@@ -64,6 +64,8 @@ function PracticePage() {
   const lesson = LessonService.getTodayLesson();
   const modelText = useMemo(() => LessonService.getModelText(lesson), [lesson]);
   const [stage, setStage] = useState<Stage>({ kind: "rep", index: 0 });
+  const [showSpanish, setShowSpanish] = useState(false);
+
 
   const [rep7Recording, setRep7Recording] = useState<Recording | null>(null);
   const [rep9Recording, setRep9Recording] = useState<Recording | null>(null);
