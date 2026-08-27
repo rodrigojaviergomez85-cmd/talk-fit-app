@@ -121,8 +121,12 @@ function PracticePage() {
         current={repIndex}
         total={10}
         title={title}
-        onBack={stage.kind === "rep" && stage.index > 0 ? () => goToRep(stage.index - 1) : undefined}
-        onExit={() => navigate({ to: "/" })}
+        {...(stage.kind === "rep" && stage.index > 0
+          ? { onBack: () => setStage({ kind: "rep", index: (stage as { index: number }).index - 1 }) }
+          : {})}
+        onExit={() => {
+          void navigate({ to: "/" });
+        }}
       />
 
       <main className="mx-auto w-full max-w-lg px-4 pb-16 pt-6">
