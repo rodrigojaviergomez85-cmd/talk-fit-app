@@ -16,8 +16,11 @@ import { AudioService } from "@/services/audio-service";
 import { SpeechAnalysisService } from "@/services/speech-analysis-service";
 import { FeedbackService } from "@/services/feedback-service";
 import { ProfileService } from "@/services/profile-service";
+import { RepFeedback } from "@/components/fluency/RepFeedback";
+import { checkRepetition, type RepCheck } from "@/lib/pronunciation-check";
 import type { QuickFix, Recording, SpeechAnalysis } from "@/lib/types";
 import { cn } from "@/lib/utils";
+
 
 export const Route = createFileRoute("/practice")({
   head: () => ({
@@ -86,7 +89,9 @@ function PracticePage() {
       transcript,
       durationSeconds: recording.durationSeconds || 38,
       isFinalRep: isFinal,
+      targetStructure: `${lesson.grammar} — ${lesson.topic}`,
     });
+
     setAnalyzing(false);
     if (isFinal) {
       setFinalAnalysis(result);
@@ -324,8 +329,14 @@ function Rep2({ lesson, modelText, onNext }: RepBodyProps) {
 function Rep3({ lesson, onNext }: RepBodyProps) {
   const [index, setIndex] = useState(0);
   const [myVoice, setMyVoice] = useState<Recording | null>(null);
+  const [check, setCheck] = useState<RepCheck | null>(null);
   const sentence = lesson.sentences[index]!;
   const isLast = index === lesson.sentences.length - 1;
+
+  const reset = () => {
+    setMyVoice(null);
+    setCheck(null);
+  };
 
   return (
     <>
@@ -337,19 +348,24 @@ function Rep3({ lesson, onNext }: RepBodyProps) {
       <div className="mt-5 space-y-3">
         <AudioPlayer text={sentence.text} label="LISTEN" variant="navy" />
         <p className="pt-2 text-center text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Your turn</p>
-        <VoiceRecorder label="RECORD" stopLabel="STOP" showTimer={false} onComplete={(recording) => setMyVoice(recording)} />
+        <VoiceRecorder
+          label="RECORD"
+          stopLabel="STOP"
+          showTimer={false}
+          captureTranscript
+          liveTranscriptOnly
+          onComplete={(recording, transcript) => {
+            setMyVoice(recording);
+            setCheck(checkRepetition(sentence.text, transcript));
+          }}
+        />
       </div>
+
+      {check ? <RepFeedback check={check} onRetry={reset} className="mt-5" /> : null}
 
       {myVoice ? (
         <div className="mt-5 space-y-3">
           <RecordingComparison leftLabel="▶ MODEL" rightLabel="▶ MY VOICE" modelText={sentence.text} rightUrl={myVoice.url} caption="Compare" />
-          <button
-            type="button"
-            onClick={() => setMyVoice(null)}
-            className="w-full rounded-2xl border border-border bg-card px-5 py-3.5 text-[15px] font-semibold"
-          >
-            TRY AGAIN
-          </button>
         </div>
       ) : null}
 
@@ -358,12 +374,13 @@ function Rep3({ lesson, onNext }: RepBodyProps) {
           if (isLast) {
             onNext();
           } else {
-            setMyVoice(null);
+            reset();
             setIndex(index + 1);
           }
         }}
         label={isLast ? "NEXT REP" : "NEXT"}
       />
+
     </>
   );
 }
@@ -394,13 +411,30 @@ function Rep4({ lesson, onNext }: RepBodyProps) {
 }
 
 function ChunkRow({ text, done, onDone }: { text: string; done: boolean; onDone: () => void }) {
+  const [check, setCheck] = useState<RepCheck | null>(null);
+  const target = text.replace(/…|______/g, "").trim();
   return (
-    <div className={cn("flex items-center gap-2 rounded-2xl bg-card p-3 shadow-[var(--shadow-card)]", done && "opacity-70")}>
-      <span className="flex-1 text-[16px] font-semibold">{text}</span>
-      {done ? <Check className="size-5 text-success" /> : null}
-      <AudioPlayer text={text.replace("…", "")} label="" size="sm" variant="ghost" className="w-auto px-3" />
-      <VoiceRecorder label="" stopLabel="" showTimer={false} onComplete={onDone} className="[&>button]:size-11 [&>button]:gap-0 [&>button>span]:hidden" />
+    <div className={cn("rounded-2xl bg-card p-3 shadow-[var(--shadow-card)]", done && "opacity-90")}>
+      <div className="flex items-center gap-2">
+        <span className="flex-1 text-[16px] font-semibold">{text}</span>
+        {done ? <Check className="size-5 text-success" /> : null}
+        <AudioPlayer text={target} label="" size="sm" variant="ghost" className="w-auto px-3" />
+        <VoiceRecorder
+          label=""
+          stopLabel=""
+          showTimer={false}
+          captureTranscript
+          liveTranscriptOnly
+          onComplete={(_recording, transcript) => {
+            setCheck(checkRepetition(target, transcript));
+            onDone();
+          }}
+          className="[&>button]:size-11 [&>button]:gap-0 [&>button>span]:hidden"
+        />
+      </div>
+      {check ? <RepFeedback check={check} onRetry={() => setCheck(null)} className="mt-3" /> : null}
     </div>
+
   );
 }
 
@@ -461,6 +495,7 @@ function Shadowing({
 }
 
 function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepBodyProps) {
+  const [check, setCheck] = useState<RepCheck | null>(null);
   return (
     <>
       <Instruction text="Now do it without the speaker." sub={`Target ${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds.`} />
@@ -476,9 +511,15 @@ function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepB
           label="RECORD"
           stopLabel="STOP"
           targetSeconds={lesson.goalSeconds}
-          onComplete={(recording) => onRep7Recorded(recording)}
+          captureTranscript
+          liveTranscriptOnly
+          onComplete={(recording, transcript) => {
+            onRep7Recorded(recording);
+            setCheck(checkRepetition(modelText, transcript));
+          }}
         />
       </div>
+      {check ? <RepFeedback check={check} onRetry={() => setCheck(null)} className="mt-6" /> : null}
       {rep7Recording ? (
         <div className="mt-6">
           <RecordingComparison leftLabel="▶ MODEL" rightLabel="▶ MY VOICE" modelText={modelText} rightUrl={rep7Recording.url} caption="Model vs my voice" />
@@ -488,6 +529,7 @@ function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepB
     </>
   );
 }
+
 
 function Rep8({ lesson, onNext }: RepBodyProps) {
   return (
@@ -608,11 +650,62 @@ function Rep10({ lesson, finalFocus, onRep10Recorded }: RepBodyProps) {
 
 /* -------------------------------- AI stages ------------------------------- */
 
+function CorrectnessBanner({ analysis }: { analysis: SpeechAnalysis }) {
+  const clean = analysis.grammarIssues.length === 0;
+  return (
+    <div className="space-y-2">
+      <div
+        className={cn(
+          "rounded-3xl border p-5",
+          clean ? "border-success/30 bg-success/10" : "border-primary/30 bg-accent",
+        )}
+      >
+        <p className="text-[13px] font-extrabold uppercase tracking-[0.16em]">
+          {clean ? "LO DIJISTE BIEN" : `${analysis.grammarIssues.length} COSAS PARA CORREGIR`}
+        </p>
+        <p className="mt-1.5 text-sm text-muted-foreground">
+          {clean
+            ? "No encontramos errores de gramática en lo que dijiste."
+            : "Revisa abajo lo que dijiste y cómo se dice correctamente."}
+        </p>
+      </div>
+      {analysis.aiError ? (
+        <p className="rounded-2xl bg-secondary px-4 py-3 text-[13px] text-muted-foreground">
+          Coach IA no disponible ({analysis.aiError}). Mostramos la corrección local.
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function CorrectionList({ analysis }: { analysis: SpeechAnalysis }) {
+  if (analysis.grammarIssues.length === 0) return null;
+  return (
+    <section className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Correcciones</p>
+      <ul className="mt-3 space-y-4">
+        {analysis.grammarIssues.map((issue) => (
+          <li key={issue.id} className="space-y-1">
+            <p className="text-[15px] text-destructive line-through">{issue.said}</p>
+            <p className="text-[16px] font-semibold text-success">{issue.correct}</p>
+            <p className="text-[13px] text-muted-foreground">{issue.note}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+
+
 function AnalysisStage({ analysis, onPractice }: { analysis: SpeechAnalysis; onPractice: () => void }) {
   return (
     <div className="space-y-4">
       <Instruction text="Your AI feedback" sub="One win. One fix. Then we train it." />
+      <CorrectnessBanner analysis={analysis} />
       <AIAnalysisCard analysis={analysis} onPracticeThis={onPractice} />
+      <CorrectionList analysis={analysis} />
+
 
       <section className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Fluency</p>
