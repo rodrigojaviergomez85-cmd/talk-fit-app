@@ -63,29 +63,36 @@ export const LessonService = {
   getModelText(lesson: Lesson): string {
     return lesson.sentences.map((s) => s.text).join(" ");
   },
-  /** Natural-speech chunks taught across the course. */
-  getNaturalSpeechChunks(): string[] {
+  /** Natural-speech chunks taught across the course, with Spanish support. */
+  getNaturalSpeechChunks(): { text: string; es: string }[] {
     return [
-      "I usually…",
-      "I normally…",
-      "Most of the time…",
-      "During the week…",
-      "After work…",
-      "In the morning…",
-      "because I…",
-      "because it's…",
-      "One thing I like is…",
-      "Overall…",
-      "Tomorrow I'm going to…",
+      { text: "I usually…", es: "Normalmente yo…" },
+      { text: "I normally…", es: "Yo normalmente…" },
+      { text: "Most of the time…", es: "La mayoría del tiempo…" },
+      { text: "During the week…", es: "Entre semana…" },
+      { text: "After work…", es: "Después del trabajo…" },
+      { text: "In the morning…", es: "En la mañana…" },
+      { text: "because I…", es: "porque yo…" },
+      { text: "because it's…", es: "porque es…" },
+      { text: "One thing I like is…", es: "Una cosa que me gusta es…" },
+      { text: "Overall…", es: "En general…" },
+      { text: "Tomorrow I'm going to…", es: "Mañana voy a…" },
     ];
   },
   /** Idea-expansion ladder used when a learner speaks under target time. */
-  getExpansionLadder(): string[] {
+  getExpansionLadder(): { text: string; es: string }[] {
     return [
-      "I work at a bank.",
-      "I work at a bank in Managua.",
-      "I work at a bank in Managua because I like helping customers.",
-      "I work at a bank in Managua because I like helping customers, and I usually start work at eight.",
+      { text: "I work at a bank.", es: "Trabajo en un banco." },
+      { text: "I work at a bank in Managua.", es: "Trabajo en un banco en Managua." },
+      {
+        text: "I work at a bank in Managua because I like helping customers.",
+        es: "Trabajo en un banco en Managua porque me gusta ayudar a los clientes.",
+      },
+      {
+        text: "I work at a bank in Managua because I like helping customers, and I usually start work at eight.",
+        es: "Trabajo en un banco en Managua porque me gusta ayudar a los clientes, y normalmente empiezo a trabajar a las ocho.",
+      },
     ];
   },
 };
+
