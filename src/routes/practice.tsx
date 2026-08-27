@@ -495,6 +495,7 @@ function Shadowing({
 }
 
 function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepBodyProps) {
+  const [check, setCheck] = useState<RepCheck | null>(null);
   return (
     <>
       <Instruction text="Now do it without the speaker." sub={`Target ${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds.`} />
@@ -510,9 +511,15 @@ function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepB
           label="RECORD"
           stopLabel="STOP"
           targetSeconds={lesson.goalSeconds}
-          onComplete={(recording) => onRep7Recorded(recording)}
+          captureTranscript
+          liveTranscriptOnly
+          onComplete={(recording, transcript) => {
+            onRep7Recorded(recording);
+            setCheck(checkRepetition(modelText, transcript));
+          }}
         />
       </div>
+      {check ? <RepFeedback check={check} onRetry={() => setCheck(null)} className="mt-6" /> : null}
       {rep7Recording ? (
         <div className="mt-6">
           <RecordingComparison leftLabel="▶ MODEL" rightLabel="▶ MY VOICE" modelText={modelText} rightUrl={rep7Recording.url} caption="Model vs my voice" />
@@ -522,6 +529,7 @@ function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepB
     </>
   );
 }
+
 
 function Rep8({ lesson, onNext }: RepBodyProps) {
   return (
