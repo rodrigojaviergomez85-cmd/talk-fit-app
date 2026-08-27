@@ -10,6 +10,8 @@ type VoiceRecorderProps = {
   label?: string;
   stopLabel?: string;
   targetSeconds?: [number, number];
+  /** Hard limit: the recording stops by itself when reached. */
+  maxSeconds?: number;
   showTimer?: boolean;
   captureTranscript?: boolean;
   /** Short reps: use only what the browser really heard, never a mock transcript. */
@@ -23,6 +25,7 @@ export function VoiceRecorder({
   label = "RECORD",
   stopLabel = "STOP",
   targetSeconds,
+  maxSeconds,
   showTimer = true,
   captureTranscript = false,
   liveTranscriptOnly = false,
@@ -36,6 +39,8 @@ export function VoiceRecorder({
   const activeRef = useRef<ActiveRecording | null>(null);
   const stopListeningRef = useRef<(() => string) | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const stopRef = useRef<() => void>(() => undefined);
+
 
   useEffect(
     () => () => {
