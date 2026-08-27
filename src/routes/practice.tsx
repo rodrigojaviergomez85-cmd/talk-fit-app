@@ -34,7 +34,7 @@ export const Route = createFileRoute("/practice")({
           "Listen, notice, echo, shadow, record and personalize: ten guided speaking reps that make Simple Present automatic.",
       },
       { property: "og:title", content: "Today's 10 Fluency Reps — Simple Present" },
-      { property: "og:description", content: "Ten guided speaking reps with AI feedback on your recording." },
+      { property: "og:description", content: "Seven guided speaking reps with instant feedback on your recording." },
     ],
   }),
   component: PracticePage,
@@ -48,14 +48,12 @@ type Stage =
   | { kind: "summary" };
 
 const REP_TITLES = [
-  "REP 1 OF 9",
-  "REP 2 OF 9",
-  "REP 3 OF 9",
-  "REP 4 OF 9",
-  "REP 5 OF 9",
-  "REP 6 OF 9",
-  "REP 7 OF 9",
-  "REP 8 OF 9",
+  "REP 1 OF 7",
+  "REP 2 OF 7",
+  "REP 3 OF 7",
+  "REP 4 OF 7",
+  "REP 5 OF 7",
+  "REP 6 OF 7",
   "FINAL REP",
 ];
 
@@ -81,7 +79,7 @@ function PracticePage() {
     if (typeof window !== "undefined") window.scrollTo({ top: 0 });
   }, [stage]);
 
-  const repIndex = stage.kind === "rep" ? stage.index : stage.kind === "summary" ? 9 : 8;
+  const repIndex = stage.kind === "rep" ? stage.index : stage.kind === "summary" ? 7 : 6;
   const title = stage.kind === "summary" ? "SESSION COMPLETE" : (REP_TITLES[repIndex] ?? "PRACTICE");
 
   const goToRep = (index: number) => setStage({ kind: "rep", index });
@@ -127,7 +125,7 @@ function PracticePage() {
     <div className="min-h-screen bg-background">
       <RepProgress
         current={repIndex}
-        total={9}
+        total={7}
         title={title}
         {...(stage.kind === "rep" && stage.index > 0
           ? { onBack: () => setStage({ kind: "rep", index: (stage as { index: number }).index - 1 }) }
@@ -147,9 +145,9 @@ function PracticePage() {
         {analyzing ? (
           <div className="flex flex-col items-center gap-4 py-24 text-center">
             <Loader2 className="size-8 animate-spin text-primary" />
-            <p className="text-lg font-bold">Your AI coach is listening…</p>
-            <p className="text-sm text-muted-foreground">Checking grammar, fluency, pronunciation, rhythm and structure.</p>
-            <p className="text-[13px] italic text-muted-foreground/80">Tu coach de IA está escuchando… Revisando gramática, fluidez, pronunciación, ritmo y estructura.</p>
+            <p className="text-lg font-bold">Checking your recording…</p>
+            <p className="text-sm text-muted-foreground">Grammar, fluency, pronunciation, rhythm and structure.</p>
+            <p className="text-[13px] italic text-muted-foreground/80">Revisando tu grabación… gramática, fluidez, pronunciación, ritmo y estructura.</p>
           </div>
         ) : stage.kind === "rep" ? (
 
@@ -174,10 +172,10 @@ function PracticePage() {
         ) : stage.kind === "analysis" && analysis ? (
           <AnalysisStage
             analysis={analysis}
-            onPractice={() => setStage(quickFix ? { kind: "quickfix" } : { kind: "rep", index: 8 })}
+            onPractice={() => setStage(quickFix ? { kind: "quickfix" } : { kind: "rep", index: 6 })}
           />
         ) : stage.kind === "quickfix" && quickFix ? (
-          <QuickFixCard quickFix={quickFix} onDone={() => goToRep(8)} />
+          <QuickFixCard quickFix={quickFix} onDone={() => goToRep(6)} />
         ) : stage.kind === "final-analysis" && finalAnalysis ? (
           <FinalAnalysisStage
             before={analysis}
@@ -221,22 +219,18 @@ type RepBodyProps = {
 function RepBody(props: RepBodyProps) {
   switch (props.index) {
     case 0:
-      return <Rep1 {...props} />;
-    case 1:
       return <Rep2 {...props} />;
-    case 2:
+    case 1:
       return <Rep3 {...props} />;
-    case 3:
+    case 2:
       return <Shadowing {...props} rate={0.85} instruction="Speak WITH the model." instructionEs="Habla CON el modelo." heading="Slow shadowing" note="Copy the speaker's rhythm, stress and pronunciation." noteEs="Copia el ritmo, el énfasis y la pronunciación del hablante." />;
-    case 4:
+    case 3:
       return <Shadowing {...props} rate={1} instruction="Now match natural English." instructionEs="Ahora iguala el inglés natural." heading="Natural speed" note="Same words, natural speed. Stay with the speaker." noteEs="Las mismas palabras, a velocidad natural. Sigue al hablante." />;
-    case 5:
+    case 4:
       return <Rep7 {...props} />;
+    case 5:
+      return <RepSeries {...props} />;
     case 6:
-      return <Rep8 {...props} />;
-    case 7:
-      return <Rep9 {...props} />;
-    case 8:
       return <Rep10 {...props} />;
     default:
       return null;
@@ -270,23 +264,6 @@ function NextButton({ onClick, label = "NEXT REP" }: { onClick: () => void; labe
     >
       {label}
     </button>
-  );
-}
-
-function Rep1({ modelText, onNext }: RepBodyProps) {
-  const [heard, setHeard] = useState(false);
-  return (
-    <>
-      <Instruction text="Just listen." sub="No transcript yet. Let your ears do the work." es="Solo escucha. Todavía sin texto. Deja que tus oídos hagan el trabajo." />
-      <div className="rounded-3xl bg-navy p-8 text-center text-navy-foreground">
-        <WaveformPlayer active={false} tone="primary" className="opacity-60" />
-        <p className="mt-4 text-sm text-navy-foreground/70">≈ 40 seconds of natural conversational English</p>
-      </div>
-      <div className="mt-6 space-y-3">
-        <AudioPlayer text={modelText} label={heard ? "LISTEN AGAIN" : "LISTEN TO MODEL"} size="lg" onEnd={() => setHeard(true)} />
-      </div>
-      <NextButton onClick={onNext} />
-    </>
   );
 }
 
@@ -509,35 +486,6 @@ function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepB
 }
 
 
-function Rep8({ lesson, onNext }: RepBodyProps) {
-  return (
-    <>
-      <Instruction text="Now make it yours." sub="Speak your answers out loud. No writing needed." es="Ahora hazlo tuyo. Responde en voz alta con tus propias respuestas. No necesitas escribir." />
-      <div className="space-y-3">
-        {lesson.prompts.map((prompt, index) => (
-          <div key={prompt.id} className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Question {index + 1}</p>
-            <TranslatableText es={prompt.questionEs} className="mt-1.5">
-              <p className="text-[17px] font-semibold leading-snug">{prompt.question}</p>
-            </TranslatableText>
-            <TranslatableText es={prompt.starterEs} className="mt-3">
-              <p className="rounded-2xl bg-secondary/70 px-3 py-2 text-[15px] font-semibold text-muted-foreground">
-                {prompt.starter}
-              </p>
-            </TranslatableText>
-
-            <div className="mt-3 grid grid-cols-2 gap-2">
-              <AudioPlayer text={prompt.starter.replace(/…|______/g, "")} label="HEAR STARTER" size="sm" variant="ghost" />
-              <VoiceRecorder label="SAY IT" stopLabel="DONE" showTimer={false} onComplete={() => undefined} className="[&>button]:size-11 [&>button]:text-[9px]" />
-            </div>
-          </div>
-        ))}
-      </div>
-      <NextButton onClick={onNext} />
-    </>
-  );
-}
-
 function CueRow({ cues }: { cues: string[] }) {
   return (
     <div className="flex flex-wrap gap-2">
@@ -601,7 +549,7 @@ function Rep9({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
             onClick={() => onRep9Recorded(recording, transcript)}
             className="w-full rounded-2xl bg-primary px-6 py-5 text-base font-extrabold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
           >
-            GET AI FEEDBACK
+            GET MY FEEDBACK
           </button>
         </div>
       ) : null}
@@ -635,7 +583,7 @@ function Rep10({ lesson, finalFocus, onRep10Recorded }: RepBodyProps) {
   );
 }
 
-/* -------------------------------- AI stages ------------------------------- */
+/* ------------------------------ Result stages ----------------------------- */
 
 function CorrectnessBanner({ analysis }: { analysis: SpeechAnalysis }) {
   const clean = analysis.grammarIssues.length === 0;
@@ -656,11 +604,6 @@ function CorrectnessBanner({ analysis }: { analysis: SpeechAnalysis }) {
             : "Revisa abajo lo que dijiste y cómo se dice correctamente."}
         </p>
       </div>
-      {analysis.aiError ? (
-        <p className="rounded-2xl bg-secondary px-4 py-3 text-[13px] text-muted-foreground">
-          Coach IA no disponible ({analysis.aiError}). Mostramos la corrección local.
-        </p>
-      ) : null}
     </div>
   );
 }
@@ -688,7 +631,7 @@ function CorrectionList({ analysis }: { analysis: SpeechAnalysis }) {
 function AnalysisStage({ analysis, onPractice }: { analysis: SpeechAnalysis; onPractice: () => void }) {
   return (
     <div className="space-y-4">
-      <Instruction text="Your AI feedback" sub="One win. One fix. Then we train it." es="Tu retroalimentación de IA. Un acierto. Una corrección. Luego lo entrenamos." />
+      <Instruction text="Your feedback" sub="One win. One fix. Then we train it." es="Tu retroalimentación. Un acierto. Una corrección. Luego lo entrenamos." />
       <CorrectnessBanner analysis={analysis} />
       <AIAnalysisCard analysis={analysis} onPracticeThis={onPractice} />
       <CorrectionList analysis={analysis} />
@@ -796,7 +739,7 @@ function FinalAnalysisStage({
       <FluencyScore score={after.score} breakdown={after.breakdown} caption="Today's fluency score" />
 
       <RecordingComparison
-        leftLabel="▶ REP 9"
+        leftLabel="▶ FIRST TRY"
         rightLabel="▶ FINAL REP"
         leftUrl={rep9Url}
         rightUrl={rep10Url ?? null}
@@ -832,7 +775,7 @@ function SummaryStage({
     <div className="space-y-4 pb-8">
       <div className="rounded-3xl bg-navy p-6 text-center text-navy-foreground">
         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">Today's fluency training complete</p>
-        <p className="mt-3 text-3xl font-extrabold">9 / 9 REPS ✓</p>
+        <p className="mt-3 text-3xl font-extrabold">7 / 7 REPS ✓</p>
         <p className="mt-2 text-sm text-navy-foreground/70">Final speaking time: {analysis.fluency.seconds} seconds</p>
       </div>
 
