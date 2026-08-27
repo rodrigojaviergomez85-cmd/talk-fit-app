@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Check, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { RepProgress } from "@/components/fluency/RepProgress";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
@@ -46,15 +46,14 @@ type Stage =
   | { kind: "summary" };
 
 const REP_TITLES = [
-  "REP 1 OF 10",
-  "REP 2 OF 10",
-  "REP 3 OF 10",
-  "REP 4 OF 10",
-  "REP 5 OF 10",
-  "REP 6 OF 10",
-  "REP 7 OF 10",
-  "REP 8 OF 10",
-  "REP 9 OF 10",
+  "REP 1 OF 9",
+  "REP 2 OF 9",
+  "REP 3 OF 9",
+  "REP 4 OF 9",
+  "REP 5 OF 9",
+  "REP 6 OF 9",
+  "REP 7 OF 9",
+  "REP 8 OF 9",
   "FINAL REP",
 ];
 
@@ -124,7 +123,7 @@ function PracticePage() {
     <div className="min-h-screen bg-background">
       <RepProgress
         current={repIndex}
-        total={10}
+        total={9}
         title={title}
         {...(stage.kind === "rep" && stage.index > 0
           ? { onBack: () => setStage({ kind: "rep", index: (stage as { index: number }).index - 1 }) }
@@ -163,10 +162,10 @@ function PracticePage() {
         ) : stage.kind === "analysis" && analysis ? (
           <AnalysisStage
             analysis={analysis}
-            onPractice={() => setStage(quickFix ? { kind: "quickfix" } : { kind: "rep", index: 9 })}
+            onPractice={() => setStage(quickFix ? { kind: "quickfix" } : { kind: "rep", index: 8 })}
           />
         ) : stage.kind === "quickfix" && quickFix ? (
-          <QuickFixCard quickFix={quickFix} onDone={() => goToRep(9)} />
+          <QuickFixCard quickFix={quickFix} onDone={() => goToRep(8)} />
         ) : stage.kind === "final-analysis" && finalAnalysis ? (
           <FinalAnalysisStage
             before={analysis}
@@ -214,18 +213,16 @@ function RepBody(props: RepBodyProps) {
     case 2:
       return <Rep3 {...props} />;
     case 3:
-      return <Rep4 {...props} />;
-    case 4:
       return <Shadowing {...props} rate={0.85} instruction="Speak WITH the model." heading="Slow shadowing" note="Copy the speaker's rhythm, stress and pronunciation." />;
-    case 5:
+    case 4:
       return <Shadowing {...props} rate={1} instruction="Now match natural English." heading="Natural speed" note="Same words, natural speed. Stay with the speaker." />;
-    case 6:
+    case 5:
       return <Rep7 {...props} />;
-    case 7:
+    case 6:
       return <Rep8 {...props} />;
-    case 8:
+    case 7:
       return <Rep9 {...props} />;
-    case 9:
+    case 8:
       return <Rep10 {...props} />;
     default:
       return null;
@@ -382,59 +379,6 @@ function Rep3({ lesson, onNext }: RepBodyProps) {
       />
 
     </>
-  );
-}
-
-function Rep4({ lesson, onNext }: RepBodyProps) {
-  const [done, setDone] = useState<Record<string, boolean>>({});
-  const completed = Object.values(done).filter(Boolean).length;
-
-  return (
-    <>
-      <Instruction text="Make these phrases automatic." sub="Fast reps. Speaking muscle memory." />
-      <p className="mb-4 text-sm font-semibold text-muted-foreground">
-        {completed} / {lesson.automaticityChunks.length} chunks trained
-      </p>
-      <div className="space-y-2">
-        {lesson.automaticityChunks.map((chunk) => (
-          <ChunkRow
-            key={chunk.id}
-            text={chunk.text}
-            done={!!done[chunk.id]}
-            onDone={() => setDone((prev) => ({ ...prev, [chunk.id]: true }))}
-          />
-        ))}
-      </div>
-      <NextButton onClick={onNext} />
-    </>
-  );
-}
-
-function ChunkRow({ text, done, onDone }: { text: string; done: boolean; onDone: () => void }) {
-  const [check, setCheck] = useState<RepCheck | null>(null);
-  const target = text.replace(/…|______/g, "").trim();
-  return (
-    <div className={cn("rounded-2xl bg-card p-3 shadow-[var(--shadow-card)]", done && "opacity-90")}>
-      <div className="flex items-center gap-2">
-        <span className="flex-1 text-[16px] font-semibold">{text}</span>
-        {done ? <Check className="size-5 text-success" /> : null}
-        <AudioPlayer text={target} label="" size="sm" variant="ghost" className="w-auto px-3" />
-        <VoiceRecorder
-          label=""
-          stopLabel=""
-          showTimer={false}
-          captureTranscript
-          liveTranscriptOnly
-          onComplete={(_recording, transcript) => {
-            setCheck(checkRepetition(target, transcript));
-            onDone();
-          }}
-          className="[&>button]:size-11 [&>button]:gap-0 [&>button>span]:hidden"
-        />
-      </div>
-      {check ? <RepFeedback check={check} onRetry={() => setCheck(null)} className="mt-3" /> : null}
-    </div>
-
   );
 }
 
@@ -845,7 +789,7 @@ function SummaryStage({
     <div className="space-y-4 pb-8">
       <div className="rounded-3xl bg-navy p-6 text-center text-navy-foreground">
         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">Today's fluency training complete</p>
-        <p className="mt-3 text-3xl font-extrabold">10 / 10 REPS ✓</p>
+        <p className="mt-3 text-3xl font-extrabold">9 / 9 REPS ✓</p>
         <p className="mt-2 text-sm text-navy-foreground/70">Final speaking time: {analysis.fluency.seconds} seconds</p>
       </div>
 
