@@ -61,7 +61,15 @@ export function VoiceRecorder({
       }
       setSeconds(0);
       setRecording(true);
-      timerRef.current = setInterval(() => setSeconds((value) => value + 1), 1000);
+      timerRef.current = setInterval(
+        () =>
+          setSeconds((value) => {
+            const next = value + 1;
+            if (maxSeconds && next >= maxSeconds) stopRef.current();
+            return next;
+          }),
+        1000,
+      );
     } catch {
       setError("We need microphone access to record your voice.");
     }
@@ -69,6 +77,8 @@ export function VoiceRecorder({
 
   const stop = async () => {
     if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = null;
+    if (!activeRef.current && !recording) return;
     setRecording(false);
     const live = stopListeningRef.current?.() ?? "";
     stopListeningRef.current = null;
@@ -87,10 +97,15 @@ export function VoiceRecorder({
       transcript = (await SpeechToTextService.transcribe(0)).transcript;
     }
 
-    onComplete({ ...result, durationSeconds: Math.max(result.durationSeconds, seconds) }, transcript);
+    const capped = maxSeconds ? Math.min(maxSeconds, Math.max(result.durationSeconds, seconds)) : Math.max(result.durationSeconds, seconds);
+    onComplete({ ...result, durationSeconds: capped }, transcript);
   };
 
+  stopRef.current = () => void stop();
+
+  const nearLimit = !!maxSeconds && recording && seconds >= maxSeconds - 5;
   const inTarget = targetSeconds && seconds >= targetSeconds[0] && seconds <= targetSeconds[1];
+
 
   return (
     <div className={cn("flex flex-col items-center gap-4", className)}>
