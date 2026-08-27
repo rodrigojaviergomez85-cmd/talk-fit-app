@@ -1,3 +1,4 @@
+import { analyzeSpeech } from "@/lib/speech-analysis.functions";
 import type {
   GrammarIssue,
   FluencyMetrics,
@@ -7,6 +8,7 @@ import type {
   SpeechAnalysis,
   StructureCheck,
 } from "@/lib/types";
+
 
 /**
  * SpeechAnalysisService — five-dimension analysis of a learner recording.
