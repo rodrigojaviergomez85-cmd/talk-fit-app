@@ -225,7 +225,7 @@ function RepBody(props: RepBodyProps) {
     case 2:
       return <Shadowing {...props} rate={0.85} instruction="Speak WITH the model." instructionEs="Habla CON el modelo." heading="Slow shadowing" note="Copy the speaker's rhythm, stress and pronunciation." noteEs="Copia el ritmo, el énfasis y la pronunciación del hablante." />;
     case 3:
-      return <Shadowing {...props} rate={1} instruction="Now match natural English." instructionEs="Ahora iguala el inglés natural." heading="Natural speed" note="Same words, natural speed. Stay with the speaker." noteEs="Las mismas palabras, a velocidad natural. Sigue al hablante." />;
+      return <Shadowing {...props} rate={1} speeds={[0.75, 1, 1.25, 1.5]} instruction="Now match natural English." instructionEs="Ahora iguala el inglés natural." heading="Natural speed" note="Tap a speed to make it slower or faster." noteEs="Toca una velocidad para ponerlo más lento o más rápido. Empieza en 1x y súbelo cuando te sientas cómodo." />;
     case 4:
       return <Rep7 {...props} />;
     case 5:
@@ -393,13 +393,15 @@ function Shadowing({
   modelText,
   onNext,
   rate,
+  speeds,
   instruction,
   instructionEs,
   heading,
   note,
   noteEs,
-}: RepBodyProps & { rate: number; instruction: string; instructionEs?: string; heading: string; note: string; noteEs?: string }) {
+}: RepBodyProps & { rate: number; speeds?: number[]; instruction: string; instructionEs?: string; heading: string; note: string; noteEs?: string }) {
   const [playing, setPlaying] = useState(false);
+  const [speed, setSpeed] = useState(rate);
   const stopRef = useRef<(() => void) | null>(null);
 
   useEffect(() => () => stopRef.current?.(), []);
@@ -412,15 +414,22 @@ function Shadowing({
       return;
     }
     stopRef.current = AudioService.speak(modelText, {
-      rate,
+      rate: speed,
       onStart: () => setPlaying(true),
       onEnd: () => setPlaying(false),
     });
   };
 
+  const pickSpeed = (value: number) => {
+    stopRef.current?.();
+    AudioService.stop();
+    setPlaying(false);
+    setSpeed(value);
+  };
+
   return (
     <>
-      <Instruction text={instruction} sub={`${heading} · ${rate}x speed`} es={instructionEs} />
+      <Instruction text={instruction} sub={`${heading} · ${speed}x speed`} es={instructionEs} />
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         <WaveformPlayer active={playing} />
         <div className="mt-4 space-y-2">
@@ -432,6 +441,29 @@ function Shadowing({
 
         </div>
       </div>
+      {speeds ? (
+        <div className="mt-4">
+          <p className="mb-2 text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Velocidad</p>
+          <div className="flex gap-2">
+            {speeds.map((value) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => pickSpeed(value)}
+                aria-pressed={speed === value}
+                className={cn(
+                  "flex-1 rounded-2xl border px-2 py-3 text-sm font-extrabold tabular-nums transition-colors",
+                  speed === value
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-border bg-card text-muted-foreground active:bg-secondary",
+                )}
+              >
+                {value}x
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : null}
       <p className="mt-4 text-center text-sm text-muted-foreground">{note}</p>
       {noteEs ? <EsLine text={noteEs} className="mt-1 text-center" /> : null}
       <div className="mt-5">
@@ -447,6 +479,7 @@ function Shadowing({
     </>
   );
 }
+
 
 function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepBodyProps) {
   const [check, setCheck] = useState<RepCheck | null>(null);
@@ -527,6 +560,9 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
         </div>
         <p className="mt-3 text-sm text-navy-foreground/70">Say the whole thing again, a little better each time.</p>
         <EsLine text="Repite todo otra vez, un poco mejor cada vez." className="mt-1 text-navy-foreground/60" />
+        <p className="mt-2 text-sm font-semibold text-navy-foreground/80">Max 30 seconds per rep. It stops on its own.</p>
+        <EsLine text="Máximo 30 segundos por rep. Se detiene solo." className="mt-1 text-navy-foreground/60" />
+
       </div>
 
       <CueRow cues={lesson.cues} />
@@ -550,8 +586,10 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
           key={repNumber}
           label="START"
           stopLabel="STOP"
-          targetSeconds={lesson.goalSeconds}
+          targetSeconds={[Math.min(lesson.goalSeconds[0], 30), Math.min(lesson.goalSeconds[1], 30)]}
+          maxSeconds={30}
           captureTranscript
+
           onComplete={(rec, text) => {
             setRecording(rec);
             setTranscript(text);

@@ -10,6 +10,8 @@ type VoiceRecorderProps = {
   label?: string;
   stopLabel?: string;
   targetSeconds?: [number, number];
+  /** Hard limit: the recording stops by itself when reached. */
+  maxSeconds?: number;
   showTimer?: boolean;
   captureTranscript?: boolean;
   /** Short reps: use only what the browser really heard, never a mock transcript. */
@@ -23,6 +25,7 @@ export function VoiceRecorder({
   label = "RECORD",
   stopLabel = "STOP",
   targetSeconds,
+  maxSeconds,
   showTimer = true,
   captureTranscript = false,
   liveTranscriptOnly = false,
@@ -36,6 +39,8 @@ export function VoiceRecorder({
   const activeRef = useRef<ActiveRecording | null>(null);
   const stopListeningRef = useRef<(() => string) | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const stopRef = useRef<() => void>(() => undefined);
+
 
   useEffect(
     () => () => {
@@ -56,7 +61,15 @@ export function VoiceRecorder({
       }
       setSeconds(0);
       setRecording(true);
-      timerRef.current = setInterval(() => setSeconds((value) => value + 1), 1000);
+      timerRef.current = setInterval(
+        () =>
+          setSeconds((value) => {
+            const next = value + 1;
+            if (maxSeconds && next >= maxSeconds) stopRef.current();
+            return next;
+          }),
+        1000,
+      );
     } catch {
       setError("We need microphone access to record your voice.");
     }
@@ -64,6 +77,8 @@ export function VoiceRecorder({
 
   const stop = async () => {
     if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = null;
+    if (!activeRef.current && !recording) return;
     setRecording(false);
     const live = stopListeningRef.current?.() ?? "";
     stopListeningRef.current = null;
@@ -82,10 +97,15 @@ export function VoiceRecorder({
       transcript = (await SpeechToTextService.transcribe(0)).transcript;
     }
 
-    onComplete({ ...result, durationSeconds: Math.max(result.durationSeconds, seconds) }, transcript);
+    const capped = maxSeconds ? Math.min(maxSeconds, Math.max(result.durationSeconds, seconds)) : Math.max(result.durationSeconds, seconds);
+    onComplete({ ...result, durationSeconds: capped }, transcript);
   };
 
+  stopRef.current = () => void stop();
+
+  const nearLimit = !!maxSeconds && recording && seconds >= maxSeconds - 5;
   const inTarget = targetSeconds && seconds >= targetSeconds[0] && seconds <= targetSeconds[1];
+
 
   return (
     <div className={cn("flex flex-col items-center gap-4", className)}>
@@ -111,16 +131,22 @@ export function VoiceRecorder({
           <p
             className={cn(
               "font-mono text-3xl font-bold tabular-nums",
-              inTarget ? "text-success" : recording ? "text-foreground" : "text-muted-foreground",
+              nearLimit ? "text-destructive" : inTarget ? "text-success" : recording ? "text-foreground" : "text-muted-foreground",
             )}
           >
             {String(Math.floor(seconds / 60)).padStart(2, "0")}:{String(seconds % 60).padStart(2, "0")}
           </p>
+          {maxSeconds ? (
+            <p className="mt-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              MÁX {maxSeconds} s
+            </p>
+          ) : null}
           {targetSeconds ? (
             <p className="mt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
               Target {targetSeconds[0]}–{targetSeconds[1]} seconds
             </p>
           ) : null}
+
         </div>
       ) : null}
 
