@@ -4,6 +4,8 @@ import { AlertTriangle, Sparkles, Trophy } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { MistakeBank } from "@/components/fluency/MistakeBank";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
+import { TranslatableText } from "@/components/fluency/TranslatableText";
+
 import { ProfileService, defaultProfile } from "@/services/profile-service";
 import { LessonService } from "@/services/lesson-service";
 import type { LearnerProfile } from "@/lib/types";
@@ -94,8 +96,10 @@ function CoachPage() {
           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Natural speech chunks</p>
           <div className="mt-3 flex flex-wrap gap-2">
             {chunks.map((chunk) => (
-              <span key={chunk} className="rounded-full bg-secondary px-3 py-1.5 text-sm font-semibold">
-                {chunk}
+              <span key={chunk.text} className="rounded-full bg-secondary px-3 py-1.5 text-sm font-semibold">
+                <TranslatableText es={chunk.es} esClassName="text-[12px]">
+                  {chunk.text}
+                </TranslatableText>
               </span>
             ))}
           </div>
@@ -106,12 +110,15 @@ function CoachPage() {
           <p className="mt-1 text-sm text-muted-foreground">Add WHO · WHERE · WHEN · WHY · EXAMPLE · FEELING</p>
           <ol className="mt-4 space-y-3">
             {ladder.map((line, index) => (
-              <li key={line} className="rounded-2xl bg-secondary/60 p-3">
+              <li key={line.text} className="rounded-2xl bg-secondary/60 p-3">
                 <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">Level {index + 1}</p>
-                <p className="mt-1 text-[15px] font-semibold leading-snug">{line}</p>
+                <TranslatableText es={line.es}>
+                  <p className="mt-1 text-[15px] font-semibold leading-snug">{line.text}</p>
+                </TranslatableText>
               </li>
             ))}
           </ol>
+
         </section>
       </div>
     </AppShell>

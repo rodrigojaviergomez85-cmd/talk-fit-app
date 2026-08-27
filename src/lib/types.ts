@@ -7,6 +7,8 @@
 export type Chunk = {
   id: string;
   text: string;
+  /** Hand-written Spanish translation (for Spanish-speaking beginners). */
+  es?: string;
 };
 
 export type ModelSentence = {
@@ -15,12 +17,18 @@ export type ModelSentence = {
   text: string;
   /** Sentence split into natural speaking chunks. */
   chunks: string[];
+  /** Hand-written Spanish translation. */
+  es?: string;
 };
 
 export type PersonalPrompt = {
   id: string;
   question: string;
   starter: string;
+  /** Spanish translation of the question. */
+  questionEs?: string;
+  /** Spanish translation of the starter. */
+  starterEs?: string;
 };
 
 export type Lesson = {
@@ -37,6 +45,9 @@ export type Lesson = {
   prompts: PersonalPrompt[];
   cues: string[];
   checklist: string[];
+  /** Spanish translations for the checklist, same order. */
+  checklistEs?: string[];
+
 };
 
 export type Recording = {

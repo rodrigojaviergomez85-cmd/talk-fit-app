@@ -17,6 +17,8 @@ import { SpeechAnalysisService } from "@/services/speech-analysis-service";
 import { FeedbackService } from "@/services/feedback-service";
 import { ProfileService } from "@/services/profile-service";
 import { RepFeedback } from "@/components/fluency/RepFeedback";
+import { SpanishProvider, SpanishToggle, TranslatableText } from "@/components/fluency/TranslatableText";
+
 import { checkRepetition, type RepCheck } from "@/lib/pronunciation-check";
 import type { QuickFix, Recording, SpeechAnalysis } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -62,6 +64,8 @@ function PracticePage() {
   const lesson = LessonService.getTodayLesson();
   const modelText = useMemo(() => LessonService.getModelText(lesson), [lesson]);
   const [stage, setStage] = useState<Stage>({ kind: "rep", index: 0 });
+  const [showSpanish, setShowSpanish] = useState(false);
+
 
   const [rep7Recording, setRep7Recording] = useState<Recording | null>(null);
   const [rep9Recording, setRep9Recording] = useState<Recording | null>(null);
@@ -134,6 +138,12 @@ function PracticePage() {
       />
 
       <main className="mx-auto w-full max-w-lg px-4 pb-16 pt-6">
+        <SpanishProvider value={showSpanish}>
+        {stage.kind === "rep" && !analyzing ? (
+          <div className="mb-4">
+            <SpanishToggle value={showSpanish} onChange={setShowSpanish} />
+          </div>
+        ) : null}
         {analyzing ? (
           <div className="flex flex-col items-center gap-4 py-24 text-center">
             <Loader2 className="size-8 animate-spin text-primary" />
@@ -141,6 +151,7 @@ function PracticePage() {
             <p className="text-sm text-muted-foreground">Checking grammar, fluency, pronunciation, rhythm and structure.</p>
           </div>
         ) : stage.kind === "rep" ? (
+
           <RepBody
             index={stage.index}
             lesson={lesson}
@@ -184,7 +195,9 @@ function PracticePage() {
             onDone={() => navigate({ to: "/" })}
           />
         ) : null}
+        </SpanishProvider>
       </main>
+
     </div>
   );
 }
@@ -293,26 +306,29 @@ function Rep2({ lesson, modelText, onNext }: RepBodyProps) {
       <Instruction text="Listen and notice the rhythm." sub="English moves in chunks, not single words." />
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {lesson.sentences.map((sentence) => (
-          <p key={sentence.id} className="mb-3 text-[17px] leading-relaxed">
-            {sentence.chunks.map((chunk, i) => {
-              chunkCounter += 1;
-              const isActive = chunkCounter === activeChunk;
-              return (
-                <span key={`${sentence.id}-${i}`}>
-                  <span
-                    className={cn(
-                      "rounded-lg px-1 py-0.5 transition-colors duration-200",
-                      isActive ? "bg-primary/20 font-semibold text-foreground" : "text-muted-foreground",
-                    )}
-                  >
-                    {chunk}
+          <TranslatableText key={sentence.id} es={sentence.es} className="mb-3">
+            <p className="text-[17px] leading-relaxed">
+              {sentence.chunks.map((chunk, i) => {
+                chunkCounter += 1;
+                const isActive = chunkCounter === activeChunk;
+                return (
+                  <span key={`${sentence.id}-${i}`}>
+                    <span
+                      className={cn(
+                        "rounded-lg px-1 py-0.5 transition-colors duration-200",
+                        isActive ? "bg-primary/20 font-semibold text-foreground" : "text-muted-foreground",
+                      )}
+                    >
+                      {chunk}
+                    </span>
+                    {i < sentence.chunks.length - 1 ? <span className="px-1 text-primary/60">/</span> : null}
                   </span>
-                  {i < sentence.chunks.length - 1 ? <span className="px-1 text-primary/60">/</span> : null}
-                </span>
-              );
-            })}
-          </p>
+                );
+              })}
+            </p>
+          </TranslatableText>
         ))}
+
       </div>
       <div className="mt-6">
         <AudioPlayer text={modelText} label="LISTEN WITH TRANSCRIPT" size="lg" onEnd={() => setActiveChunk(-1)} />
@@ -339,8 +355,11 @@ function Rep3({ lesson, onNext }: RepBodyProps) {
     <>
       <Instruction text="Listen. Then copy." sub={`Chunk ${index + 1} of ${lesson.sentences.length}`} />
       <div className="rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-card)]">
-        <p className="text-2xl font-bold leading-snug text-balance-tight">{sentence.text}</p>
+        <TranslatableText es={sentence.es} align="center" esClassName="text-center text-[14px]">
+          <p className="text-2xl font-bold leading-snug text-balance-tight">{sentence.text}</p>
+        </TranslatableText>
       </div>
+
 
       <div className="mt-5 space-y-3">
         <AudioPlayer text={sentence.text} label="LISTEN" variant="navy" />
@@ -417,10 +436,11 @@ function Shadowing({
         <WaveformPlayer active={playing} />
         <div className="mt-4 space-y-2">
           {lesson.sentences.map((sentence) => (
-            <p key={sentence.id} className="text-[16px] leading-relaxed text-muted-foreground">
-              {sentence.chunks.join(" / ")}
-            </p>
+            <TranslatableText key={sentence.id} es={sentence.es}>
+              <p className="text-[16px] leading-relaxed text-muted-foreground">{sentence.chunks.join(" / ")}</p>
+            </TranslatableText>
           ))}
+
         </div>
       </div>
       <p className="mt-4 text-center text-sm text-muted-foreground">{note}</p>
@@ -445,10 +465,11 @@ function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepB
       <Instruction text="Now do it without the speaker." sub={`Target ${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds.`} />
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {lesson.sentences.map((sentence) => (
-          <p key={sentence.id} className="mb-2 text-[16px] leading-relaxed text-muted-foreground">
-            {sentence.text}
-          </p>
+          <TranslatableText key={sentence.id} es={sentence.es} className="mb-2">
+            <p className="text-[16px] leading-relaxed text-muted-foreground">{sentence.text}</p>
+          </TranslatableText>
         ))}
+
       </div>
       <div className="mt-6">
         <VoiceRecorder
@@ -483,10 +504,15 @@ function Rep8({ lesson, onNext }: RepBodyProps) {
         {lesson.prompts.map((prompt, index) => (
           <div key={prompt.id} className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
             <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Question {index + 1}</p>
-            <p className="mt-1.5 text-[17px] font-semibold leading-snug">{prompt.question}</p>
-            <p className="mt-3 rounded-2xl bg-secondary/70 px-3 py-2 text-[15px] font-semibold text-muted-foreground">
-              {prompt.starter}
-            </p>
+            <TranslatableText es={prompt.questionEs} className="mt-1.5">
+              <p className="text-[17px] font-semibold leading-snug">{prompt.question}</p>
+            </TranslatableText>
+            <TranslatableText es={prompt.starterEs} className="mt-3">
+              <p className="rounded-2xl bg-secondary/70 px-3 py-2 text-[15px] font-semibold text-muted-foreground">
+                {prompt.starter}
+              </p>
+            </TranslatableText>
+
             <div className="mt-3 grid grid-cols-2 gap-2">
               <AudioPlayer text={prompt.starter.replace(/…|______/g, "")} label="HEAR STARTER" size="sm" variant="ghost" />
               <VoiceRecorder label="SAY IT" stopLabel="DONE" showTimer={false} onComplete={() => undefined} className="[&>button]:size-11 [&>button]:text-[9px]" />
@@ -522,12 +548,15 @@ function Rep9({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
 
       <div className="mt-5 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         <ul className="space-y-2">
-          {lesson.checklist.map((item) => (
+          {lesson.checklist.map((item, i) => (
             <li key={item} className="flex items-center gap-2 text-[15px] text-muted-foreground">
-              <span className="size-4 rounded border border-border" />
-              {item}
+              <span className="size-4 shrink-0 rounded border border-border" />
+              <TranslatableText es={lesson.checklistEs?.[i]}>
+                <span>{item}</span>
+              </TranslatableText>
             </li>
           ))}
+
         </ul>
       </div>
 
