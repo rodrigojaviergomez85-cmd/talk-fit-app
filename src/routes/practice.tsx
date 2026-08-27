@@ -435,7 +435,7 @@ function Shadowing({
 
   return (
     <>
-      <Instruction text={instruction} sub={`${heading} · ${rate}x speed`} />
+      <Instruction text={instruction} sub={`${heading} · ${rate}x speed`} es={instructionEs} />
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         <WaveformPlayer active={playing} />
         <div className="mt-4 space-y-2">
@@ -448,6 +448,7 @@ function Shadowing({
         </div>
       </div>
       <p className="mt-4 text-center text-sm text-muted-foreground">{note}</p>
+      {noteEs ? <p className="mt-1 text-center text-[13px] italic text-muted-foreground/80">{noteEs}</p> : null}
       <div className="mt-5">
         <button
           type="button"
@@ -466,7 +467,7 @@ function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepB
   const [check, setCheck] = useState<RepCheck | null>(null);
   return (
     <>
-      <Instruction text="Now do it without the speaker." sub={`Target ${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds.`} />
+      <Instruction text="Now do it without the speaker." sub={`Target ${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds.`} es="Ahora hazlo sin el hablante. Di las frases por tu cuenta." />
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {lesson.sentences.map((sentence) => (
           <TranslatableText key={sentence.id} es={sentence.es} className="mb-2">
@@ -503,7 +504,7 @@ function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepB
 function Rep8({ lesson, onNext }: RepBodyProps) {
   return (
     <>
-      <Instruction text="Now make it yours." sub="Speak your answers out loud. No writing needed." />
+      <Instruction text="Now make it yours." sub="Speak your answers out loud. No writing needed." es="Ahora hazlo tuyo. Responde en voz alta con tus propias respuestas. No necesitas escribir." />
       <div className="space-y-3">
         {lesson.prompts.map((prompt, index) => (
           <div key={prompt.id} className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
@@ -547,7 +548,7 @@ function Rep9({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
 
   return (
     <>
-      <Instruction text="Talk about YOUR life." sub={`${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds. 7–10 sentences.`} />
+      <Instruction text="Talk about YOUR life." sub={`${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds. 7–10 sentences.`} es="Habla de TU vida. Usa la lista de abajo como guía." />
       <CueRow cues={lesson.cues} />
 
       <div className="mt-5 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
@@ -603,7 +604,7 @@ function Rep9({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
 function Rep10({ lesson, finalFocus, onRep10Recorded }: RepBodyProps) {
   return (
     <>
-      <Instruction text="Now do it again." sub="Focus on your ONE improvement." />
+      <Instruction text="Now do it again." sub="Focus on your ONE improvement." es="Ahora hazlo otra vez. Enfócate en tu UNA mejora." />
       <div className="rounded-3xl bg-navy p-5 text-navy-foreground">
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">Today's focus</p>
         <p className="mt-1.5 text-2xl font-extrabold uppercase">{finalFocus}</p>
