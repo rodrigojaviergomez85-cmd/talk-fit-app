@@ -78,9 +78,10 @@ export function VoiceRecorder({
     };
     if (active) result = await active.stop();
     let transcript = live.trim();
-    if (captureTranscript && transcript.split(/\s+/).filter(Boolean).length < 12) {
+    if (captureTranscript && !liveTranscriptOnly && transcript.split(/\s+/).filter(Boolean).length < 12) {
       transcript = (await SpeechToTextService.transcribe(0)).transcript;
     }
+
     onComplete({ ...result, durationSeconds: Math.max(result.durationSeconds, seconds) }, transcript);
   };
 
