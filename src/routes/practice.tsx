@@ -17,6 +17,7 @@ import { SpeechAnalysisService } from "@/services/speech-analysis-service";
 import { FeedbackService } from "@/services/feedback-service";
 import { ProfileService } from "@/services/profile-service";
 import { RepFeedback } from "@/components/fluency/RepFeedback";
+import { RepSeriesRow, type SeriesRep } from "@/components/fluency/RepSeriesRow";
 import { SpanishProvider, SpanishToggle, TranslatableText, useSpanishAll } from "@/components/fluency/TranslatableText";
 
 import { checkRepetition, type RepCheck } from "@/lib/pronunciation-check";
