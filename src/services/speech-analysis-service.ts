@@ -25,7 +25,10 @@ export type AnalysisInput = {
   /** Rep 10 gets a small "you focused on your fix" boost in the mock. */
   isFinalRep?: boolean;
   previousIssues?: GrammarIssue[];
+  /** Lesson target structure sent to the AI coach. */
+  targetStructure?: string;
 };
+
 
 const THIRD_PERSON_SUBJECTS = ["he", "she", "my sister", "my brother", "my manager", "my mother", "my father", "my friend", "my wife", "my husband"];
 const BASE_VERBS = ["work", "live", "start", "finish", "like", "wake", "have", "go", "study", "play", "take", "make", "get", "do", "come", "leave", "need", "want"];
