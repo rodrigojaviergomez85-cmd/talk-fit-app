@@ -306,26 +306,29 @@ function Rep2({ lesson, modelText, onNext }: RepBodyProps) {
       <Instruction text="Listen and notice the rhythm." sub="English moves in chunks, not single words." />
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {lesson.sentences.map((sentence) => (
-          <p key={sentence.id} className="mb-3 text-[17px] leading-relaxed">
-            {sentence.chunks.map((chunk, i) => {
-              chunkCounter += 1;
-              const isActive = chunkCounter === activeChunk;
-              return (
-                <span key={`${sentence.id}-${i}`}>
-                  <span
-                    className={cn(
-                      "rounded-lg px-1 py-0.5 transition-colors duration-200",
-                      isActive ? "bg-primary/20 font-semibold text-foreground" : "text-muted-foreground",
-                    )}
-                  >
-                    {chunk}
+          <TranslatableText key={sentence.id} es={sentence.es} className="mb-3">
+            <p className="text-[17px] leading-relaxed">
+              {sentence.chunks.map((chunk, i) => {
+                chunkCounter += 1;
+                const isActive = chunkCounter === activeChunk;
+                return (
+                  <span key={`${sentence.id}-${i}`}>
+                    <span
+                      className={cn(
+                        "rounded-lg px-1 py-0.5 transition-colors duration-200",
+                        isActive ? "bg-primary/20 font-semibold text-foreground" : "text-muted-foreground",
+                      )}
+                    >
+                      {chunk}
+                    </span>
+                    {i < sentence.chunks.length - 1 ? <span className="px-1 text-primary/60">/</span> : null}
                   </span>
-                  {i < sentence.chunks.length - 1 ? <span className="px-1 text-primary/60">/</span> : null}
-                </span>
-              );
-            })}
-          </p>
+                );
+              })}
+            </p>
+          </TranslatableText>
         ))}
+
       </div>
       <div className="mt-6">
         <AudioPlayer text={modelText} label="LISTEN WITH TRANSCRIPT" size="lg" onEnd={() => setActiveChunk(-1)} />
