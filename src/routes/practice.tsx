@@ -382,59 +382,6 @@ function Rep3({ lesson, onNext }: RepBodyProps) {
   );
 }
 
-function Rep4({ lesson, onNext }: RepBodyProps) {
-  const [done, setDone] = useState<Record<string, boolean>>({});
-  const completed = Object.values(done).filter(Boolean).length;
-
-  return (
-    <>
-      <Instruction text="Make these phrases automatic." sub="Fast reps. Speaking muscle memory." />
-      <p className="mb-4 text-sm font-semibold text-muted-foreground">
-        {completed} / {lesson.automaticityChunks.length} chunks trained
-      </p>
-      <div className="space-y-2">
-        {lesson.automaticityChunks.map((chunk) => (
-          <ChunkRow
-            key={chunk.id}
-            text={chunk.text}
-            done={!!done[chunk.id]}
-            onDone={() => setDone((prev) => ({ ...prev, [chunk.id]: true }))}
-          />
-        ))}
-      </div>
-      <NextButton onClick={onNext} />
-    </>
-  );
-}
-
-function ChunkRow({ text, done, onDone }: { text: string; done: boolean; onDone: () => void }) {
-  const [check, setCheck] = useState<RepCheck | null>(null);
-  const target = text.replace(/…|______/g, "").trim();
-  return (
-    <div className={cn("rounded-2xl bg-card p-3 shadow-[var(--shadow-card)]", done && "opacity-90")}>
-      <div className="flex items-center gap-2">
-        <span className="flex-1 text-[16px] font-semibold">{text}</span>
-        {done ? <Check className="size-5 text-success" /> : null}
-        <AudioPlayer text={target} label="" size="sm" variant="ghost" className="w-auto px-3" />
-        <VoiceRecorder
-          label=""
-          stopLabel=""
-          showTimer={false}
-          captureTranscript
-          liveTranscriptOnly
-          onComplete={(_recording, transcript) => {
-            setCheck(checkRepetition(target, transcript));
-            onDone();
-          }}
-          className="[&>button]:size-11 [&>button]:gap-0 [&>button>span]:hidden"
-        />
-      </div>
-      {check ? <RepFeedback check={check} onRetry={() => setCheck(null)} className="mt-3" /> : null}
-    </div>
-
-  );
-}
-
 function Shadowing({
   lesson,
   modelText,
