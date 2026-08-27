@@ -242,7 +242,7 @@ function RepBody(props: RepBodyProps) {
   }
 }
 
-function Instruction({ text, sub, es }: { text: string; sub?: string; es?: string }) {
+function Instruction({ text, sub, es }: { text: string; sub?: string; es?: string | undefined }) {
   return (
     <div className="mb-6 animate-[var(--animate-rise)]">
       <TranslatableText es={es}>
