@@ -52,7 +52,7 @@ export const SpeechToTextService = {
     recognition.onresult = (event) => {
       let text = "";
       for (let i = 0; i < event.results.length; i += 1) {
-        text += `${event.results[i][0].transcript} `;
+        text += `${event.results[i]?.[0]?.transcript ?? ""} `;
       }
       full = text.trim();
       onTranscript(full);
@@ -76,6 +76,6 @@ export const SpeechToTextService = {
   /** Fallback / offline transcription used by the prototype. */
   async transcribe(seed = 0): Promise<TranscriptionResult> {
     await new Promise((resolve) => setTimeout(resolve, 700));
-    return { transcript: MOCK_TRANSCRIPTS[seed % MOCK_TRANSCRIPTS.length], source: "mock" };
+    return { transcript: MOCK_TRANSCRIPTS[seed % MOCK_TRANSCRIPTS.length] ?? MOCK_TRANSCRIPTS[0]!, source: "mock" };
   },
 };
