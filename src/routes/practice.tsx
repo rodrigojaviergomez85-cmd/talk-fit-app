@@ -329,8 +329,14 @@ function Rep2({ lesson, modelText, onNext }: RepBodyProps) {
 function Rep3({ lesson, onNext }: RepBodyProps) {
   const [index, setIndex] = useState(0);
   const [myVoice, setMyVoice] = useState<Recording | null>(null);
+  const [check, setCheck] = useState<RepCheck | null>(null);
   const sentence = lesson.sentences[index]!;
   const isLast = index === lesson.sentences.length - 1;
+
+  const reset = () => {
+    setMyVoice(null);
+    setCheck(null);
+  };
 
   return (
     <>
@@ -342,19 +348,24 @@ function Rep3({ lesson, onNext }: RepBodyProps) {
       <div className="mt-5 space-y-3">
         <AudioPlayer text={sentence.text} label="LISTEN" variant="navy" />
         <p className="pt-2 text-center text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Your turn</p>
-        <VoiceRecorder label="RECORD" stopLabel="STOP" showTimer={false} onComplete={(recording) => setMyVoice(recording)} />
+        <VoiceRecorder
+          label="RECORD"
+          stopLabel="STOP"
+          showTimer={false}
+          captureTranscript
+          liveTranscriptOnly
+          onComplete={(recording, transcript) => {
+            setMyVoice(recording);
+            setCheck(checkRepetition(sentence.text, transcript));
+          }}
+        />
       </div>
+
+      {check ? <RepFeedback check={check} onRetry={reset} className="mt-5" /> : null}
 
       {myVoice ? (
         <div className="mt-5 space-y-3">
           <RecordingComparison leftLabel="▶ MODEL" rightLabel="▶ MY VOICE" modelText={sentence.text} rightUrl={myVoice.url} caption="Compare" />
-          <button
-            type="button"
-            onClick={() => setMyVoice(null)}
-            className="w-full rounded-2xl border border-border bg-card px-5 py-3.5 text-[15px] font-semibold"
-          >
-            TRY AGAIN
-          </button>
         </div>
       ) : null}
 
@@ -363,12 +374,13 @@ function Rep3({ lesson, onNext }: RepBodyProps) {
           if (isLast) {
             onNext();
           } else {
-            setMyVoice(null);
+            reset();
             setIndex(index + 1);
           }
         }}
         label={isLast ? "NEXT REP" : "NEXT"}
       />
+
     </>
   );
 }
