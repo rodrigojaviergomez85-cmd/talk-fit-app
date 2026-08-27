@@ -250,4 +250,54 @@ export const SpeechAnalysisService = {
       focusLabel,
     };
   },
+
+  /** Real AI correction with local analysis as fallback. */
+  async analyze(input: AnalysisInput): Promise<SpeechAnalysis> {
+    const local = await this.analyzeLocal(input);
+    try {
+      const response = await analyzeSpeech({
+        data: {
+          transcript: input.transcript,
+          durationSeconds: input.durationSeconds,
+          targetStructure: input.targetStructure ?? "Simple Present",
+          isFinalRep: input.isFinalRep ?? false,
+        },
+      });
+
+      if (!response.ok) return { ...local, aiError: response.error };
+
+      const ai = response.result;
+      const grammarIssues: GrammarIssue[] = ai.corrections.slice(0, 3).map((correction, index) => ({
+        id: `ai-${index}-${correction.category}`,
+        category: correction.category,
+        said: correction.said,
+        correct: correction.correct,
+        note: correction.note,
+      }));
+
+      const breakdown: ScoreBreakdown = {
+        fluency: clamp(ai.scores.fluency),
+        pronunciation: clamp(ai.scores.pronunciation),
+        grammarAutomaticity: clamp(ai.scores.grammarAutomaticity),
+        rhythm: clamp(ai.scores.rhythm),
+        targetStructure: clamp(ai.scores.targetStructure),
+      };
+
+      return {
+        ...local,
+        grammarIssues,
+        breakdown,
+        score: clamp(
+          (breakdown.fluency + breakdown.pronunciation + breakdown.grammarAutomaticity + breakdown.rhythm + breakdown.targetStructure) / 5,
+        ),
+        didWell: ai.didWell,
+        oneThingToImprove: ai.oneThingToImprove,
+        focusLabel: ai.focusLabel,
+        aiPowered: true,
+      };
+    } catch (error) {
+      return { ...local, aiError: error instanceof Error ? error.message : "AI unavailable" };
+    }
+  },
+
 };
