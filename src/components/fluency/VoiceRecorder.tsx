@@ -12,6 +12,8 @@ type VoiceRecorderProps = {
   targetSeconds?: [number, number];
   showTimer?: boolean;
   captureTranscript?: boolean;
+  /** Short reps: use only what the browser really heard, never a mock transcript. */
+  liveTranscriptOnly?: boolean;
   onComplete: (recording: Recording, transcript: string) => void;
   className?: string;
 };
@@ -23,9 +25,11 @@ export function VoiceRecorder({
   targetSeconds,
   showTimer = true,
   captureTranscript = false,
+  liveTranscriptOnly = false,
   onComplete,
   className,
 }: VoiceRecorderProps) {
+
   const [recording, setRecording] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [error, setError] = useState<string | null>(null);
