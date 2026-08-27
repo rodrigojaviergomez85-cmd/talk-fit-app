@@ -104,7 +104,12 @@ export type SpeechAnalysis = {
   didWell: string;
   oneThingToImprove: string;
   focusLabel: string;
+  /** True when the corrections came from the real AI coach. */
+  aiPowered?: boolean;
+  /** Set when the AI coach failed and local analysis was used instead. */
+  aiError?: string;
 };
+
 
 export type QuickFix = {
   focusLabel: string;
