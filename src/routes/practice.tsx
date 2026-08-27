@@ -548,12 +548,15 @@ function Rep9({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
 
       <div className="mt-5 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         <ul className="space-y-2">
-          {lesson.checklist.map((item) => (
+          {lesson.checklist.map((item, i) => (
             <li key={item} className="flex items-center gap-2 text-[15px] text-muted-foreground">
-              <span className="size-4 rounded border border-border" />
-              {item}
+              <span className="size-4 shrink-0 rounded border border-border" />
+              <TranslatableText es={lesson.checklistEs?.[i]}>
+                <span>{item}</span>
+              </TranslatableText>
             </li>
           ))}
+
         </ul>
       </div>
 
