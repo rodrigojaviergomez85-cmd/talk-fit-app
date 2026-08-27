@@ -131,16 +131,22 @@ export function VoiceRecorder({
           <p
             className={cn(
               "font-mono text-3xl font-bold tabular-nums",
-              inTarget ? "text-success" : recording ? "text-foreground" : "text-muted-foreground",
+              nearLimit ? "text-destructive" : inTarget ? "text-success" : recording ? "text-foreground" : "text-muted-foreground",
             )}
           >
             {String(Math.floor(seconds / 60)).padStart(2, "0")}:{String(seconds % 60).padStart(2, "0")}
           </p>
+          {maxSeconds ? (
+            <p className="mt-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              MÁX {maxSeconds} s
+            </p>
+          ) : null}
           {targetSeconds ? (
             <p className="mt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
               Target {targetSeconds[0]}–{targetSeconds[1]} seconds
             </p>
           ) : null}
+
         </div>
       ) : null}
 
