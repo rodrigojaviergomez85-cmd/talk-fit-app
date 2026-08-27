@@ -409,9 +409,11 @@ function Shadowing({
   onNext,
   rate,
   instruction,
+  instructionEs,
   heading,
   note,
-}: RepBodyProps & { rate: number; instruction: string; heading: string; note: string }) {
+  noteEs,
+}: RepBodyProps & { rate: number; instruction: string; instructionEs?: string; heading: string; note: string; noteEs?: string }) {
   const [playing, setPlaying] = useState(false);
   const stopRef = useRef<(() => void) | null>(null);
 
