@@ -586,8 +586,10 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
           key={repNumber}
           label="START"
           stopLabel="STOP"
-          targetSeconds={lesson.goalSeconds}
+          targetSeconds={[Math.min(lesson.goalSeconds[0], 30), Math.min(lesson.goalSeconds[1], 30)]}
+          maxSeconds={30}
           captureTranscript
+
           onComplete={(rec, text) => {
             setRecording(rec);
             setTranscript(text);
