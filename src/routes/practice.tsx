@@ -89,7 +89,9 @@ function PracticePage() {
       transcript,
       durationSeconds: recording.durationSeconds || 38,
       isFinalRep: isFinal,
+      targetStructure: `${lesson.grammar} — ${lesson.topic}`,
     });
+
     setAnalyzing(false);
     if (isFinal) {
       setFinalAnalysis(result);
