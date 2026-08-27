@@ -393,13 +393,15 @@ function Shadowing({
   modelText,
   onNext,
   rate,
+  speeds,
   instruction,
   instructionEs,
   heading,
   note,
   noteEs,
-}: RepBodyProps & { rate: number; instruction: string; instructionEs?: string; heading: string; note: string; noteEs?: string }) {
+}: RepBodyProps & { rate: number; speeds?: number[]; instruction: string; instructionEs?: string; heading: string; note: string; noteEs?: string }) {
   const [playing, setPlaying] = useState(false);
+  const [speed, setSpeed] = useState(rate);
   const stopRef = useRef<(() => void) | null>(null);
 
   useEffect(() => () => stopRef.current?.(), []);
@@ -412,15 +414,22 @@ function Shadowing({
       return;
     }
     stopRef.current = AudioService.speak(modelText, {
-      rate,
+      rate: speed,
       onStart: () => setPlaying(true),
       onEnd: () => setPlaying(false),
     });
   };
 
+  const pickSpeed = (value: number) => {
+    stopRef.current?.();
+    AudioService.stop();
+    setPlaying(false);
+    setSpeed(value);
+  };
+
   return (
     <>
-      <Instruction text={instruction} sub={`${heading} · ${rate}x speed`} es={instructionEs} />
+      <Instruction text={instruction} sub={`${heading} · ${speed}x speed`} es={instructionEs} />
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         <WaveformPlayer active={playing} />
         <div className="mt-4 space-y-2">
@@ -432,6 +441,29 @@ function Shadowing({
 
         </div>
       </div>
+      {speeds ? (
+        <div className="mt-4">
+          <p className="mb-2 text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Velocidad</p>
+          <div className="flex gap-2">
+            {speeds.map((value) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => pickSpeed(value)}
+                aria-pressed={speed === value}
+                className={cn(
+                  "flex-1 rounded-2xl border px-2 py-3 text-sm font-extrabold tabular-nums transition-colors",
+                  speed === value
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-border bg-card text-muted-foreground active:bg-secondary",
+                )}
+              >
+                {value}x
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : null}
       <p className="mt-4 text-center text-sm text-muted-foreground">{note}</p>
       {noteEs ? <EsLine text={noteEs} className="mt-1 text-center" /> : null}
       <div className="mt-5">
@@ -447,6 +479,7 @@ function Shadowing({
     </>
   );
 }
+
 
 function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepBodyProps) {
   const [check, setCheck] = useState<RepCheck | null>(null);
