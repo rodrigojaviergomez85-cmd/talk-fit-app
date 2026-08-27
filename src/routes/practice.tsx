@@ -195,7 +195,9 @@ function PracticePage() {
             onDone={() => navigate({ to: "/" })}
           />
         ) : null}
+        </SpanishProvider>
       </main>
+
     </div>
   );
 }
