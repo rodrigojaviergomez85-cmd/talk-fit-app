@@ -538,7 +538,18 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
   const [repNumber, setRepNumber] = useState(1);
   const [recording, setRecording] = useState<Recording | null>(rep9Recording);
   const [transcript, setTranscript] = useState("");
+  const [completedReps, setCompletedReps] = useState<SeriesRep[]>([]);
   const isLast = repNumber === SERIES_TOTAL;
+
+  const markRep = (number: number, duration: number | null, status: SeriesRep["status"]) => {
+    setCompletedReps((prev) => {
+      const next = prev.filter((r) => r.number !== number);
+      if (status === "done" && duration != null) {
+        next.push({ number, duration, status });
+      }
+      return next.sort((a, b) => a.number - b.number);
+    });
+  };
 
   return (
     <>
@@ -565,6 +576,8 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
         <EsLine text="Máximo 30 segundos por rep. Se detiene solo." className="mt-1 text-navy-foreground/60" />
 
       </div>
+
+      <RepSeriesRow total={SERIES_TOTAL} reps={completedReps} />
 
       <CueRow cues={lesson.cues} />
 
@@ -594,6 +607,7 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
           onComplete={(rec, text) => {
             setRecording(rec);
             setTranscript(text);
+            markRep(repNumber, rec.durationSeconds, "done");
           }}
         />
       </div>
@@ -603,7 +617,10 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
           <RecordingPlayback url={recording.url} label="▶ LISTEN" />
           <button
             type="button"
-            onClick={() => setRecording(null)}
+            onClick={() => {
+              setRecording(null);
+              markRep(repNumber, null, "pending");
+            }}
             className="w-full rounded-2xl border border-border bg-card px-5 py-3.5 text-[15px] font-semibold"
           >
             TRY AGAIN
