@@ -4,6 +4,8 @@ import { AlertTriangle, Sparkles, Trophy } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { MistakeBank } from "@/components/fluency/MistakeBank";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
+import { TranslatableText } from "@/components/fluency/TranslatableText";
+
 import { ProfileService, defaultProfile } from "@/services/profile-service";
 import { LessonService } from "@/services/lesson-service";
 import type { LearnerProfile } from "@/lib/types";
