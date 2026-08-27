@@ -1,4 +1,3 @@
-import { analyzeSpeech } from "@/lib/speech-analysis.functions";
 import type {
   GrammarIssue,
   FluencyMetrics,
@@ -25,7 +24,7 @@ export type AnalysisInput = {
   /** Rep 10 gets a small "you focused on your fix" boost in the mock. */
   isFinalRep?: boolean;
   previousIssues?: GrammarIssue[];
-  /** Lesson target structure sent to the AI coach. */
+  /** Lesson target structure (kept for future use). */
   targetStructure?: string;
 };
 
@@ -187,7 +186,7 @@ function clamp(value: number): number {
 }
 
 export const SpeechAnalysisService = {
-  /** Local heuristics only — used as fallback when the AI coach is unavailable. */
+  /** Local heuristics analysis. */
   async analyzeLocal(input: AnalysisInput): Promise<SpeechAnalysis> {
     const { transcript, durationSeconds } = input;
     const grammarIssues = input.isFinalRep ? detectGrammarIssues(transcript).slice(0, 1) : detectGrammarIssues(transcript);
@@ -256,53 +255,8 @@ export const SpeechAnalysisService = {
     };
   },
 
-  /** Real AI correction with local analysis as fallback. */
+  /** Local analysis (no AI). */
   async analyze(input: AnalysisInput): Promise<SpeechAnalysis> {
-    const local = await this.analyzeLocal(input);
-    try {
-      const response = await analyzeSpeech({
-        data: {
-          transcript: input.transcript,
-          durationSeconds: input.durationSeconds,
-          targetStructure: input.targetStructure ?? "Simple Present",
-          isFinalRep: input.isFinalRep ?? false,
-        },
-      });
-
-      if (!response.ok) return { ...local, aiError: response.error };
-
-      const ai = response.result;
-      const grammarIssues: GrammarIssue[] = ai.corrections.slice(0, 3).map((correction, index) => ({
-        id: `ai-${index}-${correction.category}`,
-        category: correction.category,
-        said: correction.said,
-        correct: correction.correct,
-        note: correction.note,
-      }));
-
-      const breakdown: ScoreBreakdown = {
-        fluency: clamp(ai.scores.fluency),
-        pronunciation: clamp(ai.scores.pronunciation),
-        grammarAutomaticity: clamp(ai.scores.grammarAutomaticity),
-        rhythm: clamp(ai.scores.rhythm),
-        targetStructure: clamp(ai.scores.targetStructure),
-      };
-
-      return {
-        ...local,
-        grammarIssues,
-        breakdown,
-        score: clamp(
-          (breakdown.fluency + breakdown.pronunciation + breakdown.grammarAutomaticity + breakdown.rhythm + breakdown.targetStructure) / 5,
-        ),
-        didWell: ai.didWell,
-        oneThingToImprove: ai.oneThingToImprove,
-        focusLabel: ai.focusLabel,
-        aiPowered: true,
-      };
-    } catch (error) {
-      return { ...local, aiError: error instanceof Error ? error.message : "AI unavailable" };
-    }
+    return this.analyzeLocal(input);
   },
-
 };
