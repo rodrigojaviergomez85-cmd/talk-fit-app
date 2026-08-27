@@ -654,7 +654,10 @@ function AnalysisStage({ analysis, onPractice }: { analysis: SpeechAnalysis; onP
   return (
     <div className="space-y-4">
       <Instruction text="Your AI feedback" sub="One win. One fix. Then we train it." />
+      <CorrectnessBanner analysis={analysis} />
       <AIAnalysisCard analysis={analysis} onPracticeThis={onPractice} />
+      <CorrectionList analysis={analysis} />
+
 
       <section className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Fluency</p>
