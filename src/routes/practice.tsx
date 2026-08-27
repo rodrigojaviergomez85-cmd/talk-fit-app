@@ -225,7 +225,7 @@ function RepBody(props: RepBodyProps) {
     case 2:
       return <Shadowing {...props} rate={0.85} instruction="Speak WITH the model." instructionEs="Habla CON el modelo." heading="Slow shadowing" note="Copy the speaker's rhythm, stress and pronunciation." noteEs="Copia el ritmo, el énfasis y la pronunciación del hablante." />;
     case 3:
-      return <Shadowing {...props} rate={1} instruction="Now match natural English." instructionEs="Ahora iguala el inglés natural." heading="Natural speed" note="Same words, natural speed. Stay with the speaker." noteEs="Las mismas palabras, a velocidad natural. Sigue al hablante." />;
+      return <Shadowing {...props} rate={1} speeds={[0.75, 1, 1.25, 1.5]} instruction="Now match natural English." instructionEs="Ahora iguala el inglés natural." heading="Natural speed" note="Tap a speed to make it slower or faster." noteEs="Toca una velocidad para ponerlo más lento o más rápido. Empieza en 1x y súbelo cuando te sientas cómodo." />;
     case 4:
       return <Rep7 {...props} />;
     case 5:
