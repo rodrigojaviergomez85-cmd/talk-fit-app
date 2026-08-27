@@ -355,8 +355,11 @@ function Rep3({ lesson, onNext }: RepBodyProps) {
     <>
       <Instruction text="Listen. Then copy." sub={`Chunk ${index + 1} of ${lesson.sentences.length}`} />
       <div className="rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-card)]">
-        <p className="text-2xl font-bold leading-snug text-balance-tight">{sentence.text}</p>
+        <TranslatableText es={sentence.es} align="center" esClassName="text-center text-[14px]">
+          <p className="text-2xl font-bold leading-snug text-balance-tight">{sentence.text}</p>
+        </TranslatableText>
       </div>
+
 
       <div className="mt-5 space-y-3">
         <AudioPlayer text={sentence.text} label="LISTEN" variant="navy" />
