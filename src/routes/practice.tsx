@@ -16,8 +16,11 @@ import { AudioService } from "@/services/audio-service";
 import { SpeechAnalysisService } from "@/services/speech-analysis-service";
 import { FeedbackService } from "@/services/feedback-service";
 import { ProfileService } from "@/services/profile-service";
+import { RepFeedback } from "@/components/fluency/RepFeedback";
+import { checkRepetition, type RepCheck } from "@/lib/pronunciation-check";
 import type { QuickFix, Recording, SpeechAnalysis } from "@/lib/types";
 import { cn } from "@/lib/utils";
+
 
 export const Route = createFileRoute("/practice")({
   head: () => ({
