@@ -149,6 +149,7 @@ function PracticePage() {
             <Loader2 className="size-8 animate-spin text-primary" />
             <p className="text-lg font-bold">Your AI coach is listening…</p>
             <p className="text-sm text-muted-foreground">Checking grammar, fluency, pronunciation, rhythm and structure.</p>
+            <p className="text-[13px] italic text-muted-foreground/80">Tu coach de IA está escuchando… Revisando gramática, fluidez, pronunciación, ritmo y estructura.</p>
           </div>
         ) : stage.kind === "rep" ? (
 
@@ -251,6 +252,13 @@ function Instruction({ text, sub, es }: { text: string; sub?: string; es?: strin
       </TranslatableText>
     </div>
   );
+}
+
+/** Spanish hint line, only visible when "Mostrar todo en español" is on. */
+function EsLine({ text, className }: { text: string; className?: string }) {
+  const show = useSpanishAll();
+  if (!show) return null;
+  return <p className={cn("text-[13px] italic leading-snug text-muted-foreground", className)}>{text}</p>;
 }
 
 function NextButton({ onClick, label = "NEXT REP" }: { onClick: () => void; label?: string }) {
@@ -448,7 +456,7 @@ function Shadowing({
         </div>
       </div>
       <p className="mt-4 text-center text-sm text-muted-foreground">{note}</p>
-      {noteEs ? <p className="mt-1 text-center text-[13px] italic text-muted-foreground/80">{noteEs}</p> : null}
+      {noteEs ? <EsLine text={noteEs} className="mt-1 text-center" /> : null}
       <div className="mt-5">
         <button
           type="button"
@@ -622,6 +630,7 @@ function Rep10({ lesson, finalFocus, onRep10Recorded }: RepBodyProps) {
         />
       </div>
       <p className="mt-6 text-center text-sm text-muted-foreground">Almost no support this time. You've got the pattern.</p>
+      <EsLine text="Casi sin ayuda esta vez. Ya tienes el patrón." className="mt-1 text-center" />
     </>
   );
 }
@@ -679,7 +688,7 @@ function CorrectionList({ analysis }: { analysis: SpeechAnalysis }) {
 function AnalysisStage({ analysis, onPractice }: { analysis: SpeechAnalysis; onPractice: () => void }) {
   return (
     <div className="space-y-4">
-      <Instruction text="Your AI feedback" sub="One win. One fix. Then we train it." />
+      <Instruction text="Your AI feedback" sub="One win. One fix. Then we train it." es="Tu retroalimentación de IA. Un acierto. Una corrección. Luego lo entrenamos." />
       <CorrectnessBanner analysis={analysis} />
       <AIAnalysisCard analysis={analysis} onPracticeThis={onPractice} />
       <CorrectionList analysis={analysis} />
@@ -764,7 +773,7 @@ function FinalAnalysisStage({
 
   return (
     <div className="space-y-4">
-      <Instruction text="You improved" sub="Same pattern, better result." />
+      <Instruction text="You improved" sub="Same pattern, better result." es="Mejoraste. Mismo patrón, mejor resultado." />
 
       {fixed.length > 0 ? (
         <section className="rounded-3xl border border-success/25 bg-success/8 p-5">
