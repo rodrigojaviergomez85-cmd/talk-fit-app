@@ -17,7 +17,7 @@ import { SpeechAnalysisService } from "@/services/speech-analysis-service";
 import { FeedbackService } from "@/services/feedback-service";
 import { ProfileService } from "@/services/profile-service";
 import { RepFeedback } from "@/components/fluency/RepFeedback";
-import { SpanishProvider, SpanishToggle, TranslatableText } from "@/components/fluency/TranslatableText";
+import { SpanishProvider, SpanishToggle, TranslatableText, useSpanishAll } from "@/components/fluency/TranslatableText";
 
 import { checkRepetition, type RepCheck } from "@/lib/pronunciation-check";
 import type { QuickFix, Recording, SpeechAnalysis } from "@/lib/types";
@@ -149,6 +149,7 @@ function PracticePage() {
             <Loader2 className="size-8 animate-spin text-primary" />
             <p className="text-lg font-bold">Your AI coach is listening…</p>
             <p className="text-sm text-muted-foreground">Checking grammar, fluency, pronunciation, rhythm and structure.</p>
+            <p className="text-[13px] italic text-muted-foreground/80">Tu coach de IA está escuchando… Revisando gramática, fluidez, pronunciación, ritmo y estructura.</p>
           </div>
         ) : stage.kind === "rep" ? (
 
@@ -226,9 +227,9 @@ function RepBody(props: RepBodyProps) {
     case 2:
       return <Rep3 {...props} />;
     case 3:
-      return <Shadowing {...props} rate={0.85} instruction="Speak WITH the model." heading="Slow shadowing" note="Copy the speaker's rhythm, stress and pronunciation." />;
+      return <Shadowing {...props} rate={0.85} instruction="Speak WITH the model." instructionEs="Habla CON el modelo." heading="Slow shadowing" note="Copy the speaker's rhythm, stress and pronunciation." noteEs="Copia el ritmo, el énfasis y la pronunciación del hablante." />;
     case 4:
-      return <Shadowing {...props} rate={1} instruction="Now match natural English." heading="Natural speed" note="Same words, natural speed. Stay with the speaker." />;
+      return <Shadowing {...props} rate={1} instruction="Now match natural English." instructionEs="Ahora iguala el inglés natural." heading="Natural speed" note="Same words, natural speed. Stay with the speaker." noteEs="Las mismas palabras, a velocidad natural. Sigue al hablante." />;
     case 5:
       return <Rep7 {...props} />;
     case 6:
@@ -242,13 +243,22 @@ function RepBody(props: RepBodyProps) {
   }
 }
 
-function Instruction({ text, sub }: { text: string; sub?: string }) {
+function Instruction({ text, sub, es }: { text: string; sub?: string; es?: string | undefined }) {
   return (
     <div className="mb-6 animate-[var(--animate-rise)]">
-      <h1 className="text-[26px] font-extrabold leading-tight tracking-tight text-balance-tight">{text}</h1>
-      {sub ? <p className="mt-2 text-[15px] text-muted-foreground">{sub}</p> : null}
+      <TranslatableText es={es}>
+        <h1 className="text-[26px] font-extrabold leading-tight tracking-tight text-balance-tight">{text}</h1>
+        {sub ? <p className="mt-2 text-[15px] text-muted-foreground">{sub}</p> : null}
+      </TranslatableText>
     </div>
   );
+}
+
+/** Spanish hint line, only visible when "Mostrar todo en español" is on. */
+function EsLine({ text, className }: { text: string; className?: string }) {
+  const show = useSpanishAll();
+  if (!show) return null;
+  return <p className={cn("text-[13px] italic leading-snug text-muted-foreground", className)}>{text}</p>;
 }
 
 function NextButton({ onClick, label = "NEXT REP" }: { onClick: () => void; label?: string }) {
@@ -267,7 +277,7 @@ function Rep1({ modelText, onNext }: RepBodyProps) {
   const [heard, setHeard] = useState(false);
   return (
     <>
-      <Instruction text="Just listen." sub="No transcript yet. Let your ears do the work." />
+      <Instruction text="Just listen." sub="No transcript yet. Let your ears do the work." es="Solo escucha. Todavía sin texto. Deja que tus oídos hagan el trabajo." />
       <div className="rounded-3xl bg-navy p-8 text-center text-navy-foreground">
         <WaveformPlayer active={false} tone="primary" className="opacity-60" />
         <p className="mt-4 text-sm text-navy-foreground/70">≈ 40 seconds of natural conversational English</p>
@@ -303,7 +313,7 @@ function Rep2({ lesson, modelText, onNext }: RepBodyProps) {
 
   return (
     <>
-      <Instruction text="Listen and notice the rhythm." sub="English moves in chunks, not single words." />
+      <Instruction text="Listen and notice the rhythm." sub="English moves in chunks, not single words." es="Escucha y nota el ritmo. El inglés se mueve en bloques, no en palabras sueltas." />
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {lesson.sentences.map((sentence) => (
           <TranslatableText key={sentence.id} es={sentence.es} className="mb-3">
@@ -353,7 +363,7 @@ function Rep3({ lesson, onNext }: RepBodyProps) {
 
   return (
     <>
-      <Instruction text="Listen. Then copy." sub={`Chunk ${index + 1} of ${lesson.sentences.length}`} />
+      <Instruction text="Listen. Then copy." sub={`Chunk ${index + 1} of ${lesson.sentences.length}`} es="Escucha. Luego repite exactamente igual." />
       <div className="rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-card)]">
         <TranslatableText es={sentence.es} align="center" esClassName="text-center text-[14px]">
           <p className="text-2xl font-bold leading-snug text-balance-tight">{sentence.text}</p>
@@ -407,9 +417,11 @@ function Shadowing({
   onNext,
   rate,
   instruction,
+  instructionEs,
   heading,
   note,
-}: RepBodyProps & { rate: number; instruction: string; heading: string; note: string }) {
+  noteEs,
+}: RepBodyProps & { rate: number; instruction: string; instructionEs?: string; heading: string; note: string; noteEs?: string }) {
   const [playing, setPlaying] = useState(false);
   const stopRef = useRef<(() => void) | null>(null);
 
@@ -431,7 +443,7 @@ function Shadowing({
 
   return (
     <>
-      <Instruction text={instruction} sub={`${heading} · ${rate}x speed`} />
+      <Instruction text={instruction} sub={`${heading} · ${rate}x speed`} es={instructionEs} />
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         <WaveformPlayer active={playing} />
         <div className="mt-4 space-y-2">
@@ -444,6 +456,7 @@ function Shadowing({
         </div>
       </div>
       <p className="mt-4 text-center text-sm text-muted-foreground">{note}</p>
+      {noteEs ? <EsLine text={noteEs} className="mt-1 text-center" /> : null}
       <div className="mt-5">
         <button
           type="button"
@@ -462,7 +475,7 @@ function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepB
   const [check, setCheck] = useState<RepCheck | null>(null);
   return (
     <>
-      <Instruction text="Now do it without the speaker." sub={`Target ${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds.`} />
+      <Instruction text="Now do it without the speaker." sub={`Target ${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds.`} es="Ahora hazlo sin el hablante. Di las frases por tu cuenta." />
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {lesson.sentences.map((sentence) => (
           <TranslatableText key={sentence.id} es={sentence.es} className="mb-2">
@@ -499,7 +512,7 @@ function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepB
 function Rep8({ lesson, onNext }: RepBodyProps) {
   return (
     <>
-      <Instruction text="Now make it yours." sub="Speak your answers out loud. No writing needed." />
+      <Instruction text="Now make it yours." sub="Speak your answers out loud. No writing needed." es="Ahora hazlo tuyo. Responde en voz alta con tus propias respuestas. No necesitas escribir." />
       <div className="space-y-3">
         {lesson.prompts.map((prompt, index) => (
           <div key={prompt.id} className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
@@ -543,7 +556,7 @@ function Rep9({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
 
   return (
     <>
-      <Instruction text="Talk about YOUR life." sub={`${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds. 7–10 sentences.`} />
+      <Instruction text="Talk about YOUR life." sub={`${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds. 7–10 sentences.`} es="Habla de TU vida. Usa la lista de abajo como guía." />
       <CueRow cues={lesson.cues} />
 
       <div className="mt-5 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
@@ -599,7 +612,7 @@ function Rep9({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
 function Rep10({ lesson, finalFocus, onRep10Recorded }: RepBodyProps) {
   return (
     <>
-      <Instruction text="Now do it again." sub="Focus on your ONE improvement." />
+      <Instruction text="Now do it again." sub="Focus on your ONE improvement." es="Ahora hazlo otra vez. Enfócate en tu UNA mejora." />
       <div className="rounded-3xl bg-navy p-5 text-navy-foreground">
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">Today's focus</p>
         <p className="mt-1.5 text-2xl font-extrabold uppercase">{finalFocus}</p>
@@ -617,6 +630,7 @@ function Rep10({ lesson, finalFocus, onRep10Recorded }: RepBodyProps) {
         />
       </div>
       <p className="mt-6 text-center text-sm text-muted-foreground">Almost no support this time. You've got the pattern.</p>
+      <EsLine text="Casi sin ayuda esta vez. Ya tienes el patrón." className="mt-1 text-center" />
     </>
   );
 }
@@ -674,7 +688,7 @@ function CorrectionList({ analysis }: { analysis: SpeechAnalysis }) {
 function AnalysisStage({ analysis, onPractice }: { analysis: SpeechAnalysis; onPractice: () => void }) {
   return (
     <div className="space-y-4">
-      <Instruction text="Your AI feedback" sub="One win. One fix. Then we train it." />
+      <Instruction text="Your AI feedback" sub="One win. One fix. Then we train it." es="Tu retroalimentación de IA. Un acierto. Una corrección. Luego lo entrenamos." />
       <CorrectnessBanner analysis={analysis} />
       <AIAnalysisCard analysis={analysis} onPracticeThis={onPractice} />
       <CorrectionList analysis={analysis} />
@@ -759,7 +773,7 @@ function FinalAnalysisStage({
 
   return (
     <div className="space-y-4">
-      <Instruction text="You improved" sub="Same pattern, better result." />
+      <Instruction text="You improved" sub="Same pattern, better result." es="Mejoraste. Mismo patrón, mejor resultado." />
 
       {fixed.length > 0 ? (
         <section className="rounded-3xl border border-success/25 bg-success/8 p-5">
