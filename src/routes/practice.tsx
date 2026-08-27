@@ -504,10 +504,15 @@ function Rep8({ lesson, onNext }: RepBodyProps) {
         {lesson.prompts.map((prompt, index) => (
           <div key={prompt.id} className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
             <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Question {index + 1}</p>
-            <p className="mt-1.5 text-[17px] font-semibold leading-snug">{prompt.question}</p>
-            <p className="mt-3 rounded-2xl bg-secondary/70 px-3 py-2 text-[15px] font-semibold text-muted-foreground">
-              {prompt.starter}
-            </p>
+            <TranslatableText es={prompt.questionEs} className="mt-1.5">
+              <p className="text-[17px] font-semibold leading-snug">{prompt.question}</p>
+            </TranslatableText>
+            <TranslatableText es={prompt.starterEs} className="mt-3">
+              <p className="rounded-2xl bg-secondary/70 px-3 py-2 text-[15px] font-semibold text-muted-foreground">
+                {prompt.starter}
+              </p>
+            </TranslatableText>
+
             <div className="mt-3 grid grid-cols-2 gap-2">
               <AudioPlayer text={prompt.starter.replace(/…|______/g, "")} label="HEAR STARTER" size="sm" variant="ghost" />
               <VoiceRecorder label="SAY IT" stopLabel="DONE" showTimer={false} onComplete={() => undefined} className="[&>button]:size-11 [&>button]:text-[9px]" />
