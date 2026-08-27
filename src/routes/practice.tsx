@@ -436,10 +436,11 @@ function Shadowing({
         <WaveformPlayer active={playing} />
         <div className="mt-4 space-y-2">
           {lesson.sentences.map((sentence) => (
-            <p key={sentence.id} className="text-[16px] leading-relaxed text-muted-foreground">
-              {sentence.chunks.join(" / ")}
-            </p>
+            <TranslatableText key={sentence.id} es={sentence.es}>
+              <p className="text-[16px] leading-relaxed text-muted-foreground">{sentence.chunks.join(" / ")}</p>
+            </TranslatableText>
           ))}
+
         </div>
       </div>
       <p className="mt-4 text-center text-sm text-muted-foreground">{note}</p>
