@@ -226,9 +226,9 @@ function RepBody(props: RepBodyProps) {
     case 2:
       return <Rep3 {...props} />;
     case 3:
-      return <Shadowing {...props} rate={0.85} instruction="Speak WITH the model." heading="Slow shadowing" note="Copy the speaker's rhythm, stress and pronunciation." />;
+      return <Shadowing {...props} rate={0.85} instruction="Speak WITH the model." instructionEs="Habla CON el modelo." heading="Slow shadowing" note="Copy the speaker's rhythm, stress and pronunciation." noteEs="Copia el ritmo, el énfasis y la pronunciación del hablante." />;
     case 4:
-      return <Shadowing {...props} rate={1} instruction="Now match natural English." heading="Natural speed" note="Same words, natural speed. Stay with the speaker." />;
+      return <Shadowing {...props} rate={1} instruction="Now match natural English." instructionEs="Ahora iguala el inglés natural." heading="Natural speed" note="Same words, natural speed. Stay with the speaker." noteEs="Las mismas palabras, a velocidad natural. Sigue al hablante." />;
     case 5:
       return <Rep7 {...props} />;
     case 6:
@@ -269,7 +269,7 @@ function Rep1({ modelText, onNext }: RepBodyProps) {
   const [heard, setHeard] = useState(false);
   return (
     <>
-      <Instruction text="Just listen." sub="No transcript yet. Let your ears do the work." />
+      <Instruction text="Just listen." sub="No transcript yet. Let your ears do the work." es="Solo escucha. Todavía sin texto. Deja que tus oídos hagan el trabajo." />
       <div className="rounded-3xl bg-navy p-8 text-center text-navy-foreground">
         <WaveformPlayer active={false} tone="primary" className="opacity-60" />
         <p className="mt-4 text-sm text-navy-foreground/70">≈ 40 seconds of natural conversational English</p>
@@ -305,7 +305,7 @@ function Rep2({ lesson, modelText, onNext }: RepBodyProps) {
 
   return (
     <>
-      <Instruction text="Listen and notice the rhythm." sub="English moves in chunks, not single words." />
+      <Instruction text="Listen and notice the rhythm." sub="English moves in chunks, not single words." es="Escucha y nota el ritmo. El inglés se mueve en bloques, no en palabras sueltas." />
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {lesson.sentences.map((sentence) => (
           <TranslatableText key={sentence.id} es={sentence.es} className="mb-3">
@@ -355,7 +355,7 @@ function Rep3({ lesson, onNext }: RepBodyProps) {
 
   return (
     <>
-      <Instruction text="Listen. Then copy." sub={`Chunk ${index + 1} of ${lesson.sentences.length}`} />
+      <Instruction text="Listen. Then copy." sub={`Chunk ${index + 1} of ${lesson.sentences.length}`} es="Escucha. Luego repite exactamente igual." />
       <div className="rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-card)]">
         <TranslatableText es={sentence.es} align="center" esClassName="text-center text-[14px]">
           <p className="text-2xl font-bold leading-snug text-balance-tight">{sentence.text}</p>
