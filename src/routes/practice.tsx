@@ -138,6 +138,12 @@ function PracticePage() {
       />
 
       <main className="mx-auto w-full max-w-lg px-4 pb-16 pt-6">
+        <SpanishProvider value={showSpanish}>
+        {stage.kind === "rep" && !analyzing ? (
+          <div className="mb-4">
+            <SpanishToggle value={showSpanish} onChange={setShowSpanish} />
+          </div>
+        ) : null}
         {analyzing ? (
           <div className="flex flex-col items-center gap-4 py-24 text-center">
             <Loader2 className="size-8 animate-spin text-primary" />
@@ -145,6 +151,7 @@ function PracticePage() {
             <p className="text-sm text-muted-foreground">Checking grammar, fluency, pronunciation, rhythm and structure.</p>
           </div>
         ) : stage.kind === "rep" ? (
+
           <RepBody
             index={stage.index}
             lesson={lesson}
