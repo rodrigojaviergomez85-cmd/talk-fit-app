@@ -650,6 +650,54 @@ function Rep10({ lesson, finalFocus, onRep10Recorded }: RepBodyProps) {
 
 /* -------------------------------- AI stages ------------------------------- */
 
+function CorrectnessBanner({ analysis }: { analysis: SpeechAnalysis }) {
+  const clean = analysis.grammarIssues.length === 0;
+  return (
+    <div className="space-y-2">
+      <div
+        className={cn(
+          "rounded-3xl border p-5",
+          clean ? "border-success/30 bg-success/10" : "border-primary/30 bg-accent",
+        )}
+      >
+        <p className="text-[13px] font-extrabold uppercase tracking-[0.16em]">
+          {clean ? "LO DIJISTE BIEN" : `${analysis.grammarIssues.length} COSAS PARA CORREGIR`}
+        </p>
+        <p className="mt-1.5 text-sm text-muted-foreground">
+          {clean
+            ? "No encontramos errores de gramática en lo que dijiste."
+            : "Revisa abajo lo que dijiste y cómo se dice correctamente."}
+        </p>
+      </div>
+      {analysis.aiError ? (
+        <p className="rounded-2xl bg-secondary px-4 py-3 text-[13px] text-muted-foreground">
+          Coach IA no disponible ({analysis.aiError}). Mostramos la corrección local.
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function CorrectionList({ analysis }: { analysis: SpeechAnalysis }) {
+  if (analysis.grammarIssues.length === 0) return null;
+  return (
+    <section className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Correcciones</p>
+      <ul className="mt-3 space-y-4">
+        {analysis.grammarIssues.map((issue) => (
+          <li key={issue.id} className="space-y-1">
+            <p className="text-[15px] text-destructive line-through">{issue.said}</p>
+            <p className="text-[16px] font-semibold text-success">{issue.correct}</p>
+            <p className="text-[13px] text-muted-foreground">{issue.note}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+
+
 function AnalysisStage({ analysis, onPractice }: { analysis: SpeechAnalysis; onPractice: () => void }) {
   return (
     <div className="space-y-4">
