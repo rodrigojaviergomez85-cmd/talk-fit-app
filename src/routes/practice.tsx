@@ -789,7 +789,7 @@ function SummaryStage({
     <div className="space-y-4 pb-8">
       <div className="rounded-3xl bg-navy p-6 text-center text-navy-foreground">
         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">Today's fluency training complete</p>
-        <p className="mt-3 text-3xl font-extrabold">10 / 10 REPS ✓</p>
+        <p className="mt-3 text-3xl font-extrabold">9 / 9 REPS ✓</p>
         <p className="mt-2 text-sm text-navy-foreground/70">Final speaking time: {analysis.fluency.seconds} seconds</p>
       </div>
 
