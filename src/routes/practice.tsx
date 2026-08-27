@@ -411,13 +411,30 @@ function Rep4({ lesson, onNext }: RepBodyProps) {
 }
 
 function ChunkRow({ text, done, onDone }: { text: string; done: boolean; onDone: () => void }) {
+  const [check, setCheck] = useState<RepCheck | null>(null);
+  const target = text.replace(/…|______/g, "").trim();
   return (
-    <div className={cn("flex items-center gap-2 rounded-2xl bg-card p-3 shadow-[var(--shadow-card)]", done && "opacity-70")}>
-      <span className="flex-1 text-[16px] font-semibold">{text}</span>
-      {done ? <Check className="size-5 text-success" /> : null}
-      <AudioPlayer text={text.replace("…", "")} label="" size="sm" variant="ghost" className="w-auto px-3" />
-      <VoiceRecorder label="" stopLabel="" showTimer={false} onComplete={onDone} className="[&>button]:size-11 [&>button]:gap-0 [&>button>span]:hidden" />
+    <div className={cn("rounded-2xl bg-card p-3 shadow-[var(--shadow-card)]", done && "opacity-90")}>
+      <div className="flex items-center gap-2">
+        <span className="flex-1 text-[16px] font-semibold">{text}</span>
+        {done ? <Check className="size-5 text-success" /> : null}
+        <AudioPlayer text={target} label="" size="sm" variant="ghost" className="w-auto px-3" />
+        <VoiceRecorder
+          label=""
+          stopLabel=""
+          showTimer={false}
+          captureTranscript
+          liveTranscriptOnly
+          onComplete={(_recording, transcript) => {
+            setCheck(checkRepetition(target, transcript));
+            onDone();
+          }}
+          className="[&>button]:size-11 [&>button]:gap-0 [&>button>span]:hidden"
+        />
+      </div>
+      {check ? <RepFeedback check={check} onRetry={() => setCheck(null)} className="mt-3" /> : null}
     </div>
+
   );
 }
 
