@@ -182,11 +182,12 @@ function clamp(value: number): number {
 }
 
 export const SpeechAnalysisService = {
-  async analyze(input: AnalysisInput): Promise<SpeechAnalysis> {
-    await new Promise((resolve) => setTimeout(resolve, 900));
+  /** Local heuristics only — used as fallback when the AI coach is unavailable. */
+  async analyzeLocal(input: AnalysisInput): Promise<SpeechAnalysis> {
     const { transcript, durationSeconds } = input;
     const grammarIssues = input.isFinalRep ? detectGrammarIssues(transcript).slice(0, 1) : detectGrammarIssues(transcript);
     const fluency = analyzeFluency(transcript, durationSeconds);
+
     const pronunciation = analyzePronunciation(transcript);
     const rhythm = analyzeRhythm(transcript);
     const structure = analyzeStructure(transcript, fluency.sentences);
