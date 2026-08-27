@@ -465,10 +465,11 @@ function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepB
       <Instruction text="Now do it without the speaker." sub={`Target ${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds.`} />
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {lesson.sentences.map((sentence) => (
-          <p key={sentence.id} className="mb-2 text-[16px] leading-relaxed text-muted-foreground">
-            {sentence.text}
-          </p>
+          <TranslatableText key={sentence.id} es={sentence.es} className="mb-2">
+            <p className="text-[16px] leading-relaxed text-muted-foreground">{sentence.text}</p>
+          </TranslatableText>
         ))}
+
       </div>
       <div className="mt-6">
         <VoiceRecorder
