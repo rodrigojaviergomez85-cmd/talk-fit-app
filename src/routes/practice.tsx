@@ -560,6 +560,9 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
         </div>
         <p className="mt-3 text-sm text-navy-foreground/70">Say the whole thing again, a little better each time.</p>
         <EsLine text="Repite todo otra vez, un poco mejor cada vez." className="mt-1 text-navy-foreground/60" />
+        <p className="mt-2 text-sm font-semibold text-navy-foreground/80">Max 30 seconds per rep. It stops on its own.</p>
+        <EsLine text="Máximo 30 segundos por rep. Se detiene solo." className="mt-1 text-navy-foreground/60" />
+
       </div>
 
       <CueRow cues={lesson.cues} />
