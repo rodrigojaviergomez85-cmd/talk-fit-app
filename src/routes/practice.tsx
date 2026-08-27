@@ -242,11 +242,13 @@ function RepBody(props: RepBodyProps) {
   }
 }
 
-function Instruction({ text, sub }: { text: string; sub?: string }) {
+function Instruction({ text, sub, es }: { text: string; sub?: string; es?: string }) {
   return (
     <div className="mb-6 animate-[var(--animate-rise)]">
-      <h1 className="text-[26px] font-extrabold leading-tight tracking-tight text-balance-tight">{text}</h1>
-      {sub ? <p className="mt-2 text-[15px] text-muted-foreground">{sub}</p> : null}
+      <TranslatableText es={es}>
+        <h1 className="text-[26px] font-extrabold leading-tight tracking-tight text-balance-tight">{text}</h1>
+        {sub ? <p className="mt-2 text-[15px] text-muted-foreground">{sub}</p> : null}
+      </TranslatableText>
     </div>
   );
 }
