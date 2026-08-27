@@ -498,13 +498,37 @@ function CueRow({ cues }: { cues: string[] }) {
   );
 }
 
-function Rep9({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
+const SERIES_TOTAL = 5;
+
+function RepSeries({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
+  const [repNumber, setRepNumber] = useState(1);
   const [recording, setRecording] = useState<Recording | null>(rep9Recording);
   const [transcript, setTranscript] = useState("");
+  const isLast = repNumber === SERIES_TOTAL;
 
   return (
     <>
       <Instruction text="Talk about YOUR life." sub={`${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds. 7–10 sentences.`} es="Habla de TU vida. Usa la lista de abajo como guía." />
+
+      <div className="mb-5 rounded-3xl bg-navy p-4 text-navy-foreground">
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+          REP {repNumber} DE {SERIES_TOTAL}
+        </p>
+        <div className="mt-3 flex gap-1.5">
+          {Array.from({ length: SERIES_TOTAL }).map((_, i) => (
+            <span
+              key={i}
+              className={cn(
+                "h-1.5 flex-1 rounded-full",
+                i < repNumber - 1 ? "bg-primary" : i === repNumber - 1 ? "bg-primary/50" : "bg-white/15",
+              )}
+            />
+          ))}
+        </div>
+        <p className="mt-3 text-sm text-navy-foreground/70">Say the whole thing again, a little better each time.</p>
+        <EsLine text="Repite todo otra vez, un poco mejor cada vez." className="mt-1 text-navy-foreground/60" />
+      </div>
+
       <CueRow cues={lesson.cues} />
 
       <div className="mt-5 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
@@ -523,6 +547,7 @@ function Rep9({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
 
       <div className="mt-8">
         <VoiceRecorder
+          key={repNumber}
           label="START"
           stopLabel="STOP"
           targetSeconds={lesson.goalSeconds}
@@ -546,16 +571,25 @@ function Rep9({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
           </button>
           <button
             type="button"
-            onClick={() => onRep9Recorded(recording, transcript)}
+            onClick={() => {
+              if (isLast) {
+                onRep9Recorded(recording, transcript);
+                return;
+              }
+              setRecording(null);
+              setTranscript("");
+              setRepNumber((n) => n + 1);
+            }}
             className="w-full rounded-2xl bg-primary px-6 py-5 text-base font-extrabold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
           >
-            GET MY FEEDBACK
+            {isLast ? "GET MY FEEDBACK" : `NEXT REP (${repNumber + 1} / ${SERIES_TOTAL})`}
           </button>
         </div>
       ) : null}
     </>
   );
 }
+
 
 function Rep10({ lesson, finalFocus, onRep10Recorded }: RepBodyProps) {
   return (
