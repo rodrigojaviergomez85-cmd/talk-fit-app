@@ -61,8 +61,16 @@ function PracticePage() {
     if (typeof window !== "undefined") window.scrollTo({ top: 0 });
   }, [stage]);
 
-  const repIndex = stage.kind === "rep" ? stage.index : 6;
-  const title = stage.kind === "complete" ? "DAY COMPLETE" : (REP_TITLES[repIndex] ?? "PRACTICE");
+  const progressIndex =
+    stage.kind === "intro" ? 0 : stage.kind === "rep" ? stage.index + 1 : 7;
+  const title =
+    stage.kind === "intro"
+      ? showSpanish
+        ? "PASO 0 — PRESENTE SIMPLE"
+        : "STEP 0 — SIMPLE PRESENT"
+      : stage.kind === "complete"
+        ? "DAY COMPLETE"
+        : (REP_TITLES[stage.index] ?? "PRACTICE");
 
   /** Set by the current rep when it has an internal sub-step to go back to. */
   const backRef = useRef<(() => boolean) | null>(null);
@@ -73,17 +81,25 @@ function PracticePage() {
 
   const handleBack = () => {
     if (backRef.current?.()) return;
-    if (stage.kind === "rep" && stage.index > 0) goToRep(stage.index - 1);
+    if (stage.kind === "rep") {
+      if (stage.index > 0) goToRep(stage.index - 1);
+      else setStage({ kind: "intro" });
+    }
   };
 
   const handleForward = () => {
+    if (stage.kind === "intro") {
+      goToRep(0);
+      return;
+    }
     if (forwardRef.current?.()) return;
     if (stage.kind === "rep" && stage.index < REP_TITLES.length - 1) goToRep(stage.index + 1);
   };
 
-  const canGoBack = stage.kind !== "complete" && !(stage.kind === "rep" && stage.index === 0 && !backRef.current);
+  const canGoBack = stage.kind === "rep";
   const canGoForward =
-    stage.kind === "rep" && (stage.index < REP_TITLES.length - 1 || forwardRef.current !== null);
+    stage.kind === "intro" ||
+    (stage.kind === "rep" && (stage.index < REP_TITLES.length - 1 || forwardRef.current !== null));
 
   backRef.current = null;
   forwardRef.current = null;
@@ -91,8 +107,8 @@ function PracticePage() {
   return (
     <div className="min-h-screen bg-background">
       <RepProgress
-        current={repIndex}
-        total={6}
+        current={progressIndex}
+        total={7}
         title={title}
         {...(canGoBack ? { onBack: handleBack } : {})}
         {...(canGoForward ? { onNext: handleForward } : {})}
@@ -103,12 +119,14 @@ function PracticePage() {
 
       <main className="mx-auto w-full max-w-lg px-4 pb-16 pt-6">
         <SpanishProvider value={showSpanish}>
-        {stage.kind === "rep" ? (
+        {stage.kind !== "complete" ? (
           <div className="mb-4">
             <SpanishToggle value={showSpanish} onChange={setShowSpanish} />
           </div>
         ) : null}
-        {stage.kind === "rep" ? (
+        {stage.kind === "intro" ? (
+          <IntroStep showSpanish={showSpanish} onStart={() => goToRep(0)} />
+        ) : stage.kind === "rep" ? (
           <RepBody
             backRef={backRef}
             forwardRef={forwardRef}
