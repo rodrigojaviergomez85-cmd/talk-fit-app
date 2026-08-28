@@ -546,26 +546,42 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
   const [repNumber, setRepNumber] = useState(1);
   const [recording, setRecording] = useState<Recording | null>(rep9Recording);
   const [completedReps, setCompletedReps] = useState<SeriesRep[]>([]);
+  const [recordings, setRecordings] = useState<Record<number, Recording>>({});
   const isLast = repNumber === SERIES_TOTAL;
+
+  const goToRep = (n: number) => {
+    setRepNumber(n);
+    setRecording(recordings[n] ?? null);
+  };
 
   backRef.current =
     repNumber > 1
       ? () => {
-          setRecording(null);
-          setRepNumber((n) => n - 1);
+          goToRep(repNumber - 1);
           return true;
         }
       : null;
 
-  const markRep = (number: number, duration: number | null, status: SeriesRep["status"]) => {
+  const markRep = (number: number, duration: number | null, status: SeriesRep["status"], url?: string) => {
     setCompletedReps((prev) => {
       const next = prev.filter((r) => r.number !== number);
       if (status === "done" && duration != null) {
-        next.push({ number, duration, status });
+        next.push({ number, duration, status, url });
       }
       return next.sort((a, b) => a.number - b.number);
     });
   };
+
+  const deleteRep = (number: number) => {
+    markRep(number, null, "pending");
+    setRecordings((prev) => {
+      const next = { ...prev };
+      delete next[number];
+      return next;
+    });
+    if (number === repNumber) setRecording(null);
+  };
+
 
   return (
     <>
@@ -593,7 +609,7 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
 
       </div>
 
-      <RepSeriesRow total={SERIES_TOTAL} reps={completedReps} />
+      <RepSeriesRow total={SERIES_TOTAL} reps={completedReps} onDelete={deleteRep} />
 
       <CueRow cues={lesson.cues} />
 
@@ -621,7 +637,8 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
 
           onComplete={(rec) => {
             setRecording(rec);
-            markRep(repNumber, rec.durationSeconds, "done");
+            setRecordings((prev) => ({ ...prev, [repNumber]: rec }));
+            markRep(repNumber, rec.durationSeconds, "done", rec.url ?? undefined);
           }}
         />
       </div>
@@ -631,10 +648,7 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
           <RecordingPlayback url={recording.url} label="▶ LISTEN" />
           <button
             type="button"
-            onClick={() => {
-              setRecording(null);
-              markRep(repNumber, null, "pending");
-            }}
+            onClick={() => deleteRep(repNumber)}
             className="w-full rounded-2xl border border-border bg-card px-5 py-3.5 text-[15px] font-semibold"
           >
             TRY AGAIN
@@ -646,9 +660,9 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
                 onRep9Recorded(recording);
                 return;
               }
-              setRecording(null);
-              setRepNumber((n) => n + 1);
+              goToRep(repNumber + 1);
             }}
+
             className="w-full rounded-2xl bg-primary px-6 py-5 text-base font-extrabold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
           >
             {isLast ? "GO TO FINAL REP" : `NEXT REP (${repNumber + 1} / ${SERIES_TOTAL})`}
