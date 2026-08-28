@@ -159,28 +159,21 @@ function PracticePage() {
             modelText={modelText}
             rep7Recording={rep7Recording}
             rep9Recording={rep9Recording}
-            finalFocus={analysis?.focusLabel ?? lesson.focus}
+            finalFocus={lesson.focus}
             onNext={() => goToRep(stage.index + 1)}
             onRep7Recorded={setRep7Recording}
-            onRep9Recorded={(recording, transcript) => {
+            onRep9Recorded={(recording) => {
               setRep9Recording(recording);
-              void runAnalysis(recording, transcript, false);
+              goToRep(6);
             }}
             onRep10Recorded={(recording, transcript) => {
               setRep10Recording(recording);
-              void runAnalysis(recording, transcript, true);
+              void runAnalysis(recording, transcript);
             }}
           />
-        ) : stage.kind === "analysis" && analysis ? (
-          <AnalysisStage
-            analysis={analysis}
-            onPractice={() => setStage(quickFix ? { kind: "quickfix" } : { kind: "rep", index: 6 })}
-          />
-        ) : stage.kind === "quickfix" && quickFix ? (
-          <QuickFixCard quickFix={quickFix} onDone={() => goToRep(6)} />
         ) : stage.kind === "final-analysis" && finalAnalysis ? (
           <FinalAnalysisStage
-            before={analysis}
+            before={null}
             after={finalAnalysis}
             modelText={modelText}
             rep9Url={rep9Recording?.url ?? null}
@@ -190,7 +183,7 @@ function PracticePage() {
         ) : stage.kind === "summary" && finalAnalysis ? (
           <SummaryStage
             analysis={finalAnalysis}
-            fixed={analysis ? FeedbackService.compare(analysis, finalAnalysis).fixed.map((i) => i.correct) : []}
+            fixed={[]}
             recordingUrl={rep10Recording?.url ?? null}
             onViewProgress={() => navigate({ to: "/progress" })}
             onDone={() => navigate({ to: "/" })}
