@@ -64,9 +64,7 @@ function PracticePage() {
   const [rep7Recording, setRep7Recording] = useState<Recording | null>(null);
   const [rep9Recording, setRep9Recording] = useState<Recording | null>(null);
   const [rep10Recording, setRep10Recording] = useState<Recording | null>(null);
-  const [analysis, setAnalysis] = useState<SpeechAnalysis | null>(null);
   const [finalAnalysis, setFinalAnalysis] = useState<SpeechAnalysis | null>(null);
-  const [quickFix, setQuickFix] = useState<QuickFix | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
 
   useEffect(() => () => AudioService.stop(), []);
