@@ -411,6 +411,9 @@ function Shadowing({
   const stopRef = useRef<(() => void) | null>(null);
 
   useEffect(() => () => stopRef.current?.(), []);
+  useEffect(() => {
+    setSpeed(rate);
+  }, [rate]);
 
   const start = () => {
     if (playing) {
