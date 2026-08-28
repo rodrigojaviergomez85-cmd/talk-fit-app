@@ -512,6 +512,17 @@ function RepSeries({ lesson, rep9Recording, onSeriesComplete, backRef, forwardRe
         }
       : null;
 
+  // Forward only to completed reps or the next pending one (no skipping recordings).
+  const maxDone = completedReps.reduce((max, r) => (r.status === "done" ? Math.max(max, r.number) : max), 0);
+  const nextAllowed = Math.min(maxDone + 1, SERIES_TOTAL);
+  forwardRef.current =
+    repNumber < nextAllowed
+      ? () => {
+          goToRep(repNumber + 1);
+          return true;
+        }
+      : null;
+
   const markRep = (number: number, duration: number | null, status: SeriesRep["status"], url?: string) => {
     setCompletedReps((prev) => {
       const next = prev.filter((r) => r.number !== number);
