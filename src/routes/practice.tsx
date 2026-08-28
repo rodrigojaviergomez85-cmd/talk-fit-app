@@ -609,7 +609,7 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
 
       </div>
 
-      <RepSeriesRow total={SERIES_TOTAL} reps={completedReps} />
+      <RepSeriesRow total={SERIES_TOTAL} reps={completedReps} onDelete={deleteRep} />
 
       <CueRow cues={lesson.cues} />
 
