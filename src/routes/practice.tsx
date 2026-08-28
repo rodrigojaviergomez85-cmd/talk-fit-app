@@ -7,9 +7,6 @@ import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { RecordingComparison } from "@/components/fluency/RecordingComparison";
 import { WaveformPlayer } from "@/components/fluency/WaveformPlayer";
-import { AIAnalysisCard } from "@/components/fluency/AIAnalysisCard";
-import { QuickFixCard } from "@/components/fluency/QuickFixCard";
-import { PronunciationCard } from "@/components/fluency/PronunciationCard";
 import { FluencyScore } from "@/components/fluency/FluencyScore";
 import { LessonService } from "@/services/lesson-service";
 import { AudioService } from "@/services/audio-service";
@@ -21,7 +18,7 @@ import { RepSeriesRow, type SeriesRep } from "@/components/fluency/RepSeriesRow"
 import { SpanishProvider, SpanishToggle, TranslatableText, useSpanishAll } from "@/components/fluency/TranslatableText";
 
 import { checkRepetition, type RepCheck } from "@/lib/pronunciation-check";
-import type { QuickFix, Recording, SpeechAnalysis } from "@/lib/types";
+import type { Recording, SpeechAnalysis } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 
@@ -43,8 +40,6 @@ export const Route = createFileRoute("/practice")({
 
 type Stage =
   | { kind: "rep"; index: number }
-  | { kind: "analysis" }
-  | { kind: "quickfix" }
   | { kind: "final-analysis" }
   | { kind: "summary" };
 
@@ -69,9 +64,7 @@ function PracticePage() {
   const [rep7Recording, setRep7Recording] = useState<Recording | null>(null);
   const [rep9Recording, setRep9Recording] = useState<Recording | null>(null);
   const [rep10Recording, setRep10Recording] = useState<Recording | null>(null);
-  const [analysis, setAnalysis] = useState<SpeechAnalysis | null>(null);
   const [finalAnalysis, setFinalAnalysis] = useState<SpeechAnalysis | null>(null);
-  const [quickFix, setQuickFix] = useState<QuickFix | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
 
   useEffect(() => () => AudioService.stop(), []);
@@ -89,37 +82,30 @@ function PracticePage() {
   const goToRep = (index: number) => setStage({ kind: "rep", index });
 
 
-  const runAnalysis = async (recording: Recording, transcript: string, isFinal: boolean) => {
+  const runAnalysis = async (recording: Recording, transcript: string) => {
     setAnalyzing(true);
     const result = await SpeechAnalysisService.analyze({
       transcript,
       durationSeconds: recording.durationSeconds || 38,
-      isFinalRep: isFinal,
+      isFinalRep: true,
       targetStructure: `${lesson.grammar} — ${lesson.topic}`,
     });
 
     setAnalyzing(false);
-    if (isFinal) {
-      setFinalAnalysis(result);
-      setStage({ kind: "final-analysis" });
-    } else {
-      setAnalysis(result);
-      setQuickFix(FeedbackService.buildQuickFix(result));
-      setStage({ kind: "analysis" });
-    }
+    setFinalAnalysis(result);
+    setStage({ kind: "final-analysis" });
     return result;
   };
 
   const finishSession = () => {
     if (!finalAnalysis) return;
-    const comparison = analysis ? FeedbackService.compare(analysis, finalAnalysis) : null;
     const profile = ProfileService.load();
     ProfileService.recordSession(profile, {
       lessonId: lesson.id,
       score: finalAnalysis.score,
       breakdown: finalAnalysis.breakdown,
       finalSeconds: finalAnalysis.fluency.seconds,
-      fixed: comparison?.fixed.map((issue) => issue.correct) ?? [],
+      fixed: [],
       transcript: finalAnalysis.transcript,
       remainingIssues: finalAnalysis.grammarIssues,
     });
@@ -129,7 +115,6 @@ function PracticePage() {
   const handleBack = () => {
     if (backRef.current?.()) return;
     if (stage.kind === "rep" && stage.index > 0) goToRep(stage.index - 1);
-    else if (stage.kind === "analysis" || stage.kind === "quickfix") goToRep(5);
     else if (stage.kind === "final-analysis") goToRep(6);
   };
 
@@ -174,28 +159,21 @@ function PracticePage() {
             modelText={modelText}
             rep7Recording={rep7Recording}
             rep9Recording={rep9Recording}
-            finalFocus={analysis?.focusLabel ?? lesson.focus}
+            finalFocus={lesson.focus}
             onNext={() => goToRep(stage.index + 1)}
             onRep7Recorded={setRep7Recording}
-            onRep9Recorded={(recording, transcript) => {
+            onRep9Recorded={(recording) => {
               setRep9Recording(recording);
-              void runAnalysis(recording, transcript, false);
+              goToRep(6);
             }}
             onRep10Recorded={(recording, transcript) => {
               setRep10Recording(recording);
-              void runAnalysis(recording, transcript, true);
+              void runAnalysis(recording, transcript);
             }}
           />
-        ) : stage.kind === "analysis" && analysis ? (
-          <AnalysisStage
-            analysis={analysis}
-            onPractice={() => setStage(quickFix ? { kind: "quickfix" } : { kind: "rep", index: 6 })}
-          />
-        ) : stage.kind === "quickfix" && quickFix ? (
-          <QuickFixCard quickFix={quickFix} onDone={() => goToRep(6)} />
         ) : stage.kind === "final-analysis" && finalAnalysis ? (
           <FinalAnalysisStage
-            before={analysis}
+            before={null}
             after={finalAnalysis}
             modelText={modelText}
             rep9Url={rep9Recording?.url ?? null}
@@ -205,7 +183,7 @@ function PracticePage() {
         ) : stage.kind === "summary" && finalAnalysis ? (
           <SummaryStage
             analysis={finalAnalysis}
-            fixed={analysis ? FeedbackService.compare(analysis, finalAnalysis).fixed.map((i) => i.correct) : []}
+            fixed={[]}
             recordingUrl={rep10Recording?.url ?? null}
             onViewProgress={() => navigate({ to: "/progress" })}
             onDone={() => navigate({ to: "/" })}
@@ -231,7 +209,7 @@ type RepBodyProps = {
   finalFocus: string;
   onNext: () => void;
   onRep7Recorded: (recording: Recording) => void;
-  onRep9Recorded: (recording: Recording, transcript: string) => void;
+  onRep9Recorded: (recording: Recording) => void;
   onRep10Recorded: (recording: Recording, transcript: string) => void;
 };
 
@@ -564,7 +542,6 @@ const SERIES_TOTAL = 5;
 function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyProps) {
   const [repNumber, setRepNumber] = useState(1);
   const [recording, setRecording] = useState<Recording | null>(rep9Recording);
-  const [transcript, setTranscript] = useState("");
   const [completedReps, setCompletedReps] = useState<SeriesRep[]>([]);
   const isLast = repNumber === SERIES_TOTAL;
 
@@ -572,7 +549,6 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
     repNumber > 1
       ? () => {
           setRecording(null);
-          setTranscript("");
           setRepNumber((n) => n - 1);
           return true;
         }
@@ -639,11 +615,9 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
           stopLabel="STOP"
           targetSeconds={[Math.min(lesson.goalSeconds[0], 30), Math.min(lesson.goalSeconds[1], 30)]}
           maxSeconds={30}
-          captureTranscript
 
-          onComplete={(rec, text) => {
+          onComplete={(rec) => {
             setRecording(rec);
-            setTranscript(text);
             markRep(repNumber, rec.durationSeconds, "done");
           }}
         />
@@ -666,16 +640,15 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
             type="button"
             onClick={() => {
               if (isLast) {
-                onRep9Recorded(recording, transcript);
+                onRep9Recorded(recording);
                 return;
               }
               setRecording(null);
-              setTranscript("");
               setRepNumber((n) => n + 1);
             }}
             className="w-full rounded-2xl bg-primary px-6 py-5 text-base font-extrabold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
           >
-            {isLast ? "GET MY FEEDBACK" : `NEXT REP (${repNumber + 1} / ${SERIES_TOTAL})`}
+            {isLast ? "GO TO FINAL REP" : `NEXT REP (${repNumber + 1} / ${SERIES_TOTAL})`}
           </button>
         </div>
       ) : null}
@@ -712,118 +685,8 @@ function Rep10({ lesson, finalFocus, onRep10Recorded }: RepBodyProps) {
 
 /* ------------------------------ Result stages ----------------------------- */
 
-function CorrectnessBanner({ analysis }: { analysis: SpeechAnalysis }) {
-  const clean = analysis.grammarIssues.length === 0;
-  return (
-    <div className="space-y-2">
-      <div
-        className={cn(
-          "rounded-3xl border p-5",
-          clean ? "border-success/30 bg-success/10" : "border-primary/30 bg-accent",
-        )}
-      >
-        <p className="text-[13px] font-extrabold uppercase tracking-[0.16em]">
-          {clean ? "LO DIJISTE BIEN" : `${analysis.grammarIssues.length} COSAS PARA CORREGIR`}
-        </p>
-        <p className="mt-1.5 text-sm text-muted-foreground">
-          {clean
-            ? "No encontramos errores de gramática en lo que dijiste."
-            : "Revisa abajo lo que dijiste y cómo se dice correctamente."}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function CorrectionList({ analysis }: { analysis: SpeechAnalysis }) {
-  if (analysis.grammarIssues.length === 0) return null;
-  return (
-    <section className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Correcciones</p>
-      <ul className="mt-3 space-y-4">
-        {analysis.grammarIssues.map((issue) => (
-          <li key={issue.id} className="space-y-1">
-            <p className="text-[15px] text-destructive line-through">{issue.said}</p>
-            <p className="text-[16px] font-semibold text-success">{issue.correct}</p>
-            <p className="text-[13px] text-muted-foreground">{issue.note}</p>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
-
-
-function AnalysisStage({ analysis, onPractice }: { analysis: SpeechAnalysis; onPractice: () => void }) {
-  return (
-    <div className="space-y-4">
-      <Instruction text="Your feedback" sub="One win. One fix. Then we train it." es="Tu retroalimentación. Un acierto. Una corrección. Luego lo entrenamos." />
-      <CorrectnessBanner analysis={analysis} />
-      <AIAnalysisCard analysis={analysis} onPracticeThis={onPractice} />
-      <CorrectionList analysis={analysis} />
-
-
-      <section className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Fluency</p>
-        <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
-          <Metric label="Speaking time" value={`${analysis.fluency.seconds}s`} />
-          <Metric label="Words per minute" value={String(analysis.fluency.wordsPerMinute)} />
-          <Metric label="Long pauses" value={String(analysis.fluency.longPauses)} />
-          <Metric label="Filler words" value={String(analysis.fluency.fillerWords)} />
-        </div>
-        <p className="mt-3 text-sm text-muted-foreground">{analysis.fluency.continuityNote}</p>
-      </section>
-
-      <section className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Structure</p>
-        <ul className="mt-3 space-y-2">
-          {analysis.structure.map((check) => (
-            <li key={check.label} className="flex items-center justify-between text-[15px]">
-              <span className={check.passed ? "font-semibold" : "text-muted-foreground"}>{check.label}</span>
-              <span className={check.passed ? "text-success" : "text-muted-foreground"}>{check.passed ? "✓" : check.detail ?? "—"}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <PronunciationCard targets={analysis.pronunciation} />
-
-      <section className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Rhythm &amp; pauses</p>
-        {analysis.rhythm.map((target) => (
-          <div key={target.chunked} className="mt-3 rounded-2xl bg-secondary/60 p-4">
-            <p className="text-sm text-muted-foreground line-through">{target.wordByWord}</p>
-            <p className="mt-1 text-[16px] font-bold">{target.chunked}</p>
-            <div className="mt-3 grid grid-cols-2 gap-2">
-              <AudioPlayer text={target.chunked.replace(/\//g, " ")} label="HEAR IT" size="sm" variant="ghost" />
-              <VoiceRecorder label="SAY IT" stopLabel="DONE" showTimer={false} onComplete={() => undefined} className="[&>button]:size-11 [&>button]:text-[9px]" />
-            </div>
-          </div>
-        ))}
-      </section>
-
-      <button
-        type="button"
-        onClick={onPractice}
-        className="w-full rounded-2xl bg-primary px-6 py-5 text-base font-extrabold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
-      >
-        PRACTICE THIS
-      </button>
-    </div>
-  );
-}
-
-function Metric({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-2xl bg-secondary/60 p-3">
-      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">{label}</p>
-      <p className="mt-1 text-xl font-extrabold tabular-nums">{value}</p>
-    </div>
-  );
-}
-
 function FinalAnalysisStage({
+
   before,
   after,
   modelText,
