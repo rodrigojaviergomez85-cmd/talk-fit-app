@@ -6,7 +6,7 @@ export type SeriesRep = {
   number: number;
   duration: number;
   status: "done" | "pending";
-  url?: string;
+  url?: string | undefined;
 };
 
 type RepSeriesRowProps = {
