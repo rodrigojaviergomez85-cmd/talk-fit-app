@@ -122,19 +122,29 @@ function PracticePage() {
     setStage({ kind: "summary" });
   };
 
+  const handleBack = () => {
+    if (backRef.current?.()) return;
+    if (stage.kind === "rep" && stage.index > 0) goToRep(stage.index - 1);
+    else if (stage.kind === "analysis" || stage.kind === "quickfix") goToRep(5);
+    else if (stage.kind === "final-analysis") goToRep(6);
+  };
+
+  const canGoBack = stage.kind !== "summary" && !(stage.kind === "rep" && stage.index === 0 && !backRef.current);
+
+  backRef.current = null;
+
   return (
     <div className="min-h-screen bg-background">
       <RepProgress
         current={repIndex}
         total={7}
         title={title}
-        {...(stage.kind === "rep" && stage.index > 0
-          ? { onBack: () => setStage({ kind: "rep", index: (stage as { index: number }).index - 1 }) }
-          : {})}
+        {...(canGoBack ? { onBack: handleBack } : {})}
         onExit={() => {
           void navigate({ to: "/" });
         }}
       />
+
 
       <main className="mx-auto w-full max-w-lg px-4 pb-16 pt-6">
         <SpanishProvider value={showSpanish}>
