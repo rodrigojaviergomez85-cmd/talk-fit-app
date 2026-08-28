@@ -1,9 +1,10 @@
 /**
  * AudioService — model-voice playback abstraction.
  *
- * MVP: browser SpeechSynthesis with one clear, neutral English voice.
- * Later: swap `speak()` for a TTS API (male/female/accent variants) without
- * touching the components — they only use this interface.
+ * Primary: a natural American English AI voice generated on the server
+ * (`/api/tts`) and played with an <audio> element, so speed changes are just
+ * `playbackRate`. Fallback: the browser SpeechSynthesis voice, so practice
+ * never blocks if generation fails.
  */
 
 export type ModelVoice = "neutral" | "female" | "male";
@@ -33,9 +34,54 @@ function pickVoice(voice: ModelVoice): SpeechSynthesisVoice | undefined {
   return voices.find((v) => v.lang === "en-US") ?? voices[0];
 }
 
+/** Cache of generated model audio, keyed by text. */
+const audioCache = new Map<string, Promise<string>>();
+let currentAudio: HTMLAudioElement | null = null;
+
+async function loadModelAudio(text: string): Promise<string> {
+  const cached = audioCache.get(text);
+  if (cached) return cached;
+  const promise = (async () => {
+    const response = await fetch("/api/tts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
+    if (!response.ok) throw new Error(`TTS ${response.status}`);
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
+  })();
+  audioCache.set(text, promise);
+  promise.catch(() => audioCache.delete(text));
+  return promise;
+}
+
+function speakWithBrowser(text: string, options: SpeakOptions): () => void {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+    options.onStart?.();
+    const estimate = AudioService.estimateSeconds(text, options.rate ?? 1) * 1000;
+    const timer = setTimeout(() => options.onEnd?.(), estimate);
+    return () => clearTimeout(timer);
+  }
+  const synth = window.speechSynthesis;
+  synth.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = options.rate ?? 1;
+  utterance.pitch = 1;
+  utterance.lang = "en-US";
+  const selected = pickVoice(options.voice ?? "neutral");
+  if (selected) utterance.voice = selected;
+  utterance.onstart = () => options.onStart?.();
+  utterance.onend = () => options.onEnd?.();
+  utterance.onerror = () => options.onEnd?.();
+  utterance.onboundary = (event) => options.onBoundary?.(event.charIndex);
+  synth.speak(utterance);
+  return () => synth.cancel();
+}
+
 export const AudioService = {
   isSupported(): boolean {
-    return typeof window !== "undefined" && "speechSynthesis" in window;
+    return typeof window !== "undefined";
   },
 
   /** Estimated duration in seconds for a piece of model text at a given rate. */
@@ -45,29 +91,59 @@ export const AudioService = {
   },
 
   speak(text: string, options: SpeakOptions = {}): () => void {
-    if (!AudioService.isSupported()) {
-      options.onStart?.();
-      const estimate = AudioService.estimateSeconds(text, options.rate ?? 1) * 1000;
-      const timer = setTimeout(() => options.onEnd?.(), estimate);
-      return () => clearTimeout(timer);
-    }
-    const synth = window.speechSynthesis;
-    synth.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = options.rate ?? 1;
-    utterance.pitch = 1;
-    utterance.lang = "en-US";
-    const selected = pickVoice(options.voice ?? "neutral");
-    if (selected) utterance.voice = selected;
-    utterance.onstart = () => options.onStart?.();
-    utterance.onend = () => options.onEnd?.();
-    utterance.onerror = () => options.onEnd?.();
-    utterance.onboundary = (event) => options.onBoundary?.(event.charIndex);
-    synth.speak(utterance);
-    return () => synth.cancel();
+    if (typeof window === "undefined") return () => undefined;
+
+    AudioService.stop();
+
+    let cancelled = false;
+    let stopFallback: (() => void) | null = null;
+    let element: HTMLAudioElement | null = null;
+
+    void loadModelAudio(text)
+      .then((url) => {
+        if (cancelled) return;
+        const audio = new Audio(url);
+        audio.playbackRate = options.rate ?? 1;
+        audio.preservesPitch = true;
+        element = audio;
+        currentAudio = audio;
+        audio.onplay = () => options.onStart?.();
+        audio.onended = () => {
+          if (currentAudio === audio) currentAudio = null;
+          options.onEnd?.();
+        };
+        audio.onerror = () => {
+          if (currentAudio === audio) currentAudio = null;
+          options.onEnd?.();
+        };
+        void audio.play().catch(() => {
+          if (cancelled) return;
+          stopFallback = speakWithBrowser(text, options);
+        });
+      })
+      .catch(() => {
+        if (cancelled) return;
+        stopFallback = speakWithBrowser(text, options);
+      });
+
+    return () => {
+      cancelled = true;
+      stopFallback?.();
+      if (element) {
+        element.pause();
+        element.currentTime = 0;
+        if (currentAudio === element) currentAudio = null;
+      }
+    };
   },
 
   stop() {
-    if (AudioService.isSupported()) window.speechSynthesis.cancel();
+    if (typeof window === "undefined") return;
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      currentAudio = null;
+    }
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
   },
 };

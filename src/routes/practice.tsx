@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { Loader2 } from "lucide-react";
 import { RepProgress } from "@/components/fluency/RepProgress";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
@@ -83,7 +83,11 @@ function PracticePage() {
   const repIndex = stage.kind === "rep" ? stage.index : stage.kind === "summary" ? 7 : 6;
   const title = stage.kind === "summary" ? "SESSION COMPLETE" : (REP_TITLES[repIndex] ?? "PRACTICE");
 
+  /** Set by the current rep when it has an internal sub-step to go back to. */
+  const backRef = useRef<(() => boolean) | null>(null);
+
   const goToRep = (index: number) => setStage({ kind: "rep", index });
+
 
   const runAnalysis = async (recording: Recording, transcript: string, isFinal: boolean) => {
     setAnalyzing(true);
@@ -122,19 +126,29 @@ function PracticePage() {
     setStage({ kind: "summary" });
   };
 
+  const handleBack = () => {
+    if (backRef.current?.()) return;
+    if (stage.kind === "rep" && stage.index > 0) goToRep(stage.index - 1);
+    else if (stage.kind === "analysis" || stage.kind === "quickfix") goToRep(5);
+    else if (stage.kind === "final-analysis") goToRep(6);
+  };
+
+  const canGoBack = stage.kind !== "summary" && !(stage.kind === "rep" && stage.index === 0 && !backRef.current);
+
+  backRef.current = null;
+
   return (
     <div className="min-h-screen bg-background">
       <RepProgress
         current={repIndex}
         total={7}
         title={title}
-        {...(stage.kind === "rep" && stage.index > 0
-          ? { onBack: () => setStage({ kind: "rep", index: (stage as { index: number }).index - 1 }) }
-          : {})}
+        {...(canGoBack ? { onBack: handleBack } : {})}
         onExit={() => {
           void navigate({ to: "/" });
         }}
       />
+
 
       <main className="mx-auto w-full max-w-lg px-4 pb-16 pt-6">
         <SpanishProvider value={showSpanish}>
@@ -153,7 +167,9 @@ function PracticePage() {
         ) : stage.kind === "rep" ? (
 
           <RepBody
+            backRef={backRef}
             index={stage.index}
+
             lesson={lesson}
             modelText={modelText}
             rep7Recording={rep7Recording}
@@ -205,7 +221,9 @@ function PracticePage() {
 /* ---------------------------------- Reps ---------------------------------- */
 
 type RepBodyProps = {
+  backRef: RefObject<(() => boolean) | null>;
   index: number;
+
   lesson: ReturnType<typeof LessonService.getTodayLesson>;
   modelText: string;
   rep7Recording: Recording | null;
@@ -327,7 +345,7 @@ function Rep2({ lesson, modelText, onNext }: RepBodyProps) {
   );
 }
 
-function Rep3({ lesson, onNext }: RepBodyProps) {
+function Rep3({ lesson, onNext, backRef }: RepBodyProps) {
   const [index, setIndex] = useState(0);
   const [myVoice, setMyVoice] = useState<Recording | null>(null);
   const [check, setCheck] = useState<RepCheck | null>(null);
@@ -338,6 +356,15 @@ function Rep3({ lesson, onNext }: RepBodyProps) {
     setMyVoice(null);
     setCheck(null);
   };
+
+  backRef.current =
+    index > 0
+      ? () => {
+          reset();
+          setIndex(index - 1);
+          return true;
+        }
+      : null;
 
   return (
     <>
@@ -534,12 +561,22 @@ function CueRow({ cues }: { cues: string[] }) {
 
 const SERIES_TOTAL = 5;
 
-function RepSeries({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
+function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyProps) {
   const [repNumber, setRepNumber] = useState(1);
   const [recording, setRecording] = useState<Recording | null>(rep9Recording);
   const [transcript, setTranscript] = useState("");
   const [completedReps, setCompletedReps] = useState<SeriesRep[]>([]);
   const isLast = repNumber === SERIES_TOTAL;
+
+  backRef.current =
+    repNumber > 1
+      ? () => {
+          setRecording(null);
+          setTranscript("");
+          setRepNumber((n) => n - 1);
+          return true;
+        }
+      : null;
 
   const markRep = (number: number, duration: number | null, status: SeriesRep["status"]) => {
     setCompletedReps((prev) => {
