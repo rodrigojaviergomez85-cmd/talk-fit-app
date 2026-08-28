@@ -83,7 +83,11 @@ function PracticePage() {
   const repIndex = stage.kind === "rep" ? stage.index : stage.kind === "summary" ? 7 : 6;
   const title = stage.kind === "summary" ? "SESSION COMPLETE" : (REP_TITLES[repIndex] ?? "PRACTICE");
 
+  /** Set by the current rep when it has an internal sub-step to go back to. */
+  const backRef = useRef<(() => boolean) | null>(null);
+
   const goToRep = (index: number) => setStage({ kind: "rep", index });
+
 
   const runAnalysis = async (recording: Recording, transcript: string, isFinal: boolean) => {
     setAnalyzing(true);
