@@ -34,7 +34,7 @@ export const Route = createFileRoute("/practice")({
   component: PracticePage,
 });
 
-type Stage = { kind: "rep"; index: number } | { kind: "complete" };
+type Stage = { kind: "intro" } | { kind: "rep"; index: number } | { kind: "complete" };
 
 const REP_TITLES = [
   "REP 1 OF 6",
@@ -49,7 +49,7 @@ function PracticePage() {
   const navigate = useNavigate();
   const lesson = LessonService.getTodayLesson();
   const modelText = useMemo(() => LessonService.getModelText(lesson), [lesson]);
-  const [stage, setStage] = useState<Stage>({ kind: "rep", index: 0 });
+  const [stage, setStage] = useState<Stage>({ kind: "intro" });
   const [showSpanish, setShowSpanish] = useState(false);
 
   const [rep7Recording, setRep7Recording] = useState<Recording | null>(null);
