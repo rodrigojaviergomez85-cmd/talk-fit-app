@@ -221,7 +221,9 @@ function PracticePage() {
 /* ---------------------------------- Reps ---------------------------------- */
 
 type RepBodyProps = {
+  backRef: React.RefObject<(() => boolean) | null>;
   index: number;
+
   lesson: ReturnType<typeof LessonService.getTodayLesson>;
   modelText: string;
   rep7Recording: Recording | null;
