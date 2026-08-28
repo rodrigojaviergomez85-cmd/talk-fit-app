@@ -66,6 +66,8 @@ function PracticePage() {
 
   /** Set by the current rep when it has an internal sub-step to go back to. */
   const backRef = useRef<(() => boolean) | null>(null);
+  /** Set by the current rep when it has an internal sub-step to go forward to. */
+  const forwardRef = useRef<(() => boolean) | null>(null);
 
   const goToRep = (index: number) => setStage({ kind: "rep", index });
 
@@ -74,9 +76,17 @@ function PracticePage() {
     if (stage.kind === "rep" && stage.index > 0) goToRep(stage.index - 1);
   };
 
+  const handleForward = () => {
+    if (forwardRef.current?.()) return;
+    if (stage.kind === "rep" && stage.index < REP_TITLES.length - 1) goToRep(stage.index + 1);
+  };
+
   const canGoBack = stage.kind !== "complete" && !(stage.kind === "rep" && stage.index === 0 && !backRef.current);
+  const canGoForward =
+    stage.kind === "rep" && (stage.index < REP_TITLES.length - 1 || forwardRef.current !== null);
 
   backRef.current = null;
+  forwardRef.current = null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -85,6 +95,7 @@ function PracticePage() {
         total={6}
         title={title}
         {...(canGoBack ? { onBack: handleBack } : {})}
+        {...(canGoForward ? { onNext: handleForward } : {})}
         onExit={() => {
           void navigate({ to: "/" });
         }}
@@ -100,6 +111,7 @@ function PracticePage() {
         {stage.kind === "rep" ? (
           <RepBody
             backRef={backRef}
+            forwardRef={forwardRef}
             index={stage.index}
             lesson={lesson}
             modelText={modelText}
@@ -132,6 +144,7 @@ function PracticePage() {
 
 type RepBodyProps = {
   backRef: RefObject<(() => boolean) | null>;
+  forwardRef: RefObject<(() => boolean) | null>;
   index: number;
 
   lesson: ReturnType<typeof LessonService.getTodayLesson>;
@@ -252,7 +265,7 @@ function Rep2({ lesson, modelText, onNext }: RepBodyProps) {
   );
 }
 
-function Rep3({ lesson, onNext, backRef }: RepBodyProps) {
+function Rep3({ lesson, onNext, backRef, forwardRef }: RepBodyProps) {
   const [index, setIndex] = useState(0);
   const [myVoice, setMyVoice] = useState<Recording | null>(null);
   const [check, setCheck] = useState<RepCheck | null>(null);
@@ -272,6 +285,14 @@ function Rep3({ lesson, onNext, backRef }: RepBodyProps) {
           return true;
         }
       : null;
+
+  forwardRef.current = !isLast
+    ? () => {
+        reset();
+        setIndex(index + 1);
+        return true;
+      }
+    : null;
 
   return (
     <>
@@ -471,7 +492,7 @@ function CueRow({ cues }: { cues: string[] }) {
 
 const SERIES_TOTAL = 5;
 
-function RepSeries({ lesson, rep9Recording, onSeriesComplete, backRef }: RepBodyProps) {
+function RepSeries({ lesson, rep9Recording, onSeriesComplete, backRef, forwardRef }: RepBodyProps) {
   const [repNumber, setRepNumber] = useState(1);
   const [recording, setRecording] = useState<Recording | null>(rep9Recording);
   const [completedReps, setCompletedReps] = useState<SeriesRep[]>([]);
@@ -487,6 +508,17 @@ function RepSeries({ lesson, rep9Recording, onSeriesComplete, backRef }: RepBody
     repNumber > 1
       ? () => {
           goToRep(repNumber - 1);
+          return true;
+        }
+      : null;
+
+  // Forward only to completed reps or the next pending one (no skipping recordings).
+  const maxDone = completedReps.reduce((max, r) => (r.status === "done" ? Math.max(max, r.number) : max), 0);
+  const nextAllowed = Math.min(maxDone + 1, SERIES_TOTAL);
+  forwardRef.current =
+    repNumber < nextAllowed
+      ? () => {
+          goToRep(repNumber + 1);
           return true;
         }
       : null;
