@@ -40,8 +40,9 @@ export function RepProgress({ current, total, title, onBack, onNext, onExit }: R
           onClick={onExit}
           className="rounded-full px-2 py-1 text-xs font-semibold uppercase tracking-wider text-navy-foreground/70 transition-colors hover:bg-white/10"
         >
-          Exit
-        </button>
+            Exit
+          </button>
+        </div>
       </div>
       <div className="mx-auto mt-3 flex w-full max-w-lg gap-1">
         {Array.from({ length: total }).map((_, index) => (
