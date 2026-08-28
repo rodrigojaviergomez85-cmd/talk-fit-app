@@ -585,7 +585,7 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
 
   return (
     <>
-      <Instruction text="Talk about YOUR life." sub={`${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds. 7–10 sentences.`} es="Habla de TU vida. Usa la lista de abajo como guía." />
+      <Instruction text="Talk about YOUR life." sub={`${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds. 7–10 sentences.`} es="Habla de TU vida. 7–10 oraciones." />
 
       <div className="mb-5 rounded-3xl bg-navy p-4 text-navy-foreground">
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
@@ -612,20 +612,6 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
       <RepSeriesRow total={SERIES_TOTAL} reps={completedReps} onDelete={deleteRep} />
 
       <CueRow cues={lesson.cues} />
-
-      <div className="mt-5 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-        <ul className="space-y-2">
-          {lesson.checklist.map((item, i) => (
-            <li key={item} className="flex items-center gap-2 text-[15px] text-muted-foreground">
-              <span className="size-4 shrink-0 rounded border border-border" />
-              <TranslatableText es={lesson.checklistEs?.[i]}>
-                <span>{item}</span>
-              </TranslatableText>
-            </li>
-          ))}
-
-        </ul>
-      </div>
 
       <div className="mt-8">
         <VoiceRecorder
