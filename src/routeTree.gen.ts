@@ -15,6 +15,7 @@ import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
+import { Route as ModuleSimplePresentRouteImport } from './routes/module.simple-present'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const ApiTtsRoute = ApiTtsRouteImport.update({
   path: '/api/tts',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ModuleSimplePresentRoute = ModuleSimplePresentRouteImport.update({
+  id: '/module/simple-present',
+  path: '/module/simple-present',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/api/tts': typeof ApiTtsRoute
+  '/module/simple-present': typeof ModuleSimplePresentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/api/tts': typeof ApiTtsRoute
+  '/module/simple-present': typeof ModuleSimplePresentRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,13 +79,27 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/api/tts': typeof ApiTtsRoute
+  '/module/simple-present': typeof ModuleSimplePresentRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/coach' | '/practice' | '/profile' | '/progress' | '/api/tts'
+    | '/'
+    | '/coach'
+    | '/practice'
+    | '/profile'
+    | '/progress'
+    | '/api/tts'
+    | '/module/simple-present'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/coach' | '/practice' | '/profile' | '/progress' | '/api/tts'
+  to:
+    | '/'
+    | '/coach'
+    | '/practice'
+    | '/profile'
+    | '/progress'
+    | '/api/tts'
+    | '/module/simple-present'
   id:
     | '__root__'
     | '/'
@@ -86,6 +108,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/api/tts'
+    | '/module/simple-present'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,6 +118,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   ProgressRoute: typeof ProgressRoute
   ApiTtsRoute: typeof ApiTtsRoute
+  ModuleSimplePresentRoute: typeof ModuleSimplePresentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiTtsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/module/simple-present': {
+      id: '/module/simple-present'
+      path: '/module/simple-present'
+      fullPath: '/module/simple-present'
+      preLoaderRoute: typeof ModuleSimplePresentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -151,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   ProgressRoute: ProgressRoute,
   ApiTtsRoute: ApiTtsRoute,
+  ModuleSimplePresentRoute: ModuleSimplePresentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
