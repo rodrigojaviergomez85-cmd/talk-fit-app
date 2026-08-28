@@ -546,26 +546,42 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
   const [repNumber, setRepNumber] = useState(1);
   const [recording, setRecording] = useState<Recording | null>(rep9Recording);
   const [completedReps, setCompletedReps] = useState<SeriesRep[]>([]);
+  const [recordings, setRecordings] = useState<Record<number, Recording>>({});
   const isLast = repNumber === SERIES_TOTAL;
+
+  const goToRep = (n: number) => {
+    setRepNumber(n);
+    setRecording(recordings[n] ?? null);
+  };
 
   backRef.current =
     repNumber > 1
       ? () => {
-          setRecording(null);
-          setRepNumber((n) => n - 1);
+          goToRep(repNumber - 1);
           return true;
         }
       : null;
 
-  const markRep = (number: number, duration: number | null, status: SeriesRep["status"]) => {
+  const markRep = (number: number, duration: number | null, status: SeriesRep["status"], url?: string) => {
     setCompletedReps((prev) => {
       const next = prev.filter((r) => r.number !== number);
       if (status === "done" && duration != null) {
-        next.push({ number, duration, status });
+        next.push({ number, duration, status, url });
       }
       return next.sort((a, b) => a.number - b.number);
     });
   };
+
+  const deleteRep = (number: number) => {
+    markRep(number, null, "pending");
+    setRecordings((prev) => {
+      const next = { ...prev };
+      delete next[number];
+      return next;
+    });
+    if (number === repNumber) setRecording(null);
+  };
+
 
   return (
     <>
