@@ -11,6 +11,7 @@ import { AudioService } from "@/services/audio-service";
 import { RepFeedback } from "@/components/fluency/RepFeedback";
 import { RepSeriesRow, type SeriesRep } from "@/components/fluency/RepSeriesRow";
 import { DailyCompleteScreen } from "@/components/fluency/DailyCompleteScreen";
+import { IntroStep } from "@/components/fluency/IntroStep";
 import { SpanishProvider, SpanishToggle, TranslatableText, useSpanishAll } from "@/components/fluency/TranslatableText";
 
 import { checkRepetition, type RepCheck } from "@/lib/pronunciation-check";
