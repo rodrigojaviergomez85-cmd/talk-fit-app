@@ -82,37 +82,30 @@ function PracticePage() {
   const goToRep = (index: number) => setStage({ kind: "rep", index });
 
 
-  const runAnalysis = async (recording: Recording, transcript: string, isFinal: boolean) => {
+  const runAnalysis = async (recording: Recording, transcript: string) => {
     setAnalyzing(true);
     const result = await SpeechAnalysisService.analyze({
       transcript,
       durationSeconds: recording.durationSeconds || 38,
-      isFinalRep: isFinal,
+      isFinalRep: true,
       targetStructure: `${lesson.grammar} — ${lesson.topic}`,
     });
 
     setAnalyzing(false);
-    if (isFinal) {
-      setFinalAnalysis(result);
-      setStage({ kind: "final-analysis" });
-    } else {
-      setAnalysis(result);
-      setQuickFix(FeedbackService.buildQuickFix(result));
-      setStage({ kind: "analysis" });
-    }
+    setFinalAnalysis(result);
+    setStage({ kind: "final-analysis" });
     return result;
   };
 
   const finishSession = () => {
     if (!finalAnalysis) return;
-    const comparison = analysis ? FeedbackService.compare(analysis, finalAnalysis) : null;
     const profile = ProfileService.load();
     ProfileService.recordSession(profile, {
       lessonId: lesson.id,
       score: finalAnalysis.score,
       breakdown: finalAnalysis.breakdown,
       finalSeconds: finalAnalysis.fluency.seconds,
-      fixed: comparison?.fixed.map((issue) => issue.correct) ?? [],
+      fixed: [],
       transcript: finalAnalysis.transcript,
       remainingIssues: finalAnalysis.grammarIssues,
     });
@@ -122,7 +115,6 @@ function PracticePage() {
   const handleBack = () => {
     if (backRef.current?.()) return;
     if (stage.kind === "rep" && stage.index > 0) goToRep(stage.index - 1);
-    else if (stage.kind === "analysis" || stage.kind === "quickfix") goToRep(5);
     else if (stage.kind === "final-analysis") goToRep(6);
   };
 
