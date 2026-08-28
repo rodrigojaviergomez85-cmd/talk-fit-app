@@ -12,7 +12,7 @@ export const defaultProfile: LearnerProfile = {
   name: "Rodrigo",
   level: "A2 · Elementary",
   lessonsCompleted: 24,
-  streakDays: 7,
+  streakDays: 0,
   speakingMinutesThisWeek: 42,
   weeklyGoalMinutes: 60,
   totalSpeakingMinutes: 186,

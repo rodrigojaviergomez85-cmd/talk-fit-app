@@ -29,9 +29,12 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const lesson = LessonService.getTodayLesson();
   const [profile, setProfile] = useState<LearnerProfile>(defaultProfile);
+  const [completedToday, setCompletedToday] = useState(false);
 
   useEffect(() => {
-    setProfile(ProfileService.load());
+    const loaded = ProfileService.load();
+    setProfile(loaded);
+    setCompletedToday(ProfileService.isTodayCompleted(loaded));
   }, []);
 
   const weekPct = Math.min(100, Math.round((profile.speakingMinutesThisWeek / profile.weeklyGoalMinutes) * 100));
@@ -49,7 +52,7 @@ function HomePage() {
       </header>
 
       <main className="mx-auto -mt-4 w-full max-w-lg space-y-4 px-4 pb-6">
-        <DailyPracticeCard lesson={lesson} />
+        <DailyPracticeCard lesson={lesson} completed={completedToday} />
 
         <div className="grid grid-cols-2 gap-3">
           <StatTile icon={<Flame className="size-4" />} label="Current streak" value={`${profile.streakDays} days`} />
