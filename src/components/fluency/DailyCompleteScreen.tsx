@@ -66,7 +66,7 @@ export function DailyCompleteScreen({ onComplete, className }: DailyCompleteScre
       ) : null}
 
       <header className="pt-4 text-center">
-        <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-success/15 text-success animate-scale-in">
+        <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-success/15 text-success animate-pop-check">
           <Check className="size-11" strokeWidth={3} />
         </div>
         <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight">🎉 {es ? "¡MUY BIEN!" : "GREAT JOB!"}</h1>
