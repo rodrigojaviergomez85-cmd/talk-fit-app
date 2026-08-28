@@ -141,8 +141,7 @@ type RepBodyProps = {
   finalFocus: string;
   onNext: () => void;
   onRep7Recorded: (recording: Recording) => void;
-  onRep9Recorded: (recording: Recording) => void;
-  onRep10Recorded: (recording: Recording, transcript: string) => void;
+  onSeriesComplete: (recording: Recording) => void;
 };
 
 function RepBody(props: RepBodyProps) {
@@ -159,8 +158,6 @@ function RepBody(props: RepBodyProps) {
       return <Rep7 {...props} />;
     case 5:
       return <RepSeries {...props} />;
-    case 6:
-      return <Rep10 {...props} />;
     default:
       return null;
   }
@@ -474,7 +471,7 @@ function CueRow({ cues }: { cues: string[] }) {
 
 const SERIES_TOTAL = 5;
 
-function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyProps) {
+function RepSeries({ lesson, rep9Recording, onSeriesComplete, backRef }: RepBodyProps) {
   const [repNumber, setRepNumber] = useState(1);
   const [recording, setRecording] = useState<Recording | null>(rep9Recording);
   const [completedReps, setCompletedReps] = useState<SeriesRep[]>([]);
@@ -575,7 +572,7 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
             type="button"
             onClick={() => {
               if (isLast) {
-                onRep9Recorded(recording);
+                onSeriesComplete(recording);
                 return;
               }
               goToRep(repNumber + 1);
@@ -583,164 +580,10 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
 
             className="w-full rounded-2xl bg-primary px-6 py-5 text-base font-extrabold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
           >
-            {isLast ? "GO TO FINAL REP" : `NEXT REP (${repNumber + 1} / ${SERIES_TOTAL})`}
+            {isLast ? "FINISH 5 REPS ✓" : `NEXT REP (${repNumber + 1} / ${SERIES_TOTAL})`}
           </button>
         </div>
       ) : null}
     </>
-  );
-}
-
-
-function Rep10({ lesson, finalFocus, onRep10Recorded }: RepBodyProps) {
-  return (
-    <>
-      <Instruction text="Now do it again." sub="Focus on your ONE improvement." es="Ahora hazlo otra vez. Enfócate en tu UNA mejora." />
-      <div className="rounded-3xl bg-navy p-5 text-navy-foreground">
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">Today's focus</p>
-        <p className="mt-1.5 text-2xl font-extrabold uppercase">{finalFocus}</p>
-      </div>
-      <div className="mt-5">
-        <CueRow cues={lesson.cues} />
-      </div>
-      <div className="mt-10">
-        <VoiceRecorder
-          label="START"
-          stopLabel="STOP"
-          targetSeconds={lesson.goalSeconds}
-          captureTranscript
-          onComplete={(recording, transcript) => onRep10Recorded(recording, transcript)}
-        />
-      </div>
-      <p className="mt-6 text-center text-sm text-muted-foreground">Almost no support this time. You've got the pattern.</p>
-      <EsLine text="Casi sin ayuda esta vez. Ya tienes el patrón." className="mt-1 text-center" />
-    </>
-  );
-}
-
-/* ------------------------------ Result stages ----------------------------- */
-
-function FinalAnalysisStage({
-
-  before,
-  after,
-  modelText,
-  rep9Url,
-  rep10Url,
-  onDone,
-}: {
-  before: SpeechAnalysis | null;
-  after: SpeechAnalysis;
-  modelText: string;
-  rep9Url: string | null;
-  rep10Url: string | null;
-  onDone: () => void;
-}) {
-  const comparison = before ? FeedbackService.compare(before, after) : null;
-  const fixed = comparison?.fixed ?? [];
-
-  return (
-    <div className="space-y-4">
-      <Instruction text="You improved" sub="Same pattern, better result." es="Mejoraste. Mismo patrón, mejor resultado." />
-
-      {fixed.length > 0 ? (
-        <section className="rounded-3xl border border-success/25 bg-success/8 p-5">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-success">Fixed today</p>
-          {fixed.map((issue) => (
-            <div key={issue.id} className="mt-3">
-              <p className="text-sm text-muted-foreground line-through">Before: {issue.said}</p>
-              <p className="mt-1 text-[16px] font-bold">Final: {issue.correct}</p>
-              <p className="mt-1 text-sm font-bold text-success">✓ FIXED</p>
-            </div>
-          ))}
-        </section>
-      ) : (
-        <section className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-          <p className="text-[15px] font-semibold">{after.didWell}</p>
-          <p className="mt-1 text-sm text-muted-foreground">Keep training the same pattern tomorrow.</p>
-        </section>
-      )}
-
-      <FluencyScore score={after.score} breakdown={after.breakdown} caption="Today's fluency score" />
-
-      <RecordingComparison
-        leftLabel="▶ FIRST TRY"
-        rightLabel="▶ FINAL REP"
-        leftUrl={rep9Url}
-        rightUrl={rep10Url ?? null}
-        caption="Before vs after"
-      />
-      <RecordingComparison leftLabel="▶ MODEL" rightLabel="▶ MY FINAL" modelText={modelText} rightUrl={rep10Url} caption="Model vs you" />
-
-      <button
-        type="button"
-        onClick={onDone}
-        className="w-full rounded-2xl bg-primary px-6 py-5 text-base font-extrabold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
-      >
-        FINISH SESSION
-      </button>
-    </div>
-  );
-}
-
-function SummaryStage({
-  analysis,
-  fixed,
-  recordingUrl,
-  onViewProgress,
-  onDone,
-}: {
-  analysis: SpeechAnalysis;
-  fixed: string[];
-  recordingUrl: string | null;
-  onViewProgress: () => void;
-  onDone: () => void;
-}) {
-  return (
-    <div className="space-y-4 pb-8">
-      <div className="rounded-3xl bg-navy p-6 text-center text-navy-foreground">
-        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">Today's fluency training complete</p>
-        <p className="mt-3 text-3xl font-extrabold">7 / 7 REPS ✓</p>
-        <p className="mt-2 text-sm text-navy-foreground/70">Final speaking time: {analysis.fluency.seconds} seconds</p>
-      </div>
-
-      <FluencyScore score={analysis.score} breakdown={analysis.breakdown} />
-
-      {fixed.length > 0 ? (
-        <section className="rounded-3xl border border-success/25 bg-success/8 p-5">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-success">Today you improved</p>
-          <ul className="mt-2 space-y-1">
-            {fixed.map((item) => (
-              <li key={item} className="text-[15px] font-semibold">✓ {item}</li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
-
-      <section className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Today's best moment</p>
-        <p className="mt-2 text-[16px] font-semibold">{analysis.didWell}</p>
-        <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Next target</p>
-        <p className="mt-2 text-[16px] font-semibold">{FeedbackService.nextTarget(analysis)}</p>
-      </section>
-
-      <RecordingPlayback url={recordingUrl} label="▶ HEAR FINAL RECORDING" />
-      <button
-        type="button"
-        onClick={onViewProgress}
-        className="w-full rounded-2xl border border-border bg-card px-5 py-4 text-[15px] font-semibold"
-      >
-        VIEW PROGRESS
-      </button>
-      <button
-        type="button"
-        onClick={onDone}
-        className="w-full rounded-2xl bg-primary px-6 py-5 text-base font-extrabold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
-      >
-        DONE
-      </button>
-
-      <p className="pt-4 text-center text-lg font-extrabold uppercase tracking-[0.2em] text-primary">Small reps. Big fluency.</p>
-    </div>
   );
 }
