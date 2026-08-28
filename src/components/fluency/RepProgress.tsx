@@ -1,4 +1,4 @@
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type RepProgressProps = {
@@ -6,11 +6,12 @@ type RepProgressProps = {
   total: number;
   title: string;
   onBack?: () => void;
+  onNext?: () => void;
   onExit?: () => void;
 };
 
 /** Sticky practice header — always answers "where am I?". */
-export function RepProgress({ current, total, title, onBack, onExit }: RepProgressProps) {
+export function RepProgress({ current, total, title, onBack, onNext, onExit }: RepProgressProps) {
   return (
     <header className="sticky top-0 z-20 bg-navy px-4 pb-4 pt-[max(0.75rem,env(safe-area-inset-top))] text-navy-foreground">
       <div className="mx-auto flex w-full max-w-lg items-center justify-between">
@@ -24,7 +25,17 @@ export function RepProgress({ current, total, title, onBack, onExit }: RepProgre
           <ChevronLeft className="size-5" />
         </button>
         <p className="text-xs font-bold uppercase tracking-[0.2em]">{title}</p>
-        <button
+        <div className="flex items-center">
+          <button
+            type="button"
+            onClick={onNext}
+            disabled={!onNext}
+            className="inline-flex size-9 items-center justify-center rounded-full text-navy-foreground/80 transition-colors hover:bg-white/10 disabled:opacity-30"
+            aria-label="Next rep"
+          >
+            <ChevronRight className="size-5" />
+          </button>
+          <button
           type="button"
           onClick={onExit}
           className="rounded-full px-2 py-1 text-xs font-semibold uppercase tracking-wider text-navy-foreground/70 transition-colors hover:bg-white/10"
