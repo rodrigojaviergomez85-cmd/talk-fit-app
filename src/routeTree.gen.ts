@@ -14,6 +14,7 @@ import { Route as CoachRouteImport } from './routes/coach'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProgressRouteImport } from './routes/progress'
+import { Route as ApiTranscribeRouteImport } from './routes/api/transcribe'
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as ModuleSimplePresentRouteImport } from './routes/module.simple-present'
 
@@ -42,6 +43,11 @@ const ProgressRoute = ProgressRouteImport.update({
   path: '/progress',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiTranscribeRoute = ApiTranscribeRouteImport.update({
+  id: '/api/transcribe',
+  path: '/api/transcribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiTtsRoute = ApiTtsRouteImport.update({
   id: '/api/tts',
   path: '/api/tts',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/practice': typeof PracticeRoute
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
+  '/api/transcribe': typeof ApiTranscribeRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/simple-present': typeof ModuleSimplePresentRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/practice': typeof PracticeRoute
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
+  '/api/transcribe': typeof ApiTranscribeRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/simple-present': typeof ModuleSimplePresentRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/practice': typeof PracticeRoute
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
+  '/api/transcribe': typeof ApiTranscribeRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/simple-present': typeof ModuleSimplePresentRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/practice'
     | '/profile'
     | '/progress'
+    | '/api/transcribe'
     | '/api/tts'
     | '/module/simple-present'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/practice'
     | '/profile'
     | '/progress'
+    | '/api/transcribe'
     | '/api/tts'
     | '/module/simple-present'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/practice'
     | '/profile'
     | '/progress'
+    | '/api/transcribe'
     | '/api/tts'
     | '/module/simple-present'
   fileRoutesById: FileRoutesById
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   PracticeRoute: typeof PracticeRoute
   ProfileRoute: typeof ProfileRoute
   ProgressRoute: typeof ProgressRoute
+  ApiTranscribeRoute: typeof ApiTranscribeRoute
   ApiTtsRoute: typeof ApiTtsRoute
   ModuleSimplePresentRoute: typeof ModuleSimplePresentRoute
 }
@@ -158,6 +171,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgressRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/transcribe': {
+      id: '/api/transcribe'
+      path: '/api/transcribe'
+      fullPath: '/api/transcribe'
+      preLoaderRoute: typeof ApiTranscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/tts': {
       id: '/api/tts'
       path: '/api/tts'
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   PracticeRoute: PracticeRoute,
   ProfileRoute: ProfileRoute,
   ProgressRoute: ProgressRoute,
+  ApiTranscribeRoute: ApiTranscribeRoute,
   ApiTtsRoute: ApiTtsRoute,
   ModuleSimplePresentRoute: ModuleSimplePresentRoute,
 }
