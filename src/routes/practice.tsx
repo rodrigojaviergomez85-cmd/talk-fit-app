@@ -66,6 +66,8 @@ function PracticePage() {
 
   /** Set by the current rep when it has an internal sub-step to go back to. */
   const backRef = useRef<(() => boolean) | null>(null);
+  /** Set by the current rep when it has an internal sub-step to go forward to. */
+  const forwardRef = useRef<(() => boolean) | null>(null);
 
   const goToRep = (index: number) => setStage({ kind: "rep", index });
 
@@ -74,9 +76,17 @@ function PracticePage() {
     if (stage.kind === "rep" && stage.index > 0) goToRep(stage.index - 1);
   };
 
+  const handleForward = () => {
+    if (forwardRef.current?.()) return;
+    if (stage.kind === "rep" && stage.index < REP_TITLES.length - 1) goToRep(stage.index + 1);
+  };
+
   const canGoBack = stage.kind !== "complete" && !(stage.kind === "rep" && stage.index === 0 && !backRef.current);
+  const canGoForward =
+    stage.kind === "rep" && (stage.index < REP_TITLES.length - 1 || forwardRef.current !== null);
 
   backRef.current = null;
+  forwardRef.current = null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -85,6 +95,7 @@ function PracticePage() {
         total={6}
         title={title}
         {...(canGoBack ? { onBack: handleBack } : {})}
+        {...(canGoForward ? { onNext: handleForward } : {})}
         onExit={() => {
           void navigate({ to: "/" });
         }}
@@ -100,6 +111,7 @@ function PracticePage() {
         {stage.kind === "rep" ? (
           <RepBody
             backRef={backRef}
+            forwardRef={forwardRef}
             index={stage.index}
             lesson={lesson}
             modelText={modelText}
@@ -132,6 +144,7 @@ function PracticePage() {
 
 type RepBodyProps = {
   backRef: RefObject<(() => boolean) | null>;
+  forwardRef: RefObject<(() => boolean) | null>;
   index: number;
 
   lesson: ReturnType<typeof LessonService.getTodayLesson>;
