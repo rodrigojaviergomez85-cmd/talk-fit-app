@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { Loader2 } from "lucide-react";
 import { RepProgress } from "@/components/fluency/RepProgress";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
@@ -221,7 +221,7 @@ function PracticePage() {
 /* ---------------------------------- Reps ---------------------------------- */
 
 type RepBodyProps = {
-  backRef: React.RefObject<(() => boolean) | null>;
+  backRef: RefObject<(() => boolean) | null>;
   index: number;
 
   lesson: ReturnType<typeof LessonService.getTodayLesson>;
@@ -345,7 +345,7 @@ function Rep2({ lesson, modelText, onNext }: RepBodyProps) {
   );
 }
 
-function Rep3({ lesson, onNext }: RepBodyProps) {
+function Rep3({ lesson, onNext, backRef }: RepBodyProps) {
   const [index, setIndex] = useState(0);
   const [myVoice, setMyVoice] = useState<Recording | null>(null);
   const [check, setCheck] = useState<RepCheck | null>(null);
@@ -356,6 +356,15 @@ function Rep3({ lesson, onNext }: RepBodyProps) {
     setMyVoice(null);
     setCheck(null);
   };
+
+  backRef.current =
+    index > 0
+      ? () => {
+          reset();
+          setIndex(index - 1);
+          return true;
+        }
+      : null;
 
   return (
     <>
@@ -552,12 +561,22 @@ function CueRow({ cues }: { cues: string[] }) {
 
 const SERIES_TOTAL = 5;
 
-function RepSeries({ lesson, rep9Recording, onRep9Recorded }: RepBodyProps) {
+function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyProps) {
   const [repNumber, setRepNumber] = useState(1);
   const [recording, setRecording] = useState<Recording | null>(rep9Recording);
   const [transcript, setTranscript] = useState("");
   const [completedReps, setCompletedReps] = useState<SeriesRep[]>([]);
   const isLast = repNumber === SERIES_TOTAL;
+
+  backRef.current =
+    repNumber > 1
+      ? () => {
+          setRecording(null);
+          setTranscript("");
+          setRepNumber((n) => n - 1);
+          return true;
+        }
+      : null;
 
   const markRep = (number: number, duration: number | null, status: SeriesRep["status"]) => {
     setCompletedReps((prev) => {
