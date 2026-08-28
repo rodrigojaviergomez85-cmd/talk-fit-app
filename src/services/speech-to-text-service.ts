@@ -13,7 +13,7 @@ const MOCK_TRANSCRIPTS = [
 
 export type TranscriptionResult = {
   transcript: string;
-  source: "browser" | "mock";
+  source: "browser" | "mock" | "server";
 };
 
 type RecognitionCtor = new () => {
