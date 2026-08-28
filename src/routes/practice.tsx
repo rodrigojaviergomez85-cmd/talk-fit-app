@@ -638,7 +638,7 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
           onComplete={(rec) => {
             setRecording(rec);
             setRecordings((prev) => ({ ...prev, [repNumber]: rec }));
-            markRep(repNumber, rec.durationSeconds, "done", rec.url);
+            markRep(repNumber, rec.durationSeconds, "done", rec.url ?? undefined);
           }}
         />
       </div>
