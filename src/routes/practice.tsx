@@ -167,7 +167,9 @@ function PracticePage() {
         ) : stage.kind === "rep" ? (
 
           <RepBody
+            backRef={backRef}
             index={stage.index}
+
             lesson={lesson}
             modelText={modelText}
             rep7Recording={rep7Recording}
