@@ -265,7 +265,7 @@ function Rep2({ lesson, modelText, onNext }: RepBodyProps) {
   );
 }
 
-function Rep3({ lesson, onNext, backRef }: RepBodyProps) {
+function Rep3({ lesson, onNext, backRef, forwardRef }: RepBodyProps) {
   const [index, setIndex] = useState(0);
   const [myVoice, setMyVoice] = useState<Recording | null>(null);
   const [check, setCheck] = useState<RepCheck | null>(null);
@@ -285,6 +285,14 @@ function Rep3({ lesson, onNext, backRef }: RepBodyProps) {
           return true;
         }
       : null;
+
+  forwardRef.current = !isLast
+    ? () => {
+        reset();
+        setIndex(index + 1);
+        return true;
+      }
+    : null;
 
   return (
     <>
@@ -484,7 +492,7 @@ function CueRow({ cues }: { cues: string[] }) {
 
 const SERIES_TOTAL = 5;
 
-function RepSeries({ lesson, rep9Recording, onSeriesComplete, backRef }: RepBodyProps) {
+function RepSeries({ lesson, rep9Recording, onSeriesComplete, backRef, forwardRef }: RepBodyProps) {
   const [repNumber, setRepNumber] = useState(1);
   const [recording, setRecording] = useState<Recording | null>(rep9Recording);
   const [completedReps, setCompletedReps] = useState<SeriesRep[]>([]);
