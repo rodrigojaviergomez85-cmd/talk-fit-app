@@ -12,7 +12,7 @@ export const defaultProfile: LearnerProfile = {
   name: "Rodrigo",
   level: "A2 · Elementary",
   lessonsCompleted: 24,
-  streakDays: 7,
+  streakDays: 0,
   speakingMinutesThisWeek: 42,
   weeklyGoalMinutes: 60,
   totalSpeakingMinutes: 186,
@@ -166,4 +166,40 @@ export const ProfileService = {
     if (!top || top.occurrences < 3) return null;
     return top;
   },
+
+  /** Local YYYY-MM-DD key for a date. */
+  dayKey(date = new Date()): string {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  },
+
+  /** True when today's 5 daily reps were already saved as complete. */
+  isTodayCompleted(profile: LearnerProfile): boolean {
+    return profile.lastCompletedDate === ProfileService.dayKey();
+  },
+
+  /**
+   * Saves today as a completed day and updates the streak.
+   * Idempotent: calling it twice on the same day changes nothing.
+   */
+  completeToday(profile: LearnerProfile): LearnerProfile {
+    const today = ProfileService.dayKey();
+    if (profile.lastCompletedDate === today) return profile;
+
+    const yesterday = ProfileService.dayKey(new Date(Date.now() - 24 * 60 * 60 * 1000));
+    const streakDays = profile.lastCompletedDate === yesterday ? profile.streakDays + 1 : 1;
+
+    const updated: LearnerProfile = {
+      ...profile,
+      streakDays,
+      lastCompletedDate: today,
+      repsCompletedToday: 5,
+      lessonsCompleted: profile.lessonsCompleted + 1,
+    };
+    ProfileService.save(updated);
+    return updated;
+  },
 };
+

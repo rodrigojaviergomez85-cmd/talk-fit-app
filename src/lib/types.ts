@@ -159,4 +159,9 @@ export type LearnerProfile = {
   mistakes: MistakeEntry[];
   strongestSkill: string;
   priorities: string[];
+  /** Local date (YYYY-MM-DD) of the last day the 5 daily reps were completed. */
+  lastCompletedDate?: string;
+  /** Reps completed on `lastCompletedDate`. */
+  repsCompletedToday?: number;
 };
+
