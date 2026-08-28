@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useSpanishAll } from "./TranslatableText";
 
@@ -14,11 +14,20 @@ type RepSeriesRowProps = {
   reps: SeriesRep[];
   className?: string;
   onDelete?: (number: number) => void;
+  current?: number;
+  onSelect?: (number: number) => void;
 };
 
-export function RepSeriesRow({ total, reps, className, onDelete }: RepSeriesRowProps) {
+export function RepSeriesRow({ total, reps, className, onDelete, current, onSelect }: RepSeriesRowProps) {
   const showEs = useSpanishAll();
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [playingRep, setPlayingRep] = useState<number | null>(null);
+
+  const stop = () => {
+    audioRef.current?.pause();
+    audioRef.current = null;
+    setPlayingRep(null);
+  };
 
   useEffect(() => {
     return () => {
@@ -27,13 +36,22 @@ export function RepSeriesRow({ total, reps, className, onDelete }: RepSeriesRowP
     };
   }, []);
 
-  const play = (url?: string) => {
+  const toggle = (number: number, url?: string) => {
+    if (playingRep === number) {
+      stop();
+      return;
+    }
     if (!url) return;
     audioRef.current?.pause();
     const audio = new Audio(url);
     audioRef.current = audio;
-    void audio.play();
+    setPlayingRep(number);
+    audio.onended = () => setPlayingRep((p) => (p === number ? null : p));
+    audio.onerror = () => setPlayingRep((p) => (p === number ? null : p));
+    void audio.play().catch(() => setPlayingRep((p) => (p === number ? null : p)));
   };
+
+  const maxDone = reps.filter((r) => r.status === "done").reduce((m, r) => Math.max(m, r.number), 0);
 
   const rows = Array.from({ length: total }, (_, i) => {
     const found = reps.find((r) => r.number === i + 1);
@@ -42,8 +60,10 @@ export function RepSeriesRow({ total, reps, className, onDelete }: RepSeriesRowP
       duration: found?.duration ?? null,
       status: found?.status ?? "pending",
       url: found?.url,
+      selectable: i + 1 <= maxDone + 1,
     };
   });
+
 
   return (
     <div className={cn("overflow-x-auto", className)}>
