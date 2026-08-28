@@ -209,7 +209,7 @@ type RepBodyProps = {
   finalFocus: string;
   onNext: () => void;
   onRep7Recorded: (recording: Recording) => void;
-  onRep9Recorded: (recording: Recording, transcript: string) => void;
+  onRep9Recorded: (recording: Recording) => void;
   onRep10Recorded: (recording: Recording, transcript: string) => void;
 };
 
@@ -542,7 +542,6 @@ const SERIES_TOTAL = 5;
 function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyProps) {
   const [repNumber, setRepNumber] = useState(1);
   const [recording, setRecording] = useState<Recording | null>(rep9Recording);
-  const [transcript, setTranscript] = useState("");
   const [completedReps, setCompletedReps] = useState<SeriesRep[]>([]);
   const isLast = repNumber === SERIES_TOTAL;
 
@@ -550,7 +549,6 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
     repNumber > 1
       ? () => {
           setRecording(null);
-          setTranscript("");
           setRepNumber((n) => n - 1);
           return true;
         }
@@ -617,11 +615,9 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
           stopLabel="STOP"
           targetSeconds={[Math.min(lesson.goalSeconds[0], 30), Math.min(lesson.goalSeconds[1], 30)]}
           maxSeconds={30}
-          captureTranscript
 
-          onComplete={(rec, text) => {
+          onComplete={(rec) => {
             setRecording(rec);
-            setTranscript(text);
             markRep(repNumber, rec.durationSeconds, "done");
           }}
         />
@@ -644,16 +640,15 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
             type="button"
             onClick={() => {
               if (isLast) {
-                onRep9Recorded(recording, transcript);
+                onRep9Recorded(recording);
                 return;
               }
               setRecording(null);
-              setTranscript("");
               setRepNumber((n) => n + 1);
             }}
             className="w-full rounded-2xl bg-primary px-6 py-5 text-base font-extrabold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
           >
-            {isLast ? "GET MY FEEDBACK" : `NEXT REP (${repNumber + 1} / ${SERIES_TOTAL})`}
+            {isLast ? "GO TO FINAL REP" : `NEXT REP (${repNumber + 1} / ${SERIES_TOTAL})`}
           </button>
         </div>
       ) : null}
