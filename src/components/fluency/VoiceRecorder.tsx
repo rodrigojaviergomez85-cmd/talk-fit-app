@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Mic, Square } from "lucide-react";
-import { RecordingService, type ActiveRecording } from "@/services/recording-service";
+import { RecordingService, MicError, type ActiveRecording, type MicErrorKind } from "@/services/recording-service";
 import { SpeechToTextService } from "@/services/speech-to-text-service";
 import { WaveformPlayer } from "./WaveformPlayer";
+import { useSpanishAll } from "./TranslatableText";
 import type { Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,25 @@ type VoiceRecorderProps = {
   className?: string;
 };
 
+const MIC_ERRORS: Record<MicErrorKind, { en: string; es: string }> = {
+  permission: {
+    en: "Microphone access is blocked. Allow it in your browser settings and try again.",
+    es: "El micrófono está bloqueado. Permítelo en los ajustes del navegador e inténtalo otra vez.",
+  },
+  unsupported: {
+    en: "This browser can't record audio. Try Safari or Chrome.",
+    es: "Este navegador no puede grabar audio. Prueba con Safari o Chrome.",
+  },
+  insecure: {
+    en: "Recording needs a secure (https) page. Open the published app link.",
+    es: "Para grabar necesitas una página segura (https). Abre el enlace de la app publicada.",
+  },
+  unknown: {
+    en: "We couldn't start the microphone. Try again.",
+    es: "No pudimos iniciar el micrófono. Inténtalo otra vez.",
+  },
+};
+
 /** Large, unmistakable microphone control — the primary action of the app. */
 export function VoiceRecorder({
   label = "RECORD",
@@ -32,15 +52,15 @@ export function VoiceRecorder({
   onComplete,
   className,
 }: VoiceRecorderProps) {
-
+  const showEs = useSpanishAll();
   const [recording, setRecording] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const activeRef = useRef<ActiveRecording | null>(null);
   const stopListeningRef = useRef<(() => string) | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const stopRef = useRef<() => void>(() => undefined);
-
 
   useEffect(
     () => () => {
@@ -70,8 +90,10 @@ export function VoiceRecorder({
           }),
         1000,
       );
-    } catch {
-      setError("We need microphone access to record your voice.");
+    } catch (err) {
+      const kind: MicErrorKind = err instanceof MicError ? err.kind : "unknown";
+      const message = MIC_ERRORS[kind];
+      setError(showEs ? message.es : message.en);
     }
   };
 
@@ -81,6 +103,7 @@ export function VoiceRecorder({
     if (!activeRef.current && !recording) return;
     setRecording(false);
     const live = stopListeningRef.current?.() ?? "";
+    const hadLive = stopListeningRef.current !== null;
     stopListeningRef.current = null;
     const active = activeRef.current;
     activeRef.current = null;
@@ -93,6 +116,22 @@ export function VoiceRecorder({
     };
     if (active) result = await active.stop();
     let transcript = live.trim();
+
+    // iPhone (Safari and Chrome) has no live recognition: transcribe on the server.
+    if (captureTranscript && !hadLive && !transcript && result.blob) {
+      setAnalyzing(true);
+      const served = await SpeechToTextService.transcribeBlob(result.blob);
+      setAnalyzing(false);
+      transcript = served.transcript;
+      if (!transcript) {
+        setError(
+          showEs
+            ? "No pudimos escuchar bien tu audio. Tu grabación se guardó; inténtalo otra vez."
+            : "We couldn't hear your audio clearly. Your recording is saved — try again.",
+        );
+      }
+    }
+
     if (captureTranscript && !liveTranscriptOnly && transcript.split(/\s+/).filter(Boolean).length < 12) {
       transcript = (await SpeechToTextService.transcribe(0)).transcript;
     }
@@ -106,7 +145,6 @@ export function VoiceRecorder({
   const nearLimit = !!maxSeconds && recording && seconds >= maxSeconds - 5;
   const inTarget = targetSeconds && seconds >= targetSeconds[0] && seconds <= targetSeconds[1];
 
-
   return (
     <div className={cn("flex flex-col items-center gap-4", className)}>
       {recording ? <WaveformPlayer active /> : null}
@@ -114,17 +152,26 @@ export function VoiceRecorder({
       <button
         type="button"
         onClick={recording ? stop : start}
+        disabled={analyzing}
         className={cn(
           "flex size-28 flex-col items-center justify-center gap-1 rounded-full text-xs font-bold tracking-widest transition-transform active:scale-95",
           recording
             ? "bg-navy text-navy-foreground"
-            : "bg-primary text-primary-foreground shadow-[var(--shadow-lift)] animate-[var(--animate-pulse-ring)]",
+            : analyzing
+              ? "bg-secondary text-muted-foreground"
+              : "bg-primary text-primary-foreground shadow-[var(--shadow-lift)] animate-[var(--animate-pulse-ring)]",
         )}
         aria-label={recording ? stopLabel : label}
       >
         {recording ? <Square className="size-8 fill-current" /> : <Mic className="size-10" />}
-        <span>{recording ? stopLabel : label}</span>
+        <span>{recording ? stopLabel : analyzing ? (showEs ? "ANALIZANDO…" : "ANALYZING…") : label}</span>
       </button>
+
+      {analyzing ? (
+        <p className="text-center text-xs font-bold uppercase tracking-wider text-muted-foreground">
+          {showEs ? "Analizando tu audio…" : "Analyzing your audio…"}
+        </p>
+      ) : null}
 
       {showTimer ? (
         <div className="text-center">
@@ -146,7 +193,6 @@ export function VoiceRecorder({
               Target {targetSeconds[0]}–{targetSeconds[1]} seconds
             </p>
           ) : null}
-
         </div>
       ) : null}
 

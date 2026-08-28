@@ -13,7 +13,7 @@ const MOCK_TRANSCRIPTS = [
 
 export type TranscriptionResult = {
   transcript: string;
-  source: "browser" | "mock";
+  source: "browser" | "mock" | "server";
 };
 
 type RecognitionCtor = new () => {
@@ -71,6 +71,24 @@ export const SpeechToTextService = {
       }
       return full;
     };
+  },
+
+  /**
+   * Server transcription for browsers without live recognition (iPhone).
+   * Returns an empty transcript when it fails; never invents text.
+   */
+  async transcribeBlob(blob: Blob): Promise<TranscriptionResult> {
+    if (!blob || blob.size < 2048) return { transcript: "", source: "server" };
+    const form = new FormData();
+    form.append("file", blob, "recording");
+    try {
+      const response = await fetch("/api/transcribe", { method: "POST", body: form });
+      if (!response.ok) return { transcript: "", source: "server" };
+      const data = (await response.json()) as { text?: unknown };
+      return { transcript: typeof data.text === "string" ? data.text.trim() : "", source: "server" };
+    } catch {
+      return { transcript: "", source: "server" };
+    }
   },
 
   /** Fallback / offline transcription used by the prototype. */

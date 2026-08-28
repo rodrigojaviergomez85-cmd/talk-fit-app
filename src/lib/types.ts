@@ -57,6 +57,8 @@ export type Recording = {
   durationSeconds: number;
   createdAt: string;
   label: string;
+  /** Raw audio blob (session-scoped), used for server-side transcription. */
+  blob?: Blob | undefined;
 };
 
 export type GrammarIssue = {
