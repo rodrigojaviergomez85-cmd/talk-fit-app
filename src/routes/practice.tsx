@@ -585,7 +585,7 @@ function RepSeries({ lesson, rep9Recording, onRep9Recorded, backRef }: RepBodyPr
 
   return (
     <>
-      <Instruction text="Talk about YOUR life." sub={`${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds. 7–10 sentences.`} es="Habla de TU vida. Usa la lista de abajo como guía." />
+      <Instruction text="Talk about YOUR life." sub={`${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds. 7–10 sentences.`} es="Habla de TU vida. 7–10 oraciones." />
 
       <div className="mb-5 rounded-3xl bg-navy p-4 text-navy-foreground">
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
