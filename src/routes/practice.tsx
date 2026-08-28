@@ -7,9 +7,6 @@ import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { RecordingComparison } from "@/components/fluency/RecordingComparison";
 import { WaveformPlayer } from "@/components/fluency/WaveformPlayer";
-import { AIAnalysisCard } from "@/components/fluency/AIAnalysisCard";
-import { QuickFixCard } from "@/components/fluency/QuickFixCard";
-import { PronunciationCard } from "@/components/fluency/PronunciationCard";
 import { FluencyScore } from "@/components/fluency/FluencyScore";
 import { LessonService } from "@/services/lesson-service";
 import { AudioService } from "@/services/audio-service";
@@ -21,7 +18,7 @@ import { RepSeriesRow, type SeriesRep } from "@/components/fluency/RepSeriesRow"
 import { SpanishProvider, SpanishToggle, TranslatableText, useSpanishAll } from "@/components/fluency/TranslatableText";
 
 import { checkRepetition, type RepCheck } from "@/lib/pronunciation-check";
-import type { QuickFix, Recording, SpeechAnalysis } from "@/lib/types";
+import type { Recording, SpeechAnalysis } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 
@@ -43,8 +40,6 @@ export const Route = createFileRoute("/practice")({
 
 type Stage =
   | { kind: "rep"; index: number }
-  | { kind: "analysis" }
-  | { kind: "quickfix" }
   | { kind: "final-analysis" }
   | { kind: "summary" };
 
