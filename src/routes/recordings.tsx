@@ -22,19 +22,20 @@ export const Route = createFileRoute("/recordings")({
 
 function RecordingsPage() {
   const [state, setState] = useState<JourneyState>(emptyJourney);
-  const [urls, setUrls] = useState<Record<number, string>>({});
+  const [urls, setUrls] = useState<Record<string, string>>({});
 
   useEffect(() => {
     setState(JourneyService.load());
     void JourneyService.pull()
       .then(async (next) => {
         setState(next);
-        const resolved: Record<number, string> = {};
+        const resolved: Record<string, string> = {};
         for (const record of Object.values(next.days)) {
-          if (record.finalUrl) resolved[record.day] = record.finalUrl;
+          const key = JourneyService.recordKey(record.moduleId, record.day);
+          if (record.finalUrl) resolved[key] = record.finalUrl;
           else if (record.recordingPath) {
             const signed = await JourneyService.signedRecordingUrl(record.recordingPath);
-            if (signed) resolved[record.day] = signed;
+            if (signed) resolved[key] = signed;
           }
         }
         setUrls(resolved);
@@ -65,15 +66,15 @@ function RecordingsPage() {
         ) : null}
 
         {records.map((record) => (
-          <section key={record.day} className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+          <section key={`${record.moduleId}:${record.day}`} className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
             <div className="flex items-center justify-between">
               <p className="text-[15px] font-extrabold tracking-tight">
-                Day {record.day} · {CourseService.getDay(record.day).topic}
+                Day {record.day} · {CourseService.getDay(record.moduleId, record.day).topic}
               </p>
               <span className="text-[12px] font-bold text-muted-foreground">{record.finalSeconds}s</span>
             </div>
-            {urls[record.day] ? (
-              <RecordingPlayback url={urls[record.day] ?? null} label="LISTEN TO MY FINAL REP" />
+            {urls[JourneyService.recordKey(record.moduleId, record.day)] ? (
+              <RecordingPlayback url={urls[JourneyService.recordKey(record.moduleId, record.day)] ?? null} label="LISTEN TO MY FINAL REP" />
             ) : (
               <p className="text-[13px] text-muted-foreground">
                 Sign in to keep your recordings across devices.
