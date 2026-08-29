@@ -8,6 +8,7 @@
  */
 
 export type ModelVoice = "neutral" | "female" | "male";
+type AudioVoice = "female" | "male";
 
 export type SpeakOptions = {
   rate?: number;

@@ -7,6 +7,8 @@ type AudioPlayerProps = {
   text: string;
   label?: string;
   rate?: number;
+  /** Model voice: female or male character voice. */
+  voice?: "female" | "male";
   size?: "sm" | "md" | "lg";
   variant?: "primary" | "navy" | "ghost";
   onEnd?: () => void;
@@ -18,6 +20,7 @@ export function AudioPlayer({
   text,
   label = "LISTEN",
   rate = 1,
+  voice,
   size = "md",
   variant = "primary",
   onEnd,
