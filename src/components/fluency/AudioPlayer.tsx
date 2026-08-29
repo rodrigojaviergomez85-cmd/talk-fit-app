@@ -8,7 +8,7 @@ type AudioPlayerProps = {
   label?: string;
   rate?: number;
   /** Model voice: female or male character voice. */
-  voice?: "female" | "male";
+  voice?: "female" | "male" | undefined;
   size?: "sm" | "md" | "lg";
   variant?: "primary" | "navy" | "ghost";
   onEnd?: () => void;
