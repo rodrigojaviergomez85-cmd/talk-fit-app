@@ -63,6 +63,8 @@ export type CourseDay = {
   challenges?: Challenge[] | undefined;
   /** Optional non-Simple-Present speaking extension. */
   fluencyBonus?: { text: string; es: string } | undefined;
+  /** Optional model monologue for Rep 5 — how a complete answer should sound. */
+  modelExample?: { text: string; es: string } | undefined;
 };
 
 export type Recording = {
