@@ -390,7 +390,7 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
       <Instruction en="Read along with the model." es="Lee a la par del modelo." />
 
       <div className="flex gap-2">
-        {[0.5, 0.75].map((rate) => (
+        {[0.5, 0.75, 1.0].map((rate) => (
           <button
             key={rate}
             type="button"
@@ -404,6 +404,11 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
           </button>
         ))}
       </div>
+
+      <p className="text-center text-[12px] font-semibold leading-snug text-muted-foreground">
+        0.5× / 0.75× = slow · 1.0× = normal
+      </p>
+
 
       <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {day.lines.map((line) => (
