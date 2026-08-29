@@ -1,17 +1,18 @@
 import { Link } from "@tanstack/react-router";
 import { Check, Clock, Lock, Mic } from "lucide-react";
 import { TranslatableText } from "./TranslatableText";
-import type { CourseDay } from "@/lib/types";
+import type { CourseDay, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type Props = {
+  moduleId: ModuleId;
   day: CourseDay;
   completed: boolean;
   totalDays: number;
 };
 
 /** The one clear action on Home: start (or replay) today's day. */
-export function DailyPracticeCard({ day, completed, totalDays }: Props) {
+export function DailyPracticeCard({ moduleId, day, completed, totalDays }: Props) {
   return (
     <section className="rounded-3xl bg-card p-6 shadow-[var(--shadow-card)]">
       <div className="flex items-center justify-between">
@@ -41,7 +42,7 @@ export function DailyPracticeCard({ day, completed, totalDays }: Props) {
 
       <Link
         to="/practice"
-        search={{ day: day.day }}
+        search={{ day: day.day, module: moduleId }}
         className={cn(
           "mt-5 flex w-full items-center justify-center rounded-2xl px-6 py-4 text-[15px] font-bold tracking-wide transition-transform active:scale-[0.98]",
           completed
@@ -65,11 +66,13 @@ function Meta({ icon, text }: { icon: React.ReactNode; text: string }) {
 
 /** Compact row used by the 5-day journey map. */
 export function JourneyDayRow({
+  moduleId,
   day,
   completed,
   unlocked,
   current,
 }: {
+  moduleId: ModuleId;
   day: CourseDay;
   completed: boolean;
   unlocked: boolean;
@@ -102,7 +105,7 @@ export function JourneyDayRow({
 
   if (!unlocked) return content;
   return (
-    <Link to="/practice" search={{ day: day.day }} className="block">
+    <Link to="/practice" search={{ day: day.day, module: moduleId }} className="block">
       {content}
     </Link>
   );
