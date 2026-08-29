@@ -157,7 +157,7 @@ function PracticePage() {
         <main className="mx-auto w-full max-w-lg space-y-5 px-4 py-6">
           <SpanishToggle value={showEs} onChange={setShowEs} />
 
-          {stage === 0 ? <IntroStep day={day} onNext={goForward} /> : null}
+          {stage === 0 ? <IntroStep moduleId={moduleId} day={day} onNext={goForward} /> : null}
           {stage === 1 ? <Rep1Listen day={day} showEs={showEs} onNext={goForward} /> : null}
           {stage === 2 ? (
             <Rep2Copy
