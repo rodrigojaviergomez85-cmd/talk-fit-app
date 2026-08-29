@@ -311,6 +311,7 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
       <AudioPlayer
         text={CourseService.getModelText(day)}
         label="LISTEN TO THE MODEL"
+        voice={day.speakerVoice}
         size="lg"
         onEnd={() => setHeard(true)}
       />
@@ -373,7 +374,7 @@ function Rep2Copy({
         <LineCard line={line} chunked />
       </div>
 
-      <AudioPlayer text={line.text} label="LISTEN" rate={0.9} />
+      <AudioPlayer text={line.text} label="LISTEN" rate={0.9} voice={day.speakerVoice} />
 
       <VoiceRecorder label="RECORD" maxSeconds={20} showTimer onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
 
@@ -423,7 +424,7 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
         ))}
       </div>
 
-      <AudioPlayer text={CourseService.getModelText(day)} label="START SHADOWING" rate={speed} size="lg" />
+      <AudioPlayer text={CourseService.getModelText(day)} label="START SHADOWING" rate={speed} size="lg" voice={day.speakerVoice} />
 
       <VoiceRecorder label="RECORD ME" maxSeconds={60} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
       {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
@@ -490,7 +491,7 @@ function Rep4MakeItYours({
 
       {item.cues ? <CueRow cues={item.cues} /> : null}
 
-      <AudioPlayer text={item.question} label="HEAR THE QUESTION" variant="ghost" size="sm" />
+      <AudioPlayer text={item.question} label="HEAR THE QUESTION" variant="ghost" size="sm" voice={day.speakerVoice} />
 
       <VoiceRecorder label="ANSWER" maxSeconds={30} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
       {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
@@ -566,7 +567,7 @@ function Rep5FinalRep({
               Want to hear how it should sound?
             </p>
           </TranslatableText>
-          <AudioPlayer text={day.modelExample.text} label="LISTEN TO EXAMPLE" rate={1} variant="navy" />
+          <AudioPlayer text={day.modelExample.text} label="LISTEN TO EXAMPLE" rate={1} variant="navy" voice={day.speakerVoice} />
           <button
             type="button"
             onClick={() => setShowExampleText((v) => !v)}
