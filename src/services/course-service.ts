@@ -96,6 +96,10 @@ const day2: CourseDay = {
     { id: "d2-p7", question: "How would you finish?", questionEs: "¿Cómo terminarías?", starter: "Overall…", starterEs: "En general…" },
   ],
   cues: ["HE / SHE", "WORK", "USUALLY", "BECAUSE", "CONCLUSION"],
+  rep5Prompt: {
+    question: "Tell me about someone you know. What does he / she do every day?",
+    questionEs: "Háblame de alguien que conoces. ¿Qué hace él / ella todos los días?",
+  },
   modelExample: {
     text: "My sister works from home. She usually starts work around seven. She talks to customers every day. She likes her job because it is flexible. She sometimes works late because her team is busy. Overall, she really enjoys her routine.",
     es: "Mi hermana trabaja desde casa. Ella normalmente empieza a trabajar como a las siete. Habla con clientes todos los días. Le gusta su trabajo porque es flexible. A veces trabaja hasta tarde porque su equipo está ocupado. En general, disfruta mucho su rutina.",
