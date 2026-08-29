@@ -144,6 +144,10 @@ const day3: CourseDay = {
     { id: "d3-p7", question: "How would you finish?", questionEs: "¿Cómo terminarías?", starter: "Overall…", starterEs: "En general…" },
   ],
   cues: ["I DON'T", "WE DON'T", "HE / SHE DOESN'T", "BECAUSE", "CONCLUSION"],
+  rep5Prompt: {
+    question: "What do you do — and what don't you do?",
+    questionEs: "¿Qué haces — y qué no haces?",
+  },
   modelExample: {
     text: "I usually start work at eight. I don't start work late. We usually eat lunch together, but we don't eat at our desks because we like to take a break. My sister works from home, but she doesn't work on Fridays. Overall, we all have different routines.",
     es: "Normalmente empiezo a trabajar a las ocho. No empiezo a trabajar tarde. Normalmente almorzamos juntos, pero no comemos en nuestros escritorios porque nos gusta tomar un descanso. Mi hermana trabaja desde casa, pero no trabaja los viernes. En general, todos tenemos rutinas diferentes.",
