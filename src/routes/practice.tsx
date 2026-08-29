@@ -83,14 +83,18 @@ function PracticePage() {
     practiceSeconds.current += recording.durationSeconds;
   };
 
-  const finish = (final: Recording) => {
-    const first = attempts[0] ?? final;
+  const recorded = takes.filter((take): take is Recording => Boolean(take));
+
+  const finish = () => {
+    const final = (finalIndex !== null ? takes[finalIndex] : null) ?? recorded[recorded.length - 1];
+    if (!final) return;
+    const first = recorded[0] ?? final;
     const next = JourneyService.completeDay({
       day: day.day,
       finalSeconds: final.durationSeconds,
       firstSeconds: first.durationSeconds,
       practiceSeconds: Math.round(practiceSeconds.current),
-      recordingsCount: Math.max(1, attempts.length),
+      recordingsCount: Math.max(1, recorded.length),
       finalUrl: final.url,
       firstUrl: first.url,
     });
