@@ -48,7 +48,8 @@ function PracticePage() {
   const [stage, setStage] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [done, setDone] = useState(false);
-  const [attempts, setAttempts] = useState<Recording[]>([]);
+  const [takes, setTakes] = useState<(Recording | null)[]>(() => Array(TAKE_COUNT).fill(null));
+  const [finalIndex, setFinalIndex] = useState<number | null>(null);
   const [finalRecording, setFinalRecording] = useState<Recording | null>(null);
   const practiceSeconds = useRef(0);
 
