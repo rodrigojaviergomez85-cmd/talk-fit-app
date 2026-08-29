@@ -547,16 +547,28 @@ function Rep5FinalRep({
         </p>
       </TranslatableText>
 
-      <CueRow cues={day.cues} />
-
-      {day.fluencyBonus ? (
-        <div className="rounded-3xl border border-primary/25 bg-accent p-4">
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-accent-foreground">Bonus</p>
-          <TranslatableText es={day.fluencyBonus.es} className="mt-1">
-            <p className="text-[15px] font-semibold">{day.fluencyBonus.text}</p>
-          </TranslatableText>
-        </div>
-      ) : null}
+      <div className="rounded-3xl border border-primary/25 bg-accent p-4 space-y-3">
+        <TranslatableText es="Responde la pregunta:" align="center">
+          <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-accent-foreground">
+            Answer the question:
+          </p>
+        </TranslatableText>
+        <TranslatableText es={day.rep5Prompt.questionEs}>
+          <p className="text-[17px] font-extrabold leading-snug">{day.rep5Prompt.question}</p>
+        </TranslatableText>
+        <TranslatableText
+          es="Usa conectores como after, later y then. Si puedes, agrega un because."
+        >
+          <p className="text-[14px] leading-relaxed text-foreground">
+            Use connectors like <strong>after</strong>, <strong>later</strong> and <strong>then</strong>. If you can, add a <strong>because</strong>.
+          </p>
+        </TranslatableText>
+        <TranslatableText es="Meta: al menos 5–10 oraciones en 30 segundos o más.">
+          <p className="text-[14px] font-semibold text-foreground">
+            Goal: at least 5–10 sentences in 30 seconds or more.
+          </p>
+        </TranslatableText>
+      </div>
 
       <TakeBoard
         takes={takes}
