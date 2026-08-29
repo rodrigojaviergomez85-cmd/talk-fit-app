@@ -512,10 +512,34 @@ function Rep5FinalRep({
   const completed = takes.filter(Boolean).length;
   const requiredDone = completed >= REQUIRED_TAKES;
   const slotsLeft = takes.some((take) => !take);
+  const [showExampleText, setShowExampleText] = useState(false);
 
   return (
     <div className="space-y-5">
       <Instruction en="Record it. Listen. Try again." es="Grábalo. Escúchalo. Inténtalo otra vez." />
+
+      {day.modelExample ? (
+        <div className="space-y-3 rounded-3xl border border-border bg-card p-4">
+          <TranslatableText es="¿Quieres escuchar cómo debería sonar?" align="center">
+            <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+              Want to hear how it should sound?
+            </p>
+          </TranslatableText>
+          <AudioPlayer text={day.modelExample.text} label="LISTEN TO EXAMPLE" rate={1} variant="navy" />
+          <button
+            type="button"
+            onClick={() => setShowExampleText((v) => !v)}
+            className="w-full text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-primary"
+          >
+            {showExampleText ? "Hide example text" : "Show example text"}
+          </button>
+          {showExampleText ? (
+            <TranslatableText es={day.modelExample.es}>
+              <p className="text-[14px] leading-relaxed text-foreground">{day.modelExample.text}</p>
+            </TranslatableText>
+          ) : null}
+        </div>
+      ) : null}
 
       <TranslatableText es={`Meta: ${day.goalSeconds[0]}–${day.goalSeconds[1]} segundos por toma.`} align="center">
         <p className="text-center text-[13px] text-muted-foreground">
