@@ -168,9 +168,6 @@ export function TakeBoard({
                   maxSeconds={90}
                   onComplete={(rec) => onRecorded(index, rec)}
                 />
-                <p className="text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Target {goalSeconds[0]}–{goalSeconds[1]} sec
-                </p>
               </div>
             ) : (
               <p className="mt-3 text-[13px] text-muted-foreground">Ready to record</p>
