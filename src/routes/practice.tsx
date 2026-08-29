@@ -252,7 +252,7 @@ function IntroStep({ day, onNext }: { day: CourseDay; onNext: () => void }) {
 
 /* -------------------------------- Rep 1 ---------------------------------- */
 
-function Rep1Listen({ day, onNext }: { day: CourseDay; onNext: () => void }) {
+function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; onNext: () => void }) {
   const [heard, setHeard] = useState(false);
   const [showText, setShowText] = useState(false);
 
