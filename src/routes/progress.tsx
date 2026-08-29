@@ -29,23 +29,27 @@ function ProgressPage() {
     void JourneyService.pull().then(setState).catch(() => undefined);
   }, []);
 
-  const days = CourseService.getDays();
+  const modules = CourseService.modules();
   const completedCount = JourneyService.completedCount(state);
+  const totalDays = modules.reduce((sum, m) => sum + m.days.length, 0);
 
   return (
     <AppShell title="My Progress">
       <div className="space-y-5">
         <div className="grid grid-cols-2 gap-3">
-          <Stat icon={<Check className="size-4 text-primary" />} label="Days completed" value={`${completedCount} / ${CourseService.totalDays}`} />
+          <Stat icon={<Check className="size-4 text-primary" />} label="Days completed" value={`${completedCount} / ${totalDays}`} />
           <Stat icon={<Mic className="size-4 text-primary" />} label="Total reps" value={`${state.totalRepsCompleted}`} />
           <Stat icon={<Timer className="size-4 text-primary" />} label="Minutes this week" value={`${JourneyService.speakingMinutesThisWeek(state)}`} />
           <Stat icon={<Flame className="size-4 text-primary" />} label="Streak" value={`${state.streakDays}`} />
         </div>
 
-        <section className="space-y-2">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Journey map</h2>
-          {days.map((day) => {
-            const record = state.days[day.day];
+        {modules.map((module) => (
+        <section key={module.id} className="space-y-2">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+            {module.title} · {JourneyService.completedCount(state, module.id)} / {module.days.length} days
+          </h2>
+          {module.days.map((day) => {
+            const record = JourneyService.getRecord(state, module.id, day.day);
             return (
               <div
                 key={day.day}
@@ -67,6 +71,7 @@ function ProgressPage() {
             );
           })}
         </section>
+        ))}
 
         {state.selfAssessment ? (
           <div className="rounded-3xl border border-primary/25 bg-accent p-5">

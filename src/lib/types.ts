@@ -23,7 +23,10 @@ export type PersonalPrompt = {
   questionEs: string;
   starter: string;
   starterEs: string;
+  /** Short visual cue shown above the question (e.g. NAME, AGE). */
+  cue?: string | undefined;
 };
+
 
 /** Step 0 — very short grammar intro. */
 export type DayIntro = {
@@ -47,8 +50,15 @@ export type Challenge = {
   cues: string[];
 };
 
+/** Learning module identifier. */
+export type ModuleId = "basic-zero" | "simple-present";
+
 export type CourseDay = {
   day: number;
+  /** Week number inside the module (Basic Zero only). */
+  week?: 1 | 2 | 3 | 4 | undefined;
+  weekTitle?: string | undefined;
+  weekTitleEs?: string | undefined;
   focus: string;
   focusEs: string;
   topic: string;
@@ -63,9 +73,12 @@ export type CourseDay = {
   challenges?: Challenge[] | undefined;
   /** Rep 5 main question the learner answers with their free talk. */
   rep5Prompt: { question: string; questionEs: string };
+  /** Short bilingual guidance shown with the Rep 5 question. */
+  rep5Tips?: { en: string; es: string } | undefined;
   /** Optional model monologue for Rep 5 — how a complete answer should sound. */
   modelExample?: { text: string; es: string } | undefined;
 };
+
 
 export type Recording = {
   id: string;
@@ -87,6 +100,8 @@ export type SelfAssessment = "not-yet" | "a-little" | "definitely";
 /** Objective record of one completed day. */
 export type DayRecord = {
   day: number;
+  /** Module the day belongs to. */
+  moduleId: ModuleId;
   /** Local YYYY-MM-DD key of completion. */
   dayKey: string;
   completedAt: string;
@@ -98,6 +113,8 @@ export type DayRecord = {
   practiceSeconds: number;
   /** Number of full recordings made in Rep 5. */
   recordingsCount: number;
+  /** Estimated complete spoken ideas in the final recording. */
+  sentenceCount?: number | null | undefined;
   /** Session-scoped object URL of the final recording. */
   finalUrl?: string | null | undefined;
   /** Session-scoped object URL of attempt 1. */
@@ -108,8 +125,9 @@ export type DayRecord = {
 };
 
 export type JourneyState = {
-  /** Completed days, keyed by day number. */
-  days: Record<number, DayRecord>;
+  /** Completed days, keyed by `${moduleId}:${day}`. */
+  days: Record<string, DayRecord>;
+
   streakDays: number;
   /** Local YYYY-MM-DD key of the last completed day. */
   lastCompletedDate?: string | undefined;

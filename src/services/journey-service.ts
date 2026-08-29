@@ -1,14 +1,15 @@
 import { supabase } from "@/integrations/supabase/client";
-import type { DayRecord, JourneyState, SelfAssessment } from "@/lib/types";
+import type { DayRecord, JourneyState, ModuleId, SelfAssessment } from "@/lib/types";
 import { CourseService } from "./course-service";
 
 /**
- * JourneyService — progress for the 5-day Simple Present journey.
+ * JourneyService — progress across learning modules (Basic Zero, Simple Present).
  * Local-first (works offline and signed out); mirrors to Lovable Cloud when a
  * student is signed in, so final recordings survive across devices.
  */
 
-const STORAGE_KEY = "fluency-reps:journey:v1";
+const STORAGE_KEY = "fluency-reps:journey:v2";
+const LEGACY_KEY = "fluency-reps:journey:v1";
 
 export const emptyJourney: JourneyState = {
   days: {},
@@ -18,6 +19,11 @@ export const emptyJourney: JourneyState = {
   weekSeconds: {},
 };
 
+/** Storage key for one module day. */
+export function recordKey(moduleId: ModuleId, day: number): string {
+  return `${moduleId}:${day}`;
+}
+
 function dayKey(date = new Date()): string {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, "0");
@@ -25,12 +31,26 @@ function dayKey(date = new Date()): string {
   return `${y}-${m}-${d}`;
 }
 
+/** v1 stored days keyed by number and had no moduleId — those were Simple Present. */
+function migrate(state: JourneyState): JourneyState {
+  const days: Record<string, DayRecord> = {};
+  for (const [key, record] of Object.entries(state.days)) {
+    if (key.includes(":")) {
+      days[key] = record;
+      continue;
+    }
+    const day = Number(key);
+    days[recordKey("simple-present", day)] = { ...record, moduleId: "simple-present", day };
+  }
+  return { ...state, days };
+}
+
 function read(): JourneyState {
   if (typeof window === "undefined") return emptyJourney;
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const raw = window.localStorage.getItem(STORAGE_KEY) ?? window.localStorage.getItem(LEGACY_KEY);
     if (!raw) return emptyJourney;
-    return { ...emptyJourney, ...(JSON.parse(raw) as Partial<JourneyState>) };
+    return migrate({ ...emptyJourney, ...(JSON.parse(raw) as Partial<JourneyState>) });
   } catch {
     return emptyJourney;
   }
@@ -40,9 +60,9 @@ function write(state: JourneyState) {
   if (typeof window === "undefined") return;
   try {
     // Object URLs are session-scoped: never persist them.
-    const days: Record<number, DayRecord> = {};
+    const days: Record<string, DayRecord> = {};
     for (const [key, record] of Object.entries(state.days)) {
-      days[Number(key)] = { ...record, finalUrl: null, firstUrl: null };
+      days[key] = { ...record, finalUrl: null, firstUrl: null };
     }
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...state, days }));
   } catch {
@@ -51,16 +71,17 @@ function write(state: JourneyState) {
 }
 
 /** Session-scoped playback URLs, kept out of localStorage. */
-const sessionUrls = new Map<number, { finalUrl: string | null; firstUrl: string | null }>();
+const sessionUrls = new Map<string, { finalUrl: string | null; firstUrl: string | null }>();
 
 export const JourneyService = {
   dayKey,
+  recordKey,
 
   load(): JourneyState {
     const state = read();
-    for (const [day, urls] of sessionUrls) {
-      const record = state.days[day];
-      if (record) state.days[day] = { ...record, ...urls };
+    for (const [key, urls] of sessionUrls) {
+      const record = state.days[key];
+      if (record) state.days[key] = { ...record, ...urls };
     }
     return state;
   },
@@ -69,28 +90,49 @@ export const JourneyService = {
     write(state);
   },
 
+  getRecord(state: JourneyState, moduleId: ModuleId, day: number): DayRecord | undefined {
+    return state.days[recordKey(moduleId, day)];
+  },
+
+  moduleRecords(state: JourneyState, moduleId: ModuleId): DayRecord[] {
+    return Object.values(state.days)
+      .filter((record) => record.moduleId === moduleId)
+      .sort((a, b) => a.day - b.day);
+  },
+
   /** The day the learner should practice next (sequential unlock, no waiting). */
-  currentDay(state: JourneyState): number {
-    for (let day = 1; day <= CourseService.totalDays; day += 1) {
-      if (!state.days[day]) return day;
+  currentDay(state: JourneyState, moduleId: ModuleId): number {
+    const total = CourseService.totalDays(moduleId);
+    for (let day = 1; day <= total; day += 1) {
+      if (!state.days[recordKey(moduleId, day)]) return day;
     }
-    return CourseService.totalDays;
+    return total;
   },
 
-  isDayCompleted(state: JourneyState, day: number): boolean {
-    return Boolean(state.days[day]);
+  isDayCompleted(state: JourneyState, moduleId: ModuleId, day: number): boolean {
+    return Boolean(state.days[recordKey(moduleId, day)]);
   },
 
-  isDayUnlocked(state: JourneyState, day: number): boolean {
-    return day === 1 || Boolean(state.days[day - 1]) || Boolean(state.days[day]);
+  isDayUnlocked(state: JourneyState, moduleId: ModuleId, day: number): boolean {
+    return (
+      day === 1 ||
+      Boolean(state.days[recordKey(moduleId, day - 1)]) ||
+      Boolean(state.days[recordKey(moduleId, day)])
+    );
   },
 
-  journeyComplete(state: JourneyState): boolean {
-    return Object.keys(state.days).length >= CourseService.totalDays;
+  moduleComplete(state: JourneyState, moduleId: ModuleId): boolean {
+    return JourneyService.completedCount(state, moduleId) >= CourseService.totalDays(moduleId);
   },
 
-  completedCount(state: JourneyState): number {
-    return Object.keys(state.days).length;
+  completedCount(state: JourneyState, moduleId?: ModuleId): number {
+    if (!moduleId) return Object.keys(state.days).length;
+    return JourneyService.moduleRecords(state, moduleId).length;
+  },
+
+  /** Total recorded speaking seconds inside one module. */
+  moduleSeconds(state: JourneyState, moduleId: ModuleId): number {
+    return JourneyService.moduleRecords(state, moduleId).reduce((total, r) => total + r.practiceSeconds, 0);
   },
 
   /** Speaking minutes recorded in the last 7 local days. */
@@ -109,23 +151,24 @@ export const JourneyService = {
   },
 
   /**
-   * Saves a finished day. Idempotent per day: re-completing the same day
+   * Saves a finished day. Idempotent per module day: re-completing the same day
    * updates its recording without inflating the streak or the totals.
    */
-  completeDay(
-    input: {
-      day: number;
-      finalSeconds: number;
-      firstSeconds: number;
-      practiceSeconds: number;
-      recordingsCount: number;
-      finalUrl?: string | null;
-      firstUrl?: string | null;
-    },
-  ): JourneyState {
+  completeDay(input: {
+    moduleId: ModuleId;
+    day: number;
+    finalSeconds: number;
+    firstSeconds: number;
+    practiceSeconds: number;
+    recordingsCount: number;
+    sentenceCount?: number | null;
+    finalUrl?: string | null;
+    firstUrl?: string | null;
+  }): JourneyState {
     const state = read();
     const today = dayKey();
-    const existing = state.days[input.day];
+    const key = recordKey(input.moduleId, input.day);
+    const existing = state.days[key];
 
     let streakDays = state.streakDays;
     if (!existing) {
@@ -137,52 +180,60 @@ export const JourneyService = {
 
     const record: DayRecord = {
       day: input.day,
+      moduleId: input.moduleId,
       dayKey: existing?.dayKey ?? today,
       completedAt: new Date().toISOString(),
       finalSeconds: input.finalSeconds,
       firstSeconds: input.firstSeconds,
       practiceSeconds: input.practiceSeconds,
       recordingsCount: input.recordingsCount,
+      sentenceCount: input.sentenceCount ?? null,
       finalUrl: input.finalUrl ?? null,
       firstUrl: input.firstUrl ?? null,
       ...(existing?.recordingPath ? { recordingPath: existing.recordingPath } : {}),
       ...(existing?.selfAssessment ? { selfAssessment: existing.selfAssessment } : {}),
     };
 
-    sessionUrls.set(input.day, { finalUrl: input.finalUrl ?? null, firstUrl: input.firstUrl ?? null });
+    sessionUrls.set(key, { finalUrl: input.finalUrl ?? null, firstUrl: input.firstUrl ?? null });
 
     const weekSeconds = { ...state.weekSeconds };
     if (!existing) weekSeconds[today] = (weekSeconds[today] ?? 0) + input.practiceSeconds;
 
     const next: JourneyState = {
       ...state,
-      days: { ...state.days, [input.day]: record },
+      days: { ...state.days, [key]: record },
       streakDays,
       lastCompletedDate: existing ? state.lastCompletedDate : today,
       totalRepsCompleted: existing ? state.totalRepsCompleted : state.totalRepsCompleted + 5,
-      totalSpeakingSeconds: existing ? state.totalSpeakingSeconds : state.totalSpeakingSeconds + input.practiceSeconds,
+      totalSpeakingSeconds: existing
+        ? state.totalSpeakingSeconds
+        : state.totalSpeakingSeconds + input.practiceSeconds,
       weekSeconds,
     };
     write(next);
     return next;
   },
 
-  saveSelfAssessment(answer: SelfAssessment): JourneyState {
+  saveSelfAssessment(moduleId: ModuleId, answer: SelfAssessment): JourneyState {
     const state = read();
-    const last = CourseService.totalDays;
-    const record = state.days[last];
+    const last = CourseService.totalDays(moduleId);
+    const key = recordKey(moduleId, last);
+    const record = state.days[key];
     const next: JourneyState = {
       ...state,
       selfAssessment: answer,
-      days: record ? { ...state.days, [last]: { ...record, selfAssessment: answer } } : state.days,
+      days: record ? { ...state.days, [key]: { ...record, selfAssessment: answer } } : state.days,
     };
     write(next);
-    void JourneyService.syncDay(last, next).catch(() => undefined);
+    void JourneyService.syncDay(moduleId, last, next).catch(() => undefined);
     return next;
   },
 
   reset(): JourneyState {
-    if (typeof window !== "undefined") window.localStorage.removeItem(STORAGE_KEY);
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem(STORAGE_KEY);
+      window.localStorage.removeItem(LEGACY_KEY);
+    }
     sessionUrls.clear();
     return emptyJourney;
   },
@@ -190,16 +241,17 @@ export const JourneyService = {
   /* ------------------------------ Cloud sync ------------------------------ */
 
   /** Uploads the final recording and upserts the day row (signed-in only). */
-  async syncDay(day: number, state: JourneyState, blob?: Blob | null): Promise<void> {
+  async syncDay(moduleId: ModuleId, day: number, state: JourneyState, blob?: Blob | null): Promise<void> {
     const { data } = await supabase.auth.getUser();
     const user = data.user;
-    const record = state.days[day];
+    const key = recordKey(moduleId, day);
+    const record = state.days[key];
     if (!user || !record) return;
 
     let recordingPath = record.recordingPath ?? null;
     if (blob) {
       const extension = blob.type.includes("mp4") ? "m4a" : blob.type.includes("webm") ? "webm" : "audio";
-      const path = `${user.id}/day-${day}.${extension}`;
+      const path = `${user.id}/${moduleId}-day-${day}.${extension}`;
       const upload = await supabase.storage
         .from("recordings")
         .upload(path, blob, { upsert: true, contentType: blob.type || "audio/webm" });
@@ -209,23 +261,25 @@ export const JourneyService = {
     await supabase.from("day_progress").upsert(
       {
         user_id: user.id,
+        module_id: moduleId,
         day,
         local_day_key: record.dayKey,
         completed_at: record.completedAt,
         final_seconds: Math.round(record.finalSeconds),
         practice_seconds: Math.round(record.practiceSeconds),
         recordings_count: record.recordingsCount,
+        sentence_count: record.sentenceCount ?? null,
         recording_path: recordingPath,
         self_assessment: record.selfAssessment ?? null,
       },
-      { onConflict: "user_id,day" },
+      { onConflict: "user_id,module_id,day" },
     );
 
     if (recordingPath && recordingPath !== record.recordingPath) {
       const current = read();
-      const stored = current.days[day];
+      const stored = current.days[key];
       if (stored) {
-        write({ ...current, days: { ...current.days, [day]: { ...stored, recordingPath } } });
+        write({ ...current, days: { ...current.days, [key]: { ...stored, recordingPath } } });
       }
     }
   },
@@ -239,22 +293,28 @@ export const JourneyService = {
 
     const { data: rows } = await supabase
       .from("day_progress")
-      .select("day, completed_at, local_day_key, final_seconds, practice_seconds, recordings_count, recording_path, self_assessment")
+      .select(
+        "day, module_id, completed_at, local_day_key, final_seconds, practice_seconds, recordings_count, sentence_count, recording_path, self_assessment",
+      )
       .order("day");
     if (!rows) return local;
 
     const days = { ...local.days };
     let totalSeconds = local.totalSpeakingSeconds;
     for (const row of rows) {
-      if (days[row.day]) continue;
-      days[row.day] = {
+      const moduleId: ModuleId = row.module_id === "basic-zero" ? "basic-zero" : "simple-present";
+      const key = recordKey(moduleId, row.day);
+      if (days[key]) continue;
+      days[key] = {
         day: row.day,
+        moduleId,
         dayKey: row.local_day_key ?? dayKey(new Date(row.completed_at)),
         completedAt: row.completed_at,
         finalSeconds: row.final_seconds,
         firstSeconds: 0,
         practiceSeconds: row.practice_seconds,
         recordingsCount: row.recordings_count,
+        sentenceCount: row.sentence_count ?? null,
         finalUrl: null,
         firstUrl: null,
         recordingPath: row.recording_path,
