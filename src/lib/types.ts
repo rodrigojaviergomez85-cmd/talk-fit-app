@@ -61,8 +61,8 @@ export type CourseDay = {
   prompts: PersonalPrompt[];
   cues: string[];
   challenges?: Challenge[] | undefined;
-  /** Optional non-Simple-Present speaking extension. */
-  fluencyBonus?: { text: string; es: string } | undefined;
+  /** Rep 5 main question the learner answers with their free talk. */
+  rep5Prompt: { question: string; questionEs: string };
   /** Optional model monologue for Rep 5 — how a complete answer should sound. */
   modelExample?: { text: string; es: string } | undefined;
 };

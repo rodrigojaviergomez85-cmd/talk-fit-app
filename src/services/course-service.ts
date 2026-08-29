@@ -51,7 +51,10 @@ const day1: CourseDay = {
     { id: "d1-p8", question: "What do you like about your routine? Why?", questionEs: "¿Qué te gusta de tu rutina? ¿Por qué?", starter: "I like ______ because…", starterEs: "Me gusta ______ porque…" },
   ],
   cues: ["ROUTINE", "WORK", "WE / THEY", "BECAUSE", "CONCLUSION"],
-  fluencyBonus: { text: "Tomorrow I'm going to start a little earlier.", es: "Mañana voy a empezar un poco más temprano." },
+  rep5Prompt: {
+    question: "What is your daily routine? / What do you do every day?",
+    questionEs: "¿Cuál es tu rutina diaria? / ¿Qué haces todos los días?",
+  },
   modelExample: {
     text: "I usually wake up around six thirty. I have breakfast at home before I start work. I start work at eight and I talk to customers every day. My coworkers and I usually have lunch together. We sometimes have very busy mornings. I like my job because I learn something new every week. Overall, I really enjoy my routine.",
     es: "Normalmente me levanto como a las seis y media. Desayuno en casa antes de empezar a trabajar. Empiezo a trabajar a las ocho y hablo con clientes todos los días. Mis compañeros y yo normalmente almorzamos juntos. A veces tenemos mañanas muy ocupadas. Me gusta mi trabajo porque aprendo algo nuevo cada semana. En general, disfruto mucho mi rutina.",
@@ -96,6 +99,10 @@ const day2: CourseDay = {
     { id: "d2-p7", question: "How would you finish?", questionEs: "¿Cómo terminarías?", starter: "Overall…", starterEs: "En general…" },
   ],
   cues: ["HE / SHE", "WORK", "USUALLY", "BECAUSE", "CONCLUSION"],
+  rep5Prompt: {
+    question: "Tell me about someone you know. What does he / she do every day?",
+    questionEs: "Háblame de alguien que conoces. ¿Qué hace él / ella todos los días?",
+  },
   modelExample: {
     text: "My sister works from home. She usually starts work around seven. She talks to customers every day. She likes her job because it is flexible. She sometimes works late because her team is busy. Overall, she really enjoys her routine.",
     es: "Mi hermana trabaja desde casa. Ella normalmente empieza a trabajar como a las siete. Habla con clientes todos los días. Le gusta su trabajo porque es flexible. A veces trabaja hasta tarde porque su equipo está ocupado. En general, disfruta mucho su rutina.",
@@ -140,6 +147,10 @@ const day3: CourseDay = {
     { id: "d3-p7", question: "How would you finish?", questionEs: "¿Cómo terminarías?", starter: "Overall…", starterEs: "En general…" },
   ],
   cues: ["I DON'T", "WE DON'T", "HE / SHE DOESN'T", "BECAUSE", "CONCLUSION"],
+  rep5Prompt: {
+    question: "What do you do — and what don't you do?",
+    questionEs: "¿Qué haces — y qué no haces?",
+  },
   modelExample: {
     text: "I usually start work at eight. I don't start work late. We usually eat lunch together, but we don't eat at our desks because we like to take a break. My sister works from home, but she doesn't work on Fridays. Overall, we all have different routines.",
     es: "Normalmente empiezo a trabajar a las ocho. No empiezo a trabajar tarde. Normalmente almorzamos juntos, pero no comemos en nuestros escritorios porque nos gusta tomar un descanso. Mi hermana trabaja desde casa, pero no trabaja los viernes. En general, todos tenemos rutinas diferentes.",
