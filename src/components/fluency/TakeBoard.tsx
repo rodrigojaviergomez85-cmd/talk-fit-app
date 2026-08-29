@@ -7,6 +7,9 @@ import { cn } from "@/lib/utils";
 
 export const TAKE_COUNT = 5;
 export const REQUIRED_TAKES = 3;
+/** Daily objective for every take. */
+export const GOAL_SECONDS = 30;
+export const GOAL_SENTENCES = 5;
 
 type TakeBoardProps = {
   takes: (Recording | null)[];
