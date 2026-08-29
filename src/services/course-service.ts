@@ -202,6 +202,10 @@ const day4: CourseDay = {
     { id: "d4-p6", question: "ASK A QUESTION USING DOES", questionEs: "HAZ UNA PREGUNTA CON DOES", starter: "Does he / she…?", starterEs: "¿Él / Ella…?" },
   ],
   cues: ["DO YOU…?", "DOES HE / SHE…?", "YES, I DO", "NO, HE DOESN'T", "BECAUSE"],
+  rep5Prompt: {
+    question: "What do you do every day? Ask and answer your own questions.",
+    questionEs: "¿Qué haces todos los días? Pregúntate y respóndete.",
+  },
   modelExample: {
     text: "Do I work on Saturdays? No, I don't. I usually rest on Saturdays. Where do I work? I work at a call center. What time do I start? I usually start at eight. Do I like my job? Yes, I do, because I learn new things. Does my sister work from home? Yes, she does. She works from home three days a week.",
     es: "¿Trabajo los sábados? No. Normalmente descanso los sábados. ¿Dónde trabajo? Trabajo en un call center. ¿A qué hora empiezo? Normalmente empiezo a las ocho. ¿Me gusta mi trabajo? Sí, porque aprendo cosas nuevas. ¿Mi hermana trabaja desde casa? Sí. Trabaja desde casa tres días a la semana.",
@@ -247,6 +251,10 @@ const day5: CourseDay = {
     { id: "d5-p6", question: "Ask a question with DOES.", questionEs: "Haz una pregunta con DOES.", starter: "Does he / she…?", starterEs: "¿Él / Ella…?" },
   ],
   cues: ["ROUTINE", "HE / SHE", "DON'T / DOESN'T", "DO / DOES?", "BECAUSE"],
+  rep5Prompt: {
+    question: "What is your daily routine? / What do you do every day?",
+    questionEs: "¿Cuál es tu rutina diaria? / ¿Qué haces todos los días?",
+  },
   challenges: [
     {
       id: "c1",
@@ -273,7 +281,7 @@ const day5: CourseDay = {
       cues: ["DO YOU…?", "DOES HE…?", "YES, I DO", "NO, SHE DOESN'T"],
     },
   ],
-  fluencyBonus: { text: "Tomorrow I'm going to start a little earlier.", es: "Mañana voy a empezar un poco más temprano." },
+  
   modelExample: {
     text: "I usually start my day early. We don't have the same schedule every day. My manager works from home twice a week. She usually starts before the rest of the team. My brother doesn't work on Saturdays. I like my routine because it keeps me busy. Overall, our routines are different, but they work well for us.",
     es: "Normalmente empiezo mi día temprano. No tenemos el mismo horario todos los días. Mi jefa trabaja desde casa dos veces por semana. Ella normalmente empieza antes que el resto del equipo. Mi hermano no trabaja los sábados. Me gusta mi rutina porque me mantiene ocupado. En general, nuestras rutinas son diferentes, pero nos funcionan bien.",
