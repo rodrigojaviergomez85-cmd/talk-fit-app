@@ -539,13 +539,19 @@ function Rep5FinalRep({
         <TranslatableText es={day.rep5Prompt.questionEs}>
           <p className="text-[17px] font-extrabold leading-snug">{day.rep5Prompt.question}</p>
         </TranslatableText>
-        <TranslatableText
-          es="Usa conectores como after, later y then. Si puedes, agrega un because."
-        >
-          <p className="text-[14px] leading-relaxed text-foreground">
-            Use connectors like <strong>after</strong>, <strong>later</strong> and <strong>then</strong>. If you can, add a <strong>because</strong>.
-          </p>
-        </TranslatableText>
+        {day.rep5Tips ? (
+          <TranslatableText es={day.rep5Tips.es}>
+            <p className="text-[14px] leading-relaxed text-foreground">{day.rep5Tips.en}</p>
+          </TranslatableText>
+        ) : (
+          <TranslatableText
+            es="Usa conectores como after, later y then. Si puedes, agrega un because."
+          >
+            <p className="text-[14px] leading-relaxed text-foreground">
+              Use connectors like <strong>after</strong>, <strong>later</strong> and <strong>then</strong>. If you can, add a <strong>because</strong>.
+            </p>
+          </TranslatableText>
+        )}
         <TranslatableText es="Meta: al menos 5–10 oraciones en 30 segundos o más.">
           <p className="text-[14px] font-semibold text-foreground">
             Goal: at least 5–10 sentences in 30 seconds or more.
