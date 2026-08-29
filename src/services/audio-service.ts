@@ -101,7 +101,7 @@ export const AudioService = {
     let stopFallback: (() => void) | null = null;
     let element: HTMLAudioElement | null = null;
 
-    void loadModelAudio(text)
+    void loadModelAudio(text, options.voice === "female" || options.voice === "male" ? options.voice : undefined)
       .then((url) => {
         if (cancelled) return;
         const audio = new Audio(url);

@@ -40,6 +40,7 @@ export function AudioPlayer({
     }
     stopRef.current = AudioService.speak(text, {
       rate,
+      voice,
       onStart: () => setPlaying(true),
       onEnd: () => {
         setPlaying(false);
