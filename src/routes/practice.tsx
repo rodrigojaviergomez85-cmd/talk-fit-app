@@ -40,6 +40,22 @@ const REP_TITLES = [
   { en: "REP 5 OF 5 · YOUR TURN", es: "REP 5 DE 5 · TU TURNO" },
 ];
 
+/** Estimated complete spoken ideas for one take. Returns null when unavailable. */
+async function countSentences(blob: Blob | null): Promise<number | null> {
+  if (!blob || blob.size < 2048) return null;
+  try {
+    const form = new FormData();
+    form.append("file", blob, "take");
+    const res = await fetch("/api/sentence-count", { method: "POST", body: form });
+    if (!res.ok) return null;
+    const body = (await res.json()) as { sentences?: unknown };
+    return typeof body.sentences === "number" ? body.sentences : null;
+  } catch {
+    return null;
+  }
+}
+
+
 function PracticePage() {
   const { day: dayNumber } = Route.useSearch();
   const navigate = useNavigate();
