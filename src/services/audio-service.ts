@@ -12,7 +12,7 @@ type AudioVoice = "female" | "male";
 
 export type SpeakOptions = {
   rate?: number;
-  voice?: ModelVoice;
+  voice?: ModelVoice | undefined;
   onStart?: () => void;
   onEnd?: () => void;
   onBoundary?: (charIndex: number) => void;
