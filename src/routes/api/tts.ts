@@ -18,8 +18,11 @@ export const Route = createFileRoute("/api/tts")({
         }
 
         let text = "";
+        let voice = "alloy";
         try {
-          const body = (await request.json()) as { text?: unknown };
+          const body = (await request.json()) as { text?: unknown; voice?: unknown };
+          if (body.voice === "female") voice = "nova";
+          else if (body.voice === "male") voice = "onyx";
           text = typeof body.text === "string" ? body.text.trim() : "";
         } catch {
           text = "";
