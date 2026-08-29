@@ -37,7 +37,7 @@ export function DayCompleteScreen({ day, finalRecording, firstRecording, showEs 
     <div className="min-h-screen bg-background px-4 pb-16 pt-[max(2rem,env(safe-area-inset-top))]">
       <div className="mx-auto w-full max-w-lg space-y-5">
         <div className="rounded-3xl bg-navy p-7 text-center text-navy-foreground">
-          <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground animate-[var(--animate-pop-check)]">
+          <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground animate-pop-check">
             <Check className="size-9" />
           </div>
           <h1 className="mt-4 text-3xl font-extrabold tracking-tight">
