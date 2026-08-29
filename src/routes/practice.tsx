@@ -129,7 +129,7 @@ function PracticePage() {
           <SpanishToggle value={showEs} onChange={setShowEs} />
 
           {stage === 0 ? <IntroStep day={day} onNext={goForward} /> : null}
-          {stage === 1 ? <Rep1Listen day={day} onNext={goForward} /> : null}
+          {stage === 1 ? <Rep1Listen day={day} showEs={showEs} onNext={goForward} /> : null}
           {stage === 2 ? (
             <Rep2Copy
               day={day}
@@ -252,7 +252,7 @@ function IntroStep({ day, onNext }: { day: CourseDay; onNext: () => void }) {
 
 /* -------------------------------- Rep 1 ---------------------------------- */
 
-function Rep1Listen({ day, onNext }: { day: CourseDay; onNext: () => void }) {
+function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; onNext: () => void }) {
   const [heard, setHeard] = useState(false);
   const [showText, setShowText] = useState(false);
 
@@ -283,8 +283,14 @@ function Rep1Listen({ day, onNext }: { day: CourseDay; onNext: () => void }) {
         </div>
       ) : null}
 
-      <PrimaryButton onClick={onNext} disabled={!heard}>
-        {heard ? "NEXT REP" : "LISTEN FIRST"} <ArrowRight className="size-5" />
+      <PrimaryButton
+        onClick={() => {
+          if (!heard) AudioService.stop();
+          onNext();
+        }}
+      >
+        {showEs ? (heard ? "SIGUIENTE REP" : "SALTAR") : heard ? "NEXT REP" : "SKIP"}{" "}
+        <ArrowRight className="size-5" />
       </PrimaryButton>
     </div>
   );
