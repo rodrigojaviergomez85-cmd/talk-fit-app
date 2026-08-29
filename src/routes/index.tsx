@@ -1,113 +1,81 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Flame, Mic, Target, TrendingUp } from "lucide-react";
-import { DailyPracticeCard } from "@/components/fluency/DailyPracticeCard";
-import { BottomNav } from "@/components/fluency/BottomNav";
-import { LessonService } from "@/services/lesson-service";
-import { ProfileService, defaultProfile } from "@/services/profile-service";
-import type { LearnerProfile } from "@/lib/types";
+import { createFileRoute } from "@tanstack/react-router";
+import { Flame, Mic, Timer } from "lucide-react";
+import { AppShell } from "@/components/fluency/AppShell";
+import { DailyPracticeCard, JourneyDayRow } from "@/components/fluency/DailyPracticeCard";
+import { CourseService } from "@/services/course-service";
+import { JourneyService, emptyJourney } from "@/services/journey-service";
+import type { JourneyState } from "@/lib/types";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Fluency Reps — Train Automatic English Speaking" },
+      { title: "Fluency Reps — Speak English Every Day" },
       {
         name: "description",
-        content:
-          "Daily 10-rep speaking training for adult English learners: listen, shadow, record, and get AI feedback on grammar, rhythm and fluency.",
+        content: "A 5-day Simple Present speaking journey: 5 short reps a day to make your English automatic.",
       },
-      { property: "og:title", content: "Fluency Reps — Train Automatic English Speaking" },
-      {
-        property: "og:description",
-        content: "Small reps. Big fluency. Ten daily speaking reps that make English automatic.",
-      },
+      { property: "og:title", content: "Fluency Reps — Speak English Every Day" },
+      { property: "og:description", content: "Five short speaking reps a day. Listen, copy, shadow, personalize, record." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: HomePage,
 });
 
 function HomePage() {
-  const lesson = LessonService.getTodayLesson();
-  const [profile, setProfile] = useState<LearnerProfile>(defaultProfile);
-  const [completedToday, setCompletedToday] = useState(false);
+  const [state, setState] = useState<JourneyState>(emptyJourney);
 
   useEffect(() => {
-    const loaded = ProfileService.load();
-    setProfile(loaded);
-    setCompletedToday(ProfileService.isTodayCompleted(loaded));
+    setState(JourneyService.load());
+    void JourneyService.pull().then(setState).catch(() => undefined);
   }, []);
 
-  const weekPct = Math.min(100, Math.round((profile.speakingMinutesThisWeek / profile.weeklyGoalMinutes) * 100));
+  const days = CourseService.getDays();
+  const currentDay = JourneyService.currentDay(state);
+  const day = CourseService.getDay(currentDay);
+  const completed = JourneyService.isDayCompleted(state, currentDay);
 
   return (
-    <div className="min-h-screen bg-background pb-24">
-      <header className="bg-navy px-5 pb-8 pt-[max(1.25rem,env(safe-area-inset-top))] text-navy-foreground">
-        <div className="mx-auto w-full max-w-lg">
-          <p className="text-[13px] font-extrabold uppercase tracking-[0.28em] text-primary">Fluency Reps</p>
-          <h1 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight">Ready to speak English?</h1>
-          <p className="mt-2 text-sm text-navy-foreground/70">
-            {profile.level} · Small reps. Big fluency.
-          </p>
-        </div>
-      </header>
+    <AppShell title="Today">
+      <div className="space-y-5">
+        <DailyPracticeCard day={day} completed={completed} totalDays={CourseService.totalDays} />
 
-      <main className="mx-auto -mt-4 w-full max-w-lg space-y-4 px-4 pb-6">
-        <DailyPracticeCard lesson={lesson} completed={completedToday} />
-
-        <div className="grid grid-cols-2 gap-3">
-          <StatTile icon={<Flame className="size-4" />} label="Current streak" value={`${profile.streakDays} days`} />
-          <StatTile icon={<TrendingUp className="size-4" />} label="Fluency score" value={String(profile.fluencyScore)} />
+        <div className="grid grid-cols-3 gap-3">
+          <Stat icon={<Flame className="size-4 text-primary" />} label="Streak" value={`${state.streakDays}`} />
+          <Stat icon={<Mic className="size-4 text-primary" />} label="Reps" value={`${state.totalRepsCompleted}`} />
+          <Stat icon={<Timer className="size-4 text-primary" />} label="Minutes" value={`${JourneyService.totalSpeakingMinutes(state)}`} />
         </div>
 
-        <section className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-          <div className="flex items-end justify-between">
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Speaking this week</p>
-            <p className="text-sm font-bold tabular-nums">
-              {profile.speakingMinutesThisWeek} / {profile.weeklyGoalMinutes} min
-            </p>
-          </div>
-          <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-secondary">
-            <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${weekPct}%` }} />
+        <section className="space-y-3">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+            Your 5-day journey
+          </h2>
+          <div className="space-y-2">
+            {days.map((item) => (
+              <JourneyDayRow
+                key={item.day}
+                day={item}
+                completed={JourneyService.isDayCompleted(state, item.day)}
+                unlocked={JourneyService.isDayUnlocked(state, item.day)}
+                current={item.day === currentDay}
+              />
+            ))}
           </div>
         </section>
-
-        <section className="rounded-3xl bg-navy p-5 text-navy-foreground">
-          <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
-            <Target className="size-4" /> Today's focus
-          </p>
-          <p className="mt-2 text-lg font-bold">{lesson.focus}</p>
-        </section>
-
-        <Link
-          to="/coach"
-          className="flex items-center justify-between rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]"
-        >
-          <span className="flex items-center gap-3">
-            <span className="flex size-10 items-center justify-center rounded-2xl bg-accent text-accent-foreground">
-              <Mic className="size-5" />
-            </span>
-            <span>
-              <span className="block text-[15px] font-bold">Your AI Coach</span>
-              <span className="block text-sm text-muted-foreground">See your current priorities</span>
-            </span>
-          </span>
-          <span className="text-xl text-muted-foreground">›</span>
-        </Link>
-      </main>
-
-      <BottomNav />
-    </div>
+      </div>
+    </AppShell>
   );
 }
 
-function StatTile({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-      <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-        {icon}
-        {label}
+    <div className="rounded-3xl bg-card p-4 text-center shadow-[var(--shadow-card)]">
+      <p className="flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+        {icon} {label}
       </p>
-      <p className="mt-2 text-2xl font-extrabold tabular-nums">{value}</p>
+      <p className="mt-1.5 text-2xl font-extrabold tabular-nums tracking-tight">{value}</p>
     </div>
   );
 }

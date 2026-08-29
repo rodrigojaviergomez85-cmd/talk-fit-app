@@ -1,53 +1,109 @@
 import { Link } from "@tanstack/react-router";
-import { Check, Clock, Repeat2 } from "lucide-react";
-import type { Lesson } from "@/lib/types";
+import { Check, Clock, Lock, Mic } from "lucide-react";
+import { TranslatableText } from "./TranslatableText";
+import type { CourseDay } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
-export function DailyPracticeCard({ lesson, completed = false }: { lesson: Lesson; completed?: boolean }) {
+type Props = {
+  day: CourseDay;
+  completed: boolean;
+  totalDays: number;
+};
+
+/** The one clear action on Home: start (or replay) today's day. */
+export function DailyPracticeCard({ day, completed, totalDays }: Props) {
   return (
     <section className="rounded-3xl bg-card p-6 shadow-[var(--shadow-card)]">
-      <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">Today's practice</p>
-      <h2 className="mt-2 text-2xl font-extrabold leading-tight">{lesson.grammar}</h2>
-      <p className="mt-1 text-lg font-semibold text-muted-foreground">{lesson.topic}</p>
-
-      {completed ? (
-        <p className="mt-4 flex items-center gap-2 rounded-2xl bg-success/10 p-4 text-[16px] font-extrabold text-success">
-          <Check className="size-5" strokeWidth={3} /> 5/5 Reps Completed
+      <div className="flex items-center justify-between">
+        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
+          DAY {day.day} OF {totalDays}
         </p>
-      ) : (
-        <p className="mt-4 rounded-2xl bg-secondary/70 p-4 text-[15px] leading-relaxed">
-          <span className="font-bold">Goal:</span> speak naturally for {lesson.goalSeconds[0]}–{lesson.goalSeconds[1]} seconds.
-        </p>
-      )}
-
-      <div className="mt-4 flex items-center gap-4 text-sm font-semibold text-muted-foreground">
-        <span className="inline-flex items-center gap-1.5">
-          <Repeat2 className="size-4" /> 5 Fluency Reps
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <Clock className="size-4" /> {lesson.estimatedMinutes}
-        </span>
+        {completed ? (
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-success/12 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-success">
+            <Check className="size-3.5" /> 5 / 5 reps
+          </span>
+        ) : null}
       </div>
 
-      {completed ? (
-        <>
-          <p className="mt-4 text-[15px] text-muted-foreground">
-            You already finished today's practice. See you tomorrow 🚀
-          </p>
-          <Link
-            to="/practice"
-            className="mt-4 flex w-full items-center justify-center rounded-2xl border border-border bg-card px-6 py-4 text-[15px] font-bold text-foreground transition-transform active:scale-[0.98]"
-          >
-            PRACTICE AGAIN
-          </Link>
-        </>
-      ) : (
-        <Link
-          to="/practice"
-          className="mt-6 flex w-full items-center justify-center rounded-2xl bg-primary px-6 py-5 text-base font-extrabold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98]"
-        >
-          START TODAY'S PRACTICE
-        </Link>
-      )}
+      <TranslatableText es={day.topicEs} className="mt-2">
+        <h2 className="text-[26px] font-extrabold leading-tight tracking-tight">{day.topic}</h2>
+      </TranslatableText>
+
+      <TranslatableText es={day.focusEs} className="mt-2">
+        <p className="text-[15px] font-semibold text-muted-foreground">{day.focus}</p>
+      </TranslatableText>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        <Meta icon={<Mic className="size-3.5" />} text={`${day.goalSeconds[0]}–${day.goalSeconds[1]}s goal`} />
+        <Meta icon={<Check className="size-3.5" />} text="5 reps" />
+        <Meta icon={<Clock className="size-3.5" />} text={day.estimatedMinutes} />
+      </div>
+
+      <Link
+        to="/practice"
+        search={{ day: day.day }}
+        className={cn(
+          "mt-5 flex w-full items-center justify-center rounded-2xl px-6 py-4 text-[15px] font-bold tracking-wide transition-transform active:scale-[0.98]",
+          completed
+            ? "border border-border bg-card text-foreground"
+            : "bg-primary text-primary-foreground shadow-[var(--shadow-lift)]",
+        )}
+      >
+        {completed ? `PRACTICE DAY ${day.day} AGAIN` : `START DAY ${day.day}`}
+      </Link>
     </section>
+  );
+}
+
+function Meta({ icon, text }: { icon: React.ReactNode; text: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+      {icon} {text}
+    </span>
+  );
+}
+
+/** Compact row used by the 5-day journey map. */
+export function JourneyDayRow({
+  day,
+  completed,
+  unlocked,
+  current,
+}: {
+  day: CourseDay;
+  completed: boolean;
+  unlocked: boolean;
+  current: boolean;
+}) {
+  const content = (
+    <div
+      className={cn(
+        "flex items-center gap-3 rounded-2xl border p-4 transition-colors",
+        completed && "border-success/30 bg-success/8",
+        !completed && current && "border-primary bg-primary/8",
+        !completed && !current && "border-border bg-card",
+        !unlocked && "opacity-55",
+      )}
+    >
+      <span
+        className={cn(
+          "flex size-9 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold",
+          completed ? "bg-success text-success-foreground" : current ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground",
+        )}
+      >
+        {completed ? <Check className="size-4" /> : unlocked ? day.day : <Lock className="size-3.5" />}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-[15px] font-bold tracking-tight">{day.topic}</span>
+        <span className="block truncate text-[12px] text-muted-foreground">{day.focus}</span>
+      </span>
+    </div>
+  );
+
+  if (!unlocked) return content;
+  return (
+    <Link to="/practice" search={{ day: day.day }} className="block">
+      {content}
+    </Link>
   );
 }
