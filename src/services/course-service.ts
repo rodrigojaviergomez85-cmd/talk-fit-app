@@ -52,6 +52,10 @@ const day1: CourseDay = {
   ],
   cues: ["ROUTINE", "WORK", "WE / THEY", "BECAUSE", "CONCLUSION"],
   fluencyBonus: { text: "Tomorrow I'm going to start a little earlier.", es: "Mañana voy a empezar un poco más temprano." },
+  modelExample: {
+    text: "I usually wake up around six thirty. I have breakfast at home before I start work. I start work at eight and I talk to customers every day. My coworkers and I usually have lunch together. We sometimes have very busy mornings. I like my job because I learn something new every week. Overall, I really enjoy my routine.",
+    es: "Normalmente me levanto como a las seis y media. Desayuno en casa antes de empezar a trabajar. Empiezo a trabajar a las ocho y hablo con clientes todos los días. Mis compañeros y yo normalmente almorzamos juntos. A veces tenemos mañanas muy ocupadas. Me gusta mi trabajo porque aprendo algo nuevo cada semana. En general, disfruto mucho mi rutina.",
+  },
 };
 
 const day2: CourseDay = {
@@ -92,6 +96,10 @@ const day2: CourseDay = {
     { id: "d2-p7", question: "How would you finish?", questionEs: "¿Cómo terminarías?", starter: "Overall…", starterEs: "En general…" },
   ],
   cues: ["HE / SHE", "WORK", "USUALLY", "BECAUSE", "CONCLUSION"],
+  modelExample: {
+    text: "My sister works from home. She usually starts work around seven. She talks to customers every day. She likes her job because it is flexible. She sometimes works late because her team is busy. Overall, she really enjoys her routine.",
+    es: "Mi hermana trabaja desde casa. Ella normalmente empieza a trabajar como a las siete. Habla con clientes todos los días. Le gusta su trabajo porque es flexible. A veces trabaja hasta tarde porque su equipo está ocupado. En general, disfruta mucho su rutina.",
+  },
 };
 
 const day3: CourseDay = {
@@ -132,6 +140,10 @@ const day3: CourseDay = {
     { id: "d3-p7", question: "How would you finish?", questionEs: "¿Cómo terminarías?", starter: "Overall…", starterEs: "En general…" },
   ],
   cues: ["I DON'T", "WE DON'T", "HE / SHE DOESN'T", "BECAUSE", "CONCLUSION"],
+  modelExample: {
+    text: "I usually start work at eight. I don't start work late. We usually eat lunch together, but we don't eat at our desks because we like to take a break. My sister works from home, but she doesn't work on Fridays. Overall, we all have different routines.",
+    es: "Normalmente empiezo a trabajar a las ocho. No empiezo a trabajar tarde. Normalmente almorzamos juntos, pero no comemos en nuestros escritorios porque nos gusta tomar un descanso. Mi hermana trabaja desde casa, pero no trabaja los viernes. En general, todos tenemos rutinas diferentes.",
+  },
 };
 
 const day4: CourseDay = {
@@ -179,6 +191,10 @@ const day4: CourseDay = {
     { id: "d4-p6", question: "ASK A QUESTION USING DOES", questionEs: "HAZ UNA PREGUNTA CON DOES", starter: "Does he / she…?", starterEs: "¿Él / Ella…?" },
   ],
   cues: ["DO YOU…?", "DOES HE / SHE…?", "YES, I DO", "NO, HE DOESN'T", "BECAUSE"],
+  modelExample: {
+    text: "Do I work on Saturdays? No, I don't. I usually rest on Saturdays. Where do I work? I work at a call center. What time do I start? I usually start at eight. Do I like my job? Yes, I do, because I learn new things. Does my sister work from home? Yes, she does. She works from home three days a week.",
+    es: "¿Trabajo los sábados? No. Normalmente descanso los sábados. ¿Dónde trabajo? Trabajo en un call center. ¿A qué hora empiezo? Normalmente empiezo a las ocho. ¿Me gusta mi trabajo? Sí, porque aprendo cosas nuevas. ¿Mi hermana trabaja desde casa? Sí. Trabaja desde casa tres días a la semana.",
+  },
 };
 
 const day5: CourseDay = {
@@ -247,6 +263,10 @@ const day5: CourseDay = {
     },
   ],
   fluencyBonus: { text: "Tomorrow I'm going to start a little earlier.", es: "Mañana voy a empezar un poco más temprano." },
+  modelExample: {
+    text: "I usually start my day early. We don't have the same schedule every day. My manager works from home twice a week. She usually starts before the rest of the team. My brother doesn't work on Saturdays. I like my routine because it keeps me busy. Overall, our routines are different, but they work well for us.",
+    es: "Normalmente empiezo mi día temprano. No tenemos el mismo horario todos los días. Mi jefa trabaja desde casa dos veces por semana. Ella normalmente empieza antes que el resto del equipo. Mi hermano no trabaja los sábados. Me gusta mi rutina porque me mantiene ocupado. En general, nuestras rutinas son diferentes, pero nos funcionan bien.",
+  },
 };
 
 const DAYS: CourseDay[] = [day1, day2, day3, day4, day5];
