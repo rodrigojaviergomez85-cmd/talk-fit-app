@@ -23,7 +23,10 @@ export type PersonalPrompt = {
   questionEs: string;
   starter: string;
   starterEs: string;
+  /** Short visual cue shown above the question (e.g. NAME, AGE). */
+  cue?: string | undefined;
 };
+
 
 /** Step 0 — very short grammar intro. */
 export type DayIntro = {
