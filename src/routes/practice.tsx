@@ -150,11 +150,18 @@ function PracticePage() {
           {stage === 5 ? (
             <Rep5FinalRep
               day={day}
-              attempts={attempts}
-              onAttempt={(rec) => {
+              takes={takes}
+              finalIndex={finalIndex}
+              onRecorded={(index, rec) => {
                 trackSeconds(rec);
-                setAttempts((list) => [...list, rec]);
+                setTakes((list) => list.map((item, i) => (i === index ? rec : item)));
+                setFinalIndex(index);
               }}
+              onDelete={(index) => {
+                setTakes((list) => list.map((item, i) => (i === index ? null : item)));
+                setFinalIndex((current) => (current === index ? null : current));
+              }}
+              onSelectFinal={setFinalIndex}
               onFinish={finish}
             />
           ) : null}
