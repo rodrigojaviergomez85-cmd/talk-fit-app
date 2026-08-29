@@ -290,15 +290,74 @@ const day5: CourseDay = {
 
 const DAYS: CourseDay[] = [day1, day2, day3, day4, day5];
 
-export const CourseService = {
-  totalDays: DAYS.length,
+export type LearningModule = {
+  id: ModuleId;
+  order: number;
+  label: string;
+  title: string;
+  subtitle: string;
+  subtitleEs: string;
+  description: string;
+  descriptionEs: string;
+  meta: string[];
+  days: CourseDay[];
+  weeks?: { week: 1 | 2 | 3 | 4; title: string; subtitle: string; subtitleEs: string }[];
+};
 
-  getDays(): CourseDay[] {
-    return DAYS;
+const MODULES: LearningModule[] = [
+  {
+    id: "basic-zero",
+    order: 1,
+    label: "MODULE 1 · MONTH 1",
+    title: "BASIC ZERO",
+    subtitle: "Introduce Yourself & Someone Else",
+    subtitleEs: "Preséntate y habla de otra persona",
+    description: "Build your first English speaking foundation.",
+    descriptionEs: "Construye tu primera base para hablar inglés.",
+    meta: ["4 Weeks", "20 Days", "5 Fluency Reps per Day"],
+    days: BASIC_ZERO_DAYS,
+    weeks: BASIC_ZERO_WEEKS,
+  },
+  {
+    id: "simple-present",
+    order: 2,
+    label: "MODULE 2",
+    title: "SIMPLE PRESENT",
+    subtitle: "Routines, He/She, Negatives & Questions",
+    subtitleEs: "Rutinas, He/She, negativos y preguntas",
+    description: "5-Day Fluency Journey.",
+    descriptionEs: "Viaje de fluidez de 5 días.",
+    meta: ["1 Week", "5 Days", "5 Fluency Reps per Day"],
+    days: DAYS,
+  },
+];
+
+export const DEFAULT_MODULE: ModuleId = "basic-zero";
+
+export function isModuleId(value: unknown): value is ModuleId {
+  return value === "basic-zero" || value === "simple-present";
+}
+
+export const CourseService = {
+  modules(): LearningModule[] {
+    return MODULES;
   },
 
-  getDay(day: number): CourseDay {
-    return DAYS.find((d) => d.day === day) ?? day1;
+  getModule(moduleId: ModuleId): LearningModule {
+    return MODULES.find((m) => m.id === moduleId) ?? MODULES[0]!;
+  },
+
+  totalDays(moduleId: ModuleId): number {
+    return CourseService.getModule(moduleId).days.length;
+  },
+
+  getDays(moduleId: ModuleId): CourseDay[] {
+    return CourseService.getModule(moduleId).days;
+  },
+
+  getDay(moduleId: ModuleId, day: number): CourseDay {
+    const days = CourseService.getDays(moduleId);
+    return days.find((d) => d.day === day) ?? days[0]!;
   },
 
   /** Full model text for the day (used by the model voice). */
@@ -306,3 +365,4 @@ export const CourseService = {
     return day.lines.map((l) => l.text).join(" ");
   },
 };
+
