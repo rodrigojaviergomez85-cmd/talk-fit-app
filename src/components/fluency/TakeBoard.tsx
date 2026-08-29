@@ -185,6 +185,80 @@ export function TakeBoard({
           </div>
         );
       })}
+      </div>
     </div>
   );
 }
+
+/** Colored TIME / SENTENCES indicators for the most recent take. */
+function GoalPanel({ latest }: { latest: Recording | null }) {
+  const seconds = latest?.durationSeconds ?? 0;
+  const timeOk = seconds >= GOAL_SECONDS;
+  const count = latest?.countStatus === "done" ? (latest.sentenceCount ?? null) : null;
+  const sentencesOk = count !== null && count >= GOAL_SENTENCES;
+
+  return (
+    <div className="rounded-3xl border border-border bg-card p-4">
+      <TranslatableText es="META DE HOY · 30+ segundos · 5+ oraciones" align="center">
+        <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+          Today's goal · 30+ sec · 5+ sentences
+        </p>
+      </TranslatableText>
+
+      <div className="mt-3 grid grid-cols-2 gap-3">
+        <div className="rounded-2xl bg-secondary p-3 text-center">
+          <TranslatableText es="TIEMPO" align="center">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Time</p>
+          </TranslatableText>
+          <p className={cn("mt-1 text-[16px] font-extrabold tabular-nums", latest ? (timeOk ? "text-success" : "text-destructive") : "text-muted-foreground")}>
+            {latest ? `${timeOk ? "🟢" : "🔴"} ${seconds} / ${GOAL_SECONDS} sec` : `— / ${GOAL_SECONDS} sec`}
+          </p>
+        </div>
+        <div className="rounded-2xl bg-secondary p-3 text-center">
+          <TranslatableText es="ORACIONES" align="center">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Sentences</p>
+          </TranslatableText>
+          <p className={cn("mt-1 text-[16px] font-extrabold tabular-nums", count === null ? "text-muted-foreground" : sentencesOk ? "text-success" : "text-destructive")}>
+            {count === null ? `— / ${GOAL_SENTENCES}` : `${sentencesOk ? "🟢" : "🔴"} ${count} / ${GOAL_SENTENCES}`}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Sentence estimate for one completed take — no transcript, no correction. */
+function SentenceLine({ take }: { take: Recording }) {
+  if (take.countStatus === "pending") {
+    return (
+      <TranslatableText es="Contando oraciones…">
+        <p className="text-[13px] font-semibold text-muted-foreground">Counting sentences…</p>
+      </TranslatableText>
+    );
+  }
+
+  if (take.countStatus !== "done" || typeof take.sentenceCount !== "number") {
+    return (
+      <TranslatableText es="Conteo de oraciones no disponible">
+        <p className="text-[12px] text-muted-foreground">Sentence count unavailable</p>
+      </TranslatableText>
+    );
+  }
+
+  const count = take.sentenceCount;
+  const ok = count >= GOAL_SENTENCES;
+
+  return (
+    <div>
+      <p className={cn("text-[15px] font-extrabold", ok ? "text-success" : "text-destructive")}>
+        {ok ? "🟢" : "🔴"} {count} {count === 1 ? "sentence" : "sentences"}
+      </p>
+      <TranslatableText es={ok ? "¡Meta alcanzada!" : "Sigue — busca 5."}>
+        <p className="text-[12px] font-semibold text-muted-foreground">
+          {ok ? "Goal reached!" : "Keep going — aim for 5."}
+        </p>
+      </TranslatableText>
+    </div>
+  );
+}
+
