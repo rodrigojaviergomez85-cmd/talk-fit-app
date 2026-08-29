@@ -283,8 +283,14 @@ function Rep1Listen({ day, onNext }: { day: CourseDay; onNext: () => void }) {
         </div>
       ) : null}
 
-      <PrimaryButton onClick={onNext} disabled={!heard}>
-        {heard ? "NEXT REP" : "LISTEN FIRST"} <ArrowRight className="size-5" />
+      <PrimaryButton
+        onClick={() => {
+          if (!heard) AudioService.stop();
+          onNext();
+        }}
+      >
+        {showEs ? (heard ? "SIGUIENTE REP" : "SALTAR") : heard ? "NEXT REP" : "SKIP"}{" "}
+        <ArrowRight className="size-5" />
       </PrimaryButton>
     </div>
   );
