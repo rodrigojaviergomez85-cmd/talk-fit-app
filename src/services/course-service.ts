@@ -263,6 +263,10 @@ const day5: CourseDay = {
     },
   ],
   fluencyBonus: { text: "Tomorrow I'm going to start a little earlier.", es: "Mañana voy a empezar un poco más temprano." },
+  modelExample: {
+    text: "I usually start my day early. We don't have the same schedule every day. My manager works from home twice a week. She usually starts before the rest of the team. My brother doesn't work on Saturdays. I like my routine because it keeps me busy. Overall, our routines are different, but they work well for us.",
+    es: "Normalmente empiezo mi día temprano. No tenemos el mismo horario todos los días. Mi jefa trabaja desde casa dos veces por semana. Ella normalmente empieza antes que el resto del equipo. Mi hermano no trabaja los sábados. Me gusta mi rutina porque me mantiene ocupado. En general, nuestras rutinas son diferentes, pero nos funcionan bien.",
+  },
 };
 
 const DAYS: CourseDay[] = [day1, day2, day3, day4, day5];
