@@ -77,6 +77,8 @@ export type CourseDay = {
   rep5Tips?: { en: string; es: string } | undefined;
   /** Optional model monologue for Rep 5 — how a complete answer should sound. */
   modelExample?: { text: string; es: string } | undefined;
+  /** Model voice for this day's character (Basic Zero). Omitted = neutral. */
+  speakerVoice?: "female" | "male";
 };
 
 
