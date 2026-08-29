@@ -424,6 +424,7 @@ function week1Day(day: number, p: Person, topic: string, topicEs: string): Cours
     examples: ["My name is…", "I am from…", "My favorite food is…"],
     rep5: SELF_Q,
     rep5Tips: SELF_TIPS,
+    speakerVoice: p.gender === "f" ? "female" : "male",
   });
 }
 
@@ -444,6 +445,7 @@ function week2Day(day: number, p: Person, topic: string, topicEs: string): Cours
     examples: ["…, and I am…", "… because …", "In my free time, I like to…"],
     rep5: SELF_Q,
     rep5Tips: SELF_TIPS_FLUENCY,
+    speakerVoice: p.gender === "f" ? "female" : "male",
   });
 }
 
@@ -464,6 +466,7 @@ function week3Day(day: number, p: Person, topic: string, topicEs: string): Cours
     examples: ["This is my…", "His name is… / Her name is…", "He lives in… / She lives in…"],
     rep5: OTHER_Q,
     rep5Tips: OTHER_TIPS,
+    speakerVoice: p.gender === "f" ? "female" : "male",
   });
 }
 
@@ -484,6 +487,7 @@ function week4Day(day: number, p: Person, topic: string, topicEs: string): Cours
     examples: ["…, and his name is…", "… because …", "Overall, she is a…"],
     rep5: OTHER_Q,
     rep5Tips: OTHER_TIPS_FLUENCY,
+    speakerVoice: p.gender === "f" ? "female" : "male",
   });
 }
 
