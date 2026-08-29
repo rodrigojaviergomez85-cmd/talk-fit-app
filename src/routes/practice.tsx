@@ -5,6 +5,7 @@ import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { RepProgress } from "@/components/fluency/RepProgress";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
+import { TakeBoard, TAKE_COUNT, REQUIRED_TAKES } from "@/components/fluency/TakeBoard";
 import { DayCompleteScreen } from "@/components/fluency/DayCompleteScreen";
 import { SpanishProvider, SpanishToggle, TranslatableText } from "@/components/fluency/TranslatableText";
 import { CourseService } from "@/services/course-service";
@@ -48,7 +49,8 @@ function PracticePage() {
   const [stage, setStage] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [done, setDone] = useState(false);
-  const [attempts, setAttempts] = useState<Recording[]>([]);
+  const [takes, setTakes] = useState<(Recording | null)[]>(() => Array(TAKE_COUNT).fill(null));
+  const [finalIndex, setFinalIndex] = useState<number | null>(null);
   const [finalRecording, setFinalRecording] = useState<Recording | null>(null);
   const practiceSeconds = useRef(0);
 
@@ -82,14 +84,18 @@ function PracticePage() {
     practiceSeconds.current += recording.durationSeconds;
   };
 
-  const finish = (final: Recording) => {
-    const first = attempts[0] ?? final;
+  const recorded = takes.filter((take): take is Recording => Boolean(take));
+
+  const finish = () => {
+    const final = (finalIndex !== null ? takes[finalIndex] : null) ?? recorded[recorded.length - 1];
+    if (!final) return;
+    const first = recorded[0] ?? final;
     const next = JourneyService.completeDay({
       day: day.day,
       finalSeconds: final.durationSeconds,
       firstSeconds: first.durationSeconds,
       practiceSeconds: Math.round(practiceSeconds.current),
-      recordingsCount: Math.max(1, attempts.length),
+      recordingsCount: Math.max(1, recorded.length),
       finalUrl: final.url,
       firstUrl: first.url,
     });
@@ -104,7 +110,7 @@ function PracticePage() {
         <DayCompleteScreen
           day={day}
           finalRecording={finalRecording}
-          firstRecording={attempts[0] ?? null}
+          firstRecording={recorded[0] ?? null}
           showEs={showEs}
         />
       </SpanishProvider>
@@ -145,11 +151,18 @@ function PracticePage() {
           {stage === 5 ? (
             <Rep5FinalRep
               day={day}
-              attempts={attempts}
-              onAttempt={(rec) => {
+              takes={takes}
+              finalIndex={finalIndex}
+              onRecorded={(index, rec) => {
                 trackSeconds(rec);
-                setAttempts((list) => [...list, rec]);
+                setTakes((list) => list.map((item, i) => (i === index ? rec : item)));
+                setFinalIndex(index);
               }}
+              onDelete={(index) => {
+                setTakes((list) => list.map((item, i) => (i === index ? null : item)));
+                setFinalIndex((current) => (current === index ? null : current));
+              }}
+              onSelectFinal={setFinalIndex}
               onFinish={finish}
             />
           ) : null}
@@ -453,61 +466,36 @@ function Rep4MakeItYours({
 
 function Rep5FinalRep({
   day,
-  attempts,
-  onAttempt,
+  takes,
+  finalIndex,
+  onRecorded,
+  onDelete,
+  onSelectFinal,
   onFinish,
 }: {
   day: CourseDay;
-  attempts: Recording[];
-  onAttempt: (rec: Recording) => void;
-  onFinish: (rec: Recording) => void;
+  takes: (Recording | null)[];
+  finalIndex: number | null;
+  onRecorded: (index: number, rec: Recording) => void;
+  onDelete: (index: number) => void;
+  onSelectFinal: (index: number) => void;
+  onFinish: () => void;
 }) {
-  const attemptNumber = attempts.length + 1;
-  const last = attempts[attempts.length - 1] ?? null;
-  const [reviewing, setReviewing] = useState(false);
-
-  useEffect(() => setReviewing(Boolean(last)), [attempts.length, last]);
-
-  if (reviewing && last) {
-    return (
-      <div className="space-y-5">
-        <div className="rounded-3xl border border-success/25 bg-success/8 p-5 text-center">
-          <p className="flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-success">
-            <Sparkles className="size-4" /> {attempts.length === 1 ? "First take done" : `Take ${attempts.length} done`}
-          </p>
-          <p className="mt-2 text-[22px] font-extrabold tracking-tight">
-            {last.durationSeconds}s
-          </p>
-          <TranslatableText es="Meta: 35–45 segundos. Más largo es mejor que perfecto." align="center" className="mt-1">
-            <p className="text-[13px] text-muted-foreground">Goal: {day.goalSeconds[0]}–{day.goalSeconds[1]} seconds. Longer beats perfect.</p>
-          </TranslatableText>
-        </div>
-
-        <RecordingPlayback url={last.url} label="LISTEN TO MY REP" />
-
-        <PrimaryButton onClick={() => onFinish(last)}>
-          <Check className="size-5" /> USE THIS AS MY FINAL REP
-        </PrimaryButton>
-
-        <button
-          type="button"
-          onClick={() => setReviewing(false)}
-          className="w-full rounded-2xl border border-border bg-card px-5 py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
-        >
-          Try one more time
-        </button>
-      </div>
-    );
-  }
+  const completed = takes.filter(Boolean).length;
+  const requiredDone = completed >= REQUIRED_TAKES;
+  const slotsLeft = takes.some((take) => !take);
 
   return (
     <div className="space-y-5">
-      <Instruction
-        en={attemptNumber === 1 ? "Speak about your life. 7–10 sentences." : "One more take. A little longer this time."}
-        es={attemptNumber === 1 ? "Habla de tu vida. 7–10 oraciones." : "Otra toma. Un poco más larga esta vez."}
-      />
+      <Instruction en="Record it. Listen. Try again." es="Grábalo. Escúchalo. Inténtalo otra vez." />
 
-      <CueRow cues={attemptNumber > 2 ? day.cues.slice(0, 2) : day.cues} />
+      <TranslatableText es={`Meta: ${day.goalSeconds[0]}–${day.goalSeconds[1]} segundos por toma.`} align="center">
+        <p className="text-center text-[13px] text-muted-foreground">
+          Goal: {day.goalSeconds[0]}–{day.goalSeconds[1]} seconds per take.
+        </p>
+      </TranslatableText>
+
+      <CueRow cues={day.cues} />
 
       {day.fluencyBonus ? (
         <div className="rounded-3xl border border-primary/25 bg-accent p-4">
@@ -518,12 +506,49 @@ function Rep5FinalRep({
         </div>
       ) : null}
 
-      <VoiceRecorder
-        label="START MY REP"
-        targetSeconds={day.goalSeconds}
-        maxSeconds={90}
-        onComplete={onAttempt}
+      <TakeBoard
+        takes={takes}
+        finalIndex={finalIndex}
+        goalSeconds={day.goalSeconds}
+        onRecorded={onRecorded}
+        onDelete={onDelete}
+        onSelectFinal={onSelectFinal}
       />
+
+      {requiredDone ? (
+        <div className="space-y-3">
+          <div className="rounded-3xl border border-success/25 bg-success/8 p-4 text-center">
+            <p className="flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-success">
+              <Sparkles className="size-4" /> 3 required reps complete ✓
+            </p>
+            {finalIndex !== null ? (
+              <p className="mt-1 text-[13px] font-semibold">Final rep selected ✓ — Take {finalIndex + 1}</p>
+            ) : (
+              <TranslatableText es="Elige una toma como tu rep final." align="center" className="mt-1">
+                <p className="text-[13px] text-muted-foreground">Pick one take as your final rep.</p>
+              </TranslatableText>
+            )}
+          </div>
+
+          <PrimaryButton onClick={onFinish} disabled={finalIndex === null}>
+            <Check className="size-5" /> COMPLETE TODAY'S PRACTICE
+          </PrimaryButton>
+
+          {slotsLeft ? (
+            <TranslatableText es="O graba otra toma opcional arriba." align="center">
+              <p className="text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                Or record another take above
+              </p>
+            </TranslatableText>
+          ) : null}
+        </div>
+      ) : (
+        <TranslatableText es={`Faltan ${REQUIRED_TAKES - completed} tomas obligatorias.`} align="center">
+          <p className="text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+            {REQUIRED_TAKES - completed} required take{REQUIRED_TAKES - completed === 1 ? "" : "s"} left
+          </p>
+        </TranslatableText>
+      )}
     </div>
   );
 }
