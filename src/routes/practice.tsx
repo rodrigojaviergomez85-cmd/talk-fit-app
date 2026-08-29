@@ -109,7 +109,7 @@ function PracticePage() {
         <DayCompleteScreen
           day={day}
           finalRecording={finalRecording}
-          firstRecording={attempts[0] ?? null}
+          firstRecording={recorded[0] ?? null}
           showEs={showEs}
         />
       </SpanishProvider>
