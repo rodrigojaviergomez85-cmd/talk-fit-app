@@ -44,7 +44,7 @@ export const Route = createFileRoute("/api/tts")({
           body: JSON.stringify({
             model: "openai/gpt-4o-mini-tts",
             input: text,
-            voice: "alloy",
+            voice,
             response_format: "mp3",
             instructions:
               "Speak in a natural, friendly, everyday American English accent. Clear and conversational, like a normal North American speaker — not robotic, not over-enunciated.",
