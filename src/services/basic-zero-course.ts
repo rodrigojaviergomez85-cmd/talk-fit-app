@@ -187,6 +187,7 @@ function otherPromptsFluency(id: string): PersonalPrompt[] {
 /* --------------------------------- People -------------------------------- */
 
 const carlos: Person = {
+  gender: "m",
   name: "Carlos", age: 22, country: "El Salvador", countryEs: "El Salvador", city: "San Salvador",
   color: "blue", colorEs: "azul", colorWhy: "it is calm", colorWhyEs: "es tranquilo",
   food: "pizza", foodEs: "la pizza", foodWhy: "I love cheese", foodWhyEs: "me encanta el queso",
@@ -197,6 +198,7 @@ const carlos: Person = {
 };
 
 const sofia: Person = {
+  gender: "f",
   name: "Sofia", age: 28, country: "Mexico", countryEs: "México", city: "Guadalajara",
   color: "green", colorEs: "verde", colorWhy: "it makes me happy", colorWhyEs: "me hace feliz",
   food: "tacos", foodEs: "los tacos", foodWhy: "they remind me of my family", foodWhyEs: "me recuerdan a mi familia",
@@ -207,6 +209,7 @@ const sofia: Person = {
 };
 
 const daniel: Person = {
+  gender: "m",
   name: "Daniel", age: 35, country: "Colombia", countryEs: "Colombia", city: "Medellín",
   color: "red", colorEs: "rojo", colorWhy: "it gives me energy", colorWhyEs: "me da energía",
   food: "chicken and rice", foodEs: "el pollo con arroz", foodWhy: "it is simple and delicious", foodWhyEs: "es simple y delicioso",
@@ -217,6 +220,7 @@ const daniel: Person = {
 };
 
 const valeria: Person = {
+  gender: "f",
   name: "Valeria", age: 19, country: "Peru", countryEs: "Perú", city: "Lima",
   color: "yellow", colorEs: "amarillo", colorWhy: "it is bright", colorWhyEs: "es brillante",
   food: "ceviche", foodEs: "el ceviche", foodWhy: "it is fresh", foodWhyEs: "es fresco",
@@ -227,6 +231,7 @@ const valeria: Person = {
 };
 
 const miguel: Person = {
+  gender: "m",
   name: "Miguel", age: 41, country: "Guatemala", countryEs: "Guatemala", city: "Antigua",
   color: "black", colorEs: "negro", colorWhy: "it is elegant", colorWhyEs: "es elegante",
   food: "soup", foodEs: "la sopa", foodWhy: "my mother makes it", foodWhyEs: "mi mamá la prepara",
@@ -237,6 +242,7 @@ const miguel: Person = {
 };
 
 const lucia: Person = {
+  gender: "f",
   name: "Lucia", age: 31, country: "Spain", countryEs: "España", city: "Valencia",
   color: "white", colorEs: "blanco", colorWhy: "it is clean and simple", colorWhyEs: "es limpio y simple",
   food: "paella", foodEs: "la paella", foodWhy: "it is a family tradition", foodWhyEs: "es una tradición familiar",
@@ -247,6 +253,7 @@ const lucia: Person = {
 };
 
 const andres: Person = {
+  gender: "m",
   name: "Andres", age: 26, country: "Ecuador", countryEs: "Ecuador", city: "Quito",
   color: "orange", colorEs: "naranja", colorWhy: "it is warm", colorWhyEs: "es cálido",
   food: "hamburgers", foodEs: "las hamburguesas", foodWhy: "they are my weekend food", foodWhyEs: "son mi comida del fin de semana",
@@ -257,6 +264,7 @@ const andres: Person = {
 };
 
 const paola: Person = {
+  gender: "f",
   name: "Paola", age: 24, country: "Honduras", countryEs: "Honduras", city: "San Pedro Sula",
   color: "purple", colorEs: "morado", colorWhy: "it is different", colorWhyEs: "es diferente",
   food: "baleadas", foodEs: "las baleadas", foodWhy: "they are cheap and delicious", foodWhyEs: "son baratas y deliciosas",
@@ -322,6 +330,7 @@ type DayInput = {
   examples: string[];
   rep5: { question: string; questionEs: string };
   rep5Tips: { en: string; es: string };
+  speakerVoice: "female" | "male";
   challenges?: CourseDay["challenges"];
 };
 
@@ -361,6 +370,7 @@ function makeDay(input: DayInput): CourseDay {
     ...(input.challenges ? { challenges: input.challenges } : {}),
     rep5Prompt: input.rep5,
     rep5Tips: input.rep5Tips,
+    speakerVoice: input.speakerVoice,
     modelExample: {
       text: input.lines.map((l) => l.text).join(" "),
       es: input.lines.map((l) => l.es).join(" "),
@@ -414,6 +424,7 @@ function week1Day(day: number, p: Person, topic: string, topicEs: string): Cours
     examples: ["My name is…", "I am from…", "My favorite food is…"],
     rep5: SELF_Q,
     rep5Tips: SELF_TIPS,
+    speakerVoice: p.gender === "f" ? "female" : "male",
   });
 }
 
@@ -434,6 +445,7 @@ function week2Day(day: number, p: Person, topic: string, topicEs: string): Cours
     examples: ["…, and I am…", "… because …", "In my free time, I like to…"],
     rep5: SELF_Q,
     rep5Tips: SELF_TIPS_FLUENCY,
+    speakerVoice: p.gender === "f" ? "female" : "male",
   });
 }
 
@@ -454,6 +466,7 @@ function week3Day(day: number, p: Person, topic: string, topicEs: string): Cours
     examples: ["This is my…", "His name is… / Her name is…", "He lives in… / She lives in…"],
     rep5: OTHER_Q,
     rep5Tips: OTHER_TIPS,
+    speakerVoice: p.gender === "f" ? "female" : "male",
   });
 }
 
@@ -474,6 +487,7 @@ function week4Day(day: number, p: Person, topic: string, topicEs: string): Cours
     examples: ["…, and his name is…", "… because …", "Overall, she is a…"],
     rep5: OTHER_Q,
     rep5Tips: OTHER_TIPS_FLUENCY,
+    speakerVoice: p.gender === "f" ? "female" : "male",
   });
 }
 

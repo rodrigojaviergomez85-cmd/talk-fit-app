@@ -8,10 +8,11 @@
  */
 
 export type ModelVoice = "neutral" | "female" | "male";
+type AudioVoice = "female" | "male";
 
 export type SpeakOptions = {
   rate?: number;
-  voice?: ModelVoice;
+  voice?: ModelVoice | undefined;
   onStart?: () => void;
   onEnd?: () => void;
   onBoundary?: (charIndex: number) => void;
@@ -34,25 +35,26 @@ function pickVoice(voice: ModelVoice): SpeechSynthesisVoice | undefined {
   return voices.find((v) => v.lang === "en-US") ?? voices[0];
 }
 
-/** Cache of generated model audio, keyed by text. */
+/** Cache of generated model audio, keyed by voice + text. */
 const audioCache = new Map<string, Promise<string>>();
 let currentAudio: HTMLAudioElement | null = null;
 
-async function loadModelAudio(text: string): Promise<string> {
-  const cached = audioCache.get(text);
+async function loadModelAudio(text: string, voice?: AudioVoice): Promise<string> {
+  const key = `${voice ?? "neutral"}::${text}`;
+  const cached = audioCache.get(key);
   if (cached) return cached;
   const promise = (async () => {
     const response = await fetch("/api/tts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text, voice }),
     });
     if (!response.ok) throw new Error(`TTS ${response.status}`);
     const blob = await response.blob();
     return URL.createObjectURL(blob);
   })();
-  audioCache.set(text, promise);
-  promise.catch(() => audioCache.delete(text));
+  audioCache.set(key, promise);
+  promise.catch(() => audioCache.delete(key));
   return promise;
 }
 
@@ -99,7 +101,7 @@ export const AudioService = {
     let stopFallback: (() => void) | null = null;
     let element: HTMLAudioElement | null = null;
 
-    void loadModelAudio(text)
+    void loadModelAudio(text, options.voice === "female" || options.voice === "male" ? options.voice : undefined)
       .then((url) => {
         if (cancelled) return;
         const audio = new Audio(url);

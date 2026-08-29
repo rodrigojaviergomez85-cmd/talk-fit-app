@@ -18,8 +18,11 @@ export const Route = createFileRoute("/api/tts")({
         }
 
         let text = "";
+        let voice = "alloy";
         try {
-          const body = (await request.json()) as { text?: unknown };
+          const body = (await request.json()) as { text?: unknown; voice?: unknown };
+          if (body.voice === "female") voice = "nova";
+          else if (body.voice === "male") voice = "onyx";
           text = typeof body.text === "string" ? body.text.trim() : "";
         } catch {
           text = "";
@@ -41,7 +44,7 @@ export const Route = createFileRoute("/api/tts")({
           body: JSON.stringify({
             model: "openai/gpt-4o-mini-tts",
             input: text,
-            voice: "alloy",
+            voice,
             response_format: "mp3",
             instructions:
               "Speak in a natural, friendly, everyday American English accent. Clear and conversational, like a normal North American speaker — not robotic, not over-enunciated.",

@@ -7,6 +7,8 @@ type AudioPlayerProps = {
   text: string;
   label?: string;
   rate?: number;
+  /** Model voice: female or male character voice. */
+  voice?: "female" | "male" | undefined;
   size?: "sm" | "md" | "lg";
   variant?: "primary" | "navy" | "ghost";
   onEnd?: () => void;
@@ -18,6 +20,7 @@ export function AudioPlayer({
   text,
   label = "LISTEN",
   rate = 1,
+  voice,
   size = "md",
   variant = "primary",
   onEnd,
@@ -37,6 +40,7 @@ export function AudioPlayer({
     }
     stopRef.current = AudioService.speak(text, {
       rate,
+      voice,
       onStart: () => setPlaying(true),
       onEnd: () => {
         setPlaying(false);
