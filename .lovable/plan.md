@@ -1,25 +1,25 @@
-# Quitar el subrayado de palabras buenas/malas en Rep 2
+# Quitar todo el feedback de corrección en Rep 2
 
 ## Objetivo
-En el paso "Listen. Then copy." (Rep 2 del contador de 6, componente `Rep3`), eliminar el feedback visual que subraya/raya palabras como buenas o malas. Se conserva el veredicto general (BIEN DICHO / CASI / INTÉNTALO OTRA VEZ), el porcentaje y el botón de repetir; también se conserva la comparación "Model vs my voice".
+En el paso "Listen. Then copy." (Rep 2 del contador de 6, componente `Rep3`), eliminar por completo el feedback de corrección: ni veredicto (BIEN DICHO / CASI / INTÉNTALO OTRA VEZ), ni porcentaje, ni palabras subrayadas/rayadas. El usuario graba, puede escuchar su grabación y comparar con el modelo, y avanza sin recibir evaluación intermedia.
 
 ## Cambios
 
-1. **`src/components/fluency/RepFeedback.tsx`**
-   - Agregar prop opcional `showWords?: boolean` (default `true`).
-   - Cuando `showWords` sea `false`, no renderizar el bloque de palabras coloreadas/tachadas ni la línea "Palabras de más".
-   - Mantener el banner de veredicto, el porcentaje y el botón `INTENTAR OTRA VEZ`.
+1. **`src/routes/practice.tsx`**
+   - En el componente `Rep3`, quitar el estado `check` y la llamada a `checkRepetition`.
+   - Quitar la renderización de `<RepFeedback>` en `Rep3`.
+   - Mantener `myVoice` para que la comparación "Model vs my voice" siga funcionando.
+   - El botón "NEXT" / "NEXT REP" sigue habilitado después de grabar.
 
-2. **`src/routes/practice.tsx`**
-   - En el componente `Rep3`, pasar `showWords={false}` a `<RepFeedback>`.
-   - No modificar `Rep7` ni ningún otro paso: ellos siguen mostrando el desglose palabra por palabra.
+2. **`src/components/fluency/RepFeedback.tsx`**
+   - No requiere cambios; se sigue usando en `Rep7` y posibles usos futuros.
 
 ## Lo que no cambia
 - Lógica de grabación, transcripción y comparación en `Rep3`.
-- Componente `RepFeedback` en `Rep7` y cualquier otro uso futuro.
+- `Rep7` y `RepSeries` conservan su feedback actual.
 - Navegación hacia adelante/atrás, límites de tiempo y flujo de completado del día.
 
 ## Verificación
 - `bunx tsgo --noEmit` sin errores.
-- En el preview, grabar en Rep 2 y confirmar que aparece el veredicto y el porcentaje, pero no las palabras subrayadas/rayadas.
-- Verificar que Rep 5 sigue mostrando el desglose palabra por palabra.
+- En el preview, grabar en Rep 2 y confirmar que no aparece ningún banner de veredicto, porcentaje ni palabras subrayadas; sí aparece la comparación "Model vs my voice".
+- Verificar que Rep 5 sigue mostrando el feedback completo.
