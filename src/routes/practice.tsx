@@ -1,500 +1,208 @@
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useMemo, useRef, useState, useEffect, type RefObject } from "react";
-import { RepProgress } from "@/components/fluency/RepProgress";
+import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
-import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
-import { RecordingComparison } from "@/components/fluency/RecordingComparison";
-import { WaveformPlayer } from "@/components/fluency/WaveformPlayer";
-import { LessonService } from "@/services/lesson-service";
+import { RepProgress } from "@/components/fluency/RepProgress";
+import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
+import { DayCompleteScreen } from "@/components/fluency/DayCompleteScreen";
+import { SpanishProvider, SpanishToggle, TranslatableText } from "@/components/fluency/TranslatableText";
+import { CourseService } from "@/services/course-service";
+import { JourneyService } from "@/services/journey-service";
 import { AudioService } from "@/services/audio-service";
-import { RepFeedback } from "@/components/fluency/RepFeedback";
-import { RepSeriesRow, type SeriesRep } from "@/components/fluency/RepSeriesRow";
-import { DailyCompleteScreen } from "@/components/fluency/DailyCompleteScreen";
-import { IntroStep } from "@/components/fluency/IntroStep";
-import { SpanishProvider, SpanishToggle, TranslatableText, useSpanishAll } from "@/components/fluency/TranslatableText";
-
-import { checkRepetition, type RepCheck } from "@/lib/pronunciation-check";
-import type { Recording } from "@/lib/types";
+import type { CourseDay, ModelLine, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-
 export const Route = createFileRoute("/practice")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    day: Math.min(CourseService.totalDays, Math.max(1, Number(search["day"]) || 1)),
+  }),
   head: () => ({
     meta: [
-      { title: "Today's 5 Fluency Reps — Simple Present" },
-      {
-        name: "description",
-        content:
-          "Listen, notice, echo, shadow and record: guided speaking reps that make Simple Present automatic.",
-      },
-      { property: "og:title", content: "Today's 5 Fluency Reps — Simple Present" },
-      { property: "og:description", content: "Guided speaking reps ending in your daily 5/5 completion." },
+      { title: "Daily Practice — Fluency Reps" },
+      { name: "description", content: "Five speaking reps a day: listen, copy, shadow, personalize and record your final rep in English." },
+      { property: "og:title", content: "Daily Practice — Fluency Reps" },
+      { property: "og:description", content: "Five speaking reps a day to make your English automatic." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: PracticePage,
 });
 
-type Stage = { kind: "intro" } | { kind: "rep"; index: number } | { kind: "complete" };
-
 const REP_TITLES = [
-  "REP 1 OF 6",
-  "REP 2 OF 6",
-  "REP 3 OF 6",
-  "REP 4 OF 6",
-  "REP 5 OF 6",
-  "REP 6 OF 6",
+  { en: "STEP 0 · INTRO", es: "PASO 0 · INTRO" },
+  { en: "REP 1 OF 5 · LISTEN", es: "REP 1 DE 5 · ESCUCHA" },
+  { en: "REP 2 OF 5 · COPY", es: "REP 2 DE 5 · COPIA" },
+  { en: "REP 3 OF 5 · SHADOW", es: "REP 3 DE 5 · SHADOWING" },
+  { en: "REP 4 OF 5 · MAKE IT YOURS", es: "REP 4 DE 5 · HAZLO TUYO" },
+  { en: "REP 5 OF 5 · YOUR TURN", es: "REP 5 DE 5 · TU TURNO" },
 ];
 
 function PracticePage() {
+  const { day: dayNumber } = Route.useSearch();
   const navigate = useNavigate();
-  const lesson = LessonService.getTodayLesson();
-  const modelText = useMemo(() => LessonService.getModelText(lesson), [lesson]);
-  const [stage, setStage] = useState<Stage>({ kind: "intro" });
-  const [showSpanish, setShowSpanish] = useState(false);
+  const day = useMemo(() => CourseService.getDay(dayNumber), [dayNumber]);
 
-  const [rep7Recording, setRep7Recording] = useState<Recording | null>(null);
-  const [rep9Recording, setRep9Recording] = useState<Recording | null>(null);
+  const [showEs, setShowEs] = useState(false);
+  const [stage, setStage] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [done, setDone] = useState(false);
+  const [attempts, setAttempts] = useState<Recording[]>([]);
+  const [finalRecording, setFinalRecording] = useState<Recording | null>(null);
+  const practiceSeconds = useRef(0);
 
   useEffect(() => () => AudioService.stop(), []);
   useEffect(() => {
     AudioService.stop();
-    if (typeof window !== "undefined") window.scrollTo({ top: 0 });
-  }, [stage]);
+    window.scrollTo({ top: 0 });
+  }, [stage, subIndex]);
 
-  const progressIndex =
-    stage.kind === "intro" ? 0 : stage.kind === "rep" ? stage.index + 1 : 7;
-  const title =
-    stage.kind === "intro"
-      ? showSpanish
-        ? "PASO 0 — PRESENTE SIMPLE"
-        : "STEP 0 — SIMPLE PRESENT"
-      : stage.kind === "complete"
-        ? "DAY COMPLETE"
-        : (REP_TITLES[stage.index] ?? "PRACTICE");
+  const subTotal = stage === 2 ? day.lines.length : stage === 4 ? rep4Items(day).length : 1;
 
-  /** Set by the current rep when it has an internal sub-step to go back to. */
-  const backRef = useRef<(() => boolean) | null>(null);
-  /** Set by the current rep when it has an internal sub-step to go forward to. */
-  const forwardRef = useRef<(() => boolean) | null>(null);
-
-  const goToRep = (index: number) => setStage({ kind: "rep", index });
-
-  const handleBack = () => {
-    if (backRef.current?.()) return;
-    if (stage.kind === "rep") {
-      if (stage.index > 0) goToRep(stage.index - 1);
-      else setStage({ kind: "intro" });
-    }
-  };
-
-  const handleForward = () => {
-    if (stage.kind === "intro") {
-      goToRep(0);
+  const goBack = () => {
+    if (subIndex > 0) return setSubIndex(subIndex - 1);
+    if (stage > 0) {
+      setStage(stage - 1);
+      setSubIndex(0);
       return;
     }
-    if (forwardRef.current?.()) return;
-    if (stage.kind === "rep" && stage.index < REP_TITLES.length - 1) goToRep(stage.index + 1);
+    void navigate({ to: "/" });
   };
 
-  const canGoBack = stage.kind === "rep";
-  const canGoForward =
-    stage.kind === "intro" ||
-    (stage.kind === "rep" && (stage.index < REP_TITLES.length - 1 || forwardRef.current !== null));
+  const goForward = () => {
+    if (subIndex < subTotal - 1) return setSubIndex(subIndex + 1);
+    if (stage < 5) {
+      setStage(stage + 1);
+      setSubIndex(0);
+    }
+  };
 
-  backRef.current = null;
-  forwardRef.current = null;
+  const trackSeconds = (recording: Recording) => {
+    practiceSeconds.current += recording.durationSeconds;
+  };
 
-  return (
-    <div className="min-h-screen bg-background">
-      <RepProgress
-        current={progressIndex}
-        total={7}
-        title={title}
-        {...(canGoBack ? { onBack: handleBack } : {})}
-        {...(canGoForward ? { onNext: handleForward } : {})}
-        onExit={() => {
-          void navigate({ to: "/" });
-        }}
-      />
+  const finish = (final: Recording) => {
+    const first = attempts[0] ?? final;
+    const next = JourneyService.completeDay({
+      day: day.day,
+      finalSeconds: final.durationSeconds,
+      firstSeconds: first.durationSeconds,
+      practiceSeconds: Math.round(practiceSeconds.current),
+      recordingsCount: Math.max(1, attempts.length),
+      finalUrl: final.url,
+      firstUrl: first.url,
+    });
+    setFinalRecording(final);
+    setDone(true);
+    void JourneyService.syncDay(day.day, next, final.blob ?? null).catch(() => undefined);
+  };
 
-      <main className="mx-auto w-full max-w-lg px-4 pb-16 pt-6">
-        <SpanishProvider value={showSpanish}>
-        {stage.kind !== "complete" ? (
-          <div className="mb-4">
-            <SpanishToggle value={showSpanish} onChange={setShowSpanish} />
-          </div>
-        ) : null}
-        {stage.kind === "intro" ? (
-          <IntroStep showSpanish={showSpanish} onStart={() => goToRep(0)} />
-        ) : stage.kind === "rep" ? (
-          <RepBody
-            backRef={backRef}
-            forwardRef={forwardRef}
-            index={stage.index}
-            lesson={lesson}
-            modelText={modelText}
-            rep7Recording={rep7Recording}
-            rep9Recording={rep9Recording}
-            finalFocus={lesson.focus}
-            onNext={() => goToRep(stage.index + 1)}
-            onRep7Recorded={setRep7Recording}
-            onSeriesComplete={(recording) => {
-              setRep9Recording(recording);
-              setStage({ kind: "complete" });
-            }}
-          />
-        ) : (
-          <DailyCompleteScreen
-            onComplete={() => {
-              void navigate({ to: "/" });
-            }}
-          />
-        )}
-        </SpanishProvider>
-      </main>
-
-    </div>
-  );
-}
-
-
-/* ---------------------------------- Reps ---------------------------------- */
-
-type RepBodyProps = {
-  backRef: RefObject<(() => boolean) | null>;
-  forwardRef: RefObject<(() => boolean) | null>;
-  index: number;
-
-  lesson: ReturnType<typeof LessonService.getTodayLesson>;
-  modelText: string;
-  rep7Recording: Recording | null;
-  rep9Recording: Recording | null;
-  finalFocus: string;
-  onNext: () => void;
-  onRep7Recorded: (recording: Recording) => void;
-  onSeriesComplete: (recording: Recording) => void;
-};
-
-function RepBody(props: RepBodyProps) {
-  switch (props.index) {
-    case 0:
-      return <Rep2 {...props} />;
-    case 1:
-      return <Rep3 {...props} />;
-    case 2:
-      return <Shadowing {...props} rate={0.75} speeds={[0.5, 0.75]} instruction="Read along with the model" instructionEs="Lee a la par del modelo" heading="Slow shadowing" note="Tap 0.5× or 0.75× to slow the model." noteEs="Toca 0.5× o 0.75× para poner el modelo más lento." />;
-    case 3:
-      return <Shadowing {...props} rate={1} instruction="Now match natural English." instructionEs="Ahora iguala el inglés natural." heading="Natural speed" note="Match the model's natural rhythm and flow." noteEs="Iguala el ritmo y fluidez naturales del modelo." />;
-    case 4:
-      return <Rep7 {...props} />;
-    case 5:
-      return <RepSeries {...props} />;
-    default:
-      return null;
+  if (done) {
+    return (
+      <SpanishProvider value={showEs}>
+        <DayCompleteScreen
+          day={day}
+          finalRecording={finalRecording}
+          firstRecording={attempts[0] ?? null}
+          showEs={showEs}
+        />
+      </SpanishProvider>
+    );
   }
-}
 
-function Instruction({ text, sub, es }: { text: string; sub?: string; es?: string | undefined }) {
+  const title = REP_TITLES[stage] ?? REP_TITLES[0]!;
+
   return (
-    <div className="mb-6 animate-[var(--animate-rise)]">
-      <TranslatableText es={es}>
-        <h1 className="text-[26px] font-extrabold leading-tight tracking-tight text-balance-tight">{text}</h1>
-        {sub ? <p className="mt-2 text-[15px] text-muted-foreground">{sub}</p> : null}
-      </TranslatableText>
-    </div>
+    <SpanishProvider value={showEs}>
+      <div className="min-h-screen bg-background pb-16">
+        <RepProgress
+          current={stage}
+          total={6}
+          title={`DAY ${day.day} · ${showEs ? title.es : title.en}`}
+          onBack={goBack}
+          {...(stage < 5 ? { onNext: goForward } : {})}
+          onExit={() => void navigate({ to: "/" })}
+        />
+
+        <main className="mx-auto w-full max-w-lg space-y-5 px-4 py-6">
+          <SpanishToggle value={showEs} onChange={setShowEs} />
+
+          {stage === 0 ? <IntroStep day={day} onNext={goForward} /> : null}
+          {stage === 1 ? <Rep1Listen day={day} onNext={goForward} /> : null}
+          {stage === 2 ? (
+            <Rep2Copy
+              day={day}
+              index={subIndex}
+              onRecorded={trackSeconds}
+              onNext={goForward}
+            />
+          ) : null}
+          {stage === 3 ? <Rep3Shadow day={day} onRecorded={trackSeconds} onNext={goForward} /> : null}
+          {stage === 4 ? (
+            <Rep4MakeItYours day={day} index={subIndex} onRecorded={trackSeconds} onNext={goForward} />
+          ) : null}
+          {stage === 5 ? (
+            <Rep5FinalRep
+              day={day}
+              attempts={attempts}
+              onAttempt={(rec) => {
+                trackSeconds(rec);
+                setAttempts((list) => [...list, rec]);
+              }}
+              onFinish={finish}
+            />
+          ) : null}
+        </main>
+      </div>
+    </SpanishProvider>
   );
 }
 
-/** Spanish hint line, only visible when "Mostrar todo en español" is on. */
-function EsLine({ text, className }: { text: string; className?: string }) {
-  const show = useSpanishAll();
-  if (!show) return null;
-  return <p className={cn("text-[13px] italic leading-snug text-muted-foreground", className)}>{text}</p>;
-}
+/* ------------------------------- Shared UI ------------------------------- */
 
-function NextButton({ onClick, label = "NEXT REP" }: { onClick: () => void; label?: string }) {
+function PrimaryButton({ children, onClick, disabled }: { children: React.ReactNode; onClick: () => void; disabled?: boolean }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="mt-6 w-full rounded-2xl bg-primary px-6 py-5 text-base font-extrabold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
+      disabled={disabled}
+      className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-4 text-[15px] font-bold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98] disabled:opacity-40 disabled:shadow-none"
     >
-      {label}
+      {children}
     </button>
   );
 }
 
-function Rep2({ lesson, modelText, onNext }: RepBodyProps) {
-  const [activeChunk, setActiveChunk] = useState(-1);
-  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const allChunks = useMemo(() => lesson.sentences.flatMap((s) => s.chunks), [lesson]);
-
-  useEffect(() => () => timers.current.forEach(clearTimeout), []);
-
-  const play = () => {
-    timers.current.forEach(clearTimeout);
-    timers.current = [];
-    let elapsed = 0;
-    allChunks.forEach((chunk, index) => {
-      const duration = AudioService.estimateSeconds(chunk) * 1000 + 120;
-      timers.current.push(setTimeout(() => setActiveChunk(index), elapsed));
-      elapsed += duration;
-    });
-    timers.current.push(setTimeout(() => setActiveChunk(-1), elapsed));
-  };
-
-  let chunkCounter = -1;
-
+function Instruction({ en, es }: { en: string; es: string }) {
   return (
-    <>
-      <Instruction text="Listen and notice the rhythm." sub="English moves in chunks, not single words." es="Escucha y nota el ritmo. El inglés se mueve en bloques, no en palabras sueltas." />
-      <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-        {lesson.sentences.map((sentence) => (
-          <TranslatableText key={sentence.id} es={sentence.es} className="mb-3">
-            <p className="text-[17px] leading-relaxed">
-              {sentence.chunks.map((chunk, i) => {
-                chunkCounter += 1;
-                const isActive = chunkCounter === activeChunk;
-                return (
-                  <span key={`${sentence.id}-${i}`}>
-                    <span
-                      className={cn(
-                        "rounded-lg px-1 py-0.5 transition-colors duration-200",
-                        isActive ? "bg-primary/20 font-semibold text-foreground" : "text-muted-foreground",
-                      )}
-                    >
-                      {chunk}
-                    </span>
-                    {i < sentence.chunks.length - 1 ? <span className="px-1 text-primary/60">/</span> : null}
-                  </span>
-                );
-              })}
-            </p>
-          </TranslatableText>
-        ))}
-
-      </div>
-      <div className="mt-6">
-        <AudioPlayer text={modelText} label="LISTEN WITH TRANSCRIPT" size="lg" onEnd={() => setActiveChunk(-1)} />
-      </div>
-      <button type="button" onClick={play} className="sr-only" aria-hidden />
-      <NextButton onClick={onNext} />
-    </>
+    <TranslatableText es={es} align="center" className="text-center">
+      <p className="text-center text-[17px] font-bold leading-snug">{en}</p>
+    </TranslatableText>
   );
 }
 
-function Rep3({ lesson, onNext, backRef, forwardRef }: RepBodyProps) {
-  const [index, setIndex] = useState(0);
-  const [myVoice, setMyVoice] = useState<Recording | null>(null);
-  const sentence = lesson.sentences[index]!;
-  const isLast = index === lesson.sentences.length - 1;
-
-  const reset = () => {
-    setMyVoice(null);
-  };
-
-  backRef.current =
-    index > 0
-      ? () => {
-          reset();
-          setIndex(index - 1);
-          return true;
-        }
-      : null;
-
-  forwardRef.current = !isLast
-    ? () => {
-        reset();
-        setIndex(index + 1);
-        return true;
-      }
-    : null;
-
+function LineCard({ line, chunked = false }: { line: ModelLine; chunked?: boolean }) {
   return (
-    <>
-      <Instruction text="Listen. Then copy." sub={`Chunk ${index + 1} of ${lesson.sentences.length}`} es="Escucha. Luego repite exactamente igual." />
-      <div className="rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-card)]">
-        <TranslatableText es={sentence.es} align="center" esClassName="text-center text-[14px]">
-          <p className="text-2xl font-bold leading-snug text-balance-tight">{sentence.text}</p>
-        </TranslatableText>
-      </div>
-
-
-      <div className="mt-5 space-y-3">
-        <AudioPlayer text={sentence.text} label="LISTEN" variant="navy" />
-        <p className="pt-2 text-center text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Your turn</p>
-        <VoiceRecorder
-          label="RECORD"
-          stopLabel="STOP"
-          showTimer={false}
-          onComplete={(recording) => {
-            setMyVoice(recording);
-          }}
-        />
-      </div>
-
-      {myVoice ? (
-        <div className="mt-5 space-y-3">
-          <RecordingComparison leftLabel="▶ MODEL" rightLabel="▶ MY VOICE" modelText={sentence.text} rightUrl={myVoice.url} caption="Compare" />
-        </div>
-      ) : null}
-
-      <NextButton
-        onClick={() => {
-          if (isLast) {
-            onNext();
-          } else {
-            reset();
-            setIndex(index + 1);
-          }
-        }}
-        label={isLast ? "NEXT REP" : "NEXT"}
-      />
-
-    </>
+    <TranslatableText es={line.es}>
+      <p className="text-[22px] font-extrabold leading-tight tracking-tight">
+        {chunked
+          ? line.chunks.map((chunk, index) => (
+              <span key={index} className="mr-1.5 inline-block rounded-lg bg-secondary px-1.5">
+                {chunk}
+              </span>
+            ))
+          : line.text}
+      </p>
+    </TranslatableText>
   );
 }
-
-function Shadowing({
-  lesson,
-  modelText,
-  onNext,
-  rate,
-  speeds,
-  instruction,
-  instructionEs,
-  heading,
-  note,
-  noteEs,
-}: RepBodyProps & { rate: number; speeds?: number[]; instruction: string; instructionEs?: string; heading: string; note: string; noteEs?: string }) {
-  const [playing, setPlaying] = useState(false);
-  const [speed, setSpeed] = useState(rate);
-  const stopRef = useRef<(() => void) | null>(null);
-
-  useEffect(() => () => stopRef.current?.(), []);
-  useEffect(() => {
-    setSpeed(rate);
-  }, [rate]);
-
-  const start = () => {
-    if (playing) {
-      stopRef.current?.();
-      AudioService.stop();
-      setPlaying(false);
-      return;
-    }
-    stopRef.current = AudioService.speak(modelText, {
-      rate: speed,
-      onStart: () => setPlaying(true),
-      onEnd: () => setPlaying(false),
-    });
-  };
-
-  const pickSpeed = (value: number) => {
-    stopRef.current?.();
-    AudioService.stop();
-    setPlaying(false);
-    setSpeed(value);
-  };
-
-  return (
-    <>
-      <Instruction text={instruction} sub={`${heading} · ${speed}x speed`} es={instructionEs} />
-      <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-        <WaveformPlayer active={playing} />
-        <div className="mt-4 space-y-2">
-          {lesson.sentences.map((sentence) => (
-            <TranslatableText key={sentence.id} es={sentence.es}>
-              <p className="text-[16px] leading-relaxed text-muted-foreground">{sentence.chunks.join(" / ")}</p>
-            </TranslatableText>
-          ))}
-
-        </div>
-      </div>
-      {speeds ? (
-        <div className="mt-4">
-          <p className="mb-2 text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Velocidad</p>
-          <div className="flex gap-2">
-            {speeds.map((value) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => pickSpeed(value)}
-                aria-pressed={speed === value}
-                className={cn(
-                  "flex-1 rounded-2xl border px-2 py-3 text-sm font-extrabold tabular-nums transition-colors",
-                  speed === value
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "border-border bg-card text-muted-foreground active:bg-secondary",
-                )}
-              >
-                {value}x
-              </button>
-            ))}
-          </div>
-        </div>
-      ) : null}
-      <p className="mt-4 text-center text-sm text-muted-foreground">{note}</p>
-      {noteEs ? <EsLine text={noteEs} className="mt-1 text-center" /> : null}
-      <div className="mt-5">
-        <button
-          type="button"
-          onClick={start}
-          className="w-full rounded-2xl bg-primary px-6 py-5 text-base font-extrabold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
-        >
-          {playing ? "STOP" : "▶ START SHADOWING"}
-        </button>
-      </div>
-      <NextButton onClick={onNext} />
-    </>
-  );
-}
-
-
-function Rep7({ lesson, modelText, rep7Recording, onRep7Recorded, onNext }: RepBodyProps) {
-  const [check, setCheck] = useState<RepCheck | null>(null);
-  return (
-    <>
-      <Instruction text="Now do it without the speaker." sub={`Target ${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds.`} es="Ahora hazlo sin el hablante. Di las frases por tu cuenta." />
-      <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-        {lesson.sentences.map((sentence) => (
-          <TranslatableText key={sentence.id} es={sentence.es} className="mb-2">
-            <p className="text-[16px] leading-relaxed text-muted-foreground">{sentence.text}</p>
-          </TranslatableText>
-        ))}
-
-      </div>
-      <div className="mt-6">
-        <VoiceRecorder
-          label="RECORD"
-          stopLabel="STOP"
-          targetSeconds={lesson.goalSeconds}
-          captureTranscript
-          liveTranscriptOnly
-          onComplete={(recording, transcript) => {
-            onRep7Recorded(recording);
-            setCheck(checkRepetition(modelText, transcript));
-          }}
-        />
-      </div>
-      {check ? <RepFeedback check={check} onRetry={() => setCheck(null)} className="mt-6" /> : null}
-      {rep7Recording ? (
-        <div className="mt-6">
-          <RecordingComparison leftLabel="▶ MODEL" rightLabel="▶ MY VOICE" modelText={modelText} rightUrl={rep7Recording.url} caption="Model vs my voice" />
-        </div>
-      ) : null}
-      <NextButton onClick={onNext} />
-    </>
-  );
-}
-
 
 function CueRow({ cues }: { cues: string[] }) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap justify-center gap-2">
       {cues.map((cue) => (
-        <span key={cue} className="rounded-full bg-navy px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-navy-foreground">
+        <span key={cue} className="rounded-full bg-secondary px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
           {cue}
         </span>
       ))}
@@ -502,132 +210,314 @@ function CueRow({ cues }: { cues: string[] }) {
   );
 }
 
-const SERIES_TOTAL = 5;
+/* ------------------------------ Step 0 intro ----------------------------- */
 
-function RepSeries({ lesson, rep9Recording, onSeriesComplete, backRef, forwardRef }: RepBodyProps) {
-  const [repNumber, setRepNumber] = useState(1);
-  const [recording, setRecording] = useState<Recording | null>(rep9Recording);
-  const [completedReps, setCompletedReps] = useState<SeriesRep[]>([]);
-  const [recordings, setRecordings] = useState<Record<number, Recording>>({});
-  const isLast = repNumber === SERIES_TOTAL;
+function IntroStep({ day, onNext }: { day: CourseDay; onNext: () => void }) {
+  const intro = day.intro;
+  return (
+    <div className="space-y-5">
+      <div className="rounded-3xl bg-navy p-6 text-navy-foreground">
+        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">DAY {day.day} OF {CourseService.totalDays}</p>
+        <TranslatableText es={intro.titleEs} esClassName="text-navy-foreground/70">
+          <h2 className="mt-2 text-3xl font-extrabold tracking-tight">{intro.title}</h2>
+        </TranslatableText>
+        <TranslatableText es={intro.leadEs} className="mt-3" esClassName="text-navy-foreground/70">
+          <p className="text-[17px] font-semibold leading-snug">{intro.lead}</p>
+        </TranslatableText>
+      </div>
 
-  const goToRep = (n: number) => {
-    setRepNumber(n);
-    setRecording(recordings[n] ?? null);
-  };
+      <div className="space-y-2 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+        {intro.examples.map((example) => (
+          <p key={example} className="text-[20px] font-extrabold tracking-tight">
+            {example}
+          </p>
+        ))}
+      </div>
 
-  backRef.current =
-    repNumber > 1
-      ? () => {
-          goToRep(repNumber - 1);
-          return true;
-        }
-      : null;
+      <div className="rounded-3xl border border-primary/25 bg-accent p-5">
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-accent-foreground">
+          {day.focus} · {day.topic}
+        </p>
+        <TranslatableText es={intro.goalEs} className="mt-2">
+          <p className="text-[17px] font-bold leading-snug text-foreground">{intro.goal}</p>
+        </TranslatableText>
+      </div>
 
-  // Forward only to completed reps or the next pending one (no skipping recordings).
-  const maxDone = completedReps.reduce((max, r) => (r.status === "done" ? Math.max(max, r.number) : max), 0);
-  const nextAllowed = Math.min(maxDone + 1, SERIES_TOTAL);
-  forwardRef.current =
-    repNumber < nextAllowed
-      ? () => {
-          goToRep(repNumber + 1);
-          return true;
-        }
-      : null;
+      <PrimaryButton onClick={onNext}>
+        {intro.cta} <ArrowRight className="size-5" />
+      </PrimaryButton>
+    </div>
+  );
+}
 
-  const markRep = (number: number, duration: number | null, status: SeriesRep["status"], url?: string) => {
-    setCompletedReps((prev) => {
-      const next = prev.filter((r) => r.number !== number);
-      if (status === "done" && duration != null) {
-        next.push({ number, duration, status, url });
-      }
-      return next.sort((a, b) => a.number - b.number);
-    });
-  };
+/* -------------------------------- Rep 1 ---------------------------------- */
 
-  const deleteRep = (number: number) => {
-    markRep(number, null, "pending");
-    setRecordings((prev) => {
-      const next = { ...prev };
-      delete next[number];
-      return next;
-    });
-    if (number === repNumber) setRecording(null);
-  };
-
+function Rep1Listen({ day, onNext }: { day: CourseDay; onNext: () => void }) {
+  const [heard, setHeard] = useState(false);
+  const [showText, setShowText] = useState(false);
 
   return (
-    <>
-      <Instruction text="Talk about YOUR life." sub={`${lesson.goalSeconds[0]}–${lesson.goalSeconds[1]} seconds. 7–10 sentences.`} es="Habla de TU vida. 7–10 oraciones." />
+    <div className="space-y-5">
+      <Instruction en="Just listen. Don't speak yet." es="Solo escucha. Todavía no hables." />
 
-      <div className="mb-5 rounded-3xl bg-navy p-4 text-navy-foreground">
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
-          REP {repNumber} DE {SERIES_TOTAL}
-        </p>
-        <div className="mt-3 flex gap-1.5">
-          {Array.from({ length: SERIES_TOTAL }).map((_, i) => (
-            <span
-              key={i}
-              className={cn(
-                "h-1.5 flex-1 rounded-full",
-                i < repNumber - 1 ? "bg-primary" : i === repNumber - 1 ? "bg-primary/50" : "bg-white/15",
-              )}
-            />
+      <AudioPlayer
+        text={CourseService.getModelText(day)}
+        label="LISTEN TO THE MODEL"
+        size="lg"
+        onEnd={() => setHeard(true)}
+      />
+
+      <button
+        type="button"
+        onClick={() => setShowText((v) => !v)}
+        className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
+      >
+        {showText ? "Hide text" : "Show text"}
+      </button>
+
+      {showText ? (
+        <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+          {day.lines.map((line) => (
+            <LineCard key={line.id} line={line} />
           ))}
         </div>
-        <p className="mt-3 text-sm text-navy-foreground/70">Say the whole thing again, a little better each time.</p>
-        <EsLine text="Repite todo otra vez, un poco mejor cada vez." className="mt-1 text-navy-foreground/60" />
-        <p className="mt-2 text-sm font-semibold text-navy-foreground/80">Max 30 seconds per rep. It stops on its own.</p>
-        <EsLine text="Máximo 30 segundos por rep. Se detiene solo." className="mt-1 text-navy-foreground/60" />
+      ) : null}
 
+      <PrimaryButton onClick={onNext} disabled={!heard}>
+        {heard ? "NEXT REP" : "LISTEN FIRST"} <ArrowRight className="size-5" />
+      </PrimaryButton>
+    </div>
+  );
+}
+
+/* -------------------------------- Rep 2 ---------------------------------- */
+
+function Rep2Copy({
+  day,
+  index,
+  onRecorded,
+  onNext,
+}: {
+  day: CourseDay;
+  index: number;
+  onRecorded: (rec: Recording) => void;
+  onNext: () => void;
+}) {
+  const line = day.lines[index]!;
+  const [mine, setMine] = useState<Recording | null>(null);
+
+  useEffect(() => setMine(null), [index]);
+
+  return (
+    <div className="space-y-5">
+      <Instruction en="Listen. Then copy the sentence." es="Escucha. Después copia la oración." />
+      <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+        {index + 1} / {day.lines.length}
+      </p>
+
+      <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+        <LineCard line={line} chunked />
       </div>
 
-      <RepSeriesRow total={SERIES_TOTAL} reps={completedReps} onDelete={deleteRep} current={repNumber} onSelect={goToRep} />
+      <AudioPlayer text={line.text} label="LISTEN" rate={0.9} />
 
-      <CueRow cues={lesson.cues} />
+      <VoiceRecorder label="RECORD" maxSeconds={20} showTimer onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
 
-      <div className="mt-8">
-        <VoiceRecorder
-          key={repNumber}
-          label="START"
-          stopLabel="STOP"
-          targetSeconds={[Math.min(lesson.goalSeconds[0], 30), Math.min(lesson.goalSeconds[1], 30)]}
-          maxSeconds={30}
+      {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
 
-          onComplete={(rec) => {
-            setRecording(rec);
-            setRecordings((prev) => ({ ...prev, [repNumber]: rec }));
-            markRep(repNumber, rec.durationSeconds, "done", rec.url ?? undefined);
-          }}
-        />
+      <PrimaryButton onClick={onNext}>
+        {index < day.lines.length - 1 ? "NEXT SENTENCE" : "NEXT REP"} <ArrowRight className="size-5" />
+      </PrimaryButton>
+    </div>
+  );
+}
+
+/* -------------------------------- Rep 3 ---------------------------------- */
+
+function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (rec: Recording) => void; onNext: () => void }) {
+  const [speed, setSpeed] = useState(0.75);
+  const [mine, setMine] = useState<Recording | null>(null);
+
+  return (
+    <div className="space-y-5">
+      <Instruction en="Read along with the model." es="Lee a la par del modelo." />
+
+      <div className="flex gap-2">
+        {[0.5, 0.75].map((rate) => (
+          <button
+            key={rate}
+            type="button"
+            onClick={() => setSpeed(rate)}
+            className={cn(
+              "flex-1 rounded-2xl border px-4 py-3 text-[13px] font-bold uppercase tracking-[0.12em] transition-colors",
+              speed === rate ? "border-primary bg-primary/10 text-primary" : "border-border bg-card text-muted-foreground",
+            )}
+          >
+            {rate}x
+          </button>
+        ))}
       </div>
 
-      {recording ? (
-        <div className="mt-6 space-y-3">
-          <RecordingPlayback url={recording.url} label="▶ LISTEN" />
-          <button
-            type="button"
-            onClick={() => deleteRep(repNumber)}
-            className="w-full rounded-2xl border border-border bg-card px-5 py-3.5 text-[15px] font-semibold"
-          >
-            TRY AGAIN
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              if (isLast) {
-                onSeriesComplete(recording);
-                return;
-              }
-              goToRep(repNumber + 1);
-            }}
+      <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+        {day.lines.map((line) => (
+          <LineCard key={line.id} line={line} chunked />
+        ))}
+      </div>
 
-            className="w-full rounded-2xl bg-primary px-6 py-5 text-base font-extrabold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
-          >
-            {isLast ? "FINISH 5 REPS ✓" : `NEXT REP (${repNumber + 1} / ${SERIES_TOTAL})`}
-          </button>
+      <AudioPlayer text={CourseService.getModelText(day)} label="START SHADOWING" rate={speed} size="lg" />
+
+      <VoiceRecorder label="RECORD ME" maxSeconds={60} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
+      {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
+
+      <PrimaryButton onClick={onNext}>
+        NEXT REP <ArrowRight className="size-5" />
+      </PrimaryButton>
+    </div>
+  );
+}
+
+/* -------------------------------- Rep 4 ---------------------------------- */
+
+type Rep4Item = { id: string; question: string; questionEs: string; starter: string; starterEs: string; cues?: string[] };
+
+function rep4Items(day: CourseDay): Rep4Item[] {
+  if (day.challenges?.length) {
+    return day.challenges.map((challenge) => ({
+      id: challenge.id,
+      question: challenge.title,
+      questionEs: challenge.titleEs,
+      starter: challenge.detail,
+      starterEs: challenge.detailEs,
+      cues: challenge.cues,
+    }));
+  }
+  return day.prompts;
+}
+
+function Rep4MakeItYours({
+  day,
+  index,
+  onRecorded,
+  onNext,
+}: {
+  day: CourseDay;
+  index: number;
+  onRecorded: (rec: Recording) => void;
+  onNext: () => void;
+}) {
+  const items = rep4Items(day);
+  const item = items[index]!;
+  const [mine, setMine] = useState<Recording | null>(null);
+
+  useEffect(() => setMine(null), [index]);
+
+  return (
+    <div className="space-y-5">
+      <Instruction en="Answer about YOUR life." es="Responde sobre TU vida." />
+      <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+        {index + 1} / {items.length}
+      </p>
+
+      <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+        <TranslatableText es={item.questionEs}>
+          <p className="text-[20px] font-extrabold leading-tight tracking-tight">{item.question}</p>
+        </TranslatableText>
+        <div className="mt-4 rounded-2xl bg-secondary p-4">
+          <TranslatableText es={item.starterEs}>
+            <p className="text-[17px] font-bold text-foreground">{item.starter}</p>
+          </TranslatableText>
+        </div>
+      </div>
+
+      {item.cues ? <CueRow cues={item.cues} /> : null}
+
+      <AudioPlayer text={item.question} label="HEAR THE QUESTION" variant="ghost" size="sm" />
+
+      <VoiceRecorder label="ANSWER" maxSeconds={30} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
+      {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
+
+      <PrimaryButton onClick={onNext}>
+        {index < items.length - 1 ? "NEXT QUESTION" : "NEXT REP"} <ArrowRight className="size-5" />
+      </PrimaryButton>
+    </div>
+  );
+}
+
+/* -------------------------------- Rep 5 ---------------------------------- */
+
+function Rep5FinalRep({
+  day,
+  attempts,
+  onAttempt,
+  onFinish,
+}: {
+  day: CourseDay;
+  attempts: Recording[];
+  onAttempt: (rec: Recording) => void;
+  onFinish: (rec: Recording) => void;
+}) {
+  const attemptNumber = attempts.length + 1;
+  const last = attempts[attempts.length - 1] ?? null;
+  const [reviewing, setReviewing] = useState(false);
+
+  useEffect(() => setReviewing(Boolean(last)), [attempts.length, last]);
+
+  if (reviewing && last) {
+    return (
+      <div className="space-y-5">
+        <div className="rounded-3xl border border-success/25 bg-success/8 p-5 text-center">
+          <p className="flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-success">
+            <Sparkles className="size-4" /> {attempts.length === 1 ? "First take done" : `Take ${attempts.length} done`}
+          </p>
+          <p className="mt-2 text-[22px] font-extrabold tracking-tight">
+            {last.durationSeconds}s
+          </p>
+          <TranslatableText es="Meta: 35–45 segundos. Más largo es mejor que perfecto." align="center" className="mt-1">
+            <p className="text-[13px] text-muted-foreground">Goal: {day.goalSeconds[0]}–{day.goalSeconds[1]} seconds. Longer beats perfect.</p>
+          </TranslatableText>
+        </div>
+
+        <RecordingPlayback url={last.url} label="LISTEN TO MY REP" />
+
+        <PrimaryButton onClick={() => onFinish(last)}>
+          <Check className="size-5" /> USE THIS AS MY FINAL REP
+        </PrimaryButton>
+
+        <button
+          type="button"
+          onClick={() => setReviewing(false)}
+          className="w-full rounded-2xl border border-border bg-card px-5 py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
+        >
+          Try one more time
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-5">
+      <Instruction
+        en={attemptNumber === 1 ? "Speak about your life. 7–10 sentences." : "One more take. A little longer this time."}
+        es={attemptNumber === 1 ? "Habla de tu vida. 7–10 oraciones." : "Otra toma. Un poco más larga esta vez."}
+      />
+
+      <CueRow cues={attemptNumber > 2 ? day.cues.slice(0, 2) : day.cues} />
+
+      {day.fluencyBonus ? (
+        <div className="rounded-3xl border border-primary/25 bg-accent p-4">
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-accent-foreground">Bonus</p>
+          <TranslatableText es={day.fluencyBonus.es} className="mt-1">
+            <p className="text-[15px] font-semibold">{day.fluencyBonus.text}</p>
+          </TranslatableText>
         </div>
       ) : null}
-    </>
+
+      <VoiceRecorder
+        label="START MY REP"
+        targetSeconds={day.goalSeconds}
+        maxSeconds={90}
+        onComplete={onAttempt}
+      />
+    </div>
   );
 }

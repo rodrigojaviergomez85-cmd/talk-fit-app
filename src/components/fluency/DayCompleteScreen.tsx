@@ -1,0 +1,134 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { Check, Flame } from "lucide-react";
+import { RecordingPlayback } from "./RecordingPlayback";
+import { TranslatableText } from "./TranslatableText";
+import { JourneyService } from "@/services/journey-service";
+import { CourseService } from "@/services/course-service";
+import type { CourseDay, Recording, SelfAssessment } from "@/lib/types";
+import { cn } from "@/lib/utils";
+
+type Props = {
+  day: CourseDay;
+  finalRecording: Recording | null;
+  firstRecording: Recording | null;
+  showEs: boolean;
+};
+
+const ASSESSMENTS: { value: SelfAssessment; en: string; es: string }[] = [
+  { value: "not-yet", en: "Not yet", es: "Todavía no" },
+  { value: "a-little", en: "A little", es: "Un poco" },
+  { value: "definitely", en: "Definitely", es: "Definitivamente" },
+];
+
+/** Celebration + objective numbers after the 5th rep of the day. */
+export function DayCompleteScreen({ day, finalRecording, firstRecording, showEs }: Props) {
+  const navigate = useNavigate();
+  const [state, setState] = useState(() => JourneyService.load());
+  const [answer, setAnswer] = useState<SelfAssessment | null>(state.selfAssessment ?? null);
+
+  useEffect(() => setState(JourneyService.load()), []);
+
+  const isLastDay = day.day === CourseService.totalDays;
+  const seconds = finalRecording?.durationSeconds ?? 0;
+  const firstSeconds = firstRecording?.durationSeconds ?? 0;
+
+  return (
+    <div className="min-h-screen bg-background px-4 pb-16 pt-[max(2rem,env(safe-area-inset-top))]">
+      <div className="mx-auto w-full max-w-lg space-y-5">
+        <div className="rounded-3xl bg-navy p-7 text-center text-navy-foreground">
+          <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground animate-pop-check">
+            <Check className="size-9" />
+          </div>
+          <h1 className="mt-4 text-3xl font-extrabold tracking-tight">
+            {showEs ? "¡MUY BIEN!" : "GREAT JOB!"}
+          </h1>
+          <p className="mt-2 text-[17px] font-semibold text-navy-foreground/85">
+            {showEs
+              ? `Terminaste el Día ${day.day}: 5 de 5 reps.`
+              : `You finished Day ${day.day}: 5 of 5 reps.`}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <Stat label={showEs ? "Reps hoy" : "Reps today"} value="5 / 5" />
+          <Stat label={showEs ? "Rep final" : "Final rep"} value={`${seconds}s`} />
+          <Stat
+            label={showEs ? "Racha" : "Streak"}
+            value={`${state.streakDays}`}
+            icon={<Flame className="size-4 text-primary" />}
+          />
+          <Stat
+            label={showEs ? "Días completados" : "Days completed"}
+            value={`${JourneyService.completedCount(state)} / ${CourseService.totalDays}`}
+          />
+        </div>
+
+        {finalRecording ? (
+          <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              {showEs ? "Tu grabación final" : "Your final recording"}
+            </p>
+            <RecordingPlayback url={finalRecording.url} label={showEs ? "ESCUCHAR MI REP" : "LISTEN TO MY REP"} />
+            {firstRecording && firstRecording.id !== finalRecording.id ? (
+              <RecordingPlayback url={firstRecording.url} label={showEs ? `PRIMERA TOMA (${firstSeconds}s)` : `FIRST TAKE (${firstSeconds}s)`} />
+            ) : null}
+          </div>
+        ) : null}
+
+        <div className="rounded-3xl border border-primary/25 bg-accent p-5 text-center">
+          <TranslatableText es="Cada rep hace tu inglés más automático." align="center">
+            <p className="text-[18px] font-extrabold leading-snug text-foreground">
+              Every rep makes your English more automatic.
+            </p>
+          </TranslatableText>
+        </div>
+
+        {isLastDay ? (
+          <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+            <p className="text-[17px] font-extrabold tracking-tight">
+              {showEs ? "¿Sientes que hablar es más fácil que el Día 1?" : "Does speaking feel easier than Day 1?"}
+            </p>
+            <div className="grid gap-2">
+              {ASSESSMENTS.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => {
+                    setAnswer(option.value);
+                    setState(JourneyService.saveSelfAssessment(option.value));
+                  }}
+                  className={cn(
+                    "rounded-2xl border px-4 py-3 text-[15px] font-bold transition-colors",
+                    answer === option.value ? "border-primary bg-primary/10 text-primary" : "border-border bg-card text-foreground",
+                  )}
+                >
+                  {showEs ? option.es : option.en}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        <button
+          type="button"
+          onClick={() => void navigate({ to: "/" })}
+          className="w-full rounded-2xl bg-primary px-6 py-4 text-[15px] font-bold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
+        >
+          {showEs ? "TERMINAR DÍA ✓" : "COMPLETE DAY ✓"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Stat({ label, value, icon }: { label: string; value: string; icon?: React.ReactNode }) {
+  return (
+    <div className="rounded-3xl bg-card p-4 text-center shadow-[var(--shadow-card)]">
+      <p className="flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+        {icon} {label}
+      </p>
+      <p className="mt-1.5 text-2xl font-extrabold tabular-nums tracking-tight">{value}</p>
+    </div>
+  );
+}

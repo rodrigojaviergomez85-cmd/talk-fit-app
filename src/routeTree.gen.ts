@@ -10,22 +10,15 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as CoachRouteImport } from './routes/coach'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProgressRouteImport } from './routes/progress'
-import { Route as ApiTranscribeRouteImport } from './routes/api/transcribe'
+import { Route as RecordingsRouteImport } from './routes/recordings'
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
-import { Route as ModuleSimplePresentRouteImport } from './routes/module.simple-present'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CoachRoute = CoachRouteImport.update({
-  id: '/coach',
-  path: '/coach',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PracticeRoute = PracticeRouteImport.update({
@@ -43,9 +36,9 @@ const ProgressRoute = ProgressRouteImport.update({
   path: '/progress',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiTranscribeRoute = ApiTranscribeRouteImport.update({
-  id: '/api/transcribe',
-  path: '/api/transcribe',
+const RecordingsRoute = RecordingsRouteImport.update({
+  id: '/recordings',
+  path: '/recordings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiTtsRoute = ApiTtsRouteImport.update({
@@ -53,85 +46,55 @@ const ApiTtsRoute = ApiTtsRouteImport.update({
   path: '/api/tts',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ModuleSimplePresentRoute = ModuleSimplePresentRouteImport.update({
-  id: '/module/simple-present',
-  path: '/module/simple-present',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/coach': typeof CoachRoute
   '/practice': typeof PracticeRoute
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
-  '/api/transcribe': typeof ApiTranscribeRoute
+  '/recordings': typeof RecordingsRoute
   '/api/tts': typeof ApiTtsRoute
-  '/module/simple-present': typeof ModuleSimplePresentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/coach': typeof CoachRoute
   '/practice': typeof PracticeRoute
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
-  '/api/transcribe': typeof ApiTranscribeRoute
+  '/recordings': typeof RecordingsRoute
   '/api/tts': typeof ApiTtsRoute
-  '/module/simple-present': typeof ModuleSimplePresentRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/coach': typeof CoachRoute
   '/practice': typeof PracticeRoute
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
-  '/api/transcribe': typeof ApiTranscribeRoute
+  '/recordings': typeof RecordingsRoute
   '/api/tts': typeof ApiTtsRoute
-  '/module/simple-present': typeof ModuleSimplePresentRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/coach'
-    | '/practice'
-    | '/profile'
-    | '/progress'
-    | '/api/transcribe'
-    | '/api/tts'
-    | '/module/simple-present'
+    '/' | '/practice' | '/profile' | '/progress' | '/recordings' | '/api/tts'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/coach'
-    | '/practice'
-    | '/profile'
-    | '/progress'
-    | '/api/transcribe'
-    | '/api/tts'
-    | '/module/simple-present'
+  to: '/' | '/practice' | '/profile' | '/progress' | '/recordings' | '/api/tts'
   id:
     | '__root__'
     | '/'
-    | '/coach'
     | '/practice'
     | '/profile'
     | '/progress'
-    | '/api/transcribe'
+    | '/recordings'
     | '/api/tts'
-    | '/module/simple-present'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CoachRoute: typeof CoachRoute
   PracticeRoute: typeof PracticeRoute
   ProfileRoute: typeof ProfileRoute
   ProgressRoute: typeof ProgressRoute
-  ApiTranscribeRoute: typeof ApiTranscribeRoute
+  RecordingsRoute: typeof RecordingsRoute
   ApiTtsRoute: typeof ApiTtsRoute
-  ModuleSimplePresentRoute: typeof ModuleSimplePresentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,13 +104,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/coach': {
-      id: '/coach'
-      path: '/coach'
-      fullPath: '/coach'
-      preLoaderRoute: typeof CoachRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/practice': {
@@ -171,11 +127,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgressRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/transcribe': {
-      id: '/api/transcribe'
-      path: '/api/transcribe'
-      fullPath: '/api/transcribe'
-      preLoaderRoute: typeof ApiTranscribeRouteImport
+    '/recordings': {
+      id: '/recordings'
+      path: '/recordings'
+      fullPath: '/recordings'
+      preLoaderRoute: typeof RecordingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/tts': {
@@ -185,25 +141,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiTtsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/module/simple-present': {
-      id: '/module/simple-present'
-      path: '/module/simple-present'
-      fullPath: '/module/simple-present'
-      preLoaderRoute: typeof ModuleSimplePresentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CoachRoute: CoachRoute,
   PracticeRoute: PracticeRoute,
   ProfileRoute: ProfileRoute,
   ProgressRoute: ProgressRoute,
-  ApiTranscribeRoute: ApiTranscribeRoute,
+  RecordingsRoute: RecordingsRoute,
   ApiTtsRoute: ApiTtsRoute,
-  ModuleSimplePresentRoute: ModuleSimplePresentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

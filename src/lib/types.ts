@@ -1,53 +1,68 @@
 /**
  * Shared domain types for FLUENCY REPS.
- * Version 1 (guided reps) and Version 2 (AI coach) share this model, so the
- * mock services can be swapped for real APIs without touching the UI.
+ * MVP: no automatic evaluation — only objective, measurable practice data.
  */
 
-export type Chunk = {
+/** One model line of the day, split into natural speaking chunks. */
+export type ModelLine = {
   id: string;
+  /** English text (always visually dominant). */
   text: string;
-  /** Hand-written Spanish translation (for Spanish-speaking beginners). */
-  es?: string;
-};
-
-export type ModelSentence = {
-  id: string;
-  /** Full sentence text. */
-  text: string;
-  /** Sentence split into natural speaking chunks. */
+  /** Hand-written Spanish translation (secondary support). */
+  es: string;
+  /** Natural speaking chunks. */
   chunks: string[];
-  /** Hand-written Spanish translation. */
-  es?: string;
+  /** Day 4 only: question or answer turn. */
+  role?: "q" | "a" | undefined;
 };
 
+/** Rep 4 personalization prompt. */
 export type PersonalPrompt = {
   id: string;
   question: string;
+  questionEs: string;
   starter: string;
-  /** Spanish translation of the question. */
-  questionEs?: string;
-  /** Spanish translation of the starter. */
-  starterEs?: string;
+  starterEs: string;
 };
 
-export type Lesson = {
+/** Step 0 — very short grammar intro. */
+export type DayIntro = {
+  title: string;
+  titleEs: string;
+  lead: string;
+  leadEs: string;
+  examples: string[];
+  goal: string;
+  goalEs: string;
+  cta: string;
+};
+
+/** Day 5 mini challenge. */
+export type Challenge = {
   id: string;
-  grammar: string;
-  topic: string;
-  level: string;
-  goalSeconds: [number, number];
+  title: string;
+  titleEs: string;
+  detail: string;
+  detailEs: string;
+  cues: string[];
+};
+
+export type CourseDay = {
+  day: number;
   focus: string;
+  focusEs: string;
+  topic: string;
+  topicEs: string;
+  goalSeconds: [number, number];
   estimatedMinutes: string;
-  sentences: ModelSentence[];
-  /** Reusable automaticity chunks (Rep 4). */
-  automaticityChunks: Chunk[];
+  intro: DayIntro;
+  /** The day's core model lines — recycled across Reps 1–4. */
+  lines: ModelLine[];
   prompts: PersonalPrompt[];
   cues: string[];
-  checklist: string[];
-  /** Spanish translations for the checklist, same order. */
-  checklistEs?: string[];
-
+  challenges?: Challenge[] | undefined;
+  /** Optional non-Simple-Present speaking extension. */
+  fluencyBonus?: { text: string; es: string } | undefined;
 };
 
 export type Recording = {
@@ -57,113 +72,44 @@ export type Recording = {
   durationSeconds: number;
   createdAt: string;
   label: string;
-  /** Raw audio blob (session-scoped), used for server-side transcription. */
+  /** Raw audio blob (session-scoped), used for cloud upload. */
   blob?: Blob | undefined;
 };
 
-export type GrammarIssue = {
-  id: string;
-  category: "third-person-s" | "because" | "future" | "frequency" | "other";
-  said: string;
-  correct: string;
-  note: string;
-};
+export type SelfAssessment = "not-yet" | "a-little" | "definitely";
 
-export type FluencyMetrics = {
-  seconds: number;
-  words: number;
-  wordsPerMinute: number;
-  longPauses: number;
-  fillerWords: number;
-  sentences: number;
-  continuityNote: string;
-};
-
-export type PronunciationTarget = {
-  word: string;
-  tip: string;
-};
-
-export type RhythmTarget = {
-  wordByWord: string;
-  chunked: string;
-};
-
-export type StructureCheck = {
-  label: string;
-  passed: boolean;
-  detail?: string;
-};
-
-export type ScoreBreakdown = {
-  fluency: number;
-  pronunciation: number;
-  grammarAutomaticity: number;
-  rhythm: number;
-  targetStructure: number;
-};
-
-export type SpeechAnalysis = {
-  id: string;
-  createdAt: string;
-  transcript: string;
-  grammarIssues: GrammarIssue[];
-  fluency: FluencyMetrics;
-  pronunciation: PronunciationTarget[];
-  rhythm: RhythmTarget[];
-  structure: StructureCheck[];
-  score: number;
-  breakdown: ScoreBreakdown;
-  didWell: string;
-  oneThingToImprove: string;
-  focusLabel: string;
-};
-
-
-export type QuickFix = {
-  focusLabel: string;
-  variations: string[];
-};
-
-export type MistakeEntry = {
-  id: string;
-  category: GrammarIssue["category"];
-  categoryLabel: string;
-  wrong: string;
-  right: string;
-  occurrences: number;
-  lastSeen: string;
-};
-
-export type SessionResult = {
-  date: string;
-  lessonId: string;
-  score: number;
-  breakdown: ScoreBreakdown;
+/** Objective record of one completed day. */
+export type DayRecord = {
+  day: number;
+  /** Local YYYY-MM-DD key of completion. */
+  dayKey: string;
+  completedAt: string;
+  /** Duration of the saved final recording. */
   finalSeconds: number;
-  fixed: string[];
-  transcript: string;
+  /** Duration of attempt 1 (for the first-vs-final comparison). */
+  firstSeconds: number;
+  /** Total recorded seconds during the day. */
+  practiceSeconds: number;
+  /** Number of full recordings made in Rep 5. */
+  recordingsCount: number;
+  /** Session-scoped object URL of the final recording. */
+  finalUrl?: string | null | undefined;
+  /** Session-scoped object URL of attempt 1. */
+  firstUrl?: string | null | undefined;
+  /** Cloud storage path of the final recording, when signed in. */
+  recordingPath?: string | null | undefined;
+  selfAssessment?: SelfAssessment | undefined;
 };
 
-export type LearnerProfile = {
-  studentId: string;
-  name: string;
-  level: string;
-  lessonsCompleted: number;
+export type JourneyState = {
+  /** Completed days, keyed by day number. */
+  days: Record<number, DayRecord>;
   streakDays: number;
-  speakingMinutesThisWeek: number;
-  weeklyGoalMinutes: number;
-  totalSpeakingMinutes: number;
-  fluencyScore: number;
-  bestContinuousSeconds: number;
-  history: { day: number; score: number; label: string }[];
-  sessions: SessionResult[];
-  mistakes: MistakeEntry[];
-  strongestSkill: string;
-  priorities: string[];
-  /** Local date (YYYY-MM-DD) of the last day the 5 daily reps were completed. */
-  lastCompletedDate?: string;
-  /** Reps completed on `lastCompletedDate`. */
-  repsCompletedToday?: number;
+  /** Local YYYY-MM-DD key of the last completed day. */
+  lastCompletedDate?: string | undefined;
+  totalRepsCompleted: number;
+  totalSpeakingSeconds: number;
+  /** Speaking seconds keyed by local day, used for the weekly total. */
+  weekSeconds: Record<string, number>;
+  selfAssessment?: SelfAssessment | undefined;
 };
-

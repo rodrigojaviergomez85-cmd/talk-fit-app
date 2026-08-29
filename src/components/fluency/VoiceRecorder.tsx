@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Mic, Square } from "lucide-react";
 import { RecordingService, MicError, type ActiveRecording, type MicErrorKind } from "@/services/recording-service";
-import { SpeechToTextService } from "@/services/speech-to-text-service";
 import { WaveformPlayer } from "./WaveformPlayer";
 import { useSpanishAll } from "./TranslatableText";
 import type { Recording } from "@/lib/types";
@@ -14,10 +13,8 @@ type VoiceRecorderProps = {
   /** Hard limit: the recording stops by itself when reached. */
   maxSeconds?: number;
   showTimer?: boolean;
-  captureTranscript?: boolean;
-  /** Short reps: use only what the browser really heard, never a mock transcript. */
-  liveTranscriptOnly?: boolean;
-  onComplete: (recording: Recording, transcript: string) => void;
+  size?: "md" | "lg";
+  onComplete: (recording: Recording) => void;
   className?: string;
 };
 
@@ -47,18 +44,15 @@ export function VoiceRecorder({
   targetSeconds,
   maxSeconds,
   showTimer = true,
-  captureTranscript = false,
-  liveTranscriptOnly = false,
+  size = "lg",
   onComplete,
   className,
 }: VoiceRecorderProps) {
   const showEs = useSpanishAll();
   const [recording, setRecording] = useState(false);
-  const [analyzing, setAnalyzing] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const activeRef = useRef<ActiveRecording | null>(null);
-  const stopListeningRef = useRef<(() => string) | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const stopRef = useRef<() => void>(() => undefined);
 
@@ -66,7 +60,6 @@ export function VoiceRecorder({
     () => () => {
       if (timerRef.current) clearInterval(timerRef.current);
       activeRef.current?.cancel();
-      stopListeningRef.current?.();
     },
     [],
   );
@@ -76,9 +69,6 @@ export function VoiceRecorder({
     try {
       const active = await RecordingService.start(label);
       activeRef.current = active;
-      if (captureTranscript && SpeechToTextService.isLiveSupported()) {
-        stopListeningRef.current = SpeechToTextService.listen(() => undefined);
-      }
       setSeconds(0);
       setRecording(true);
       timerRef.current = setInterval(
@@ -102,9 +92,6 @@ export function VoiceRecorder({
     timerRef.current = null;
     if (!activeRef.current && !recording) return;
     setRecording(false);
-    const live = stopListeningRef.current?.() ?? "";
-    const hadLive = stopListeningRef.current !== null;
-    stopListeningRef.current = null;
     const active = activeRef.current;
     activeRef.current = null;
     let result: Recording = {
@@ -115,29 +102,11 @@ export function VoiceRecorder({
       label,
     };
     if (active) result = await active.stop();
-    let transcript = live.trim();
 
-    // iPhone (Safari and Chrome) has no live recognition: transcribe on the server.
-    if (captureTranscript && !hadLive && !transcript && result.blob) {
-      setAnalyzing(true);
-      const served = await SpeechToTextService.transcribeBlob(result.blob);
-      setAnalyzing(false);
-      transcript = served.transcript;
-      if (!transcript) {
-        setError(
-          showEs
-            ? "No pudimos escuchar bien tu audio. Tu grabación se guardó; inténtalo otra vez."
-            : "We couldn't hear your audio clearly. Your recording is saved — try again.",
-        );
-      }
-    }
-
-    if (captureTranscript && !liveTranscriptOnly && transcript.split(/\s+/).filter(Boolean).length < 12) {
-      transcript = (await SpeechToTextService.transcribe(0)).transcript;
-    }
-
-    const capped = maxSeconds ? Math.min(maxSeconds, Math.max(result.durationSeconds, seconds)) : Math.max(result.durationSeconds, seconds);
-    onComplete({ ...result, durationSeconds: capped }, transcript);
+    const capped = maxSeconds
+      ? Math.min(maxSeconds, Math.max(result.durationSeconds, seconds))
+      : Math.max(result.durationSeconds, seconds);
+    onComplete({ ...result, durationSeconds: capped });
   };
 
   stopRef.current = () => void stop();
@@ -152,26 +121,18 @@ export function VoiceRecorder({
       <button
         type="button"
         onClick={recording ? stop : start}
-        disabled={analyzing}
         className={cn(
-          "flex size-28 flex-col items-center justify-center gap-1 rounded-full text-xs font-bold tracking-widest transition-transform active:scale-95",
+          "flex flex-col items-center justify-center gap-1 rounded-full font-bold tracking-widest transition-transform active:scale-95",
+          size === "lg" ? "size-28 text-xs" : "size-20 text-[10px]",
           recording
             ? "bg-navy text-navy-foreground"
-            : analyzing
-              ? "bg-secondary text-muted-foreground"
-              : "bg-primary text-primary-foreground shadow-[var(--shadow-lift)] animate-[var(--animate-pulse-ring)]",
+            : "bg-primary text-primary-foreground shadow-[var(--shadow-lift)] animate-[var(--animate-pulse-ring)]",
         )}
         aria-label={recording ? stopLabel : label}
       >
-        {recording ? <Square className="size-8 fill-current" /> : <Mic className="size-10" />}
-        <span>{recording ? stopLabel : analyzing ? (showEs ? "ANALIZANDO…" : "ANALYZING…") : label}</span>
+        {recording ? <Square className={size === "lg" ? "size-8 fill-current" : "size-6 fill-current"} /> : <Mic className={size === "lg" ? "size-10" : "size-7"} />}
+        <span>{recording ? stopLabel : label}</span>
       </button>
-
-      {analyzing ? (
-        <p className="text-center text-xs font-bold uppercase tracking-wider text-muted-foreground">
-          {showEs ? "Analizando tu audio…" : "Analyzing your audio…"}
-        </p>
-      ) : null}
 
       {showTimer ? (
         <div className="text-center">
@@ -183,14 +144,9 @@ export function VoiceRecorder({
           >
             {String(Math.floor(seconds / 60)).padStart(2, "0")}:{String(seconds % 60).padStart(2, "0")}
           </p>
-          {maxSeconds ? (
-            <p className="mt-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-              MÁX {maxSeconds} s
-            </p>
-          ) : null}
           {targetSeconds ? (
             <p className="mt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              Target {targetSeconds[0]}–{targetSeconds[1]} seconds
+              {showEs ? "Meta" : "Target"} {targetSeconds[0]}–{targetSeconds[1]} {showEs ? "segundos" : "seconds"}
             </p>
           ) : null}
         </div>
