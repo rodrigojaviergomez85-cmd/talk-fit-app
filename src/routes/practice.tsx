@@ -155,8 +155,20 @@ function PracticePage() {
               finalIndex={finalIndex}
               onRecorded={(index, rec) => {
                 trackSeconds(rec);
-                setTakes((list) => list.map((item, i) => (i === index ? rec : item)));
+                const pending: Recording = { ...rec, countStatus: "pending", sentenceCount: null };
+                setTakes((list) => list.map((item, i) => (i === index ? pending : item)));
                 setFinalIndex(index);
+                void countSentences(rec.blob ?? null).then((count) => {
+                  setTakes((list) =>
+                    list.map((item, i) =>
+                      i === index && item?.id === rec.id
+                        ? count === null
+                          ? { ...item, countStatus: "failed", sentenceCount: null }
+                          : { ...item, countStatus: "done", sentenceCount: count }
+                        : item,
+                    ),
+                  );
+                });
               }}
               onDelete={(index) => {
                 setTakes((list) => list.map((item, i) => (i === index ? null : item)));
