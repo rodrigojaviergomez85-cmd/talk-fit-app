@@ -5,10 +5,11 @@ import { RecordingPlayback } from "./RecordingPlayback";
 import { TranslatableText } from "./TranslatableText";
 import { JourneyService } from "@/services/journey-service";
 import { CourseService } from "@/services/course-service";
-import type { CourseDay, Recording, SelfAssessment } from "@/lib/types";
+import type { CourseDay, ModuleId, Recording, SelfAssessment } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type Props = {
+  moduleId: ModuleId;
   day: CourseDay;
   finalRecording: Recording | null;
   firstRecording: Recording | null;
@@ -22,14 +23,15 @@ const ASSESSMENTS: { value: SelfAssessment; en: string; es: string }[] = [
 ];
 
 /** Celebration + objective numbers after the 5th rep of the day. */
-export function DayCompleteScreen({ day, finalRecording, firstRecording, showEs }: Props) {
+export function DayCompleteScreen({ moduleId, day, finalRecording, firstRecording, showEs }: Props) {
   const navigate = useNavigate();
   const [state, setState] = useState(() => JourneyService.load());
   const [answer, setAnswer] = useState<SelfAssessment | null>(state.selfAssessment ?? null);
 
   useEffect(() => setState(JourneyService.load()), []);
 
-  const isLastDay = day.day === CourseService.totalDays;
+  const totalDays = CourseService.totalDays(moduleId);
+  const isLastDay = day.day === totalDays;
   const seconds = finalRecording?.durationSeconds ?? 0;
   const firstSeconds = firstRecording?.durationSeconds ?? 0;
 
@@ -60,7 +62,7 @@ export function DayCompleteScreen({ day, finalRecording, firstRecording, showEs 
           />
           <Stat
             label={showEs ? "Días completados" : "Days completed"}
-            value={`${JourneyService.completedCount(state)} / ${CourseService.totalDays}`}
+            value={`${JourneyService.completedCount(state, moduleId)} / ${totalDays}`}
           />
         </div>
 
@@ -96,7 +98,7 @@ export function DayCompleteScreen({ day, finalRecording, firstRecording, showEs 
                   type="button"
                   onClick={() => {
                     setAnswer(option.value);
-                    setState(JourneyService.saveSelfAssessment(option.value));
+                    setState(JourneyService.saveSelfAssessment(moduleId, option.value));
                   }}
                   className={cn(
                     "rounded-2xl border px-4 py-3 text-[15px] font-bold transition-colors",
