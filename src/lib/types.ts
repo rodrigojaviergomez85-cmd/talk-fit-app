@@ -74,6 +74,10 @@ export type Recording = {
   label: string;
   /** Raw audio blob (session-scoped), used for cloud upload. */
   blob?: Blob | undefined;
+  /** Estimated number of complete spoken ideas (Rep 5 only). */
+  sentenceCount?: number | null | undefined;
+  /** Status of the sentence estimate. */
+  countStatus?: "pending" | "done" | "failed" | undefined;
 };
 
 export type SelfAssessment = "not-yet" | "a-little" | "definitely";
