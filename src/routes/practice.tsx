@@ -287,13 +287,11 @@ function Rep2({ lesson, modelText, onNext }: RepBodyProps) {
 function Rep3({ lesson, onNext, backRef, forwardRef }: RepBodyProps) {
   const [index, setIndex] = useState(0);
   const [myVoice, setMyVoice] = useState<Recording | null>(null);
-  const [check, setCheck] = useState<RepCheck | null>(null);
   const sentence = lesson.sentences[index]!;
   const isLast = index === lesson.sentences.length - 1;
 
   const reset = () => {
     setMyVoice(null);
-    setCheck(null);
   };
 
   backRef.current =
