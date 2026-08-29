@@ -330,6 +330,7 @@ type DayInput = {
   examples: string[];
   rep5: { question: string; questionEs: string };
   rep5Tips: { en: string; es: string };
+  speakerVoice: "female" | "male";
   challenges?: CourseDay["challenges"];
 };
 
@@ -369,6 +370,7 @@ function makeDay(input: DayInput): CourseDay {
     ...(input.challenges ? { challenges: input.challenges } : {}),
     rep5Prompt: input.rep5,
     rep5Tips: input.rep5Tips,
+    speakerVoice: input.speakerVoice,
     modelExample: {
       text: input.lines.map((l) => l.text).join(" "),
       es: input.lines.map((l) => l.es).join(" "),
