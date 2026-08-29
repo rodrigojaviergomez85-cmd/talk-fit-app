@@ -50,8 +50,15 @@ export type Challenge = {
   cues: string[];
 };
 
+/** Learning module identifier. */
+export type ModuleId = "basic-zero" | "simple-present";
+
 export type CourseDay = {
   day: number;
+  /** Week number inside the module (Basic Zero only). */
+  week?: 1 | 2 | 3 | 4 | undefined;
+  weekTitle?: string | undefined;
+  weekTitleEs?: string | undefined;
   focus: string;
   focusEs: string;
   topic: string;
@@ -66,9 +73,12 @@ export type CourseDay = {
   challenges?: Challenge[] | undefined;
   /** Rep 5 main question the learner answers with their free talk. */
   rep5Prompt: { question: string; questionEs: string };
+  /** Short bilingual guidance shown with the Rep 5 question. */
+  rep5Tips?: { en: string; es: string } | undefined;
   /** Optional model monologue for Rep 5 — how a complete answer should sound. */
   modelExample?: { text: string; es: string } | undefined;
 };
+
 
 export type Recording = {
   id: string;
