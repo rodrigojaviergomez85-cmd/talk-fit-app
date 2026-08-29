@@ -128,8 +128,11 @@ export function TakeBoard({
               <div className="mt-3 space-y-3">
                 <div className="flex items-center gap-3">
                   <MiniWave seed={index * 3} playing={playing} />
-                  <span className="text-[15px] font-extrabold tabular-nums">{take.durationSeconds}s</span>
+                  <span className="text-[15px] font-extrabold tabular-nums">{take.durationSeconds} sec</span>
                 </div>
+
+                <SentenceLine take={take} />
+
 
                 <div className="flex items-center gap-2">
                   <button
