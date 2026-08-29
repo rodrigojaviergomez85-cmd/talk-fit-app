@@ -1,4 +1,6 @@
-import type { CourseDay, ModelLine } from "@/lib/types";
+import type { CourseDay, ModelLine, ModuleId } from "@/lib/types";
+import { BASIC_ZERO_DAYS, BASIC_ZERO_WEEKS } from "./basic-zero-course";
+
 
 /**
  * CourseService — the 5-day Simple Present Fluency Journey.
