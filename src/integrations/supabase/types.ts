@@ -21,10 +21,12 @@ export type Database = {
           final_seconds: number
           id: string
           local_day_key: string | null
+          module_id: string
           practice_seconds: number
           recording_path: string | null
           recordings_count: number
           self_assessment: string | null
+          sentence_count: number | null
           updated_at: string
           user_id: string
         }
@@ -34,10 +36,12 @@ export type Database = {
           final_seconds?: number
           id?: string
           local_day_key?: string | null
+          module_id?: string
           practice_seconds?: number
           recording_path?: string | null
           recordings_count?: number
           self_assessment?: string | null
+          sentence_count?: number | null
           updated_at?: string
           user_id: string
         }
@@ -47,10 +51,12 @@ export type Database = {
           final_seconds?: number
           id?: string
           local_day_key?: string | null
+          module_id?: string
           practice_seconds?: number
           recording_path?: string | null
           recordings_count?: number
           self_assessment?: string | null
+          sentence_count?: number | null
           updated_at?: string
           user_id?: string
         }
