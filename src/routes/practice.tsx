@@ -129,7 +129,7 @@ function PracticePage() {
           <SpanishToggle value={showEs} onChange={setShowEs} />
 
           {stage === 0 ? <IntroStep day={day} onNext={goForward} /> : null}
-          {stage === 1 ? <Rep1Listen day={day} onNext={goForward} /> : null}
+          {stage === 1 ? <Rep1Listen day={day} showEs={showEs} onNext={goForward} /> : null}
           {stage === 2 ? (
             <Rep2Copy
               day={day}
