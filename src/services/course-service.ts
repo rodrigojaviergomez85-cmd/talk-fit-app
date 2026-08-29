@@ -51,7 +51,10 @@ const day1: CourseDay = {
     { id: "d1-p8", question: "What do you like about your routine? Why?", questionEs: "¿Qué te gusta de tu rutina? ¿Por qué?", starter: "I like ______ because…", starterEs: "Me gusta ______ porque…" },
   ],
   cues: ["ROUTINE", "WORK", "WE / THEY", "BECAUSE", "CONCLUSION"],
-  fluencyBonus: { text: "Tomorrow I'm going to start a little earlier.", es: "Mañana voy a empezar un poco más temprano." },
+  rep5Prompt: {
+    question: "What is your daily routine? / What do you do every day?",
+    questionEs: "¿Cuál es tu rutina diaria? / ¿Qué haces todos los días?",
+  },
   modelExample: {
     text: "I usually wake up around six thirty. I have breakfast at home before I start work. I start work at eight and I talk to customers every day. My coworkers and I usually have lunch together. We sometimes have very busy mornings. I like my job because I learn something new every week. Overall, I really enjoy my routine.",
     es: "Normalmente me levanto como a las seis y media. Desayuno en casa antes de empezar a trabajar. Empiezo a trabajar a las ocho y hablo con clientes todos los días. Mis compañeros y yo normalmente almorzamos juntos. A veces tenemos mañanas muy ocupadas. Me gusta mi trabajo porque aprendo algo nuevo cada semana. En general, disfruto mucho mi rutina.",
