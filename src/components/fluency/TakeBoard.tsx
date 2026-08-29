@@ -80,9 +80,13 @@ export function TakeBoard({
   };
 
   const firstEmpty = takes.findIndex((take) => !take);
+  const latest = [...takes].reverse().find((take): take is Recording => Boolean(take)) ?? null;
 
   return (
-    <div className="grid gap-3 sm:grid-cols-2">
+    <div className="space-y-4">
+      <GoalPanel latest={latest} />
+
+      <div className="grid gap-3 sm:grid-cols-2">
       {takes.map((take, index) => {
         const optional = index >= REQUIRED_TAKES;
         const isActive = index === firstEmpty;
