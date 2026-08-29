@@ -100,6 +100,8 @@ export type SelfAssessment = "not-yet" | "a-little" | "definitely";
 /** Objective record of one completed day. */
 export type DayRecord = {
   day: number;
+  /** Module the day belongs to. */
+  moduleId: ModuleId;
   /** Local YYYY-MM-DD key of completion. */
   dayKey: string;
   completedAt: string;
@@ -111,6 +113,8 @@ export type DayRecord = {
   practiceSeconds: number;
   /** Number of full recordings made in Rep 5. */
   recordingsCount: number;
+  /** Estimated complete spoken ideas in the final recording. */
+  sentenceCount?: number | null | undefined;
   /** Session-scoped object URL of the final recording. */
   finalUrl?: string | null | undefined;
   /** Session-scoped object URL of attempt 1. */
@@ -121,8 +125,9 @@ export type DayRecord = {
 };
 
 export type JourneyState = {
-  /** Completed days, keyed by day number. */
-  days: Record<number, DayRecord>;
+  /** Completed days, keyed by `${moduleId}:${day}`. */
+  days: Record<string, DayRecord>;
+
   streakDays: number;
   /** Local YYYY-MM-DD key of the last completed day. */
   lastCompletedDate?: string | undefined;
