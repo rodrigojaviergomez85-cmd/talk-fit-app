@@ -8,16 +8,20 @@ import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { TakeBoard, TAKE_COUNT, REQUIRED_TAKES } from "@/components/fluency/TakeBoard";
 import { DayCompleteScreen } from "@/components/fluency/DayCompleteScreen";
 import { SpanishProvider, SpanishToggle, TranslatableText } from "@/components/fluency/TranslatableText";
-import { CourseService } from "@/services/course-service";
+import { CourseService, DEFAULT_MODULE, isModuleId } from "@/services/course-service";
 import { JourneyService } from "@/services/journey-service";
 import { AudioService } from "@/services/audio-service";
-import type { CourseDay, ModelLine, Recording } from "@/lib/types";
+import type { CourseDay, ModelLine, ModuleId, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/practice")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    day: Math.min(CourseService.totalDays, Math.max(1, Number(search["day"]) || 1)),
-  }),
+  validateSearch: (search: Record<string, unknown>) => {
+    const module: ModuleId = isModuleId(search["module"]) ? search["module"] : DEFAULT_MODULE;
+    return {
+      module,
+      day: Math.min(CourseService.totalDays(module), Math.max(1, Number(search["day"]) || 1)),
+    };
+  },
   head: () => ({
     meta: [
       { title: "Daily Practice — Fluency Reps" },
@@ -57,9 +61,9 @@ async function countSentences(blob: Blob | null): Promise<number | null> {
 
 
 function PracticePage() {
-  const { day: dayNumber } = Route.useSearch();
+  const { day: dayNumber, module: moduleId } = Route.useSearch();
   const navigate = useNavigate();
-  const day = useMemo(() => CourseService.getDay(dayNumber), [dayNumber]);
+  const day = useMemo(() => CourseService.getDay(moduleId, dayNumber), [moduleId, dayNumber]);
 
   const [showEs, setShowEs] = useState(false);
   const [stage, setStage] = useState(0);
@@ -107,7 +111,9 @@ function PracticePage() {
     if (!final) return;
     const first = recorded[0] ?? final;
     const next = JourneyService.completeDay({
+      moduleId,
       day: day.day,
+      sentenceCount: final.sentenceCount ?? null,
       finalSeconds: final.durationSeconds,
       firstSeconds: first.durationSeconds,
       practiceSeconds: Math.round(practiceSeconds.current),
@@ -117,13 +123,14 @@ function PracticePage() {
     });
     setFinalRecording(final);
     setDone(true);
-    void JourneyService.syncDay(day.day, next, final.blob ?? null).catch(() => undefined);
+    void JourneyService.syncDay(moduleId, day.day, next, final.blob ?? null).catch(() => undefined);
   };
 
   if (done) {
     return (
       <SpanishProvider value={showEs}>
         <DayCompleteScreen
+          moduleId={moduleId}
           day={day}
           finalRecording={finalRecording}
           firstRecording={recorded[0] ?? null}
@@ -253,12 +260,12 @@ function CueRow({ cues }: { cues: string[] }) {
 
 /* ------------------------------ Step 0 intro ----------------------------- */
 
-function IntroStep({ day, onNext }: { day: CourseDay; onNext: () => void }) {
+function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseDay; onNext: () => void }) {
   const intro = day.intro;
   return (
     <div className="space-y-5">
       <div className="rounded-3xl bg-navy p-6 text-navy-foreground">
-        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">DAY {day.day} OF {CourseService.totalDays}</p>
+        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">DAY {day.day} OF {CourseService.totalDays(moduleId)}</p>
         <TranslatableText es={intro.titleEs} esClassName="text-navy-foreground/70">
           <h2 className="mt-2 text-3xl font-extrabold tracking-tight">{intro.title}</h2>
         </TranslatableText>
