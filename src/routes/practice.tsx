@@ -5,6 +5,7 @@ import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { RepProgress } from "@/components/fluency/RepProgress";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
+import { TakeBoard, TAKE_COUNT, REQUIRED_TAKES } from "@/components/fluency/TakeBoard";
 import { DayCompleteScreen } from "@/components/fluency/DayCompleteScreen";
 import { SpanishProvider, SpanishToggle, TranslatableText } from "@/components/fluency/TranslatableText";
 import { CourseService } from "@/services/course-service";
