@@ -1,13 +1,14 @@
 import { Link } from "@tanstack/react-router";
-import { BarChart3, Dumbbell, Home, Sparkles, User } from "lucide-react";
+import { BarChart3, Dumbbell, Home, Mic, User } from "lucide-react";
 
 const ITEMS = [
   { to: "/", label: "Home", icon: Home },
   { to: "/practice", label: "Practice", icon: Dumbbell },
   { to: "/progress", label: "Progress", icon: BarChart3 },
-  { to: "/coach", label: "Coach", icon: Sparkles },
-  { to: "/profile", label: "Profile", icon: User },
+  { to: "/recordings", label: "Recordings", icon: Mic },
+  { to: "/profile", label: "Account", icon: User },
 ] as const;
+
 
 export function BottomNav() {
   return (
