@@ -1,5 +1,6 @@
 import type { CourseDay, ModelLine, ModuleId } from "@/lib/types";
 import { BASIC_ZERO_DAYS, BASIC_ZERO_WEEKS } from "./basic-zero-course";
+import { SIMPLE_PRESENT_EXTRA_DAYS, SIMPLE_PRESENT_WEEKS } from "./simple-present-course";
 
 
 /**
@@ -290,7 +291,17 @@ const day5: CourseDay = {
   },
 };
 
-const DAYS: CourseDay[] = [day1, day2, day3, day4, day5];
+const WEEK_1 = SIMPLE_PRESENT_WEEKS[0]!;
+
+/** Week 1 (Days 1–5) exactly as built, tagged so Home can group it by week. */
+const WEEK_1_DAYS: CourseDay[] = [day1, day2, day3, day4, day5].map((d) => ({
+  ...d,
+  week: 1 as const,
+  weekTitle: WEEK_1.title,
+  weekTitleEs: WEEK_1.subtitleEs,
+}));
+
+const DAYS: CourseDay[] = [...WEEK_1_DAYS, ...SIMPLE_PRESENT_EXTRA_DAYS];
 
 export type LearningModule = {
   id: ModuleId;
