@@ -89,7 +89,7 @@ export function TakeBoard({
 
   return (
     <div className="space-y-4">
-      <GoalPanel latest={latest} />
+      <GoalPanel latest={latest} minSeconds={goalSeconds[0]} goalSentences={goalSentences} />
 
       <div className="grid gap-3 sm:grid-cols-2">
       {takes.map((take, index) => {
