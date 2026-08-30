@@ -413,6 +413,8 @@ function Rep2Copy({
   return (
     <div className="space-y-5">
       <Instruction en="Listen. Then copy the sentence." es="Escucha. Después copia la oración." />
+
+      <SceneImage day={day} />
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
         {index + 1} / {day.lines.length}
       </p>
@@ -443,6 +445,8 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
   return (
     <div className="space-y-5">
       <Instruction en="Read along with the model." es="Lee a la par del modelo." />
+
+      <SceneImage day={day} />
 
       <div className="flex gap-2">
         {[0.5, 0.75, 1.0].map((rate) => (
@@ -520,7 +524,13 @@ function Rep4MakeItYours({
 
   return (
     <div className="space-y-5">
-      <Instruction en="Answer about YOUR life." es="Responde sobre TU vida." />
+      <Instruction
+        en={day.sceneImage ? "What's happening? Answer about the picture." : "Answer about YOUR life."}
+        es={day.sceneImage ? "¿Qué está pasando? Responde sobre la imagen." : "Responde sobre TU vida."}
+      />
+
+      <SceneImage day={day} />
+      <VariantPicker day={day} />
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
         {index + 1} / {items.length}
       </p>
@@ -577,6 +587,9 @@ function Rep5FinalRep({
   return (
     <div className="space-y-5">
       <Instruction en="Record it. Listen. Try again." es="Grábalo. Escúchalo. Inténtalo otra vez." />
+
+      <SceneImage day={day} />
+      <VariantPicker day={day} />
 
       <div className="rounded-3xl border border-primary/25 bg-accent p-4 space-y-3">
         <TranslatableText es="Responde la pregunta:" align="center">
