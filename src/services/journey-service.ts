@@ -122,6 +122,23 @@ export const JourneyService = {
     return JourneyService.completedCount(state, moduleId) >= CourseService.totalDays(moduleId);
   },
 
+  /** Completed day records inside one week of a module, in day order. */
+  weekRecords(state: JourneyState, moduleId: ModuleId, week: number): DayRecord[] {
+    return CourseService.getDays(moduleId)
+      .filter((d) => d.week === week)
+      .map((d) => state.days[recordKey(moduleId, d.day)])
+      .filter((record): record is DayRecord => Boolean(record));
+  },
+
+  weekTotalDays(moduleId: ModuleId, week: number): number {
+    return CourseService.getDays(moduleId).filter((d) => d.week === week).length;
+  },
+
+  weekComplete(state: JourneyState, moduleId: ModuleId, week: number): boolean {
+    const total = JourneyService.weekTotalDays(moduleId, week);
+    return total > 0 && JourneyService.weekRecords(state, moduleId, week).length >= total;
+  },
+
   completedCount(state: JourneyState, moduleId?: ModuleId): number {
     if (!moduleId) return Object.keys(state.days).length;
     return JourneyService.moduleRecords(state, moduleId).length;

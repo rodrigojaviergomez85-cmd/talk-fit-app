@@ -79,6 +79,10 @@ export type CourseDay = {
   modelExample?: { text: string; es: string } | undefined;
   /** Model voice for this day's character (Basic Zero). Omitted = neutral. */
   speakerVoice?: "female" | "male";
+  /** Instructional picture the whole day is built around (Present Progressive). */
+  sceneImage?: { src: string; alt: string; altEs: string } | undefined;
+  /** Optional choices the learner can talk about instead of the model person/process. */
+  variants?: { id: string; label: string; labelEs: string }[] | undefined;
 };
 
 

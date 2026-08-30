@@ -35,6 +35,14 @@ export function DayCompleteScreen({ moduleId, day, finalRecording, firstRecordin
   const seconds = finalRecording?.durationSeconds ?? 0;
   const firstSeconds = firstRecording?.durationSeconds ?? 0;
 
+  const module = CourseService.getModule(moduleId);
+  const week = day.week;
+  const weekInfo = week ? module.weeks?.find((w) => w.week === week) : undefined;
+  const weekJustDone = Boolean(week && JourneyService.weekComplete(state, moduleId, week));
+  const weekRecords = week ? JourneyService.weekRecords(state, moduleId, week) : [];
+  const weekSeconds = weekRecords.reduce((total, r) => total + r.practiceSeconds, 0);
+  const moduleDone = JourneyService.moduleComplete(state, moduleId);
+
   return (
     <div className="min-h-screen bg-background px-4 pb-16 pt-[max(2rem,env(safe-area-inset-top))]">
       <div className="mx-auto w-full max-w-lg space-y-5">
@@ -85,6 +93,69 @@ export function DayCompleteScreen({ moduleId, day, finalRecording, firstRecordin
             </p>
           </TranslatableText>
         </div>
+
+        {weekJustDone && week && weekInfo ? (
+          <div className="space-y-3 rounded-3xl border border-success/30 bg-success/8 p-5">
+            <p className="text-center text-[13px] font-extrabold uppercase tracking-[0.18em] text-success">
+              WEEK {week} COMPLETE ✓
+            </p>
+            <p className="text-center text-[18px] font-extrabold leading-snug tracking-tight">
+              {showEs ? weekInfo.subtitleEs : weekInfo.title}
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              <Stat label={showEs ? "Días de la semana" : "Days completed"} value={`${weekRecords.length} / ${JourneyService.weekTotalDays(moduleId, week)}`} />
+              <Stat label={showEs ? "Fluency Reps" : "Fluency Reps"} value={`${weekRecords.length * 5}`} />
+              <Stat label={showEs ? "Minutos hablando" : "Speaking minutes"} value={`${Math.round(weekSeconds / 60)}`} />
+              <Stat label={showEs ? "Rep final" : "Final recording"} value={`${seconds}s`} />
+            </div>
+            <p className="text-center text-[12px] font-semibold text-muted-foreground">
+              {showEs ? "Oraciones estimadas en tu rep final" : "Estimated sentences in your final rep"}:{" "}
+              <span className="font-extrabold text-foreground">{finalRecording?.sentenceCount ?? "—"}</span>
+            </p>
+          </div>
+        ) : null}
+
+        {moduleDone && module.weeks?.length ? (
+          <div className="space-y-4 rounded-3xl bg-navy p-6 text-navy-foreground">
+            <p className="text-center text-[13px] font-extrabold uppercase tracking-[0.2em] text-primary">
+              {module.label.includes("MONTH 2") ? "MONTH 2 COMPLETE ✓" : `${module.title} COMPLETE ✓`}
+            </p>
+            <div className="space-y-1.5">
+              {module.weeks.map((item) => (
+                <p key={item.week} className="text-[14px] font-bold">
+                  ✓ WEEK {item.week} — {showEs ? item.subtitleEs : item.title}
+                </p>
+              ))}
+            </div>
+            <div className="rounded-2xl bg-navy-foreground/10 p-4">
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+                {showEs ? "AHORA PUEDES:" : "YOU CAN NOW:"}
+              </p>
+              <ul className="mt-2 space-y-1 text-[14px] font-semibold">
+                <li>✓ {showEs ? "Hablar de rutinas" : "Talk about routines"}</li>
+                <li>✓ {showEs ? "Hablar de las rutinas de otras personas" : "Talk about other people's routines"}</li>
+                <li>✓ {showEs ? "Explicar un proceso simple" : "Explain a simple process"}</li>
+                <li>✓ {showEs ? "Describir lo que está pasando ahora" : "Describe what is happening right now"}</li>
+              </ul>
+            </div>
+            <div className="space-y-2">
+              {module.weeks.map((item) => {
+                const records = JourneyService.weekRecords(state, moduleId, item.week);
+                const last = records[records.length - 1];
+                if (!last?.finalUrl) return null;
+                return (
+                  <RecordingPlayback
+                    key={item.week}
+                    url={last.finalUrl}
+                    label={`${showEs ? "SEMANA" : "WEEK"} ${item.week} · ${last.finalSeconds}s`}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
+
+
 
         {isLastDay ? (
           <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">

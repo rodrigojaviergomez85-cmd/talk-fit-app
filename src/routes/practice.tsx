@@ -258,6 +258,48 @@ function CueRow({ cues }: { cues: string[] }) {
   );
 }
 
+/** The day's instructional picture (Present Progressive days only). */
+function SceneImage({ day }: { day: CourseDay }) {
+  const scene = day.sceneImage;
+  if (!scene) return null;
+  return (
+    <figure className="overflow-hidden rounded-3xl border border-border bg-card shadow-[var(--shadow-card)]">
+      <img src={scene.src} alt={scene.alt} width={1280} height={896} loading="lazy" className="w-full" />
+    </figure>
+  );
+}
+
+/** Choice cards: who or what the learner wants to talk about. */
+function VariantPicker({ day }: { day: CourseDay }) {
+  const variants = day.variants;
+  const [picked, setPicked] = useState<string | null>(null);
+  if (!variants?.length) return null;
+  return (
+    <div className="space-y-2 rounded-3xl border border-border bg-card p-4">
+      <TranslatableText es="Elige de quién o de qué vas a hablar" align="center">
+        <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+          Choose what you want to talk about
+        </p>
+      </TranslatableText>
+      <div className="flex flex-wrap justify-center gap-2">
+        {variants.map((variant) => (
+          <button
+            key={variant.id}
+            type="button"
+            onClick={() => setPicked(variant.id)}
+            className={cn(
+              "rounded-2xl border px-3.5 py-2.5 text-[12px] font-bold uppercase tracking-[0.12em] transition-colors",
+              picked === variant.id ? "border-primary bg-primary/10 text-primary" : "border-border bg-card text-muted-foreground",
+            )}
+          >
+            {variant.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ------------------------------ Step 0 intro ----------------------------- */
 
 function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseDay; onNext: () => void }) {
@@ -306,7 +348,12 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 
   return (
     <div className="space-y-5">
-      <Instruction en="Just listen. Don't speak yet." es="Solo escucha. Todavía no hables." />
+      <Instruction
+        en={day.sceneImage ? "Look at the picture and just listen." : "Just listen. Don't speak yet."}
+        es={day.sceneImage ? "Mira la imagen y solo escucha." : "Solo escucha. Todavía no hables."}
+      />
+
+      <SceneImage day={day} />
 
       <AudioPlayer
         text={CourseService.getModelText(day)}
@@ -366,6 +413,8 @@ function Rep2Copy({
   return (
     <div className="space-y-5">
       <Instruction en="Listen. Then copy the sentence." es="Escucha. Después copia la oración." />
+
+      <SceneImage day={day} />
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
         {index + 1} / {day.lines.length}
       </p>
@@ -396,6 +445,8 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
   return (
     <div className="space-y-5">
       <Instruction en="Read along with the model." es="Lee a la par del modelo." />
+
+      <SceneImage day={day} />
 
       <div className="flex gap-2">
         {[0.5, 0.75, 1.0].map((rate) => (
@@ -473,7 +524,13 @@ function Rep4MakeItYours({
 
   return (
     <div className="space-y-5">
-      <Instruction en="Answer about YOUR life." es="Responde sobre TU vida." />
+      <Instruction
+        en={day.sceneImage ? "What's happening? Answer about the picture." : "Answer about YOUR life."}
+        es={day.sceneImage ? "¿Qué está pasando? Responde sobre la imagen." : "Responde sobre TU vida."}
+      />
+
+      <SceneImage day={day} />
+      <VariantPicker day={day} />
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
         {index + 1} / {items.length}
       </p>
@@ -530,6 +587,9 @@ function Rep5FinalRep({
   return (
     <div className="space-y-5">
       <Instruction en="Record it. Listen. Try again." es="Grábalo. Escúchalo. Inténtalo otra vez." />
+
+      <SceneImage day={day} />
+      <VariantPicker day={day} />
 
       <div className="rounded-3xl border border-primary/25 bg-accent p-4 space-y-3">
         <TranslatableText es="Responde la pregunta:" align="center">
