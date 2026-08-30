@@ -236,9 +236,8 @@ function GoalPanel({
           </p>
         </div>
       </div>
-
-      </div>
     </div>
+
   );
 }
 
