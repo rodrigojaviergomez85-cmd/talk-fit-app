@@ -357,6 +357,9 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
       />
 
       <SceneImage day={day} />
+      <PastVerbCards day={day} />
+      <StoryStrip day={day} showCaptions={!day.hideModelText} />
+
 
       <AudioPlayer
         text={CourseService.getModelText(day)}
