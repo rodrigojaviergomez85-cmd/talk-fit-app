@@ -6,6 +6,9 @@ import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { RepProgress } from "@/components/fluency/RepProgress";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { TakeBoard, TAKE_COUNT, REQUIRED_TAKES } from "@/components/fluency/TakeBoard";
+import { PastVerbCards } from "@/components/fluency/PastVerbCards";
+import { StoryStrip } from "@/components/fluency/StoryStrip";
+
 import { DayCompleteScreen } from "@/components/fluency/DayCompleteScreen";
 import { SpanishProvider, SpanishToggle, TranslatableText } from "@/components/fluency/TranslatableText";
 import { CourseService, DEFAULT_MODULE, isModuleId } from "@/services/course-service";
@@ -354,6 +357,9 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
       />
 
       <SceneImage day={day} />
+      <PastVerbCards day={day} />
+      <StoryStrip day={day} showCaptions={!day.hideModelText} />
+
 
       <AudioPlayer
         text={CourseService.getModelText(day)}
@@ -447,6 +453,8 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
       <Instruction en="Read along with the model." es="Lee a la par del modelo." />
 
       <SceneImage day={day} />
+      <StoryStrip day={day} showCaptions={!day.hideModelText} />
+
 
       <div className="flex gap-2">
         {[0.5, 0.75, 1.0].map((rate) => (
@@ -530,6 +538,9 @@ function Rep4MakeItYours({
       />
 
       <SceneImage day={day} />
+      <PastVerbCards day={day} />
+      <StoryStrip day={day} showCaptions={!day.hideModelText} />
+
       <VariantPicker day={day} />
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
         {index + 1} / {items.length}
@@ -589,7 +600,9 @@ function Rep5FinalRep({
       <Instruction en="Record it. Listen. Try again." es="Grábalo. Escúchalo. Inténtalo otra vez." />
 
       <SceneImage day={day} />
+      <StoryStrip day={day} showCaptions={!day.hideModelText} />
       <VariantPicker day={day} />
+
 
       <div className="rounded-3xl border border-primary/25 bg-accent p-4 space-y-3">
         <TranslatableText es="Responde la pregunta:" align="center">
@@ -653,8 +666,10 @@ function Rep5FinalRep({
         takes={takes}
         finalIndex={finalIndex}
         goalSeconds={day.goalSeconds}
+        goalSentences={day.goalSentences ?? 5}
         onRecorded={onRecorded}
         onDelete={onDelete}
+
         onSelectFinal={onSelectFinal}
       />
 

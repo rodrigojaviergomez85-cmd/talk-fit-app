@@ -15,10 +15,13 @@ type TakeBoardProps = {
   takes: (Recording | null)[];
   finalIndex: number | null;
   goalSeconds: [number, number];
+  /** Minimum complete spoken ideas for this day (default 5). */
+  goalSentences?: number;
   onRecorded: (index: number, recording: Recording) => void;
   onDelete: (index: number) => void;
   onSelectFinal: (index: number) => void;
 };
+
 
 /** Static bar pattern so each completed take shows a small waveform. */
 function MiniWave({ seed, playing }: { seed: number; playing: boolean }) {
@@ -42,10 +45,12 @@ export function TakeBoard({
   takes,
   finalIndex,
   goalSeconds,
+  goalSentences = GOAL_SENTENCES,
   onRecorded,
   onDelete,
   onSelectFinal,
 }: TakeBoardProps) {
+
   const [playingIndex, setPlayingIndex] = useState<number | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -84,7 +89,7 @@ export function TakeBoard({
 
   return (
     <div className="space-y-4">
-      <GoalPanel latest={latest} />
+      <GoalPanel latest={latest} minSeconds={goalSeconds[0]} goalSentences={goalSentences} />
 
       <div className="grid gap-3 sm:grid-cols-2">
       {takes.map((take, index) => {
@@ -131,7 +136,7 @@ export function TakeBoard({
                   <span className="text-[15px] font-extrabold tabular-nums">{take.durationSeconds} sec</span>
                 </div>
 
-                <SentenceLine take={take} />
+                <SentenceLine take={take} goal={goalSentences} />
 
 
                 <div className="flex items-center gap-2">
@@ -191,17 +196,25 @@ export function TakeBoard({
 }
 
 /** Colored TIME / SENTENCES indicators for the most recent take. */
-function GoalPanel({ latest }: { latest: Recording | null }) {
+function GoalPanel({
+  latest,
+  minSeconds,
+  goalSentences,
+}: {
+  latest: Recording | null;
+  minSeconds: number;
+  goalSentences: number;
+}) {
   const seconds = latest?.durationSeconds ?? 0;
-  const timeOk = seconds >= GOAL_SECONDS;
+  const timeOk = seconds >= minSeconds;
   const count = latest?.countStatus === "done" ? (latest.sentenceCount ?? null) : null;
-  const sentencesOk = count !== null && count >= GOAL_SENTENCES;
+  const sentencesOk = count !== null && count >= goalSentences;
 
   return (
     <div className="rounded-3xl border border-border bg-card p-4">
-      <TranslatableText es="META DE HOY · 30+ segundos · 5+ oraciones" align="center">
+      <TranslatableText es={`META DE HOY · ${minSeconds}+ segundos · ${goalSentences}+ oraciones`} align="center">
         <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-          Today's goal · 30+ sec · 5+ sentences
+          Today's goal · {minSeconds}+ sec · {goalSentences}+ sentences
         </p>
       </TranslatableText>
 
@@ -211,7 +224,7 @@ function GoalPanel({ latest }: { latest: Recording | null }) {
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Time</p>
           </TranslatableText>
           <p className={cn("mt-1 text-[16px] font-extrabold tabular-nums", latest ? (timeOk ? "text-success" : "text-destructive") : "text-muted-foreground")}>
-            {latest ? `${timeOk ? "🟢" : "🔴"} ${seconds} / ${GOAL_SECONDS} sec` : `— / ${GOAL_SECONDS} sec`}
+            {latest ? `${timeOk ? "🟢" : "🔴"} ${seconds} / ${minSeconds} sec` : `— / ${minSeconds} sec`}
           </p>
         </div>
         <div className="rounded-2xl bg-secondary p-3 text-center">
@@ -219,16 +232,17 @@ function GoalPanel({ latest }: { latest: Recording | null }) {
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Sentences</p>
           </TranslatableText>
           <p className={cn("mt-1 text-[16px] font-extrabold tabular-nums", count === null ? "text-muted-foreground" : sentencesOk ? "text-success" : "text-destructive")}>
-            {count === null ? `— / ${GOAL_SENTENCES}` : `${sentencesOk ? "🟢" : "🔴"} ${count} / ${GOAL_SENTENCES}`}
+            {count === null ? `— / ${goalSentences}` : `${sentencesOk ? "🟢" : "🔴"} ${count} / ${goalSentences}`}
           </p>
         </div>
       </div>
     </div>
+
   );
 }
 
 /** Sentence estimate for one completed take — no transcript, no correction. */
-function SentenceLine({ take }: { take: Recording }) {
+function SentenceLine({ take, goal }: { take: Recording; goal: number }) {
   if (take.countStatus === "pending") {
     return (
       <TranslatableText es="Contando oraciones…">
@@ -246,18 +260,19 @@ function SentenceLine({ take }: { take: Recording }) {
   }
 
   const count = take.sentenceCount;
-  const ok = count >= GOAL_SENTENCES;
+  const ok = count >= goal;
 
   return (
     <div>
       <p className={cn("text-[15px] font-extrabold", ok ? "text-success" : "text-destructive")}>
         {ok ? "🟢" : "🔴"} {count} {count === 1 ? "sentence" : "sentences"}
       </p>
-      <TranslatableText es={ok ? "¡Meta alcanzada!" : "Sigue — busca 5."}>
+      <TranslatableText es={ok ? "¡Meta alcanzada!" : `Sigue — busca ${goal}.`}>
         <p className="text-[12px] font-semibold text-muted-foreground">
-          {ok ? "Goal reached!" : "Keep going — aim for 5."}
+          {ok ? "Goal reached!" : `Keep going — aim for ${goal}.`}
         </p>
       </TranslatableText>
+
     </div>
   );
 }

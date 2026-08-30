@@ -51,7 +51,38 @@ export type Challenge = {
 };
 
 /** Learning module identifier. */
-export type ModuleId = "basic-zero" | "simple-present";
+export type ModuleId = "basic-zero" | "simple-present" | "past-stories";
+
+/** Image → action → past verb → spoken sentence (Module 3). */
+export type VerbCard = {
+  id: string;
+  /** Imported image asset. */
+  src: string;
+  alt: string;
+  /** Base form, e.g. WAKE UP. */
+  present: string;
+  /** Past form, e.g. WOKE UP. */
+  past: string;
+  /** Model sentence using the past form. */
+  sentence: string;
+  /** Optional Spanish support: "despertarse → me desperté". */
+  es?: string | undefined;
+  /** Show the action crossed out (didn't + base verb contrast). */
+  negative?: { sentence: string; es?: string | undefined } | undefined;
+};
+
+/** One illustration of the week's story (Module 3, Week 4). */
+export type StoryPanel = {
+  id: string;
+  src: string;
+  alt: string;
+  /** Sequencing cue: ONE DAY, THEN, SUDDENLY… */
+  cue: string;
+  /** Optional caption, hidden on the final storytelling challenge. */
+  caption?: string | undefined;
+  captionEs?: string | undefined;
+};
+
 
 export type CourseDay = {
   day: number;
@@ -83,7 +114,16 @@ export type CourseDay = {
   sceneImage?: { src: string; alt: string; altEs: string } | undefined;
   /** Optional choices the learner can talk about instead of the model person/process. */
   variants?: { id: string; label: string; labelEs: string }[] | undefined;
+  /** Past verb visual cards (Module 3, Weeks 1–2). */
+  verbCards?: VerbCard[] | undefined;
+  /** Story illustrations (Module 3, Week 4). */
+  storyPanels?: StoryPanel[] | undefined;
+  /** Minimum complete spoken ideas targeted in Rep 5 (default 5). */
+  goalSentences?: number | undefined;
+  /** Hide model sentences by default (final storytelling challenge). */
+  hideModelText?: boolean | undefined;
 };
+
 
 
 export type Recording = {
