@@ -348,7 +348,12 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 
   return (
     <div className="space-y-5">
-      <Instruction en="Just listen. Don't speak yet." es="Solo escucha. Todavía no hables." />
+      <Instruction
+        en={day.sceneImage ? "Look at the picture and just listen." : "Just listen. Don't speak yet."}
+        es={day.sceneImage ? "Mira la imagen y solo escucha." : "Solo escucha. Todavía no hables."}
+      />
+
+      <SceneImage day={day} />
 
       <AudioPlayer
         text={CourseService.getModelText(day)}
