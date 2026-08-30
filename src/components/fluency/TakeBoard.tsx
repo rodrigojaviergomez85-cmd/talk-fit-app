@@ -45,10 +45,12 @@ export function TakeBoard({
   takes,
   finalIndex,
   goalSeconds,
+  goalSentences = GOAL_SENTENCES,
   onRecorded,
   onDelete,
   onSelectFinal,
 }: TakeBoardProps) {
+
   const [playingIndex, setPlayingIndex] = useState<number | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
