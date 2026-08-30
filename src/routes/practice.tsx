@@ -258,6 +258,48 @@ function CueRow({ cues }: { cues: string[] }) {
   );
 }
 
+/** The day's instructional picture (Present Progressive days only). */
+function SceneImage({ day }: { day: CourseDay }) {
+  const scene = day.sceneImage;
+  if (!scene) return null;
+  return (
+    <figure className="overflow-hidden rounded-3xl border border-border bg-card shadow-[var(--shadow-card)]">
+      <img src={scene.src} alt={scene.alt} width={1280} height={896} loading="lazy" className="w-full" />
+    </figure>
+  );
+}
+
+/** Choice cards: who or what the learner wants to talk about. */
+function VariantPicker({ day }: { day: CourseDay }) {
+  const variants = day.variants;
+  const [picked, setPicked] = useState<string | null>(null);
+  if (!variants?.length) return null;
+  return (
+    <div className="space-y-2 rounded-3xl border border-border bg-card p-4">
+      <TranslatableText es="Elige de quién o de qué vas a hablar" align="center">
+        <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+          Choose what you want to talk about
+        </p>
+      </TranslatableText>
+      <div className="flex flex-wrap justify-center gap-2">
+        {variants.map((variant) => (
+          <button
+            key={variant.id}
+            type="button"
+            onClick={() => setPicked(variant.id)}
+            className={cn(
+              "rounded-2xl border px-3.5 py-2.5 text-[12px] font-bold uppercase tracking-[0.12em] transition-colors",
+              picked === variant.id ? "border-primary bg-primary/10 text-primary" : "border-border bg-card text-muted-foreground",
+            )}
+          >
+            {variant.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ------------------------------ Step 0 intro ----------------------------- */
 
 function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseDay; onNext: () => void }) {
