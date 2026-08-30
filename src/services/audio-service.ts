@@ -40,7 +40,8 @@ const audioCache = new Map<string, Promise<string>>();
 let currentAudio: HTMLAudioElement | null = null;
 
 async function loadModelAudio(text: string, voice?: AudioVoice): Promise<string> {
-  const key = `${voice ?? "neutral"}::${text}`;
+  // v2: energetic voice instructions on the server — don't reuse v1 audio.
+  const key = `v2::${voice ?? "neutral"}::${text}`;
   const cached = audioCache.get(key);
   if (cached) return cached;
   const promise = (async () => {
