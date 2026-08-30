@@ -64,49 +64,42 @@ function Meta({ icon, text }: { icon: React.ReactNode; text: string }) {
   );
 }
 
-/** Compact row used by the 5-day journey map. */
+/** Compact row used by the journey map. All days are always open. */
 export function JourneyDayRow({
   moduleId,
   day,
   completed,
-  unlocked,
   current,
 }: {
   moduleId: ModuleId;
   day: CourseDay;
   completed: boolean;
-  unlocked: boolean;
+  unlocked?: boolean;
   current: boolean;
 }) {
-  const content = (
-    <div
-      className={cn(
-        "flex items-center gap-3 rounded-2xl border p-4 transition-colors",
-        completed && "border-success/30 bg-success/8",
-        !completed && current && "border-primary bg-primary/8",
-        !completed && !current && "border-border bg-card",
-        !unlocked && "opacity-55",
-      )}
-    >
-      <span
-        className={cn(
-          "flex size-9 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold",
-          completed ? "bg-success text-success-foreground" : current ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground",
-        )}
-      >
-        {completed ? <Check className="size-4" /> : unlocked ? day.day : <Lock className="size-3.5" />}
-      </span>
-      <span className="min-w-0 flex-1">
-        <span className="block truncate text-[15px] font-bold tracking-tight">{day.topic}</span>
-        <span className="block truncate text-[12px] text-muted-foreground">{day.focus}</span>
-      </span>
-    </div>
-  );
-
-  if (!unlocked) return content;
   return (
     <Link to="/practice" search={{ day: day.day, module: moduleId }} className="block">
-      {content}
+      <div
+        className={cn(
+          "flex items-center gap-3 rounded-2xl border p-4 transition-colors",
+          completed && "border-success/30 bg-success/8",
+          !completed && current && "border-primary bg-primary/8",
+          !completed && !current && "border-border bg-card",
+        )}
+      >
+        <span
+          className={cn(
+            "flex size-9 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold",
+            completed ? "bg-success text-success-foreground" : current ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground",
+          )}
+        >
+          {completed ? <Check className="size-4" /> : day.day}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-[15px] font-bold tracking-tight">{day.topic}</span>
+          <span className="block truncate text-[12px] text-muted-foreground">{day.focus}</span>
+        </span>
+      </div>
     </Link>
   );
 }
