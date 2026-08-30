@@ -118,7 +118,11 @@ export function DayCompleteScreen({ moduleId, day, finalRecording, firstRecordin
         {moduleDone && module.weeks?.length ? (
           <div className="space-y-4 rounded-3xl bg-navy p-6 text-navy-foreground">
             <p className="text-center text-[13px] font-extrabold uppercase tracking-[0.2em] text-primary">
-              {module.label.includes("MONTH 2") ? "MONTH 2 COMPLETE ✓" : `${module.title} COMPLETE ✓`}
+              {moduleId === "past-stories"
+                ? "MONTH 3 COMPLETE ✓"
+                : module.label.includes("MONTH 2")
+                  ? "MONTH 2 COMPLETE ✓"
+                  : `${module.title} COMPLETE ✓`}
             </p>
             <div className="space-y-1.5">
               {module.weeks.map((item) => (
@@ -132,12 +136,24 @@ export function DayCompleteScreen({ moduleId, day, finalRecording, firstRecordin
                 {showEs ? "AHORA PUEDES:" : "YOU CAN NOW:"}
               </p>
               <ul className="mt-2 space-y-1 text-[14px] font-semibold">
-                <li>✓ {showEs ? "Hablar de rutinas" : "Talk about routines"}</li>
-                <li>✓ {showEs ? "Hablar de las rutinas de otras personas" : "Talk about other people's routines"}</li>
-                <li>✓ {showEs ? "Explicar un proceso simple" : "Explain a simple process"}</li>
-                <li>✓ {showEs ? "Describir lo que está pasando ahora" : "Describe what is happening right now"}</li>
+                {moduleId === "past-stories" ? (
+                  <>
+                    <li>✓ {showEs ? "Contar lo que hiciste ayer" : "Talk about what you did yesterday"}</li>
+                    <li>✓ {showEs ? "Hablar del pasado de otras personas" : "Talk about other people's past"}</li>
+                    <li>✓ {showEs ? "Describir qué estaba pasando" : "Describe what was happening"}</li>
+                    <li>✓ {showEs ? "Contar una historia completa" : "Tell a complete story"}</li>
+                  </>
+                ) : (
+                  <>
+                    <li>✓ {showEs ? "Hablar de rutinas" : "Talk about routines"}</li>
+                    <li>✓ {showEs ? "Hablar de las rutinas de otras personas" : "Talk about other people's routines"}</li>
+                    <li>✓ {showEs ? "Explicar un proceso simple" : "Explain a simple process"}</li>
+                    <li>✓ {showEs ? "Describir lo que está pasando ahora" : "Describe what is happening right now"}</li>
+                  </>
+                )}
               </ul>
             </div>
+
             <div className="space-y-2">
               {module.weeks.map((item) => {
                 const records = JourneyService.weekRecords(state, moduleId, item.week);
