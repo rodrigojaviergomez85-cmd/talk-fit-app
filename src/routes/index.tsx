@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import { Flame, Mic, Timer } from "lucide-react";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { ChevronRight, Flame, Mic, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
-import { DailyPracticeCard, JourneyDayRow } from "@/components/fluency/DailyPracticeCard";
 import { CourseService, type LearningModule } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
 import type { JourneyState } from "@/lib/types";
@@ -45,27 +44,29 @@ function HomePage() {
         </div>
 
         {modules.map((module) => (
-          <ModuleSection key={module.id} module={module} state={state} />
+          <ModuleCard key={module.id} module={module} state={state} />
         ))}
       </div>
     </AppShell>
   );
 }
 
-function ModuleSection({ module, state }: { module: LearningModule; state: JourneyState }) {
+function ModuleCard({ module, state }: { module: LearningModule; state: JourneyState }) {
   const total = module.days.length;
   const completedCount = JourneyService.completedCount(state, module.id);
-  const currentDay = JourneyService.currentDay(state, module.id);
-  const day = CourseService.getDay(module.id, currentDay);
-  const completed = JourneyService.isDayCompleted(state, module.id, currentDay);
   const percent = Math.round((completedCount / total) * 100);
 
   return (
-    <section className="space-y-3">
+    <Link to="/module/$moduleId" params={{ moduleId: module.id }} className="block transition-transform active:scale-[0.99]">
       <div className="rounded-3xl bg-navy p-5 text-navy-foreground">
-        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{module.label}</p>
-        <h2 className="mt-1 text-2xl font-extrabold tracking-tight">{module.title}</h2>
-        <p className="mt-1 text-[14px] font-semibold text-navy-foreground/80">{module.subtitle}</p>
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{module.label}</p>
+            <h2 className="mt-1 text-2xl font-extrabold tracking-tight">{module.title}</h2>
+            <p className="mt-1 text-[14px] font-semibold text-navy-foreground/80">{module.subtitle}</p>
+          </div>
+          <ChevronRight className="mt-1 size-6 shrink-0 text-navy-foreground/60" />
+        </div>
         <div className="mt-3 flex flex-wrap gap-2">
           {module.meta.map((item) => (
             <span
@@ -85,33 +86,7 @@ function ModuleSection({ module, state }: { module: LearningModule; state: Journ
           </p>
         </div>
       </div>
-
-      <DailyPracticeCard moduleId={module.id} day={day} completed={completed} totalDays={total} />
-
-      <details className="rounded-3xl border border-border bg-card p-4">
-        <summary className="cursor-pointer text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-          All {total} days
-        </summary>
-        <div className="mt-3 space-y-2">
-          {module.days.map((item) => (
-            <div key={item.day}>
-              {module.weeks && item.week && module.days.find((d) => d.week === item.week)?.day === item.day ? (
-                <p className="pb-1.5 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
-                  Week {item.week} · {module.weeks.find((w) => w.week === item.week)?.title}
-                </p>
-              ) : null}
-              <JourneyDayRow
-                moduleId={module.id}
-                day={item}
-                completed={JourneyService.isDayCompleted(state, module.id, item.day)}
-                unlocked={JourneyService.isDayUnlocked(state, module.id, item.day)}
-                current={item.day === currentDay}
-              />
-            </div>
-          ))}
-        </div>
-      </details>
-    </section>
+    </Link>
   );
 }
 
