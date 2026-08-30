@@ -51,7 +51,38 @@ export type Challenge = {
 };
 
 /** Learning module identifier. */
-export type ModuleId = "basic-zero" | "simple-present";
+export type ModuleId = "basic-zero" | "simple-present" | "past-stories";
+
+/** Image → action → past verb → spoken sentence (Module 3). */
+export type VerbCard = {
+  id: string;
+  /** Imported image asset. */
+  src: string;
+  alt: string;
+  /** Base form, e.g. WAKE UP. */
+  present: string;
+  /** Past form, e.g. WOKE UP. */
+  past: string;
+  /** Model sentence using the past form. */
+  sentence: string;
+  /** Optional Spanish support: "despertarse → me desperté". */
+  es?: string | undefined;
+  /** Show the action crossed out (didn't + base verb contrast). */
+  negative?: { sentence: string; es?: string | undefined } | undefined;
+};
+
+/** One illustration of the week's story (Module 3, Week 4). */
+export type StoryPanel = {
+  id: string;
+  src: string;
+  alt: string;
+  /** Sequencing cue: ONE DAY, THEN, SUDDENLY… */
+  cue: string;
+  /** Optional caption, hidden on the final storytelling challenge. */
+  caption?: string | undefined;
+  captionEs?: string | undefined;
+};
+
 
 export type CourseDay = {
   day: number;
