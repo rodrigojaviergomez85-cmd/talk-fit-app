@@ -538,6 +538,9 @@ function Rep4MakeItYours({
       />
 
       <SceneImage day={day} />
+      <PastVerbCards day={day} />
+      <StoryStrip day={day} showCaptions={!day.hideModelText} />
+
       <VariantPicker day={day} />
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
         {index + 1} / {items.length}
