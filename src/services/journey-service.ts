@@ -113,12 +113,9 @@ export const JourneyService = {
     return Boolean(state.days[recordKey(moduleId, day)]);
   },
 
-  isDayUnlocked(state: JourneyState, moduleId: ModuleId, day: number): boolean {
-    return (
-      day === 1 ||
-      Boolean(state.days[recordKey(moduleId, day - 1)]) ||
-      Boolean(state.days[recordKey(moduleId, day)])
-    );
+  /** All days are open: the learner can practice any day at any time. */
+  isDayUnlocked(_state: JourneyState, _moduleId: ModuleId, _day: number): boolean {
+    return true;
   },
 
   moduleComplete(state: JourneyState, moduleId: ModuleId): boolean {

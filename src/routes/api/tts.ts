@@ -47,7 +47,7 @@ export const Route = createFileRoute("/api/tts")({
             voice,
             response_format: "mp3",
             instructions:
-              "Speak in a natural, friendly, everyday American English accent. Clear and conversational, like a normal North American speaker — not robotic, not over-enunciated.",
+              "Speak with a very energetic, cheerful and excited tone — like an enthusiastic bilingual call-center coach hyping up their team. Warm, upbeat, smiling while speaking, dynamic rhythm and lively intonation. Natural everyday American English accent, clear and conversational — not robotic, not flat, not over-enunciated.",
           }),
         });
 
