@@ -334,14 +334,15 @@ const MODULES: LearningModule[] = [
   {
     id: "simple-present",
     order: 2,
-    label: "MODULE 2",
+    label: "MODULE 2 · MONTH 2",
     title: "SIMPLE PRESENT",
-    subtitle: "Routines, He/She, Negatives & Questions",
-    subtitleEs: "Rutinas, He/She, negativos y preguntas",
-    description: "5-Day Fluency Journey.",
-    descriptionEs: "Viaje de fluidez de 5 días.",
-    meta: ["1 Week", "5 Days", "5 Fluency Reps per Day"],
+    subtitle: "Routines, Other People, Processes & Right Now",
+    subtitleEs: "Rutinas, otras personas, procesos y lo que pasa ahora",
+    description: "4-Week Fluency Journey.",
+    descriptionEs: "Viaje de fluidez de 4 semanas.",
+    meta: ["4 Weeks", "20 Days", "5 Fluency Reps per Day"],
     days: DAYS,
+    weeks: SIMPLE_PRESENT_WEEKS,
   },
 ];
 
