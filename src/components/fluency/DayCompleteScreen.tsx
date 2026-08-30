@@ -35,6 +35,14 @@ export function DayCompleteScreen({ moduleId, day, finalRecording, firstRecordin
   const seconds = finalRecording?.durationSeconds ?? 0;
   const firstSeconds = firstRecording?.durationSeconds ?? 0;
 
+  const module = CourseService.getModule(moduleId);
+  const week = day.week;
+  const weekInfo = week ? module.weeks?.find((w) => w.week === week) : undefined;
+  const weekJustDone = Boolean(week && JourneyService.weekComplete(state, moduleId, week));
+  const weekRecords = week ? JourneyService.weekRecords(state, moduleId, week) : [];
+  const weekSeconds = weekRecords.reduce((total, r) => total + r.practiceSeconds, 0);
+  const moduleDone = JourneyService.moduleComplete(state, moduleId);
+
   return (
     <div className="min-h-screen bg-background px-4 pb-16 pt-[max(2rem,env(safe-area-inset-top))]">
       <div className="mx-auto w-full max-w-lg space-y-5">
