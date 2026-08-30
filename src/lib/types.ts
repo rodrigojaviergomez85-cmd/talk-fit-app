@@ -114,7 +114,16 @@ export type CourseDay = {
   sceneImage?: { src: string; alt: string; altEs: string } | undefined;
   /** Optional choices the learner can talk about instead of the model person/process. */
   variants?: { id: string; label: string; labelEs: string }[] | undefined;
+  /** Past verb visual cards (Module 3, Weeks 1–2). */
+  verbCards?: VerbCard[] | undefined;
+  /** Story illustrations (Module 3, Week 4). */
+  storyPanels?: StoryPanel[] | undefined;
+  /** Minimum complete spoken ideas targeted in Rep 5 (default 5). */
+  goalSentences?: number | undefined;
+  /** Hide model sentences by default (final storytelling challenge). */
+  hideModelText?: boolean | undefined;
 };
+
 
 
 export type Recording = {
