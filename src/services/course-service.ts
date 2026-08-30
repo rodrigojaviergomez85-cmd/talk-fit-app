@@ -1,6 +1,8 @@
 import type { CourseDay, ModelLine, ModuleId } from "@/lib/types";
 import { BASIC_ZERO_DAYS, BASIC_ZERO_WEEKS } from "./basic-zero-course";
 import { SIMPLE_PRESENT_EXTRA_DAYS, SIMPLE_PRESENT_WEEKS } from "./simple-present-course";
+import { PAST_STORIES_DAYS, PAST_STORIES_WEEKS } from "./past-stories-course";
+
 
 
 /**
