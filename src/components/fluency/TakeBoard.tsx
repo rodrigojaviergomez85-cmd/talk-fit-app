@@ -260,18 +260,19 @@ function SentenceLine({ take, goal }: { take: Recording; goal: number }) {
   }
 
   const count = take.sentenceCount;
-  const ok = count >= GOAL_SENTENCES;
+  const ok = count >= goal;
 
   return (
     <div>
       <p className={cn("text-[15px] font-extrabold", ok ? "text-success" : "text-destructive")}>
         {ok ? "🟢" : "🔴"} {count} {count === 1 ? "sentence" : "sentences"}
       </p>
-      <TranslatableText es={ok ? "¡Meta alcanzada!" : "Sigue — busca 5."}>
+      <TranslatableText es={ok ? "¡Meta alcanzada!" : `Sigue — busca ${goal}.`}>
         <p className="text-[12px] font-semibold text-muted-foreground">
-          {ok ? "Goal reached!" : "Keep going — aim for 5."}
+          {ok ? "Goal reached!" : `Keep going — aim for ${goal}.`}
         </p>
       </TranslatableText>
+
     </div>
   );
 }
