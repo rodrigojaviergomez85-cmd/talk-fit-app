@@ -667,8 +667,9 @@ function Rep5FinalRep({
         finalIndex={finalIndex}
         goalSeconds={day.goalSeconds}
         goalSentences={day.goalSentences ?? 5}
-
+        onRecorded={onRecorded}
         onDelete={onDelete}
+
         onSelectFinal={onSelectFinal}
       />
 
