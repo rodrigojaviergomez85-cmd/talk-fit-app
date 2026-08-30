@@ -600,7 +600,9 @@ function Rep5FinalRep({
       <Instruction en="Record it. Listen. Try again." es="Grábalo. Escúchalo. Inténtalo otra vez." />
 
       <SceneImage day={day} />
+      <StoryStrip day={day} showCaptions={!day.hideModelText} />
       <VariantPicker day={day} />
+
 
       <div className="rounded-3xl border border-primary/25 bg-accent p-4 space-y-3">
         <TranslatableText es="Responde la pregunta:" align="center">
