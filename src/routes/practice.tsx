@@ -6,6 +6,9 @@ import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { RepProgress } from "@/components/fluency/RepProgress";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { TakeBoard, TAKE_COUNT, REQUIRED_TAKES } from "@/components/fluency/TakeBoard";
+import { PastVerbCards } from "@/components/fluency/PastVerbCards";
+import { StoryStrip } from "@/components/fluency/StoryStrip";
+
 import { DayCompleteScreen } from "@/components/fluency/DayCompleteScreen";
 import { SpanishProvider, SpanishToggle, TranslatableText } from "@/components/fluency/TranslatableText";
 import { CourseService, DEFAULT_MODULE, isModuleId } from "@/services/course-service";
