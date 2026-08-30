@@ -242,7 +242,7 @@ function GoalPanel({
 }
 
 /** Sentence estimate for one completed take — no transcript, no correction. */
-function SentenceLine({ take }: { take: Recording }) {
+function SentenceLine({ take, goal }: { take: Recording; goal: number }) {
   if (take.countStatus === "pending") {
     return (
       <TranslatableText es="Contando oraciones…">
