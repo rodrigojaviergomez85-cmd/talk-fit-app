@@ -453,6 +453,8 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
       <Instruction en="Read along with the model." es="Lee a la par del modelo." />
 
       <SceneImage day={day} />
+      <StoryStrip day={day} showCaptions={!day.hideModelText} />
+
 
       <div className="flex gap-2">
         {[0.5, 0.75, 1.0].map((rate) => (
