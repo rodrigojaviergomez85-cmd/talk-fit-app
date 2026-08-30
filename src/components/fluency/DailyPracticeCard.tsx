@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Check, Clock, Lock, Mic } from "lucide-react";
+import { Check, Clock, Mic } from "lucide-react";
 import { TranslatableText } from "./TranslatableText";
 import type { CourseDay, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
