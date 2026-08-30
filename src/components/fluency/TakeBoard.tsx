@@ -15,10 +15,13 @@ type TakeBoardProps = {
   takes: (Recording | null)[];
   finalIndex: number | null;
   goalSeconds: [number, number];
+  /** Minimum complete spoken ideas for this day (default 5). */
+  goalSentences?: number;
   onRecorded: (index: number, recording: Recording) => void;
   onDelete: (index: number) => void;
   onSelectFinal: (index: number) => void;
 };
+
 
 /** Static bar pattern so each completed take shows a small waveform. */
 function MiniWave({ seed, playing }: { seed: number; playing: boolean }) {
