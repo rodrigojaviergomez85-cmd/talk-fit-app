@@ -136,7 +136,7 @@ export function TakeBoard({
                   <span className="text-[15px] font-extrabold tabular-nums">{take.durationSeconds} sec</span>
                 </div>
 
-                <SentenceLine take={take} />
+                <SentenceLine take={take} goal={goalSentences} />
 
 
                 <div className="flex items-center gap-2">
