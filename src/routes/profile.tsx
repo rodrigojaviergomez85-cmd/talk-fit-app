@@ -39,11 +39,15 @@ function ProfilePage() {
     setState(JourneyService.load());
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
       setUserEmail(session?.user.email ?? null);
+      setSessionScope(session?.user.id ?? null);
       // Never keep another session's numbers on screen.
       if (session) void JourneyService.pull().then(setState).catch(() => undefined);
       else setState(JourneyService.load());
     });
-    void supabase.auth.getUser().then(({ data }) => setUserEmail(data.user?.email ?? null));
+    void supabase.auth.getUser().then(({ data }) => {
+      setUserEmail(data.user?.email ?? null);
+      setSessionScope(data.user?.id ?? null);
+    });
     return () => sub.subscription.unsubscribe();
   }, []);
 
