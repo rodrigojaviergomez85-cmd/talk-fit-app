@@ -886,9 +886,14 @@ function Rep4MakeItYours({
       <VoiceRecorder label="ANSWER" maxSeconds={30} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
       {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
 
-      <PrimaryButton onClick={onNext}>
+      <PrimaryButton onClick={onNext} disabled={!attempted}>
         {index < items.length - 1 ? "NEXT QUESTION" : "NEXT REP"} <ArrowRight className="size-5" />
       </PrimaryButton>
+
+      {attempted ? null : (
+        <SkipLink label={showEs ? "SALTAR ESTA PREGUNTA" : "SKIP THIS PROMPT"} onClick={onSkip} />
+      )}
+
     </div>
   );
 }
