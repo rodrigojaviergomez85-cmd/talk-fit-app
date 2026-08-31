@@ -199,7 +199,17 @@ function PracticePage() {
     });
     setFinalRecording(final);
     setDone(true);
+    PracticeSessionService.clear(moduleId, day.day);
     void JourneyService.syncDay(moduleId, day.day, next, final.blob ?? null).catch(() => undefined);
+  };
+
+  const countFor = (rep: 2 | 4, ids: string[]) => {
+    const keys = ids.map((id) => itemKey(rep, id));
+    return {
+      total: keys.length,
+      attempted: keys.filter((key) => attempted.includes(key)).length,
+      skipped: keys.filter((key) => skipped.includes(key) && !attempted.includes(key)).length,
+    };
   };
 
   if (done) {
@@ -211,6 +221,35 @@ function PracticePage() {
           finalRecording={finalRecording}
           firstRecording={recorded[0] ?? null}
           showEs={showEs}
+          summary={{
+            rep2: countFor(2, day.lines.map((line) => line.id)),
+            rep4: countFor(4, items4.map((item) => item.id)),
+          }}
+        />
+      </SpanishProvider>
+    );
+  }
+
+  if (resume) {
+    return (
+      <SpanishProvider value={showEs}>
+        <ResumeScreen
+          session={resume}
+          day={day}
+          showEs={showEs}
+          onContinue={() => {
+            setStage(resume.stage);
+            setSubIndex(resume.subIndex);
+            setAttempted(resume.attempted);
+            setSkipped(resume.skipped);
+            startedAt.current = resume.startedAt;
+            setResume(null);
+          }}
+          onRestart={() => {
+            PracticeSessionService.clear(moduleId, dayNumber);
+            startedAt.current = new Date().toISOString();
+            setResume(null);
+          }}
         />
       </SpanishProvider>
     );
@@ -227,8 +266,19 @@ function PracticePage() {
           title={`DAY ${day.day} · ${showEs ? title.es : title.en}`}
           onBack={goBack}
           {...(stage < 5 ? { onNext: goForward } : {})}
-          onExit={() => void navigate({ to: "/" })}
+          onExit={() => setConfirmExit(true)}
         />
+
+        {confirmExit ? (
+          <ExitDialog
+            showEs={showEs}
+            onCancel={() => setConfirmExit(false)}
+            onExit={() => {
+              AudioService.stop();
+              void navigate({ to: "/" });
+            }}
+          />
+        ) : null}
 
         <main className="mx-auto w-full max-w-lg space-y-5 px-4 py-5">
           <div className="flex justify-end">
@@ -241,13 +291,32 @@ function PracticePage() {
             <Rep2Copy
               day={day}
               index={subIndex}
-              onRecorded={trackSeconds}
+              showEs={showEs}
+              attempted={Boolean(currentItemKey && attempted.includes(currentItemKey))}
+              onRecorded={(rec) => {
+                trackSeconds(rec);
+                if (currentItemKey) markAttempted(currentItemKey);
+              }}
+              onSkip={skipCurrent}
               onNext={goForward}
             />
           ) : null}
           {stage === 3 ? <Rep3Shadow day={day} onRecorded={trackSeconds} onNext={goForward} /> : null}
           {stage === 4 ? (
-            <Rep4MakeItYours day={day} index={subIndex} onRecorded={trackSeconds} onNext={goForward} hideVisuals={moduleId === "past-stories"} />
+            <Rep4MakeItYours
+              day={day}
+              index={subIndex}
+              showEs={showEs}
+              attempted={Boolean(currentItemKey && attempted.includes(currentItemKey))}
+              onRecorded={(rec) => {
+                trackSeconds(rec);
+                if (currentItemKey) markAttempted(currentItemKey);
+              }}
+              onSkip={skipCurrent}
+              onNext={goForward}
+              hideVisuals={moduleId === "past-stories"}
+            />
+
           ) : null}
           {stage === 5 ? (
             <Rep5FinalRep
