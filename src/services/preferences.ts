@@ -81,5 +81,10 @@ export function savePreferences(patch: Partial<Preferences>): Preferences {
     }
   }
   notify();
+  if (typeof window !== "undefined" && scope !== "guest") {
+    void import("./cloud-sync")
+      .then(({ CloudSync }) => CloudSync.pushPreferences())
+      .catch(() => undefined);
+  }
   return next;
 }

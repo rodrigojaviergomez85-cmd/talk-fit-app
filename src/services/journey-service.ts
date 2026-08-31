@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { DayRecord, JourneyState, ModuleId, SelfAssessment } from "@/lib/types";
-import { CourseService } from "./course-service";
+import { CourseService, isModuleId } from "./course-service";
 
 /**
  * JourneyService — progress across learning modules (Basic Zero, Simple Present).
@@ -447,7 +447,7 @@ export const JourneyService = {
     const days = { ...local.days };
     let totalSeconds = local.totalSpeakingSeconds;
     for (const row of rows) {
-      const moduleId: ModuleId = row.module_id === "basic-zero" ? "basic-zero" : "simple-present";
+      const moduleId: ModuleId = isModuleId(row.module_id) ? row.module_id : "simple-present";
       const key = recordKey(moduleId, row.day);
       if (days[key]) continue;
       days[key] = {
