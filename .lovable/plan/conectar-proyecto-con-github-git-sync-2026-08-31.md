@@ -1,7 +1,7 @@
 # Conectar proyecto con GitHub (Git sync)
 
 ## Objetivo
-Vincular el proyecto FLUENCY REPS a un repositorio de GitHub para respaldar y sincronizar el código automáticamente.
+Vincular el proyecto FLUENCY REPS a un repositorio de GitHub para que los cambios de código se sincronicen automáticamente entre Lovable y GitHub.
 
 ## Pasos a realizar
 
