@@ -235,7 +235,10 @@ function keyFor(id: string): string {
   return `${PREFIX}:${id}`;
 }
 
+let cache: VerbBankState | null = null;
+
 function notify() {
+  cache = null;
   listeners.forEach((fn) => fn());
 }
 
@@ -249,19 +252,24 @@ export function setVerbBankScope(userId: string | null) {
   const next = userId ?? "guest";
   if (next === scope) return;
   scope = next;
+  cache = null;
   notify();
 }
 
 const emptyStat: VerbStat = { discovered: false, firstDiscoveredAt: null, listenCount: 0, practiceCount: 0 };
 
+const EMPTY_STATE: VerbBankState = {};
+
 function read(): VerbBankState {
-  if (typeof window === "undefined") return {};
+  if (typeof window === "undefined") return EMPTY_STATE;
+  if (cache) return cache;
   try {
     const raw = window.localStorage.getItem(keyFor(scope));
-    return raw ? (JSON.parse(raw) as VerbBankState) : {};
+    cache = raw ? (JSON.parse(raw) as VerbBankState) : {};
   } catch {
-    return {};
+    cache = {};
   }
+  return cache;
 }
 
 function write(state: VerbBankState) {
@@ -271,7 +279,8 @@ function write(state: VerbBankState) {
   } catch {
     /* storage unavailable */
   }
-  notify();
+  cache = state;
+  listeners.forEach((fn) => fn());
 }
 
 /** Past forms (lowercase) that count as an encounter with a verb. */
@@ -302,7 +311,7 @@ export const VerbBank = {
 
   /** Marks verbs as discovered; returns the ids that were new. */
   discover(ids: string[]): string[] {
-    const state = read();
+    const state = { ...read() };
     const fresh: string[] = [];
     for (const id of ids) {
       if (!PAST_VERBS.some((verb) => verb.id === id)) continue;
@@ -319,14 +328,14 @@ export const VerbBank = {
   },
 
   countListen(id: string) {
-    const state = read();
+    const state = { ...read() };
     const current = state[id] ?? emptyStat;
     state[id] = { ...current, listenCount: current.listenCount + 1 };
     write(state);
   },
 
   countPractice(id: string) {
-    const state = read();
+    const state = { ...read() };
     const current = state[id] ?? emptyStat;
     state[id] = { ...current, practiceCount: current.practiceCount + 1 };
     write(state);
