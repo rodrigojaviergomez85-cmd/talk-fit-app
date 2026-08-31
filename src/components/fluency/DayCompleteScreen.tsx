@@ -26,7 +26,7 @@ const ASSESSMENTS: { value: SelfAssessment; en: string; es: string }[] = [
 ];
 
 /** Celebration + objective numbers after the 5th rep of the day. */
-export function DayCompleteScreen({ moduleId, day, finalRecording, firstRecording, showEs }: Props) {
+export function DayCompleteScreen({ moduleId, day, finalRecording, firstRecording, showEs, summary }: Props) {
   const navigate = useNavigate();
   const [state, setState] = useState(() => JourneyService.load());
   const [answer, setAnswer] = useState<SelfAssessment | null>(state.selfAssessment ?? null);
