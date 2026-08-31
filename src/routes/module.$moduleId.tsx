@@ -129,7 +129,11 @@ function ModulePage() {
                   key={week}
                   moduleId={module.id}
                   week={week}
-                  title={module.weeks?.find((w) => w.week === week)?.title ?? days[0]?.weekTitle ?? ""}
+                  title={
+                    module.weeks?.find((w) => w.week === week)?.subtitle ??
+                    days[0]?.weekTitle ??
+                    `Week ${week}`
+                  }
                   days={days}
                   state={state}
                   currentDay={currentDay}
