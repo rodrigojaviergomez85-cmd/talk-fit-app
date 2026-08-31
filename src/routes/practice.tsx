@@ -523,6 +523,7 @@ function VariantPicker({ day }: { day: CourseDay }) {
 /* ------------------------------ Step 0 intro ----------------------------- */
 
 function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseDay; onNext: () => void }) {
+  const t = useT();
   const intro = day.intro;
   const [first, ...rest] = intro.examples;
 
@@ -722,6 +723,7 @@ function SkipLink({ label, onClick }: { label: string; onClick: () => void }) {
 
 
 function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; onNext: () => void }) {
+  const t = useT();
   const [heard, setHeard] = useState(false);
   const [showText, setShowText] = useState(false);
 
@@ -791,6 +793,7 @@ function Rep2Copy({
   onSkip: () => void;
   onNext: () => void;
 }) {
+  const t = useT();
   const line = day.lines[index]!;
   const [mine, setMine] = useState<Recording | null>(null);
 
@@ -843,6 +846,7 @@ function Rep2Copy({
 /* -------------------------------- Rep 3 ---------------------------------- */
 
 function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (rec: Recording) => void; onNext: () => void }) {
+  const t = useT();
   const [speed, setSpeed] = useState(0.75);
   const [mine, setMine] = useState<Recording | null>(null);
   const level = supportLevel(day);
@@ -938,6 +942,7 @@ function Rep4MakeItYours({
   onNext: () => void;
   hideVisuals?: boolean;
 }) {
+  const t = useT();
   const items = rep4Items(day);
   const item = items[index]!;
   const [mine, setMine] = useState<Recording | null>(null);
@@ -1023,6 +1028,7 @@ function Rep5FinalRep({
   onSelectFinal: (index: number) => void;
   onFinish: () => void;
 }) {
+  const t = useT();
   const completed = takes.filter(Boolean).length;
   const requiredDone = completed >= REQUIRED_TAKES;
   const slotsLeft = takes.some((take) => !take);
