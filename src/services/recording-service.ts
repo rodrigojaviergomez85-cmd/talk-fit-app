@@ -94,11 +94,19 @@ export const RecordingService = {
     }
 
     const mimeType = pickMimeType();
+    // Speech-appropriate bitrate keeps uploads small on mobile networks.
+    const options: MediaRecorderOptions = { audioBitsPerSecond: 32000 };
     let recorder: MediaRecorder;
     try {
-      recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
+      recorder = mimeType
+        ? new MediaRecorder(stream, { ...options, mimeType })
+        : new MediaRecorder(stream, options);
     } catch {
-      recorder = new MediaRecorder(stream);
+      try {
+        recorder = new MediaRecorder(stream, options);
+      } catch {
+        recorder = new MediaRecorder(stream);
+      }
     }
     const chunks: BlobPart[] = [];
     const startedAt = Date.now();
