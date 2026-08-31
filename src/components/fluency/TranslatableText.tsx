@@ -2,7 +2,6 @@ import { createContext, useContext, useState, type ReactNode } from "react";
 import { Languages } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppLang } from "@/lib/i18n";
-import { useAppLang } from "@/lib/i18n";
 
 /** Session-level "show everything in Spanish" toggle. */
 const SpanishContext = createContext(false);
