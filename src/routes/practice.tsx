@@ -33,7 +33,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording } from "@/lib/types";
 import type { FinalRepSaveState } from "@/components/fluency/DayCompleteScreen";
 import { cn } from "@/lib/utils";
-import { useAppLang } from "@/lib/i18n";
+import { useAppLang, useT } from "@/lib/i18n";
 import { setPreferencesScope } from "@/services/preferences";
 import { VerbBank, setVerbBankScope } from "@/services/verb-bank";
 
@@ -545,7 +545,7 @@ function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseD
       {first ? (
         <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
           <p className="text-[20px] font-extrabold leading-tight tracking-tight">{first}</p>
-          <AudioPlayer text={first} label="LISTEN" voice={day.speakerVoice} />
+          <AudioPlayer text={first} label={t("practice.listen")} voice={day.speakerVoice} />
         </div>
       ) : null}
 
@@ -738,7 +738,7 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 
       <AudioPlayer
         text={CourseService.getModelText(day)}
-        label="LISTEN TO THE MODEL"
+        label={t("practice.listenModel")}
         voice={day.speakerVoice}
         size="lg"
         onEnd={() => setHeard(true)}
@@ -812,11 +812,11 @@ function Rep2Copy({
       </div>
 
 
-      <AudioPlayer text={line.text} label="LISTEN" rate={0.9} voice={day.speakerVoice} />
+      <AudioPlayer text={line.text} label={t("practice.listen")} rate={0.9} voice={day.speakerVoice} />
 
-      <VoiceRecorder label="RECORD" maxSeconds={20} showTimer onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
+      <VoiceRecorder label={t("practice.record")} maxSeconds={20} showTimer onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
 
-      {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
+      {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
       <PrimaryButton onClick={onNext} disabled={!attempted}>
         {index < day.lines.length - 1
@@ -889,10 +889,10 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
       )}
 
 
-      <AudioPlayer text={CourseService.getModelText(day)} label="START SHADOWING" rate={speed} size="lg" voice={day.speakerVoice} />
+      <AudioPlayer text={CourseService.getModelText(day)} label={t("practice.startShadowing")} rate={speed} size="lg" voice={day.speakerVoice} />
 
-      <VoiceRecorder label="RECORD ME" maxSeconds={60} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
-      {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
+      <VoiceRecorder label={t("practice.recordMe")} maxSeconds={60} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
+      {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
       <PrimaryButton onClick={onNext}>
         NEXT REP <ArrowRight className="size-5" />
@@ -977,10 +977,10 @@ function Rep4MakeItYours({
       </div>
 
 
-      <AudioPlayer text={item.question} label="HEAR THE QUESTION" variant="ghost" size="sm" voice={day.speakerVoice} />
+      <AudioPlayer text={item.question} label={t("practice.hearQuestion")} variant="ghost" size="sm" voice={day.speakerVoice} />
 
-      <VoiceRecorder label="ANSWER" maxSeconds={30} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
-      {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
+      <VoiceRecorder label={t("practice.answer")} maxSeconds={30} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
+      {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
       <PrimaryButton onClick={onNext} disabled={!attempted}>
         {index < items.length - 1
@@ -1063,7 +1063,7 @@ function Rep5FinalRep({
         )}
         {day.modelExample ? (
           <>
-            <AudioPlayer text={day.modelExample.text} label="LISTEN TO EXAMPLE" rate={1} variant="navy" voice={day.speakerVoice} />
+            <AudioPlayer text={day.modelExample.text} label={t("practice.listenExample")} rate={1} variant="navy" voice={day.speakerVoice} />
             <button
               type="button"
               onClick={() => setShowExampleText((v) => !v)}
