@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Check, ChevronDown } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { DailyPracticeCard, JourneyDayRow } from "@/components/fluency/DailyPracticeCard";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
-import type { JourneyState, ModuleId } from "@/lib/types";
+import { StatusBadge } from "@/routes/index";
+import type { CourseDay, JourneyState, ModuleId } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/module/$moduleId")({
   beforeLoad: ({ params }) => {
@@ -36,28 +38,48 @@ export const Route = createFileRoute("/module/$moduleId")({
 function ModulePage() {
   const { moduleId } = Route.useParams();
   const module = CourseService.getModule(moduleId as ModuleId)!;
-  const [state, setState] = useState<JourneyState>(emptyJourney);
+  const [state, setState] = useState<JourneyState | null>(null);
+  const [failed, setFailed] = useState(false);
 
-  useEffect(() => {
+  const load = useCallback(() => {
+    setFailed(false);
     setState(JourneyService.load());
-    void JourneyService.pull().then(setState).catch(() => undefined);
+    void JourneyService.pull()
+      .then(setState)
+      .catch(() => setFailed(true));
   }, []);
 
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const safeState = state ?? emptyJourney;
   const total = module.days.length;
-  const completedCount = JourneyService.completedCount(state, module.id);
-  const currentDay = JourneyService.currentDay(state, module.id);
+  const completedCount = JourneyService.completedCount(safeState, module.id);
+  const currentDay = JourneyService.currentDay(safeState, module.id);
   const day = CourseService.getDay(module.id, currentDay);
-  const completed = JourneyService.isDayCompleted(state, module.id, currentDay);
-  const percent = Math.round((completedCount / total) * 100);
+  const completed = JourneyService.isDayCompleted(safeState, module.id, currentDay);
+  const percent = total > 0 ? Math.round((completedCount / total) * 100) : 0;
+
+  const weeks = useMemo(() => {
+    const groups = new Map<number, CourseDay[]>();
+    for (const item of module.days) {
+      const week = item.week ?? 1;
+      const list = groups.get(week) ?? [];
+      list.push(item);
+      groups.set(week, list);
+    }
+    return [...groups.entries()].sort((a, b) => a[0] - b[0]);
+  }, [module.days]);
 
   return (
     <AppShell title={module.title}>
       <div className="space-y-6">
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
+          className="inline-flex min-h-[44px] items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
         >
-          <ArrowLeft className="size-4" /> Modules
+          <ArrowLeft className="size-4" /> Home
         </Link>
 
         <div className="rounded-3xl bg-navy p-5 text-navy-foreground">
@@ -84,31 +106,140 @@ function ModulePage() {
           </div>
         </div>
 
-        <DailyPracticeCard moduleId={module.id} day={day} completed={completed} totalDays={total} />
+        {failed ? (
+          <div className="rounded-2xl border border-border bg-card p-4">
+            <p className="text-[13px] font-semibold text-muted-foreground">We couldn't load your progress.</p>
+            <button
+              type="button"
+              onClick={load}
+              className="mt-3 min-h-[44px] w-full rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
+            >
+              Try again
+            </button>
+          </div>
+        ) : null}
 
-        <details open className="rounded-3xl border border-border bg-card p-4">
-          <summary className="cursor-pointer text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-            All {total} days
-          </summary>
-          <div className="mt-3 space-y-2">
-            {module.days.map((item) => (
-              <div key={item.day}>
-                {module.weeks && item.week && module.days.find((d) => d.week === item.week)?.day === item.day ? (
-                  <p className="pb-1.5 pt-2 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
-                    Week {item.week} · {module.weeks.find((w) => w.week === item.week)?.title}
-                  </p>
-                ) : null}
-                <JourneyDayRow
+        {state ? (
+          <>
+            <DailyPracticeCard moduleId={module.id} day={day} completed={completed} totalDays={total} />
+
+            <section className="space-y-3">
+              {weeks.map(([week, days]) => (
+                <WeekSection
+                  key={week}
                   moduleId={module.id}
-                  day={item}
-                  completed={JourneyService.isDayCompleted(state, module.id, item.day)}
-                  current={item.day === currentDay}
+                  week={week}
+                  title={module.weeks?.find((w) => w.week === week)?.title ?? days[0]?.weekTitle ?? ""}
+                  days={days}
+                  state={state}
+                  currentDay={currentDay}
                 />
-              </div>
+              ))}
+            </section>
+          </>
+        ) : (
+          <div className="space-y-3" aria-busy="true">
+            {[0, 1, 2, 3].map((i) => (
+              <div key={i} className="h-20 animate-pulse rounded-3xl bg-secondary" />
             ))}
           </div>
-        </details>
+        )}
       </div>
     </AppShell>
+  );
+}
+
+function WeekSection({
+  moduleId,
+  week,
+  title,
+  days,
+  state,
+  currentDay,
+}: {
+  moduleId: ModuleId;
+  week: number;
+  title: string;
+  days: CourseDay[];
+  state: JourneyState;
+  currentDay: number;
+}) {
+  const doneCount = days.filter((d) => JourneyService.isDayCompleted(state, moduleId, d.day)).length;
+  const isCurrent = days.some((d) => d.day === currentDay) && doneCount < days.length;
+  const status =
+    doneCount >= days.length
+      ? ({ label: "COMPLETE ✓", tone: "done" } as const)
+      : isCurrent
+        ? ({ label: "CURRENT", tone: "current" } as const)
+        : ({ label: "UP NEXT", tone: "next" } as const);
+
+  const [open, setOpen] = useState(isCurrent);
+  useEffect(() => {
+    setOpen(isCurrent);
+  }, [isCurrent]);
+
+  return (
+    <div className={cn("rounded-3xl border bg-card", status.tone === "current" ? "border-primary" : "border-border")}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex min-h-[60px] w-full items-center gap-3 px-4 py-3 text-left"
+      >
+        <span className="min-w-0 flex-1">
+          <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-primary">Week {week}</span>
+          <span className="block truncate text-[15px] font-extrabold tracking-tight">{title}</span>
+          <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+            {doneCount} / {days.length}
+          </span>
+        </span>
+        <StatusBadge status={status} />
+        <ChevronDown className={cn("size-5 shrink-0 text-muted-foreground transition-transform", open && "rotate-180")} />
+      </button>
+
+      {open ? (
+        <div className="space-y-2 px-4 pb-4">
+          {days.map((item) => {
+            const done = JourneyService.isDayCompleted(state, moduleId, item.day);
+            const current = !done && item.day === currentDay;
+            return (
+              <div key={item.day} className="space-y-1.5">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                    Day {item.day}
+                  </span>
+                  <span
+                    className={cn(
+                      "inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.14em]",
+                      done ? "text-success" : current ? "text-primary" : "text-muted-foreground",
+                    )}
+                  >
+                    {done ? (
+                      <>
+                        <Check className="size-3.5" /> Complete
+                      </>
+                    ) : current ? (
+                      "Current"
+                    ) : (
+                      "Up next"
+                    )}
+                  </span>
+                </div>
+                <JourneyDayRow moduleId={moduleId} day={item} completed={done} current={current} />
+                {current ? (
+                  <Link
+                    to="/practice"
+                    search={{ day: item.day, module: moduleId }}
+                    className="flex min-h-[48px] w-full items-center justify-center rounded-2xl bg-primary px-5 text-[14px] font-bold tracking-wide text-primary-foreground"
+                  >
+                    {JourneyService.completedCount(state, moduleId) > 0 ? "CONTINUE" : "START"}
+                  </Link>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
   );
 }
