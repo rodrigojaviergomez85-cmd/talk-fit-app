@@ -749,9 +749,14 @@ function Rep2Copy({
 
       {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
 
-      <PrimaryButton onClick={onNext}>
+      <PrimaryButton onClick={onNext} disabled={!attempted}>
         {index < day.lines.length - 1 ? "NEXT SENTENCE" : "NEXT REP"} <ArrowRight className="size-5" />
       </PrimaryButton>
+
+      {attempted ? null : (
+        <SkipLink label={showEs ? "SALTAR ESTA FRASE" : "SKIP THIS SENTENCE"} onClick={onSkip} />
+      )}
+
     </div>
   );
 }
