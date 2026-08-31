@@ -8,12 +8,15 @@ import { CourseService } from "@/services/course-service";
 import type { CourseDay, ModuleId, Recording, SelfAssessment } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
+export type RepSummary = { total: number; attempted: number; skipped: number };
+
 type Props = {
   moduleId: ModuleId;
   day: CourseDay;
   finalRecording: Recording | null;
   firstRecording: Recording | null;
   showEs: boolean;
+  summary?: { rep2: RepSummary; rep4: RepSummary };
 };
 
 const ASSESSMENTS: { value: SelfAssessment; en: string; es: string }[] = [
