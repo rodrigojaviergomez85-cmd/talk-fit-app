@@ -272,6 +272,10 @@ function PracticePage() {
             rep2: countFor(2, day.lines.map((line) => line.id)),
             rep4: countFor(4, items4.map((item) => item.id)),
           }}
+          saveState={saveState}
+          onRetrySave={() => {
+            if (finalRecording && journeyAfterFinish) cloudSave(finalRecording, journeyAfterFinish);
+          }}
         />
       </SpanishProvider>
     );
