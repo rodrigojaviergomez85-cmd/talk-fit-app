@@ -103,7 +103,7 @@ function ModulePage() {
               <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${percent}%` }} />
             </div>
             <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">
-              {completedCount} / {total} days
+              {completedCount} / {total} {t("home.days")}
             </p>
           </div>
         </div>
