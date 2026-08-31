@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { Mic } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
-import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
+import { RecordingCard } from "@/components/fluency/RecordingCard";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
-import type { JourneyState } from "@/lib/types";
+import { stopPlayback } from "@/hooks/use-recording-playback";
+import type { JourneyState, ModuleId } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/recordings")({
   head: () => ({
     meta: [
       { title: "My Recordings — Fluency Reps" },
-      { name: "description", content: "Listen to your final speaking rep from each day and compare Day 1 with Day 5." },
+      { name: "description", content: "Listen to your saved Final Rep from each practice and hear how your speaking changes." },
       { property: "og:title", content: "My Recordings — Fluency Reps" },
-      { property: "og:description", content: "Your saved final reps, day by day." },
+      { property: "og:description", content: "Your saved Final Reps, organized by module and day." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -20,69 +23,139 @@ export const Route = createFileRoute("/recordings")({
   component: RecordingsPage,
 });
 
-function RecordingsPage() {
-  const [state, setState] = useState<JourneyState>(emptyJourney);
-  const [urls, setUrls] = useState<Record<string, string>>({});
+const PAGE_SIZE = 20;
 
-  useEffect(() => {
+function RecordingsPage() {
+  const [state, setState] = useState<JourneyState | null>(null);
+  const [filter, setFilter] = useState<ModuleId | "all">("all");
+  const [sort, setSort] = useState<"recent" | "oldest">("recent");
+  const [visible, setVisible] = useState(PAGE_SIZE);
+
+  const load = useCallback(() => {
     setState(JourneyService.load());
     void JourneyService.pull()
-      .then(async (next) => {
-        setState(next);
-        const resolved: Record<string, string> = {};
-        for (const record of Object.values(next.days)) {
-          const key = JourneyService.recordKey(record.moduleId, record.day);
-          if (record.finalUrl) resolved[key] = record.finalUrl;
-          else if (record.recordingPath) {
-            const signed = await JourneyService.signedRecordingUrl(record.recordingPath);
-            if (signed) resolved[key] = signed;
-          }
-        }
-        setUrls(resolved);
-      })
+      .then(setState)
       .catch(() => undefined);
   }, []);
 
-  const records = Object.values(state.days).sort((a, b) => a.day - b.day);
-  const first = records[0];
-  const last = records.length > 1 ? records[records.length - 1] : undefined;
+  useEffect(() => {
+    load();
+    return () => stopPlayback();
+  }, [load]);
+
+  const safe = state ?? emptyJourney;
+  const modules = CourseService.modules();
+  const next = JourneyService.nextPractice(safe);
+
+  const records = useMemo(() => {
+    const list = JourneyService.recordsByDate(safe).filter(
+      (record) => filter === "all" || record.moduleId === filter,
+    );
+    return sort === "recent" ? [...list].reverse() : list;
+  }, [safe, filter, sort]);
+
+  useEffect(() => {
+    setVisible(PAGE_SIZE);
+    stopPlayback();
+  }, [filter, sort]);
+
+  if (!state) {
+    return (
+      <AppShell title="My Recordings">
+        <div className="space-y-3" aria-busy="true">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="h-32 animate-pulse rounded-3xl bg-secondary" />
+          ))}
+        </div>
+      </AppShell>
+    );
+  }
+
+  const total = JourneyService.completedCount(safe);
 
   return (
     <AppShell title="My Recordings">
       <div className="space-y-5">
-        {records.length === 0 ? (
-          <p className="rounded-3xl bg-card p-6 text-center text-[15px] text-muted-foreground shadow-[var(--shadow-card)]">
-            Finish a day to save your first recording here.
-          </p>
-        ) : null}
-
-        {first && last ? (
-          <section className="rounded-3xl border border-primary/25 bg-accent p-5">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-accent-foreground">Then vs now</p>
-            <p className="mt-1.5 text-[15px] font-semibold">
-              Day {first.day}: {first.finalSeconds}s → Day {last.day}: {last.finalSeconds}s
+        {total === 0 ? (
+          <section className="rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-card)]">
+            <Mic className="mx-auto size-8 text-primary" />
+            <h2 className="mt-3 text-[18px] font-extrabold uppercase tracking-tight">Your voice journey starts here.</h2>
+            <p className="mt-2 text-[14px] text-muted-foreground">
+              Complete your first Fluency Reps practice and save your Final Rep.
             </p>
+            {next ? (
+              <Link
+                to="/practice"
+                search={{ day: next.day, module: next.moduleId }}
+                className="mt-5 flex min-h-[52px] w-full items-center justify-center rounded-2xl bg-primary px-6 text-[14px] font-bold tracking-wide text-primary-foreground"
+              >
+                START PRACTICE
+              </Link>
+            ) : null}
           </section>
-        ) : null}
+        ) : (
+          <>
+            <p className="text-[13px] text-muted-foreground">
+              Your saved Final Rep from every completed practice — listen back and hear the difference.
+            </p>
 
-        {records.map((record) => (
-          <section key={`${record.moduleId}:${record.day}`} className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-            <div className="flex items-center justify-between">
-              <p className="text-[15px] font-extrabold tracking-tight">
-                Day {record.day} · {CourseService.getDay(record.moduleId, record.day).topic}
-              </p>
-              <span className="text-[12px] font-bold text-muted-foreground">{record.finalSeconds}s</span>
+            <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
+              <Chip active={filter === "all"} onClick={() => setFilter("all")} label="All" />
+              {modules.map((module) => (
+                <Chip
+                  key={module.id}
+                  active={filter === module.id}
+                  onClick={() => setFilter(module.id)}
+                  label={module.label.split(" · ")[0] ?? module.title}
+                />
+              ))}
             </div>
-            {urls[JourneyService.recordKey(record.moduleId, record.day)] ? (
-              <RecordingPlayback url={urls[JourneyService.recordKey(record.moduleId, record.day)] ?? null} label="LISTEN TO MY FINAL REP" />
-            ) : (
-              <p className="text-[13px] text-muted-foreground">
-                Sign in to keep your recordings across devices.
+
+            <div className="flex gap-2">
+              <Chip active={sort === "recent"} onClick={() => setSort("recent")} label="Recent" />
+              <Chip active={sort === "oldest"} onClick={() => setSort("oldest")} label="Oldest" />
+            </div>
+
+            {records.length === 0 ? (
+              <p className="rounded-3xl bg-card p-6 text-center text-[14px] text-muted-foreground shadow-[var(--shadow-card)]">
+                No saved recordings in this module yet.
               </p>
-            )}
-          </section>
-        ))}
+            ) : null}
+
+            <div className="space-y-3">
+              {records.slice(0, visible).map((record) => (
+                <RecordingCard key={`${record.moduleId}:${record.day}`} record={record} />
+              ))}
+            </div>
+
+            {records.length > visible ? (
+              <button
+                type="button"
+                onClick={() => setVisible((v) => v + PAGE_SIZE)}
+                className="min-h-[48px] w-full rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
+              >
+                Load more
+              </button>
+            ) : null}
+          </>
+        )}
       </div>
     </AppShell>
+  );
+}
+
+function Chip({ active, onClick, label }: { active: boolean; onClick: () => void; label: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={cn(
+        "min-h-[40px] shrink-0 rounded-full px-4 text-[11px] font-bold uppercase tracking-[0.14em] transition-colors",
+        active ? "bg-primary text-primary-foreground" : "border border-border bg-card text-muted-foreground",
+      )}
+    >
+      {label}
+    </button>
   );
 }

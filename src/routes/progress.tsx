@@ -1,10 +1,15 @@
-import { useEffect, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import { Check, Flame, Mic, Timer } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { ArrowRight, Check, ChevronDown, Flame, Mic, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { StatusBadge } from "@/components/fluency/StatusBadge";
+import { ThenVsNow } from "@/components/fluency/ThenVsNow";
+import { SpeakingChart } from "@/components/fluency/SpeakingChart";
+import { RecordingCard } from "@/components/fluency/RecordingCard";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
-import type { JourneyState } from "@/lib/types";
+import { formatDuration, ideasLabel } from "@/lib/recordings";
+import type { CourseDay, DayRecord, JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/progress")({
@@ -22,68 +27,354 @@ export const Route = createFileRoute("/progress")({
 });
 
 function ProgressPage() {
-  const [state, setState] = useState<JourneyState>(emptyJourney);
+  const [state, setState] = useState<JourneyState | null>(null);
+  const [failed, setFailed] = useState(false);
 
-  useEffect(() => {
+  const load = useCallback(() => {
+    setFailed(false);
     setState(JourneyService.load());
-    void JourneyService.pull().then(setState).catch(() => undefined);
+    void JourneyService.pull()
+      .then(setState)
+      .catch(() => setFailed(true));
   }, []);
 
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const safe = state ?? emptyJourney;
   const modules = CourseService.modules();
-  const completedCount = JourneyService.completedCount(state);
-  const totalDays = modules.reduce((sum, m) => sum + m.days.length, 0);
+  const totalDays = CourseService.totalDaysAll();
+  const completedCount = JourneyService.completedCount(safe);
+  const week = JourneyService.weekStats(safe);
+  const next = JourneyService.nextPractice(safe);
+  const bests = JourneyService.personalBests(safe);
+  const recent = useMemo(() => JourneyService.recordsByDate(safe).slice(-4).reverse(), [safe]);
+  const series = useMemo(() => JourneyService.speakingSeries(safe), [safe]);
+  const dated = useMemo(() => JourneyService.recordsByDate(safe), [safe]);
+  const first = dated[0];
+  const latest = dated.length > 1 ? dated[dated.length - 1] : undefined;
+
+  if (!state) {
+    return (
+      <AppShell title="Your Progress">
+        <div className="space-y-3" aria-busy="true">
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="h-24 animate-pulse rounded-3xl bg-secondary" />
+          ))}
+        </div>
+      </AppShell>
+    );
+  }
 
   return (
-    <AppShell title="My Progress">
-      <div className="space-y-5">
-        <div className="grid grid-cols-2 gap-3">
-          <Stat icon={<Check className="size-4 text-primary" />} label="Days completed" value={`${completedCount} / ${totalDays}`} />
-          <Stat icon={<Mic className="size-4 text-primary" />} label="Total reps" value={`${state.totalRepsCompleted}`} />
-          <Stat icon={<Timer className="size-4 text-primary" />} label="Minutes this week" value={`${JourneyService.speakingMinutesThisWeek(state)}`} />
-          <Stat icon={<Flame className="size-4 text-primary" />} label="Streak" value={`${state.streakDays}`} />
-        </div>
+    <AppShell title="Your Progress">
+      <div className="space-y-6">
+        {failed ? (
+          <div className="rounded-2xl border border-border bg-card p-4">
+            <p className="text-[13px] font-semibold text-muted-foreground">We couldn't load your progress.</p>
+            <button
+              type="button"
+              onClick={load}
+              className="mt-3 min-h-[44px] w-full rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
+            >
+              Try again
+            </button>
+          </div>
+        ) : null}
 
-        {modules.map((module) => (
-        <section key={module.id} className="space-y-2">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-            {module.title} · {JourneyService.completedCount(state, module.id)} / {module.days.length} days
-          </h2>
-          {module.days.map((day) => {
-            const record = JourneyService.getRecord(state, module.id, day.day);
+        {/* Objective metrics */}
+        <section className="grid grid-cols-2 gap-3">
+          <Stat icon={<Check className="size-4 text-primary" />} label="Days completed" value={`${completedCount} / ${totalDays}`} />
+          <Stat icon={<Mic className="size-4 text-primary" />} label="Fluency reps" value={`${safe.totalRepsCompleted}`} />
+          <Stat icon={<Timer className="size-4 text-primary" />} label="Speaking time" value={`${JourneyService.totalSpeakingMinutes(safe)} min`} />
+          <Stat icon={<Flame className="size-4 text-primary" />} label="Current streak" value={`${safe.streakDays} ${safe.streakDays === 1 ? "day" : "days"}`} />
+        </section>
+
+        {/* This week */}
+        <section className="rounded-3xl bg-card p-4 shadow-[var(--shadow-card)]">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">This week</h2>
+          <div className="mt-2 grid grid-cols-3 gap-2 text-center">
+            <WeekStat value={`${week.days} / 5`} label="Days" />
+            <WeekStat value={`${week.reps}`} label="Reps" />
+            <WeekStat value={`${week.minutes}`} label="Minutes" />
+          </div>
+        </section>
+
+        {/* Current module */}
+        {next ? <CurrentModule state={safe} moduleId={next.moduleId} day={next.day} /> : null}
+
+        {/* Modules */}
+        <section className="space-y-3">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Your modules</h2>
+          {modules.map((module) => {
+            const done = JourneyService.completedCount(safe, module.id);
+            const total = module.days.length;
+            const status =
+              done >= total
+                ? ({ label: "COMPLETE ✓", tone: "done" } as const)
+                : next?.moduleId === module.id
+                  ? ({ label: "CURRENT", tone: "current" } as const)
+                  : ({ label: "UP NEXT", tone: "next" } as const);
+            return (
+              <Link
+                key={module.id}
+                to="/module/$moduleId"
+                params={{ moduleId: module.id }}
+                className={cn(
+                  "block rounded-3xl border bg-card p-4",
+                  status.tone === "current" ? "border-primary" : "border-border",
+                )}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                      {module.label.split(" · ")[0]}
+                    </p>
+                    <p className="truncate text-[15px] font-extrabold tracking-tight">{module.title}</p>
+                  </div>
+                  <StatusBadge status={status} />
+                </div>
+                <ProgressBar value={total > 0 ? done / total : 0} />
+                <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                  {done} / {total} days
+                </p>
+              </Link>
+            );
+          })}
+        </section>
+
+        {/* Speaking output */}
+        {first ? (
+          <section className="space-y-3">
+            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Your speaking</h2>
+            <div className="grid grid-cols-2 gap-3">
+              <OutputStat label="First saved recording" record={first} />
+              {latest ? <OutputStat label="Latest saved recording" record={latest} /> : null}
+              {bests.longestSeconds ? (
+                <Stat
+                  icon={<Timer className="size-4 text-primary" />}
+                  label="Longest final rep"
+                  value={`${bests.longestSeconds} sec`}
+                />
+              ) : null}
+              {bests.mostIdeas ? (
+                <Stat
+                  icon={<Mic className="size-4 text-primary" />}
+                  label="Most ideas"
+                  value={`${bests.mostIdeas} ideas`}
+                />
+              ) : null}
+            </div>
+          </section>
+        ) : null}
+
+        <ThenVsNow pair={JourneyService.thenVsNow(safe)} />
+
+        <SpeakingChart data={series} />
+
+        {/* Speaking history */}
+        {recent.length ? (
+          <section className="space-y-3">
+            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Speaking history</h2>
+            {recent.map((record) => (
+              <RecordingCard key={`${record.moduleId}:${record.day}`} record={record} />
+            ))}
+            <Link
+              to="/recordings"
+              className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
+            >
+              View all recordings <ArrowRight className="size-4" />
+            </Link>
+          </section>
+        ) : null}
+
+        <AllDays state={safe} />
+      </div>
+    </AppShell>
+  );
+}
+
+function CurrentModule({ state, moduleId, day }: { state: JourneyState; moduleId: ModuleId; day: number }) {
+  const module = CourseService.getModule(moduleId);
+  const done = JourneyService.completedCount(state, moduleId);
+  const total = module.days.length;
+  const week = CourseService.getDay(moduleId, day).week ?? 1;
+  const weekDone = JourneyService.weekRecords(state, moduleId, week).length;
+  const weekTotal = JourneyService.weekTotalDays(moduleId, week);
+
+  return (
+    <section className="rounded-3xl bg-navy p-5 text-navy-foreground">
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Current module</p>
+      <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-navy-foreground/70">
+        {module.label.split(" · ")[0]}
+      </p>
+      <h2 className="text-[22px] font-extrabold tracking-tight">{module.title}</h2>
+      <div className="mt-3 h-2 overflow-hidden rounded-full bg-navy-foreground/15">
+        <div
+          className="h-full rounded-full bg-primary transition-all"
+          style={{ width: `${total > 0 ? Math.round((done / total) * 100) : 0}%` }}
+        />
+      </div>
+      <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">
+        {done} / {total} days · Week {week} · {weekDone} / {weekTotal} days
+      </p>
+      <Link
+        to="/practice"
+        search={{ day, module: moduleId }}
+        className="mt-4 flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 text-[14px] font-bold tracking-wide text-primary-foreground"
+      >
+        CONTINUE PRACTICE <ArrowRight className="size-4" />
+      </Link>
+    </section>
+  );
+}
+
+function AllDays({ state }: { state: JourneyState }) {
+  const [open, setOpen] = useState(false);
+  const modules = CourseService.modules();
+
+  return (
+    <section className="space-y-3">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex min-h-[52px] w-full items-center justify-between gap-2 rounded-2xl border border-border bg-card px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
+      >
+        View all days
+        <ChevronDown className={cn("size-5 text-muted-foreground transition-transform", open && "rotate-180")} />
+      </button>
+
+      {open
+        ? modules.map((module) => {
+            const currentDay = JourneyService.currentDay(state, module.id);
+            const weeks = new Map<number, CourseDay[]>();
+            for (const item of module.days) {
+              const week = item.week ?? 1;
+              weeks.set(week, [...(weeks.get(week) ?? []), item]);
+            }
+            return (
+              <div key={module.id} className="space-y-2">
+                <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                  {module.title} · {JourneyService.completedCount(state, module.id)} / {module.days.length} days
+                </h3>
+                {[...weeks.entries()]
+                  .sort((a, b) => a[0] - b[0])
+                  .map(([week, days]) => (
+                    <WeekBlock
+                      key={week}
+                      moduleId={module.id}
+                      week={week}
+                      days={days}
+                      state={state}
+                      currentDay={currentDay}
+                    />
+                  ))}
+              </div>
+            );
+          })
+        : null}
+    </section>
+  );
+}
+
+function WeekBlock({
+  moduleId,
+  week,
+  days,
+  state,
+  currentDay,
+}: {
+  moduleId: ModuleId;
+  week: number;
+  days: CourseDay[];
+  state: JourneyState;
+  currentDay: number;
+}) {
+  const doneCount = days.filter((d) => JourneyService.isDayCompleted(state, moduleId, d.day)).length;
+  const isCurrent = days.some((d) => d.day === currentDay) && doneCount < days.length;
+  const [open, setOpen] = useState(isCurrent);
+  const status =
+    doneCount >= days.length
+      ? ({ label: "COMPLETE ✓", tone: "done" } as const)
+      : isCurrent
+        ? ({ label: "CURRENT", tone: "current" } as const)
+        : ({ label: "UP NEXT", tone: "next" } as const);
+
+  return (
+    <div className={cn("rounded-3xl border bg-card", isCurrent ? "border-primary" : "border-border")}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex min-h-[56px] w-full items-center gap-3 px-4 py-3 text-left"
+      >
+        <span className="min-w-0 flex-1">
+          <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-primary">Week {week}</span>
+          <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+            {doneCount} / {days.length} days
+          </span>
+        </span>
+        <StatusBadge status={status} />
+        <ChevronDown className={cn("size-5 shrink-0 text-muted-foreground transition-transform", open && "rotate-180")} />
+      </button>
+
+      {open ? (
+        <div className="space-y-2 px-4 pb-4">
+          {days.map((item) => {
+            const record = JourneyService.getRecord(state, moduleId, item.day);
             return (
               <div
-                key={day.day}
+                key={item.day}
                 className={cn(
-                  "flex items-center justify-between gap-3 rounded-2xl border p-4",
-                  record ? "border-success/30 bg-success/8" : "border-border bg-card",
+                  "flex items-center justify-between gap-3 rounded-2xl border p-3",
+                  record ? "border-success/30 bg-success/8" : "border-border",
                 )}
               >
                 <div className="min-w-0">
-                  <p className="truncate text-[15px] font-bold tracking-tight">
-                    Day {day.day} · {day.topic}
+                  <p className="truncate text-[14px] font-bold tracking-tight">
+                    Day {item.day} · {item.topic}
                   </p>
-                  <p className="truncate text-[12px] text-muted-foreground">{day.focus}</p>
+                  <p className="truncate text-[12px] text-muted-foreground">{item.focus}</p>
                 </div>
                 <span className="shrink-0 text-[12px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                  {record ? `${record.finalSeconds}s` : "—"}
+                  {record ? `${Math.round(record.finalSeconds)}s` : "—"}
                 </span>
               </div>
             );
           })}
-        </section>
-        ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
-        {state.selfAssessment ? (
-          <div className="rounded-3xl border border-primary/25 bg-accent p-5">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-accent-foreground">Self check</p>
-            <p className="mt-1.5 text-[15px] font-semibold">
-              Speaking feels easier than Day 1:{" "}
-              {state.selfAssessment === "definitely" ? "Definitely" : state.selfAssessment === "a-little" ? "A little" : "Not yet"}
-            </p>
-          </div>
-        ) : null}
-      </div>
-    </AppShell>
+function OutputStat({ label, record }: { label: string; record: DayRecord }) {
+  const ideas = ideasLabel(record.sentenceCount);
+  return (
+    <div className="rounded-3xl bg-card p-4 shadow-[var(--shadow-card)]">
+      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
+      <p className="mt-1.5 text-xl font-extrabold tabular-nums tracking-tight">{formatDuration(record.finalSeconds)}</p>
+      {ideas ? <p className="text-[12px] font-bold text-muted-foreground">{ideas}</p> : null}
+    </div>
+  );
+}
+
+function ProgressBar({ value }: { value: number }) {
+  return (
+    <div className="mt-3 h-2 overflow-hidden rounded-full bg-secondary">
+      <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${Math.round(value * 100)}%` }} />
+    </div>
+  );
+}
+
+function WeekStat({ value, label }: { value: string; label: string }) {
+  return (
+    <div>
+      <p className="text-xl font-extrabold tabular-nums tracking-tight">{value}</p>
+      <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
+    </div>
   );
 }
 
