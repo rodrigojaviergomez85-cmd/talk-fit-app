@@ -102,6 +102,9 @@ const DICT = {
   "home.startDay": ["EMPEZAR DÍA", "START DAY"],
   "home.week": ["SEMANA", "WEEK"],
   "home.day": ["DÍA", "DAY"],
+  "home.continueDay": ["CONTINUAR DÍA", "CONTINUE DAY"],
+  "home.rep": ["REP", "REP"],
+
 
   // Recordings
   "rec.title": ["Mis grabaciones", "My Recordings"],
