@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useSpanishAll } from "./TranslatableText";
+import { useAppLang } from "@/lib/i18n";
 
 type Props = {
   /** English label, defaults to HOW IT WORKS. */
@@ -14,7 +14,7 @@ type Props = {
 /** Optional grammar / extra explanation. Always collapsed by default. */
 export function CollapsibleHelp({ label = "How it works", labelEs = "Cómo funciona", children, className }: Props) {
   const [open, setOpen] = useState(false);
-  const es = useSpanishAll();
+  const es = useAppLang().lang === "es";
   return (
     <div className={cn("overflow-hidden rounded-3xl border border-border bg-card", className)}>
       <button
@@ -35,7 +35,7 @@ export function CollapsibleHelp({ label = "How it works", labelEs = "Cómo funci
 
 /** Compact "show / hide text" switch used to keep reps visual-first. */
 export function TextToggle({ open, onToggle }: { open: boolean; onToggle: () => void }) {
-  const es = useSpanishAll();
+  const es = useAppLang().lang === "es";
   return (
     <button
       type="button"

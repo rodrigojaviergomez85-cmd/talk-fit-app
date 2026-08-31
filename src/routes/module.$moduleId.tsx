@@ -8,6 +8,7 @@ import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
 import type { CourseDay, JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/module/$moduleId")({
   beforeLoad: ({ params }) => {
@@ -36,6 +37,7 @@ export const Route = createFileRoute("/module/$moduleId")({
 });
 
 function ModulePage() {
+  const t = useT();
   const { moduleId } = Route.useParams();
   const module = CourseService.getModule(moduleId as ModuleId)!;
   const [state, setState] = useState<JourneyState | null>(null);
@@ -79,7 +81,7 @@ function ModulePage() {
           to="/"
           className="inline-flex min-h-[44px] items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
         >
-          <ArrowLeft className="size-4" /> Home
+          <ArrowLeft className="size-4" /> {t("nav.home")}
         </Link>
 
         <div className="rounded-3xl bg-navy p-5 text-navy-foreground">
@@ -101,7 +103,7 @@ function ModulePage() {
               <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${percent}%` }} />
             </div>
             <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">
-              {completedCount} / {total} days
+              {completedCount} / {total} {t("home.days")}
             </p>
           </div>
         </div>
@@ -168,14 +170,15 @@ function WeekSection({
   state: JourneyState;
   currentDay: number;
 }) {
+  const t = useT();
   const doneCount = days.filter((d) => JourneyService.isDayCompleted(state, moduleId, d.day)).length;
   const isCurrent = days.some((d) => d.day === currentDay) && doneCount < days.length;
   const status =
     doneCount >= days.length
-      ? ({ label: "COMPLETE ✓", tone: "done" } as const)
+      ? ({ label: t("status.complete"), tone: "done" } as const)
       : isCurrent
-        ? ({ label: "CURRENT", tone: "current" } as const)
-        : ({ label: "UP NEXT", tone: "next" } as const);
+        ? ({ label: t("status.current"), tone: "current" } as const)
+        : ({ label: t("status.upNext"), tone: "next" } as const);
 
   const [open, setOpen] = useState(isCurrent);
   useEffect(() => {
@@ -191,7 +194,7 @@ function WeekSection({
         className="flex min-h-[60px] w-full items-center gap-3 px-4 py-3 text-left"
       >
         <span className="min-w-0 flex-1">
-          <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-primary">Week {week}</span>
+          <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-primary">{t("home.week")} {week}</span>
           <span className="block truncate text-[15px] font-extrabold tracking-tight">{title}</span>
           <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
             {doneCount} / {days.length}

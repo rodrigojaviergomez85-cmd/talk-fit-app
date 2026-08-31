@@ -11,6 +11,7 @@ import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { formatDuration, ideasLabel } from "@/lib/recordings";
 import type { CourseDay, DayRecord, JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/progress")({
   head: () => ({
@@ -27,6 +28,7 @@ export const Route = createFileRoute("/progress")({
 });
 
 function ProgressPage() {
+  const t = useT();
   const [state, setState] = useState<JourneyState | null>(null);
   const [failed, setFailed] = useState(false);
 
@@ -57,7 +59,7 @@ function ProgressPage() {
 
   if (!state) {
     return (
-      <AppShell title="Your Progress">
+      <AppShell title={t("nav.progress")}>
         <div className="space-y-3" aria-busy="true">
           {[0, 1, 2, 3].map((i) => (
             <div key={i} className="h-24 animate-pulse rounded-3xl bg-secondary" />
@@ -68,11 +70,11 @@ function ProgressPage() {
   }
 
   return (
-    <AppShell title="Your Progress">
+    <AppShell title={t("nav.progress")}>
       <div className="space-y-6">
         {failed ? (
           <div className="rounded-2xl border border-border bg-card p-4">
-            <p className="text-[13px] font-semibold text-muted-foreground">We couldn't load your progress.</p>
+            <p className="text-[13px] font-semibold text-muted-foreground">{t("home.loadFailed")}</p>
             <button
               type="button"
               onClick={load}
@@ -85,19 +87,19 @@ function ProgressPage() {
 
         {/* Objective metrics */}
         <section className="grid grid-cols-2 gap-3">
-          <Stat icon={<Check className="size-4 text-primary" />} label="Days completed" value={`${completedCount} / ${totalDays}`} />
-          <Stat icon={<Mic className="size-4 text-primary" />} label="Fluency reps" value={`${safe.totalRepsCompleted}`} />
-          <Stat icon={<Timer className="size-4 text-primary" />} label="Speaking time" value={`${JourneyService.totalSpeakingMinutes(safe)} min`} />
-          <Stat icon={<Flame className="size-4 text-primary" />} label="Current streak" value={`${safe.streakDays} ${safe.streakDays === 1 ? "day" : "days"}`} />
+          <Stat icon={<Check className="size-4 text-primary" />} label={t("home.daysCompleted")} value={`${completedCount} / ${totalDays}`} />
+          <Stat icon={<Mic className="size-4 text-primary" />} label={t("home.reps")} value={`${safe.totalRepsCompleted}`} />
+          <Stat icon={<Timer className="size-4 text-primary" />} label={t("home.speakingTime")} value={`${JourneyService.totalSpeakingMinutes(safe)} min`} />
+          <Stat icon={<Flame className="size-4 text-primary" />} label={t("home.streak")} value={`${safe.streakDays} ${t("home.days")}`} />
         </section>
 
         {/* This week */}
         <section className="rounded-3xl bg-card p-4 shadow-[var(--shadow-card)]">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">This week</h2>
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t("prog.thisWeek")}</h2>
           <div className="mt-2 grid grid-cols-3 gap-2 text-center">
-            <WeekStat value={`${week.days} / 5`} label="Days" />
-            <WeekStat value={`${week.reps}`} label="Reps" />
-            <WeekStat value={`${week.minutes}`} label="Minutes" />
+            <WeekStat value={`${week.days} / 5`} label={t("prog.days")} />
+            <WeekStat value={`${week.reps}`} label={t("home.reps")} />
+            <WeekStat value={`${week.minutes}`} label={t("prog.minutes")} />
           </div>
         </section>
 
@@ -106,7 +108,7 @@ function ProgressPage() {
 
         {/* Modules */}
         <section className="space-y-3">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Your modules</h2>
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t("prog.modules")}</h2>
           {modules.map((module) => {
             const done = JourneyService.completedCount(safe, module.id);
             const total = module.days.length;
@@ -147,21 +149,21 @@ function ProgressPage() {
         {/* Speaking output */}
         {first ? (
           <section className="space-y-3">
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Your speaking</h2>
+            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t("prog.speaking")}</h2>
             <div className="grid grid-cols-2 gap-3">
-              <OutputStat label="First saved recording" record={first} />
-              {latest ? <OutputStat label="Latest saved recording" record={latest} /> : null}
+              <OutputStat label={t("prog.firstRec")} record={first} />
+              {latest ? <OutputStat label={t("prog.latestRec")} record={latest} /> : null}
               {bests.longestSeconds ? (
                 <Stat
                   icon={<Timer className="size-4 text-primary" />}
-                  label="Longest final rep"
+                  label={t("prog.longest")}
                   value={`${bests.longestSeconds} sec`}
                 />
               ) : null}
               {bests.mostIdeas ? (
                 <Stat
                   icon={<Mic className="size-4 text-primary" />}
-                  label="Most ideas"
+                  label={t("prog.mostIdeas")}
                   value={`${bests.mostIdeas} ideas`}
                 />
               ) : null}
@@ -176,7 +178,7 @@ function ProgressPage() {
         {/* Speaking history */}
         {recent.length ? (
           <section className="space-y-3">
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Speaking history</h2>
+            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t("prog.history")}</h2>
             {recent.map((record) => (
               <RecordingCard key={`${record.moduleId}:${record.day}`} record={record} />
             ))}
@@ -196,6 +198,7 @@ function ProgressPage() {
 }
 
 function CurrentModule({ state, moduleId, day }: { state: JourneyState; moduleId: ModuleId; day: number }) {
+  const t = useT();
   const module = CourseService.getModule(moduleId);
   const done = JourneyService.completedCount(state, moduleId);
   const total = module.days.length;
@@ -205,7 +208,7 @@ function CurrentModule({ state, moduleId, day }: { state: JourneyState; moduleId
 
   return (
     <section className="rounded-3xl bg-navy p-5 text-navy-foreground">
-      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Current module</p>
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{t("prog.currentModule")}</p>
       <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-navy-foreground/70">
         {module.label.split(" · ")[0]}
       </p>

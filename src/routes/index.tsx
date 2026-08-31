@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Check, ChevronRight, Flame, Mic, Repeat, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { ContinueCard } from "@/components/fluency/ContinueCard";
@@ -8,6 +8,7 @@ import { JourneyService, emptyJourney } from "@/services/journey-service";
 import type { JourneyState, ModuleId } from "@/lib/types";
 import { StatusBadge, type ProgressStatus } from "@/components/fluency/StatusBadge";
 import { cn } from "@/lib/utils";
+import { useAppLang, useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -30,6 +31,8 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const [state, setState] = useState<JourneyState | null>(null);
   const [failed, setFailed] = useState(false);
+  const navigate = useNavigate();
+  const { t, prefs } = useAppLang();
 
   const load = useCallback(() => {
     setFailed(false);
@@ -44,11 +47,19 @@ function HomePage() {
     load();
   }, [load]);
 
+  // First-time learners see the 3-screen intro once; active learners never do.
+  useEffect(() => {
+    if (!state) return;
+    if (prefs.onboardingCompleted) return;
+    if (JourneyService.completedCount(state) > 0) return;
+    void navigate({ to: "/onboarding" });
+  }, [state, prefs.onboardingCompleted, navigate]);
+
   const modules = [...CourseService.modules()].sort((a, b) => a.order - b.order);
 
   if (!state) {
     return (
-      <AppShell title="Today">
+      <AppShell title={t("home.today")}>
         <HomeSkeleton />
       </AppShell>
     );
@@ -59,36 +70,36 @@ function HomePage() {
   const completed = JourneyService.completedCount(state);
 
   return (
-    <AppShell title="Today">
+    <AppShell title={t("home.today")}>
       <div className="space-y-6">
         <ContinueCard state={state} />
 
         {failed ? (
           <div className="rounded-2xl border border-border bg-card p-4">
-            <p className="text-[13px] font-semibold text-muted-foreground">We couldn't load your saved progress.</p>
+            <p className="text-[13px] font-semibold text-muted-foreground">{t("home.loadFailed")}</p>
             <button
               type="button"
               onClick={load}
               className="mt-3 min-h-[44px] w-full rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
             >
-              Try again
+              {t("action.tryAgain")}
             </button>
           </div>
         ) : null}
 
         <section className="grid grid-cols-2 gap-3">
-          <Stat icon={<Flame className="size-4 text-primary" />} label="Streak" value={`${state.streakDays || 0} days`} />
+          <Stat icon={<Flame className="size-4 text-primary" />} label={t("home.streak")} value={`${state.streakDays || 0} ${t("home.days")}`} />
           <Stat
             icon={<Timer className="size-4 text-primary" />}
-            label="Speaking time"
+            label={t("home.speakingTime")}
             value={`${JourneyService.totalSpeakingMinutes(state) || 0} min`}
           />
-          <Stat icon={<Check className="size-4 text-primary" />} label="Days completed" value={`${completed} / ${totalDays}`} />
-          <Stat icon={<Repeat className="size-4 text-primary" />} label="Fluency reps" value={`${state.totalRepsCompleted || 0}`} />
+          <Stat icon={<Check className="size-4 text-primary" />} label={t("home.daysCompleted")} value={`${completed} / ${totalDays}`} />
+          <Stat icon={<Repeat className="size-4 text-primary" />} label={t("home.reps")} value={`${state.totalRepsCompleted || 0}`} />
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Your journey</h2>
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t("home.journey")}</h2>
           {modules.map((module) => (
             <ModuleCard
               key={module.id}
@@ -107,10 +118,11 @@ function moduleStatus(
   module: LearningModule,
   state: JourneyState,
   currentModule: ModuleId | null,
+  t: (key: "status.complete" | "status.current" | "status.upNext") => string,
 ): ProgressStatus {
-  if (JourneyService.moduleComplete(state, module.id)) return { label: "COMPLETE ✓", tone: "done" };
-  if (currentModule === module.id) return { label: "CURRENT", tone: "current" };
-  return { label: "UP NEXT", tone: "next" };
+  if (JourneyService.moduleComplete(state, module.id)) return { label: t("status.complete"), tone: "done" };
+  if (currentModule === module.id) return { label: t("status.current"), tone: "current" };
+  return { label: t("status.upNext"), tone: "next" };
 }
 
 function ModuleCard({
@@ -122,10 +134,11 @@ function ModuleCard({
   state: JourneyState;
   currentModule: ModuleId | null;
 }) {
+  const t = useT();
   const total = module.days.length;
   const completedCount = JourneyService.completedCount(state, module.id);
   const percent = total > 0 ? Math.round((completedCount / total) * 100) : 0;
-  const status = moduleStatus(module, state, currentModule);
+  const status = moduleStatus(module, state, currentModule, t);
 
   return (
     <Link to="/module/$moduleId" params={{ moduleId: module.id }} className="block transition-transform active:scale-[0.99]">
@@ -148,7 +161,7 @@ function ModuleCard({
 
         <div className="mt-4 flex items-center justify-between gap-3">
           <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-            {completedCount} / {total} days
+            {completedCount} / {total} {t("home.days")}
           </p>
           <StatusBadge status={status} />
         </div>

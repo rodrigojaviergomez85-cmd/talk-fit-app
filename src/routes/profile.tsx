@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { PracticeSessionService, setSessionScope } from "@/services/practice-session";
+import { setPreferencesScope } from "@/services/preferences";
+import { useAppLang } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 /** Never render NaN/undefined in a stat. */
 const num = (value: unknown): number => (typeof value === "number" && Number.isFinite(value) ? value : 0);
@@ -27,6 +30,7 @@ export const Route = createFileRoute("/profile")({
 });
 
 function ProfilePage() {
+  const { t, lang, setLang, prefs, setPrefs } = useAppLang();
   const [state, setState] = useState<JourneyState>(emptyJourney);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,6 +44,7 @@ function ProfilePage() {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
       setUserEmail(session?.user.email ?? null);
       setSessionScope(session?.user.id ?? null);
+      setPreferencesScope(session?.user.id ?? null);
       // Never keep another session's numbers on screen.
       if (session) void JourneyService.pull().then(setState).catch(() => undefined);
       else setState(JourneyService.load());
@@ -47,6 +52,7 @@ function ProfilePage() {
     void supabase.auth.getUser().then(({ data }) => {
       setUserEmail(data.user?.email ?? null);
       setSessionScope(data.user?.id ?? null);
+      setPreferencesScope(data.user?.id ?? null);
     });
     return () => sub.subscription.unsubscribe();
   }, []);
@@ -61,7 +67,7 @@ function ProfilePage() {
         password,
         options: { emailRedirectTo: window.location.origin },
       });
-      setMessage(signUp.error ? signUp.error.message : "Check your email to confirm your account.");
+      setMessage(signUp.error ? signUp.error.message : t("account.checkEmail"));
     }
     setBusy(false);
   };
@@ -69,40 +75,75 @@ function ProfilePage() {
   const signInWithGoogle = async () => {
     setMessage(null);
     const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
-    if (result.error) setMessage("Google sign-in failed. Try again.");
+    if (result.error) setMessage(t("account.googleFailed"));
   };
 
   return (
-    <AppShell title="My Account">
+    <AppShell title={t("account.title")}>
       <div className="space-y-5">
         <section className="grid grid-cols-2 gap-3">
           <Stat
-            label="Days completed"
+            label={t("home.daysCompleted")}
             value={`${num(JourneyService.completedCount(state))} / ${num(CourseService.totalDaysAll())}`}
           />
-          <Stat label="Speaking minutes" value={`${num(JourneyService.totalSpeakingMinutes(state))}`} />
+          <Stat label={t("home.speakingTime")} value={`${num(JourneyService.totalSpeakingMinutes(state))}`} />
         </section>
 
+        <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+            {t("account.language")}
+          </p>
+          <div className="grid grid-cols-2 gap-2" role="group" aria-label={t("account.language")}>
+            <LangButton label="Español" active={lang === "es"} onClick={() => setLang("es")} />
+            <LangButton label="English" active={lang === "en"} onClick={() => setLang("en")} />
+          </div>
+
+          <div className="pt-2">
+            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+              {t("account.spanishSupport")}
+            </p>
+            <p className="mt-1 text-[13px] text-muted-foreground">{t("account.spanishSupportHelp")}</p>
+            <div className="mt-2 grid grid-cols-2 gap-2" role="group" aria-label={t("account.spanishSupport")}>
+              <LangButton
+                label={t("account.on")}
+                active={prefs.spanishSupport}
+                onClick={() => setPrefs({ spanishSupport: true })}
+              />
+              <LangButton
+                label={t("account.off")}
+                active={!prefs.spanishSupport}
+                onClick={() => setPrefs({ spanishSupport: false })}
+              />
+            </div>
+          </div>
+
+          <Link
+            to="/onboarding"
+            className="mt-1 inline-flex min-h-[44px] w-full items-center justify-center rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
+          >
+            {t("account.viewIntro")}
+          </Link>
+        </section>
 
         {userEmail ? (
           <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Signed in</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+              {t("account.signedIn")}
+            </p>
             <p className="text-[16px] font-bold">{userEmail}</p>
-            <p className="text-[13px] text-muted-foreground">Your progress and recordings sync automatically.</p>
+            <p className="text-[13px] text-muted-foreground">{t("account.syncNote")}</p>
             <button
               type="button"
               onClick={() => void supabase.auth.signOut()}
               className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-border px-5 py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
             >
-              <LogOut className="size-4" /> Sign out
+              <LogOut className="size-4" /> {t("account.signOut")}
             </button>
           </section>
         ) : (
           <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-            <p className="text-[17px] font-extrabold tracking-tight">Save your progress</p>
-            <p className="text-[13px] text-muted-foreground">
-              Optional. You can practice without an account, but signing in keeps your recordings safe.
-            </p>
+            <p className="text-[17px] font-extrabold tracking-tight">{t("account.saveProgress")}</p>
+            <p className="text-[13px] text-muted-foreground">{t("account.saveProgressBody")}</p>
             <input
               type="email"
               value={email}
@@ -114,7 +155,7 @@ function ProfilePage() {
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              placeholder="Password"
+              placeholder={t("account.password")}
               className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-[15px]"
             />
             <button
@@ -123,14 +164,14 @@ function ProfilePage() {
               onClick={() => void signIn()}
               className="w-full rounded-2xl bg-primary px-5 py-3.5 text-[15px] font-bold tracking-wide text-primary-foreground disabled:opacity-40"
             >
-              CONTINUE WITH EMAIL
+              {t("account.continueEmail")}
             </button>
             <button
               type="button"
               onClick={() => void signInWithGoogle()}
               className="w-full rounded-2xl border border-border px-5 py-3.5 text-[15px] font-bold tracking-wide"
             >
-              CONTINUE WITH GOOGLE
+              {t("account.continueGoogle")}
             </button>
             {message ? <p className="text-[13px] text-muted-foreground">{message}</p> : null}
           </section>
@@ -138,11 +179,8 @@ function ProfilePage() {
 
         {confirmReset ? (
           <section className="space-y-3 rounded-3xl border border-destructive/30 bg-card p-5 text-center">
-            <p className="text-[17px] font-extrabold tracking-tight">Reset my journey?</p>
-            <p className="text-[13px] text-muted-foreground">
-              This permanently erases your completed days, course progress, saved practice positions and your streak.
-              This can't be undone.
-            </p>
+            <p className="text-[17px] font-extrabold tracking-tight">{t("account.resetConfirm")}</p>
+            <p className="text-[13px] text-muted-foreground">{t("account.resetBody")}</p>
             <div className="flex gap-2">
               <button
                 type="button"
@@ -150,7 +188,7 @@ function ProfilePage() {
                 onClick={() => setConfirmReset(false)}
                 className="flex-1 rounded-2xl border border-border px-4 py-3.5 text-[13px] font-bold uppercase tracking-[0.12em]"
               >
-                Cancel
+                {t("account.cancel")}
               </button>
               <button
                 type="button"
@@ -161,7 +199,7 @@ function ProfilePage() {
                 }}
                 className="flex-1 rounded-2xl bg-destructive px-4 py-3.5 text-[13px] font-bold uppercase tracking-[0.12em] text-destructive-foreground"
               >
-                Reset everything
+                {t("account.resetAll")}
               </button>
             </div>
           </section>
@@ -171,12 +209,29 @@ function ProfilePage() {
             onClick={() => setConfirmReset(true)}
             className="w-full rounded-2xl border border-border px-5 py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
           >
-            Reset my journey
+            {t("account.reset")}
           </button>
         )}
 
       </div>
     </AppShell>
+  );
+}
+
+function LangButton({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={cn(
+        "min-h-[48px] rounded-2xl border px-4 text-[14px] font-bold transition-colors",
+        active ? "border-primary bg-primary/10 text-primary" : "border-border bg-card text-muted-foreground",
+      )}
+    >
+      {label}
+      {active ? " ✓" : ""}
+    </button>
   );
 }
 

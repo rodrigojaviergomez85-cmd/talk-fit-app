@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import { Languages } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAppLang } from "@/lib/i18n";
 
 /** Session-level "show everything in Spanish" toggle. */
 const SpanishContext = createContext(false);
@@ -13,30 +14,13 @@ export function useSpanishAll() {
   return useContext(SpanishContext);
 }
 
-const ES_PREF_KEY = "fluency-reps:es-support";
-
-/** Remembered ES SUPPORT preference (off by default, English stays dominant). */
+/**
+ * Spanish LEARNING SUPPORT preference — independent from the app interface
+ * language. Off by default so English stays dominant.
+ */
 export function useEsSupportPref(): [boolean, (value: boolean) => void] {
-  const [value, setValue] = useState(false);
-
-  useEffect(() => {
-    try {
-      setValue(window.localStorage.getItem(ES_PREF_KEY) === "on");
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
-  const update = (next: boolean) => {
-    setValue(next);
-    try {
-      window.localStorage.setItem(ES_PREF_KEY, next ? "on" : "off");
-    } catch {
-      /* ignore */
-    }
-  };
-
-  return [value, update];
+  const { prefs, setPrefs } = useAppLang();
+  return [prefs.spanishSupport, (next: boolean) => setPrefs({ spanishSupport: next })];
 }
 
 type Props = {
@@ -107,6 +91,7 @@ export function SpanishToggle({
   onChange: (v: boolean) => void;
   className?: string;
 }) {
+  const { lang } = useAppLang();
   return (
     <button
       type="button"
@@ -119,7 +104,7 @@ export function SpanishToggle({
       )}
     >
       <Languages className="size-3.5" />
-      ES support · {value ? "on" : "off"}
+      {lang === "es" ? "Ayuda en español" : "Spanish support"} · {value ? (lang === "es" ? "sí" : "on") : "off"}
     </button>
   );
 }
