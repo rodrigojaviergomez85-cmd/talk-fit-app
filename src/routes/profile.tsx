@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { MicTest } from "@/components/fluency/MicTest";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { PracticeSessionService, setSessionScope } from "@/services/practice-session";
@@ -31,6 +32,7 @@ export const Route = createFileRoute("/profile")({
 
 function ProfilePage() {
   const { t, lang, setLang, prefs, setPrefs } = useAppLang();
+  const esUi = lang === "es";
   const [state, setState] = useState<JourneyState>(emptyJourney);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
