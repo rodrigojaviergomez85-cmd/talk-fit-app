@@ -13,6 +13,8 @@ type AudioPlayerProps = {
   size?: "sm" | "md" | "lg";
   variant?: "primary" | "navy" | "ghost";
   onEnd?: () => void;
+  /** Fired when the learner presses play (not on resume). */
+  onStart?: () => void;
   className?: string;
 };
 
@@ -34,6 +36,7 @@ export function AudioPlayer({
   size = "md",
   variant = "primary",
   onEnd,
+  onStart,
   className,
 }: AudioPlayerProps) {
   const [status, setStatus] = useState<Status>("idle");
@@ -57,6 +60,7 @@ export function AudioPlayer({
   const start = () => {
     setStatus("loading");
     setCurrent(0);
+    onStart?.();
     stopRef.current = AudioService.speak(text, {
       rate,
       voice,

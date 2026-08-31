@@ -3,7 +3,7 @@ import { ArrowRight, Lock, Mic } from "lucide-react";
 import { AudioPlayer } from "./AudioPlayer";
 import { VoiceRecorder } from "./VoiceRecorder";
 import { RecordingPlayback } from "./RecordingPlayback";
-import { useSpanishSupport } from "./TranslatableText";
+import { useEsSupportPref } from "./TranslatableText";
 import { useAppLang } from "@/lib/i18n";
 import { VerbBank, type PastVerb, type VerbStat } from "@/services/verb-bank";
 import type { Recording } from "@/lib/types";
@@ -22,7 +22,7 @@ type Props = {
 /** IMAGE → PRESENT → PAST → AUDIO → EXAMPLE → SPEAK. Never scored. */
 export function PastVerbCard({ verb, stat, compact = false, showNegative = false, locked = false }: Props) {
   const es = useAppLang().lang === "es";
-  const support = useSpanishSupport();
+  const [support] = useEsSupportPref();
   const [mode, setMode] = useState<"none" | "say" | "use">("none");
   const [mine, setMine] = useState<Recording | null>(null);
 
