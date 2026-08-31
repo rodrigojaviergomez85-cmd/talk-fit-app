@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
-import { ArrowLeft, Check, ChevronDown } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronDown, Sparkles } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { DailyPracticeCard, JourneyDayRow } from "@/components/fluency/DailyPracticeCard";
 import { CourseService } from "@/services/course-service";
@@ -9,6 +9,8 @@ import { StatusBadge } from "@/components/fluency/StatusBadge";
 import type { CourseDay, JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
+import { useVerbBank } from "@/hooks/use-verb-bank";
+import { PAST_VERBS, VerbBank } from "@/services/verb-bank";
 
 export const Route = createFileRoute("/module/$moduleId")({
   beforeLoad: ({ params }) => {
@@ -124,6 +126,8 @@ function ModulePage() {
         {state ? (
           <>
             <DailyPracticeCard moduleId={module.id} day={day} completed={completed} totalDays={total} />
+
+            {module.id === "past-stories" ? <VerbBankCard /> : null}
 
             <section className="space-y-3">
               {weeks.map(([week, days]) => (
@@ -253,5 +257,28 @@ function WeekSection({
         </div>
       ) : null}
     </div>
+  );
+}
+
+/** Entry point to the Past Verb Bank (Module 3 only). */
+function VerbBankCard() {
+  const state = useVerbBank();
+  const discovered = VerbBank.discoveredCount(state);
+  return (
+    <Link
+      to="/verb-bank"
+      className="flex items-center justify-between gap-3 rounded-3xl border border-border bg-card p-4 shadow-[var(--shadow-card)]"
+    >
+      <span>
+        <span className="flex items-center gap-2 text-[14px] font-extrabold uppercase tracking-tight">
+          <Sparkles className="size-4 text-primary" aria-hidden />
+          PAST VERB BANK
+        </span>
+        <span className="mt-1 block text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+          {discovered} / {PAST_VERBS.length} DISCOVERED
+        </span>
+      </span>
+      <ArrowRight className="size-4 text-muted-foreground" aria-hidden />
+    </Link>
   );
 }

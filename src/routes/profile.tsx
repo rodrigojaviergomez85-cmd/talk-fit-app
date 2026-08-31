@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { MicTest } from "@/components/fluency/MicTest";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { PracticeSessionService, setSessionScope } from "@/services/practice-session";
@@ -31,6 +32,7 @@ export const Route = createFileRoute("/profile")({
 
 function ProfilePage() {
   const { t, lang, setLang, prefs, setPrefs } = useAppLang();
+  const esUi = lang === "es";
   const [state, setState] = useState<JourneyState>(emptyJourney);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -38,6 +40,7 @@ function ProfilePage() {
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [micTest, setMicTest] = useState(false);
 
   useEffect(() => {
     setState(JourneyService.load());
@@ -176,6 +179,23 @@ function ProfilePage() {
             {message ? <p className="text-[13px] text-muted-foreground">{message}</p> : null}
           </section>
         )}
+
+        <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+          <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+            {esUi ? "MICRÓFONO" : "MICROPHONE"}
+          </p>
+          {micTest ? (
+            <MicTest onPass={() => setMicTest(false)} onSkip={() => setMicTest(false)} />
+          ) : (
+            <button
+              type="button"
+              onClick={() => setMicTest(true)}
+              className="w-full rounded-2xl border border-border px-5 py-3.5 text-[15px] font-bold tracking-wide"
+            >
+              {esUi ? "PROBAR MI MICRÓFONO" : "TEST MY MICROPHONE"}
+            </button>
+          )}
+        </section>
 
         {confirmReset ? (
           <section className="space-y-3 rounded-3xl border border-destructive/30 bg-card p-5 text-center">
