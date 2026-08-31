@@ -29,7 +29,9 @@ import {
   itemKey,
   type PracticeSession,
 } from "@/services/practice-session";
-import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth";
+import { AuthGate } from "@/components/fluency/AuthGate";
+import { CloudSync } from "@/services/cloud-sync";
 import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording } from "@/lib/types";
 import type { FinalRepSaveState } from "@/components/fluency/DayCompleteScreen";
 import { cn } from "@/lib/utils";
@@ -86,6 +88,7 @@ async function countSentences(blob: Blob | null): Promise<number | null> {
 function PracticePage() {
   const { day: dayNumber, module: moduleId } = Route.useSearch();
   const navigate = useNavigate();
+  const { user, loading: authLoading, sync } = useAuth();
   const day = useMemo(() => CourseService.getDay(moduleId, dayNumber), [moduleId, dayNumber]);
 
   const [showEs, setShowEs] = useEsSupportPref();
@@ -111,27 +114,19 @@ function PracticePage() {
   const [micChecked, setMicChecked] = useState(true);
   const startedAt = useRef(new Date().toISOString());
 
-  // Restore any saved position for this module + day (scoped to the learner).
+  // Restore the saved position for this module + day from the account.
   useEffect(() => {
-    let cancelled = false;
-    const start = (userId: string | null) => {
-      if (cancelled) return;
-      setSessionScope(userId);
-      setPreferencesScope(userId);
-      setVerbBankScope(userId);
-      const saved = PracticeSessionService.load(moduleId, dayNumber);
-      if (PracticeSessionService.isResumable(saved)) setResume(saved);
-      else PracticeSessionService.clear(moduleId, dayNumber);
-      setReady(true);
-    };
-    void supabase.auth
-      .getUser()
-      .then(({ data }) => start(data.user?.id ?? null))
-      .catch(() => start(null));
-    return () => {
-      cancelled = true;
-    };
-  }, [moduleId, dayNumber]);
+    if (!user) {
+      setReady(false);
+      return;
+    }
+    setSessionScope(user.id);
+    setPreferencesScope(user.id);
+    setVerbBankScope(user.id);
+    const saved = PracticeSessionService.load(moduleId, dayNumber);
+    if (PracticeSessionService.isResumable(saved)) setResume(saved);
+    setReady(true);
+  }, [moduleId, dayNumber, user?.id, sync]);
 
   // Persist the position on every meaningful change.
   useEffect(() => {
