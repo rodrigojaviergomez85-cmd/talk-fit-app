@@ -414,6 +414,11 @@ export const JourneyService = {
    * Shared for a short window so several screens mounting at once make a
    * single request instead of one each.
    */
+  /** Drops the shared pull cache (sign-in / sign-out / after a write). */
+  invalidatePull() {
+    pullCache = null;
+  },
+
   async pull(): Promise<JourneyState> {
     const now = Date.now();
     if (pullCache && now - pullCache.at < PULL_TTL_MS) return pullCache.promise;
