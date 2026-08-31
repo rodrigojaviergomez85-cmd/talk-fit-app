@@ -2,6 +2,7 @@ import { createContext, useContext, useState, type ReactNode } from "react";
 import { Languages } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppLang } from "@/lib/i18n";
+import { useAppLang } from "@/lib/i18n";
 
 /** Session-level "show everything in Spanish" toggle. */
 const SpanishContext = createContext(false);
@@ -47,6 +48,7 @@ type Props = {
  */
 export function TranslatableText({ es, children, className, esClassName, align = "left", supportOnly = false }: Props) {
   const forced = useSpanishAll();
+  const uiEs = useAppLang().lang === "es";
   const [open, setOpen] = useState(false);
   const visible = forced || (!supportOnly && open);
   const showButton = !forced && !supportOnly;
@@ -71,7 +73,7 @@ export function TranslatableText({ es, children, className, esClassName, align =
               )}
             >
               <Languages className="size-3" />
-              ES · {visible ? "OCULTAR" : "TRADUCIR"}
+              ES · {visible ? (uiEs ? "OCULTAR" : "HIDE") : uiEs ? "TRADUCIR" : "TRANSLATE"}
             </button>
           ) : null}
           {visible ? (

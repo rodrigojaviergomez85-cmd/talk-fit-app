@@ -55,7 +55,7 @@ export const Route = createFileRoute("/practice")({
 });
 
 const REP_TITLES = [
-  { en: "STEP 0 · INTRO", es: "PASO 0 · INTRO" },
+  { en: "INTRO", es: "INTRO" },
   { en: "REP 1 OF 5 · LISTEN", es: "REP 1 DE 5 · ESCUCHA" },
   { en: "REP 2 OF 5 · COPY", es: "REP 2 DE 5 · COPIA" },
   { en: "REP 3 OF 5 · SHADOW", es: "REP 3 DE 5 · SHADOWING" },
@@ -646,13 +646,19 @@ function ExitDialog({ showEs, onCancel, onExit }: { showEs: boolean; onCancel: (
   );
 }
 
-/** Secondary text link: move on without a recording. */
+/** Tiny hint under a disabled primary action. */
+function HelperText({ text }: { text: string }) {
+  return <p className="text-center text-[12px] font-semibold text-muted-foreground">{text}</p>;
+}
+
+/** Tertiary text link: move on without a recording. */
 function SkipLink({ label, onClick }: { label: string; onClick: () => void }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="w-full text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground underline underline-offset-4"
+      aria-label={label}
+      className="inline-flex min-h-[44px] w-full items-center justify-center text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
     >
       {label}
     </button>
@@ -696,15 +702,19 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
       ) : null}
 
 
-      <PrimaryButton
-        onClick={() => {
-          if (!heard) AudioService.stop();
-          onNext();
-        }}
-      >
-        {showEs ? (heard ? "SIGUIENTE REP" : "SALTAR") : heard ? "NEXT REP" : "SKIP"}{" "}
-        <ArrowRight className="size-5" />
-      </PrimaryButton>
+      {heard ? (
+        <PrimaryButton onClick={onNext}>
+          {showEs ? "SIGUIENTE REP" : "NEXT REP"} <ArrowRight className="size-5" />
+        </PrimaryButton>
+      ) : (
+        <SkipLink
+          label={showEs ? "saltar por ahora" : "skip for now"}
+          onClick={() => {
+            AudioService.stop();
+            onNext();
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -756,11 +766,21 @@ function Rep2Copy({
       {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
 
       <PrimaryButton onClick={onNext} disabled={!attempted}>
-        {index < day.lines.length - 1 ? "NEXT SENTENCE" : "NEXT REP"} <ArrowRight className="size-5" />
+        {index < day.lines.length - 1
+          ? showEs
+            ? "SIGUIENTE FRASE"
+            : "NEXT SENTENCE"
+          : showEs
+            ? "SIGUIENTE REP"
+            : "NEXT REP"}{" "}
+        <ArrowRight className="size-5" />
       </PrimaryButton>
 
       {attempted ? null : (
-        <SkipLink label={showEs ? "SALTAR ESTA FRASE" : "SKIP THIS SENTENCE"} onClick={onSkip} />
+        <>
+          <HelperText text={showEs ? "Graba una vez para continuar." : "Record once to continue."} />
+          <SkipLink label={showEs ? "saltar esta frase" : "skip this sentence"} onClick={onSkip} />
+        </>
       )}
 
     </div>
@@ -910,11 +930,21 @@ function Rep4MakeItYours({
       {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
 
       <PrimaryButton onClick={onNext} disabled={!attempted}>
-        {index < items.length - 1 ? "NEXT QUESTION" : "NEXT REP"} <ArrowRight className="size-5" />
+        {index < items.length - 1
+          ? showEs
+            ? "SIGUIENTE PREGUNTA"
+            : "NEXT QUESTION"
+          : showEs
+            ? "SIGUIENTE REP"
+            : "NEXT REP"}{" "}
+        <ArrowRight className="size-5" />
       </PrimaryButton>
 
       {attempted ? null : (
-        <SkipLink label={showEs ? "SALTAR ESTA PREGUNTA" : "SKIP THIS PROMPT"} onClick={onSkip} />
+        <>
+          <HelperText text={showEs ? "Graba una vez para continuar." : "Record once to continue."} />
+          <SkipLink label={showEs ? "saltar esta pregunta" : "skip this prompt"} onClick={onSkip} />
+        </>
       )}
 
     </div>
