@@ -29,6 +29,7 @@ function ProfilePage() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
 
   useEffect(() => {
     setState(JourneyService.load());
