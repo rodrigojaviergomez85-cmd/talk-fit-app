@@ -63,6 +63,23 @@ export function DayCompleteScreen({ moduleId, day, finalRecording, firstRecordin
           </p>
         </div>
 
+        {summary ? (
+          <div className="space-y-2 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              {showEs ? "PRÁCTICA DE HOY" : "TODAY'S PRACTICE"}
+            </p>
+            <SummaryRow label="REP 2" summary={summary.rep2} showEs={showEs} />
+            <SummaryRow label="REP 4" summary={summary.rep4} showEs={showEs} />
+            <div className="flex items-center justify-between text-[13px] font-semibold">
+              <span className="font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                {showEs ? "REP FINAL" : "FINAL REP"}
+              </span>
+              <span>{showEs ? "Completada ✓" : "Completed ✓"}</span>
+            </div>
+          </div>
+        ) : null}
+
+
         <div className="grid grid-cols-2 gap-3">
           <Stat label={showEs ? "Reps hoy" : "Reps today"} value="5 / 5" />
           <Stat label={showEs ? "Rep final" : "Final rep"} value={`${seconds}s`} />
