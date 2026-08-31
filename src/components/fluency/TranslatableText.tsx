@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { Languages } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /** Session-level "show everything in Spanish" toggle. */
@@ -12,37 +13,71 @@ export function useSpanishAll() {
   return useContext(SpanishContext);
 }
 
+const ES_PREF_KEY = "fluency-reps:es-support";
+
+/** Remembered ES SUPPORT preference (off by default, English stays dominant). */
+export function useEsSupportPref(): [boolean, (value: boolean) => void] {
+  const [value, setValue] = useState(false);
+
+  useEffect(() => {
+    try {
+      setValue(window.localStorage.getItem(ES_PREF_KEY) === "on");
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const update = (next: boolean) => {
+    setValue(next);
+    try {
+      window.localStorage.setItem(ES_PREF_KEY, next ? "on" : "off");
+    } catch {
+      /* ignore */
+    }
+  };
+
+  return [value, update];
+}
+
 type Props = {
-  /** English text (already rendered by the caller as `children` when provided). */
+  /** Spanish support text. */
   es?: string | undefined;
   children: ReactNode;
   /** Extra classes for the wrapper. */
   className?: string;
   /** Extra classes for the Spanish line. */
   esClassName?: string;
-  /** Render the ES button inline next to the text instead of below. */
+  /** Alignment of the Spanish line / ES button. */
   align?: "left" | "center";
+  /**
+   * Never render an individual ES button: the Spanish line only appears when
+   * the global ES SUPPORT switch is on. Used for UI labels and instructions.
+   */
+  supportOnly?: boolean;
 };
 
 /**
- * Wraps any English text with a small "ES" button that reveals a hand-written
- * Spanish translation. A global toggle (SpanishProvider) can force it open.
+ * Wraps English text with optional Spanish support. Key content (model
+ * sentences, questions) keeps a small "ES" tap; everything else relies on the
+ * single global ES SUPPORT control.
  */
-export function TranslatableText({ es, children, className, esClassName, align = "left" }: Props) {
+export function TranslatableText({ es, children, className, esClassName, align = "left", supportOnly = false }: Props) {
   const forced = useSpanishAll();
   const [open, setOpen] = useState(false);
-  const visible = forced || open;
+  const visible = forced || (!supportOnly && open);
+  const showButton = !forced && !supportOnly;
 
   return (
     <div className={cn("w-full", className)}>
       {children}
-      {es ? (
+      {es && (visible || showButton) ? (
         <div className={cn("mt-1.5 flex items-center gap-2", align === "center" && "justify-center")}>
-          {!forced ? (
+          {showButton ? (
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={visible}
+              aria-label="Ver en español"
               className={cn(
                 "shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] transition-colors",
                 visible
@@ -62,19 +97,29 @@ export function TranslatableText({ es, children, className, esClassName, align =
   );
 }
 
-export function SpanishToggle({ value, onChange, className }: { value: boolean; onChange: (v: boolean) => void; className?: string }) {
+/** Compact global ES SUPPORT switch shown once per lesson. */
+export function SpanishToggle({
+  value,
+  onChange,
+  className,
+}: {
+  value: boolean;
+  onChange: (v: boolean) => void;
+  className?: string;
+}) {
   return (
     <button
       type="button"
       onClick={() => onChange(!value)}
       aria-pressed={value}
       className={cn(
-        "flex w-full items-center justify-center gap-2 rounded-2xl border px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.14em] transition-colors",
+        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] transition-colors",
         value ? "border-primary bg-primary/10 text-primary" : "border-border bg-card text-muted-foreground",
         className,
       )}
     >
-      {value ? "Ocultar español" : "Mostrar todo en español"}
+      <Languages className="size-3.5" />
+      ES support · {value ? "on" : "off"}
     </button>
   );
 }

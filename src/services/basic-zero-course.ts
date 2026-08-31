@@ -484,7 +484,7 @@ function week4Day(day: number, p: Person, topic: string, topicEs: string): Cours
     introTitleEs: "DILO CON CONECTORES",
     introLead: "Same person — now with and, because and overall.",
     introLeadEs: "La misma persona — ahora con and, because y overall.",
-    examples: ["…, and his name is…", "… because …", "Overall, she is a…"],
+    examples: [`…, and ${hisLower(p)} name is…`, "… because …", `Overall, ${heLower(p)} is a…`],
     rep5: OTHER_Q,
     rep5Tips: OTHER_TIPS_FLUENCY,
     speakerVoice: p.gender === "f" ? "female" : "male",
