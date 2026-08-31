@@ -104,7 +104,7 @@ export function SpanishToggle({
       )}
     >
       <Languages className="size-3.5" />
-      ES support · {value ? "on" : "off"}
+      {lang === "es" ? "Ayuda en español" : "Spanish support"} · {value ? (lang === "es" ? "sí" : "on") : "off"}
     </button>
   );
 }
