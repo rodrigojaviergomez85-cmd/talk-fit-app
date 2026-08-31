@@ -7,6 +7,7 @@ import { JourneyService } from "@/services/journey-service";
 import { CourseService } from "@/services/course-service";
 import type { CourseDay, ModuleId, Recording, SelfAssessment } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { SaveProgressPrompt } from "./SaveProgressPrompt";
 
 export type RepSummary = { total: number; attempted: number; skipped: number };
 
@@ -218,6 +219,8 @@ export function DayCompleteScreen({ moduleId, day, finalRecording, firstRecordin
             </div>
           </div>
         ) : null}
+
+        <SaveProgressPrompt moduleId={moduleId} />
 
         <button
           type="button"
