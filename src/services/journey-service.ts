@@ -340,13 +340,22 @@ export const JourneyService = {
 
   /* ------------------------------ Cloud sync ------------------------------ */
 
-  /** Uploads the final recording and upserts the day row (signed-in only). */
-  async syncDay(moduleId: ModuleId, day: number, state: JourneyState, blob?: Blob | null): Promise<void> {
+  /**
+   * Uploads the final recording and upserts the day row (signed-in only).
+   * Returns "saved" on success, "skipped" when there is nothing to sync
+   * (guest / offline-only), and "failed" when the learner should retry.
+   */
+  async syncDay(
+    moduleId: ModuleId,
+    day: number,
+    state: JourneyState,
+    blob?: Blob | null,
+  ): Promise<"saved" | "skipped" | "failed"> {
     const { data } = await supabase.auth.getUser();
     const user = data.user;
     const key = recordKey(moduleId, day);
     const record = state.days[key];
-    if (!user || !record) return;
+    if (!user || !record) return "skipped";
 
     let recordingPath = record.recordingPath ?? null;
     if (blob) {
@@ -355,10 +364,14 @@ export const JourneyService = {
       const upload = await supabase.storage
         .from("recordings")
         .upload(path, blob, { upsert: true, contentType: blob.type || "audio/webm" });
-      if (!upload.error) recordingPath = path;
+      if (upload.error) {
+        console.error("[journey] final rep upload failed", upload.error.message);
+        return "failed";
+      }
+      recordingPath = path;
     }
 
-    await supabase.from("day_progress").upsert(
+    const { error } = await supabase.from("day_progress").upsert(
       {
         user_id: user.id,
         module_id: moduleId,
