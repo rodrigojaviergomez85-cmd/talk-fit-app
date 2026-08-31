@@ -832,13 +832,19 @@ function rep4Items(day: CourseDay): Rep4Item[] {
 function Rep4MakeItYours({
   day,
   index,
+  showEs,
+  attempted,
   onRecorded,
+  onSkip,
   onNext,
   hideVisuals = false,
 }: {
   day: CourseDay;
   index: number;
+  showEs: boolean;
+  attempted: boolean;
   onRecorded: (rec: Recording) => void;
+  onSkip: () => void;
   onNext: () => void;
   hideVisuals?: boolean;
 }) {
