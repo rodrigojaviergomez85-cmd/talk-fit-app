@@ -170,14 +170,15 @@ function WeekSection({
   state: JourneyState;
   currentDay: number;
 }) {
+  const t = useT();
   const doneCount = days.filter((d) => JourneyService.isDayCompleted(state, moduleId, d.day)).length;
   const isCurrent = days.some((d) => d.day === currentDay) && doneCount < days.length;
   const status =
     doneCount >= days.length
-      ? ({ label: "COMPLETE ✓", tone: "done" } as const)
+      ? ({ label: t("status.complete"), tone: "done" } as const)
       : isCurrent
-        ? ({ label: "CURRENT", tone: "current" } as const)
-        : ({ label: "UP NEXT", tone: "next" } as const);
+        ? ({ label: t("status.current"), tone: "current" } as const)
+        : ({ label: t("status.upNext"), tone: "next" } as const);
 
   const [open, setOpen] = useState(isCurrent);
   useEffect(() => {
@@ -193,7 +194,7 @@ function WeekSection({
         className="flex min-h-[60px] w-full items-center gap-3 px-4 py-3 text-left"
       >
         <span className="min-w-0 flex-1">
-          <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-primary">Week {week}</span>
+          <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-primary">{t("home.week")} {week}</span>
           <span className="block truncate text-[15px] font-extrabold tracking-tight">{title}</span>
           <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
             {doneCount} / {days.length}
