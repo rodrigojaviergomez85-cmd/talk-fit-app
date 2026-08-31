@@ -106,6 +106,7 @@ function PracticePage() {
   const saveRef = useRef(false);
   const practiceSeconds = useRef(0);
 
+  const [takeErrors, setTakeErrors] = useState<number[]>([]);
   const [attempted, setAttempted] = useState<string[]>([]);
   const [skipped, setSkipped] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
@@ -200,6 +201,25 @@ function PracticePage() {
 
   const recorded = takes.filter((take): take is Recording => Boolean(take));
 
+  /**
+   * Every Rep 5 take is stored in the learner's account. A failed upload keeps
+   * the audio in memory and stays retryable for the whole session.
+   */
+  const uploadTake = (index: number, rec: Recording) => {
+    setTakeErrors((list) => list.filter((i) => i !== index));
+    CloudSync.uploadTake({
+      moduleId,
+      day: day.day,
+      takeNumber: index + 1,
+      recording: rec,
+      isFinalRep: false,
+    })
+      .then((result) => {
+        if (!result.ok) setTakeErrors((list) => (list.includes(index) ? list : [...list, index]));
+      })
+      .catch(() => setTakeErrors((list) => (list.includes(index) ? list : [...list, index])));
+  };
+
 
   /**
    * Saves the Final Rep to the cloud. The blob stays in memory until the
@@ -242,6 +262,9 @@ function PracticePage() {
     setJourneyAfterFinish(next);
     setDone(true);
     PracticeSessionService.clear(moduleId, day.day);
+    const finalTake = (finalIndex ?? takes.findIndex((take) => take?.id === final.id)) + 1;
+    if (finalTake > 0) void CloudSync.markFinalTake(moduleId, day.day, finalTake).catch(() => undefined);
+    void CloudSync.completeSession(moduleId, day.day).catch(() => undefined);
     cloudSave(final, next);
   };
 
@@ -253,6 +276,32 @@ function PracticePage() {
       skipped: keys.filter((key) => skipped.includes(key) && !attempted.includes(key)).length,
     };
   };
+
+  // The pilot requires an account: no practice data may live only on a phone.
+  if (authLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background px-5">
+        <p className="text-[13px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+          {esUi ? "CARGANDO…" : "LOADING…"}
+        </p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-background px-4 py-8">
+        <AuthGate blocking />
+        <button
+          type="button"
+          onClick={() => void navigate({ to: "/" })}
+          className="mx-auto mt-4 block min-h-[44px] rounded-2xl px-4 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
+        >
+          {esUi ? "VOLVER AL INICIO" : "BACK TO HOME"}
+        </button>
+      </div>
+    );
+  }
 
   if (done) {
     return (
@@ -382,7 +431,9 @@ function PracticePage() {
                 const pending: Recording = { ...rec, countStatus: "pending", sentenceCount: null };
                 setTakes((list) => list.map((item, i) => (i === index ? pending : item)));
                 setFinalIndex(index);
+                uploadTake(index, rec);
                 void countSentences(rec.blob ?? null).then((count) => {
+                  void CloudSync.updateTakeIdeas(moduleId, day.day, index + 1, count).catch(() => undefined);
                   setTakes((list) =>
                     list.map((item, i) =>
                       i === index && item?.id === rec.id
