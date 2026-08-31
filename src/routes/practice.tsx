@@ -518,11 +518,13 @@ function Rep4MakeItYours({
   index,
   onRecorded,
   onNext,
+  hideVisuals = false,
 }: {
   day: CourseDay;
   index: number;
   onRecorded: (rec: Recording) => void;
   onNext: () => void;
+  hideVisuals?: boolean;
 }) {
   const items = rep4Items(day);
   const item = items[index]!;
@@ -533,15 +535,18 @@ function Rep4MakeItYours({
   return (
     <div className="space-y-5">
       <Instruction
-        en={day.sceneImage ? "What's happening? Answer about the picture." : "Answer about YOUR life."}
-        es={day.sceneImage ? "¿Qué está pasando? Responde sobre la imagen." : "Responde sobre TU vida."}
+        en={!hideVisuals && day.sceneImage ? "What's happening? Answer about the picture." : "Answer about YOUR life."}
+        es={!hideVisuals && day.sceneImage ? "¿Qué está pasando? Responde sobre la imagen." : "Responde sobre TU vida."}
       />
 
-      <SceneImage day={day} />
-      <PastVerbCards day={day} />
-      <StoryStrip day={day} showCaptions={!day.hideModelText} />
-
-      <VariantPicker day={day} />
+      {!hideVisuals ? (
+        <>
+          <SceneImage day={day} />
+          <PastVerbCards day={day} />
+          <StoryStrip day={day} showCaptions={!day.hideModelText} />
+          <VariantPicker day={day} />
+        </>
+      ) : null}
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
         {index + 1} / {items.length}
       </p>
