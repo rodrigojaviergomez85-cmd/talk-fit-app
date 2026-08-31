@@ -137,6 +137,24 @@ const DICT = {
   "prog.currentModule": ["Módulo actual", "Current module"],
 
   // Account
+  // Account gate + sync
+  "gate.title": ["GUARDA TU PROGRESO", "SAVE YOUR PROGRESS"],
+  "gate.practiceTitle": ["INICIA SESIÓN PARA PRACTICAR", "SIGN IN TO PRACTICE"],
+  "gate.b1": ["Tu progreso se guarda en tu cuenta.", "Your progress is saved to your account."],
+  "gate.b2": ["Tus grabaciones te siguen a cualquier teléfono.", "Your recordings follow you to any phone."],
+  "gate.b3": ["Continúa justo donde te quedaste.", "Continue right where you left off."],
+  "gate.haveAccount": [
+    "¿Ya tienes cuenta? Usa el mismo correo o Google.",
+    "Already have an account? Use the same email or Google.",
+  ],
+  "sync.syncing": ["SINCRONIZANDO TU PROGRESO…", "SYNCING YOUR PROGRESS…"],
+  "sync.ready": ["TUS DATOS ESTÁN LISTOS ✓", "YOUR DATA IS READY ✓"],
+  "sync.failed": ["No pudimos sincronizar tu progreso.", "We couldn't sync your progress."],
+  "sync.retry": ["REINTENTAR", "RETRY"],
+  "sync.takeFailed": [
+    "No pudimos guardar esta grabación todavía.",
+    "We couldn't save this recording yet.",
+  ],
   "account.title": ["Mi cuenta", "My Account"],
   "account.language": ["Idioma de la app", "App language"],
   "account.spanishSupport": ["Ayuda en español", "Spanish support"],
