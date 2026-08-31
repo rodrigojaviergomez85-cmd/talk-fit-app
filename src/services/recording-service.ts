@@ -78,8 +78,9 @@ export const RecordingService = {
 
     let stream: MediaStream;
     try {
+      // Mono speech capture: clear voice at a fraction of the file size.
       stream = await navigator.mediaDevices.getUserMedia({
-        audio: { echoCancellation: true, noiseSuppression: true },
+        audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 },
       });
     } catch (error) {
       const name = (error as { name?: string } | null)?.name ?? "";
