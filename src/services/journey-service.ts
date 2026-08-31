@@ -70,6 +70,25 @@ function write(state: JourneyState) {
   }
 }
 
+/**
+ * Streak recomputed from real completion dates, so restoring on a new device
+ * never inflates it by adding two stored numbers together.
+ */
+function streakFrom(days: Record<string, DayRecord>): number {
+  const keys = new Set(Object.values(days).map((r) => r.dayKey));
+  if (keys.size === 0) return 0;
+  const today = dayKey();
+  const yesterday = dayKey(new Date(Date.now() - 86400000));
+  if (!keys.has(today) && !keys.has(yesterday)) return 0;
+  let streak = 0;
+  let cursor = keys.has(today) ? new Date() : new Date(Date.now() - 86400000);
+  while (keys.has(dayKey(cursor))) {
+    streak += 1;
+    cursor = new Date(cursor.getTime() - 86400000);
+  }
+  return streak;
+}
+
 /** Session-scoped playback URLs, kept out of localStorage. */
 const sessionUrls = new Map<string, { finalUrl: string | null; firstUrl: string | null }>();
 
@@ -343,6 +362,18 @@ export const JourneyService = {
     return emptyJourney;
   },
 
+  /**
+   * Drops every cached learner value on this device (sign-out).
+   * The next person to use the phone starts from nothing.
+   */
+  clearLocalCache() {
+    if (typeof window === "undefined") return;
+    window.localStorage.removeItem(STORAGE_KEY);
+    window.localStorage.removeItem(LEGACY_KEY);
+    sessionUrls.clear();
+    pullCache = null;
+  },
+
   /* ------------------------------ Cloud sync ------------------------------ */
 
   /**
@@ -449,30 +480,32 @@ export const JourneyService = {
     for (const row of rows) {
       const moduleId: ModuleId = isModuleId(row.module_id) ? row.module_id : "simple-present";
       const key = recordKey(moduleId, row.day);
-      if (days[key]) continue;
+      const localRecord = days[key];
+      // Backend is the source of truth; local only supplies session-only fields.
       days[key] = {
         day: row.day,
         moduleId,
         dayKey: row.local_day_key ?? dayKey(new Date(row.completed_at)),
         completedAt: row.completed_at,
         finalSeconds: row.final_seconds,
-        firstSeconds: 0,
+        firstSeconds: localRecord?.firstSeconds ?? 0,
         practiceSeconds: row.practice_seconds,
         recordingsCount: row.recordings_count,
         sentenceCount: row.sentence_count ?? null,
-        finalUrl: null,
-        firstUrl: null,
+        finalUrl: localRecord?.finalUrl ?? null,
+        firstUrl: localRecord?.firstUrl ?? null,
         recordingPath: row.recording_path,
         ...(row.self_assessment ? { selfAssessment: row.self_assessment as SelfAssessment } : {}),
       };
-      totalSeconds += row.practice_seconds;
+      if (!localRecord) totalSeconds += row.practice_seconds;
     }
 
     const merged: JourneyState = {
       ...local,
       days,
+      streakDays: streakFrom(days),
       totalSpeakingSeconds: totalSeconds,
-      totalRepsCompleted: Math.max(local.totalRepsCompleted, Object.keys(days).length * 5),
+      totalRepsCompleted: Object.keys(days).length * 5,
     };
     write(merged);
     return merged;
