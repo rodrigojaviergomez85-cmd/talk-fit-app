@@ -8,12 +8,15 @@ import { CourseService } from "@/services/course-service";
 import type { CourseDay, ModuleId, Recording, SelfAssessment } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
+export type RepSummary = { total: number; attempted: number; skipped: number };
+
 type Props = {
   moduleId: ModuleId;
   day: CourseDay;
   finalRecording: Recording | null;
   firstRecording: Recording | null;
   showEs: boolean;
+  summary?: { rep2: RepSummary; rep4: RepSummary };
 };
 
 const ASSESSMENTS: { value: SelfAssessment; en: string; es: string }[] = [
@@ -23,7 +26,7 @@ const ASSESSMENTS: { value: SelfAssessment; en: string; es: string }[] = [
 ];
 
 /** Celebration + objective numbers after the 5th rep of the day. */
-export function DayCompleteScreen({ moduleId, day, finalRecording, firstRecording, showEs }: Props) {
+export function DayCompleteScreen({ moduleId, day, finalRecording, firstRecording, showEs, summary }: Props) {
   const navigate = useNavigate();
   const [state, setState] = useState(() => JourneyService.load());
   const [answer, setAnswer] = useState<SelfAssessment | null>(state.selfAssessment ?? null);
@@ -59,6 +62,23 @@ export function DayCompleteScreen({ moduleId, day, finalRecording, firstRecordin
               : `You finished Day ${day.day}: 5 of 5 reps.`}
           </p>
         </div>
+
+        {summary ? (
+          <div className="space-y-2 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              {showEs ? "PRÁCTICA DE HOY" : "TODAY'S PRACTICE"}
+            </p>
+            <SummaryRow label="REP 2" summary={summary.rep2} showEs={showEs} />
+            <SummaryRow label="REP 4" summary={summary.rep4} showEs={showEs} />
+            <div className="flex items-center justify-between text-[13px] font-semibold">
+              <span className="font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                {showEs ? "REP FINAL" : "FINAL REP"}
+              </span>
+              <span>{showEs ? "Completada ✓" : "Completed ✓"}</span>
+            </div>
+          </div>
+        ) : null}
+
 
         <div className="grid grid-cols-2 gap-3">
           <Stat label={showEs ? "Reps hoy" : "Reps today"} value="5 / 5" />
@@ -218,6 +238,18 @@ function Stat({ label, value, icon }: { label: string; value: string; icon?: Rea
         {icon} {label}
       </p>
       <p className="mt-1.5 text-2xl font-extrabold tabular-nums tracking-tight">{value}</p>
+    </div>
+  );
+}
+
+function SummaryRow({ label, summary, showEs }: { label: string; summary: RepSummary; showEs: boolean }) {
+  return (
+    <div className="flex items-center justify-between text-[13px] font-semibold">
+      <span className="font-bold uppercase tracking-[0.14em] text-muted-foreground">{label}</span>
+      <span className="tabular-nums">
+        {summary.attempted} / {summary.total} {showEs ? "intentadas" : "attempted"}
+        {summary.skipped ? ` · ${summary.skipped} ${showEs ? "saltadas" : "skipped"}` : ""}
+      </span>
     </div>
   );
 }

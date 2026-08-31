@@ -21,6 +21,13 @@ import { supportLevel, prefersChunks, showsFullTextByDefault } from "@/lib/suppo
 import { CourseService, DEFAULT_MODULE, isModuleId } from "@/services/course-service";
 import { JourneyService } from "@/services/journey-service";
 import { AudioService } from "@/services/audio-service";
+import {
+  PracticeSessionService,
+  setSessionScope,
+  itemKey,
+  type PracticeSession,
+} from "@/services/practice-session";
+import { supabase } from "@/integrations/supabase/client";
 import type { CourseDay, ModelLine, ModuleId, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -84,13 +91,66 @@ function PracticePage() {
   const [finalRecording, setFinalRecording] = useState<Recording | null>(null);
   const practiceSeconds = useRef(0);
 
+  const [attempted, setAttempted] = useState<string[]>([]);
+  const [skipped, setSkipped] = useState<string[]>([]);
+  const [ready, setReady] = useState(false);
+  const [resume, setResume] = useState<PracticeSession | null>(null);
+  const [confirmExit, setConfirmExit] = useState(false);
+  const startedAt = useRef(new Date().toISOString());
+
+  // Restore any saved position for this module + day (scoped to the learner).
+  useEffect(() => {
+    let cancelled = false;
+    const start = (userId: string | null) => {
+      if (cancelled) return;
+      setSessionScope(userId);
+      const saved = PracticeSessionService.load(moduleId, dayNumber);
+      if (PracticeSessionService.isResumable(saved)) setResume(saved);
+      else PracticeSessionService.clear(moduleId, dayNumber);
+      setReady(true);
+    };
+    void supabase.auth
+      .getUser()
+      .then(({ data }) => start(data.user?.id ?? null))
+      .catch(() => start(null));
+    return () => {
+      cancelled = true;
+    };
+  }, [moduleId, dayNumber]);
+
+  // Persist the position on every meaningful change.
+  useEffect(() => {
+    if (!ready || resume || done) return;
+    PracticeSessionService.save({
+      moduleId,
+      day: dayNumber,
+      week: day.week ?? null,
+      stage,
+      subIndex,
+      attempted,
+      skipped,
+      startedAt: startedAt.current,
+    });
+  }, [ready, resume, done, moduleId, dayNumber, day.week, stage, subIndex, attempted, skipped]);
+
   useEffect(() => () => AudioService.stop(), []);
   useEffect(() => {
     AudioService.stop();
     window.scrollTo({ top: 0 });
   }, [stage, subIndex]);
 
-  const subTotal = stage === 2 ? day.lines.length : stage === 4 ? rep4Items(day).length : 1;
+  const items4 = useMemo(() => rep4Items(day), [day]);
+  const subTotal = stage === 2 ? day.lines.length : stage === 4 ? items4.length : 1;
+
+  const currentItemKey =
+    stage === 2
+      ? itemKey(2, day.lines[subIndex]?.id ?? String(subIndex))
+      : stage === 4
+        ? itemKey(4, items4[subIndex]?.id ?? String(subIndex))
+        : null;
+
+  const markAttempted = (key: string) =>
+    setAttempted((list) => (list.includes(key) ? list : [...list, key]));
 
   const goBack = () => {
     if (subIndex > 0) return setSubIndex(subIndex - 1);
@@ -99,7 +159,7 @@ function PracticePage() {
       setSubIndex(0);
       return;
     }
-    void navigate({ to: "/" });
+    setConfirmExit(true);
   };
 
   const goForward = () => {
@@ -110,11 +170,17 @@ function PracticePage() {
     }
   };
 
+  const skipCurrent = () => {
+    if (currentItemKey) setSkipped((list) => (list.includes(currentItemKey) ? list : [...list, currentItemKey]));
+    goForward();
+  };
+
   const trackSeconds = (recording: Recording) => {
     practiceSeconds.current += recording.durationSeconds;
   };
 
   const recorded = takes.filter((take): take is Recording => Boolean(take));
+
 
   const finish = () => {
     const final = (finalIndex !== null ? takes[finalIndex] : null) ?? recorded[recorded.length - 1];
@@ -133,7 +199,17 @@ function PracticePage() {
     });
     setFinalRecording(final);
     setDone(true);
+    PracticeSessionService.clear(moduleId, day.day);
     void JourneyService.syncDay(moduleId, day.day, next, final.blob ?? null).catch(() => undefined);
+  };
+
+  const countFor = (rep: 2 | 4, ids: string[]) => {
+    const keys = ids.map((id) => itemKey(rep, id));
+    return {
+      total: keys.length,
+      attempted: keys.filter((key) => attempted.includes(key)).length,
+      skipped: keys.filter((key) => skipped.includes(key) && !attempted.includes(key)).length,
+    };
   };
 
   if (done) {
@@ -145,6 +221,35 @@ function PracticePage() {
           finalRecording={finalRecording}
           firstRecording={recorded[0] ?? null}
           showEs={showEs}
+          summary={{
+            rep2: countFor(2, day.lines.map((line) => line.id)),
+            rep4: countFor(4, items4.map((item) => item.id)),
+          }}
+        />
+      </SpanishProvider>
+    );
+  }
+
+  if (resume) {
+    return (
+      <SpanishProvider value={showEs}>
+        <ResumeScreen
+          session={resume}
+          day={day}
+          showEs={showEs}
+          onContinue={() => {
+            setStage(resume.stage);
+            setSubIndex(resume.subIndex);
+            setAttempted(resume.attempted);
+            setSkipped(resume.skipped);
+            startedAt.current = resume.startedAt;
+            setResume(null);
+          }}
+          onRestart={() => {
+            PracticeSessionService.clear(moduleId, dayNumber);
+            startedAt.current = new Date().toISOString();
+            setResume(null);
+          }}
         />
       </SpanishProvider>
     );
@@ -161,8 +266,19 @@ function PracticePage() {
           title={`DAY ${day.day} · ${showEs ? title.es : title.en}`}
           onBack={goBack}
           {...(stage < 5 ? { onNext: goForward } : {})}
-          onExit={() => void navigate({ to: "/" })}
+          onExit={() => setConfirmExit(true)}
         />
+
+        {confirmExit ? (
+          <ExitDialog
+            showEs={showEs}
+            onCancel={() => setConfirmExit(false)}
+            onExit={() => {
+              AudioService.stop();
+              void navigate({ to: "/" });
+            }}
+          />
+        ) : null}
 
         <main className="mx-auto w-full max-w-lg space-y-5 px-4 py-5">
           <div className="flex justify-end">
@@ -175,13 +291,32 @@ function PracticePage() {
             <Rep2Copy
               day={day}
               index={subIndex}
-              onRecorded={trackSeconds}
+              showEs={showEs}
+              attempted={Boolean(currentItemKey && attempted.includes(currentItemKey))}
+              onRecorded={(rec) => {
+                trackSeconds(rec);
+                if (currentItemKey) markAttempted(currentItemKey);
+              }}
+              onSkip={skipCurrent}
               onNext={goForward}
             />
           ) : null}
           {stage === 3 ? <Rep3Shadow day={day} onRecorded={trackSeconds} onNext={goForward} /> : null}
           {stage === 4 ? (
-            <Rep4MakeItYours day={day} index={subIndex} onRecorded={trackSeconds} onNext={goForward} hideVisuals={moduleId === "past-stories"} />
+            <Rep4MakeItYours
+              day={day}
+              index={subIndex}
+              showEs={showEs}
+              attempted={Boolean(currentItemKey && attempted.includes(currentItemKey))}
+              onRecorded={(rec) => {
+                trackSeconds(rec);
+                if (currentItemKey) markAttempted(currentItemKey);
+              }}
+              onSkip={skipCurrent}
+              onNext={goForward}
+              hideVisuals={moduleId === "past-stories"}
+            />
+
           ) : null}
           {stage === 5 ? (
             <Rep5FinalRep
@@ -382,7 +517,144 @@ function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseD
   );
 }
 
+/* --------------------------- Resume / exit UI ---------------------------- */
+
+const RESUME_LABELS = [
+  { en: "INTRO", es: "INTRO" },
+  { en: "REP 1", es: "REP 1" },
+  { en: "REP 2", es: "REP 2" },
+  { en: "REP 3", es: "REP 3" },
+  { en: "REP 4", es: "REP 4" },
+  { en: "REP 5", es: "REP 5" },
+];
+
+function ResumeScreen({
+  session,
+  day,
+  showEs,
+  onContinue,
+  onRestart,
+}: {
+  session: PracticeSession;
+  day: CourseDay;
+  showEs: boolean;
+  onContinue: () => void;
+  onRestart: () => void;
+}) {
+  const [confirming, setConfirming] = useState(false);
+  const label = RESUME_LABELS[session.stage] ?? RESUME_LABELS[0]!;
+  const total = session.stage === 2 ? day.lines.length : session.stage === 4 ? rep4Items(day).length : 1;
+  const position =
+    total > 1
+      ? `${showEs ? label.es : label.en} · ${showEs ? "FRASE" : "PROMPT"} ${session.subIndex + 1} ${showEs ? "DE" : "OF"} ${total}`
+      : showEs
+        ? label.es
+        : label.en;
+
+  return (
+    <div className="min-h-screen bg-background px-4 pb-16 pt-[max(2rem,env(safe-area-inset-top))]">
+      <div className="mx-auto w-full max-w-lg space-y-5">
+        <div className="rounded-3xl bg-navy p-7 text-center text-navy-foreground">
+          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+            {showEs ? "QUÉ BUENO VERTE" : "WELCOME BACK"}
+          </p>
+          <h1 className="mt-2 text-2xl font-extrabold tracking-tight">
+            {showEs ? `Día ${day.day}` : `Day ${day.day}`}
+          </h1>
+          <p className="mt-3 text-[14px] font-semibold text-navy-foreground/80">
+            {showEs ? "Estabas practicando" : "You were practicing"}
+          </p>
+          <p className="mt-1 text-[17px] font-extrabold tracking-tight">{position}</p>
+        </div>
+
+        <PrimaryButton onClick={onContinue}>
+          {showEs ? "CONTINUAR DONDE ME QUEDÉ" : "CONTINUE WHERE I LEFT OFF"} <ArrowRight className="size-5" />
+        </PrimaryButton>
+
+        {confirming ? (
+          <div className="space-y-3 rounded-3xl border border-border bg-card p-5 text-center">
+            <p className="text-[14px] font-semibold">
+              {showEs
+                ? "Tu avance dentro de esta práctica se borrará."
+                : "Your progress inside this practice will be reset."}
+            </p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setConfirming(false)}
+                className="flex-1 rounded-2xl border border-border px-4 py-3 text-[13px] font-bold uppercase tracking-[0.12em]"
+              >
+                {showEs ? "CANCELAR" : "CANCEL"}
+              </button>
+              <button
+                type="button"
+                onClick={onRestart}
+                className="flex-1 rounded-2xl bg-destructive px-4 py-3 text-[13px] font-bold uppercase tracking-[0.12em] text-destructive-foreground"
+              >
+                {showEs ? "EMPEZAR DE NUEVO" : "START OVER"}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setConfirming(true)}
+            className="w-full text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground underline underline-offset-4"
+          >
+            {showEs ? "Empezar este día de nuevo" : "Start this day over"}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ExitDialog({ showEs, onCancel, onExit }: { showEs: boolean; onCancel: () => void; onExit: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-4 sm:items-center">
+      <div className="w-full max-w-sm space-y-4 rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-lift)]">
+        <p className="text-[18px] font-extrabold tracking-tight">
+          {showEs ? "¿SALIR DE LA PRÁCTICA?" : "EXIT PRACTICE?"}
+        </p>
+        <p className="text-[14px] text-muted-foreground">
+          {showEs ? "Tu avance de hoy se guardará." : "Your progress today will be saved."}
+        </p>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={onExit}
+            className="flex-1 rounded-2xl border border-border px-4 py-3 text-[13px] font-bold uppercase tracking-[0.12em]"
+          >
+            {showEs ? "SALIR" : "EXIT"}
+          </button>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="flex-1 rounded-2xl bg-primary px-4 py-3 text-[13px] font-bold uppercase tracking-[0.12em] text-primary-foreground"
+          >
+            {showEs ? "SEGUIR PRACTICANDO" : "KEEP PRACTICING"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Secondary text link: move on without a recording. */
+function SkipLink({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="w-full text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground underline underline-offset-4"
+    >
+      {label}
+    </button>
+  );
+}
+
 /* -------------------------------- Rep 1 ---------------------------------- */
+
 
 function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; onNext: () => void }) {
   const [heard, setHeard] = useState(false);
@@ -436,12 +708,18 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 function Rep2Copy({
   day,
   index,
+  showEs,
+  attempted,
   onRecorded,
+  onSkip,
   onNext,
 }: {
   day: CourseDay;
   index: number;
+  showEs: boolean;
+  attempted: boolean;
   onRecorded: (rec: Recording) => void;
+  onSkip: () => void;
   onNext: () => void;
 }) {
   const line = day.lines[index]!;
@@ -471,9 +749,14 @@ function Rep2Copy({
 
       {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
 
-      <PrimaryButton onClick={onNext}>
+      <PrimaryButton onClick={onNext} disabled={!attempted}>
         {index < day.lines.length - 1 ? "NEXT SENTENCE" : "NEXT REP"} <ArrowRight className="size-5" />
       </PrimaryButton>
+
+      {attempted ? null : (
+        <SkipLink label={showEs ? "SALTAR ESTA FRASE" : "SKIP THIS SENTENCE"} onClick={onSkip} />
+      )}
+
     </div>
   );
 }
@@ -560,13 +843,19 @@ function rep4Items(day: CourseDay): Rep4Item[] {
 function Rep4MakeItYours({
   day,
   index,
+  showEs,
+  attempted,
   onRecorded,
+  onSkip,
   onNext,
   hideVisuals = false,
 }: {
   day: CourseDay;
   index: number;
+  showEs: boolean;
+  attempted: boolean;
   onRecorded: (rec: Recording) => void;
+  onSkip: () => void;
   onNext: () => void;
   hideVisuals?: boolean;
 }) {
@@ -614,9 +903,14 @@ function Rep4MakeItYours({
       <VoiceRecorder label="ANSWER" maxSeconds={30} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
       {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
 
-      <PrimaryButton onClick={onNext}>
+      <PrimaryButton onClick={onNext} disabled={!attempted}>
         {index < items.length - 1 ? "NEXT QUESTION" : "NEXT REP"} <ArrowRight className="size-5" />
       </PrimaryButton>
+
+      {attempted ? null : (
+        <SkipLink label={showEs ? "SALTAR ESTA PREGUNTA" : "SKIP THIS PROMPT"} onClick={onSkip} />
+      )}
+
     </div>
   );
 }
