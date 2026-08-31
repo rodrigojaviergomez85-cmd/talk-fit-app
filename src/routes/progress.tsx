@@ -114,10 +114,10 @@ function ProgressPage() {
             const total = module.days.length;
             const status =
               done >= total
-                ? ({ label: "COMPLETE ✓", tone: "done" } as const)
+                ? ({ label: t("status.complete"), tone: "done" } as const)
                 : next?.moduleId === module.id
-                  ? ({ label: "CURRENT", tone: "current" } as const)
-                  : ({ label: "UP NEXT", tone: "next" } as const);
+                  ? ({ label: t("status.current"), tone: "current" } as const)
+                  : ({ label: t("status.upNext"), tone: "next" } as const);
             return (
               <Link
                 key={module.id}
@@ -139,7 +139,7 @@ function ProgressPage() {
                 </div>
                 <ProgressBar value={total > 0 ? done / total : 0} />
                 <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                  {done} / {total} days
+                  {done} / {total} {t("home.days")}
                 </p>
               </Link>
             );
@@ -220,7 +220,7 @@ function CurrentModule({ state, moduleId, day }: { state: JourneyState; moduleId
         />
       </div>
       <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">
-        {done} / {total} days · Week {week} · {weekDone} / {weekTotal} days
+        {done} / {total} {t("home.days")} · Week {week} · {weekDone} / {weekTotal} days
       </p>
       <Link
         to="/practice"
