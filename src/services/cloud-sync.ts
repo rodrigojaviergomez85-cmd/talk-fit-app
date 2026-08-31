@@ -351,6 +351,18 @@ export const CloudSync = {
       .upsert({ user_id: uid, migrated_local_at: new Date().toISOString() }, { onConflict: "user_id" });
   },
 
+  /**
+   * "Reset my journey": clears day progress and saved positions in the account.
+   * Stored audio is kept for the pilot and is never deleted automatically.
+   */
+  async resetAccountProgress(): Promise<void> {
+    const uid = await userId();
+    if (!uid) return;
+    await supabase.from("day_progress").delete().eq("user_id", uid);
+    await supabase.from("practice_sessions").delete().eq("user_id", uid);
+    JourneyService.invalidatePull();
+  },
+
   /** Full restore after sign-in: backend state replaces the local cache. */
   async restoreAll(): Promise<void> {
     const uid = await userId();
