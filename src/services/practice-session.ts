@@ -34,6 +34,29 @@ function keyFor(moduleId: ModuleId, day: number): string {
   return `${PREFIX}:${scope}:${moduleId}:${day}`;
 }
 
+/**
+ * Cloud writes are debounced so saving on every rep/prompt change does not
+ * turn into network noise; the last position always wins.
+ */
+let cloudTimer: ReturnType<typeof setTimeout> | null = null;
+let pending: PracticeSession | null = null;
+
+function queueCloudSave(session: PracticeSession) {
+  if (typeof window === "undefined") return;
+  pending = session;
+  if (cloudTimer) clearTimeout(cloudTimer);
+  cloudTimer = setTimeout(() => {
+    const value = pending;
+    pending = null;
+    cloudTimer = null;
+    if (!value) return;
+    void import("./cloud-sync")
+      .then(({ CloudSync }) => CloudSync.saveSession(value))
+      .catch(() => undefined);
+  }, 1200);
+}
+
+
 export const PracticeSessionService = {
   load(moduleId: ModuleId, day: number): PracticeSession | null {
     if (typeof window === "undefined") return null;
