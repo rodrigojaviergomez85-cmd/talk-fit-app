@@ -62,6 +62,54 @@ export type Database = {
         }
         Relationships: []
       }
+      practice_sessions: {
+        Row: {
+          attempted: string[]
+          created_at: string
+          day: number
+          id: string
+          module_id: string
+          skipped: string[]
+          stage: number
+          started_at: string
+          status: string
+          sub_index: number
+          updated_at: string
+          user_id: string
+          week: number | null
+        }
+        Insert: {
+          attempted?: string[]
+          created_at?: string
+          day: number
+          id?: string
+          module_id: string
+          skipped?: string[]
+          stage?: number
+          started_at?: string
+          status?: string
+          sub_index?: number
+          updated_at?: string
+          user_id: string
+          week?: number | null
+        }
+        Update: {
+          attempted?: string[]
+          created_at?: string
+          day?: number
+          id?: string
+          module_id?: string
+          skipped?: string[]
+          stage?: number
+          started_at?: string
+          status?: string
+          sub_index?: number
+          updated_at?: string
+          user_id?: string
+          week?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -80,6 +128,117 @@ export type Database = {
           display_name?: string | null
           email?: string | null
           id?: string
+        }
+        Relationships: []
+      }
+      recordings: {
+        Row: {
+          created_at: string
+          day: number
+          duration_seconds: number
+          estimated_idea_count: number | null
+          id: string
+          is_final_rep: boolean
+          mime_type: string | null
+          module_id: string
+          storage_path: string
+          take_number: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          day: number
+          duration_seconds?: number
+          estimated_idea_count?: number | null
+          id?: string
+          is_final_rep?: boolean
+          mime_type?: string | null
+          module_id: string
+          storage_path: string
+          take_number: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          day?: number
+          duration_seconds?: number
+          estimated_idea_count?: number | null
+          id?: string
+          is_final_rep?: boolean
+          mime_type?: string | null
+          module_id?: string
+          storage_path?: string
+          take_number?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_preferences: {
+        Row: {
+          app_language: string
+          created_at: string
+          migrated_local_at: string | null
+          onboarding_completed: boolean
+          spanish_support: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          app_language?: string
+          created_at?: string
+          migrated_local_at?: string | null
+          onboarding_completed?: boolean
+          spanish_support?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          app_language?: string
+          created_at?: string
+          migrated_local_at?: string | null
+          onboarding_completed?: boolean
+          spanish_support?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      verb_progress: {
+        Row: {
+          created_at: string
+          discovered: boolean
+          first_discovered_at: string | null
+          id: string
+          listen_count: number
+          practice_count: number
+          updated_at: string
+          user_id: string
+          verb_id: string
+        }
+        Insert: {
+          created_at?: string
+          discovered?: boolean
+          first_discovered_at?: string | null
+          id?: string
+          listen_count?: number
+          practice_count?: number
+          updated_at?: string
+          user_id: string
+          verb_id: string
+        }
+        Update: {
+          created_at?: string
+          discovered?: boolean
+          first_discovered_at?: string | null
+          id?: string
+          listen_count?: number
+          practice_count?: number
+          updated_at?: string
+          user_id?: string
+          verb_id?: string
         }
         Relationships: []
       }
