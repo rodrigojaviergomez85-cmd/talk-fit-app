@@ -737,7 +737,7 @@ function Rep5FinalRep({
           ) : null}
         </div>
       ) : (
-        <TranslatableText es={`Faltan ${REQUIRED_TAKES - completed} tomas obligatorias.`} align="center">
+        <TranslatableText supportOnly es={`Faltan ${REQUIRED_TAKES - completed} tomas obligatorias.`} align="center">
           <p className="text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
             {REQUIRED_TAKES - completed} required take{REQUIRED_TAKES - completed === 1 ? "" : "s"} left
           </p>
