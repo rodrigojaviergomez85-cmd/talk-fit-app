@@ -791,7 +791,7 @@ const d12 = makeDay({
     titleEs: "¿QUÉ ESTABA PASANDO?",
     lead: "Look at the office and describe every action.",
     leadEs: "Mira la oficina y describe cada acción.",
-    examples: ["He was typing.", "They were meeting.", "She was reading."],
+    examples: ["He was typing.", "They were having a meeting.", "She was reading."],
     goal: "Speak for 30+ seconds.",
     goalEs: "Habla 30 segundos o más.",
     cta: "START REP 1",

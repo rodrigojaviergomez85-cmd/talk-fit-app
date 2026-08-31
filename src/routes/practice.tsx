@@ -10,7 +10,14 @@ import { PastVerbCards } from "@/components/fluency/PastVerbCards";
 import { StoryStrip } from "@/components/fluency/StoryStrip";
 
 import { DayCompleteScreen } from "@/components/fluency/DayCompleteScreen";
-import { SpanishProvider, SpanishToggle, TranslatableText } from "@/components/fluency/TranslatableText";
+import {
+  SpanishProvider,
+  SpanishToggle,
+  TranslatableText,
+  useEsSupportPref,
+} from "@/components/fluency/TranslatableText";
+import { CollapsibleHelp, TextToggle } from "@/components/fluency/CollapsibleHelp";
+import { supportLevel, prefersChunks, showsFullTextByDefault } from "@/lib/support-level";
 import { CourseService, DEFAULT_MODULE, isModuleId } from "@/services/course-service";
 import { JourneyService } from "@/services/journey-service";
 import { AudioService } from "@/services/audio-service";
@@ -68,7 +75,7 @@ function PracticePage() {
   const navigate = useNavigate();
   const day = useMemo(() => CourseService.getDay(moduleId, dayNumber), [moduleId, dayNumber]);
 
-  const [showEs, setShowEs] = useState(false);
+  const [showEs, setShowEs] = useEsSupportPref();
   const [stage, setStage] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [done, setDone] = useState(false);
@@ -157,8 +164,10 @@ function PracticePage() {
           onExit={() => void navigate({ to: "/" })}
         />
 
-        <main className="mx-auto w-full max-w-lg space-y-5 px-4 py-6">
-          <SpanishToggle value={showEs} onChange={setShowEs} />
+        <main className="mx-auto w-full max-w-lg space-y-5 px-4 py-5">
+          <div className="flex justify-end">
+            <SpanishToggle value={showEs} onChange={setShowEs} />
+          </div>
 
           {stage === 0 ? <IntroStep moduleId={moduleId} day={day} onNext={goForward} /> : null}
           {stage === 1 ? <Rep1Listen day={day} showEs={showEs} onNext={goForward} /> : null}
@@ -227,9 +236,23 @@ function PrimaryButton({ children, onClick, disabled }: { children: React.ReactN
 
 function Instruction({ en, es }: { en: string; es: string }) {
   return (
-    <TranslatableText es={es} align="center" className="text-center">
+    <TranslatableText es={es} align="center" className="text-center" supportOnly>
       <p className="text-center text-[17px] font-bold leading-snug">{en}</p>
     </TranslatableText>
+  );
+}
+
+/** Small goal chips: seconds + ideas. */
+function GoalChips({ day }: { day: CourseDay }) {
+  return (
+    <div className="flex justify-center gap-2">
+      <span className="rounded-full bg-secondary px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+        {day.goalSeconds[0]}+ sec
+      </span>
+      <span className="rounded-full bg-secondary px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+        {day.goalSentences ?? 5}+ ideas
+      </span>
+    </div>
   );
 }
 
@@ -307,34 +330,50 @@ function VariantPicker({ day }: { day: CourseDay }) {
 
 function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseDay; onNext: () => void }) {
   const intro = day.intro;
+  const [first, ...rest] = intro.examples;
+
   return (
     <div className="space-y-5">
       <div className="rounded-3xl bg-navy p-6 text-navy-foreground">
-        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">DAY {day.day} OF {CourseService.totalDays(moduleId)}</p>
-        <TranslatableText es={intro.titleEs} esClassName="text-navy-foreground/70">
+        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+          DAY {day.day} OF {CourseService.totalDays(moduleId)}
+        </p>
+        <TranslatableText es={intro.titleEs} esClassName="text-navy-foreground/70" supportOnly>
           <h2 className="mt-2 text-3xl font-extrabold tracking-tight">{intro.title}</h2>
         </TranslatableText>
-        <TranslatableText es={intro.leadEs} className="mt-3" esClassName="text-navy-foreground/70">
-          <p className="text-[17px] font-semibold leading-snug">{intro.lead}</p>
+        <TranslatableText es={intro.goalEs} className="mt-3" esClassName="text-navy-foreground/70" supportOnly>
+          <p className="text-[16px] font-semibold leading-snug text-navy-foreground/85">{intro.goal}</p>
         </TranslatableText>
       </div>
 
-      <div className="space-y-2 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-        {intro.examples.map((example) => (
-          <p key={example} className="text-[20px] font-extrabold tracking-tight">
-            {example}
-          </p>
-        ))}
-      </div>
+      <SceneImage day={day} />
 
-      <div className="rounded-3xl border border-primary/25 bg-accent p-5">
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-accent-foreground">
+      {first ? (
+        <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+          <p className="text-[20px] font-extrabold leading-tight tracking-tight">{first}</p>
+          <AudioPlayer text={first} label="LISTEN" voice={day.speakerVoice} />
+        </div>
+      ) : null}
+
+      <GoalChips day={day} />
+
+      <CollapsibleHelp>
+        <TranslatableText es={intro.leadEs} supportOnly>
+          <p className="text-[15px] leading-relaxed text-foreground">{intro.lead}</p>
+        </TranslatableText>
+        {rest.length ? (
+          <div className="space-y-1.5">
+            {rest.map((example) => (
+              <p key={example} className="text-[16px] font-bold tracking-tight">
+                {example}
+              </p>
+            ))}
+          </div>
+        ) : null}
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
           {day.focus} · {day.topic}
         </p>
-        <TranslatableText es={intro.goalEs} className="mt-2">
-          <p className="text-[17px] font-bold leading-snug text-foreground">{intro.goal}</p>
-        </TranslatableText>
-      </div>
+      </CollapsibleHelp>
 
       <PrimaryButton onClick={onNext}>
         {intro.cta} <ArrowRight className="size-5" />
@@ -358,8 +397,7 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 
       <SceneImage day={day} />
       <PastVerbCards day={day} />
-      <StoryStrip day={day} showCaptions={!day.hideModelText} />
-
+      <StoryStrip day={day} showCaptions={false} />
 
       <AudioPlayer
         text={CourseService.getModelText(day)}
@@ -369,13 +407,7 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
         onEnd={() => setHeard(true)}
       />
 
-      <button
-        type="button"
-        onClick={() => setShowText((v) => !v)}
-        className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
-      >
-        {showText ? "Hide text" : "Show text"}
-      </button>
+      <TextToggle open={showText} onToggle={() => setShowText((v) => !v)} />
 
       {showText ? (
         <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
@@ -384,6 +416,7 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
           ))}
         </div>
       ) : null}
+
 
       <PrimaryButton
         onClick={() => {
@@ -416,9 +449,11 @@ function Rep2Copy({
 
   useEffect(() => setMine(null), [index]);
 
+  const level = supportLevel(day);
+
   return (
     <div className="space-y-5">
-      <Instruction en="Listen. Then copy the sentence." es="Escucha. Después copia la oración." />
+      <Instruction en="Listen, then copy." es="Escucha y copia." />
 
       <SceneImage day={day} />
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
@@ -426,8 +461,9 @@ function Rep2Copy({
       </p>
 
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-        <LineCard line={line} chunked />
+        <LineCard line={line} chunked={prefersChunks(level)} />
       </div>
+
 
       <AudioPlayer text={line.text} label="LISTEN" rate={0.9} voice={day.speakerVoice} />
 
@@ -447,14 +483,20 @@ function Rep2Copy({
 function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (rec: Recording) => void; onNext: () => void }) {
   const [speed, setSpeed] = useState(0.75);
   const [mine, setMine] = useState<Recording | null>(null);
+  const level = supportLevel(day);
+  const [showText, setShowText] = useState(showsFullTextByDefault(level));
 
   return (
     <div className="space-y-5">
-      <Instruction en="Read along with the model." es="Lee a la par del modelo." />
+      <div className="rounded-3xl bg-navy p-5 text-center text-navy-foreground">
+        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">Shadow</p>
+        <TranslatableText es="Habla al mismo tiempo que el modelo." align="center" className="mt-1" esClassName="text-navy-foreground/70" supportOnly>
+          <p className="text-[17px] font-bold leading-snug">Speak with the audio.</p>
+        </TranslatableText>
+      </div>
 
       <SceneImage day={day} />
-      <StoryStrip day={day} showCaptions={!day.hideModelText} />
-
+      <StoryStrip day={day} showCaptions={false} />
 
       <div className="flex gap-2">
         {[0.5, 0.75, 1.0].map((rate) => (
@@ -472,16 +514,18 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
         ))}
       </div>
 
-      <p className="text-center text-[12px] font-semibold leading-snug text-muted-foreground">
-        0.5× / 0.75× = slow · 1.0× = normal
-      </p>
+      <TextToggle open={showText} onToggle={() => setShowText((v) => !v)} />
 
+      {showText ? (
+        <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+          {day.lines.map((line) => (
+            <LineCard key={line.id} line={line} chunked={prefersChunks(level)} />
+          ))}
+        </div>
+      ) : (
+        <CueRow cues={day.cues} />
+      )}
 
-      <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-        {day.lines.map((line) => (
-          <LineCard key={line.id} line={line} chunked />
-        ))}
-      </div>
 
       <AudioPlayer text={CourseService.getModelText(day)} label="START SHADOWING" rate={speed} size="lg" voice={day.speakerVoice} />
 
@@ -543,13 +587,15 @@ function Rep4MakeItYours({
         <>
           <SceneImage day={day} />
           <PastVerbCards day={day} />
-          <StoryStrip day={day} showCaptions={!day.hideModelText} />
+          <StoryStrip day={day} showCaptions={false} />
           <VariantPicker day={day} />
         </>
       ) : null}
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
         {index + 1} / {items.length}
       </p>
+
+      <CueRow cues={item.cues ?? day.cues} />
 
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         <TranslatableText es={item.questionEs}>
@@ -562,7 +608,6 @@ function Rep4MakeItYours({
         </div>
       </div>
 
-      {item.cues ? <CueRow cues={item.cues} /> : null}
 
       <AudioPlayer text={item.question} label="HEAR THE QUESTION" variant="ghost" size="sm" voice={day.speakerVoice} />
 
@@ -602,70 +647,56 @@ function Rep5FinalRep({
 
   return (
     <div className="space-y-5">
-      <Instruction en="Record it. Listen. Try again." es="Grábalo. Escúchalo. Inténtalo otra vez." />
-
-      <SceneImage day={day} />
-      <StoryStrip day={day} showCaptions={!day.hideModelText} />
-      <VariantPicker day={day} />
-
-
-      <div className="rounded-3xl border border-primary/25 bg-accent p-4 space-y-3">
-        <TranslatableText es="Responde la pregunta:" align="center">
+      <div className="space-y-3 rounded-3xl border border-primary/25 bg-accent p-5">
+        <TranslatableText es="Responde la pregunta:" align="center" supportOnly>
           <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-accent-foreground">
-            Answer the question:
+            Answer the question
           </p>
         </TranslatableText>
         <TranslatableText es={day.rep5Prompt.questionEs}>
-          <p className="text-[17px] font-extrabold leading-snug">{day.rep5Prompt.question}</p>
+          <p className="text-[19px] font-extrabold leading-snug">{day.rep5Prompt.question}</p>
         </TranslatableText>
+      </div>
+
+      <GoalChips day={day} />
+
+      <CueRow cues={day.cues} />
+
+      <SceneImage day={day} />
+      <StoryStrip day={day} showCaptions={false} />
+      <VariantPicker day={day} />
+
+      <CollapsibleHelp label="Need help?" labelEs="¿Necesitas ayuda?">
         {day.rep5Tips ? (
-          <TranslatableText es={day.rep5Tips.es}>
+          <TranslatableText es={day.rep5Tips.es} supportOnly>
             <p className="text-[14px] leading-relaxed text-foreground">{day.rep5Tips.en}</p>
           </TranslatableText>
         ) : (
-          <TranslatableText
-            es="Usa conectores como after, later y then. Si puedes, agrega un because."
-          >
+          <TranslatableText es="Usa conectores como after, later y then. Si puedes, agrega un because." supportOnly>
             <p className="text-[14px] leading-relaxed text-foreground">
               Use connectors like <strong>after</strong>, <strong>later</strong> and <strong>then</strong>. If you can, add a <strong>because</strong>.
             </p>
           </TranslatableText>
         )}
-        <TranslatableText es="Meta: al menos 5–10 oraciones en 30 segundos o más.">
-          <p className="text-[14px] font-semibold text-foreground">
-            Goal: at least 5–10 sentences in 30 seconds or more.
-          </p>
-        </TranslatableText>
-      </div>
+        {day.modelExample ? (
+          <>
+            <AudioPlayer text={day.modelExample.text} label="LISTEN TO EXAMPLE" rate={1} variant="navy" voice={day.speakerVoice} />
+            <button
+              type="button"
+              onClick={() => setShowExampleText((v) => !v)}
+              className="w-full text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-primary"
+            >
+              {showExampleText ? "Hide example text" : "Show example text"}
+            </button>
+            {showExampleText ? (
+              <TranslatableText es={day.modelExample.es}>
+                <p className="text-[14px] leading-relaxed text-foreground">{day.modelExample.text}</p>
+              </TranslatableText>
+            ) : null}
+          </>
+        ) : null}
+      </CollapsibleHelp>
 
-      {day.modelExample ? (
-        <div className="space-y-3 rounded-3xl border border-border bg-card p-4">
-          <TranslatableText es="¿Quieres escuchar cómo debería sonar?" align="center">
-            <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-              Want to hear how it should sound?
-            </p>
-          </TranslatableText>
-          <AudioPlayer text={day.modelExample.text} label="LISTEN TO EXAMPLE" rate={1} variant="navy" voice={day.speakerVoice} />
-          <button
-            type="button"
-            onClick={() => setShowExampleText((v) => !v)}
-            className="w-full text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-primary"
-          >
-            {showExampleText ? "Hide example text" : "Show example text"}
-          </button>
-          {showExampleText ? (
-            <TranslatableText es={day.modelExample.es}>
-              <p className="text-[14px] leading-relaxed text-foreground">{day.modelExample.text}</p>
-            </TranslatableText>
-          ) : null}
-        </div>
-      ) : null}
-
-      <TranslatableText es={`Meta: ${day.goalSeconds[0]}–${day.goalSeconds[1]} segundos por toma.`} align="center">
-        <p className="text-center text-[13px] text-muted-foreground">
-          Goal: {day.goalSeconds[0]}–{day.goalSeconds[1]} seconds per take.
-        </p>
-      </TranslatableText>
 
       <TakeBoard
         takes={takes}
@@ -706,7 +737,7 @@ function Rep5FinalRep({
           ) : null}
         </div>
       ) : (
-        <TranslatableText es={`Faltan ${REQUIRED_TAKES - completed} tomas obligatorias.`} align="center">
+        <TranslatableText supportOnly es={`Faltan ${REQUIRED_TAKES - completed} tomas obligatorias.`} align="center">
           <p className="text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
             {REQUIRED_TAKES - completed} required take{REQUIRED_TAKES - completed === 1 ? "" : "s"} left
           </p>
