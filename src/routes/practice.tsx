@@ -97,6 +97,9 @@ function PracticePage() {
   const [takes, setTakes] = useState<(Recording | null)[]>(() => Array(TAKE_COUNT).fill(null));
   const [finalIndex, setFinalIndex] = useState<number | null>(null);
   const [finalRecording, setFinalRecording] = useState<Recording | null>(null);
+  const [saveState, setSaveState] = useState<FinalRepSaveState>("idle");
+  const [journeyAfterFinish, setJourneyAfterFinish] = useState<JourneyState | null>(null);
+  const saveRef = useRef(false);
   const practiceSeconds = useRef(0);
 
   const [attempted, setAttempted] = useState<string[]>([]);
