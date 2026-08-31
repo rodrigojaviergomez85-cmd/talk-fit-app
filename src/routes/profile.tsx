@@ -4,6 +4,10 @@ import { LogOut } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
+import { PracticeSessionService, setSessionScope } from "@/services/practice-session";
+
+/** Never render NaN/undefined in a stat. */
+const num = (value: unknown): number => (typeof value === "number" && Number.isFinite(value) ? value : 0);
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import type { JourneyState } from "@/lib/types";
