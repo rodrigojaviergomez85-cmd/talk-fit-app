@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Ear, Mic, Repeat, Sparkles, User } from "lucide-react";
 import { CourseService } from "@/services/course-service";
@@ -43,9 +43,6 @@ function OnboardingPage() {
   const { t, lang, setPrefs } = useAppLang();
   const [screen, setScreen] = useState(0);
 
-  useEffect(() => {
-    setPrefs({});
-  }, [setPrefs]);
 
   const finish = (to: "day1" | "explore") => {
     setPrefs({ onboardingCompleted: true });
