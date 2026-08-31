@@ -173,7 +173,7 @@ export function TakeBoard({
               </div>
             ) : isActive ? (
               <div className="mt-3 space-y-2">
-                <TranslatableText es="Listo para grabar" align="center" className="text-center">
+                <TranslatableText supportOnly es="Listo para grabar" align="center" className="text-center">
                   <p className="text-center text-[13px] text-muted-foreground">Ready to record</p>
                 </TranslatableText>
                 <VoiceRecorder
@@ -212,7 +212,7 @@ function GoalPanel({
 
   return (
     <div className="rounded-3xl border border-border bg-card p-4">
-      <TranslatableText es={`META DE HOY · ${minSeconds}+ segundos · ${goalSentences}+ oraciones`} align="center">
+      <TranslatableText supportOnly es={`META DE HOY · ${minSeconds}+ segundos · ${goalSentences}+ oraciones`} align="center">
         <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
           Today's goal · {minSeconds}+ sec · {goalSentences}+ sentences
         </p>
@@ -220,7 +220,7 @@ function GoalPanel({
 
       <div className="mt-3 grid grid-cols-2 gap-3">
         <div className="rounded-2xl bg-secondary p-3 text-center">
-          <TranslatableText es="TIEMPO" align="center">
+          <TranslatableText supportOnly es="TIEMPO" align="center">
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Time</p>
           </TranslatableText>
           <p className={cn("mt-1 text-[16px] font-extrabold tabular-nums", latest ? (timeOk ? "text-success" : "text-destructive") : "text-muted-foreground")}>
@@ -228,7 +228,7 @@ function GoalPanel({
           </p>
         </div>
         <div className="rounded-2xl bg-secondary p-3 text-center">
-          <TranslatableText es="ORACIONES" align="center">
+          <TranslatableText supportOnly es="ORACIONES" align="center">
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Sentences</p>
           </TranslatableText>
           <p className={cn("mt-1 text-[16px] font-extrabold tabular-nums", count === null ? "text-muted-foreground" : sentencesOk ? "text-success" : "text-destructive")}>
@@ -245,7 +245,7 @@ function GoalPanel({
 function SentenceLine({ take, goal }: { take: Recording; goal: number }) {
   if (take.countStatus === "pending") {
     return (
-      <TranslatableText es="Contando oraciones…">
+      <TranslatableText supportOnly es="Contando oraciones…">
         <p className="text-[13px] font-semibold text-muted-foreground">Counting sentences…</p>
       </TranslatableText>
     );
@@ -253,7 +253,7 @@ function SentenceLine({ take, goal }: { take: Recording; goal: number }) {
 
   if (take.countStatus !== "done" || typeof take.sentenceCount !== "number") {
     return (
-      <TranslatableText es="Conteo de oraciones no disponible">
+      <TranslatableText supportOnly es="Conteo de oraciones no disponible">
         <p className="text-[12px] text-muted-foreground">Sentence count unavailable</p>
       </TranslatableText>
     );
@@ -267,7 +267,7 @@ function SentenceLine({ take, goal }: { take: Recording; goal: number }) {
       <p className={cn("text-[15px] font-extrabold", ok ? "text-success" : "text-destructive")}>
         {ok ? "🟢" : "🔴"} {count} {count === 1 ? "sentence" : "sentences"}
       </p>
-      <TranslatableText es={ok ? "¡Meta alcanzada!" : `Sigue — busca ${goal}.`}>
+      <TranslatableText supportOnly es={ok ? "¡Meta alcanzada!" : `Sigue — busca ${goal}.`}>
         <p className="text-[12px] font-semibold text-muted-foreground">
           {ok ? "Goal reached!" : `Keep going — aim for ${goal}.`}
         </p>
