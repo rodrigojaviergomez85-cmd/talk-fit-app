@@ -763,7 +763,7 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
         </PrimaryButton>
       ) : (
         <SkipLink
-          label={showEs ? "saltar por ahora" : "skip for now"}
+          label={t("practice.skipNow")}
           onClick={() => {
             AudioService.stop();
             onNext();
@@ -834,8 +834,8 @@ function Rep2Copy({
 
       {attempted ? null : (
         <>
-          <HelperText text={showEs ? "Graba una vez para continuar." : "Record once to continue."} />
-          <SkipLink label={showEs ? "saltar esta frase" : "skip this sentence"} onClick={onSkip} />
+          <HelperText text={t("practice.recordOnce")} />
+          <SkipLink label={t("practice.skipSentence")} onClick={onSkip} />
         </>
       )}
 
@@ -1000,8 +1000,8 @@ function Rep4MakeItYours({
 
       {attempted ? null : (
         <>
-          <HelperText text={showEs ? "Graba una vez para continuar." : "Record once to continue."} />
-          <SkipLink label={showEs ? "saltar esta pregunta" : "skip this prompt"} onClick={onSkip} />
+          <HelperText text={t("practice.recordOnce")} />
+          <SkipLink label={t("practice.skipPrompt")} onClick={onSkip} />
         </>
       )}
 
@@ -1037,11 +1037,9 @@ function Rep5FinalRep({
   return (
     <div className="space-y-5">
       <div className="space-y-3 rounded-3xl border border-primary/25 bg-accent p-5">
-        <TranslatableText es="Responde la pregunta:" align="center" supportOnly>
-          <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-accent-foreground">
-            Answer the question
-          </p>
-        </TranslatableText>
+        <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-accent-foreground">
+          {t("practice.answer")}
+        </p>
         <TranslatableText es={day.rep5Prompt.questionEs}>
           <p className="text-[19px] font-extrabold leading-snug">{day.rep5Prompt.question}</p>
         </TranslatableText>
@@ -1073,9 +1071,9 @@ function Rep5FinalRep({
             <button
               type="button"
               onClick={() => setShowExampleText((v) => !v)}
-              className="w-full text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-primary"
+              className="inline-flex min-h-[44px] w-full items-center justify-center text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-primary"
             >
-              {showExampleText ? "Hide example text" : "Show example text"}
+              {showExampleText ? t("practice.hideExampleText") : t("practice.showExampleText")}
             </button>
             {showExampleText ? (
               <TranslatableText es={day.modelExample.es}>
@@ -1102,27 +1100,23 @@ function Rep5FinalRep({
         <div className="space-y-3">
           <div className="rounded-3xl border border-success/25 bg-success/8 p-4 text-center">
             <p className="flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-success">
-              <Sparkles className="size-4" /> 3 required reps complete ✓
+              <Sparkles className="size-4" /> {t("practice.requiredDone")}
             </p>
             {finalIndex !== null ? (
-              <p className="mt-1 text-[13px] font-semibold">Final rep selected ✓ — Take {finalIndex + 1}</p>
+              <p className="mt-1 text-[13px] font-semibold">{t("practice.finalSelected")} {finalIndex + 1}</p>
             ) : (
-              <TranslatableText es="Elige una toma como tu rep final." align="center" className="mt-1">
-                <p className="text-[13px] text-muted-foreground">Pick one take as your final rep.</p>
-              </TranslatableText>
+              <p className="mt-1 text-[13px] text-muted-foreground">{t("practice.pickFinal")}</p>
             )}
           </div>
 
           <PrimaryButton onClick={onFinish} disabled={finalIndex === null}>
-            <Check className="size-5" /> COMPLETE TODAY'S PRACTICE
+            <Check className="size-5" /> {t("practice.complete")}
           </PrimaryButton>
 
           {slotsLeft ? (
-            <TranslatableText es="O graba otra toma opcional arriba." align="center">
-              <p className="text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                Or record another take above
-              </p>
-            </TranslatableText>
+            <p className="text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              {t("practice.recordAnother")}
+            </p>
           ) : null}
         </div>
       ) : (
