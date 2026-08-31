@@ -49,6 +49,7 @@ function ProfilePage() {
       setSessionScope(session?.user.id ?? null);
       setPreferencesScope(session?.user.id ?? null);
       // Never keep another session's numbers on screen.
+      JourneyService.invalidatePull();
       if (session) void JourneyService.pull().then(setState).catch(() => undefined);
       else setState(JourneyService.load());
     });
