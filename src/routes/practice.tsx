@@ -517,7 +517,144 @@ function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseD
   );
 }
 
+/* --------------------------- Resume / exit UI ---------------------------- */
+
+const RESUME_LABELS = [
+  { en: "INTRO", es: "INTRO" },
+  { en: "REP 1", es: "REP 1" },
+  { en: "REP 2", es: "REP 2" },
+  { en: "REP 3", es: "REP 3" },
+  { en: "REP 4", es: "REP 4" },
+  { en: "REP 5", es: "REP 5" },
+];
+
+function ResumeScreen({
+  session,
+  day,
+  showEs,
+  onContinue,
+  onRestart,
+}: {
+  session: PracticeSession;
+  day: CourseDay;
+  showEs: boolean;
+  onContinue: () => void;
+  onRestart: () => void;
+}) {
+  const [confirming, setConfirming] = useState(false);
+  const label = RESUME_LABELS[session.stage] ?? RESUME_LABELS[0]!;
+  const total = session.stage === 2 ? day.lines.length : session.stage === 4 ? rep4Items(day).length : 1;
+  const position =
+    total > 1
+      ? `${showEs ? label.es : label.en} · ${showEs ? "FRASE" : "PROMPT"} ${session.subIndex + 1} ${showEs ? "DE" : "OF"} ${total}`
+      : showEs
+        ? label.es
+        : label.en;
+
+  return (
+    <div className="min-h-screen bg-background px-4 pb-16 pt-[max(2rem,env(safe-area-inset-top))]">
+      <div className="mx-auto w-full max-w-lg space-y-5">
+        <div className="rounded-3xl bg-navy p-7 text-center text-navy-foreground">
+          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+            {showEs ? "QUÉ BUENO VERTE" : "WELCOME BACK"}
+          </p>
+          <h1 className="mt-2 text-2xl font-extrabold tracking-tight">
+            {showEs ? `Día ${day.day}` : `Day ${day.day}`}
+          </h1>
+          <p className="mt-3 text-[14px] font-semibold text-navy-foreground/80">
+            {showEs ? "Estabas practicando" : "You were practicing"}
+          </p>
+          <p className="mt-1 text-[17px] font-extrabold tracking-tight">{position}</p>
+        </div>
+
+        <PrimaryButton onClick={onContinue}>
+          {showEs ? "CONTINUAR DONDE ME QUEDÉ" : "CONTINUE WHERE I LEFT OFF"} <ArrowRight className="size-5" />
+        </PrimaryButton>
+
+        {confirming ? (
+          <div className="space-y-3 rounded-3xl border border-border bg-card p-5 text-center">
+            <p className="text-[14px] font-semibold">
+              {showEs
+                ? "Tu avance dentro de esta práctica se borrará."
+                : "Your progress inside this practice will be reset."}
+            </p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setConfirming(false)}
+                className="flex-1 rounded-2xl border border-border px-4 py-3 text-[13px] font-bold uppercase tracking-[0.12em]"
+              >
+                {showEs ? "CANCELAR" : "CANCEL"}
+              </button>
+              <button
+                type="button"
+                onClick={onRestart}
+                className="flex-1 rounded-2xl bg-destructive px-4 py-3 text-[13px] font-bold uppercase tracking-[0.12em] text-destructive-foreground"
+              >
+                {showEs ? "EMPEZAR DE NUEVO" : "START OVER"}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setConfirming(true)}
+            className="w-full text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground underline underline-offset-4"
+          >
+            {showEs ? "Empezar este día de nuevo" : "Start this day over"}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ExitDialog({ showEs, onCancel, onExit }: { showEs: boolean; onCancel: () => void; onExit: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-4 sm:items-center">
+      <div className="w-full max-w-sm space-y-4 rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-lift)]">
+        <p className="text-[18px] font-extrabold tracking-tight">
+          {showEs ? "¿SALIR DE LA PRÁCTICA?" : "EXIT PRACTICE?"}
+        </p>
+        <p className="text-[14px] text-muted-foreground">
+          {showEs ? "Tu avance de hoy se guardará." : "Your progress today will be saved."}
+        </p>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={onExit}
+            className="flex-1 rounded-2xl border border-border px-4 py-3 text-[13px] font-bold uppercase tracking-[0.12em]"
+          >
+            {showEs ? "SALIR" : "EXIT"}
+          </button>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="flex-1 rounded-2xl bg-primary px-4 py-3 text-[13px] font-bold uppercase tracking-[0.12em] text-primary-foreground"
+          >
+            {showEs ? "SEGUIR PRACTICANDO" : "KEEP PRACTICING"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Secondary text link: move on without a recording. */
+function SkipLink({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="w-full text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground underline underline-offset-4"
+    >
+      {label}
+    </button>
+  );
+}
+
 /* -------------------------------- Rep 1 ---------------------------------- */
+
 
 function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; onNext: () => void }) {
   const [heard, setHeard] = useState(false);
