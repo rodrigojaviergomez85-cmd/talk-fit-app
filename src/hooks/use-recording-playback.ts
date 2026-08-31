@@ -1,4 +1,5 @@
 import { useCallback, useSyncExternalStore } from "react";
+import { registerAudioStopper, stopOtherAudio } from "@/lib/audio-bus";
 
 /**
  * One shared audio element for the whole app: only one recording ever plays.
@@ -57,6 +58,7 @@ async function play(id: string, resolveUrl: () => Promise<string | null> | strin
     return;
   }
   stopPlayback();
+  stopOtherAudio("recording");
 
   let url = urlCache.get(id) ?? null;
   if (!url) {
@@ -101,4 +103,8 @@ export function useRecordingPlayback(id: string) {
   );
 
   return { playing: playingId === id, loading: pendingId === id, toggle, stop: stopPlayback };
+}
+
+if (typeof window !== "undefined") {
+  registerAudioStopper("recording", () => stopPlayback());
 }

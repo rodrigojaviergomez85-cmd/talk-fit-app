@@ -7,6 +7,8 @@
  * never blocks if generation fails.
  */
 
+import { registerAudioStopper, stopOtherAudio } from "@/lib/audio-bus";
+
 export type ModelVoice = "neutral" | "female" | "male";
 type AudioVoice = "female" | "male";
 
@@ -16,6 +18,10 @@ export type SpeakOptions = {
   onStart?: () => void;
   onEnd?: () => void;
   onBoundary?: (charIndex: number) => void;
+  /** Playback position updates, in seconds. duration is 0 when unknown. */
+  onProgress?: (current: number, duration: number) => void;
+  /** Audio could not be produced or played at all. */
+  onError?: () => void;
 };
 
 function pickVoice(voice: ModelVoice): SpeechSynthesisVoice | undefined {
@@ -97,6 +103,7 @@ export const AudioService = {
     if (typeof window === "undefined") return () => undefined;
 
     AudioService.stop();
+    stopOtherAudio("model");
 
     let cancelled = false;
     let stopFallback: (() => void) | null = null;
@@ -111,6 +118,12 @@ export const AudioService = {
         element = audio;
         currentAudio = audio;
         audio.onplay = () => options.onStart?.();
+        audio.ontimeupdate = () => {
+          options.onProgress?.(audio.currentTime, Number.isFinite(audio.duration) ? audio.duration : 0);
+        };
+        audio.onloadedmetadata = () => {
+          options.onProgress?.(0, Number.isFinite(audio.duration) ? audio.duration : 0);
+        };
         audio.onended = () => {
           if (currentAudio === audio) currentAudio = null;
           options.onEnd?.();
@@ -121,12 +134,20 @@ export const AudioService = {
         };
         void audio.play().catch(() => {
           if (cancelled) return;
-          stopFallback = speakWithBrowser(text, options);
+          if (typeof window !== "undefined" && "speechSynthesis" in window) {
+            stopFallback = speakWithBrowser(text, options);
+          } else {
+            options.onError?.();
+          }
         });
       })
       .catch(() => {
         if (cancelled) return;
-        stopFallback = speakWithBrowser(text, options);
+        if (typeof window !== "undefined" && "speechSynthesis" in window) {
+          stopFallback = speakWithBrowser(text, options);
+        } else {
+          options.onError?.();
+        }
       });
 
     return () => {
@@ -140,6 +161,36 @@ export const AudioService = {
     };
   },
 
+  /** Pauses playback in place. Returns true when something was paused. */
+  pause(): boolean {
+    if (typeof window === "undefined") return false;
+    if (currentAudio && !currentAudio.paused) {
+      currentAudio.pause();
+      return true;
+    }
+    if ("speechSynthesis" in window && window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+      window.speechSynthesis.pause();
+      return true;
+    }
+    return false;
+  },
+
+  /** Resumes paused playback. Returns true when something resumed. */
+  resume(): boolean {
+    if (typeof window === "undefined") return false;
+    if (currentAudio && currentAudio.paused) {
+      stopOtherAudio("model");
+      void currentAudio.play().catch(() => undefined);
+      return true;
+    }
+    if ("speechSynthesis" in window && window.speechSynthesis.paused) {
+      stopOtherAudio("model");
+      window.speechSynthesis.resume();
+      return true;
+    }
+    return false;
+  },
+
   stop() {
     if (typeof window === "undefined") return;
     if (currentAudio) {
@@ -150,3 +201,7 @@ export const AudioService = {
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
   },
 };
+
+if (typeof window !== "undefined") {
+  registerAudioStopper("model", () => AudioService.stop());
+}
