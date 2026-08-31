@@ -234,8 +234,11 @@ function CurrentModule({ state, moduleId, day }: { state: JourneyState; moduleId
 }
 
 function AllDays({ state }: { state: JourneyState }) {
+  const t = useT();
   const [open, setOpen] = useState(false);
   const modules = CourseService.modules();
+  const currentModuleId =
+    modules.find((m) => JourneyService.completedCount(state, m.id) < m.days.length)?.id ?? modules[0]?.id;
 
   return (
     <section className="space-y-3">
@@ -245,40 +248,82 @@ function AllDays({ state }: { state: JourneyState }) {
         aria-expanded={open}
         className="flex min-h-[52px] w-full items-center justify-between gap-2 rounded-2xl border border-border bg-card px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
       >
-        View all days
+        {t("prog.viewAll")}
         <ChevronDown className={cn("size-5 text-muted-foreground transition-transform", open && "rotate-180")} />
       </button>
 
       {open
-        ? modules.map((module) => {
-            const currentDay = JourneyService.currentDay(state, module.id);
-            const weeks = new Map<number, CourseDay[]>();
-            for (const item of module.days) {
-              const week = item.week ?? 1;
-              weeks.set(week, [...(weeks.get(week) ?? []), item]);
-            }
-            return (
-              <div key={module.id} className="space-y-2">
-                <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                  {module.title} · {JourneyService.completedCount(state, module.id)} / {module.days.length} days
-                </h3>
-                {[...weeks.entries()]
-                  .sort((a, b) => a[0] - b[0])
-                  .map(([week, days]) => (
-                    <WeekBlock
-                      key={week}
-                      moduleId={module.id}
-                      week={week}
-                      days={days}
-                      state={state}
-                      currentDay={currentDay}
-                    />
-                  ))}
-              </div>
-            );
-          })
+        ? modules.map((module) => (
+            <ModuleBlock key={module.id} module={module} state={state} isCurrent={module.id === currentModuleId} />
+          ))
         : null}
     </section>
+  );
+}
+
+function ModuleBlock({
+  module,
+  state,
+  isCurrent,
+}: {
+  module: ReturnType<typeof CourseService.modules>[number];
+  state: JourneyState;
+  isCurrent: boolean;
+}) {
+  const t = useT();
+  const done = JourneyService.completedCount(state, module.id);
+  const total = module.days.length;
+  const currentDay = JourneyService.currentDay(state, module.id);
+  const [open, setOpen] = useState(isCurrent);
+
+  const weeks = new Map<number, CourseDay[]>();
+  for (const item of module.days) {
+    const week = item.week ?? 1;
+    weeks.set(week, [...(weeks.get(week) ?? []), item]);
+  }
+
+  const status =
+    done >= total
+      ? ({ label: t("status.complete"), tone: "done" } as const)
+      : isCurrent
+        ? ({ label: t("status.current"), tone: "current" } as const)
+        : ({ label: t("status.upNext"), tone: "next" } as const);
+
+  return (
+    <div className={cn("rounded-3xl border bg-card", isCurrent ? "border-primary" : "border-border")}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex min-h-[60px] w-full items-center gap-3 px-4 py-3 text-left"
+      >
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-[14px] font-extrabold tracking-tight">{module.title}</span>
+          <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+            {done} / {total} {t("home.days")}
+          </span>
+        </span>
+        <StatusBadge status={status} />
+        <ChevronDown className={cn("size-5 shrink-0 text-muted-foreground transition-transform", open && "rotate-180")} />
+      </button>
+
+      {open ? (
+        <div className="space-y-2 border-t border-border px-3 py-3">
+          {[...weeks.entries()]
+            .sort((a, b) => a[0] - b[0])
+            .map(([week, days]) => (
+              <WeekBlock
+                key={week}
+                moduleId={module.id}
+                week={week}
+                days={days}
+                state={state}
+                currentDay={isCurrent ? currentDay : -1}
+              />
+            ))}
+        </div>
+      ) : null}
+    </div>
   );
 }
 
@@ -295,15 +340,16 @@ function WeekBlock({
   state: JourneyState;
   currentDay: number;
 }) {
+  const t = useT();
   const doneCount = days.filter((d) => JourneyService.isDayCompleted(state, moduleId, d.day)).length;
   const isCurrent = days.some((d) => d.day === currentDay) && doneCount < days.length;
   const [open, setOpen] = useState(isCurrent);
   const status =
     doneCount >= days.length
-      ? ({ label: "COMPLETE ✓", tone: "done" } as const)
+      ? ({ label: t("status.complete"), tone: "done" } as const)
       : isCurrent
-        ? ({ label: "CURRENT", tone: "current" } as const)
-        : ({ label: "UP NEXT", tone: "next" } as const);
+        ? ({ label: t("status.current"), tone: "current" } as const)
+        : ({ label: t("status.upNext"), tone: "next" } as const);
 
   return (
     <div className={cn("rounded-3xl border bg-card", isCurrent ? "border-primary" : "border-border")}>
@@ -314,9 +360,11 @@ function WeekBlock({
         className="flex min-h-[56px] w-full items-center gap-3 px-4 py-3 text-left"
       >
         <span className="min-w-0 flex-1">
-          <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-primary">Week {week}</span>
+          <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+            {t("home.week")} {week}
+          </span>
           <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-            {doneCount} / {days.length} days
+            {doneCount} / {days.length} {t("home.days")}
           </span>
         </span>
         <StatusBadge status={status} />
@@ -327,23 +375,35 @@ function WeekBlock({
         <div className="space-y-2 px-4 pb-4">
           {days.map((item) => {
             const record = JourneyService.getRecord(state, moduleId, item.day);
+            const isToday = item.day === currentDay && !record;
             return (
               <div
                 key={item.day}
+                aria-current={isToday ? "step" : undefined}
                 className={cn(
                   "flex items-center justify-between gap-3 rounded-2xl border p-3",
-                  record ? "border-success/30 bg-success/8" : "border-border",
+                  isToday
+                    ? "border-primary bg-primary/8"
+                    : record
+                      ? "border-success/30 bg-success/8"
+                      : "border-border",
                 )}
               >
                 <div className="min-w-0">
                   <p className="truncate text-[14px] font-bold tracking-tight">
-                    Day {item.day} · {item.topic}
+                    {t("home.day")} {item.day} · {item.topic}
                   </p>
                   <p className="truncate text-[12px] text-muted-foreground">{item.focus}</p>
                 </div>
-                <span className="shrink-0 text-[12px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                  {record ? `${Math.round(record.finalSeconds)}s` : "—"}
-                </span>
+                {isToday ? (
+                  <span className="shrink-0 rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-primary-foreground">
+                    {t("status.current")}
+                  </span>
+                ) : (
+                  <span className="shrink-0 text-[12px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+                    {record ? `${Math.round(record.finalSeconds)}s` : "—"}
+                  </span>
+                )}
               </div>
             );
           })}
