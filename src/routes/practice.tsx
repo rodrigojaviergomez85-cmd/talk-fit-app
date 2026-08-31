@@ -708,12 +708,18 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 function Rep2Copy({
   day,
   index,
+  showEs,
+  attempted,
   onRecorded,
+  onSkip,
   onNext,
 }: {
   day: CourseDay;
   index: number;
+  showEs: boolean;
+  attempted: boolean;
   onRecorded: (rec: Recording) => void;
+  onSkip: () => void;
   onNext: () => void;
 }) {
   const line = day.lines[index]!;
