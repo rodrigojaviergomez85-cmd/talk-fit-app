@@ -182,6 +182,74 @@ export const JourneyService = {
     return Math.round(state.totalSpeakingSeconds / 60);
   },
 
+  /** Every completed day record in learning order (module order, then day). */
+  allRecords(state: JourneyState): DayRecord[] {
+    const order = new Map(CourseService.modules().map((m) => [m.id, m.order]));
+    return Object.values(state.days).sort((a, b) => {
+      const diff = (order.get(a.moduleId) ?? 0) - (order.get(b.moduleId) ?? 0);
+      return diff !== 0 ? diff : a.day - b.day;
+    });
+  },
+
+  /** Completed days ordered by when they were finished (oldest first). */
+  recordsByDate(state: JourneyState): DayRecord[] {
+    return Object.values(state.days).sort(
+      (a, b) => new Date(a.completedAt).getTime() - new Date(b.completedAt).getTime(),
+    );
+  },
+
+  /** Saved final reps that actually have audio behind them. */
+  playableRecords(state: JourneyState): DayRecord[] {
+    return JourneyService.recordsByDate(state).filter((r) => Boolean(r.recordingPath || r.finalUrl));
+  },
+
+  /** Earliest and latest saved final rep — null unless there are at least two. */
+  thenVsNow(state: JourneyState): { then: DayRecord; now: DayRecord } | null {
+    const records = JourneyService.recordsByDate(state);
+    if (records.length < 2) return null;
+    const then = records[0]!;
+    const now = records[records.length - 1]!;
+    if (then === now) return null;
+    return { then, now };
+  },
+
+  /** Objective personal bests, computed only from saved data. */
+  personalBests(state: JourneyState): {
+    longestSeconds: number | null;
+    mostIdeas: number | null;
+    totalMinutes: number;
+  } {
+    const records = Object.values(state.days);
+    const seconds = records.map((r) => r.finalSeconds).filter((n) => n > 0);
+    const ideas = records
+      .map((r) => r.sentenceCount)
+      .filter((n): n is number => typeof n === "number" && n > 0);
+    return {
+      longestSeconds: seconds.length ? Math.max(...seconds) : null,
+      mostIdeas: ideas.length ? Math.max(...ideas) : null,
+      totalMinutes: JourneyService.totalSpeakingMinutes(state),
+    };
+  },
+
+  /** Practice done in the last 7 local days. */
+  weekStats(state: JourneyState): { days: number; reps: number; minutes: number } {
+    const now = new Date();
+    const keys = new Set<string>();
+    for (let i = 0; i < 7; i += 1) keys.add(dayKey(new Date(now.getTime() - i * 86400000)));
+    const days = Object.values(state.days).filter((r) => keys.has(r.dayKey)).length;
+    return { days, reps: days * 5, minutes: JourneyService.speakingMinutesThisWeek(state) };
+  },
+
+  /** Final rep duration by practice date, for the speaking-output chart. */
+  speakingSeries(state: JourneyState): { label: string; seconds: number; ideas: number }[] {
+    return JourneyService.recordsByDate(state).map((record) => ({
+      label: `D${record.day}`,
+      seconds: Math.round(record.finalSeconds),
+      ideas: record.sentenceCount ?? 0,
+    }));
+  },
+
+
   /**
    * Saves a finished day. Idempotent per module day: re-completing the same day
    * updates its recording without inflating the streak or the totals.
