@@ -1,0 +1,105 @@
+import type { ModuleId } from "@/lib/types";
+
+/**
+ * PracticeSession — where the learner is *inside* one day of practice.
+ * Local only, position + item state, never audio. Cleared when the day is done.
+ */
+
+export type PracticeSession = {
+  moduleId: ModuleId;
+  day: number;
+  week: number | null;
+  stage: number;
+  subIndex: number;
+  attempted: string[];
+  skipped: string[];
+  startedAt: string;
+  updatedAt: string;
+};
+
+const PREFIX = "fluency-reps:session:v1";
+
+let scope = "guest";
+
+/** Scope sessions to the signed-in learner (or "guest"). */
+export function setSessionScope(userId: string | null) {
+  scope = userId ?? "guest";
+}
+
+export function sessionScope(): string {
+  return scope;
+}
+
+function keyFor(moduleId: ModuleId, day: number): string {
+  return `${PREFIX}:${scope}:${moduleId}:${day}`;
+}
+
+export const PracticeSessionService = {
+  load(moduleId: ModuleId, day: number): PracticeSession | null {
+    if (typeof window === "undefined") return null;
+    try {
+      const raw = window.localStorage.getItem(keyFor(moduleId, day));
+      if (!raw) return null;
+      const parsed = JSON.parse(raw) as Partial<PracticeSession>;
+      if (typeof parsed.stage !== "number") return null;
+      return {
+        moduleId,
+        day,
+        week: typeof parsed.week === "number" ? parsed.week : null,
+        stage: parsed.stage,
+        subIndex: typeof parsed.subIndex === "number" ? parsed.subIndex : 0,
+        attempted: Array.isArray(parsed.attempted) ? parsed.attempted.filter((v) => typeof v === "string") : [],
+        skipped: Array.isArray(parsed.skipped) ? parsed.skipped.filter((v) => typeof v === "string") : [],
+        startedAt: typeof parsed.startedAt === "string" ? parsed.startedAt : new Date().toISOString(),
+        updatedAt: typeof parsed.updatedAt === "string" ? parsed.updatedAt : new Date().toISOString(),
+      };
+    } catch {
+      return null;
+    }
+  },
+
+  save(session: Omit<PracticeSession, "updatedAt">) {
+    if (typeof window === "undefined") return;
+    try {
+      const value: PracticeSession = { ...session, updatedAt: new Date().toISOString() };
+      window.localStorage.setItem(keyFor(session.moduleId, session.day), JSON.stringify(value));
+    } catch {
+      /* storage unavailable */
+    }
+  },
+
+  clear(moduleId: ModuleId, day: number) {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.removeItem(keyFor(moduleId, day));
+    } catch {
+      /* storage unavailable */
+    }
+  },
+
+  /** Removes every stored practice position for the current scope. */
+  clearAll() {
+    if (typeof window === "undefined") return;
+    try {
+      const prefix = `${PREFIX}:${scope}:`;
+      const keys: string[] = [];
+      for (let i = 0; i < window.localStorage.length; i += 1) {
+        const key = window.localStorage.key(i);
+        if (key?.startsWith(prefix)) keys.push(key);
+      }
+      keys.forEach((key) => window.localStorage.removeItem(key));
+    } catch {
+      /* storage unavailable */
+    }
+  },
+
+  /** True when the learner actually got somewhere worth resuming. */
+  isResumable(session: PracticeSession | null): boolean {
+    if (!session) return false;
+    return session.stage > 0 || session.subIndex > 0 || session.attempted.length > 0 || session.skipped.length > 0;
+  },
+};
+
+export function itemKey(rep: 2 | 4, id: string): string {
+  return `r${rep}:${id}`;
+}
