@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ChevronRight, Flame, Mic, Timer } from "lucide-react";
+import { Check, ChevronRight, Flame, Mic, Repeat, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { ContinueCard } from "@/components/fluency/ContinueCard";
 import { CourseService, type LearningModule } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
-import type { JourneyState } from "@/lib/types";
+import type { JourneyState, ModuleId } from "@/lib/types";
+import { StatusBadge, type ProgressStatus } from "@/components/fluency/StatusBadge";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -13,7 +16,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Basic Zero: 4 weeks to introduce yourself and someone else in English, then a 5-day Simple Present journey. Five short speaking reps a day.",
+          "Your daily speaking practice: Basic Zero, Simple Present and Past Experiences. Five short speaking reps a day.",
       },
       { property: "og:title", content: "Fluency Reps — Speak English Every Day" },
       { property: "og:description", content: "Five short speaking reps a day. Listen, copy, shadow, personalize, record." },
@@ -25,65 +28,135 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const [state, setState] = useState<JourneyState>(emptyJourney);
+  const [state, setState] = useState<JourneyState | null>(null);
+  const [failed, setFailed] = useState(false);
 
-  useEffect(() => {
-    setState(JourneyService.load());
-    void JourneyService.pull().then(setState).catch(() => undefined);
+  const load = useCallback(() => {
+    setFailed(false);
+    const local = JourneyService.load();
+    setState(local);
+    void JourneyService.pull()
+      .then(setState)
+      .catch(() => setFailed(true));
   }, []);
 
-  const modules = CourseService.modules();
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const modules = [...CourseService.modules()].sort((a, b) => a.order - b.order);
+
+  if (!state) {
+    return (
+      <AppShell title="Today">
+        <HomeSkeleton />
+      </AppShell>
+    );
+  }
+
+  const next = JourneyService.nextPractice(state);
+  const totalDays = CourseService.totalDaysAll();
+  const completed = JourneyService.completedCount(state);
 
   return (
     <AppShell title="Today">
       <div className="space-y-6">
-        <div className="grid grid-cols-3 gap-3">
-          <Stat icon={<Flame className="size-4 text-primary" />} label="Streak" value={`${state.streakDays}`} />
-          <Stat icon={<Mic className="size-4 text-primary" />} label="Reps" value={`${state.totalRepsCompleted}`} />
-          <Stat icon={<Timer className="size-4 text-primary" />} label="Minutes" value={`${JourneyService.totalSpeakingMinutes(state)}`} />
-        </div>
+        <ContinueCard state={state} />
 
-        {modules.map((module) => (
-          <ModuleCard key={module.id} module={module} state={state} />
-        ))}
+        {failed ? (
+          <div className="rounded-2xl border border-border bg-card p-4">
+            <p className="text-[13px] font-semibold text-muted-foreground">We couldn't load your saved progress.</p>
+            <button
+              type="button"
+              onClick={load}
+              className="mt-3 min-h-[44px] w-full rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
+            >
+              Try again
+            </button>
+          </div>
+        ) : null}
+
+        <section className="grid grid-cols-2 gap-3">
+          <Stat icon={<Flame className="size-4 text-primary" />} label="Streak" value={`${state.streakDays || 0} days`} />
+          <Stat
+            icon={<Timer className="size-4 text-primary" />}
+            label="Speaking time"
+            value={`${JourneyService.totalSpeakingMinutes(state) || 0} min`}
+          />
+          <Stat icon={<Check className="size-4 text-primary" />} label="Days completed" value={`${completed} / ${totalDays}`} />
+          <Stat icon={<Repeat className="size-4 text-primary" />} label="Fluency reps" value={`${state.totalRepsCompleted || 0}`} />
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Your journey</h2>
+          {modules.map((module) => (
+            <ModuleCard
+              key={module.id}
+              module={module}
+              state={state}
+              currentModule={next?.moduleId ?? null}
+            />
+          ))}
+        </section>
       </div>
     </AppShell>
   );
 }
 
-function ModuleCard({ module, state }: { module: LearningModule; state: JourneyState }) {
+function moduleStatus(
+  module: LearningModule,
+  state: JourneyState,
+  currentModule: ModuleId | null,
+): ProgressStatus {
+  if (JourneyService.moduleComplete(state, module.id)) return { label: "COMPLETE ✓", tone: "done" };
+  if (currentModule === module.id) return { label: "CURRENT", tone: "current" };
+  return { label: "UP NEXT", tone: "next" };
+}
+
+function ModuleCard({
+  module,
+  state,
+  currentModule,
+}: {
+  module: LearningModule;
+  state: JourneyState;
+  currentModule: ModuleId | null;
+}) {
   const total = module.days.length;
   const completedCount = JourneyService.completedCount(state, module.id);
-  const percent = Math.round((completedCount / total) * 100);
+  const percent = total > 0 ? Math.round((completedCount / total) * 100) : 0;
+  const status = moduleStatus(module, state, currentModule);
 
   return (
     <Link to="/module/$moduleId" params={{ moduleId: module.id }} className="block transition-transform active:scale-[0.99]">
-      <div className="rounded-3xl bg-navy p-5 text-navy-foreground">
+      <div
+        className={cn(
+          "rounded-3xl border bg-card p-5 shadow-[var(--shadow-card)]",
+          status.tone === "current" ? "border-primary" : "border-border",
+        )}
+      >
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{module.label}</p>
-            <h2 className="mt-1 text-2xl font-extrabold tracking-tight">{module.title}</h2>
-            <p className="mt-1 text-[14px] font-semibold text-navy-foreground/80">{module.subtitle}</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+              {module.label.split(" · ")[0]}
+            </p>
+            <h3 className="mt-1 text-[19px] font-extrabold leading-tight tracking-tight">{module.title}</h3>
+            <p className="mt-1 text-[13px] font-semibold text-muted-foreground">{module.subtitle}</p>
           </div>
-          <ChevronRight className="mt-1 size-6 shrink-0 text-navy-foreground/60" />
+          <ChevronRight className="mt-1 size-5 shrink-0 text-muted-foreground" />
         </div>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {module.meta.map((item) => (
-            <span
-              key={item}
-              className="rounded-full bg-navy-foreground/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em]"
-            >
-              {item}
-            </span>
-          ))}
-        </div>
-        <div className="mt-4">
-          <div className="h-2 overflow-hidden rounded-full bg-navy-foreground/15">
-            <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${percent}%` }} />
-          </div>
-          <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">
+
+        <div className="mt-4 flex items-center justify-between gap-3">
+          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
             {completedCount} / {total} days
           </p>
+          <StatusBadge status={status} />
+        </div>
+        <div className="mt-2 h-2 overflow-hidden rounded-full bg-secondary">
+          <div
+            className={cn("h-full rounded-full transition-all", status.tone === "done" ? "bg-success" : "bg-primary")}
+            style={{ width: `${percent}%` }}
+          />
         </div>
       </div>
     </Link>
@@ -96,7 +169,25 @@ function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; va
       <p className="flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
         {icon} {label}
       </p>
-      <p className="mt-1.5 text-2xl font-extrabold tabular-nums tracking-tight">{value}</p>
+      <p className="mt-1.5 text-[20px] font-extrabold tabular-nums tracking-tight">{value}</p>
+    </div>
+  );
+}
+
+function HomeSkeleton() {
+  return (
+    <div className="space-y-6" aria-busy="true">
+      <div className="h-56 animate-pulse rounded-3xl bg-secondary" />
+      <div className="grid grid-cols-2 gap-3">
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} className="h-20 animate-pulse rounded-3xl bg-secondary" />
+        ))}
+      </div>
+      <div className="space-y-3">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="h-32 animate-pulse rounded-3xl bg-secondary" />
+        ))}
+      </div>
     </div>
   );
 }

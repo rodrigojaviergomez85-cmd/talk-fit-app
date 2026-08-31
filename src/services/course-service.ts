@@ -381,6 +381,11 @@ export const CourseService = {
     return CourseService.getModule(moduleId).days.length;
   },
 
+  /** Total days across every existing module (used by Home / Account stats). */
+  totalDaysAll(): number {
+    return MODULES.reduce((sum, m) => sum + m.days.length, 0);
+  },
+
   getDays(moduleId: ModuleId): CourseDay[] {
     return CourseService.getModule(moduleId).days;
   },

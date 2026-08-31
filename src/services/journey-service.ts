@@ -122,6 +122,24 @@ export const JourneyService = {
     return JourneyService.completedCount(state, moduleId) >= CourseService.totalDays(moduleId);
   },
 
+  /**
+   * The single next practice across all modules, in learning order.
+   * Returns null only when every existing module is complete.
+   */
+  nextPractice(state: JourneyState): { moduleId: ModuleId; day: number; started: boolean } | null {
+    const modules = [...CourseService.modules()].sort((a, b) => a.order - b.order);
+    for (const module of modules) {
+      if (JourneyService.moduleComplete(state, module.id)) continue;
+      const day = JourneyService.currentDay(state, module.id);
+      return {
+        moduleId: module.id,
+        day,
+        started: JourneyService.completedCount(state, module.id) > 0,
+      };
+    }
+    return null;
+  },
+
   /** Completed day records inside one week of a module, in day order. */
   weekRecords(state: JourneyState, moduleId: ModuleId, week: number): DayRecord[] {
     return CourseService.getDays(moduleId)

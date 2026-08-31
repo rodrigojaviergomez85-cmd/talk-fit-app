@@ -34,7 +34,9 @@ function ProfilePage() {
     setState(JourneyService.load());
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
       setUserEmail(session?.user.email ?? null);
+      // Never keep another session's numbers on screen.
       if (session) void JourneyService.pull().then(setState).catch(() => undefined);
+      else setState(JourneyService.load());
     });
     void supabase.auth.getUser().then(({ data }) => setUserEmail(data.user?.email ?? null));
     return () => sub.subscription.unsubscribe();
@@ -65,8 +67,11 @@ function ProfilePage() {
     <AppShell title="My Account">
       <div className="space-y-5">
         <section className="grid grid-cols-2 gap-3">
-          <Stat label="Days completed" value={`${JourneyService.completedCount(state)} / ${CourseService.totalDays}`} />
-          <Stat label="Speaking minutes" value={`${JourneyService.totalSpeakingMinutes(state)}`} />
+          <Stat
+            label="Days completed"
+            value={`${JourneyService.completedCount(state) || 0} / ${CourseService.totalDaysAll()}`}
+          />
+          <Stat label="Speaking minutes" value={`${JourneyService.totalSpeakingMinutes(state) || 0}`} />
         </section>
 
         {userEmail ? (
