@@ -13,14 +13,14 @@ export function SpeakingChart({ data }: { data: { label: string; seconds: number
       <div className="mt-3 h-44 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: -24 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
             <XAxis dataKey="label" tick={{ fontSize: 10 }} tickLine={false} axisLine={false} interval="preserveStartEnd" />
             <YAxis tick={{ fontSize: 10 }} tickLine={false} axisLine={false} width={40} />
             <Tooltip
-              cursor={{ fill: "hsl(var(--secondary))" }}
+              cursor={{ fill: "var(--secondary)" }}
               formatter={(value: number) => [`${value} sec`, "Final rep"]}
             />
-            <Bar dataKey="seconds" radius={[6, 6, 0, 0]} fill="hsl(var(--primary))" />
+            <Bar dataKey="seconds" radius={[6, 6, 0, 0]} fill="var(--primary)" />
           </BarChart>
         </ResponsiveContainer>
       </div>
