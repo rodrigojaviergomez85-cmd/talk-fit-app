@@ -69,10 +69,11 @@ function ProfilePage() {
         <section className="grid grid-cols-2 gap-3">
           <Stat
             label="Days completed"
-            value={`${JourneyService.completedCount(state) || 0} / ${CourseService.totalDaysAll()}`}
+            value={`${num(JourneyService.completedCount(state))} / ${num(CourseService.totalDaysAll())}`}
           />
-          <Stat label="Speaking minutes" value={`${JourneyService.totalSpeakingMinutes(state) || 0}`} />
+          <Stat label="Speaking minutes" value={`${num(JourneyService.totalSpeakingMinutes(state))}`} />
         </section>
+
 
         {userEmail ? (
           <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
