@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import { Languages } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAppLang } from "@/lib/i18n";
 
 /** Session-level "show everything in Spanish" toggle. */
 const SpanishContext = createContext(false);
@@ -90,6 +91,7 @@ export function SpanishToggle({
   onChange: (v: boolean) => void;
   className?: string;
 }) {
+  const { lang } = useAppLang();
   return (
     <button
       type="button"
