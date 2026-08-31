@@ -1,8 +1,10 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Clock, Mic } from "lucide-react";
 import { CourseService } from "@/services/course-service";
 import type { JourneyState } from "@/lib/types";
 import { JourneyService } from "@/services/journey-service";
+import { PracticeSessionService } from "@/services/practice-session";
 import { useT } from "@/lib/i18n";
 
 /**
@@ -12,6 +14,17 @@ import { useT } from "@/lib/i18n";
 export function ContinueCard({ state }: { state: JourneyState }) {
   const t = useT();
   const next = JourneyService.nextPractice(state);
+  const [resumeStage, setResumeStage] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!next) {
+      setResumeStage(null);
+      return;
+    }
+    const session = PracticeSessionService.load(next.moduleId, next.day);
+    setResumeStage(PracticeSessionService.isResumable(session) && session ? session.stage : null);
+  }, [next?.moduleId, next?.day]);
+
 
   if (!next) {
     return (
@@ -62,7 +75,12 @@ export function ContinueCard({ state }: { state: JourneyState }) {
         search={{ day: day.day, module: module.id }}
         className="mt-5 flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-4 text-[15px] font-bold tracking-wide text-primary-foreground transition-transform active:scale-[0.98]"
       >
-        {fresh ? `${t("home.startDay")} ${day.day}` : t("action.continuePractice")} <ArrowRight className="size-4" />
+        {resumeStage !== null
+          ? `${t("home.continueDay")} ${day.day}${resumeStage > 0 ? ` · ${t("home.rep")} ${Math.min(resumeStage, 5)}` : ""}`
+          : fresh
+            ? `${t("home.startDay")} ${day.day}`
+            : t("action.continuePractice")}{" "}
+        <ArrowRight className="size-4" />
       </Link>
     </section>
   );

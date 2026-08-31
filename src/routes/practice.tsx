@@ -33,7 +33,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording } from "@/lib/types";
 import type { FinalRepSaveState } from "@/components/fluency/DayCompleteScreen";
 import { cn } from "@/lib/utils";
-import { useAppLang } from "@/lib/i18n";
+import { useAppLang, useT } from "@/lib/i18n";
 import { setPreferencesScope } from "@/services/preferences";
 import { VerbBank, setVerbBankScope } from "@/services/verb-bank";
 
@@ -523,6 +523,7 @@ function VariantPicker({ day }: { day: CourseDay }) {
 /* ------------------------------ Step 0 intro ----------------------------- */
 
 function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseDay; onNext: () => void }) {
+  const t = useT();
   const intro = day.intro;
   const [first, ...rest] = intro.examples;
 
@@ -545,7 +546,7 @@ function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseD
       {first ? (
         <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
           <p className="text-[20px] font-extrabold leading-tight tracking-tight">{first}</p>
-          <AudioPlayer text={first} label="LISTEN" voice={day.speakerVoice} />
+          <AudioPlayer text={first} label={t("practice.listen")} voice={day.speakerVoice} />
         </div>
       ) : null}
 
@@ -722,6 +723,7 @@ function SkipLink({ label, onClick }: { label: string; onClick: () => void }) {
 
 
 function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; onNext: () => void }) {
+  const t = useT();
   const [heard, setHeard] = useState(false);
   const [showText, setShowText] = useState(false);
 
@@ -738,7 +740,7 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 
       <AudioPlayer
         text={CourseService.getModelText(day)}
-        label="LISTEN TO THE MODEL"
+        label={t("practice.listenModel")}
         voice={day.speakerVoice}
         size="lg"
         onEnd={() => setHeard(true)}
@@ -761,7 +763,7 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
         </PrimaryButton>
       ) : (
         <SkipLink
-          label={showEs ? "saltar por ahora" : "skip for now"}
+          label={t("practice.skipNow")}
           onClick={() => {
             AudioService.stop();
             onNext();
@@ -791,6 +793,7 @@ function Rep2Copy({
   onSkip: () => void;
   onNext: () => void;
 }) {
+  const t = useT();
   const line = day.lines[index]!;
   const [mine, setMine] = useState<Recording | null>(null);
 
@@ -812,11 +815,11 @@ function Rep2Copy({
       </div>
 
 
-      <AudioPlayer text={line.text} label="LISTEN" rate={0.9} voice={day.speakerVoice} />
+      <AudioPlayer text={line.text} label={t("practice.listen")} rate={0.9} voice={day.speakerVoice} />
 
-      <VoiceRecorder label="RECORD" maxSeconds={20} showTimer onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
+      <VoiceRecorder label={t("practice.record")} maxSeconds={20} showTimer onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
 
-      {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
+      {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
       <PrimaryButton onClick={onNext} disabled={!attempted}>
         {index < day.lines.length - 1
@@ -831,8 +834,8 @@ function Rep2Copy({
 
       {attempted ? null : (
         <>
-          <HelperText text={showEs ? "Graba una vez para continuar." : "Record once to continue."} />
-          <SkipLink label={showEs ? "saltar esta frase" : "skip this sentence"} onClick={onSkip} />
+          <HelperText text={t("practice.recordOnce")} />
+          <SkipLink label={t("practice.skipSentence")} onClick={onSkip} />
         </>
       )}
 
@@ -843,6 +846,7 @@ function Rep2Copy({
 /* -------------------------------- Rep 3 ---------------------------------- */
 
 function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (rec: Recording) => void; onNext: () => void }) {
+  const t = useT();
   const [speed, setSpeed] = useState(0.75);
   const [mine, setMine] = useState<Recording | null>(null);
   const level = supportLevel(day);
@@ -889,10 +893,10 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
       )}
 
 
-      <AudioPlayer text={CourseService.getModelText(day)} label="START SHADOWING" rate={speed} size="lg" voice={day.speakerVoice} />
+      <AudioPlayer text={CourseService.getModelText(day)} label={t("practice.startShadowing")} rate={speed} size="lg" voice={day.speakerVoice} />
 
-      <VoiceRecorder label="RECORD ME" maxSeconds={60} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
-      {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
+      <VoiceRecorder label={t("practice.recordMe")} maxSeconds={60} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
+      {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
       <PrimaryButton onClick={onNext}>
         NEXT REP <ArrowRight className="size-5" />
@@ -938,6 +942,7 @@ function Rep4MakeItYours({
   onNext: () => void;
   hideVisuals?: boolean;
 }) {
+  const t = useT();
   const items = rep4Items(day);
   const item = items[index]!;
   const [mine, setMine] = useState<Recording | null>(null);
@@ -977,10 +982,10 @@ function Rep4MakeItYours({
       </div>
 
 
-      <AudioPlayer text={item.question} label="HEAR THE QUESTION" variant="ghost" size="sm" voice={day.speakerVoice} />
+      <AudioPlayer text={item.question} label={t("practice.hearQuestion")} variant="ghost" size="sm" voice={day.speakerVoice} />
 
-      <VoiceRecorder label="ANSWER" maxSeconds={30} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
-      {mine ? <RecordingPlayback url={mine.url} label="LISTEN TO ME" /> : null}
+      <VoiceRecorder label={t("practice.answer")} maxSeconds={30} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
+      {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
       <PrimaryButton onClick={onNext} disabled={!attempted}>
         {index < items.length - 1
@@ -995,8 +1000,8 @@ function Rep4MakeItYours({
 
       {attempted ? null : (
         <>
-          <HelperText text={showEs ? "Graba una vez para continuar." : "Record once to continue."} />
-          <SkipLink label={showEs ? "saltar esta pregunta" : "skip this prompt"} onClick={onSkip} />
+          <HelperText text={t("practice.recordOnce")} />
+          <SkipLink label={t("practice.skipPrompt")} onClick={onSkip} />
         </>
       )}
 
@@ -1023,6 +1028,7 @@ function Rep5FinalRep({
   onSelectFinal: (index: number) => void;
   onFinish: () => void;
 }) {
+  const t = useT();
   const completed = takes.filter(Boolean).length;
   const requiredDone = completed >= REQUIRED_TAKES;
   const slotsLeft = takes.some((take) => !take);
@@ -1031,11 +1037,9 @@ function Rep5FinalRep({
   return (
     <div className="space-y-5">
       <div className="space-y-3 rounded-3xl border border-primary/25 bg-accent p-5">
-        <TranslatableText es="Responde la pregunta:" align="center" supportOnly>
-          <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-accent-foreground">
-            Answer the question
-          </p>
-        </TranslatableText>
+        <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-accent-foreground">
+          {t("practice.answer")}
+        </p>
         <TranslatableText es={day.rep5Prompt.questionEs}>
           <p className="text-[19px] font-extrabold leading-snug">{day.rep5Prompt.question}</p>
         </TranslatableText>
@@ -1063,13 +1067,13 @@ function Rep5FinalRep({
         )}
         {day.modelExample ? (
           <>
-            <AudioPlayer text={day.modelExample.text} label="LISTEN TO EXAMPLE" rate={1} variant="navy" voice={day.speakerVoice} />
+            <AudioPlayer text={day.modelExample.text} label={t("practice.listenExample")} rate={1} variant="navy" voice={day.speakerVoice} />
             <button
               type="button"
               onClick={() => setShowExampleText((v) => !v)}
-              className="w-full text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-primary"
+              className="inline-flex min-h-[44px] w-full items-center justify-center text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-primary"
             >
-              {showExampleText ? "Hide example text" : "Show example text"}
+              {showExampleText ? t("practice.hideExampleText") : t("practice.showExampleText")}
             </button>
             {showExampleText ? (
               <TranslatableText es={day.modelExample.es}>
@@ -1096,27 +1100,23 @@ function Rep5FinalRep({
         <div className="space-y-3">
           <div className="rounded-3xl border border-success/25 bg-success/8 p-4 text-center">
             <p className="flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-success">
-              <Sparkles className="size-4" /> 3 required reps complete ✓
+              <Sparkles className="size-4" /> {t("practice.requiredDone")}
             </p>
             {finalIndex !== null ? (
-              <p className="mt-1 text-[13px] font-semibold">Final rep selected ✓ — Take {finalIndex + 1}</p>
+              <p className="mt-1 text-[13px] font-semibold">{t("practice.finalSelected")} {finalIndex + 1}</p>
             ) : (
-              <TranslatableText es="Elige una toma como tu rep final." align="center" className="mt-1">
-                <p className="text-[13px] text-muted-foreground">Pick one take as your final rep.</p>
-              </TranslatableText>
+              <p className="mt-1 text-[13px] text-muted-foreground">{t("practice.pickFinal")}</p>
             )}
           </div>
 
           <PrimaryButton onClick={onFinish} disabled={finalIndex === null}>
-            <Check className="size-5" /> COMPLETE TODAY'S PRACTICE
+            <Check className="size-5" /> {t("practice.complete")}
           </PrimaryButton>
 
           {slotsLeft ? (
-            <TranslatableText es="O graba otra toma opcional arriba." align="center">
-              <p className="text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                Or record another take above
-              </p>
-            </TranslatableText>
+            <p className="text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              {t("practice.recordAnother")}
+            </p>
           ) : null}
         </div>
       ) : (

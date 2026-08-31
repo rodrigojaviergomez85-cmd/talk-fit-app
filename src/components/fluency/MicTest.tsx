@@ -108,7 +108,7 @@ export function MicTest({ onPass, onSkip }: Props) {
         <button
           type="button"
           onClick={onSkip}
-          className="text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground underline underline-offset-4"
+          className="inline-flex min-h-11 w-full items-center justify-center text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground underline underline-offset-4"
         >
           {es ? "OMITIR PRUEBA" : "SKIP TEST"}
         </button>

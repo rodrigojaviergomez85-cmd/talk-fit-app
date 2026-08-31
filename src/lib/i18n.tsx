@@ -33,6 +33,50 @@ const DICT = {
   "action.startDay1": ["EMPEZAR DÍA 1", "START DAY 1"],
   "action.startPractice": ["EMPEZAR PRÁCTICA", "START PRACTICE"],
 
+  // Practice chrome
+  "practice.listen": ["ESCUCHAR", "LISTEN"],
+  "practice.listenModel": ["ESCUCHAR EL MODELO", "LISTEN TO THE MODEL"],
+  "practice.record": ["GRABAR", "RECORD"],
+  "practice.recordMe": ["GRABARME", "RECORD ME"],
+  "practice.listenToMe": ["ESCUCHARME", "LISTEN TO ME"],
+  "practice.answer": ["RESPONDER", "ANSWER"],
+  "practice.nextRep": ["SIGUIENTE REP", "NEXT REP"],
+  "practice.nextSentence": ["SIGUIENTE FRASE", "NEXT SENTENCE"],
+  "practice.nextQuestion": ["SIGUIENTE PREGUNTA", "NEXT QUESTION"],
+  "practice.startShadowing": ["EMPEZAR SHADOWING", "START SHADOWING"],
+  "practice.hearQuestion": ["ESCUCHAR LA PREGUNTA", "HEAR THE QUESTION"],
+  "practice.listenExample": ["ESCUCHAR EJEMPLO", "LISTEN TO EXAMPLE"],
+  "practice.showExampleText": ["VER TEXTO DE EJEMPLO", "SHOW EXAMPLE TEXT"],
+  "practice.hideExampleText": ["OCULTAR TEXTO DE EJEMPLO", "HIDE EXAMPLE TEXT"],
+  "practice.skipNow": ["SALTAR POR AHORA", "SKIP FOR NOW"],
+  "practice.skipSentence": ["SALTAR ESTA FRASE", "SKIP THIS SENTENCE"],
+  "practice.skipPrompt": ["SALTAR ESTA PREGUNTA", "SKIP THIS PROMPT"],
+  "practice.recordOnce": ["Graba una vez para continuar.", "Record once to continue."],
+  "practice.shadowTitle": ["SHADOWING", "SHADOW"],
+  "practice.needHelp": ["¿Necesitas ayuda?", "Need help?"],
+  "practice.complete": ["COMPLETAR LA PRÁCTICA DE HOY", "COMPLETE TODAY'S PRACTICE"],
+  "practice.pickFinal": ["Elige una toma como tu rep final.", "Pick one take as your final rep."],
+  "practice.finalSelected": ["Rep final elegida ✓ — Toma", "Final rep selected ✓ — Take"],
+  "practice.requiredDone": ["3 reps obligatorias completas ✓", "3 required reps complete ✓"],
+  "practice.recordAnother": ["O graba otra toma opcional arriba", "Or record another take above"],
+
+  // Rep 5 take board
+  "take.take": ["TOMA", "TAKE"],
+  "take.optional": ["OPCIONAL", "OPTIONAL"],
+  "take.ready": ["Listo para grabar", "Ready to record"],
+  "take.time": ["TIEMPO", "TIME"],
+  "take.sentences": ["ORACIONES", "SENTENCES"],
+  "take.goal": ["META DE HOY", "TODAY'S GOAL"],
+  "take.finalRep": ["Rep final ✓", "Final rep ✓"],
+  "take.useAsFinal": ["Usar como final", "Use as final"],
+  "take.play": ["Reproducir", "Play"],
+  "take.stop": ["Detener", "Stop"],
+  "take.seconds": ["seg", "sec"],
+  "take.counting": ["Contando oraciones…", "Counting sentences…"],
+  "take.countUnavailable": ["Conteo de oraciones no disponible", "Sentence count unavailable"],
+  "take.goalReached": ["¡Meta alcanzada!", "Goal reached!"],
+
+
   // Status
   "status.current": ["ACTUAL", "CURRENT"],
   "status.complete": ["COMPLETADO ✓", "COMPLETE ✓"],
@@ -58,6 +102,9 @@ const DICT = {
   "home.startDay": ["EMPEZAR DÍA", "START DAY"],
   "home.week": ["SEMANA", "WEEK"],
   "home.day": ["DÍA", "DAY"],
+  "home.continueDay": ["CONTINUAR DÍA", "CONTINUE DAY"],
+  "home.rep": ["REP", "REP"],
+
 
   // Recordings
   "rec.title": ["Mis grabaciones", "My Recordings"],
