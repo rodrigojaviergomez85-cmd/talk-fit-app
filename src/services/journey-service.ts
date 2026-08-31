@@ -73,6 +73,10 @@ function write(state: JourneyState) {
 /** Session-scoped playback URLs, kept out of localStorage. */
 const sessionUrls = new Map<string, { finalUrl: string | null; firstUrl: string | null }>();
 
+/** Shared in-flight/recent cloud pull, so screens don't each re-query. */
+const PULL_TTL_MS = 30_000;
+let pullCache: { at: number; promise: Promise<JourneyState> } | null = null;
+
 export const JourneyService = {
   dayKey,
   recordKey,
