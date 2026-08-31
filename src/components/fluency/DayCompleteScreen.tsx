@@ -11,6 +11,9 @@ import { SaveProgressPrompt } from "./SaveProgressPrompt";
 
 export type RepSummary = { total: number; attempted: number; skipped: number };
 
+/** "local" = guest/offline: saved on this device only, nothing to upload. */
+export type FinalRepSaveState = "idle" | "saving" | "saved" | "failed" | "local";
+
 type Props = {
   moduleId: ModuleId;
   day: CourseDay;
@@ -18,6 +21,8 @@ type Props = {
   firstRecording: Recording | null;
   showEs: boolean;
   summary?: { rep2: RepSummary; rep4: RepSummary };
+  saveState?: FinalRepSaveState;
+  onRetrySave?: () => void;
 };
 
 const ASSESSMENTS: { value: SelfAssessment; en: string; es: string }[] = [
