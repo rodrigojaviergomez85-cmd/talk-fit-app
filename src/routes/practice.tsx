@@ -21,6 +21,13 @@ import { supportLevel, prefersChunks, showsFullTextByDefault } from "@/lib/suppo
 import { CourseService, DEFAULT_MODULE, isModuleId } from "@/services/course-service";
 import { JourneyService } from "@/services/journey-service";
 import { AudioService } from "@/services/audio-service";
+import {
+  PracticeSessionService,
+  setSessionScope,
+  itemKey,
+  type PracticeSession,
+} from "@/services/practice-session";
+import { supabase } from "@/integrations/supabase/client";
 import type { CourseDay, ModelLine, ModuleId, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
