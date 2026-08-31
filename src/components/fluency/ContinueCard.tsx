@@ -1,8 +1,10 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Clock, Mic } from "lucide-react";
 import { CourseService } from "@/services/course-service";
 import type { JourneyState } from "@/lib/types";
 import { JourneyService } from "@/services/journey-service";
+import { PracticeSessionService } from "@/services/practice-session";
 import { useT } from "@/lib/i18n";
 
 /**
@@ -12,6 +14,17 @@ import { useT } from "@/lib/i18n";
 export function ContinueCard({ state }: { state: JourneyState }) {
   const t = useT();
   const next = JourneyService.nextPractice(state);
+  const [resumeStage, setResumeStage] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!next) {
+      setResumeStage(null);
+      return;
+    }
+    const session = PracticeSessionService.load(next.moduleId, next.day);
+    setResumeStage(PracticeSessionService.isResumable(session) && session ? session.stage : null);
+  }, [next?.moduleId, next?.day]);
+
 
   if (!next) {
     return (
