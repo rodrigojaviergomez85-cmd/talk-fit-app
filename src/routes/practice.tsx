@@ -917,7 +917,7 @@ function Rep4MakeItYours({
           <p className="text-[20px] font-extrabold leading-tight tracking-tight">{item.question}</p>
         </TranslatableText>
         <div className="mt-4 rounded-2xl bg-secondary p-4">
-          <TranslatableText es={item.starterEs}>
+          <TranslatableText es={item.starterEs} supportOnly>
             <p className="text-[17px] font-bold text-foreground">{item.starter}</p>
           </TranslatableText>
         </div>

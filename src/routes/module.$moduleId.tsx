@@ -155,6 +155,11 @@ function ModulePage() {
   );
 }
 
+/** Avoids "WEEK 1 · Week 1 — ..." in the same compact header. */
+function stripWeekPrefix(title: string): string {
+  return title.replace(/^\s*(week|semana)\s*\d+\s*[—–\-:·]?\s*/i, "").trim() || title;
+}
+
 function WeekSection({
   moduleId,
   week,
@@ -195,7 +200,7 @@ function WeekSection({
       >
         <span className="min-w-0 flex-1">
           <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-primary">{t("home.week")} {week}</span>
-          <span className="block truncate text-[15px] font-extrabold tracking-tight">{title}</span>
+          <span className="block truncate text-[15px] font-extrabold tracking-tight">{stripWeekPrefix(title)}</span>
           <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
             {doneCount} / {days.length}
           </span>
