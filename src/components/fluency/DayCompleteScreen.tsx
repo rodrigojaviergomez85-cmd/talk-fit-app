@@ -241,3 +241,15 @@ function Stat({ label, value, icon }: { label: string; value: string; icon?: Rea
     </div>
   );
 }
+
+function SummaryRow({ label, summary, showEs }: { label: string; summary: RepSummary; showEs: boolean }) {
+  return (
+    <div className="flex items-center justify-between text-[13px] font-semibold">
+      <span className="font-bold uppercase tracking-[0.14em] text-muted-foreground">{label}</span>
+      <span className="tabular-nums">
+        {summary.attempted} / {summary.total} {showEs ? "intentadas" : "attempted"}
+        {summary.skipped ? ` · ${summary.skipped} ${showEs ? "saltadas" : "skipped"}` : ""}
+      </span>
+    </div>
+  );
+}
