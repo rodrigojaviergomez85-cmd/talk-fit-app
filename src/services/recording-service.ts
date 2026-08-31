@@ -78,8 +78,9 @@ export const RecordingService = {
 
     let stream: MediaStream;
     try {
+      // Mono speech capture: clear voice at a fraction of the file size.
       stream = await navigator.mediaDevices.getUserMedia({
-        audio: { echoCancellation: true, noiseSuppression: true },
+        audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 },
       });
     } catch (error) {
       const name = (error as { name?: string } | null)?.name ?? "";
@@ -93,11 +94,19 @@ export const RecordingService = {
     }
 
     const mimeType = pickMimeType();
+    // Speech-appropriate bitrate keeps uploads small on mobile networks.
+    const options: MediaRecorderOptions = { audioBitsPerSecond: 32000 };
     let recorder: MediaRecorder;
     try {
-      recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
+      recorder = mimeType
+        ? new MediaRecorder(stream, { ...options, mimeType })
+        : new MediaRecorder(stream, options);
     } catch {
-      recorder = new MediaRecorder(stream);
+      try {
+        recorder = new MediaRecorder(stream, options);
+      } catch {
+        recorder = new MediaRecorder(stream);
+      }
     }
     const chunks: BlobPart[] = [];
     const startedAt = Date.now();

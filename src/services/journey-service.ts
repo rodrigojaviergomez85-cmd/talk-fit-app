@@ -73,6 +73,10 @@ function write(state: JourneyState) {
 /** Session-scoped playback URLs, kept out of localStorage. */
 const sessionUrls = new Map<string, { finalUrl: string | null; firstUrl: string | null }>();
 
+/** Shared in-flight/recent cloud pull, so screens don't each re-query. */
+const PULL_TTL_MS = 30_000;
+let pullCache: { at: number; promise: Promise<JourneyState> } | null = null;
+
 export const JourneyService = {
   dayKey,
   recordKey,
@@ -335,18 +339,28 @@ export const JourneyService = {
       window.localStorage.removeItem(LEGACY_KEY);
     }
     sessionUrls.clear();
+    pullCache = null;
     return emptyJourney;
   },
 
   /* ------------------------------ Cloud sync ------------------------------ */
 
-  /** Uploads the final recording and upserts the day row (signed-in only). */
-  async syncDay(moduleId: ModuleId, day: number, state: JourneyState, blob?: Blob | null): Promise<void> {
+  /**
+   * Uploads the final recording and upserts the day row (signed-in only).
+   * Returns "saved" on success, "skipped" when there is nothing to sync
+   * (guest / offline-only), and "failed" when the learner should retry.
+   */
+  async syncDay(
+    moduleId: ModuleId,
+    day: number,
+    state: JourneyState,
+    blob?: Blob | null,
+  ): Promise<"saved" | "skipped" | "failed"> {
     const { data } = await supabase.auth.getUser();
     const user = data.user;
     const key = recordKey(moduleId, day);
     const record = state.days[key];
-    if (!user || !record) return;
+    if (!user || !record) return "skipped";
 
     let recordingPath = record.recordingPath ?? null;
     if (blob) {
@@ -355,10 +369,14 @@ export const JourneyService = {
       const upload = await supabase.storage
         .from("recordings")
         .upload(path, blob, { upsert: true, contentType: blob.type || "audio/webm" });
-      if (!upload.error) recordingPath = path;
+      if (upload.error) {
+        console.error("[journey] final rep upload failed", upload.error.message);
+        return "failed";
+      }
+      recordingPath = path;
     }
 
-    await supabase.from("day_progress").upsert(
+    const { error } = await supabase.from("day_progress").upsert(
       {
         user_id: user.id,
         module_id: moduleId,
@@ -382,10 +400,37 @@ export const JourneyService = {
         write({ ...current, days: { ...current.days, [key]: { ...stored, recordingPath } } });
       }
     }
+
+    if (error) {
+      console.error("[journey] day progress save failed", error.message);
+      return "failed";
+    }
+    pullCache = null;
+    return "saved";
   },
 
-  /** Pulls cloud progress into local state after sign-in. */
+  /**
+   * Pulls cloud progress into local state after sign-in.
+   * Shared for a short window so several screens mounting at once make a
+   * single request instead of one each.
+   */
+  /** Drops the shared pull cache (sign-in / sign-out / after a write). */
+  invalidatePull() {
+    pullCache = null;
+  },
+
   async pull(): Promise<JourneyState> {
+    const now = Date.now();
+    if (pullCache && now - pullCache.at < PULL_TTL_MS) return pullCache.promise;
+    const promise = JourneyService.fetchRemote().catch((err) => {
+      pullCache = null;
+      throw err;
+    });
+    pullCache = { at: now, promise };
+    return promise;
+  },
+
+  async fetchRemote(): Promise<JourneyState> {
     const { data } = await supabase.auth.getUser();
     const user = data.user;
     const local = JourneyService.load();

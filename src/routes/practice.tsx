@@ -30,7 +30,8 @@ import {
   type PracticeSession,
 } from "@/services/practice-session";
 import { supabase } from "@/integrations/supabase/client";
-import type { CourseDay, ModelLine, ModuleId, Recording } from "@/lib/types";
+import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording } from "@/lib/types";
+import type { FinalRepSaveState } from "@/components/fluency/DayCompleteScreen";
 import { cn } from "@/lib/utils";
 import { useAppLang } from "@/lib/i18n";
 import { setPreferencesScope } from "@/services/preferences";
@@ -97,6 +98,9 @@ function PracticePage() {
   const [takes, setTakes] = useState<(Recording | null)[]>(() => Array(TAKE_COUNT).fill(null));
   const [finalIndex, setFinalIndex] = useState<number | null>(null);
   const [finalRecording, setFinalRecording] = useState<Recording | null>(null);
+  const [saveState, setSaveState] = useState<FinalRepSaveState>("idle");
+  const [journeyAfterFinish, setJourneyAfterFinish] = useState<JourneyState | null>(null);
+  const saveRef = useRef(false);
   const practiceSeconds = useRef(0);
 
   const [attempted, setAttempted] = useState<string[]>([]);
@@ -202,7 +206,29 @@ function PracticePage() {
   const recorded = takes.filter((take): take is Recording => Boolean(take));
 
 
+  /**
+   * Saves the Final Rep to the cloud. The blob stays in memory until the
+   * upload result is known, so a failure is always retryable in this session.
+   */
+  const cloudSave = (final: Recording, state: JourneyState) => {
+    if (saveRef.current) return;
+    saveRef.current = true;
+    setSaveState("saving");
+    JourneyService.syncDay(moduleId, day.day, state, final.blob ?? null)
+      .then((result) => {
+        setSaveState(result === "failed" ? "failed" : result === "skipped" ? "local" : "saved");
+      })
+      .catch((error: unknown) => {
+        console.error("[practice] final rep sync failed", error);
+        setSaveState("failed");
+      })
+      .finally(() => {
+        saveRef.current = false;
+      });
+  };
+
   const finish = () => {
+    if (done || saveRef.current) return;
     const final = (finalIndex !== null ? takes[finalIndex] : null) ?? recorded[recorded.length - 1];
     if (!final) return;
     const first = recorded[0] ?? final;
@@ -218,9 +244,10 @@ function PracticePage() {
       firstUrl: first.url,
     });
     setFinalRecording(final);
+    setJourneyAfterFinish(next);
     setDone(true);
     PracticeSessionService.clear(moduleId, day.day);
-    void JourneyService.syncDay(moduleId, day.day, next, final.blob ?? null).catch(() => undefined);
+    cloudSave(final, next);
   };
 
   const countFor = (rep: 2 | 4, ids: string[]) => {
@@ -244,6 +271,10 @@ function PracticePage() {
           summary={{
             rep2: countFor(2, day.lines.map((line) => line.id)),
             rep4: countFor(4, items4.map((item) => item.id)),
+          }}
+          saveState={saveState}
+          onRetrySave={() => {
+            if (finalRecording && journeyAfterFinish) cloudSave(finalRecording, journeyAfterFinish);
           }}
         />
       </SpanishProvider>
