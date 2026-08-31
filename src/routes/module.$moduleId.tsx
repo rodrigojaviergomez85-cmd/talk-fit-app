@@ -8,6 +8,7 @@ import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
 import type { CourseDay, JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/module/$moduleId")({
   beforeLoad: ({ params }) => {
@@ -36,6 +37,7 @@ export const Route = createFileRoute("/module/$moduleId")({
 });
 
 function ModulePage() {
+  const t = useT();
   const { moduleId } = Route.useParams();
   const module = CourseService.getModule(moduleId as ModuleId)!;
   const [state, setState] = useState<JourneyState | null>(null);
@@ -79,7 +81,7 @@ function ModulePage() {
           to="/"
           className="inline-flex min-h-[44px] items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
         >
-          <ArrowLeft className="size-4" /> Home
+          <ArrowLeft className="size-4" /> {t("nav.home")}
         </Link>
 
         <div className="rounded-3xl bg-navy p-5 text-navy-foreground">

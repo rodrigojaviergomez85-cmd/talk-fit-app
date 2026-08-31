@@ -75,6 +75,19 @@ const DICT = {
   "rec.oldest": ["Antiguas", "Oldest"],
   "rec.noneInModule": ["Aún no hay grabaciones en este módulo.", "No saved recordings in this module yet."],
 
+  // Progress
+  "prog.thisWeek": ["Esta semana", "This week"],
+  "prog.days": ["Días", "Days"],
+  "prog.minutes": ["Minutos", "Minutes"],
+  "prog.modules": ["Tus módulos", "Your modules"],
+  "prog.speaking": ["Tu speaking", "Your speaking"],
+  "prog.firstRec": ["Primera grabación guardada", "First saved recording"],
+  "prog.latestRec": ["Última grabación guardada", "Latest saved recording"],
+  "prog.longest": ["Rep final más larga", "Longest final rep"],
+  "prog.mostIdeas": ["Más ideas", "Most ideas"],
+  "prog.history": ["Historial de speaking", "Speaking history"],
+  "prog.currentModule": ["Módulo actual", "Current module"],
+
   // Account
   "account.title": ["Mi cuenta", "My Account"],
   "account.language": ["Idioma de la app", "App language"],

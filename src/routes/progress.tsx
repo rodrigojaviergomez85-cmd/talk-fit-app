@@ -28,6 +28,7 @@ export const Route = createFileRoute("/progress")({
 });
 
 function ProgressPage() {
+  const t = useT();
   const [state, setState] = useState<JourneyState | null>(null);
   const [failed, setFailed] = useState(false);
 
@@ -197,6 +198,7 @@ function ProgressPage() {
 }
 
 function CurrentModule({ state, moduleId, day }: { state: JourneyState; moduleId: ModuleId; day: number }) {
+  const t = useT();
   const module = CourseService.getModule(moduleId);
   const done = JourneyService.completedCount(state, moduleId);
   const total = module.days.length;
