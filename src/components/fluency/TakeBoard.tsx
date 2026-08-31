@@ -1,3 +1,4 @@
+import { registerAudioStopper, stopOtherAudio } from "@/lib/audio-bus";
 import { useEffect, useRef, useState } from "react";
 import { Check, Play, Square, Trash2 } from "lucide-react";
 import { VoiceRecorder } from "./VoiceRecorder";
@@ -59,7 +60,13 @@ export function TakeBoard({
     audio.addEventListener("ended", () => setPlayingIndex(null));
     audio.addEventListener("error", () => setPlayingIndex(null));
     audioRef.current = audio;
+    const unregister = registerAudioStopper("takeboard", () => {
+      audio.pause();
+      audio.currentTime = 0;
+      setPlayingIndex(null);
+    });
     return () => {
+      unregister();
       audio.pause();
       audioRef.current = null;
     };
@@ -77,6 +84,7 @@ export function TakeBoard({
   const play = (index: number, url: string) => {
     const audio = audioRef.current;
     if (!audio) return;
+    stopOtherAudio("takeboard");
     audio.pause();
     audio.src = url;
     audio.currentTime = 0;
