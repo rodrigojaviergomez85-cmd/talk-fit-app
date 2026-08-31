@@ -172,7 +172,7 @@ function PracticePage() {
           ) : null}
           {stage === 3 ? <Rep3Shadow day={day} onRecorded={trackSeconds} onNext={goForward} /> : null}
           {stage === 4 ? (
-            <Rep4MakeItYours day={day} index={subIndex} onRecorded={trackSeconds} onNext={goForward} />
+            <Rep4MakeItYours day={day} index={subIndex} onRecorded={trackSeconds} onNext={goForward} hideVisuals={moduleId === "past-stories"} />
           ) : null}
           {stage === 5 ? (
             <Rep5FinalRep
