@@ -109,6 +109,39 @@ export function DayCompleteScreen({
           />
         </div>
 
+        {saveState === "saving" || saveState === "saved" || saveState === "failed" ? (
+          <div
+            className={cn(
+              "rounded-3xl p-5 text-[15px] font-semibold",
+              saveState === "failed"
+                ? "border border-destructive/40 bg-destructive/10 text-foreground"
+                : "bg-card text-muted-foreground shadow-[var(--shadow-card)]",
+            )}
+            aria-live="polite"
+          >
+            {saveState === "saving" ? (
+              <p>{showEs ? "GUARDANDO TU REP FINAL…" : "SAVING YOUR FINAL REP…"}</p>
+            ) : saveState === "saved" ? (
+              <p>{showEs ? "GUARDADA ✓" : "SAVED ✓"}</p>
+            ) : (
+              <div className="space-y-3">
+                <p>
+                  {showEs
+                    ? "No pudimos guardar tu Rep Final todavía. Tu grabación no se ha borrado."
+                    : "We couldn't save your Final Rep yet. Your recording has not been removed."}
+                </p>
+                <button
+                  type="button"
+                  onClick={onRetrySave}
+                  className="min-h-[48px] w-full rounded-2xl bg-primary px-5 text-[13px] font-bold uppercase tracking-[0.12em] text-primary-foreground"
+                >
+                  {showEs ? "INTENTAR DE NUEVO" : "TRY AGAIN"}
+                </button>
+              </div>
+            )}
+          </div>
+        ) : null}
+
         {finalRecording ? (
           <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
