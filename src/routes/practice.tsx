@@ -30,6 +30,8 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import type { CourseDay, ModelLine, ModuleId, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { useAppLang } from "@/lib/i18n";
+import { setPreferencesScope } from "@/services/preferences";
 
 export const Route = createFileRoute("/practice")({
   validateSearch: (search: Record<string, unknown>) => {
@@ -83,6 +85,9 @@ function PracticePage() {
   const day = useMemo(() => CourseService.getDay(moduleId, dayNumber), [moduleId, dayNumber]);
 
   const [showEs, setShowEs] = useEsSupportPref();
+  const { lang } = useAppLang();
+  // App chrome follows the interface language; showEs is learning support only.
+  const esUi = lang === "es";
   const [stage, setStage] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [done, setDone] = useState(false);
@@ -104,6 +109,7 @@ function PracticePage() {
     const start = (userId: string | null) => {
       if (cancelled) return;
       setSessionScope(userId);
+      setPreferencesScope(userId);
       const saved = PracticeSessionService.load(moduleId, dayNumber);
       if (PracticeSessionService.isResumable(saved)) setResume(saved);
       else PracticeSessionService.clear(moduleId, dayNumber);
@@ -220,7 +226,7 @@ function PracticePage() {
           day={day}
           finalRecording={finalRecording}
           firstRecording={recorded[0] ?? null}
-          showEs={showEs}
+          showEs={esUi}
           summary={{
             rep2: countFor(2, day.lines.map((line) => line.id)),
             rep4: countFor(4, items4.map((item) => item.id)),
@@ -236,7 +242,7 @@ function PracticePage() {
         <ResumeScreen
           session={resume}
           day={day}
-          showEs={showEs}
+          showEs={esUi}
           onContinue={() => {
             setStage(resume.stage);
             setSubIndex(resume.subIndex);
@@ -263,7 +269,7 @@ function PracticePage() {
         <RepProgress
           current={stage}
           total={6}
-          title={`DAY ${day.day} · ${showEs ? title.es : title.en}`}
+          title={`${esUi ? "DÍA" : "DAY"} ${day.day} · ${esUi ? title.es : title.en}`}
           onBack={goBack}
           {...(stage < 5 ? { onNext: goForward } : {})}
           onExit={() => setConfirmExit(true)}
@@ -271,7 +277,7 @@ function PracticePage() {
 
         {confirmExit ? (
           <ExitDialog
-            showEs={showEs}
+            showEs={esUi}
             onCancel={() => setConfirmExit(false)}
             onExit={() => {
               AudioService.stop();
@@ -286,12 +292,12 @@ function PracticePage() {
           </div>
 
           {stage === 0 ? <IntroStep moduleId={moduleId} day={day} onNext={goForward} /> : null}
-          {stage === 1 ? <Rep1Listen day={day} showEs={showEs} onNext={goForward} /> : null}
+          {stage === 1 ? <Rep1Listen day={day} showEs={esUi} onNext={goForward} /> : null}
           {stage === 2 ? (
             <Rep2Copy
               day={day}
               index={subIndex}
-              showEs={showEs}
+              showEs={esUi}
               attempted={Boolean(currentItemKey && attempted.includes(currentItemKey))}
               onRecorded={(rec) => {
                 trackSeconds(rec);
@@ -306,7 +312,7 @@ function PracticePage() {
             <Rep4MakeItYours
               day={day}
               index={subIndex}
-              showEs={showEs}
+              showEs={esUi}
               attempted={Boolean(currentItemKey && attempted.includes(currentItemKey))}
               onRecorded={(rec) => {
                 trackSeconds(rec);
