@@ -2,6 +2,7 @@ import type { CourseDay, ModelLine, ModuleId } from "@/lib/types";
 import { BASIC_ZERO_DAYS, BASIC_ZERO_WEEKS } from "./basic-zero-course";
 import { SIMPLE_PRESENT_EXTRA_DAYS, SIMPLE_PRESENT_WEEKS } from "./simple-present-course";
 import { PAST_STORIES_DAYS, PAST_STORIES_WEEKS } from "./past-stories-course";
+import { SIMPLE_FUTURE_DAYS, SIMPLE_FUTURE_WEEKS } from "./simple-future-course";
 
 
 
@@ -359,12 +360,30 @@ const MODULES: LearningModule[] = [
     days: PAST_STORIES_DAYS,
     weeks: PAST_STORIES_WEEKS,
   },
+  {
+    id: "simple-future",
+    order: 4,
+    label: "MODULE 4 · MONTH 4",
+    title: "BASIC 1 — SIMPLE FUTURE",
+    subtitle: "Plans, Other People, Decisions & Predictions",
+    subtitleEs: "Planes, otras personas, decisiones y predicciones",
+    description: "Talk about plans, decisions and predictions.",
+    descriptionEs: "Habla de planes, decisiones y predicciones.",
+    meta: ["4 Weeks", "20 Days", "5 Fluency Reps per Day"],
+    days: SIMPLE_FUTURE_DAYS,
+    weeks: SIMPLE_FUTURE_WEEKS,
+  },
 ];
 
 export const DEFAULT_MODULE: ModuleId = "basic-zero";
 
 export function isModuleId(value: unknown): value is ModuleId {
-  return value === "basic-zero" || value === "simple-present" || value === "past-stories";
+  return (
+    value === "basic-zero" ||
+    value === "simple-present" ||
+    value === "past-stories" ||
+    value === "simple-future"
+  );
 }
 
 
