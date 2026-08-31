@@ -47,6 +47,7 @@ type Props = {
  */
 export function TranslatableText({ es, children, className, esClassName, align = "left", supportOnly = false }: Props) {
   const forced = useSpanishAll();
+  const uiEs = useAppLang().lang === "es";
   const [open, setOpen] = useState(false);
   const visible = forced || (!supportOnly && open);
   const showButton = !forced && !supportOnly;
@@ -61,15 +62,17 @@ export function TranslatableText({ es, children, className, esClassName, align =
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={visible}
-              aria-label="Ver en español"
+              aria-label={visible ? "Ocultar la traducción al español" : "Ver la traducción al español"}
               className={cn(
-                "shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] transition-colors",
+                "inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] transition-colors",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1",
                 visible
                   ? "border-primary bg-primary/10 text-primary"
-                  : "border-border text-muted-foreground active:bg-secondary",
+                  : "border-border text-muted-foreground hover:bg-secondary active:bg-secondary",
               )}
             >
-              ES
+              <Languages className="size-3" />
+              ES · {visible ? (uiEs ? "OCULTAR" : "HIDE") : uiEs ? "TRADUCIR" : "TRANSLATE"}
             </button>
           ) : null}
           {visible ? (

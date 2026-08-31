@@ -86,6 +86,7 @@ const DICT = {
   "prog.longest": ["Rep final más larga", "Longest final rep"],
   "prog.mostIdeas": ["Más ideas", "Most ideas"],
   "prog.history": ["Historial de speaking", "Speaking history"],
+  "prog.viewAll": ["Ver todos los días", "View all days"],
   "prog.currentModule": ["Módulo actual", "Current module"],
 
   // Account
