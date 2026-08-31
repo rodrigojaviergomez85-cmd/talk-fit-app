@@ -51,7 +51,7 @@ export type Challenge = {
 };
 
 /** Learning module identifier. */
-export type ModuleId = "basic-zero" | "simple-present" | "past-stories";
+export type ModuleId = "basic-zero" | "simple-present" | "past-stories" | "simple-future";
 
 /** Image → action → past verb → spoken sentence (Module 3). */
 export type VerbCard = {
