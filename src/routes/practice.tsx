@@ -84,13 +84,66 @@ function PracticePage() {
   const [finalRecording, setFinalRecording] = useState<Recording | null>(null);
   const practiceSeconds = useRef(0);
 
+  const [attempted, setAttempted] = useState<string[]>([]);
+  const [skipped, setSkipped] = useState<string[]>([]);
+  const [ready, setReady] = useState(false);
+  const [resume, setResume] = useState<PracticeSession | null>(null);
+  const [confirmExit, setConfirmExit] = useState(false);
+  const startedAt = useRef(new Date().toISOString());
+
+  // Restore any saved position for this module + day (scoped to the learner).
+  useEffect(() => {
+    let cancelled = false;
+    const start = (userId: string | null) => {
+      if (cancelled) return;
+      setSessionScope(userId);
+      const saved = PracticeSessionService.load(moduleId, dayNumber);
+      if (PracticeSessionService.isResumable(saved)) setResume(saved);
+      else PracticeSessionService.clear(moduleId, dayNumber);
+      setReady(true);
+    };
+    void supabase.auth
+      .getUser()
+      .then(({ data }) => start(data.user?.id ?? null))
+      .catch(() => start(null));
+    return () => {
+      cancelled = true;
+    };
+  }, [moduleId, dayNumber]);
+
+  // Persist the position on every meaningful change.
+  useEffect(() => {
+    if (!ready || resume || done) return;
+    PracticeSessionService.save({
+      moduleId,
+      day: dayNumber,
+      week: day.week ?? null,
+      stage,
+      subIndex,
+      attempted,
+      skipped,
+      startedAt: startedAt.current,
+    });
+  }, [ready, resume, done, moduleId, dayNumber, day.week, stage, subIndex, attempted, skipped]);
+
   useEffect(() => () => AudioService.stop(), []);
   useEffect(() => {
     AudioService.stop();
     window.scrollTo({ top: 0 });
   }, [stage, subIndex]);
 
-  const subTotal = stage === 2 ? day.lines.length : stage === 4 ? rep4Items(day).length : 1;
+  const items4 = useMemo(() => rep4Items(day), [day]);
+  const subTotal = stage === 2 ? day.lines.length : stage === 4 ? items4.length : 1;
+
+  const currentItemKey =
+    stage === 2
+      ? itemKey(2, day.lines[subIndex]?.id ?? String(subIndex))
+      : stage === 4
+        ? itemKey(4, items4[subIndex]?.id ?? String(subIndex))
+        : null;
+
+  const markAttempted = (key: string) =>
+    setAttempted((list) => (list.includes(key) ? list : [...list, key]));
 
   const goBack = () => {
     if (subIndex > 0) return setSubIndex(subIndex - 1);
@@ -99,7 +152,7 @@ function PracticePage() {
       setSubIndex(0);
       return;
     }
-    void navigate({ to: "/" });
+    setConfirmExit(true);
   };
 
   const goForward = () => {
@@ -110,11 +163,17 @@ function PracticePage() {
     }
   };
 
+  const skipCurrent = () => {
+    if (currentItemKey) setSkipped((list) => (list.includes(currentItemKey) ? list : [...list, currentItemKey]));
+    goForward();
+  };
+
   const trackSeconds = (recording: Recording) => {
     practiceSeconds.current += recording.durationSeconds;
   };
 
   const recorded = takes.filter((take): take is Recording => Boolean(take));
+
 
   const finish = () => {
     const final = (finalIndex !== null ? takes[finalIndex] : null) ?? recorded[recorded.length - 1];
