@@ -89,6 +89,7 @@ function PracticePage() {
   const { day: dayNumber, module: moduleId } = Route.useSearch();
   const navigate = useNavigate();
   const { user, loading: authLoading, sync } = useAuth();
+  const tt = useT();
   const day = useMemo(() => CourseService.getDay(moduleId, dayNumber), [moduleId, dayNumber]);
 
   const [showEs, setShowEs] = useEsSupportPref();
@@ -420,6 +421,23 @@ function PracticePage() {
               hideVisuals={moduleId === "past-stories"}
             />
 
+          ) : null}
+          {stage === 5 && takeErrors.length > 0 ? (
+            <div className="space-y-2 rounded-2xl border border-destructive/30 bg-card p-4 text-center">
+              <p className="text-[13px] font-semibold">{tt("sync.takeFailed")}</p>
+              <button
+                type="button"
+                onClick={() => {
+                  takeErrors.forEach((index) => {
+                    const rec = takes[index];
+                    if (rec) uploadTake(index, rec);
+                  });
+                }}
+                className="min-h-[44px] w-full rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
+              >
+                {tt("sync.retry")}
+              </button>
+            </div>
           ) : null}
           {stage === 5 ? (
             <Rep5FinalRep
