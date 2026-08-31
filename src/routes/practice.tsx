@@ -30,7 +30,8 @@ import {
   type PracticeSession,
 } from "@/services/practice-session";
 import { supabase } from "@/integrations/supabase/client";
-import type { CourseDay, ModelLine, ModuleId, Recording } from "@/lib/types";
+import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording } from "@/lib/types";
+import type { FinalRepSaveState } from "@/components/fluency/DayCompleteScreen";
 import { cn } from "@/lib/utils";
 import { useAppLang } from "@/lib/i18n";
 import { setPreferencesScope } from "@/services/preferences";
