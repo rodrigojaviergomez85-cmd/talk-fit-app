@@ -6,6 +6,7 @@ import { ContinueCard } from "@/components/fluency/ContinueCard";
 import { CourseService, type LearningModule } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
 import type { JourneyState, ModuleId } from "@/lib/types";
+import { StatusBadge, type ProgressStatus } from "@/components/fluency/StatusBadge";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
@@ -106,7 +107,7 @@ function moduleStatus(
   module: LearningModule,
   state: JourneyState,
   currentModule: ModuleId | null,
-): { label: string; tone: "done" | "current" | "next" } {
+): ProgressStatus {
   if (JourneyService.moduleComplete(state, module.id)) return { label: "COMPLETE ✓", tone: "done" };
   if (currentModule === module.id) return { label: "CURRENT", tone: "current" };
   return { label: "UP NEXT", tone: "next" };
@@ -159,21 +160,6 @@ function ModuleCard({
         </div>
       </div>
     </Link>
-  );
-}
-
-export function StatusBadge({ status }: { status: { label: string; tone: "done" | "current" | "next" } }) {
-  return (
-    <span
-      className={cn(
-        "rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em]",
-        status.tone === "done" && "bg-success/12 text-success",
-        status.tone === "current" && "bg-primary text-primary-foreground",
-        status.tone === "next" && "bg-secondary text-muted-foreground",
-      )}
-    >
-      {status.label}
-    </span>
   );
 }
 

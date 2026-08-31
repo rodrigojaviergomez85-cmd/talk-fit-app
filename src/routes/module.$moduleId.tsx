@@ -5,7 +5,7 @@ import { AppShell } from "@/components/fluency/AppShell";
 import { DailyPracticeCard, JourneyDayRow } from "@/components/fluency/DailyPracticeCard";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
-import { StatusBadge } from "@/routes/index";
+import { StatusBadge } from "@/components/fluency/StatusBadge";
 import type { CourseDay, JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
