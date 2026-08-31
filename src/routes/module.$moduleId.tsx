@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
-import { ArrowLeft, Check, ChevronDown } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronDown, Sparkles } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { DailyPracticeCard, JourneyDayRow } from "@/components/fluency/DailyPracticeCard";
 import { CourseService } from "@/services/course-service";
@@ -9,6 +9,8 @@ import { StatusBadge } from "@/components/fluency/StatusBadge";
 import type { CourseDay, JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
+import { useVerbBank } from "@/hooks/use-verb-bank";
+import { PAST_VERBS, VerbBank } from "@/services/verb-bank";
 
 export const Route = createFileRoute("/module/$moduleId")({
   beforeLoad: ({ params }) => {

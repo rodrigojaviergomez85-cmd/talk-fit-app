@@ -8,6 +8,8 @@ import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { TakeBoard, TAKE_COUNT, REQUIRED_TAKES } from "@/components/fluency/TakeBoard";
 import { PastVerbCards } from "@/components/fluency/PastVerbCards";
 import { StoryStrip } from "@/components/fluency/StoryStrip";
+import { TodaysPastVerbs } from "@/components/fluency/TodaysPastVerbs";
+import { MicTest, isMicChecked } from "@/components/fluency/MicTest";
 
 import { DayCompleteScreen } from "@/components/fluency/DayCompleteScreen";
 import {
@@ -32,6 +34,7 @@ import type { CourseDay, ModelLine, ModuleId, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useAppLang } from "@/lib/i18n";
 import { setPreferencesScope } from "@/services/preferences";
+import { VerbBank, setVerbBankScope } from "@/services/verb-bank";
 
 export const Route = createFileRoute("/practice")({
   validateSearch: (search: Record<string, unknown>) => {
@@ -101,6 +104,7 @@ function PracticePage() {
   const [ready, setReady] = useState(false);
   const [resume, setResume] = useState<PracticeSession | null>(null);
   const [confirmExit, setConfirmExit] = useState(false);
+  const [micChecked, setMicChecked] = useState(true);
   const startedAt = useRef(new Date().toISOString());
 
   // Restore any saved position for this module + day (scoped to the learner).
@@ -110,6 +114,7 @@ function PracticePage() {
       if (cancelled) return;
       setSessionScope(userId);
       setPreferencesScope(userId);
+      setVerbBankScope(userId);
       const saved = PracticeSessionService.load(moduleId, dayNumber);
       if (PracticeSessionService.isResumable(saved)) setResume(saved);
       else PracticeSessionService.clear(moduleId, dayNumber);
@@ -138,6 +143,15 @@ function PracticePage() {
       startedAt: startedAt.current,
     });
   }, [ready, resume, done, moduleId, dayNumber, day.week, stage, subIndex, attempted, skipped]);
+
+  useEffect(() => setMicChecked(isMicChecked()), []);
+
+  // Verbs used in today's lesson become "discovered" in the Past Verb Bank.
+  const todaysVerbs = useMemo(() => (ready ? VerbBank.todaysVerbs(day) : []), [ready, day]);
+  useEffect(() => {
+    if (!ready || todaysVerbs.length === 0) return;
+    VerbBank.discover(todaysVerbs.map((verb) => verb.id));
+  }, [ready, todaysVerbs]);
 
   useEffect(() => () => AudioService.stop(), []);
   useEffect(() => {
@@ -291,9 +305,17 @@ function PracticePage() {
             <SpanishToggle value={showEs} onChange={setShowEs} />
           </div>
 
-          {stage === 0 ? <IntroStep moduleId={moduleId} day={day} onNext={goForward} /> : null}
+          {stage === 0 ? (
+            <>
+              <IntroStep moduleId={moduleId} day={day} onNext={goForward} />
+              <TodaysPastVerbs verbs={todaysVerbs} />
+            </>
+          ) : null}
           {stage === 1 ? <Rep1Listen day={day} showEs={esUi} onNext={goForward} /> : null}
-          {stage === 2 ? (
+          {stage === 2 && !micChecked ? (
+            <MicTest onPass={() => setMicChecked(true)} onSkip={() => setMicChecked(true)} />
+          ) : null}
+          {stage === 2 && micChecked ? (
             <Rep2Copy
               day={day}
               index={subIndex}
