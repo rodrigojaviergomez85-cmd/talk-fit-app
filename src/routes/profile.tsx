@@ -8,6 +8,8 @@ import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { PracticeSessionService, setSessionScope } from "@/services/practice-session";
 import { setPreferencesScope } from "@/services/preferences";
 import { useAppLang } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth";
+import { CloudSync } from "@/services/cloud-sync";
 import { cn } from "@/lib/utils";
 
 /** Never render NaN/undefined in a stat. */
@@ -32,6 +34,7 @@ export const Route = createFileRoute("/profile")({
 
 function ProfilePage() {
   const { t, lang, setLang, prefs, setPrefs } = useAppLang();
+  const { signOut } = useAuth();
   const esUi = lang === "es";
   const [state, setState] = useState<JourneyState>(emptyJourney);
   const [email, setEmail] = useState("");
@@ -138,7 +141,7 @@ function ProfilePage() {
             <p className="text-[13px] text-muted-foreground">{t("account.syncNote")}</p>
             <button
               type="button"
-              onClick={() => void supabase.auth.signOut()}
+              onClick={() => void signOut()}
               className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-border px-5 py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
             >
               <LogOut className="size-4" /> {t("account.signOut")}
@@ -216,6 +219,7 @@ function ProfilePage() {
                 onClick={() => {
                   setState(JourneyService.reset());
                   PracticeSessionService.clearAll();
+                  void CloudSync.resetAccountProgress().catch(() => undefined);
                   setConfirmReset(false);
                 }}
                 className="flex-1 rounded-2xl bg-destructive px-4 py-3.5 text-[13px] font-bold uppercase tracking-[0.12em] text-destructive-foreground"

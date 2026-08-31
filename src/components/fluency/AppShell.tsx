@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { BottomNav } from "./BottomNav";
+import { SyncBanner } from "./SyncBanner";
 
 export function AppShell({ children, title }: { children: ReactNode; title?: string }) {
   return (
@@ -10,7 +11,10 @@ export function AppShell({ children, title }: { children: ReactNode; title?: str
           {title ? <h1 className="mt-2 text-2xl font-extrabold tracking-tight">{title}</h1> : null}
         </div>
       </header>
-      <main className="mx-auto w-full max-w-lg px-4 py-5">{children}</main>
+      <main className="mx-auto w-full max-w-lg px-4 py-5">
+        <SyncBanner />
+        {children}
+      </main>
       <BottomNav />
     </div>
   );

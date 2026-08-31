@@ -3,6 +3,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Ear, Mic, Repeat, Sparkles, User } from "lucide-react";
 import { CourseService } from "@/services/course-service";
 import { useAppLang } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth";
+import { AuthGate } from "@/components/fluency/AuthGate";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/onboarding")({
@@ -41,6 +43,7 @@ const STEPS_EN = [
 function OnboardingPage() {
   const navigate = useNavigate();
   const { t, lang, setPrefs } = useAppLang();
+  const { user } = useAuth();
   const [screen, setScreen] = useState(0);
 
 
@@ -58,7 +61,7 @@ function OnboardingPage() {
     <div className="flex min-h-screen flex-col bg-background px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))]">
       <div className="mx-auto flex w-full max-w-lg flex-1 flex-col">
         <div className="flex items-center gap-2" aria-hidden>
-          {[0, 1, 2].map((i) => (
+          {[0, 1, 2, 3].map((i) => (
             <span
               key={i}
               className={cn("h-1.5 flex-1 rounded-full", i <= screen ? "bg-primary" : "bg-secondary")}
@@ -121,10 +124,33 @@ function OnboardingPage() {
               </p>
             </section>
           ) : null}
+          {screen === 3 ? (
+            <section className="space-y-4">
+              <AuthGate />
+            </section>
+          ) : null}
         </div>
 
         <div className="space-y-3">
-          {screen < 2 ? (
+          {screen === 3 ? (
+            user ? (
+              <button
+                type="button"
+                onClick={() => finish("day1")}
+                className="min-h-[56px] w-full rounded-2xl bg-primary px-6 text-[16px] font-bold tracking-wide text-primary-foreground active:scale-[0.98]"
+              >
+                {t("action.startDay1")}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => finish("explore")}
+                className="min-h-[48px] w-full rounded-2xl border border-border px-6 text-[13px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
+              >
+                {t("onb.explore")}
+              </button>
+            )
+          ) : screen < 2 ? (
             <>
               <button
                 type="button"
@@ -145,10 +171,10 @@ function OnboardingPage() {
             <>
               <button
                 type="button"
-                onClick={() => finish("day1")}
+                onClick={() => (user ? finish("day1") : setScreen(3))}
                 className="min-h-[56px] w-full rounded-2xl bg-primary px-6 text-[16px] font-bold tracking-wide text-primary-foreground active:scale-[0.98]"
               >
-                {t("action.startDay1")}
+                {user ? t("action.startDay1") : t("action.next")}
               </button>
               <button
                 type="button"

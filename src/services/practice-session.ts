@@ -34,6 +34,29 @@ function keyFor(moduleId: ModuleId, day: number): string {
   return `${PREFIX}:${scope}:${moduleId}:${day}`;
 }
 
+/**
+ * Cloud writes are debounced so saving on every rep/prompt change does not
+ * turn into network noise; the last position always wins.
+ */
+let cloudTimer: ReturnType<typeof setTimeout> | null = null;
+let pending: PracticeSession | null = null;
+
+function queueCloudSave(session: PracticeSession) {
+  if (typeof window === "undefined") return;
+  pending = session;
+  if (cloudTimer) clearTimeout(cloudTimer);
+  cloudTimer = setTimeout(() => {
+    const value = pending;
+    pending = null;
+    cloudTimer = null;
+    if (!value) return;
+    void import("./cloud-sync")
+      .then(({ CloudSync }) => CloudSync.saveSession(value))
+      .catch(() => undefined);
+  }, 1200);
+}
+
+
 export const PracticeSessionService = {
   load(moduleId: ModuleId, day: number): PracticeSession | null {
     if (typeof window === "undefined") return null;
@@ -60,12 +83,13 @@ export const PracticeSessionService = {
 
   save(session: Omit<PracticeSession, "updatedAt">) {
     if (typeof window === "undefined") return;
+    const value: PracticeSession = { ...session, updatedAt: new Date().toISOString() };
     try {
-      const value: PracticeSession = { ...session, updatedAt: new Date().toISOString() };
       window.localStorage.setItem(keyFor(session.moduleId, session.day), JSON.stringify(value));
     } catch {
       /* storage unavailable */
     }
+    queueCloudSave(value);
   },
 
   clear(moduleId: ModuleId, day: number) {
@@ -75,7 +99,48 @@ export const PracticeSessionService = {
     } catch {
       /* storage unavailable */
     }
+    void import("./cloud-sync").then(({ CloudSync }) => CloudSync.completeSession(moduleId, day)).catch(() => undefined);
   },
+
+  /** Every saved position for the current learner (used by the migration). */
+  snapshotAll(): PracticeSession[] {
+    if (typeof window === "undefined") return [];
+    const prefix = `${PREFIX}:${scope}:`;
+    const out: PracticeSession[] = [];
+    try {
+      for (let i = 0; i < window.localStorage.length; i += 1) {
+        const key = window.localStorage.key(i);
+        if (!key?.startsWith(prefix)) continue;
+        const raw = window.localStorage.getItem(key);
+        if (!raw) continue;
+        const parsed = JSON.parse(raw) as PracticeSession;
+        if (typeof parsed?.stage === "number") out.push(parsed);
+      }
+    } catch {
+      return out;
+    }
+    return out;
+  },
+
+  /** Writes backend positions into the local cache (cloud wins when newer). */
+  hydrate(sessions: PracticeSession[]) {
+    if (typeof window === "undefined") return;
+    for (const session of sessions) {
+      const local = PracticeSessionService.load(session.moduleId, session.day);
+      const localNewer =
+        local && new Date(local.updatedAt).getTime() > new Date(session.updatedAt).getTime();
+      if (localNewer) continue;
+      try {
+        window.localStorage.setItem(
+          keyFor(session.moduleId, session.day),
+          JSON.stringify(session),
+        );
+      } catch {
+        /* storage unavailable */
+      }
+    }
+  },
+
 
   /** Removes every stored practice position for the current scope. */
   clearAll() {

@@ -281,6 +281,21 @@ function write(state: VerbBankState) {
   }
   cache = state;
   listeners.forEach((fn) => fn());
+  queueCloudPush(state);
+}
+
+/** Verb progress mirrors to the account, debounced. */
+let cloudTimer: ReturnType<typeof setTimeout> | null = null;
+
+function queueCloudPush(state: VerbBankState) {
+  if (typeof window === "undefined") return;
+  if (cloudTimer) clearTimeout(cloudTimer);
+  cloudTimer = setTimeout(() => {
+    cloudTimer = null;
+    void import("./cloud-sync")
+      .then(({ CloudSync }) => CloudSync.pushVerbs(state))
+      .catch(() => undefined);
+  }, 1200);
 }
 
 /** Past forms (lowercase) that count as an encounter with a verb. */
@@ -297,6 +312,18 @@ export const VerbBank = {
 
   load(): VerbBankState {
     return read();
+  },
+
+  /** Writes backend verb progress into the local cache without re-pushing. */
+  hydrate(state: VerbBankState) {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(keyFor(scope), JSON.stringify(state));
+    } catch {
+      /* storage unavailable */
+    }
+    cache = state;
+    listeners.forEach((fn) => fn());
   },
 
   stat(state: VerbBankState, id: string): VerbStat {
