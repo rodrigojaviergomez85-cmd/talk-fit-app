@@ -339,6 +339,7 @@ export const JourneyService = {
       window.localStorage.removeItem(LEGACY_KEY);
     }
     sessionUrls.clear();
+    pullCache = null;
     return emptyJourney;
   },
 
