@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Check, Play, Square, Trash2 } from "lucide-react";
 import { VoiceRecorder } from "./VoiceRecorder";
 import { TranslatableText } from "./TranslatableText";
+import { useT, type TKey } from "@/lib/i18n";
 import type { Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -51,7 +52,7 @@ export function TakeBoard({
   onDelete,
   onSelectFinal,
 }: TakeBoardProps) {
-
+  const t = useT();
   const [playingIndex, setPlayingIndex] = useState<number | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -97,7 +98,7 @@ export function TakeBoard({
 
   return (
     <div className="space-y-4">
-      <GoalPanel latest={latest} minSeconds={goalSeconds[0]} goalSentences={goalSentences} />
+      <GoalPanel latest={latest} minSeconds={goalSeconds[0]} goalSentences={goalSentences} t={t} />
 
       <div className="grid gap-3 sm:grid-cols-2">
       {takes.map((take, index) => {
@@ -122,17 +123,17 @@ export function TakeBoard({
           >
             <div className="flex items-center justify-between gap-2">
               <p className="flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.16em]">
-                TAKE {index + 1}
+                {t("take.take")} {index + 1}
                 {take ? <Check className="size-4 text-success" /> : null}
               </p>
               {optional && !take ? (
                 <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                  Optional
+                  {t("take.optional")}
                 </span>
               ) : null}
               {isFinal ? (
                 <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-primary-foreground">
-                  Final rep ✓
+                  {t("take.finalRep")}
                 </span>
               ) : null}
             </div>
@@ -141,10 +142,10 @@ export function TakeBoard({
               <div className="mt-3 space-y-3">
                 <div className="flex items-center gap-3">
                   <MiniWave seed={index * 3} playing={playing} />
-                  <span className="text-[15px] font-extrabold tabular-nums">{take.durationSeconds} sec</span>
+                  <span className="text-[15px] font-extrabold tabular-nums">{take.durationSeconds} {t("take.seconds")}</span>
                 </div>
 
-                <SentenceLine take={take} goal={goalSentences} />
+                <SentenceLine take={take} goal={goalSentences} t={t} />
 
 
                 <div className="flex items-center gap-2">
@@ -154,7 +155,7 @@ export function TakeBoard({
                     className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2.5 text-[12px] font-bold uppercase tracking-[0.12em]"
                   >
                     {playing ? <Square className="size-4 fill-current" /> : <Play className="size-4 fill-current" />}
-                    {playing ? "Stop" : "Play"}
+                    {playing ? t("take.stop") : t("take.play")}
                   </button>
                   <button
                     type="button"
@@ -175,17 +176,17 @@ export function TakeBoard({
                     onClick={() => onSelectFinal(index)}
                     className="w-full rounded-xl border border-primary/40 bg-card px-3 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-primary"
                   >
-                    Use as final
+                    {t("take.useAsFinal")}
                   </button>
                 )}
               </div>
             ) : isActive ? (
               <div className="mt-3 space-y-2">
                 <TranslatableText supportOnly es="Listo para grabar" align="center" className="text-center">
-                  <p className="text-center text-[13px] text-muted-foreground">Ready to record</p>
+                  <p className="text-center text-[13px] text-muted-foreground">{t("take.ready")}</p>
                 </TranslatableText>
                 <VoiceRecorder
-                  label="RECORD"
+                  label={t("practice.record")}
                   size="md"
                   targetSeconds={goalSeconds}
                   maxSeconds={90}
@@ -193,7 +194,7 @@ export function TakeBoard({
                 />
               </div>
             ) : (
-              <p className="mt-3 text-[13px] text-muted-foreground">Ready to record</p>
+              <p className="mt-3 text-[13px] text-muted-foreground">{t("take.ready")}</p>
             )}
           </div>
         );
@@ -208,10 +209,12 @@ function GoalPanel({
   latest,
   minSeconds,
   goalSentences,
+  t,
 }: {
   latest: Recording | null;
   minSeconds: number;
   goalSentences: number;
+  t: (key: TKey) => string;
 }) {
   const seconds = latest?.durationSeconds ?? 0;
   const timeOk = seconds >= minSeconds;
@@ -220,25 +223,19 @@ function GoalPanel({
 
   return (
     <div className="rounded-3xl border border-border bg-card p-4">
-      <TranslatableText supportOnly es={`META DE HOY · ${minSeconds}+ segundos · ${goalSentences}+ oraciones`} align="center">
-        <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-          Today's goal · {minSeconds}+ sec · {goalSentences}+ sentences
-        </p>
-      </TranslatableText>
+      <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+        {t("take.goal")} · {minSeconds}+ {t("take.seconds")} · {goalSentences}+ {t("take.sentences").toLowerCase()}
+      </p>
 
       <div className="mt-3 grid grid-cols-2 gap-3">
         <div className="rounded-2xl bg-secondary p-3 text-center">
-          <TranslatableText supportOnly es="TIEMPO" align="center">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Time</p>
-          </TranslatableText>
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{t("take.time")}</p>
           <p className={cn("mt-1 text-[16px] font-extrabold tabular-nums", latest ? (timeOk ? "text-success" : "text-destructive") : "text-muted-foreground")}>
-            {latest ? `${timeOk ? "🟢" : "🔴"} ${seconds} / ${minSeconds} sec` : `— / ${minSeconds} sec`}
+            {latest ? `${timeOk ? "🟢" : "🔴"} ${seconds} / ${minSeconds} ${t("take.seconds")}` : `— / ${minSeconds} ${t("take.seconds")}`}
           </p>
         </div>
         <div className="rounded-2xl bg-secondary p-3 text-center">
-          <TranslatableText supportOnly es="ORACIONES" align="center">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Sentences</p>
-          </TranslatableText>
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{t("take.sentences")}</p>
           <p className={cn("mt-1 text-[16px] font-extrabold tabular-nums", count === null ? "text-muted-foreground" : sentencesOk ? "text-success" : "text-destructive")}>
             {count === null ? `— / ${goalSentences}` : `${sentencesOk ? "🟢" : "🔴"} ${count} / ${goalSentences}`}
           </p>
@@ -250,21 +247,13 @@ function GoalPanel({
 }
 
 /** Sentence estimate for one completed take — no transcript, no correction. */
-function SentenceLine({ take, goal }: { take: Recording; goal: number }) {
+function SentenceLine({ take, goal, t }: { take: Recording; goal: number; t: (key: TKey) => string }) {
   if (take.countStatus === "pending") {
-    return (
-      <TranslatableText supportOnly es="Contando oraciones…">
-        <p className="text-[13px] font-semibold text-muted-foreground">Counting sentences…</p>
-      </TranslatableText>
-    );
+    return <p className="text-[13px] font-semibold text-muted-foreground">{t("take.counting")}</p>;
   }
 
   if (take.countStatus !== "done" || typeof take.sentenceCount !== "number") {
-    return (
-      <TranslatableText supportOnly es="Conteo de oraciones no disponible">
-        <p className="text-[12px] text-muted-foreground">Sentence count unavailable</p>
-      </TranslatableText>
-    );
+    return <p className="text-[12px] text-muted-foreground">{t("take.countUnavailable")}</p>;
   }
 
   const count = take.sentenceCount;
@@ -273,13 +262,11 @@ function SentenceLine({ take, goal }: { take: Recording; goal: number }) {
   return (
     <div>
       <p className={cn("text-[15px] font-extrabold", ok ? "text-success" : "text-destructive")}>
-        {ok ? "🟢" : "🔴"} {count} {count === 1 ? "sentence" : "sentences"}
+        {ok ? "🟢" : "🔴"} {count} {t("take.sentences").toLowerCase()}
       </p>
-      <TranslatableText supportOnly es={ok ? "¡Meta alcanzada!" : `Sigue — busca ${goal}.`}>
-        <p className="text-[12px] font-semibold text-muted-foreground">
-          {ok ? "Goal reached!" : `Keep going — aim for ${goal}.`}
-        </p>
-      </TranslatableText>
+      <p className="text-[12px] font-semibold text-muted-foreground">
+        {ok ? t("take.goalReached") : `${t("take.sentences")}: ${goal}+`}
+      </p>
 
     </div>
   );
