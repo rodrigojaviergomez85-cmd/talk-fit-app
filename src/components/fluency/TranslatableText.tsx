@@ -13,30 +13,13 @@ export function useSpanishAll() {
   return useContext(SpanishContext);
 }
 
-const ES_PREF_KEY = "fluency-reps:es-support";
-
-/** Remembered ES SUPPORT preference (off by default, English stays dominant). */
+/**
+ * Spanish LEARNING SUPPORT preference — independent from the app interface
+ * language. Off by default so English stays dominant.
+ */
 export function useEsSupportPref(): [boolean, (value: boolean) => void] {
-  const [value, setValue] = useState(false);
-
-  useEffect(() => {
-    try {
-      setValue(window.localStorage.getItem(ES_PREF_KEY) === "on");
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
-  const update = (next: boolean) => {
-    setValue(next);
-    try {
-      window.localStorage.setItem(ES_PREF_KEY, next ? "on" : "off");
-    } catch {
-      /* ignore */
-    }
-  };
-
-  return [value, update];
+  const { prefs, setPrefs } = useAppLang();
+  return [prefs.spanishSupport, (next: boolean) => setPrefs({ spanishSupport: next })];
 }
 
 type Props = {
