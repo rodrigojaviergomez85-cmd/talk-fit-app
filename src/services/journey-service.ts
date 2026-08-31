@@ -395,10 +395,32 @@ export const JourneyService = {
         write({ ...current, days: { ...current.days, [key]: { ...stored, recordingPath } } });
       }
     }
+
+    if (error) {
+      console.error("[journey] day progress save failed", error.message);
+      return "failed";
+    }
+    pullCache = null;
+    return "saved";
   },
 
-  /** Pulls cloud progress into local state after sign-in. */
+  /**
+   * Pulls cloud progress into local state after sign-in.
+   * Shared for a short window so several screens mounting at once make a
+   * single request instead of one each.
+   */
   async pull(): Promise<JourneyState> {
+    const now = Date.now();
+    if (pullCache && now - pullCache.at < PULL_TTL_MS) return pullCache.promise;
+    const promise = JourneyService.fetchRemote().catch((err) => {
+      pullCache = null;
+      throw err;
+    });
+    pullCache = { at: now, promise };
+    return promise;
+  },
+
+  async fetchRemote(): Promise<JourneyState> {
     const { data } = await supabase.auth.getUser();
     const user = data.user;
     const local = JourneyService.load();
