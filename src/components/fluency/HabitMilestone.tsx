@@ -38,9 +38,12 @@ export function HabitMilestone({ milestone, state, compact = false }: Props) {
           {es ? milestone.title.es : milestone.title.en}
         </h2>
         {major && milestone.days === 66 ? (
-          <p className="mt-1 text-[12px] font-bold uppercase tracking-[0.16em] text-navy-foreground/80">
-            {es ? "TU INGLÉS YA ES PARTE DE TU RUTINA." : "ENGLISH IS NOW PART OF YOUR ROUTINE."}
-          </p>
+          <>
+            <p className="mt-1 text-[12px] font-bold uppercase tracking-[0.16em] text-navy-foreground/80">
+              {es ? "TU INGLÉS YA ES PARTE DE TU RUTINA." : "ENGLISH IS NOW PART OF YOUR ROUTINE."}
+            </p>
+            <HabitExplainer tone="navy" />
+          </>
         ) : null}
         <p className="mt-3 text-[15px] font-semibold leading-snug text-navy-foreground/85">
           {es ? milestone.message.es : milestone.message.en}

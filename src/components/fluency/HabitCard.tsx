@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import type { JourneyState } from "@/lib/types";
 import { HABIT_GOAL, final6, habitDays, habitDisplay, nextMilestone } from "@/lib/habit";
 import { JourneyService } from "@/services/journey-service";
+import { HabitExplainer } from "./HabitExplainer";
 import { useAppLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -84,6 +85,10 @@ export function HabitCard({ state, variant = "home" }: Props) {
           {es ? "TOTAL" : "TOTAL"}: {count} {es ? "DÍAS DE PRÁCTICA" : "PRACTICE DAYS"}
         </p>
       ) : null}
+
+      <div className="mt-1">
+        <HabitExplainer />
+      </div>
 
       {countdown !== null ? (
         <p className="mt-2 text-[13px] font-extrabold text-primary">
