@@ -21,7 +21,7 @@ export const Route = createFileRoute("/module/$moduleId")({
   },
   head: ({ params }) => {
     const module = CourseService.getModule(params.moduleId as ModuleId);
-    const title = module ? `${module.title} — Fluency Reps` : "Module — Fluency Reps";
+    const title = module ? `${module.label} · ${module.title} — Fluency Reps` : "Module — Fluency Reps";
     const description = module
       ? `${module.subtitle} ${module.meta.join(" · ")}.`
       : "Fluency Reps learning module.";
@@ -81,7 +81,7 @@ function ModulePage() {
   }, [module.days]);
 
   return (
-    <AppShell title={module.title}>
+    <AppShell title={`${module.label} · ${module.title}`}>
       <div className="space-y-6">
         <Link
           to="/"
@@ -93,7 +93,14 @@ function ModulePage() {
         <div className="rounded-3xl bg-navy p-5 text-navy-foreground">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{module.label}</p>
           <h2 className="mt-1 text-2xl font-extrabold tracking-tight">{module.title}</h2>
-          <p className="mt-1 text-[14px] font-semibold text-navy-foreground/80">{module.subtitle}</p>
+          <p className="mt-1 text-[14px] font-semibold text-navy-foreground/80">
+            {lang === "es" ? module.subtitleEs : module.subtitle}
+          </p>
+          {module.statusLine ? (
+            <p className="mt-0.5 text-[11px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">
+              {lang === "es" ? module.statusLine.es : module.statusLine.en}
+            </p>
+          ) : null}
           {module.highlights ? (
             <ul className="mt-3 space-y-1.5">
               {module.highlights.map((item) => (

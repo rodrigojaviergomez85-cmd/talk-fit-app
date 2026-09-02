@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Ear, Mic, Repeat, Sparkles, User } from "lucide-react";
 import { CourseService } from "@/services/course-service";
 import { useAppLang } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import { AuthGate } from "@/components/fluency/AuthGate";
+import { PlacementPicker } from "@/components/fluency/PlacementPicker";
+import { getPendingPlacement, setPendingPlacement } from "@/services/preferences";
+import type { ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/onboarding")({
@@ -42,10 +45,29 @@ const STEPS_EN = [
 
 function OnboardingPage() {
   const navigate = useNavigate();
-  const { t, lang, setPrefs } = useAppLang();
+  const { t, lang, prefs, setPrefs } = useAppLang();
   const { user } = useAuth();
   const [screen, setScreen] = useState(0);
+  const [placement, setPlacement] = useState<ModuleId | null>(null);
 
+  // Restore a choice made before an OAuth redirect (client-only storage).
+  useEffect(() => {
+    setPlacement(getPendingPlacement()?.moduleId ?? null);
+  }, []);
+
+  const choosePlacement = (moduleId: ModuleId) => {
+    setPlacement(moduleId);
+    // Pre-auth: kept locally until the account exists and the backend confirms.
+    setPendingPlacement(moduleId);
+  };
+
+  /** Already signed in (e.g. via Mi Cuenta) but never placed: persist, then start. */
+  const confirmSignedInPlacement = async () => {
+    const { CloudSync } = await import("@/services/cloud-sync");
+    const result = await CloudSync.applyPendingPlacement();
+    if (result === "failed") return;
+    finish("day1");
+  };
 
   const finish = (to: "day1" | "explore") => {
     setPrefs({ onboardingCompleted: true });
@@ -53,15 +75,20 @@ function OnboardingPage() {
       void navigate({ to: "/" });
       return;
     }
-    const first = [...CourseService.modules()].sort((a, b) => a.order - b.order)[0];
-    void navigate({ to: "/practice", search: { day: 1, module: first?.id ?? "basic-zero" } });
+    // Existing learners (already placed) go back to Home, which points to their saved position.
+    if (!placement && prefs.currentModuleId) {
+      void navigate({ to: "/" });
+      return;
+    }
+    const first = CourseService.modules()[0];
+    void navigate({ to: "/practice", search: { day: 1, module: placement ?? first?.id ?? "basic-zero" } });
   };
 
   return (
     <div className="flex min-h-screen flex-col bg-background px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))]">
       <div className="mx-auto flex w-full max-w-lg flex-1 flex-col">
         <div className="flex items-center gap-2" aria-hidden>
-          {[0, 1, 2, 3].map((i) => (
+          {[0, 1, 2, 3, 4].map((i) => (
             <span
               key={i}
               className={cn("h-1.5 flex-1 rounded-full", i <= screen ? "bg-primary" : "bg-secondary")}
@@ -124,7 +151,8 @@ function OnboardingPage() {
               </p>
             </section>
           ) : null}
-          {screen === 3 ? (
+          {screen === 3 ? <PlacementPicker value={placement} onSelect={choosePlacement} /> : null}
+          {screen === 4 ? (
             <section className="space-y-4">
               <AuthGate />
             </section>
@@ -133,6 +161,24 @@ function OnboardingPage() {
 
         <div className="space-y-3">
           {screen === 3 ? (
+            <>
+              <button
+                type="button"
+                disabled={!placement}
+                onClick={() => (user ? void confirmSignedInPlacement() : setScreen(4))}
+                className="min-h-[56px] w-full rounded-2xl bg-primary px-6 text-[16px] font-bold tracking-wide text-primary-foreground active:scale-[0.98] disabled:opacity-40"
+              >
+                {t("action.next")}
+              </button>
+              <button
+                type="button"
+                onClick={() => setScreen(2)}
+                className="min-h-[48px] w-full rounded-2xl border border-border px-6 text-[13px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
+              >
+                {t("action.back")}
+              </button>
+            </>
+          ) : screen === 4 ? (
             user ? (
               <button
                 type="button"
@@ -171,7 +217,7 @@ function OnboardingPage() {
             <>
               <button
                 type="button"
-                onClick={() => (user ? finish("day1") : setScreen(3))}
+                onClick={() => (user && prefs.currentModuleId ? finish("day1") : setScreen(3))}
                 className="min-h-[56px] w-full rounded-2xl bg-primary px-6 text-[16px] font-bold tracking-wide text-primary-foreground active:scale-[0.98]"
               >
                 {user ? t("action.startDay1") : t("action.next")}

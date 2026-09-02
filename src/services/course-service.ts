@@ -298,12 +298,18 @@ const WEEK_1_DAYS: CourseDay[] = [day1, day2, day3, day4, day5].map((d) => ({
 const DAYS: CourseDay[] = [...WEEK_1_DAYS, ...SIMPLE_PRESENT_EXTRA_DAYS];
 
 export type LearningModule = {
+  /** Internal identity — used by progress, sessions and recordings. NEVER change. */
   id: ModuleId;
+  /** Display order only. Never used to decide where a learner is. */
   order: number;
+  /** Level caps shown above the title (e.g. "BASIC 2", "INTERMEDIO"). */
   label: string;
+  /** Large display title (e.g. "SIMPLE PRESENT", "EAGLES"). */
   title: string;
   subtitle: string;
   subtitleEs: string;
+  /** Small status line under the secondary text (e.g. "Semana 1 · 5 días"). */
+  statusLine?: { en: string; es: string };
   description: string;
   descriptionEs: string;
   meta: string[];
@@ -318,12 +324,16 @@ export type LearningModule = {
   cta?: { en: string; es: string };
 };
 
+/**
+ * Presentation metadata only. Internal ids are frozen (see ModuleId); the
+ * `order` here is the visual journey order and can change freely.
+ */
 const MODULES: LearningModule[] = [
   {
     id: "basic-zero",
     order: 1,
-    label: "MODULE 1 · MONTH 1",
-    title: "BASIC ZERO",
+    label: "BASIC ZERO",
+    title: "INTRODUCE YOURSELF & SOMEONE ELSE",
     subtitle: "Introduce Yourself & Someone Else",
     subtitleEs: "Preséntate y habla de otra persona",
     description: "Build your first English speaking foundation.",
@@ -333,36 +343,10 @@ const MODULES: LearningModule[] = [
     weeks: BASIC_ZERO_WEEKS,
   },
   {
-    id: "simple-present",
-    order: 2,
-    label: "MODULE 2 · MONTH 2",
-    title: "SIMPLE PRESENT",
-    subtitle: "Routines, Other People, Processes & Right Now",
-    subtitleEs: "Rutinas, otras personas, procesos y lo que pasa ahora",
-    description: "4-Week Fluency Journey.",
-    descriptionEs: "Viaje de fluidez de 4 semanas.",
-    meta: ["4 Weeks", "20 Days", "5 Fluency Reps per Day"],
-    days: DAYS,
-    weeks: SIMPLE_PRESENT_WEEKS,
-  },
-  {
-    id: "past-stories",
-    order: 3,
-    label: "MODULE 3 · MONTH 3",
-    title: "PAST EXPERIENCES & STORIES",
-    subtitle: "Yesterday, Other People, What Was Happening & Storytelling",
-    subtitleEs: "Ayer, otras personas, qué estaba pasando y contar historias",
-    description: "Talk about the past and tell a complete story.",
-    descriptionEs: "Habla del pasado y cuenta una historia completa.",
-    meta: ["4 Weeks", "20 Days", "5 Fluency Reps per Day"],
-    days: PAST_STORIES_DAYS,
-    weeks: PAST_STORIES_WEEKS,
-  },
-  {
     id: "simple-future",
-    order: 4,
-    label: "MODULE 4 · MONTH 4",
-    title: "BASIC 1 — SIMPLE FUTURE",
+    order: 2,
+    label: "BASIC 1",
+    title: "SIMPLE FUTURE",
     subtitle: "Plans, Other People, Decisions & Predictions",
     subtitleEs: "Planes, otras personas, decisiones y predicciones",
     description: "Talk about plans, decisions and predictions.",
@@ -372,10 +356,36 @@ const MODULES: LearningModule[] = [
     weeks: SIMPLE_FUTURE_WEEKS,
   },
   {
+    id: "simple-present",
+    order: 3,
+    label: "BASIC 2",
+    title: "SIMPLE PRESENT",
+    subtitle: "Routines · Habits · Actions happening now",
+    subtitleEs: "Rutinas · Hábitos · Acciones de ahora",
+    description: "4-Week Fluency Journey.",
+    descriptionEs: "Viaje de fluidez de 4 semanas.",
+    meta: ["4 Weeks", "20 Days", "5 Fluency Reps per Day"],
+    days: DAYS,
+    weeks: SIMPLE_PRESENT_WEEKS,
+  },
+  {
+    id: "past-stories",
+    order: 4,
+    label: "BASIC 3",
+    title: "SIMPLE PAST",
+    subtitle: "Past Experiences & Stories",
+    subtitleEs: "Experiencias pasadas e historias",
+    description: "Talk about the past and tell a complete story.",
+    descriptionEs: "Habla del pasado y cuenta una historia completa.",
+    meta: ["4 Weeks", "20 Days", "5 Fluency Reps per Day"],
+    days: PAST_STORIES_DAYS,
+    weeks: PAST_STORIES_WEEKS,
+  },
+  {
     id: "mixed-tenses",
     order: 5,
-    label: "MODULE 5 · MONTH 5",
-    title: "BASIC 4 — MIXED TENSES & QUESTIONS",
+    label: "BASIC 4",
+    title: "MIXED TENSES & QUESTIONS",
     subtitle: "Past · Present · Future · Questions — without freezing",
     subtitleEs: "Habla del pasado, presente y futuro — sin trabarte",
     description: "Move between past, present, future and questions in real conversation.",
@@ -394,10 +404,11 @@ const MODULES: LearningModule[] = [
   {
     id: "eagles-week-1",
     order: 6,
-    label: "EAGLES · WEEK 1",
-    title: "EAGLES — WEEK 1",
+    label: "INTERMEDIO",
+    title: "EAGLES",
     subtitle: "Recommend, Advise & Sell",
-    subtitleEs: "Usa tu inglés para resolver problemas, dar recomendaciones y vender.",
+    subtitleEs: "Recomendar, aconsejar y vender",
+    statusLine: { en: "Week 1 · 5 days", es: "Semana 1 · 5 días" },
     description: "Use your English to solve problems, give recommendations and sell.",
     descriptionEs: "Usa tu inglés para resolver problemas, dar recomendaciones y vender.",
     meta: ["5 Days", "25 Fluency Reps", "5 Test Ready Sprints"],
@@ -420,6 +431,12 @@ const MODULES: LearningModule[] = [
   },
 ];
 
+/** Preview-only levels: not selectable, not routable, zero days, never in totals. */
+export type UpcomingLevel = { key: string; label: string; title: string; note: { en: string; es: string } };
+export const UPCOMING_LEVELS: UpcomingLevel[] = [
+  { key: "advanced", label: "AVANZADO", title: "PRÓXIMAMENTE", note: { en: "Coming soon", es: "Muy pronto" } },
+];
+
 export const DEFAULT_MODULE: ModuleId = "basic-zero";
 
 export function isModuleId(value: unknown): value is ModuleId {
@@ -435,8 +452,14 @@ export function isModuleId(value: unknown): value is ModuleId {
 
 
 export const CourseService = {
+  /** Modules in visual journey order (presentation only). */
   modules(): LearningModule[] {
-    return MODULES;
+    return [...MODULES].sort((a, b) => a.order - b.order);
+  },
+
+  /** Visual position of a module in the journey (1-based). */
+  displayIndex(moduleId: ModuleId): number {
+    return CourseService.getModule(moduleId).order;
   },
 
   getModule(moduleId: ModuleId): LearningModule {
@@ -447,10 +470,12 @@ export const CourseService = {
     return CourseService.getModule(moduleId).days.length;
   },
 
-  /** Total days across every existing module (used by Home / Account stats). */
+  /**
+   * Total days across every published module (Home / Account / Progress).
+   * Computed dynamically; upcoming preview levels have no days and never count.
+   */
   totalDaysAll(): number {
-    // Pilot modules are opt-in and excluded from the learner's journey total.
-    return MODULES.filter((m) => !m.pilot).reduce((sum, m) => sum + m.days.length, 0);
+    return MODULES.reduce((sum, m) => sum + m.days.length, 0);
   },
 
   getDays(moduleId: ModuleId): CourseDay[] {

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, createFileRoute } from "@tanstack/react-router";
-import { LogOut } from "lucide-react";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { ChevronRight, LogOut } from "lucide-react";
+import { ModuleHeading } from "@/components/fluency/ModuleHeading";
+import { clearPendingPlacement } from "@/services/preferences";
 import { AppShell } from "@/components/fluency/AppShell";
 import { MicTest } from "@/components/fluency/MicTest";
 import { CourseService } from "@/services/course-service";
@@ -35,6 +37,7 @@ export const Route = createFileRoute("/profile")({
 function ProfilePage() {
   const { t, lang, setLang, prefs, setPrefs } = useAppLang();
   const { signOut } = useAuth();
+  const navigate = useNavigate();
   const esUi = lang === "es";
   const [state, setState] = useState<JourneyState>(emptyJourney);
   const [email, setEmail] = useState("");
@@ -44,6 +47,7 @@ function ProfilePage() {
   const [busy, setBusy] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
   const [micTest, setMicTest] = useState(false);
+  const currentModule = CourseService.getModule(prefs.currentModuleId ?? JourneyService.currentModule(state));
 
   useEffect(() => {
     setState(JourneyService.load());
@@ -129,6 +133,19 @@ function ProfilePage() {
             className="mt-1 inline-flex min-h-[44px] w-full items-center justify-center rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
           >
             {t("account.viewIntro")}
+          </Link>
+        </section>
+
+        <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+            {t("place.currentLevel")}
+          </p>
+          <ModuleHeading module={currentModule} />
+          <Link
+            to="/level"
+            className="inline-flex min-h-[48px] w-full items-center justify-between rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
+          >
+            {t("place.changeTitle")} <ChevronRight className="size-4 text-muted-foreground" />
           </Link>
         </section>
 
@@ -219,8 +236,15 @@ function ProfilePage() {
                 onClick={() => {
                   setState(JourneyService.reset());
                   PracticeSessionService.clearAll();
-                  void CloudSync.resetAccountProgress().catch(() => undefined);
+                  clearPendingPlacement();
                   setConfirmReset(false);
+                  // Clears the learning route too, then asks "¿Dónde empiezas?" again.
+                  void CloudSync.resetAccountProgress()
+                    .catch(() => undefined)
+                    .finally(() => {
+                      setPrefs({ onboardingCompleted: false });
+                      void navigate({ to: "/onboarding" });
+                    });
                 }}
                 className="flex-1 rounded-2xl bg-destructive px-4 py-3.5 text-[13px] font-bold uppercase tracking-[0.12em] text-destructive-foreground"
               >
