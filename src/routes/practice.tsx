@@ -868,10 +868,41 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 
 /* -------------------------------- Rep 2 ---------------------------------- */
 
+export type Rep2Chunk = { id: string; lineIds: string[]; lines: ModelLine[] };
+
+/**
+ * Groups the day's core lines into recording chunks (2 sentences each).
+ * Q/A days pair each question with its answer, so one chunk = 2 Q/A pairs.
+ * A day may override the grouping with `rep2Chunks`.
+ */
+export function rep2Chunks(day: CourseDay): Rep2Chunk[] {
+  const byId = new Map(day.lines.map((line) => [line.id, line]));
+  const toChunk = (lines: ModelLine[]): Rep2Chunk => ({
+    id: lines[0]?.id ?? "chunk",
+    lineIds: lines.map((l) => l.id),
+    lines,
+  });
+
+  if (day.rep2Chunks?.length) {
+    const chunks = day.rep2Chunks
+      .map((ids) => ids.map((id) => byId.get(id)).filter((l): l is ModelLine => Boolean(l)))
+      .filter((lines) => lines.length > 0)
+      .map(toChunk);
+    if (chunks.length) return chunks;
+  }
+
+  const isQa = day.lines.some((line) => line.role === "q") && day.lines.some((line) => line.role === "a");
+  const size = isQa ? 4 : 2;
+  const chunks: Rep2Chunk[] = [];
+  for (let i = 0; i < day.lines.length; i += size) {
+    chunks.push(toChunk(day.lines.slice(i, i + size)));
+  }
+  return chunks;
+}
+
 function Rep2Copy({
   day,
   index,
-  showEs,
   attempted,
   onRecorded,
   onSkip,
@@ -886,51 +917,55 @@ function Rep2Copy({
   onNext: () => void;
 }) {
   const t = useT();
-  const line = day.lines[index]!;
+  const chunks = rep2Chunks(day);
+  const chunk = chunks[index] ?? chunks[0]!;
   const [mine, setMine] = useState<Recording | null>(null);
 
   useEffect(() => setMine(null), [index]);
 
   const level = supportLevel(day);
+  const chunkText = chunk.lines.map((line) => line.text).join(" ");
+  const isLast = index >= chunks.length - 1;
 
   return (
     <div className="space-y-5">
-      <Instruction en="Listen, then copy." es="Escucha y copia." />
+      <Instruction en="Listen, then say both sentences together." es="Escucha y di las dos frases juntas." />
 
       <SceneImage day={day} />
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-        {index + 1} / {day.lines.length}
+        {t("practice.chunk")} {index + 1} {t("practice.of")} {chunks.length}
       </p>
 
-      <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-        <LineCard line={line} chunked={prefersChunks(level)} />
+      <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+        {chunk.lines.map((line) => (
+          <LineCard key={line.id} line={line} chunked={prefersChunks(level)} />
+        ))}
       </div>
 
+      <AudioPlayer text={chunkText} label={t("practice.listen")} rate={0.9} voice={day.speakerVoice} />
 
-      <AudioPlayer text={line.text} label={t("practice.listen")} rate={0.9} voice={day.speakerVoice} />
-
-      <VoiceRecorder label={t("practice.record")} maxSeconds={20} showTimer onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
+      <VoiceRecorder
+        label={mine ? t("practice.repeat") : t("practice.record")}
+        maxSeconds={30}
+        showTimer
+        onComplete={(rec) => {
+          setMine(rec);
+          onRecorded(rec);
+        }}
+      />
 
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
       <PrimaryButton onClick={onNext} disabled={!attempted}>
-        {index < day.lines.length - 1
-          ? showEs
-            ? "SIGUIENTE FRASE"
-            : "NEXT SENTENCE"
-          : showEs
-            ? "SIGUIENTE REP"
-            : "NEXT REP"}{" "}
-        <ArrowRight className="size-5" />
+        {isLast ? t("practice.nextRep") : t("practice.nextChunk")} <ArrowRight className="size-5" />
       </PrimaryButton>
 
       {attempted ? null : (
         <>
           <HelperText text={t("practice.recordOnce")} />
-          <SkipLink label={t("practice.skipSentence")} onClick={onSkip} />
+          <SkipLink label={t("practice.skipChunk")} onClick={onSkip} />
         </>
       )}
-
     </div>
   );
 }
