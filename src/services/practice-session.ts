@@ -165,6 +165,52 @@ export const PracticeSessionService = {
   },
 };
 
-export function itemKey(rep: 2 | 4, id: string): string {
-  return `r${rep}:${id}`;
+/**
+ * Item keys: Rep 2 chunks use `r2c:<firstLineId>`; Rep 4 prompts use `r4:<id>`.
+ * The legacy sentence-by-sentence Rep 2 used `r2:<lineId>`.
+ */
+export function itemKey(rep: "2c" | 4, id: string): string {
+  return rep === "2c" ? `r2c:${id}` : `r4:${id}`;
+}
+
+const LEGACY_REP2_PREFIX = "r2:";
+
+/**
+ * Maps a session saved with the old one-sentence-per-recording Rep 2 to the
+ * chunked structure. Old sentence index 5 → chunk index 2 (Chunk 3). A chunk
+ * counts as attempted/skipped when any of its lines was.
+ */
+export function migrateLegacyRep2(
+  session: PracticeSession,
+  chunks: { id: string; lineIds: string[] }[],
+  rep4Total: number,
+): PracticeSession {
+  const hasLegacyKeys = [...session.attempted, ...session.skipped].some((key) => key.startsWith(LEGACY_REP2_PREFIX));
+  const outOfRange = session.stage === 2 && session.subIndex >= chunks.length;
+  if (!hasLegacyKeys && !outOfRange && !(session.stage === 4 && session.subIndex >= rep4Total)) return session;
+
+  const remap = (keys: string[]) => {
+    const out: string[] = [];
+    for (const key of keys) {
+      if (!key.startsWith(LEGACY_REP2_PREFIX) || key.startsWith("r2c:")) {
+        if (!out.includes(key)) out.push(key);
+        continue;
+      }
+      const lineId = key.slice(LEGACY_REP2_PREFIX.length);
+      const chunk = chunks.find((c) => c.lineIds.includes(lineId));
+      if (!chunk) continue;
+      const mapped = itemKey("2c", chunk.id);
+      if (!out.includes(mapped)) out.push(mapped);
+    }
+    return out;
+  };
+
+  let subIndex = session.subIndex;
+  if (session.stage === 2 && (hasLegacyKeys || outOfRange)) {
+    const perChunk = Math.max(1, Math.round(chunks.reduce((n, c) => n + c.lineIds.length, 0) / Math.max(1, chunks.length)));
+    subIndex = Math.min(chunks.length - 1, Math.max(0, Math.floor(session.subIndex / perChunk)));
+  }
+  if (session.stage === 4) subIndex = Math.min(Math.max(0, rep4Total - 1), subIndex);
+
+  return { ...session, subIndex, attempted: remap(session.attempted), skipped: remap(session.skipped) };
 }
