@@ -255,6 +255,7 @@ export const CloudSync = {
 
   /* ------------------------------ Preferences ----------------------------- */
 
+  /** Pushes UI preferences only; placement fields are written by their own flows. */
   async pushPreferences(): Promise<void> {
     const uid = await userId();
     if (!uid) return;
@@ -275,15 +276,100 @@ export const CloudSync = {
     if (!uid) return;
     const { data } = await supabase
       .from("user_preferences")
-      .select("app_language, spanish_support, onboarding_completed")
+      .select(
+        "app_language, spanish_support, onboarding_completed, current_module_id, initial_placement_module_id, placement_source, placement_selected_at, placement_changed_at, placement_change_count",
+      )
       .eq("user_id", uid)
       .maybeSingle();
     if (!data) return;
-    savePreferences({
+    writePreferencesLocal({
       appLanguage: data.app_language === "en" ? "en" : "es",
       spanishSupport: data.spanish_support,
       onboardingCompleted: data.onboarding_completed,
+      currentModuleId: isModuleId(data.current_module_id) ? data.current_module_id : null,
+      initialPlacementModuleId: isModuleId(data.initial_placement_module_id)
+        ? data.initial_placement_module_id
+        : null,
+      placementSource: data.placement_source,
+      placementSelectedAt: data.placement_selected_at,
+      placementChangedAt: data.placement_changed_at,
+      placementChangeCount: data.placement_change_count ?? 0,
     });
+  },
+
+  /* ------------------------------- Placement ------------------------------ */
+
+  /** True when the account already holds meaningful learning data. */
+  async isExistingLearner(uid: string): Promise<boolean> {
+    const [days, sessions, prefs] = await Promise.all([
+      supabase.from("day_progress").select("id", { count: "exact", head: true }).eq("user_id", uid),
+      supabase.from("practice_sessions").select("id", { count: "exact", head: true }).eq("user_id", uid),
+      supabase.from("user_preferences").select("current_module_id").eq("user_id", uid).maybeSingle(),
+    ]);
+    return (days.count ?? 0) > 0 || (sessions.count ?? 0) > 0 || Boolean(prefs.data?.current_module_id);
+  },
+
+  /**
+   * Applies a pre-auth placement choice to a *new* learner. Existing learners
+   * keep their saved position and the pending choice is discarded. The pending
+   * key is only cleared once the backend confirms the write.
+   */
+  async applyPendingPlacement(): Promise<"saved" | "discarded" | "none" | "failed"> {
+    const uid = await userId();
+    const pending = getPendingPlacement();
+    if (!uid || !pending) return "none";
+    if (await CloudSync.isExistingLearner(uid)) {
+      clearPendingPlacement();
+      return "discarded";
+    }
+    const { error } = await supabase.from("user_preferences").upsert(
+      {
+        user_id: uid,
+        current_module_id: pending.moduleId,
+        initial_placement_module_id: pending.moduleId,
+        placement_source: "self_selected",
+        placement_selected_at: pending.selectedAt,
+        onboarding_completed: true,
+      },
+      { onConflict: "user_id" },
+    );
+    if (error) {
+      console.error("[placement] save failed", error.message);
+      return "failed";
+    }
+    clearPendingPlacement();
+    writePreferencesLocal({
+      currentModuleId: pending.moduleId,
+      initialPlacementModuleId: pending.moduleId,
+      placementSource: "self_selected",
+      placementSelectedAt: pending.selectedAt,
+      onboardingCompleted: true,
+    });
+    return "saved";
+  },
+
+  /**
+   * "Cambiar mi nivel": moves only the current module. Progress, recordings,
+   * sessions and the original placement are untouched.
+   */
+  async changeLevel(moduleId: ModuleId): Promise<boolean> {
+    const uid = await userId();
+    const prefs = loadPreferences();
+    const now = new Date().toISOString();
+    const count = prefs.placementChangeCount + 1;
+    if (uid) {
+      const { error } = await supabase.from("user_preferences").upsert(
+        { user_id: uid, current_module_id: moduleId, placement_changed_at: now, placement_change_count: count },
+        { onConflict: "user_id" },
+      );
+      if (error) {
+        console.error("[placement] change level failed", error.message);
+        return false;
+      }
+    }
+    writePreferencesLocal({ currentModuleId: moduleId, placementChangedAt: now, placementChangeCount: count });
+    JourneyService.invalidatePull();
+    return true;
   },
 
   /* ------------------------------- Migration ------------------------------ */
