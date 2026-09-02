@@ -106,6 +106,7 @@ export type EaglesDayInput = {
   rep5Label?: CourseDay["rep5Label"];
   rep5Scenarios?: CourseDay["rep5Scenarios"];
   hideModelText?: boolean;
+  rep5Skeleton?: CourseDay["rep5Skeleton"];
   estimatedMinutes?: string;
 };
 
@@ -147,6 +148,7 @@ export function makeDay(input: EaglesDayInput, weeks: WeekMeta[] = EAGLES_WEEK_1
     ...(input.rep5Label ? { rep5Label: input.rep5Label } : {}),
     ...(input.rep5Scenarios ? { rep5Scenarios: input.rep5Scenarios } : {}),
     ...(input.hideModelText ? { hideModelText: true } : {}),
+    ...(input.rep5Skeleton ? { rep5Skeleton: input.rep5Skeleton } : {}),
     // No modelExample on purpose: Rep 5 never shows a complete final speech.
   };
 }

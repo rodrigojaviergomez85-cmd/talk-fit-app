@@ -1280,7 +1280,7 @@ function Rep5FinalRep({
           </TranslatableText>
           <p className="pt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-navy-foreground/60">{t("rep5.skeleton")}</p>
           <div className="flex flex-wrap gap-1.5">
-            {["DECISION", "WHY", "EXAMPLE", "OTHER SIDE", "WHAT IF?", "CONCLUSION"].map((step) => (
+            {(day.rep5Skeleton ?? ["DECISION", "WHY", "EXAMPLE", "OTHER SIDE", "WHAT IF?", "CONCLUSION"]).map((step) => (
               <span key={step} className="rounded-full border border-navy-foreground/25 px-2.5 py-1 text-[10px] font-extrabold tracking-[0.12em]">
                 {step}
               </span>

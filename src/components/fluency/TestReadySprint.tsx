@@ -119,7 +119,23 @@ export function TestReadySprint({ moduleId, day, sprint }: Props) {
           <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-primary">
             {retell ? t("tr.story") : t("tr.passage")}
           </p>
-          <AudioPlayer text={sprint.passage} label={t("tr.play")} rate={1} variant="navy" voice="male" />
+          {sprint.passageParts?.length ? (
+            // Two-speaker passage: each turn plays with its own voice, in order.
+            <div className="space-y-2">
+              {sprint.passageParts.map((part, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <span className="w-8 shrink-0 text-center text-[10px] font-extrabold tracking-[0.12em] text-navy-foreground/70">
+                    {part.voice === "female" ? "A" : "B"}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <AudioPlayer text={part.text} label={`${t("tr.play")} ${i + 1}`} rate={1} variant="navy" voice={part.voice} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <AudioPlayer text={sprint.passage} label={t("tr.play")} rate={1} variant="navy" voice="male" />
+          )}
           <p className="text-center text-[12px] text-navy-foreground/70">
             {retell ? t("tr.listenOnce") : t("tr.listenFirst")}
           </p>

@@ -8,6 +8,8 @@ import { EAGLES_WEEK_1_DAYS, EAGLES_WEEK_1_WEEKS } from "./eagles-week-1-course"
 import { EAGLES_WEEKS_2_4_DAYS } from "./eagles-weeks-2-4-course";
 import { TIGERS_WEEK_1_DAYS, TIGERS_WEEKS } from "./tigers-week-1-course";
 import { TIGERS_WEEKS_2_4_DAYS } from "./tigers-weeks-2-4-course";
+import { SHARKS_WEEK_1_DAYS, SHARKS_WEEKS } from "./sharks-week-1-course";
+import { SHARKS_WEEKS_2_4_DAYS } from "./sharks-weeks-2-4-course";
 
 
 
@@ -464,12 +466,40 @@ const MODULES: LearningModule[] = [
     days: [...TIGERS_WEEK_1_DAYS, ...TIGERS_WEEKS_2_4_DAYS],
     weeks: TIGERS_WEEKS,
   },
+  {
+    // Internal id is frozen from day one: progress and recordings will be keyed to it.
+    id: "sharks",
+    order: 8,
+    label: "INTERMEDIO",
+    title: "SHARKS",
+    subtitle: "Adapt, Improvise & Keep the Conversation Going",
+    subtitleEs: "Adáptate, improvisa y mantén la conversación",
+    statusLine: { en: "Month 3 · 4 weeks · 20 days", es: "Mes 3 · 4 semanas · 20 días" },
+    description: "Respond when you don't know what's coming: react fast, clarify, rephrase, change your mind and keep talking under pressure.",
+    descriptionEs: "Responde cuando no sabes qué viene: reacciona rápido, aclara, reformula, cambia de opinión y sigue hablando bajo presión.",
+    meta: ["4 Weeks", "20 Days", "100 Fluency Reps", "12 Test Ready Sprints"],
+    highlights: [
+      { en: "React with 5–10 seconds of prep", es: "Reaccionar con 5–10 segundos de preparación" },
+      { en: "Adapt when the information changes", es: "Adaptarte cuando cambia la información" },
+      { en: "Ask for clarification and rephrase", es: "Pedir aclaración y reformular" },
+      { en: "Argue, persuade and change your mind", es: "Argumentar, persuadir y cambiar de opinión" },
+      { en: "Keep a conversation going by asking back", es: "Mantener la conversación preguntando de vuelta" },
+      { en: "Improvise under pressure in the SHARKS Final", es: "Improvisar bajo presión en la Final SHARKS" },
+    ],
+    extra: {
+      en: "⚡ 12 TEST READY SPRINTS — natural-speed audio, two-speaker listening, paraphrase, inference and Speak Now.",
+      es: "⚡ 12 TEST READY SPRINTS — audio a velocidad natural, listening a dos voces, paráfrasis, inferencia y Speak Now.",
+    },
+    cta: { en: "START SHARKS", es: "EMPEZAR SHARKS" },
+    hiddenFromPlacement: true,
+    days: [...SHARKS_WEEK_1_DAYS, ...SHARKS_WEEKS_2_4_DAYS],
+    weeks: SHARKS_WEEKS,
+  },
 ];
 
 /** Preview-only levels: not selectable, not routable, zero days, never in totals. */
 export type UpcomingLevel = { key: string; label: string; title: string; note: { en: string; es: string } };
 export const UPCOMING_LEVELS: UpcomingLevel[] = [
-  { key: "sharks", label: "INTERMEDIO · SHARKS", title: "PRÓXIMAMENTE", note: { en: "Coming soon", es: "Muy pronto" } },
   { key: "advanced", label: "AVANZADO", title: "PRÓXIMAMENTE", note: { en: "Coming soon", es: "Muy pronto" } },
 ];
 

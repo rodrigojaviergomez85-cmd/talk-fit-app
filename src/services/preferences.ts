@@ -52,6 +52,7 @@ const MODULE_IDS = new Set<string>([
   "mixed-tenses",
   "eagles-week-1",
   "tigers",
+  "sharks",
 ]);
 
 function asModuleId(value: unknown): ModuleId | null {

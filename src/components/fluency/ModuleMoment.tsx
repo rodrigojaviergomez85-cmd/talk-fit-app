@@ -1,4 +1,5 @@
 import { ComparisonPair } from "./ComparisonPair";
+import { JourneyMoment } from "./JourneyMoment";
 import { ReflectionChips } from "./ReflectionChips";
 import {
   MODULE_COMPLETION,
@@ -44,6 +45,11 @@ export function ModuleMoment({ comparison, state, celebrate = false }: Props) {
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-navy-foreground/70">
           {completion ? (es ? completion.levelLine.es : completion.levelLine.en) : `${module.label} · ${module.title}`}
         </p>
+        {completion?.journeyLine ? (
+          <p className="mt-2 text-[12px] font-extrabold uppercase tracking-[0.12em] text-primary">
+            {es ? completion.journeyLine.es : completion.journeyLine.en}
+          </p>
+        ) : null}
         <p className="mt-3 text-[16px] font-extrabold leading-snug">
           {es ? transformation.es : transformation.en}
         </p>
@@ -106,6 +112,8 @@ export function ModuleMoment({ comparison, state, celebrate = false }: Props) {
           />
         </div>
       ) : null}
+
+      {comparison.moduleId === "sharks" ? <JourneyMoment state={state} /> : null}
     </section>
   );
 }
