@@ -90,6 +90,16 @@ function ModulePage() {
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{module.label}</p>
           <h2 className="mt-1 text-2xl font-extrabold tracking-tight">{module.title}</h2>
           <p className="mt-1 text-[14px] font-semibold text-navy-foreground/80">{module.subtitle}</p>
+          {module.highlights ? (
+            <ul className="mt-3 space-y-1.5">
+              {module.highlights.map((item) => (
+                <li key={item.en} className="flex items-start gap-2 text-[13px] font-semibold text-navy-foreground/90">
+                  <span className="mt-0.5 text-primary">✓</span>
+                  <span>{item.es}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
           <div className="mt-3 flex flex-wrap gap-2">
             {module.meta.map((item) => (
               <span

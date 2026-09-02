@@ -3,6 +3,7 @@ import { BASIC_ZERO_DAYS, BASIC_ZERO_WEEKS } from "./basic-zero-course";
 import { SIMPLE_PRESENT_EXTRA_DAYS, SIMPLE_PRESENT_WEEKS } from "./simple-present-course";
 import { PAST_STORIES_DAYS, PAST_STORIES_WEEKS } from "./past-stories-course";
 import { SIMPLE_FUTURE_DAYS, SIMPLE_FUTURE_WEEKS } from "./simple-future-course";
+import { MIXED_TENSES_DAYS, MIXED_TENSES_WEEKS } from "./mixed-tenses-course";
 
 
 
@@ -305,6 +306,7 @@ export type LearningModule = {
   description: string;
   descriptionEs: string;
   meta: string[];
+  highlights?: { en: string; es: string }[];
   days: CourseDay[];
   weeks?: { week: 1 | 2 | 3 | 4; title: string; subtitle: string; subtitleEs: string }[];
 };
@@ -362,6 +364,26 @@ const MODULES: LearningModule[] = [
     days: SIMPLE_FUTURE_DAYS,
     weeks: SIMPLE_FUTURE_WEEKS,
   },
+  {
+    id: "mixed-tenses",
+    order: 5,
+    label: "MODULE 5 · MONTH 5",
+    title: "BASIC 4 — MIXED TENSES & QUESTIONS",
+    subtitle: "Past · Present · Future · Questions — without freezing",
+    subtitleEs: "Habla del pasado, presente y futuro — sin trabarte",
+    description: "Move between past, present, future and questions in real conversation.",
+    descriptionEs: "Cambia entre pasado, presente, futuro y preguntas en una conversación real.",
+    meta: ["4 Weeks", "20 Days", "5 Fluency Reps per Day"],
+    highlights: [
+      { en: "Talk about what you do", es: "Hablar de lo que haces" },
+      { en: "Tell what happened", es: "Contar lo que pasó" },
+      { en: "Talk about your plans", es: "Hablar de tus planes" },
+      { en: "Ask and answer questions", es: "Hacer y responder preguntas" },
+      { en: "Switch tenses while you speak", es: "Cambiar de tiempo al hablar" },
+    ],
+    days: MIXED_TENSES_DAYS,
+    weeks: MIXED_TENSES_WEEKS,
+  },
 ];
 
 export const DEFAULT_MODULE: ModuleId = "basic-zero";
@@ -371,7 +393,8 @@ export function isModuleId(value: unknown): value is ModuleId {
     value === "basic-zero" ||
     value === "simple-present" ||
     value === "past-stories" ||
-    value === "simple-future"
+    value === "simple-future" ||
+    value === "mixed-tenses"
   );
 }
 
