@@ -6,6 +6,8 @@ import { SIMPLE_FUTURE_DAYS, SIMPLE_FUTURE_WEEKS } from "./simple-future-course"
 import { MIXED_TENSES_DAYS, MIXED_TENSES_WEEKS } from "./mixed-tenses-course";
 import { EAGLES_WEEK_1_DAYS, EAGLES_WEEK_1_WEEKS } from "./eagles-week-1-course";
 import { EAGLES_WEEKS_2_4_DAYS } from "./eagles-weeks-2-4-course";
+import { TIGERS_WEEK_1_DAYS, TIGERS_WEEKS } from "./tigers-week-1-course";
+import { TIGERS_WEEKS_2_4_DAYS } from "./tigers-weeks-2-4-course";
 
 
 
