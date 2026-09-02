@@ -5,7 +5,7 @@ import { RecordingPlayback } from "./RecordingPlayback";
 import { TranslatableText } from "./TranslatableText";
 import { JourneyService } from "@/services/journey-service";
 import { CourseService } from "@/services/course-service";
-import type { CourseDay, ModuleId, Recording, SelfAssessment } from "@/lib/types";
+import type { CourseDay, DayRecord, JourneyState, ModuleId, Recording, SelfAssessment } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { SaveProgressPrompt } from "./SaveProgressPrompt";
 
