@@ -140,8 +140,8 @@ const DICT = {
     "I use present, past and future; I want to mix them and ask questions.",
   ],
   "place.eagles-week-1": [
-    "Ya converso y quiero explicar, recomendar, aconsejar y vender.",
-    "I can hold a conversation and want to explain, recommend, advise and sell.",
+    "Ya converso y quiero conectar ideas, resolver problemas, comparar opciones y vender.",
+    "I can hold a conversation and want to connect ideas, solve problems, compare options and sell.",
   ],
   "place.soonTitle": ["MUY PRONTO", "VERY SOON"],
   "place.soonBody": [
