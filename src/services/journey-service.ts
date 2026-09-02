@@ -287,6 +287,7 @@ export const JourneyService = {
     sentenceCount?: number | null;
     finalUrl?: string | null;
     firstUrl?: string | null;
+    repDurations?: RepDurations | null;
   }): JourneyState {
     const state = read();
     const today = dayKey();
@@ -313,6 +314,7 @@ export const JourneyService = {
       sentenceCount: input.sentenceCount ?? null,
       finalUrl: input.finalUrl ?? null,
       firstUrl: input.firstUrl ?? null,
+      repDurations: input.repDurations ?? existing?.repDurations ?? null,
       ...(existing?.recordingPath ? { recordingPath: existing.recordingPath } : {}),
       ...(existing?.selfAssessment ? { selfAssessment: existing.selfAssessment } : {}),
     };
