@@ -2,7 +2,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { JourneyService } from "./journey-service";
 import { PracticeSessionService, type PracticeSession } from "./practice-session";
 import { VerbBank, type VerbBankState } from "./verb-bank";
-import { loadPreferences, savePreferences } from "./preferences";
+import {
+  clearPendingPlacement,
+  getPendingPlacement,
+  loadPreferences,
+  writePreferencesLocal,
+} from "./preferences";
 import type { ModuleId, Recording } from "@/lib/types";
 import { isModuleId } from "./course-service";
 
