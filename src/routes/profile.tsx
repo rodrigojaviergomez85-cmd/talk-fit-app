@@ -39,7 +39,6 @@ function ProfilePage() {
   const { signOut } = useAuth();
   const navigate = useNavigate();
   const esUi = lang === "es";
-  const currentModule = CourseService.getModule(prefs.currentModuleId ?? JourneyService.currentModule(state));
   const [state, setState] = useState<JourneyState>(emptyJourney);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,6 +47,7 @@ function ProfilePage() {
   const [busy, setBusy] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
   const [micTest, setMicTest] = useState(false);
+  const currentModule = CourseService.getModule(prefs.currentModuleId ?? JourneyService.currentModule(state));
 
   useEffect(() => {
     setState(JourneyService.load());
