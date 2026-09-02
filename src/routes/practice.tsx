@@ -107,6 +107,8 @@ function PracticePage() {
   const [finalRecording, setFinalRecording] = useState<Recording | null>(null);
   const [saveState, setSaveState] = useState<FinalRepSaveState>("idle");
   const [journeyAfterFinish, setJourneyAfterFinish] = useState<JourneyState | null>(null);
+  /** Habit snapshot taken right before completeDay, so milestones are crossed exactly once. */
+  const [habitBefore, setHabitBefore] = useState<{ days: number; lastCompletedDate?: string } | null>(null);
   const saveRef = useRef(false);
   const practiceSeconds = useRef(0);
 
