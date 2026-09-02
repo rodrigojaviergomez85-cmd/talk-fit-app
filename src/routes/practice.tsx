@@ -293,7 +293,7 @@ function PracticePage() {
     cloudSave(final, next);
   };
 
-  const countFor = (rep: 2 | 4, ids: string[]) => {
+  const countFor = (rep: "2c" | 4, ids: string[]) => {
     const keys = ids.map((id) => itemKey(rep, id));
     return {
       total: keys.length,
