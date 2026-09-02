@@ -11,7 +11,7 @@ import { JourneyService } from "@/services/journey-service";
  * future milestones (day 20 / 40 / 60 / 100) are just another pair.
  */
 
-export type ComparisonType = "week" | "module";
+export type ComparisonType = "week" | "module" | "journey";
 
 export type ComparisonSide = {
   /** Day number inside the module. */
