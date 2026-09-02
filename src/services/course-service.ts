@@ -449,7 +449,8 @@ export const CourseService = {
 
   /** Total days across every existing module (used by Home / Account stats). */
   totalDaysAll(): number {
-    return MODULES.reduce((sum, m) => sum + m.days.length, 0);
+    // Pilot modules are opt-in and excluded from the learner's journey total.
+    return MODULES.filter((m) => !m.pilot).reduce((sum, m) => sum + m.days.length, 0);
   },
 
   getDays(moduleId: ModuleId): CourseDay[] {
