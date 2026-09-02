@@ -146,14 +146,30 @@ export const JourneyService = {
   },
 
   /**
-   * The single next practice across all modules, in learning order.
-   * Returns null only when every existing module is complete.
+   * The module the learner is studying right now.
+   * 1. Saved `currentModuleId` (self-placement / level change / backfilled).
+   * 2. Otherwise the module of the most recent local activity (offline safety net).
+   * 3. Otherwise the default first module.
+   * Display order is never used to decide where someone is.
+   */
+  currentModule(state: JourneyState): ModuleId {
+    const saved = loadPreferences().currentModuleId;
+    if (saved && isModuleId(saved)) return saved;
+    const latest = JourneyService.recordsByDate(state).at(-1);
+    if (latest && isModuleId(latest.moduleId)) return latest.moduleId;
+    return DEFAULT_MODULE;
+  },
+
+  /**
+   * The single next practice: the current module's next day. Once the current
+   * module is complete, the next incomplete module after it in display order.
+   * Returns null only when every module from the current one onward is done.
    */
   nextPractice(state: JourneyState): { moduleId: ModuleId; day: number; started: boolean } | null {
-    const modules = [...CourseService.modules()].sort((a, b) => a.order - b.order);
-    for (const module of modules) {
-      // Pilot modules are opt-in only: never auto-place learners into them.
-      if (module.pilot) continue;
+    const current = JourneyService.currentModule(state);
+    const modules = CourseService.modules();
+    const startIndex = Math.max(0, modules.findIndex((m) => m.id === current));
+    for (const module of modules.slice(startIndex)) {
       if (JourneyService.moduleComplete(state, module.id)) continue;
       const day = JourneyService.currentDay(state, module.id);
       return {
@@ -163,6 +179,18 @@ export const JourneyService = {
       };
     }
     return null;
+  },
+
+  /**
+   * Presentation status for a module card. Modules before the current one are
+   * "review" (never blockers); no module is ever locked.
+   */
+  moduleStatus(state: JourneyState, moduleId: ModuleId): "done" | "current" | "review" | "next" {
+    if (JourneyService.moduleComplete(state, moduleId)) return "done";
+    const next = JourneyService.nextPractice(state);
+    if (next?.moduleId === moduleId) return "current";
+    const currentIndex = CourseService.displayIndex(next?.moduleId ?? JourneyService.currentModule(state));
+    return CourseService.displayIndex(moduleId) < currentIndex ? "review" : "next";
   },
 
   /** Completed day records inside one week of a module, in day order. */
