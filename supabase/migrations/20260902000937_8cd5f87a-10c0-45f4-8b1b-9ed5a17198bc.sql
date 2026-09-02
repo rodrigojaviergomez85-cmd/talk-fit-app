@@ -1,0 +1,1 @@
+ALTER TABLE public.day_progress ADD COLUMN IF NOT EXISTS rep_durations jsonb;

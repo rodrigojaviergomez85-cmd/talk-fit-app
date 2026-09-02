@@ -25,6 +25,7 @@ export type Database = {
           practice_seconds: number
           recording_path: string | null
           recordings_count: number
+          rep_durations: Json | null
           self_assessment: string | null
           sentence_count: number | null
           updated_at: string
@@ -40,6 +41,7 @@ export type Database = {
           practice_seconds?: number
           recording_path?: string | null
           recordings_count?: number
+          rep_durations?: Json | null
           self_assessment?: string | null
           sentence_count?: number | null
           updated_at?: string
@@ -55,6 +57,7 @@ export type Database = {
           practice_seconds?: number
           recording_path?: string | null
           recordings_count?: number
+          rep_durations?: Json | null
           self_assessment?: string | null
           sentence_count?: number | null
           updated_at?: string
