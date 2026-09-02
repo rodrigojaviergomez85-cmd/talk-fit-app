@@ -321,6 +321,8 @@ export type LearningModule = {
   weeks?: { week: 1 | 2 | 3 | 4; title: string; subtitle: string; subtitleEs: string }[];
   /** Standalone pilot: never auto-placed as the learner's "next" module. */
   pilot?: boolean;
+  /** Not offered in self-placement: reached by finishing the previous module (or changing level later). */
+  hiddenFromPlacement?: boolean;
   /** Extra line shown on the module intro (e.g. Test Ready Sprints). */
   extra?: { en: string; es: string };
   /** Module card CTA override. */
