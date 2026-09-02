@@ -433,11 +433,41 @@ const MODULES: LearningModule[] = [
     days: [...EAGLES_WEEK_1_DAYS, ...EAGLES_WEEKS_2_4_DAYS],
     weeks: EAGLES_WEEK_1_WEEKS,
   },
+  {
+    // Internal id is frozen from day one: progress and recordings will be keyed to it.
+    id: "tigers",
+    order: 7,
+    label: "INTERMEDIO",
+    title: "TIGERS",
+    subtitle: "Explain, Defend & Respond",
+    subtitleEs: "Explica, defiende y responde",
+    statusLine: { en: "Month 2 · 4 weeks · 20 days", es: "Mes 2 · 4 semanas · 20 días" },
+    description: "Don't just answer. Explain why, give evidence, compare alternatives and defend your decision.",
+    descriptionEs: "No solo respondas. Explica por qué, da evidencia, compara alternativas y defiende tu decisión.",
+    meta: ["4 Weeks", "20 Days", "100 Fluency Reps", "12 Test Ready Sprints"],
+    highlights: [
+      { en: "Explain why, not just what", es: "Explicar por qué, no solo qué" },
+      { en: "Give examples and evidence", es: "Dar ejemplos y evidencia" },
+      { en: "Compare options and trade-offs", es: "Comparar opciones y sus costos" },
+      { en: "Pass a job interview in English", es: "Pasar una entrevista de trabajo en inglés" },
+      { en: "Negotiate and respond to objections", es: "Negociar y responder a objeciones" },
+      { en: "Defend a decision under pressure", es: "Defender una decisión bajo presión" },
+    ],
+    extra: {
+      en: "⚡ 12 TEST READY SPRINTS — longer audio, two-speaker conversations, interview responses.",
+      es: "⚡ 12 TEST READY SPRINTS — audios más largos, conversaciones a dos voces, respuestas de entrevista.",
+    },
+    cta: { en: "START TIGERS", es: "EMPEZAR TIGERS" },
+    hiddenFromPlacement: true,
+    days: [...TIGERS_WEEK_1_DAYS, ...TIGERS_WEEKS_2_4_DAYS],
+    weeks: TIGERS_WEEKS,
+  },
 ];
 
 /** Preview-only levels: not selectable, not routable, zero days, never in totals. */
 export type UpcomingLevel = { key: string; label: string; title: string; note: { en: string; es: string } };
 export const UPCOMING_LEVELS: UpcomingLevel[] = [
+  { key: "sharks", label: "INTERMEDIO · SHARKS", title: "PRÓXIMAMENTE", note: { en: "Coming soon", es: "Muy pronto" } },
   { key: "advanced", label: "AVANZADO", title: "PRÓXIMAMENTE", note: { en: "Coming soon", es: "Muy pronto" } },
 ];
 
@@ -450,7 +480,8 @@ export function isModuleId(value: unknown): value is ModuleId {
     value === "past-stories" ||
     value === "simple-future" ||
     value === "mixed-tenses" ||
-    value === "eagles-week-1"
+    value === "eagles-week-1" ||
+    value === "tigers"
   );
 }
 
