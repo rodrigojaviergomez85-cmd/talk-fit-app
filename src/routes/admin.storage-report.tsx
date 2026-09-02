@@ -190,6 +190,17 @@ function StorageReportPage() {
                   label={es ? "Rutas en day_progress" : "Paths in day_progress"}
                   value={String(report.totals.dayProgressWithPath)}
                 />
+                <Stat
+                  label={es ? "…que también tienen fila en recordings" : "…that also have a recordings row"}
+                  value={String(report.totals.dayProgressPathsMatchingRecordings)}
+                />
+                {report.totals.dayProgressPathsMatchingRecordings === 0 && report.totals.dayProgressWithPath > 0 ? (
+                  <p className="pt-2 text-[11px] text-muted-foreground">
+                    {es
+                      ? "Los Final Reps de la comparación de progreso viven en archivos separados (uid/módulo-day-N). Un borrado que solo recorra la tabla recordings nunca puede tocarlos."
+                      : "The Final Reps used by the progress comparison live in separate files (uid/module-day-N). A purge that only walks the recordings table can never reach them."}
+                  </p>
+                ) : null}
               </div>
             </Card>
 

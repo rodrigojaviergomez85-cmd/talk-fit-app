@@ -65,8 +65,15 @@ export type StorageReport = {
   totals: {
     recordings: number;
     dayProgressWithPath: number;
-    /** Finals that both sources of truth agree on. */
+    /** Finals that both sources of truth agree on (same storage object). */
     protectedByBoth: number;
+    /**
+     * How many day_progress.recording_path values point at an object that also
+     * has a recordings row. When this is 0 the Final Rep audio used by the
+     * progress comparison lives in SEPARATE storage objects, which a deletion
+     * step that only walks recordings rows can never reach.
+     */
+    dayProgressPathsMatchingRecordings: number;
   };
 };
 
@@ -119,6 +126,9 @@ export function classifyRecordings(
   };
   const candidates: RecordingRow[] = [];
   let protectedByBoth = 0;
+  const recordingPaths = new Set(recordings.map((r) => r.storage_path));
+  let dayProgressPathsMatchingRecordings = 0;
+  for (const path of lookups.finalPaths) if (recordingPaths.has(path)) dayProgressPathsMatchingRecordings += 1;
 
   for (const rec of recordings) {
     if (rec.is_final_rep && lookups.finalPaths.has(rec.storage_path)) protectedByBoth += 1;
@@ -166,6 +176,7 @@ export function classifyRecordings(
       recordings: recordings.length,
       dayProgressWithPath: lookups.finalPaths.size,
       protectedByBoth,
+      dayProgressPathsMatchingRecordings,
     },
   };
 }
