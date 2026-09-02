@@ -528,5 +528,15 @@ export const CourseService = {
   getModelText(day: CourseDay): string {
     return day.lines.map((l) => l.text).join(" ");
   },
+
+  /**
+   * Applies one prewritten scenario from the day's bank (TIGERS FINAL) to the
+   * Rep 5 fields. Days without a bank are returned untouched.
+   */
+  withScenario(day: CourseDay, scenarioId: string | null): CourseDay {
+    const scenario = day.rep5Scenarios?.find((s) => s.id === scenarioId) ?? day.rep5Scenarios?.[0];
+    if (!scenario) return day;
+    return { ...day, rep5Prompt: scenario.rep5Prompt, rep5Turns: scenario.rep5Turns, rep5Scenario: scenario };
+  },
 };
 
