@@ -25,17 +25,20 @@ export function PlacementPicker({
   onSelect,
   title,
   subtitle,
+  showAllLevels = false,
 }: {
   value: ModuleId | null;
   onSelect: (moduleId: ModuleId) => void;
   title?: string;
   subtitle?: string;
+  /** Account "change level" shows every module; first-time placement hides later levels. */
+  showAllLevels?: boolean;
 }) {
   const { t, lang } = useAppLang();
   const es = lang === "es";
   const [soonOpen, setSoonOpen] = useState(false);
-  // TIGERS (and later levels) are reached by finishing the previous module, never by self-placement.
-  const modules = CourseService.modules().filter((m) => !m.hiddenFromPlacement);
+  // TIGERS (and later levels) are reached by finishing the previous module in first-time placement.
+  const modules = CourseService.modules().filter((m) => showAllLevels || !m.hiddenFromPlacement);
   const intermedio = modules.find((m) => m.id === "eagles-week-1")?.id ?? modules[modules.length - 1]!.id;
 
   return (
