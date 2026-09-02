@@ -8,6 +8,8 @@ import { ThenVsNow } from "@/components/fluency/ThenVsNow";
 import { SpeakingChart } from "@/components/fluency/SpeakingChart";
 import { RecordingCard } from "@/components/fluency/RecordingCard";
 import { MomentSheet } from "@/components/fluency/MomentSheet";
+import { HabitCard } from "@/components/fluency/HabitCard";
+import { BadgeGrid } from "@/components/fluency/BadgeGrid";
 import { moduleComparison, weekComparison, type Comparison } from "@/lib/progress-moments";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
