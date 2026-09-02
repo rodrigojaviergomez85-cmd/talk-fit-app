@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { DayRecord, JourneyState, ModuleId, RepDurations, SelfAssessment } from "@/lib/types";
-import { CourseService, isModuleId } from "./course-service";
+import { CourseService, DEFAULT_MODULE, isModuleId } from "./course-service";
+import { loadPreferences } from "./preferences";
 
 /**
  * JourneyService — progress across learning modules (Basic Zero, Simple Present).
