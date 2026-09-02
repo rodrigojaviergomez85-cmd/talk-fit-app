@@ -183,7 +183,11 @@ export function DayCompleteScreen({
           </div>
         ) : null}
 
-        {moduleDone && module.weeks?.length ? (
+        {moduleDone && moduleId === "eagles-week-1" ? (
+          <EaglesCompleteCard state={state} showEs={showEs} finalRecording={finalRecording} lastDay={day.day} />
+        ) : null}
+
+        {moduleDone && moduleId !== "eagles-week-1" && module.weeks?.length ? (
           <div className="space-y-4 rounded-3xl bg-navy p-6 text-navy-foreground">
             <p className="text-center text-[13px] font-extrabold uppercase tracking-[0.2em] text-primary">
               {`${module.label} · ${module.title} COMPLETE ✓`}
