@@ -117,7 +117,30 @@ export function DayCompleteScreen({
               ? `Terminaste el Día ${day.day}: 5 de 5 reps.`
               : `You finished Day ${day.day}: 5 of 5 reps.`}
           </p>
+          {welcomeBack ? (
+            <p className="mt-2 text-[14px] font-bold text-primary">
+              {showEs ? "Bienvenido de vuelta. Tu progreso sigue aquí." : "Welcome back. Your progress is still here."}
+            </p>
+          ) : null}
+          {habitGrew ? (
+            <p className="mt-3 inline-block rounded-full bg-navy-foreground/10 px-4 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.16em]">
+              {habitNow >= HABIT_GOAL
+                ? `66-DAY HABIT ✓ · ${habitNow} ${showEs ? "DÍAS" : "DAYS"}`
+                : `${showEs ? "DÍA" : "DAY"} ${habitNow} / ${HABIT_GOAL} ${showEs ? "DEL HÁBITO" : "OF YOUR HABIT"}`}
+            </p>
+          ) : null}
+          {countdown !== null && habitGrew ? (
+            <p className="mt-2 text-[13px] font-extrabold text-primary">
+              {showEs
+                ? `FINAL 6 · ${countdown} ${countdown === 1 ? "DÍA MÁS" : "DÍAS MÁS"}`
+                : `FINAL 6 · ${countdown} ${countdown === 1 ? "MORE DAY" : "MORE DAYS"}`}
+            </p>
+          ) : null}
         </div>
+
+        {milestones.map((m) => (
+          <HabitMilestone key={m.id} milestone={m} state={state} compact={Boolean(bigCelebration) && !m.major} />
+        ))}
 
         {summary ? (
           <div className="space-y-2 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
