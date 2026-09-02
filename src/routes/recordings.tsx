@@ -2,13 +2,16 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { Mic } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
-import { RecordingCard } from "@/components/fluency/RecordingCard";
-import { CourseService } from "@/services/course-service";
+import { ComparisonPlayerCard } from "@/components/fluency/ComparisonPlayerCard";
+import { MomentSheet } from "@/components/fluency/MomentSheet";
+import { RecordingPlayButton } from "@/components/fluency/RecordingPlayButton";
+import { RecordingsGrouped } from "@/components/fluency/RecordingsGrouped";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { stopPlayback } from "@/hooks/use-recording-playback";
-import type { JourneyState, ModuleId } from "@/lib/types";
-import { cn } from "@/lib/utils";
-import { useT } from "@/lib/i18n";
+import { firstVsLatest, milestones, type Comparison } from "@/lib/progress-moments";
+import { formatDuration, recordHeading } from "@/lib/recordings";
+import type { JourneyState } from "@/lib/types";
+import { useAppLang, useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/recordings")({
   head: () => ({
@@ -16,7 +19,7 @@ export const Route = createFileRoute("/recordings")({
       { title: "My Recordings — Fluency Reps" },
       { name: "description", content: "Listen to your saved Final Rep from each practice and hear how your speaking changes." },
       { property: "og:title", content: "My Recordings — Fluency Reps" },
-      { property: "og:description", content: "Your saved Final Reps, organized by module and day." },
+      { property: "og:description", content: "Your saved Final Reps, organized by module and week." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -24,14 +27,12 @@ export const Route = createFileRoute("/recordings")({
   component: RecordingsPage,
 });
 
-const PAGE_SIZE = 20;
-
 function RecordingsPage() {
   const [state, setState] = useState<JourneyState | null>(null);
+  const [sheet, setSheet] = useState<Comparison | null>(null);
   const t = useT();
-  const [filter, setFilter] = useState<ModuleId | "all">("all");
-  const [sort, setSort] = useState<"recent" | "oldest">("recent");
-  const [visible, setVisible] = useState(PAGE_SIZE);
+  const { lang } = useAppLang();
+  const es = lang === "es";
 
   const load = useCallback(() => {
     setState(JourneyService.load());
@@ -46,20 +47,9 @@ function RecordingsPage() {
   }, [load]);
 
   const safe = state ?? emptyJourney;
-  const modules = CourseService.modules();
   const next = JourneyService.nextPractice(safe);
-
-  const records = useMemo(() => {
-    const list = JourneyService.recordsByDate(safe).filter(
-      (record) => filter === "all" || record.moduleId === filter,
-    );
-    return sort === "recent" ? [...list].reverse() : list;
-  }, [safe, filter, sort]);
-
-  useEffect(() => {
-    setVisible(PAGE_SIZE);
-    stopPlayback();
-  }, [filter, sort]);
+  const pair = useMemo(() => firstVsLatest(safe), [safe]);
+  const marks = useMemo(() => milestones(safe), [safe]);
 
   if (!state) {
     return (
@@ -77,7 +67,7 @@ function RecordingsPage() {
 
   return (
     <AppShell title={t("rec.title")}>
-      <div className="space-y-5">
+      <div className="space-y-6">
         {total === 0 ? (
           <section className="rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-card)]">
             <Mic className="mx-auto size-8 text-primary" />
@@ -95,67 +85,69 @@ function RecordingsPage() {
           </section>
         ) : (
           <>
-            <p className="text-[13px] text-muted-foreground">
-              {t("rec.intro")}
-            </p>
+            {/* ESCUCHA TU PROGRESO */}
+            <section className="space-y-3">
+              <div>
+                <h2 className="text-[20px] font-extrabold tracking-tight">{es ? "ESCUCHA TU PROGRESO" : "HEAR YOUR PROGRESS"}</h2>
+                <p className="text-[13px] font-semibold text-muted-foreground">
+                  {es ? "Compara diferentes momentos de tu camino." : "Compare different moments of your journey."}
+                </p>
+              </div>
 
-            <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
-              <Chip active={filter === "all"} onClick={() => setFilter("all")} label={t("rec.all")} />
-              {modules.map((module) => (
-                <Chip
-                  key={module.id}
-                  active={filter === module.id}
-                  onClick={() => setFilter(module.id)}
-                  label={`${module.label} · ${module.title}`}
-                />
-              ))}
-            </div>
+              {pair ? (
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <ComparisonPlayerCard
+                    caption={es ? "PRIMERA GRABACIÓN" : "FIRST RECORDING"}
+                    side={{ day: pair.first.day, record: pair.first, playable: true }}
+                    missingText=""
+                  />
+                  <ComparisonPlayerCard
+                    caption={es ? "MÁS RECIENTE" : "LATEST"}
+                    side={{ day: pair.latest.day, record: pair.latest, playable: true }}
+                    missingText=""
+                  />
+                </div>
+              ) : (
+                <p className="rounded-3xl border border-primary/25 bg-accent p-4 text-[13px] font-semibold text-accent-foreground">
+                  {es
+                    ? "Tu comparación PRIMERA vs. MÁS RECIENTE aparecerá cuando guardes más Final Reps."
+                    : "Your FIRST vs. LATEST comparison will appear once you save more Final Reps."}
+                </p>
+              )}
 
-            <div className="flex gap-2">
-              <Chip active={sort === "recent"} onClick={() => setSort("recent")} label={t("rec.recent")} />
-              <Chip active={sort === "oldest"} onClick={() => setSort("oldest")} label={t("rec.oldest")} />
-            </div>
+              {marks.length > 2 ? (
+                <div className="space-y-2">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                    {es ? "MOMENTOS CLAVE" : "MILESTONES"}
+                  </p>
+                  <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
+                    {marks.map((m) => (
+                      <div key={m.key} className="w-[220px] shrink-0 rounded-3xl bg-card p-3 shadow-[var(--shadow-card)]">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">{es ? m.label.es : m.label.en}</p>
+                        <p className="mt-0.5 truncate text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+                          {recordHeading(m.record)}
+                        </p>
+                        <p className="text-[13px] font-extrabold tabular-nums">{formatDuration(m.record.finalSeconds)}</p>
+                        <RecordingPlayButton record={m.record} className="mt-2 w-full" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </section>
 
-            {records.length === 0 ? (
-              <p className="rounded-3xl bg-card p-6 text-center text-[14px] text-muted-foreground shadow-[var(--shadow-card)]">
-                {t("rec.noneInModule")}
-              </p>
-            ) : null}
-
-            <div className="space-y-3">
-              {records.slice(0, visible).map((record) => (
-                <RecordingCard key={`${record.moduleId}:${record.day}`} record={record} />
-              ))}
-            </div>
-
-            {records.length > visible ? (
-              <button
-                type="button"
-                onClick={() => setVisible((v) => v + PAGE_SIZE)}
-                className="min-h-[48px] w-full rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
-              >
-                {t("action.loadMore")}
-              </button>
-            ) : null}
+            {/* Grouped library */}
+            <section className="space-y-3">
+              <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                {es ? "TUS FINAL REPS" : "YOUR FINAL REPS"}
+              </h2>
+              <RecordingsGrouped state={safe} onCompare={setSheet} />
+            </section>
           </>
         )}
       </div>
-    </AppShell>
-  );
-}
 
-function Chip({ active, onClick, label }: { active: boolean; onClick: () => void; label: string }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={cn(
-        "min-h-[40px] shrink-0 rounded-full px-4 text-[11px] font-bold uppercase tracking-[0.14em] transition-colors",
-        active ? "bg-primary text-primary-foreground" : "border border-border bg-card text-muted-foreground",
-      )}
-    >
-      {label}
-    </button>
+      <MomentSheet comparison={sheet} state={safe} onClose={() => setSheet(null)} />
+    </AppShell>
   );
 }
