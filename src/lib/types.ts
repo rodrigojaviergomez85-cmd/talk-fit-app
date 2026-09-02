@@ -180,6 +180,8 @@ export type DayRecord = {
   /** Cloud storage path of the final recording, when signed in. */
   recordingPath?: string | null | undefined;
   selfAssessment?: SelfAssessment | undefined;
+  /** Seconds spent per rep (pilot analytics). */
+  repDurations?: RepDurations | null | undefined;
 };
 
 export type JourneyState = {
