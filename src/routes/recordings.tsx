@@ -106,7 +106,7 @@ function RecordingsPage() {
                   key={module.id}
                   active={filter === module.id}
                   onClick={() => setFilter(module.id)}
-                  label={module.label.split(" · ")[0] ?? module.title}
+                  label={`${module.label} · ${module.title}`}
                 />
               ))}
             </div>

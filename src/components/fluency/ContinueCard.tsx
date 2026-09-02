@@ -48,7 +48,7 @@ export function ContinueCard({ state }: { state: JourneyState }) {
 
   const module = CourseService.getModule(next.moduleId);
   const day = CourseService.getDay(next.moduleId, next.day);
-  const fresh = JourneyService.completedCount(state) === 0;
+  const fresh = JourneyService.completedCount(state, next.moduleId) === 0 && resumeStage === null;
   const goalSentences = day.goalSentences ?? 5;
 
   return (
@@ -58,11 +58,10 @@ export function ContinueCard({ state }: { state: JourneyState }) {
       </p>
 
       <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.16em] text-navy-foreground/70">
-        {module.label.split(" · ")[0]} · {day.week ? `${t("home.week")} ${day.week} · ` : ""}{t("home.day")} {day.day}
+        {module.label} · {module.title} · {day.week ? `${t("home.week")} ${day.week} · ` : ""}{t("home.day")} {day.day}
       </p>
 
       <h2 className="mt-1 text-[26px] font-extrabold leading-tight tracking-tight">{day.topic}</h2>
-      <p className="mt-1.5 text-[14px] font-semibold text-navy-foreground/80">{module.title}</p>
 
       <div className="mt-4 flex flex-wrap gap-2">
         <Chip icon={<Mic className="size-3.5" />} text={`${day.goalSeconds[0]}+ sec`} />

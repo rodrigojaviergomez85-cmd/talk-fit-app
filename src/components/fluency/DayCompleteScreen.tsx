@@ -186,11 +186,7 @@ export function DayCompleteScreen({
         {moduleDone && module.weeks?.length ? (
           <div className="space-y-4 rounded-3xl bg-navy p-6 text-navy-foreground">
             <p className="text-center text-[13px] font-extrabold uppercase tracking-[0.2em] text-primary">
-              {moduleId === "past-stories"
-                ? "MONTH 3 COMPLETE ✓"
-                : module.label.includes("MONTH 2")
-                  ? "MONTH 2 COMPLETE ✓"
-                  : `${module.title} COMPLETE ✓`}
+              {`${module.label} · ${module.title} COMPLETE ✓`}
             </p>
             <div className="space-y-1.5">
               {module.weeks.map((item) => (
