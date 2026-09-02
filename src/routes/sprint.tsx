@@ -1,8 +1,10 @@
-import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Link, createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { TestReadySprint } from "@/components/fluency/TestReadySprint";
+import { ModuleLoadError } from "@/components/fluency/ModuleLoadState";
+import { useModuleContent } from "@/hooks/use-module-content";
 import { CourseService, DEFAULT_MODULE, isModuleId } from "@/services/course-service";
 import { useAuth } from "@/lib/auth";
 import { useT } from "@/lib/i18n";
@@ -10,11 +12,17 @@ import type { ModuleId } from "@/lib/types";
 
 export const Route = createFileRoute("/sprint")({
   validateSearch: (search: Record<string, unknown>) => {
-    const module: ModuleId = isModuleId(search["module"]) ? search["module"] : DEFAULT_MODULE;
+    const raw = search["module"];
+    // Missing param → default module. A present-but-unknown id is a not-found (never a silent fallback).
+    const module: ModuleId = isModuleId(raw) ? raw : DEFAULT_MODULE;
     return {
       module,
       day: Math.min(CourseService.totalDays(module), Math.max(1, Number(search["day"]) || 1)),
+      ...(raw !== undefined && !isModuleId(raw) ? { unknownModule: true as const } : {}),
     };
+  },
+  beforeLoad: ({ search }) => {
+    if (search.unknownModule) throw notFound();
   },
   head: () => ({
     meta: [
@@ -34,16 +42,27 @@ function SprintPage() {
   const { module: moduleId, day: dayNumber } = Route.useSearch();
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  const day = CourseService.getDay(moduleId, dayNumber);
-  const sprint = day.testReady;
+  const content = useModuleContent(moduleId);
+  const outline = CourseService.getDay(moduleId, dayNumber);
 
-  if (loading) {
+  if (loading || content.status === "loading") {
     return (
       <AppShell title={t("tr.card")}>
         <div className="h-40 animate-pulse rounded-3xl bg-secondary" aria-busy="true" />
       </AppShell>
     );
   }
+
+  if (content.status === "error") {
+    return (
+      <AppShell title={`${t("tr.card")} · ${t("home.day")} ${outline.day}`}>
+        <ModuleLoadError onRetry={content.retry} />
+      </AppShell>
+    );
+  }
+
+  const day = CourseService.dayOf(content.module, dayNumber);
+  const sprint = day.testReady;
 
   if (!user) {
     return (

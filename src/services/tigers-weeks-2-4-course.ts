@@ -10,7 +10,7 @@
  * generative AI. Day 20 picks ONE scenario from a small prewritten bank.
  */
 import type { CourseDay } from "@/lib/types";
-import { l } from "./eagles-week-1-course";
+import { l } from "./course-builders";
 import { chunks4, q, tigersDay } from "./tigers-week-1-course";
 
 import sceneThenNow from "@/assets/tigers/scene-d6-then-now.jpg";

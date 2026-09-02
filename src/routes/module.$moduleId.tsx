@@ -3,7 +3,9 @@ import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, ChevronDown, Sparkles, Zap } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { DailyPracticeCard, JourneyDayRow } from "@/components/fluency/DailyPracticeCard";
-import { CourseService } from "@/services/course-service";
+import { CourseService, isModuleId } from "@/services/course-service";
+import { ModuleLoadError } from "@/components/fluency/ModuleLoadState";
+import { useModuleContent } from "@/hooks/use-module-content";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { TestReadyService } from "@/services/test-ready-service";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
@@ -15,12 +17,13 @@ import { PAST_VERBS, VerbBank } from "@/services/verb-bank";
 
 export const Route = createFileRoute("/module/$moduleId")({
   beforeLoad: ({ params }) => {
-    if (!CourseService.getModule(params.moduleId as ModuleId)) {
+    // The static index decides validity; unknown ids use the existing not-found handling.
+    if (!isModuleId(params.moduleId)) {
       throw notFound();
     }
   },
   head: ({ params }) => {
-    const module = CourseService.getModule(params.moduleId as ModuleId);
+    const module = isModuleId(params.moduleId) ? CourseService.getModule(params.moduleId) : null;
     const title = module ? `${module.label} · ${module.title} — Fluency Reps` : "Module — Fluency Reps";
     const description = module
       ? `${module.subtitle} ${module.meta.join(" · ")}.`
@@ -43,10 +46,12 @@ function ModulePage() {
   const t = useT();
   const { lang } = useAppLang();
   const { moduleId } = Route.useParams();
-  const module = CourseService.getModule(moduleId as ModuleId)!;
+  // Header/progress come from the static index; the day list needs the full content chunk.
+  const meta = CourseService.getModule(moduleId as ModuleId);
+  const content = useModuleContent(meta.id);
   const [state, setState] = useState<JourneyState | null>(null);
   const [failed, setFailed] = useState(false);
-  const hasSprints = module.days.some((d) => d.testReady);
+  const hasSprints = meta.days.some((d) => d.testReady);
 
   const load = useCallback(() => {
     setFailed(false);
@@ -54,34 +59,35 @@ function ModulePage() {
     void JourneyService.pull()
       .then(setState)
       .catch(() => setFailed(true));
-    if (hasSprints) void TestReadyService.pull(module.id).catch(() => undefined);
-  }, [hasSprints, module.id]);
+    if (hasSprints) void TestReadyService.pull(meta.id).catch(() => undefined);
+  }, [hasSprints, meta.id]);
 
   useEffect(() => {
     load();
   }, [load]);
 
   const safeState = state ?? emptyJourney;
-  const total = module.days.length;
-  const completedCount = JourneyService.completedCount(safeState, module.id);
-  const currentDay = JourneyService.currentDay(safeState, module.id);
-  const day = CourseService.getDay(module.id, currentDay);
-  const completed = JourneyService.isDayCompleted(safeState, module.id, currentDay);
+  const total = meta.days.length;
+  const completedCount = JourneyService.completedCount(safeState, meta.id);
+  const currentDay = JourneyService.currentDay(safeState, meta.id);
+  const day = content.module ? CourseService.dayOf(content.module, currentDay) : null;
+  const completed = JourneyService.isDayCompleted(safeState, meta.id, currentDay);
   const percent = total > 0 ? Math.round((completedCount / total) * 100) : 0;
 
+  const fullDays = content.module?.days;
   const weeks = useMemo(() => {
     const groups = new Map<number, CourseDay[]>();
-    for (const item of module.days) {
+    for (const item of fullDays ?? []) {
       const week = item.week ?? 1;
       const list = groups.get(week) ?? [];
       list.push(item);
       groups.set(week, list);
     }
     return [...groups.entries()].sort((a, b) => a[0] - b[0]);
-  }, [module.days]);
+  }, [fullDays]);
 
   return (
-    <AppShell title={`${module.label} · ${module.title}`}>
+    <AppShell title={`${meta.label} · ${meta.title}`}>
       <div className="space-y-6">
         <Link
           to="/"
@@ -91,19 +97,19 @@ function ModulePage() {
         </Link>
 
         <div className="rounded-3xl bg-navy p-5 text-navy-foreground">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{module.label}</p>
-          <h2 className="mt-1 text-2xl font-extrabold tracking-tight">{module.title}</h2>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{meta.label}</p>
+          <h2 className="mt-1 text-2xl font-extrabold tracking-tight">{meta.title}</h2>
           <p className="mt-1 text-[14px] font-semibold text-navy-foreground/80">
-            {lang === "es" ? module.subtitleEs : module.subtitle}
+            {lang === "es" ? meta.subtitleEs : meta.subtitle}
           </p>
-          {module.statusLine ? (
+          {meta.statusLine ? (
             <p className="mt-0.5 text-[11px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">
-              {lang === "es" ? module.statusLine.es : module.statusLine.en}
+              {lang === "es" ? meta.statusLine.es : meta.statusLine.en}
             </p>
           ) : null}
-          {module.highlights ? (
+          {meta.highlights ? (
             <ul className="mt-3 space-y-1.5">
-              {module.highlights.map((item) => (
+              {meta.highlights.map((item) => (
                 <li key={item.en} className="flex items-start gap-2 text-[13px] font-semibold text-navy-foreground/90">
                   <span className="mt-0.5 text-primary">✓</span>
                   <span>{lang === "es" ? item.es : item.en}</span>
@@ -111,13 +117,13 @@ function ModulePage() {
               ))}
             </ul>
           ) : null}
-          {module.extra ? (
+          {meta.extra ? (
             <p className="mt-3 rounded-2xl bg-navy-foreground/10 px-3 py-2 text-[13px] font-bold text-navy-foreground">
-              {lang === "es" ? module.extra.es : module.extra.en}
+              {lang === "es" ? meta.extra.es : meta.extra.en}
             </p>
           ) : null}
           <div className="mt-3 flex flex-wrap gap-2">
-            {module.meta.map((item) => (
+            {meta.meta.map((item) => (
               <span
                 key={item}
                 className="rounded-full bg-navy-foreground/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em]"
@@ -149,20 +155,22 @@ function ModulePage() {
           </div>
         ) : null}
 
-        {state ? (
-          <>
-            <DailyPracticeCard moduleId={module.id} day={day} completed={completed} totalDays={total} />
+        {content.status === "error" ? <ModuleLoadError onRetry={content.retry} /> : null}
 
-            {module.id === "past-stories" ? <VerbBankCard /> : null}
+        {state && day ? (
+          <>
+            <DailyPracticeCard moduleId={meta.id} day={day} completed={completed} totalDays={total} />
+
+            {meta.id === "past-stories" ? <VerbBankCard /> : null}
 
             <section className="space-y-3">
               {weeks.map(([week, days]) => (
                 <WeekSection
                   key={week}
-                  moduleId={module.id}
+                  moduleId={meta.id}
                   week={week}
                   title={
-                    module.weeks?.find((w) => w.week === week)?.subtitle ??
+                    meta.weeks?.find((w) => w.week === week)?.subtitle ??
                     days[0]?.weekTitle ??
                     `Week ${week}`
                   }
@@ -173,7 +181,7 @@ function ModulePage() {
               ))}
             </section>
           </>
-        ) : (
+        ) : content.status === "error" ? null : (
           <div className="space-y-3" aria-busy="true">
             {[0, 1, 2, 3].map((i) => (
               <div key={i} className="h-20 animate-pulse rounded-3xl bg-secondary" />

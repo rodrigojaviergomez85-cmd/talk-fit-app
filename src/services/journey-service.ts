@@ -512,6 +512,9 @@ export const JourneyService = {
     const days = { ...local.days };
     let totalSeconds = local.totalSpeakingSeconds;
     for (const row of rows) {
+      // Legacy rows (pre-module era) have no module_id and belong to Simple Present.
+      // A non-empty id the app doesn't know is skipped rather than mislabelled.
+      if (row.module_id && !isModuleId(row.module_id)) continue;
       const moduleId: ModuleId = isModuleId(row.module_id) ? row.module_id : "simple-present";
       const key = recordKey(moduleId, row.day);
       const localRecord = days[key];

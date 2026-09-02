@@ -13,8 +13,8 @@
  * Every interlocutor turn is FIXED and prewritten — no generative AI.
  */
 import type { CourseDay, PersonalPrompt, RepLabel } from "@/lib/types";
-import { l, makeDay, type EaglesDayInput, type WeekMeta } from "./eagles-week-1-course";
-import { q, chunks4 } from "./tigers-week-1-course";
+import { l, makeDay, type EaglesDayInput, type WeekMeta } from "./course-builders";
+import { q, chunks4 } from "./course-builders";
 
 export { q, chunks4 };
 

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
@@ -22,7 +22,9 @@ import {
 } from "@/components/fluency/TranslatableText";
 import { CollapsibleHelp, TextToggle } from "@/components/fluency/CollapsibleHelp";
 import { supportLevel, prefersChunks, showsFullTextByDefault } from "@/lib/support-level";
-import { CourseService, DEFAULT_MODULE, isModuleId } from "@/services/course-service";
+import { CourseService, DEFAULT_MODULE, isModuleId, type LoadedModule } from "@/services/course-service";
+import { ModuleLoadError } from "@/components/fluency/ModuleLoadState";
+import { useModuleContent } from "@/hooks/use-module-content";
 import { JourneyService } from "@/services/journey-service";
 import { AudioService } from "@/services/audio-service";
 import {
@@ -44,11 +46,17 @@ import { VerbBank, setVerbBankScope } from "@/services/verb-bank";
 
 export const Route = createFileRoute("/practice")({
   validateSearch: (search: Record<string, unknown>) => {
-    const module: ModuleId = isModuleId(search["module"]) ? search["module"] : DEFAULT_MODULE;
+    const raw = search["module"];
+    // Missing param → default module. A present-but-unknown id is a not-found (never a silent fallback).
+    const module: ModuleId = isModuleId(raw) ? raw : DEFAULT_MODULE;
     return {
       module,
       day: Math.min(CourseService.totalDays(module), Math.max(1, Number(search["day"]) || 1)),
+      ...(raw !== undefined && !isModuleId(raw) ? { unknownModule: true as const } : {}),
     };
+  },
+  beforeLoad: ({ search }) => {
+    if (search.unknownModule) throw notFound();
   },
   head: () => ({
     meta: [
@@ -88,12 +96,42 @@ async function countSentences(blob: Blob | null): Promise<number | null> {
 }
 
 
+/**
+ * Thin shell: resolves the module's full content (dynamic import, session-cached)
+ * before mounting the practice flow, so every state initializer sees real data.
+ */
 function PracticePage() {
+  const { module: moduleId } = Route.useSearch();
+  const { lang } = useAppLang();
+  const content = useModuleContent(moduleId);
+
+  if (content.status === "loading") {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background px-5">
+        <p className="text-[13px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+          {lang === "es" ? "CARGANDO…" : "LOADING…"}
+        </p>
+      </div>
+    );
+  }
+
+  if (content.status === "error") {
+    return (
+      <div className="min-h-screen bg-background px-4 py-8">
+        <ModuleLoadError onRetry={content.retry} />
+      </div>
+    );
+  }
+
+  return <PracticeFlow module={content.module} />;
+}
+
+function PracticeFlow({ module }: { module: LoadedModule }) {
   const { day: dayNumber, module: moduleId } = Route.useSearch();
   const navigate = useNavigate();
   const { user, loading: authLoading, sync } = useAuth();
   const tt = useT();
-  const baseDay = useMemo(() => CourseService.getDay(moduleId, dayNumber), [moduleId, dayNumber]);
+  const baseDay = useMemo(() => CourseService.dayOf(module, dayNumber), [module, dayNumber]);
   /** TIGERS FINAL: one prewritten scenario, chosen once per day and kept across resumes. */
   const [scenarioId, setScenarioId] = useState<string | null>(null);
   const day = useMemo(() => CourseService.withScenario(baseDay, scenarioId), [baseDay, scenarioId]);
