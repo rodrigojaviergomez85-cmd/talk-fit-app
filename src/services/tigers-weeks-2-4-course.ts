@@ -1032,20 +1032,6 @@ const d20 = tigersDay({
         chunks: ["DECISION?", "WHY?", "EXAMPLE?", "OTHER SIDE?", "CONCLUSION?"],
         maxSeconds: 60,
       },
-      {
-        id: "t20-tr2",
-        text: "Describe a workplace problem and how you would solve it.",
-        textEs: "Describe un problema en el trabajo y cómo lo resolverías.",
-        chunks: ["PROBLEM?", "WHY?", "SOLUTION?", "OTHER OPTION?", "RESULT?"],
-        maxSeconds: 60,
-      },
-      {
-        id: "t20-tr3",
-        text: "Explain whether technology makes life better or worse.",
-        textEs: "Explica si la tecnología hace la vida mejor o peor.",
-        chunks: ["OPINION?", "WHY?", "EXAMPLE?", "OTHER SIDE?", "OVERALL?"],
-        maxSeconds: 60,
-      },
     ],
   },
 });
