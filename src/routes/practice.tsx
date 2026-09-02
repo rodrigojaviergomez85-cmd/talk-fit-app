@@ -338,7 +338,7 @@ function PracticePage() {
           firstRecording={recorded[0] ?? null}
           showEs={esUi}
           summary={{
-            rep2: countFor(2, day.lines.map((line) => line.id)),
+            rep2: countFor("2c", chunks2.map((chunk) => chunk.id)),
             rep4: countFor(4, items4.map((item) => item.id)),
           }}
           saveState={saveState}
