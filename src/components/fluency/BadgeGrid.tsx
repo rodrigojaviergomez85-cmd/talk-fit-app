@@ -63,7 +63,7 @@ export function BadgeGrid({ state }: { state: JourneyState }) {
               badge={{
                 id: `module:${module.id}`,
                 emoji: MODULE_EMOJI[module.id],
-                name: `${module.title === "EAGLES" ? "EAGLES" : module.label} ${es ? "COMPLETO" : "COMPLETE"}`,
+                name: `${module.label === "INTERMEDIO" ? module.title : module.label} ${es ? "COMPLETO" : "COMPLETE"}`,
                 detail: { es: `${module.days.length} días completados`, en: `${module.days.length} days completed` },
                 kind: "module",
               }}

@@ -35,7 +35,7 @@ import {
 import { useAuth } from "@/lib/auth";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { CloudSync } from "@/services/cloud-sync";
-import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording } from "@/lib/types";
+import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording, RepLabel } from "@/lib/types";
 import type { FinalRepSaveState } from "@/components/fluency/DayCompleteScreen";
 import { cn } from "@/lib/utils";
 import { useAppLang, useT, tPair, type TKey } from "@/lib/i18n";
@@ -93,7 +93,10 @@ function PracticePage() {
   const navigate = useNavigate();
   const { user, loading: authLoading, sync } = useAuth();
   const tt = useT();
-  const day = useMemo(() => CourseService.getDay(moduleId, dayNumber), [moduleId, dayNumber]);
+  const baseDay = useMemo(() => CourseService.getDay(moduleId, dayNumber), [moduleId, dayNumber]);
+  /** TIGERS FINAL: one prewritten scenario, chosen once per day and kept across resumes. */
+  const [scenarioId, setScenarioId] = useState<string | null>(null);
+  const day = useMemo(() => CourseService.withScenario(baseDay, scenarioId), [baseDay, scenarioId]);
 
   const [showEs, setShowEs] = useEsSupportPref();
   const { lang } = useAppLang();
@@ -130,10 +133,12 @@ function PracticePage() {
     setSessionScope(user.id);
     setPreferencesScope(user.id);
     setVerbBankScope(user.id);
+    const bank = baseDay.rep5Scenarios?.map((s) => s.id) ?? [];
+    setScenarioId(bank.length ? PracticeSessionService.scenarioFor(moduleId, dayNumber, bank) : null);
     const saved = PracticeSessionService.load(moduleId, dayNumber);
     if (PracticeSessionService.isResumable(saved) && saved) {
       // Sessions saved with the old sentence-by-sentence Rep 2 map to the closest chunk.
-      setResume(migrateLegacyRep2(saved, rep2Chunks(day), rep4Items(day).length));
+      setResume(migrateLegacyRep2(saved, rep2Chunks(baseDay), rep4Items(baseDay).length));
     }
     setReady(true);
   }, [moduleId, dayNumber, user?.id, sync]);
@@ -535,7 +540,20 @@ function PrimaryButton({ children, onClick, disabled }: { children: React.ReactN
  * App language = Spanish → Spanish is primary, English small secondary.
  * App language = English → English primary; Spanish appears only with ES SUPPORT on.
  */
-function RepHeader({ titleKey, instrKey, cueKey, dark = false }: { titleKey: TKey; instrKey: TKey; cueKey?: TKey; dark?: boolean }) {
+function RepHeader({
+  titleKey,
+  instrKey,
+  cueKey,
+  label,
+  dark = false,
+}: {
+  titleKey: TKey;
+  instrKey: TKey;
+  cueKey?: TKey;
+  /** TIGERS reasoning label (EXPLICA · JUSTIFICA · DEFIENDE) shown as a small chip. */
+  label?: RepLabel | undefined;
+  dark?: boolean;
+}) {
   const { lang } = useAppLang();
   const esAll = useSpanishAll();
   const esPrimary = lang === "es";
@@ -543,9 +561,15 @@ function RepHeader({ titleKey, instrKey, cueKey, dark = false }: { titleKey: TKe
   const [instrEs, instrEn] = tPair(instrKey);
   const secondary = esPrimary ? instrEn : esAll ? instrEs : null;
   const cue = cueKey ? tPair(cueKey)[esPrimary ? 0 : 1] : null;
+  const labelText = label ? tPair(`rep.label.${label}` as TKey)[esPrimary ? 0 : 1] : null;
 
   return (
     <div className="text-center">
+      {labelText ? (
+        <span className="mb-2 inline-block rounded-full bg-primary px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.18em] text-primary-foreground">
+          {labelText}
+        </span>
+      ) : null}
       <p className={cn("text-[20px] font-extrabold uppercase tracking-[0.18em]", dark ? "text-navy-foreground" : "text-foreground")}>
         {esPrimary ? titleEs : titleEn}
       </p>
@@ -1078,6 +1102,8 @@ type Rep4Item = {
   cues?: string[] | undefined;
   /** WH word shown as a chip above the question (WHERE, WHO…). */
   cue?: string | undefined;
+  /** TIGERS reasoning label for this prompt. */
+  label?: RepLabel | undefined;
 };
 
 /** Rep 4 never shows more than 5 speaking prompts per day. */
@@ -1108,6 +1134,7 @@ function rep4Items(day: CourseDay): Rep4Item[] {
         starter: prompt.starter,
         starterEs: prompt.starterEs,
         cue: prompt.cue ?? whCue(prompt.question),
+        label: prompt.label,
       }));
   return items.slice(0, REP4_MAX);
 }
@@ -1139,7 +1166,7 @@ function Rep4MakeItYours({
 
   return (
     <div className="space-y-5">
-      <RepHeader titleKey="rep4.title" instrKey="rep4.instr" />
+      <RepHeader titleKey="rep4.title" instrKey="rep4.instr" label={item.label} />
 
       {!hideVisuals ? (
         <>
@@ -1226,7 +1253,7 @@ function Rep5FinalRep({
 
   return (
     <div className="space-y-5">
-      <RepHeader titleKey="rep5.title" instrKey="rep5.instr" />
+      <RepHeader titleKey="rep5.title" instrKey="rep5.instr" label={day.rep5Label} />
 
       {day.rep5Audio && !day.rep5Turns ? (
         <div className="space-y-3 rounded-3xl bg-navy p-5 text-navy-foreground">
@@ -1237,6 +1264,28 @@ function Rep5FinalRep({
           <TranslatableText es={day.rep5Audio.es} esClassName="text-navy-foreground/70" supportOnly>
             <p className="text-[14px] font-semibold italic leading-relaxed text-navy-foreground/90">"{day.rep5Audio.text}"</p>
           </TranslatableText>
+        </div>
+      ) : null}
+
+      {day.rep5Scenario ? (
+        <div className="space-y-2 rounded-3xl bg-navy p-5 text-navy-foreground">
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">{t("rep5.scenario")}</p>
+            <span className="rounded-full bg-navy-foreground/15 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.16em]">
+              {lang === "es" ? day.rep5Scenario.labelEs : day.rep5Scenario.label}
+            </span>
+          </div>
+          <TranslatableText es={day.rep5Scenario.situationEs} esClassName="text-navy-foreground/70">
+            <p className="text-[15px] font-semibold leading-relaxed">{day.rep5Scenario.situation}</p>
+          </TranslatableText>
+          <p className="pt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-navy-foreground/60">{t("rep5.skeleton")}</p>
+          <div className="flex flex-wrap gap-1.5">
+            {["DECISION", "WHY", "EXAMPLE", "OTHER SIDE", "WHAT IF?", "CONCLUSION"].map((step) => (
+              <span key={step} className="rounded-full border border-navy-foreground/25 px-2.5 py-1 text-[10px] font-extrabold tracking-[0.12em]">
+                {step}
+              </span>
+            ))}
+          </div>
         </div>
       ) : null}
 

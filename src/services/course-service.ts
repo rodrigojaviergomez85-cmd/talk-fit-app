@@ -6,6 +6,8 @@ import { SIMPLE_FUTURE_DAYS, SIMPLE_FUTURE_WEEKS } from "./simple-future-course"
 import { MIXED_TENSES_DAYS, MIXED_TENSES_WEEKS } from "./mixed-tenses-course";
 import { EAGLES_WEEK_1_DAYS, EAGLES_WEEK_1_WEEKS } from "./eagles-week-1-course";
 import { EAGLES_WEEKS_2_4_DAYS } from "./eagles-weeks-2-4-course";
+import { TIGERS_WEEK_1_DAYS, TIGERS_WEEKS } from "./tigers-week-1-course";
+import { TIGERS_WEEKS_2_4_DAYS } from "./tigers-weeks-2-4-course";
 
 
 
@@ -319,6 +321,8 @@ export type LearningModule = {
   weeks?: { week: 1 | 2 | 3 | 4; title: string; subtitle: string; subtitleEs: string }[];
   /** Standalone pilot: never auto-placed as the learner's "next" module. */
   pilot?: boolean;
+  /** Not offered in self-placement: reached by finishing the previous module (or changing level later). */
+  hiddenFromPlacement?: boolean;
   /** Extra line shown on the module intro (e.g. Test Ready Sprints). */
   extra?: { en: string; es: string };
   /** Module card CTA override. */
@@ -431,11 +435,41 @@ const MODULES: LearningModule[] = [
     days: [...EAGLES_WEEK_1_DAYS, ...EAGLES_WEEKS_2_4_DAYS],
     weeks: EAGLES_WEEK_1_WEEKS,
   },
+  {
+    // Internal id is frozen from day one: progress and recordings will be keyed to it.
+    id: "tigers",
+    order: 7,
+    label: "INTERMEDIO",
+    title: "TIGERS",
+    subtitle: "Explain, Defend & Respond",
+    subtitleEs: "Explica, defiende y responde",
+    statusLine: { en: "Month 2 · 4 weeks · 20 days", es: "Mes 2 · 4 semanas · 20 días" },
+    description: "Don't just answer. Explain why, give evidence, compare alternatives and defend your decision.",
+    descriptionEs: "No solo respondas. Explica por qué, da evidencia, compara alternativas y defiende tu decisión.",
+    meta: ["4 Weeks", "20 Days", "100 Fluency Reps", "12 Test Ready Sprints"],
+    highlights: [
+      { en: "Explain why, not just what", es: "Explicar por qué, no solo qué" },
+      { en: "Give examples and evidence", es: "Dar ejemplos y evidencia" },
+      { en: "Compare options and trade-offs", es: "Comparar opciones y sus costos" },
+      { en: "Pass a job interview in English", es: "Pasar una entrevista de trabajo en inglés" },
+      { en: "Negotiate and respond to objections", es: "Negociar y responder a objeciones" },
+      { en: "Defend a decision under pressure", es: "Defender una decisión bajo presión" },
+    ],
+    extra: {
+      en: "⚡ 12 TEST READY SPRINTS — longer audio, two-speaker conversations, interview responses.",
+      es: "⚡ 12 TEST READY SPRINTS — audios más largos, conversaciones a dos voces, respuestas de entrevista.",
+    },
+    cta: { en: "START TIGERS", es: "EMPEZAR TIGERS" },
+    hiddenFromPlacement: true,
+    days: [...TIGERS_WEEK_1_DAYS, ...TIGERS_WEEKS_2_4_DAYS],
+    weeks: TIGERS_WEEKS,
+  },
 ];
 
 /** Preview-only levels: not selectable, not routable, zero days, never in totals. */
 export type UpcomingLevel = { key: string; label: string; title: string; note: { en: string; es: string } };
 export const UPCOMING_LEVELS: UpcomingLevel[] = [
+  { key: "sharks", label: "INTERMEDIO · SHARKS", title: "PRÓXIMAMENTE", note: { en: "Coming soon", es: "Muy pronto" } },
   { key: "advanced", label: "AVANZADO", title: "PRÓXIMAMENTE", note: { en: "Coming soon", es: "Muy pronto" } },
 ];
 
@@ -448,7 +482,8 @@ export function isModuleId(value: unknown): value is ModuleId {
     value === "past-stories" ||
     value === "simple-future" ||
     value === "mixed-tenses" ||
-    value === "eagles-week-1"
+    value === "eagles-week-1" ||
+    value === "tigers"
   );
 }
 
@@ -492,6 +527,16 @@ export const CourseService = {
   /** Full model text for the day (used by the model voice). */
   getModelText(day: CourseDay): string {
     return day.lines.map((l) => l.text).join(" ");
+  },
+
+  /**
+   * Applies one prewritten scenario from the day's bank (TIGERS FINAL) to the
+   * Rep 5 fields. Days without a bank are returned untouched.
+   */
+  withScenario(day: CourseDay, scenarioId: string | null): CourseDay {
+    const scenario = day.rep5Scenarios?.find((s) => s.id === scenarioId) ?? day.rep5Scenarios?.[0];
+    if (!scenario) return day;
+    return { ...day, rep5Prompt: scenario.rep5Prompt, rep5Turns: scenario.rep5Turns, rep5Scenario: scenario };
   },
 };
 

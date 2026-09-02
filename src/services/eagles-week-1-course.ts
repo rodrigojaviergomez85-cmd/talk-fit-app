@@ -101,13 +101,21 @@ export type EaglesDayInput = {
   powerChunks: CourseDay["powerChunks"];
   rep5Turns?: CourseDay["rep5Turns"];
   rep5Toolbox?: string[];
-  testReady: TestReadySprint;
+  /** EAGLES: every day has a sprint. TIGERS: only ~3 per week (optional). */
+  testReady?: TestReadySprint;
+  rep5Label?: CourseDay["rep5Label"];
+  rep5Scenarios?: CourseDay["rep5Scenarios"];
+  hideModelText?: boolean;
+  estimatedMinutes?: string;
 };
 
+/** Week metadata used to stamp each day (EAGLES by default; TIGERS passes its own). */
+export type WeekMeta = { week: 1 | 2 | 3 | 4; title: string; subtitleEs: string };
+
 /** Week is derived from the day number (5 days per week). */
-export function makeDay(input: EaglesDayInput): CourseDay {
+export function makeDay(input: EaglesDayInput, weeks: WeekMeta[] = EAGLES_WEEK_1_WEEKS): CourseDay {
   const weekNumber = Math.min(4, Math.max(1, Math.ceil(input.day / 5))) as 1 | 2 | 3 | 4;
-  const week = EAGLES_WEEK_1_WEEKS.find((w) => w.week === weekNumber) ?? EAGLES_WEEK_1_WEEKS[0]!;
+  const week = weeks.find((w) => w.week === weekNumber) ?? weeks[0]!;
   return {
     day: input.day,
     week: weekNumber,
@@ -118,7 +126,7 @@ export function makeDay(input: EaglesDayInput): CourseDay {
     topic: input.topic,
     topicEs: input.topicEs,
     goalSeconds: input.goalSeconds ?? [45, 60],
-    estimatedMinutes: "6–9 min",
+    estimatedMinutes: input.estimatedMinutes ?? "6–9 min",
     intro: input.intro,
     lines: input.lines,
     prompts: input.prompts,
@@ -132,10 +140,13 @@ export function makeDay(input: EaglesDayInput): CourseDay {
     ...(input.goalSentences ? { goalSentences: input.goalSentences } : {}),
     ...(input.rep2Chunks ? { rep2Chunks: input.rep2Chunks } : {}),
     ...(input.speakerVoice ? { speakerVoice: input.speakerVoice } : {}),
-    testReady: input.testReady,
+    ...(input.testReady ? { testReady: input.testReady } : {}),
     powerChunks: input.powerChunks,
     ...(input.rep5Turns ? { rep5Turns: input.rep5Turns } : {}),
     ...(input.rep5Toolbox ? { rep5Toolbox: input.rep5Toolbox } : {}),
+    ...(input.rep5Label ? { rep5Label: input.rep5Label } : {}),
+    ...(input.rep5Scenarios ? { rep5Scenarios: input.rep5Scenarios } : {}),
+    ...(input.hideModelText ? { hideModelText: true } : {}),
     // No modelExample on purpose: Rep 5 never shows a complete final speech.
   };
 }
