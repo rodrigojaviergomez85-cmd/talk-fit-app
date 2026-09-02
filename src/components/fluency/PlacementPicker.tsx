@@ -12,7 +12,8 @@ type PlacementKey =
   | "place.past-stories"
   | "place.mixed-tenses"
   | "place.eagles-week-1"
-  | "place.tigers";
+  | "place.tigers"
+  | "place.sharks";
 
 /**
  * Self-placement: large cards in visual journey order plus a disabled

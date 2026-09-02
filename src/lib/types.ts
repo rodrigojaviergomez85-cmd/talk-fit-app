@@ -17,7 +17,7 @@ export type ModelLine = {
 };
 
 /** TIGERS micro-label shown with a Rep 4 / Rep 5 instruction: EXPLICA · JUSTIFICA · DEFIENDE. */
-export type RepLabel = "explain" | "justify" | "defend";
+export type RepLabel = "explain" | "justify" | "defend" | "react" | "clarify" | "adapt";
 
 /** Rep 4 personalization prompt. */
 export type PersonalPrompt = {
@@ -56,7 +56,7 @@ export type Challenge = {
 };
 
 /** Learning module identifier. Frozen once shipped — progress and recordings are keyed to it. */
-export type ModuleId = "basic-zero" | "simple-present" | "past-stories" | "simple-future" | "mixed-tenses" | "eagles-week-1" | "tigers";
+export type ModuleId = "basic-zero" | "simple-present" | "past-stories" | "simple-future" | "mixed-tenses" | "eagles-week-1" | "tigers" | "sharks";
 
 /** Test Ready Sprint types (EAGLES pilot). Practice only — never scored. */
 export type TestReadyType = "repeat" | "quick-answers" | "build-sentence" | "listen-respond" | "speak-now" | "story-retell";
@@ -85,6 +85,8 @@ export type TestReadySprint = {
   items: TestReadyItem[];
   /** Listen & Respond: passage played once before the questions. */
   passage?: string | undefined;
+  /** Two-speaker passages (SHARKS): played in order with alternating voices. `passage` stays as the text fallback. */
+  passageParts?: { voice: "female" | "male"; text: string }[] | undefined;
   /** Speak Now: seconds to think before the mic opens. */
   thinkSeconds?: number | undefined;
   /** Speak Now: target speaking seconds. */
@@ -184,6 +186,8 @@ export type CourseDay = {
   rep5Scenarios?: Rep5Scenario[] | undefined;
   /** The scenario applied for this session (set by CourseService.withScenario, never authored). */
   rep5Scenario?: Rep5Scenario | undefined;
+  /** Cue skeleton shown with a scenario bank (defaults to the TIGERS list). */
+  rep5Skeleton?: string[] | undefined;
 };
 
 /** One prewritten Rep 5 scenario (TIGERS FINAL bank). */
