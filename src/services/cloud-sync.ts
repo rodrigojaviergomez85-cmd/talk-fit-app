@@ -27,6 +27,8 @@ export type TakeRow = {
   estimatedIdeaCount: number | null;
   storagePath: string;
   createdAt: string;
+  /** Set once the audio object has been purged; such takes are never listed. */
+  audioPurgedAt: string | null;
 };
 
 async function userId(): Promise<string | null> {
@@ -142,7 +144,9 @@ export const CloudSync = {
     if (!uid) return [];
     let query = supabase
       .from("recordings")
-      .select("module_id, day, take_number, is_final_rep, duration_seconds, estimated_idea_count, storage_path, created_at")
+      .select("module_id, day, take_number, is_final_rep, duration_seconds, estimated_idea_count, storage_path, created_at, audio_purged_at")
+      // A purged take simply does not exist for the learner — no player, no placeholder.
+      .is("audio_purged_at", null)
       .order("created_at", { ascending: false });
     if (moduleId) query = query.eq("module_id", moduleId);
     if (typeof day === "number") query = query.eq("day", day);
@@ -157,6 +161,7 @@ export const CloudSync = {
       estimatedIdeaCount: row.estimated_idea_count,
       storagePath: row.storage_path,
       createdAt: row.created_at,
+      audioPurgedAt: row.audio_purged_at,
     }));
   },
 

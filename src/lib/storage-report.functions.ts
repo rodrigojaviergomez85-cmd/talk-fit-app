@@ -1,5 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/integrations/supabase/types";
 import { classifyRecordings, type DayProgressRow, type RecordingRow, type StorageReport } from "./storage-report";
 
 /**
@@ -7,7 +9,7 @@ import { classifyRecordings, type DayProgressRow, type RecordingRow, type Storag
  * Nothing here writes: no update, no delete, no storage call.
  */
 
-async function assertAdmin(context: { supabase: any; userId: string }): Promise<void> {
+async function assertAdmin(context: { supabase: SupabaseClient<Database>; userId: string }): Promise<void> {
   const { data, error } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
   if (error || data !== true) throw new Error("Forbidden");
 }
