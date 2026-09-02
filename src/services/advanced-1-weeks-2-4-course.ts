@@ -856,6 +856,7 @@ const d17 = advancedDay({
     turn("a1d17-turn1", RECRUITER, compProblem.text, compProblem.es, "male", { targetSeconds: SUSTAIN, cues: ["SITUATION", "WHAT I DID", "RESULT"] }),
     turn("a1d17-turn2", RECRUITER, compProblem.followUp!.text, compProblem.followUp!.es, "male", { targetSeconds: DEVELOP }),
   ],
+  rep5Skeleton: ["SITUATION", "WHAT I DID", "RESULT", "NEW DETAIL"],
   rep5Scenarios: [
     {
       id: "a1d17-s1",
