@@ -695,10 +695,11 @@ function ResumeScreen({
 }) {
   const [confirming, setConfirming] = useState(false);
   const label = RESUME_LABELS[session.stage] ?? RESUME_LABELS[0]!;
-  const total = session.stage === 2 ? day.lines.length : session.stage === 4 ? rep4Items(day).length : 1;
+  const total = session.stage === 2 ? rep2Chunks(day).length : session.stage === 4 ? rep4Items(day).length : 1;
+  const unit = session.stage === 2 ? "CHUNK" : showEs ? "PREGUNTA" : "QUESTION";
   const position =
     total > 1
-      ? `${showEs ? label.es : label.en} · ${showEs ? "FRASE" : "PROMPT"} ${session.subIndex + 1} ${showEs ? "DE" : "OF"} ${total}`
+      ? `${showEs ? label.es : label.en} · ${unit} ${Math.min(session.subIndex, total - 1) + 1} ${showEs ? "DE" : "OF"} ${total}`
       : showEs
         ? label.es
         : label.en;
