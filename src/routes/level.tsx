@@ -77,6 +77,7 @@ function LevelPage() {
           onSelect={(id) => setChoice(id === current ? null : id)}
           title={t("place.changeTitle")}
           subtitle={t("place.changeHelp")}
+          showAllLevels
         />
 
         {choice && choice !== current ? (
