@@ -355,6 +355,7 @@ function PracticePage() {
             rep4: countFor(4, items4.map((item) => item.id)),
           }}
           saveState={saveState}
+          habitBefore={habitBefore}
           onRetrySave={() => {
             if (finalRecording && journeyAfterFinish) cloudSave(finalRecording, journeyAfterFinish);
           }}
