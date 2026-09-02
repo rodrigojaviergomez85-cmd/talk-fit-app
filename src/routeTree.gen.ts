@@ -15,6 +15,7 @@ import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as RecordingsRouteImport } from './routes/recordings'
+import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
 import { Route as ApiSentenceCountRouteImport } from './routes/api/sentence-count'
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
@@ -50,6 +51,11 @@ const RecordingsRoute = RecordingsRouteImport.update({
   path: '/recordings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SprintRoute = SprintRouteImport.update({
+  id: '/sprint',
+  path: '/sprint',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VerbBankRoute = VerbBankRouteImport.update({
   id: '/verb-bank',
   path: '/verb-bank',
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/recordings': typeof RecordingsRoute
+  '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/recordings': typeof RecordingsRoute
+  '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/recordings': typeof RecordingsRoute
+  '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/recordings'
+    | '/sprint'
     | '/verb-bank'
     | '/api/sentence-count'
     | '/api/tts'
@@ -129,6 +139,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/recordings'
+    | '/sprint'
     | '/verb-bank'
     | '/api/sentence-count'
     | '/api/tts'
@@ -141,6 +152,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/recordings'
+    | '/sprint'
     | '/verb-bank'
     | '/api/sentence-count'
     | '/api/tts'
@@ -154,6 +166,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   ProgressRoute: typeof ProgressRoute
   RecordingsRoute: typeof RecordingsRoute
+  SprintRoute: typeof SprintRoute
   VerbBankRoute: typeof VerbBankRoute
   ApiSentenceCountRoute: typeof ApiSentenceCountRoute
   ApiTtsRoute: typeof ApiTtsRoute
@@ -204,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecordingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sprint': {
+      id: '/sprint'
+      path: '/sprint'
+      fullPath: '/sprint'
+      preLoaderRoute: typeof SprintRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/verb-bank': {
       id: '/verb-bank'
       path: '/verb-bank'
@@ -242,6 +262,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   ProgressRoute: ProgressRoute,
   RecordingsRoute: RecordingsRoute,
+  SprintRoute: SprintRoute,
   VerbBankRoute: VerbBankRoute,
   ApiSentenceCountRoute: ApiSentenceCountRoute,
   ApiTtsRoute: ApiTtsRoute,

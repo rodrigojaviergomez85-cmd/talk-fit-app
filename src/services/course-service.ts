@@ -4,6 +4,7 @@ import { SIMPLE_PRESENT_EXTRA_DAYS, SIMPLE_PRESENT_WEEKS } from "./simple-presen
 import { PAST_STORIES_DAYS, PAST_STORIES_WEEKS } from "./past-stories-course";
 import { SIMPLE_FUTURE_DAYS, SIMPLE_FUTURE_WEEKS } from "./simple-future-course";
 import { MIXED_TENSES_DAYS, MIXED_TENSES_WEEKS } from "./mixed-tenses-course";
+import { EAGLES_WEEK_1_DAYS, EAGLES_WEEK_1_WEEKS } from "./eagles-week-1-course";
 
 
 
@@ -309,6 +310,12 @@ export type LearningModule = {
   highlights?: { en: string; es: string }[];
   days: CourseDay[];
   weeks?: { week: 1 | 2 | 3 | 4; title: string; subtitle: string; subtitleEs: string }[];
+  /** Standalone pilot: never auto-placed as the learner's "next" module. */
+  pilot?: boolean;
+  /** Extra line shown on the module intro (e.g. Test Ready Sprints). */
+  extra?: { en: string; es: string };
+  /** Module card CTA override. */
+  cta?: { en: string; es: string };
 };
 
 const MODULES: LearningModule[] = [
@@ -384,6 +391,33 @@ const MODULES: LearningModule[] = [
     days: MIXED_TENSES_DAYS,
     weeks: MIXED_TENSES_WEEKS,
   },
+  {
+    id: "eagles-week-1",
+    order: 6,
+    label: "EAGLES · WEEK 1",
+    title: "EAGLES — WEEK 1",
+    subtitle: "Recommend, Advise & Sell",
+    subtitleEs: "Usa tu inglés para resolver problemas, dar recomendaciones y vender.",
+    description: "Use your English to solve problems, give recommendations and sell.",
+    descriptionEs: "Usa tu inglés para resolver problemas, dar recomendaciones y vender.",
+    meta: ["5 Days", "25 Fluency Reps", "5 Test Ready Sprints"],
+    highlights: [
+      { en: "Tell what happened", es: "Contar lo que pasó" },
+      { en: "Offer options", es: "Ofrecer opciones" },
+      { en: "Give recommendations", es: "Dar recomendaciones" },
+      { en: "Understand what a customer needs", es: "Entender lo que necesita un cliente" },
+      { en: "Recommend a product", es: "Recomendar un producto" },
+      { en: "Respond to unexpected situations", es: "Responder situaciones inesperadas" },
+    ],
+    extra: {
+      en: "⚡ 5 TEST READY SPRINTS — practice listening and speaking under pressure.",
+      es: "⚡ 5 TEST READY SPRINTS — para practicar listening y speaking bajo presión.",
+    },
+    cta: { en: "START WEEK 1", es: "EMPEZAR WEEK 1" },
+    pilot: true,
+    days: EAGLES_WEEK_1_DAYS,
+    weeks: EAGLES_WEEK_1_WEEKS,
+  },
 ];
 
 export const DEFAULT_MODULE: ModuleId = "basic-zero";
@@ -394,7 +428,8 @@ export function isModuleId(value: unknown): value is ModuleId {
     value === "simple-present" ||
     value === "past-stories" ||
     value === "simple-future" ||
-    value === "mixed-tenses"
+    value === "mixed-tenses" ||
+    value === "eagles-week-1"
   );
 }
 

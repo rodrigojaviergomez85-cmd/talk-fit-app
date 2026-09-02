@@ -1202,6 +1202,7 @@ function Rep5FinalRep({
   onFinish: () => void;
 }) {
   const t = useT();
+  const { lang } = useAppLang();
   const completed = takes.filter(Boolean).length;
   const requiredDone = completed >= REQUIRED_TAKES;
   const slotsLeft = takes.some((take) => !take);
@@ -1210,6 +1211,18 @@ function Rep5FinalRep({
   return (
     <div className="space-y-5">
       <RepHeader titleKey="rep5.title" instrKey="rep5.instr" />
+
+      {day.rep5Audio ? (
+        <div className="space-y-3 rounded-3xl bg-navy p-5 text-navy-foreground">
+          <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-primary">
+            {lang === "es" ? day.rep5Audio.labelEs : day.rep5Audio.label}
+          </p>
+          <AudioPlayer text={day.rep5Audio.text} label={t("practice.listen")} rate={1} variant="navy" voice={day.rep5Audio.voice} />
+          <TranslatableText es={day.rep5Audio.es} esClassName="text-navy-foreground/70" supportOnly>
+            <p className="text-[14px] font-semibold italic leading-relaxed text-navy-foreground/90">"{day.rep5Audio.text}"</p>
+          </TranslatableText>
+        </div>
+      ) : null}
 
       <div className="space-y-3 rounded-3xl border border-primary/25 bg-accent p-5">
         <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-accent-foreground">

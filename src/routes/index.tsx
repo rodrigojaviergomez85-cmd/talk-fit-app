@@ -139,31 +139,52 @@ function ModuleCard({
   const completedCount = JourneyService.completedCount(state, module.id);
   const percent = total > 0 ? Math.round((completedCount / total) * 100) : 0;
   const status = moduleStatus(module, state, currentModule, t);
+  const { lang } = useAppLang();
+  const es = lang === "es";
 
   return (
     <Link to="/module/$moduleId" params={{ moduleId: module.id }} className="block transition-transform active:scale-[0.99]">
       <div
         className={cn(
           "rounded-3xl border bg-card p-5 shadow-[var(--shadow-card)]",
-          status.tone === "current" ? "border-primary" : "border-border",
+          status.tone === "current" ? "border-primary" : module.pilot ? "border-navy/40" : "border-border",
         )}
       >
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              {module.label.split(" · ")[0]}
+            <p className={cn("text-[10px] font-bold uppercase tracking-[0.2em]", module.pilot ? "text-primary" : "text-muted-foreground")}>
+              {module.pilot ? module.label : module.label.split(" · ")[0]}
             </p>
             <h3 className="mt-1 text-[19px] font-extrabold leading-tight tracking-tight">{module.title}</h3>
             <p className="mt-1 text-[13px] font-semibold text-muted-foreground">{module.subtitle}</p>
+            {module.pilot ? (
+              <p className="mt-1 text-[13px] font-semibold text-foreground/80">{es ? module.descriptionEs : module.description}</p>
+            ) : null}
           </div>
           <ChevronRight className="mt-1 size-5 shrink-0 text-muted-foreground" />
         </div>
+
+        {module.pilot ? (
+          <div className="mt-3 flex flex-wrap gap-2">
+            {module.meta.map((item) => (
+              <span key={item} className="rounded-full bg-secondary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+                {es ? item.replace("Days", "DÍAS") : item}
+              </span>
+            ))}
+          </div>
+        ) : null}
 
         <div className="mt-4 flex items-center justify-between gap-3">
           <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
             {completedCount} / {total} {t("home.days")}
           </p>
-          <StatusBadge status={status} />
+          {module.pilot && status.tone !== "done" ? (
+            <span className="rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-primary-foreground">
+              {es ? module.cta?.es : module.cta?.en}
+            </span>
+          ) : (
+            <StatusBadge status={status} />
+          )}
         </div>
         <div className="mt-2 h-2 overflow-hidden rounded-full bg-secondary">
           <div

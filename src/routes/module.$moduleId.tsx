@@ -1,14 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, ChevronDown, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronDown, Sparkles, Zap } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { DailyPracticeCard, JourneyDayRow } from "@/components/fluency/DailyPracticeCard";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
+import { TestReadyService } from "@/services/test-ready-service";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
 import type { CourseDay, JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { useT } from "@/lib/i18n";
+import { useAppLang, useT } from "@/lib/i18n";
 import { useVerbBank } from "@/hooks/use-verb-bank";
 import { PAST_VERBS, VerbBank } from "@/services/verb-bank";
 
@@ -40,10 +41,12 @@ export const Route = createFileRoute("/module/$moduleId")({
 
 function ModulePage() {
   const t = useT();
+  const { lang } = useAppLang();
   const { moduleId } = Route.useParams();
   const module = CourseService.getModule(moduleId as ModuleId)!;
   const [state, setState] = useState<JourneyState | null>(null);
   const [failed, setFailed] = useState(false);
+  const hasSprints = module.days.some((d) => d.testReady);
 
   const load = useCallback(() => {
     setFailed(false);
@@ -51,7 +54,8 @@ function ModulePage() {
     void JourneyService.pull()
       .then(setState)
       .catch(() => setFailed(true));
-  }, []);
+    if (hasSprints) void TestReadyService.pull(module.id).catch(() => undefined);
+  }, [hasSprints, module.id]);
 
   useEffect(() => {
     load();
@@ -95,10 +99,15 @@ function ModulePage() {
               {module.highlights.map((item) => (
                 <li key={item.en} className="flex items-start gap-2 text-[13px] font-semibold text-navy-foreground/90">
                   <span className="mt-0.5 text-primary">✓</span>
-                  <span>{item.es}</span>
+                  <span>{lang === "es" ? item.es : item.en}</span>
                 </li>
               ))}
             </ul>
+          ) : null}
+          {module.extra ? (
+            <p className="mt-3 rounded-2xl bg-navy-foreground/10 px-3 py-2 text-[13px] font-bold text-navy-foreground">
+              {lang === "es" ? module.extra.es : module.extra.en}
+            </p>
           ) : null}
           <div className="mt-3 flex flex-wrap gap-2">
             {module.meta.map((item) => (
@@ -261,12 +270,54 @@ function WeekSection({
                     {JourneyService.completedCount(state, moduleId) > 0 ? "CONTINUE" : "START"}
                   </Link>
                 ) : null}
+                {item.testReady ? <TestReadyCard moduleId={moduleId} day={item} /> : null}
               </div>
             );
           })}
         </div>
       ) : null}
     </div>
+  );
+}
+
+/** Separate, optional 3–5 minute sprint — clearly distinct from Daily Practice. */
+function TestReadyCard({ moduleId, day }: { moduleId: ModuleId; day: CourseDay }) {
+  const t = useT();
+  const { lang } = useAppLang();
+  const records = useSyncExternalStore(TestReadyService.subscribe, TestReadyService.snapshot, TestReadyService.snapshot);
+  const record = records[`${moduleId}:${day.day}`];
+  const sprint = day.testReady!;
+  return (
+    <Link
+      to="/sprint"
+      search={{ day: day.day, module: moduleId }}
+      className={cn(
+        "flex items-center justify-between gap-3 rounded-2xl border border-dashed p-3.5",
+        record ? "border-success/40 bg-success/8" : "border-primary/40 bg-primary/5",
+      )}
+    >
+      <span className="min-w-0">
+        <span className="flex items-center gap-1.5 text-[12px] font-extrabold uppercase tracking-[0.14em] text-primary">
+          <Zap className="size-3.5" aria-hidden /> {t("tr.card")} · {t("tr.minutes")}
+        </span>
+        <span className="mt-0.5 block truncate text-[13px] font-bold">{lang === "es" ? sprint.titleEs : sprint.title}</span>
+        <span className="block text-[11px] text-muted-foreground">{t("tr.subtitle")}</span>
+      </span>
+      <span
+        className={cn(
+          "inline-flex min-h-[40px] shrink-0 items-center gap-1 rounded-xl px-3 text-[11px] font-bold uppercase tracking-[0.12em]",
+          record ? "bg-success text-success-foreground" : "bg-primary text-primary-foreground",
+        )}
+      >
+        {record ? (
+          <>
+            <Check className="size-3.5" /> {t("tr.again")}
+          </>
+        ) : (
+          t("tr.start")
+        )}
+      </span>
+    </Link>
   );
 }
 
