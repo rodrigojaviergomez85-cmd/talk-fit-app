@@ -2,6 +2,7 @@ import { Flame } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import type { JourneyState } from "@/lib/types";
 import { HABIT_GOAL, final6, habitDays, habitDisplay, nextMilestone } from "@/lib/habit";
+import { JourneyService } from "@/services/journey-service";
 import { useAppLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
