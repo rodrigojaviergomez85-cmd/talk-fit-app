@@ -27,6 +27,7 @@ import {
   PracticeSessionService,
   setSessionScope,
   itemKey,
+  migrateLegacyRep2,
   type PracticeSession,
 } from "@/services/practice-session";
 import { useAuth } from "@/lib/auth";
@@ -126,7 +127,10 @@ function PracticePage() {
     setPreferencesScope(user.id);
     setVerbBankScope(user.id);
     const saved = PracticeSessionService.load(moduleId, dayNumber);
-    if (PracticeSessionService.isResumable(saved)) setResume(saved);
+    if (PracticeSessionService.isResumable(saved) && saved) {
+      // Sessions saved with the old sentence-by-sentence Rep 2 map to the closest chunk.
+      setResume(migrateLegacyRep2(saved, rep2Chunks(day), rep4Items(day).length));
+    }
     setReady(true);
   }, [moduleId, dayNumber, user?.id, sync]);
 
@@ -160,12 +164,24 @@ function PracticePage() {
     window.scrollTo({ top: 0 });
   }, [stage, subIndex]);
 
+  // Lightweight per-rep wall-clock timing (pilot analytics, never shown).
+  const repDurations = useRef<number[]>([0, 0, 0, 0, 0, 0]);
+  const stageEnteredAt = useRef(Date.now());
+  useEffect(() => {
+    stageEnteredAt.current = Date.now();
+    return () => {
+      const spent = (Date.now() - stageEnteredAt.current) / 1000;
+      repDurations.current[stage] = (repDurations.current[stage] ?? 0) + spent;
+    };
+  }, [stage]);
+
+  const chunks2 = useMemo(() => rep2Chunks(day), [day]);
   const items4 = useMemo(() => rep4Items(day), [day]);
-  const subTotal = stage === 2 ? day.lines.length : stage === 4 ? items4.length : 1;
+  const subTotal = stage === 2 ? chunks2.length : stage === 4 ? items4.length : 1;
 
   const currentItemKey =
     stage === 2
-      ? itemKey(2, day.lines[subIndex]?.id ?? String(subIndex))
+      ? itemKey("2c", chunks2[subIndex]?.id ?? String(subIndex))
       : stage === 4
         ? itemKey(4, items4[subIndex]?.id ?? String(subIndex))
         : null;
@@ -248,6 +264,10 @@ function PracticePage() {
     const final = (finalIndex !== null ? takes[finalIndex] : null) ?? recorded[recorded.length - 1];
     if (!final) return;
     const first = recorded[0] ?? final;
+    // Close the timer for the current rep before snapshotting durations.
+    const d = [...repDurations.current];
+    d[stage] = (d[stage] ?? 0) + (Date.now() - stageEnteredAt.current) / 1000;
+    const r = (i: number) => Math.round(d[i] ?? 0);
     const next = JourneyService.completeDay({
       moduleId,
       day: day.day,
@@ -258,6 +278,14 @@ function PracticePage() {
       recordingsCount: Math.max(1, recorded.length),
       finalUrl: final.url,
       firstUrl: first.url,
+      repDurations: {
+        rep1: r(1),
+        rep2: r(2),
+        rep3: r(3),
+        rep4: r(4),
+        rep5: r(5),
+        total: r(0) + r(1) + r(2) + r(3) + r(4) + r(5),
+      },
     });
     setFinalRecording(final);
     setJourneyAfterFinish(next);
@@ -269,7 +297,7 @@ function PracticePage() {
     cloudSave(final, next);
   };
 
-  const countFor = (rep: 2 | 4, ids: string[]) => {
+  const countFor = (rep: "2c" | 4, ids: string[]) => {
     const keys = ids.map((id) => itemKey(rep, id));
     return {
       total: keys.length,
@@ -314,7 +342,7 @@ function PracticePage() {
           firstRecording={recorded[0] ?? null}
           showEs={esUi}
           summary={{
-            rep2: countFor(2, day.lines.map((line) => line.id)),
+            rep2: countFor("2c", chunks2.map((chunk) => chunk.id)),
             rep4: countFor(4, items4.map((item) => item.id)),
           }}
           saveState={saveState}
@@ -667,10 +695,11 @@ function ResumeScreen({
 }) {
   const [confirming, setConfirming] = useState(false);
   const label = RESUME_LABELS[session.stage] ?? RESUME_LABELS[0]!;
-  const total = session.stage === 2 ? day.lines.length : session.stage === 4 ? rep4Items(day).length : 1;
+  const total = session.stage === 2 ? rep2Chunks(day).length : session.stage === 4 ? rep4Items(day).length : 1;
+  const unit = session.stage === 2 ? "CHUNK" : showEs ? "PREGUNTA" : "QUESTION";
   const position =
     total > 1
-      ? `${showEs ? label.es : label.en} · ${showEs ? "FRASE" : "PROMPT"} ${session.subIndex + 1} ${showEs ? "DE" : "OF"} ${total}`
+      ? `${showEs ? label.es : label.en} · ${unit} ${Math.min(session.subIndex, total - 1) + 1} ${showEs ? "DE" : "OF"} ${total}`
       : showEs
         ? label.es
         : label.en;
@@ -840,10 +869,41 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 
 /* -------------------------------- Rep 2 ---------------------------------- */
 
+export type Rep2Chunk = { id: string; lineIds: string[]; lines: ModelLine[] };
+
+/**
+ * Groups the day's core lines into recording chunks (2 sentences each).
+ * Q/A days pair each question with its answer, so one chunk = 2 Q/A pairs.
+ * A day may override the grouping with `rep2Chunks`.
+ */
+export function rep2Chunks(day: CourseDay): Rep2Chunk[] {
+  const byId = new Map(day.lines.map((line) => [line.id, line]));
+  const toChunk = (lines: ModelLine[]): Rep2Chunk => ({
+    id: lines[0]?.id ?? "chunk",
+    lineIds: lines.map((l) => l.id),
+    lines,
+  });
+
+  if (day.rep2Chunks?.length) {
+    const chunks = day.rep2Chunks
+      .map((ids) => ids.map((id) => byId.get(id)).filter((l): l is ModelLine => Boolean(l)))
+      .filter((lines) => lines.length > 0)
+      .map(toChunk);
+    if (chunks.length) return chunks;
+  }
+
+  const isQa = day.lines.some((line) => line.role === "q") && day.lines.some((line) => line.role === "a");
+  const size = isQa ? 4 : 2;
+  const chunks: Rep2Chunk[] = [];
+  for (let i = 0; i < day.lines.length; i += size) {
+    chunks.push(toChunk(day.lines.slice(i, i + size)));
+  }
+  return chunks;
+}
+
 function Rep2Copy({
   day,
   index,
-  showEs,
   attempted,
   onRecorded,
   onSkip,
@@ -858,51 +918,55 @@ function Rep2Copy({
   onNext: () => void;
 }) {
   const t = useT();
-  const line = day.lines[index]!;
+  const chunks = rep2Chunks(day);
+  const chunk = chunks[index] ?? chunks[0]!;
   const [mine, setMine] = useState<Recording | null>(null);
 
   useEffect(() => setMine(null), [index]);
 
   const level = supportLevel(day);
+  const chunkText = chunk.lines.map((line) => line.text).join(" ");
+  const isLast = index >= chunks.length - 1;
 
   return (
     <div className="space-y-5">
-      <Instruction en="Listen, then copy." es="Escucha y copia." />
+      <Instruction en="Listen, then say both sentences together." es="Escucha y di las dos frases juntas." />
 
       <SceneImage day={day} />
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-        {index + 1} / {day.lines.length}
+        {t("practice.chunk")} {index + 1} {t("practice.of")} {chunks.length}
       </p>
 
-      <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-        <LineCard line={line} chunked={prefersChunks(level)} />
+      <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+        {chunk.lines.map((line) => (
+          <LineCard key={line.id} line={line} chunked={prefersChunks(level)} />
+        ))}
       </div>
 
+      <AudioPlayer text={chunkText} label={t("practice.listen")} rate={0.9} voice={day.speakerVoice} />
 
-      <AudioPlayer text={line.text} label={t("practice.listen")} rate={0.9} voice={day.speakerVoice} />
-
-      <VoiceRecorder label={t("practice.record")} maxSeconds={20} showTimer onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
+      <VoiceRecorder
+        label={mine ? t("practice.repeat") : t("practice.record")}
+        maxSeconds={30}
+        showTimer
+        onComplete={(rec) => {
+          setMine(rec);
+          onRecorded(rec);
+        }}
+      />
 
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
       <PrimaryButton onClick={onNext} disabled={!attempted}>
-        {index < day.lines.length - 1
-          ? showEs
-            ? "SIGUIENTE FRASE"
-            : "NEXT SENTENCE"
-          : showEs
-            ? "SIGUIENTE REP"
-            : "NEXT REP"}{" "}
-        <ArrowRight className="size-5" />
+        {isLast ? t("practice.nextRep") : t("practice.nextChunk")} <ArrowRight className="size-5" />
       </PrimaryButton>
 
       {attempted ? null : (
         <>
           <HelperText text={t("practice.recordOnce")} />
-          <SkipLink label={t("practice.skipSentence")} onClick={onSkip} />
+          <SkipLink label={t("practice.skipChunk")} onClick={onSkip} />
         </>
       )}
-
     </div>
   );
 }
@@ -971,26 +1035,52 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
 
 /* -------------------------------- Rep 4 ---------------------------------- */
 
-type Rep4Item = { id: string; question: string; questionEs: string; starter: string; starterEs: string; cues?: string[] };
+type Rep4Item = {
+  id: string;
+  question: string;
+  questionEs: string;
+  starter: string;
+  starterEs: string;
+  cues?: string[] | undefined;
+  /** WH word shown as a chip above the question (WHERE, WHO…). */
+  cue?: string | undefined;
+};
+
+/** Rep 4 never shows more than 5 speaking prompts per day. */
+export const REP4_MAX = 5;
+
+const WH_WORDS = ["HOW OFTEN", "HOW LONG", "HOW MANY", "HOW MUCH", "WHAT TIME", "WHAT", "WHERE", "WHEN", "WHO", "WHY", "HOW", "WHICH"];
+
+/** Derives the WH cue from the question when the lesson does not define one. */
+function whCue(question: string): string | undefined {
+  const upper = question.trim().toUpperCase();
+  return WH_WORDS.find((word) => upper.startsWith(word));
+}
 
 function rep4Items(day: CourseDay): Rep4Item[] {
-  if (day.challenges?.length) {
-    return day.challenges.map((challenge) => ({
-      id: challenge.id,
-      question: challenge.title,
-      questionEs: challenge.titleEs,
-      starter: challenge.detail,
-      starterEs: challenge.detailEs,
-      cues: challenge.cues,
-    }));
-  }
-  return day.prompts;
+  const items: Rep4Item[] = day.challenges?.length
+    ? day.challenges.map((challenge) => ({
+        id: challenge.id,
+        question: challenge.title,
+        questionEs: challenge.titleEs,
+        starter: challenge.detail,
+        starterEs: challenge.detailEs,
+        cues: challenge.cues,
+      }))
+    : day.prompts.map((prompt) => ({
+        id: prompt.id,
+        question: prompt.question,
+        questionEs: prompt.questionEs,
+        starter: prompt.starter,
+        starterEs: prompt.starterEs,
+        cue: prompt.cue ?? whCue(prompt.question),
+      }));
+  return items.slice(0, REP4_MAX);
 }
 
 function Rep4MakeItYours({
   day,
   index,
-  showEs,
   attempted,
   onRecorded,
   onSkip,
@@ -1008,7 +1098,7 @@ function Rep4MakeItYours({
 }) {
   const t = useT();
   const items = rep4Items(day);
-  const item = items[index]!;
+  const item = items[index] ?? items[items.length - 1]!;
   const [mine, setMine] = useState<Recording | null>(null);
 
   useEffect(() => setMine(null), [index]);
@@ -1029,12 +1119,17 @@ function Rep4MakeItYours({
         </>
       ) : null}
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-        {index + 1} / {items.length}
+        {t("practice.question")} {index + 1} {t("practice.of")} {items.length}
       </p>
 
-      <CueRow cues={item.cues ?? day.cues} />
+      {item.cues ? <CueRow cues={item.cues} /> : null}
 
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+        {item.cue ? (
+          <span className="mb-3 inline-flex rounded-full bg-primary/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+            {item.cue}?
+          </span>
+        ) : null}
         <TranslatableText es={item.questionEs}>
           <p className="text-[20px] font-extrabold leading-tight tracking-tight">{item.question}</p>
         </TranslatableText>
@@ -1045,21 +1140,20 @@ function Rep4MakeItYours({
         </div>
       </div>
 
-
       <AudioPlayer text={item.question} label={t("practice.hearQuestion")} variant="ghost" size="sm" voice={day.speakerVoice} />
 
-      <VoiceRecorder label={t("practice.answer")} maxSeconds={30} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
+      <VoiceRecorder
+        label={mine ? t("practice.reRecord") : t("practice.answer")}
+        maxSeconds={30}
+        onComplete={(rec) => {
+          setMine(rec);
+          onRecorded(rec);
+        }}
+      />
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
       <PrimaryButton onClick={onNext} disabled={!attempted}>
-        {index < items.length - 1
-          ? showEs
-            ? "SIGUIENTE PREGUNTA"
-            : "NEXT QUESTION"
-          : showEs
-            ? "SIGUIENTE REP"
-            : "NEXT REP"}{" "}
-        <ArrowRight className="size-5" />
+        {index < items.length - 1 ? t("practice.nextQuestion") : t("practice.nextRep")} <ArrowRight className="size-5" />
       </PrimaryButton>
 
       {attempted ? null : (
@@ -1068,7 +1162,6 @@ function Rep4MakeItYours({
           <SkipLink label={t("practice.skipPrompt")} onClick={onSkip} />
         </>
       )}
-
     </div>
   );
 }

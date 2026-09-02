@@ -122,6 +122,18 @@ export type CourseDay = {
   goalSentences?: number | undefined;
   /** Hide model sentences by default (final storytelling challenge). */
   hideModelText?: boolean | undefined;
+  /** Optional Rep 2 chunk override: groups of line ids recorded together. */
+  rep2Chunks?: string[][] | undefined;
+};
+
+/** Wall-clock seconds spent on each rep (pilot analytics, never shown). */
+export type RepDurations = {
+  rep1: number;
+  rep2: number;
+  rep3: number;
+  rep4: number;
+  rep5: number;
+  total: number;
 };
 
 
@@ -168,6 +180,8 @@ export type DayRecord = {
   /** Cloud storage path of the final recording, when signed in. */
   recordingPath?: string | null | undefined;
   selfAssessment?: SelfAssessment | undefined;
+  /** Seconds spent per rep (pilot analytics). */
+  repDurations?: RepDurations | null | undefined;
 };
 
 export type JourneyState = {

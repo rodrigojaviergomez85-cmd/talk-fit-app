@@ -1,5 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
-import type { DayRecord, JourneyState, ModuleId, SelfAssessment } from "@/lib/types";
+import type { DayRecord, JourneyState, ModuleId, RepDurations, SelfAssessment } from "@/lib/types";
 import { CourseService, isModuleId } from "./course-service";
 
 /**
@@ -287,6 +287,7 @@ export const JourneyService = {
     sentenceCount?: number | null;
     finalUrl?: string | null;
     firstUrl?: string | null;
+    repDurations?: RepDurations | null;
   }): JourneyState {
     const state = read();
     const today = dayKey();
@@ -313,6 +314,7 @@ export const JourneyService = {
       sentenceCount: input.sentenceCount ?? null,
       finalUrl: input.finalUrl ?? null,
       firstUrl: input.firstUrl ?? null,
+      repDurations: input.repDurations ?? existing?.repDurations ?? null,
       ...(existing?.recordingPath ? { recordingPath: existing.recordingPath } : {}),
       ...(existing?.selfAssessment ? { selfAssessment: existing.selfAssessment } : {}),
     };
@@ -420,6 +422,7 @@ export const JourneyService = {
         sentence_count: record.sentenceCount ?? null,
         recording_path: recordingPath,
         self_assessment: record.selfAssessment ?? null,
+        ...(record.repDurations ? { rep_durations: record.repDurations } : {}),
       },
       { onConflict: "user_id,module_id,day" },
     );

@@ -134,53 +134,41 @@ function prompt(
 
 function selfPromptsFoundation(id: string): PersonalPrompt[] {
   return [
-    prompt(`${id}-p1`, "NAME", "What is your name?", "¿Cómo te llamas?", "My name is…", "Me llamo…"),
-    prompt(`${id}-p2`, "AGE", "How old are you?", "¿Cuántos años tienes?", "I am ______ years old.", "Tengo ______ años."),
-    prompt(`${id}-p3`, "COUNTRY", "Where are you from?", "¿De dónde eres?", "I am from…", "Soy de…"),
-    prompt(`${id}-p4`, "CITY", "Where do you live?", "¿Dónde vives?", "I live in…", "Vivo en…"),
-    prompt(`${id}-p5`, "COLOR", "What is your favorite color?", "¿Cuál es tu color favorito?", "My favorite color is…", "Mi color favorito es…"),
-    prompt(`${id}-p6`, "FOOD", "What is your favorite food?", "¿Cuál es tu comida favorita?", "My favorite food is…", "Mi comida favorita es…"),
-    prompt(`${id}-p7`, "HOBBIES", "What are your hobbies?", "¿Cuáles son tus pasatiempos?", "My hobbies are ______ and ______.", "Mis pasatiempos son ______ y ______."),
-    prompt(`${id}-p8`, "PERSONALITY", "How would you describe yourself?", "¿Cómo te describirías?", "Overall, I am a ______ and ______ person.", "En general, soy una persona ______ y ______."),
+    prompt(`${id}-p1`, "WHAT", "What is your name?", "¿Cómo te llamas?", "My name is…", "Me llamo…"),
+    prompt(`${id}-p2`, "HOW", "How old are you?", "¿Cuántos años tienes?", "I am ______ years old.", "Tengo ______ años."),
+    prompt(`${id}-p3`, "WHERE", "Where are you from, and where do you live?", "¿De dónde eres y dónde vives?", "I am from ______, and I live in…", "Soy de ______ y vivo en…"),
+    prompt(`${id}-p7`, "WHAT", "What are your hobbies?", "¿Cuáles son tus pasatiempos?", "My hobbies are ______ and ______.", "Mis pasatiempos son ______ y ______."),
+    prompt(`${id}-p8`, "HOW", "How would you describe yourself?", "¿Cómo te describirías?", "Overall, I am a ______ and ______ person.", "En general, soy una persona ______ y ______."),
   ];
 }
 
 function selfPromptsFluency(id: string): PersonalPrompt[] {
   return [
-    prompt(`${id}-p1`, "NAME + AGE", "Your name and your age?", "¿Tu nombre y tu edad?", "My name is ______, and I am ______ years old.", "Me llamo ______ y tengo ______ años."),
-    prompt(`${id}-p2`, "FROM + LIVE", "Where are you from and where do you live?", "¿De dónde eres y dónde vives?", "I am from ______, and I live in ______.", "Soy de ______ y vivo en ______."),
-    prompt(`${id}-p3`, "COLOR + WHY", "Your favorite color? Why?", "¿Tu color favorito? ¿Por qué?", "My favorite color is ______ because…", "Mi color favorito es ______ porque…"),
-    prompt(`${id}-p4`, "FOOD + WHY", "Your favorite food? Why?", "¿Tu comida favorita? ¿Por qué?", "My favorite food is ______ because…", "Mi comida favorita es ______ porque…"),
-    prompt(`${id}-p5`, "HOBBIES", "What are your hobbies?", "¿Cuáles son tus pasatiempos?", "My hobbies are ______ and ______.", "Mis pasatiempos son ______ y ______."),
-    prompt(`${id}-p6`, "FREE TIME", "What do you like to do in your free time?", "¿Qué te gusta hacer en tu tiempo libre?", "In my free time, I like to…", "En mi tiempo libre me gusta…"),
-    prompt(`${id}-p7`, "ALSO", "What else do you like to do?", "¿Qué más te gusta hacer?", "I also like to…", "También me gusta…"),
-    prompt(`${id}-p8`, "PERSONALITY", "How would you describe yourself?", "¿Cómo te describirías?", "Overall, I am a ______ and ______ person.", "En general, soy una persona ______ y ______."),
+    prompt(`${id}-p1`, "WHAT", "What is your name and how old are you?", "¿Cómo te llamas y cuántos años tienes?", "My name is ______, and I am ______ years old.", "Me llamo ______ y tengo ______ años."),
+    prompt(`${id}-p2`, "WHERE", "Where are you from and where do you live?", "¿De dónde eres y dónde vives?", "I am from ______, and I live in ______.", "Soy de ______ y vivo en ______."),
+    prompt(`${id}-p4`, "WHY", "What is your favorite food, and why?", "¿Cuál es tu comida favorita, y por qué?", "My favorite food is ______ because…", "Mi comida favorita es ______ porque…"),
+    prompt(`${id}-p6`, "WHAT", "What do you like to do in your free time?", "¿Qué te gusta hacer en tu tiempo libre?", "In my free time, I like to…", "En mi tiempo libre me gusta…"),
+    prompt(`${id}-p8`, "HOW", "How would you describe yourself?", "¿Cómo te describirías?", "Overall, I am a ______ and ______ person.", "En general, soy una persona ______ y ______."),
   ];
 }
 
 function otherPromptsFoundation(id: string): PersonalPrompt[] {
   return [
-    prompt(`${id}-p1`, "WHO?", "Who do you want to talk about?", "¿De quién quieres hablar?", "This is my…", "Esta es mi… / Este es mi…"),
-    prompt(`${id}-p2`, "NAME", "What is his / her name?", "¿Cómo se llama?", "His name is… / Her name is…", "Su nombre es…"),
-    prompt(`${id}-p3`, "AGE", "How old is he / she?", "¿Cuántos años tiene?", "He is ______ years old. / She is ______ years old.", "Tiene ______ años."),
-    prompt(`${id}-p4`, "COUNTRY", "Where is he / she from?", "¿De dónde es?", "He is from… / She is from…", "Es de…"),
-    prompt(`${id}-p5`, "CITY", "Where does he / she live?", "¿Dónde vive?", "He lives in… / She lives in…", "Vive en…"),
-    prompt(`${id}-p6`, "COLOR", "His / her favorite color?", "¿Su color favorito?", "His favorite color is… / Her favorite color is…", "Su color favorito es…"),
-    prompt(`${id}-p7`, "FOOD", "His / her favorite food?", "¿Su comida favorita?", "His favorite food is… / Her favorite food is…", "Su comida favorita es…"),
-    prompt(`${id}-p8`, "HOBBIES", "What are his / her hobbies?", "¿Cuáles son sus pasatiempos?", "His hobbies are ______ and ______.", "Sus pasatiempos son ______ y ______."),
+    prompt(`${id}-p1`, "WHO", "Who do you want to talk about?", "¿De quién quieres hablar?", "This is my…", "Esta es mi… / Este es mi…"),
+    prompt(`${id}-p2`, "WHAT", "What is his / her name?", "¿Cómo se llama?", "His name is… / Her name is…", "Su nombre es…"),
+    prompt(`${id}-p3`, "HOW", "How old is he / she?", "¿Cuántos años tiene?", "He is ______ years old. / She is ______ years old.", "Tiene ______ años."),
+    prompt(`${id}-p4`, "WHERE", "Where is he / she from, and where does he / she live?", "¿De dónde es y dónde vive?", "He/She is from ______, and lives in…", "Es de ______ y vive en…"),
+    prompt(`${id}-p8`, "WHAT", "What are his / her hobbies?", "¿Cuáles son sus pasatiempos?", "His hobbies are ______ and ______.", "Sus pasatiempos son ______ y ______."),
   ];
 }
 
 function otherPromptsFluency(id: string): PersonalPrompt[] {
   return [
-    prompt(`${id}-p1`, "WHO + NAME", "Who is this person and what is his / her name?", "¿Quién es y cómo se llama?", "This is my ______, and his/her name is ______.", "Esta es mi ______ y su nombre es ______."),
-    prompt(`${id}-p2`, "AGE + FROM", "How old is he / she and where is he / she from?", "¿Cuántos años tiene y de dónde es?", "He/She is ______ years old and is from ______.", "Tiene ______ años y es de ______."),
-    prompt(`${id}-p3`, "CITY", "Where does he / she live?", "¿Dónde vive?", "He/She lives in…", "Vive en…"),
-    prompt(`${id}-p4`, "COLOR + WHY", "His / her favorite color? Why?", "¿Su color favorito? ¿Por qué?", "His/Her favorite color is ______ because…", "Su color favorito es ______ porque…"),
-    prompt(`${id}-p5`, "FOOD + WHY", "His / her favorite food? Why?", "¿Su comida favorita? ¿Por qué?", "His/Her favorite food is ______ because…", "Su comida favorita es ______ porque…"),
-    prompt(`${id}-p6`, "HOBBIES", "What are his / her hobbies?", "¿Cuáles son sus pasatiempos?", "His/Her hobbies are ______ and ______.", "Sus pasatiempos son ______ y ______."),
-    prompt(`${id}-p7`, "FREE TIME", "What does he / she like to do in his / her free time?", "¿Qué le gusta hacer en su tiempo libre?", "In his/her free time, he/she likes to…", "En su tiempo libre le gusta…"),
-    prompt(`${id}-p8`, "PERSONALITY", "How would you describe him / her?", "¿Cómo lo / la describirías?", "Overall, he/she is a ______ and ______ person.", "En general, es una persona ______ y ______."),
+    prompt(`${id}-p1`, "WHO", "Who is this person and what is his / her name?", "¿Quién es y cómo se llama?", "This is my ______, and his/her name is ______.", "Esta es mi ______ y su nombre es ______."),
+    prompt(`${id}-p2`, "HOW", "How old is he / she and where is he / she from?", "¿Cuántos años tiene y de dónde es?", "He/She is ______ years old and is from ______.", "Tiene ______ años y es de ______."),
+    prompt(`${id}-p3`, "WHERE", "Where does he / she live?", "¿Dónde vive?", "He/She lives in…", "Vive en…"),
+    prompt(`${id}-p5`, "WHY", "What is his / her favorite food, and why?", "¿Cuál es su comida favorita, y por qué?", "His/Her favorite food is ______ because…", "Su comida favorita es ______ porque…"),
+    prompt(`${id}-p8`, "HOW", "How would you describe him / her?", "¿Cómo lo / la describirías?", "Overall, he/she is a ______ and ______ person.", "En general, es una persona ______ y ______."),
   ];
 }
 
