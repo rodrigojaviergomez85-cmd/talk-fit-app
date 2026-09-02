@@ -1034,26 +1034,52 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
 
 /* -------------------------------- Rep 4 ---------------------------------- */
 
-type Rep4Item = { id: string; question: string; questionEs: string; starter: string; starterEs: string; cues?: string[] };
+type Rep4Item = {
+  id: string;
+  question: string;
+  questionEs: string;
+  starter: string;
+  starterEs: string;
+  cues?: string[] | undefined;
+  /** WH word shown as a chip above the question (WHERE, WHO…). */
+  cue?: string | undefined;
+};
+
+/** Rep 4 never shows more than 5 speaking prompts per day. */
+export const REP4_MAX = 5;
+
+const WH_WORDS = ["HOW OFTEN", "HOW LONG", "HOW MANY", "HOW MUCH", "WHAT TIME", "WHAT", "WHERE", "WHEN", "WHO", "WHY", "HOW", "WHICH"];
+
+/** Derives the WH cue from the question when the lesson does not define one. */
+function whCue(question: string): string | undefined {
+  const upper = question.trim().toUpperCase();
+  return WH_WORDS.find((word) => upper.startsWith(word));
+}
 
 function rep4Items(day: CourseDay): Rep4Item[] {
-  if (day.challenges?.length) {
-    return day.challenges.map((challenge) => ({
-      id: challenge.id,
-      question: challenge.title,
-      questionEs: challenge.titleEs,
-      starter: challenge.detail,
-      starterEs: challenge.detailEs,
-      cues: challenge.cues,
-    }));
-  }
-  return day.prompts;
+  const items: Rep4Item[] = day.challenges?.length
+    ? day.challenges.map((challenge) => ({
+        id: challenge.id,
+        question: challenge.title,
+        questionEs: challenge.titleEs,
+        starter: challenge.detail,
+        starterEs: challenge.detailEs,
+        cues: challenge.cues,
+      }))
+    : day.prompts.map((prompt) => ({
+        id: prompt.id,
+        question: prompt.question,
+        questionEs: prompt.questionEs,
+        starter: prompt.starter,
+        starterEs: prompt.starterEs,
+        cue: prompt.cue ?? whCue(prompt.question),
+      }));
+  return items.slice(0, REP4_MAX);
 }
 
 function Rep4MakeItYours({
   day,
   index,
-  showEs,
   attempted,
   onRecorded,
   onSkip,
@@ -1071,7 +1097,7 @@ function Rep4MakeItYours({
 }) {
   const t = useT();
   const items = rep4Items(day);
-  const item = items[index]!;
+  const item = items[index] ?? items[items.length - 1]!;
   const [mine, setMine] = useState<Recording | null>(null);
 
   useEffect(() => setMine(null), [index]);
@@ -1092,12 +1118,17 @@ function Rep4MakeItYours({
         </>
       ) : null}
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-        {index + 1} / {items.length}
+        {t("practice.question")} {index + 1} {t("practice.of")} {items.length}
       </p>
 
-      <CueRow cues={item.cues ?? day.cues} />
+      {item.cues ? <CueRow cues={item.cues} /> : null}
 
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+        {item.cue ? (
+          <span className="mb-3 inline-flex rounded-full bg-primary/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+            {item.cue}?
+          </span>
+        ) : null}
         <TranslatableText es={item.questionEs}>
           <p className="text-[20px] font-extrabold leading-tight tracking-tight">{item.question}</p>
         </TranslatableText>
@@ -1108,21 +1139,20 @@ function Rep4MakeItYours({
         </div>
       </div>
 
-
       <AudioPlayer text={item.question} label={t("practice.hearQuestion")} variant="ghost" size="sm" voice={day.speakerVoice} />
 
-      <VoiceRecorder label={t("practice.answer")} maxSeconds={30} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
+      <VoiceRecorder
+        label={mine ? t("practice.reRecord") : t("practice.answer")}
+        maxSeconds={30}
+        onComplete={(rec) => {
+          setMine(rec);
+          onRecorded(rec);
+        }}
+      />
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
       <PrimaryButton onClick={onNext} disabled={!attempted}>
-        {index < items.length - 1
-          ? showEs
-            ? "SIGUIENTE PREGUNTA"
-            : "NEXT QUESTION"
-          : showEs
-            ? "SIGUIENTE REP"
-            : "NEXT REP"}{" "}
-        <ArrowRight className="size-5" />
+        {index < items.length - 1 ? t("practice.nextQuestion") : t("practice.nextRep")} <ArrowRight className="size-5" />
       </PrimaryButton>
 
       {attempted ? null : (
@@ -1131,7 +1161,6 @@ function Rep4MakeItYours({
           <SkipLink label={t("practice.skipPrompt")} onClick={onSkip} />
         </>
       )}
-
     </div>
   );
 }
