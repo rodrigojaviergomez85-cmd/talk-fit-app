@@ -104,6 +104,10 @@ function ProgressPage() {
         {/* Current module — the dominant progress metric */}
         {next ? <CurrentModule state={safe} moduleId={next.moduleId} day={next.day} /> : null}
 
+        {/* 66-day habit: habit days + streak as separate numbers, no shame */}
+        <HabitCard state={safe} variant="progress" />
+        <BadgeGrid state={safe} />
+
         {/* Objective metrics */}
         <section className="grid grid-cols-2 gap-3">
           <Stat
