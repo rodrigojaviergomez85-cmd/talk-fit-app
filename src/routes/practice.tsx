@@ -126,7 +126,10 @@ function PracticePage() {
     setPreferencesScope(user.id);
     setVerbBankScope(user.id);
     const saved = PracticeSessionService.load(moduleId, dayNumber);
-    if (PracticeSessionService.isResumable(saved)) setResume(saved);
+    if (PracticeSessionService.isResumable(saved) && saved) {
+      // Sessions saved with the old sentence-by-sentence Rep 2 map to the closest chunk.
+      setResume(migrateLegacyRep2(saved, rep2Chunks(day), rep4Items(day).length));
+    }
     setReady(true);
   }, [moduleId, dayNumber, user?.id, sync]);
 
