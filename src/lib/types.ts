@@ -16,6 +16,9 @@ export type ModelLine = {
   role?: "q" | "a" | undefined;
 };
 
+/** TIGERS micro-label shown with a Rep 4 / Rep 5 instruction: EXPLICA · JUSTIFICA · DEFIENDE. */
+export type RepLabel = "explain" | "justify" | "defend";
+
 /** Rep 4 personalization prompt. */
 export type PersonalPrompt = {
   id: string;
@@ -25,6 +28,8 @@ export type PersonalPrompt = {
   starterEs: string;
   /** Short visual cue shown above the question (e.g. NAME, AGE). */
   cue?: string | undefined;
+  /** Optional TIGERS behavior label for this prompt. */
+  label?: RepLabel | undefined;
 };
 
 
@@ -50,8 +55,8 @@ export type Challenge = {
   cues: string[];
 };
 
-/** Learning module identifier. */
-export type ModuleId = "basic-zero" | "simple-present" | "past-stories" | "simple-future" | "mixed-tenses" | "eagles-week-1";
+/** Learning module identifier. Frozen once shipped — progress and recordings are keyed to it. */
+export type ModuleId = "basic-zero" | "simple-present" | "past-stories" | "simple-future" | "mixed-tenses" | "eagles-week-1" | "tigers";
 
 /** Test Ready Sprint types (EAGLES pilot). Practice only — never scored. */
 export type TestReadyType = "repeat" | "quick-answers" | "build-sentence" | "listen-respond" | "speak-now" | "story-retell";
@@ -169,6 +174,27 @@ export type CourseDay = {
   rep5Turns?: RolePlayTurn[] | undefined;
   /** Small fixed language toolbox shown before a role play (EAGLES Sales). */
   rep5Toolbox?: string[] | undefined;
+  /** Optional TIGERS behavior label for the Rep 5 instruction. */
+  rep5Label?: RepLabel | undefined;
+  /**
+   * TIGERS FINAL: small prewritten scenario bank. One scenario is picked at
+   * random (never generated) when the learner opens the day and is kept for
+   * that day's session. Overrides rep5Prompt / rep5Turns / rep5Tips.
+   */
+  rep5Scenarios?: Rep5Scenario[] | undefined;
+};
+
+/** One prewritten Rep 5 scenario (TIGERS FINAL bank). */
+export type Rep5Scenario = {
+  id: string;
+  /** Category chip: WORK · CUSTOMER · LIFE. */
+  label: string;
+  labelEs: string;
+  /** Short situation shown above the question. */
+  situation: string;
+  situationEs: string;
+  rep5Prompt: { question: string; questionEs: string };
+  rep5Turns: RolePlayTurn[];
 };
 
 /** Small set of connector chunks: automate, don't memorize lists. */

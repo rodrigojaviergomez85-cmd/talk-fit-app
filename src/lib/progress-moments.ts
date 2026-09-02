@@ -172,6 +172,10 @@ export const TRANSFORMATION: Record<ModuleId, { es: string; en: string }> = {
     es: "Ahora puedes conectar mejor tus ideas, comparar opciones, resolver situaciones y dar recomendaciones.",
     en: "You can now connect your ideas better, compare options, solve situations and give recommendations.",
   },
+  tigers: {
+    es: "Ahora puedes desarrollar tus respuestas, dar ejemplos, comparar opciones, responder a objeciones y defender una decisión.",
+    en: "You can now develop your answers, give examples, compare options, respond to objections and defend a decision.",
+  },
 };
 
 export const MODULE_EMOJI: Record<ModuleId, string> = {
@@ -181,6 +185,25 @@ export const MODULE_EMOJI: Record<ModuleId, string> = {
   "past-stories": "🏆",
   "mixed-tenses": "🏆",
   "eagles-week-1": "🦅",
+  tigers: "🐯",
+};
+
+/** Extra completion detail for a module: level line + "AHORA PUEDES PRACTICAR CÓMO:" list. */
+export const MODULE_COMPLETION: Partial<
+  Record<ModuleId, { levelLine: { es: string; en: string }; canNow: { es: string; en: string }[] }>
+> = {
+  tigers: {
+    levelLine: { es: "INTERMEDIO · MES 2 ✓", en: "INTERMEDIATE · MONTH 2 ✓" },
+    canNow: [
+      { es: "desarrollar mejor tus respuestas", en: "develop your answers better" },
+      { es: "dar ejemplos", en: "give examples" },
+      { es: "comparar opciones", en: "compare options" },
+      { es: "explicar ventajas y desventajas", en: "explain advantages and disadvantages" },
+      { es: "responder a objeciones", en: "respond to objections" },
+      { es: "defender una decisión", en: "defend a decision" },
+      { es: "reaccionar con menos preparación", en: "react with less preparation" },
+    ],
+  },
 };
 
 export type NextUpCopy = {
@@ -260,33 +283,31 @@ export const NEXT_UP: Record<ModuleId, NextUpCopy> = {
       },
     ],
   },
-};
-
-/** Preview-only levels (not published): same shape, no CTA. */
-export const UPCOMING_NEXT_UP: Record<string, NextUpCopy & { title: string; label: string }> = {
   tigers: {
-    label: "INTERMEDIO ALTO",
-    title: "TIGERS",
     emoji: "🐯",
     promise: {
       es: "NO SOLO RESPONDAS. EXPLICA Y DEFIENDE TUS IDEAS.",
       en: "DON'T JUST ANSWER. EXPLAIN AND DEFEND YOUR IDEAS.",
     },
     items: [
-      { es: "explicar mejor", en: "explain better" },
+      { es: "explicar por qué", en: "explain why" },
+      { es: "dar ejemplos y evidencia", en: "give examples and evidence" },
       { es: "comparar opciones", en: "compare options" },
-      { es: "reaccionar a nuevas preguntas", en: "react to new questions" },
-      { es: "justificar decisiones", en: "justify decisions" },
-      { es: "defender tu punto de vista", en: "defend your point of view" },
+      { es: "responder a objeciones", en: "respond to objections" },
+      { es: "defender una decisión", en: "defend a decision" },
     ],
   },
+};
+
+/** Preview-only levels (not published): same shape, no CTA. */
+export const UPCOMING_NEXT_UP: Record<string, NextUpCopy & { title: string; label: string }> = {
   sharks: {
-    label: "AVANZADO",
+    label: "INTERMEDIO",
     title: "SHARKS",
     emoji: "🦈",
     promise: {
-      es: "RESPONDE CUANDO NO SABES QUÉ VIENE.",
-      en: "RESPOND WHEN YOU DON'T KNOW WHAT'S COMING.",
+      es: "ADAPT & IMPROVISE — RESPONDE CUANDO NO SABES QUÉ VIENE.",
+      en: "ADAPT & IMPROVISE — RESPOND WHEN YOU DON'T KNOW WHAT'S COMING.",
     },
     items: [
       { es: "improvisar", en: "improvise" },
@@ -313,7 +334,7 @@ export function nextModuleAfter(moduleId: ModuleId): NextStage {
   const next = index >= 0 ? modules[index + 1] : undefined;
   if (next) return { kind: "module", module: next, copy: NEXT_UP[next.id] };
   // Nothing published after this module yet: preview the next level, no CTA.
-  const copy = UPCOMING_NEXT_UP["tigers"];
+  const copy = UPCOMING_NEXT_UP["sharks"];
   return copy ? { kind: "upcoming", copy } : null;
 }
 
