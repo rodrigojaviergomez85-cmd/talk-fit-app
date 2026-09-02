@@ -113,6 +113,60 @@ const DICT = {
   "status.current": ["ACTUAL", "CURRENT"],
   "status.complete": ["COMPLETADO ✓", "COMPLETE ✓"],
   "status.upNext": ["SIGUIENTE", "UP NEXT"],
+  "status.review": ["DISPONIBLE PARA REPASAR", "AVAILABLE TO REVIEW"],
+  "status.soon": ["PRÓXIMAMENTE", "COMING SOON"],
+
+  // Placement
+  "place.title": ["¿DÓNDE EMPIEZAS?", "WHERE DO YOU START?"],
+  "place.subtitle": [
+    "Elige el nivel que mejor describe tu inglés actual.",
+    "Choose the level that best describes your English today.",
+  ],
+  "place.basic-zero": ["Estoy empezando desde cero.", "I'm starting from zero."],
+  "place.simple-future": [
+    "Ya puedo presentarme y quiero hablar de mis planes futuros.",
+    "I can introduce myself and want to talk about my future plans.",
+  ],
+  "place.simple-present": [
+    "Ya puedo hablar de planes y quiero dominar rutinas, hábitos y acciones de ahora.",
+    "I can talk about plans and want to master routines, habits and what's happening now.",
+  ],
+  "place.past-stories": [
+    "Ya manejo el presente y quiero contar lo que pasó.",
+    "I handle the present and want to tell what happened.",
+  ],
+  "place.mixed-tenses": [
+    "Ya uso presente, pasado y futuro; quiero mezclarlos y hacer preguntas.",
+    "I use present, past and future; I want to mix them and ask questions.",
+  ],
+  "place.eagles-week-1": [
+    "Ya converso y quiero explicar, recomendar, aconsejar y vender.",
+    "I can hold a conversation and want to explain, recommend, advise and sell.",
+  ],
+  "place.soonTitle": ["MUY PRONTO", "VERY SOON"],
+  "place.soonBody": [
+    "Por ahora te recomendamos comenzar en INTERMEDIO.",
+    "For now we recommend starting at INTERMEDIO.",
+  ],
+  "place.goIntermedio": ["IR A INTERMEDIO", "GO TO INTERMEDIO"],
+  "place.selected": ["SELECCIONADO", "SELECTED"],
+  "place.changeTitle": ["CAMBIAR MI NIVEL", "CHANGE MY LEVEL"],
+  "place.changeHelp": [
+    "Elige dónde quieres seguir practicando. Tu progreso y tus grabaciones se conservan.",
+    "Choose where you want to keep practicing. Your progress and recordings are kept.",
+  ],
+  "place.confirmTitle": ["¿CAMBIAR TU NIVEL?", "CHANGE YOUR LEVEL?"],
+  "place.confirmBody": [
+    "Tu progreso y tus grabaciones anteriores se conservarán.",
+    "Your previous progress and recordings will be kept.",
+  ],
+  "place.confirmCta": ["CAMBIAR NIVEL", "CHANGE LEVEL"],
+  "place.saveFailed": ["No se pudo guardar tu nivel. Intenta de nuevo.", "We couldn't save your level. Try again."],
+  "place.currentLevel": ["Tu nivel actual", "Your current level"],
+  "prog.yourModule": ["TU MÓDULO ACTUAL", "YOUR CURRENT MODULE"],
+  "prog.forward": ["Tu camino", "Your path"],
+  "prog.review": ["Disponibles para repasar", "Available to review"],
+  "prog.fullCurriculum": ["Currículo completo", "Full curriculum"],
 
   // Home
   "home.today": ["HOY", "TODAY"],
