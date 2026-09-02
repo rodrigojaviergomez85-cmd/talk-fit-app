@@ -540,7 +540,20 @@ function PrimaryButton({ children, onClick, disabled }: { children: React.ReactN
  * App language = Spanish → Spanish is primary, English small secondary.
  * App language = English → English primary; Spanish appears only with ES SUPPORT on.
  */
-function RepHeader({ titleKey, instrKey, cueKey, dark = false }: { titleKey: TKey; instrKey: TKey; cueKey?: TKey; dark?: boolean }) {
+function RepHeader({
+  titleKey,
+  instrKey,
+  cueKey,
+  label,
+  dark = false,
+}: {
+  titleKey: TKey;
+  instrKey: TKey;
+  cueKey?: TKey;
+  /** TIGERS reasoning label (EXPLICA · JUSTIFICA · DEFIENDE) shown as a small chip. */
+  label?: RepLabel | undefined;
+  dark?: boolean;
+}) {
   const { lang } = useAppLang();
   const esAll = useSpanishAll();
   const esPrimary = lang === "es";
@@ -548,9 +561,15 @@ function RepHeader({ titleKey, instrKey, cueKey, dark = false }: { titleKey: TKe
   const [instrEs, instrEn] = tPair(instrKey);
   const secondary = esPrimary ? instrEn : esAll ? instrEs : null;
   const cue = cueKey ? tPair(cueKey)[esPrimary ? 0 : 1] : null;
+  const labelText = label ? tPair(`rep.label.${label}` as TKey)[esPrimary ? 0 : 1] : null;
 
   return (
     <div className="text-center">
+      {labelText ? (
+        <span className="mb-2 inline-block rounded-full bg-primary px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.18em] text-primary-foreground">
+          {labelText}
+        </span>
+      ) : null}
       <p className={cn("text-[20px] font-extrabold uppercase tracking-[0.18em]", dark ? "text-navy-foreground" : "text-foreground")}>
         {esPrimary ? titleEs : titleEn}
       </p>
