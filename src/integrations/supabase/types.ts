@@ -134,6 +134,42 @@ export type Database = {
         }
         Relationships: []
       }
+      progress_moments: {
+        Row: {
+          comparison_completed_at: string
+          comparison_type: string
+          created_at: string
+          id: string
+          module_id: string
+          selected_reflections: string[]
+          updated_at: string
+          user_id: string
+          week: number
+        }
+        Insert: {
+          comparison_completed_at?: string
+          comparison_type: string
+          created_at?: string
+          id?: string
+          module_id: string
+          selected_reflections?: string[]
+          updated_at?: string
+          user_id: string
+          week?: number
+        }
+        Update: {
+          comparison_completed_at?: string
+          comparison_type?: string
+          created_at?: string
+          id?: string
+          module_id?: string
+          selected_reflections?: string[]
+          updated_at?: string
+          user_id?: string
+          week?: number
+        }
+        Relationships: []
+      }
       recordings: {
         Row: {
           created_at: string
