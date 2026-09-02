@@ -331,7 +331,7 @@ function EaglesCompleteCard({
 }) {
   const moduleId: ModuleId = "eagles-week-1";
   const totalDays = CourseService.totalDays(moduleId);
-  const records = Object.values(state.days)
+  const records = (Object.values(state.days) as DayRecord[])
     .filter((r) => r.moduleId === moduleId)
     .sort((a, b) => a.day - b.day);
   const earliest = records.find((r) => r.day !== lastDay && (r.finalUrl || r.recordingPath));
