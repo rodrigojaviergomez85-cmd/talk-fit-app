@@ -240,12 +240,10 @@ const day5: CourseDay = {
     line("d5-10", "Overall, our routines are different, but they work well for us.", "En general, nuestras rutinas son diferentes, pero nos funcionan bien.", ["Overall, our routines are different,", "but they work well for us."]),
   ],
   prompts: [
-    { id: "d5-p1", question: "Talk about your routine.", questionEs: "Habla de tu rutina.", starter: "I usually…", starterEs: "Normalmente yo…" },
-    { id: "d5-p2", question: "Say something you don't do.", questionEs: "Di algo que no haces.", starter: "I don't…", starterEs: "Yo no…" },
-    { id: "d5-p3", question: "Talk about someone else.", questionEs: "Habla de otra persona.", starter: "He / She usually…", starterEs: "Él / Ella normalmente…" },
-    { id: "d5-p4", question: "Say something he / she doesn't do.", questionEs: "Di algo que él / ella no hace.", starter: "She doesn't…", starterEs: "Ella no…" },
-    { id: "d5-p5", question: "Ask a question with DO.", questionEs: "Haz una pregunta con DO.", starter: "Do you…?", starterEs: "¿Tú…?" },
-    { id: "d5-p6", question: "Ask a question with DOES.", questionEs: "Haz una pregunta con DOES.", starter: "Does he / she…?", starterEs: "¿Él / Ella…?" },
+    { id: "d5-p1", cue: "WHAT", question: "What is your daily routine, and what don't you do?", questionEs: "¿Cuál es tu rutina diaria y qué no haces?", starter: "I usually… I don't…", starterEs: "Normalmente yo… No…" },
+    { id: "d5-p3", cue: "WHO", question: "Who has a different routine? What does he / she do and not do?", questionEs: "¿Quién tiene una rutina diferente? ¿Qué hace y qué no hace?", starter: "My ______ usually… She doesn't…", starterEs: "Mi ______ normalmente… Ella no…" },
+    { id: "d5-p5", cue: "HOW OFTEN", question: "How often do you do something different? Why?", questionEs: "¿Con qué frecuencia haces algo diferente? ¿Por qué?", starter: "I sometimes… because…", starterEs: "A veces yo… porque…" },
+    { id: "d5-p6", cue: "ASK", question: "Ask one question with DO or DOES, then answer it.", questionEs: "Haz una pregunta con DO o DOES y respóndela.", starter: "Do you…? / Does she…?", starterEs: "¿Tú…? / ¿Ella…?" },
   ],
   cues: ["ROUTINE", "HE / SHE", "DON'T / DOESN'T", "DO / DOES?", "BECAUSE"],
   rep5Prompt: {
