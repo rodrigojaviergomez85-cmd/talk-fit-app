@@ -2,6 +2,7 @@ import { Check } from "lucide-react";
 import type { JourneyState } from "@/lib/types";
 import { journeyComparison, journeyMetrics, type HabitMilestoneDef } from "@/lib/habit";
 import { ComparisonPair } from "./ComparisonPair";
+import { HabitExplainer } from "./HabitExplainer";
 import { useAppLang } from "@/lib/i18n";
 
 type Props = {
