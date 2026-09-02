@@ -206,8 +206,8 @@ const SKILL_DAYS: Partial<Record<ModuleId, { rolePlay: number[]; customerService
   "eagles-week-1": { rolePlay: [4, 9, 10, 19, 20], customerService: [9, 10, 19], sales: [4, 20] },
   tigers: { rolePlay: [3, 5, 10, 13, 14, 15, 19, 20], customerService: [], sales: [14] },
   sharks: { rolePlay: [3, 4, 5, 8, 10, 12, 13, 14, 16, 17, 19, 20], customerService: [10], sales: [14] },
-  // ADVANCED 1 Week 1: the Recruiter Pressure Round (Day 5) includes a customer-service switch.
-  "advanced-1": { rolePlay: [1, 2, 3, 4, 5], customerService: [5], sales: [] },
+  // ADVANCED 1: every day is a recruiter role play; Days 5, 19 and 20 switch to customer service; Day 19 has a sales challenge.
+  "advanced-1": { rolePlay: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], customerService: [5, 19, 20], sales: [19] },
 };
 export const TEST_READY_THRESHOLD = 5;
 
