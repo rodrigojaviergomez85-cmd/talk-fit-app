@@ -2,7 +2,7 @@
  * ADVANCED 1 — GET HIRED · WEEK 1: TELL YOUR STORY & GET HIRED (Days 1–5)
  *
  * Advanced is CYCLICAL: A1 / A2 / A3 are equivalent entry points, never levels.
- * Only Week 1 is built here. Weeks 2–4 do not exist yet (no placeholders).
+ * Week 1 lives here; Weeks 2–4 (Days 6–20) live in advanced-1-weeks-2-4-course.ts.
  *
  * DATA SAFETY: the module id ("advanced-1"), the day numbers and every
  * `a1d*` id are persisted in learner progress and recordings. Never rename.
