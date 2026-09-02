@@ -34,6 +34,10 @@ function keyFor(moduleId: ModuleId, day: number): string {
   return `${PREFIX}:${scope}:${moduleId}:${day}`;
 }
 
+function scenarioKeyFor(moduleId: ModuleId, day: number): string {
+  return `${PREFIX}:scenario:${scope}:${moduleId}:${day}`;
+}
+
 /**
  * Cloud writes are debounced so saving on every rep/prompt change does not
  * turn into network noise; the last position always wins.
