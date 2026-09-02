@@ -2,6 +2,7 @@ import { Check } from "lucide-react";
 import type { JourneyState } from "@/lib/types";
 import { journeyComparison, journeyMetrics, type HabitMilestoneDef } from "@/lib/habit";
 import { ComparisonPair } from "./ComparisonPair";
+import { HabitExplainer } from "./HabitExplainer";
 import { useAppLang } from "@/lib/i18n";
 
 type Props = {
@@ -38,9 +39,12 @@ export function HabitMilestone({ milestone, state, compact = false }: Props) {
           {es ? milestone.title.es : milestone.title.en}
         </h2>
         {major && milestone.days === 66 ? (
-          <p className="mt-1 text-[12px] font-bold uppercase tracking-[0.16em] text-navy-foreground/80">
-            {es ? "TU INGLÉS YA ES PARTE DE TU RUTINA." : "ENGLISH IS NOW PART OF YOUR ROUTINE."}
-          </p>
+          <>
+            <p className="mt-1 text-[12px] font-bold uppercase tracking-[0.16em] text-navy-foreground/80">
+              {es ? "TU INGLÉS YA ES PARTE DE TU RUTINA." : "ENGLISH IS NOW PART OF YOUR ROUTINE."}
+            </p>
+            <HabitExplainer tone="navy" />
+          </>
         ) : null}
         <p className="mt-3 text-[15px] font-semibold leading-snug text-navy-foreground/85">
           {es ? milestone.message.es : milestone.message.en}
