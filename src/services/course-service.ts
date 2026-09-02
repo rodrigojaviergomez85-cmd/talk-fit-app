@@ -5,6 +5,7 @@ import { PAST_STORIES_DAYS, PAST_STORIES_WEEKS } from "./past-stories-course";
 import { SIMPLE_FUTURE_DAYS, SIMPLE_FUTURE_WEEKS } from "./simple-future-course";
 import { MIXED_TENSES_DAYS, MIXED_TENSES_WEEKS } from "./mixed-tenses-course";
 import { EAGLES_WEEK_1_DAYS, EAGLES_WEEK_1_WEEKS } from "./eagles-week-1-course";
+import { EAGLES_WEEKS_2_4_DAYS } from "./eagles-weeks-2-4-course";
 
 
 
@@ -402,31 +403,32 @@ const MODULES: LearningModule[] = [
     weeks: MIXED_TENSES_WEEKS,
   },
   {
+    // Internal id is frozen: learners already have progress and recordings keyed to it.
     id: "eagles-week-1",
     order: 6,
     label: "INTERMEDIO",
     title: "EAGLES",
-    subtitle: "Recommend, Advise & Sell",
-    subtitleEs: "Recomendar, aconsejar y vender",
-    statusLine: { en: "Week 1 · 5 days", es: "Semana 1 · 5 días" },
-    description: "Use your English to solve problems, give recommendations and sell.",
-    descriptionEs: "Usa tu inglés para resolver problemas, dar recomendaciones y vender.",
-    meta: ["5 Days", "25 Fluency Reps", "5 Test Ready Sprints"],
+    subtitle: "English for Work & Real Conversation",
+    subtitleEs: "Inglés para el trabajo y conversación real",
+    statusLine: { en: "4 weeks · 20 days", es: "4 semanas · 20 días" },
+    description: "Connect your ideas, solve problems, compare options and adapt when the situation changes.",
+    descriptionEs: "Conecta tus ideas, resuelve problemas, compara opciones y adáptate cuando la situación cambia.",
+    meta: ["4 Weeks", "20 Days", "100 Fluency Reps", "Test Ready Sprints"],
     highlights: [
-      { en: "Tell what happened", es: "Contar lo que pasó" },
-      { en: "Offer options", es: "Ofrecer opciones" },
-      { en: "Give recommendations", es: "Dar recomendaciones" },
-      { en: "Understand what a customer needs", es: "Entender lo que necesita un cliente" },
-      { en: "Recommend a product", es: "Recomendar un producto" },
-      { en: "Respond to unexpected situations", es: "Responder situaciones inesperadas" },
+      { en: "Connect your ideas with reasons and details", es: "Conectar tus ideas con razones y detalles" },
+      { en: "Explain experiences and decisions", es: "Explicar experiencias y decisiones" },
+      { en: "Compare options and justify your choice", es: "Comparar opciones y justificar tu elección" },
+      { en: "Solve customer service situations", es: "Resolver situaciones de servicio al cliente" },
+      { en: "Recommend, handle objections and close", es: "Recomendar, manejar objeciones y cerrar" },
+      { en: "Respond with less preparation", es: "Responder con menos preparación" },
     ],
     extra: {
-      en: "⚡ 5 TEST READY SPRINTS — practice listening and speaking under pressure.",
-      es: "⚡ 5 TEST READY SPRINTS — para practicar listening y speaking bajo presión.",
+      en: "⚡ 20 TEST READY SPRINTS — practice listening and speaking under pressure.",
+      es: "⚡ 20 TEST READY SPRINTS — para practicar listening y speaking bajo presión.",
     },
-    cta: { en: "START WEEK 1", es: "EMPEZAR WEEK 1" },
+    cta: { en: "START EAGLES", es: "EMPEZAR EAGLES" },
     pilot: true,
-    days: EAGLES_WEEK_1_DAYS,
+    days: [...EAGLES_WEEK_1_DAYS, ...EAGLES_WEEKS_2_4_DAYS],
     weeks: EAGLES_WEEK_1_WEEKS,
   },
 ];

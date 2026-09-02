@@ -111,16 +111,21 @@ export function TestReadySprint({ moduleId, day, sprint }: Props) {
   /* -------------------------------- passage ------------------------------- */
 
   if (phase === "passage" && sprint.passage) {
+    const retell = sprint.type === "story-retell";
     return (
       <div className="space-y-5">
         <Header sprint={sprint} es={es} step={`1 / 2`} />
         <div className="space-y-3 rounded-3xl bg-navy p-5 text-navy-foreground">
-          <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-primary">{t("tr.passage")}</p>
+          <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-primary">
+            {retell ? t("tr.story") : t("tr.passage")}
+          </p>
           <AudioPlayer text={sprint.passage} label={t("tr.play")} rate={1} variant="navy" voice="male" />
-          <p className="text-center text-[12px] text-navy-foreground/70">{t("tr.listenFirst")}</p>
+          <p className="text-center text-[12px] text-navy-foreground/70">
+            {retell ? t("tr.listenOnce") : t("tr.listenFirst")}
+          </p>
         </div>
         <button type="button" onClick={() => setPhase("items")} className={primaryBtn}>
-          {t("tr.next")} <ArrowRight className="size-5" />
+          {retell ? t("tr.retellNow") : t("tr.next")} <ArrowRight className="size-5" />
         </button>
       </div>
     );
@@ -331,7 +336,9 @@ function ItemCard({
             label={t("tr.record")}
             stopLabel={t("tr.stop")}
             maxSeconds={maxSeconds}
-            {...(speakNow && sprint.speakSeconds ? { targetSeconds: [sprint.speakSeconds, maxSeconds] as [number, number] } : {})}
+            {...((speakNow || sprint.type === "story-retell") && sprint.speakSeconds
+              ? { targetSeconds: [sprint.speakSeconds, maxSeconds] as [number, number] }
+              : {})}
             onComplete={onRecorded}
           />
         </>

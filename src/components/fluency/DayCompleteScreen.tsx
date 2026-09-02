@@ -5,7 +5,7 @@ import { RecordingPlayback } from "./RecordingPlayback";
 import { TranslatableText } from "./TranslatableText";
 import { JourneyService } from "@/services/journey-service";
 import { CourseService } from "@/services/course-service";
-import type { CourseDay, ModuleId, Recording, SelfAssessment } from "@/lib/types";
+import type { CourseDay, DayRecord, JourneyState, ModuleId, Recording, SelfAssessment } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { SaveProgressPrompt } from "./SaveProgressPrompt";
 
@@ -183,7 +183,11 @@ export function DayCompleteScreen({
           </div>
         ) : null}
 
-        {moduleDone && module.weeks?.length ? (
+        {moduleDone && moduleId === "eagles-week-1" ? (
+          <EaglesCompleteCard state={state} showEs={showEs} finalRecording={finalRecording} lastDay={day.day} />
+        ) : null}
+
+        {moduleDone && moduleId !== "eagles-week-1" && module.weeks?.length ? (
           <div className="space-y-4 rounded-3xl bg-navy p-6 text-navy-foreground">
             <p className="text-center text-[13px] font-extrabold uppercase tracking-[0.2em] text-primary">
               {`${module.label} · ${module.title} COMPLETE ✓`}
@@ -296,6 +300,124 @@ function SummaryRow({ label, summary, showEs }: { label: string; summary: RepSum
         {summary.attempted} / {summary.total} {showEs ? "intentadas" : "attempted"}
         {summary.skipped ? ` · ${summary.skipped} ${showEs ? "saltadas" : "skipped"}` : ""}
       </span>
+    </div>
+  );
+}
+
+const EAGLES_OUTCOMES: { es: string; en: string }[] = [
+  { es: "conectar mejor tus ideas", en: "connect your ideas better" },
+  { es: "explicar experiencias y decisiones", en: "explain experiences and decisions" },
+  { es: "comparar opciones", en: "compare options" },
+  { es: "dar recomendaciones", en: "give recommendations" },
+  { es: "resolver situaciones de servicio al cliente", en: "solve customer service situations" },
+  { es: "manejar objeciones básicas", en: "handle basic objections" },
+  { es: "responder con menos preparación", en: "respond with less preparation" },
+];
+
+/**
+ * EAGLES COMPLETE — shown once all 20 days are done.
+ * Objective numbers + a self-reflective THEN vs NOW listen. No scores, no CEFR claims.
+ */
+function EaglesCompleteCard({
+  state,
+  showEs,
+  finalRecording,
+  lastDay,
+}: {
+  state: JourneyState;
+  showEs: boolean;
+  finalRecording: Recording | null;
+  lastDay: number;
+}) {
+  const moduleId: ModuleId = "eagles-week-1";
+  const totalDays = CourseService.totalDays(moduleId);
+  const records = (Object.values(state.days) as DayRecord[])
+    .filter((r) => r.moduleId === moduleId)
+    .sort((a, b) => a.day - b.day);
+  const earliest = records.find((r) => r.day !== lastDay && (r.finalUrl || r.recordingPath));
+  const last = records.find((r) => r.day === lastDay);
+
+  const [earlyUrl, setEarlyUrl] = useState<string | null>(earliest?.finalUrl ?? null);
+  const [lateUrl, setLateUrl] = useState<string | null>(finalRecording?.url ?? last?.finalUrl ?? null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (!earlyUrl && earliest?.recordingPath) {
+        const url = await JourneyService.signedRecordingUrl(earliest.recordingPath);
+        if (!cancelled && url) setEarlyUrl(url);
+      }
+      if (!lateUrl && last?.recordingPath) {
+        const url = await JourneyService.signedRecordingUrl(last.recordingPath);
+        if (!cancelled && url) setLateUrl(url);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [earliest?.recordingPath, last?.recordingPath]);
+
+  const canCompare = Boolean(earliest && earlyUrl && lateUrl);
+
+  return (
+    <div className="space-y-4 rounded-3xl bg-navy p-6 text-navy-foreground">
+      <div className="text-center">
+        <p className="text-[13px] font-extrabold uppercase tracking-[0.2em] text-primary">EAGLES COMPLETE</p>
+        <p className="mt-1 text-[12px] font-bold uppercase tracking-[0.16em] text-navy-foreground/70">
+          {showEs ? "INTERMEDIO · MES COMPLETADO ✓" : "INTERMEDIO · MONTH COMPLETE ✓"}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2 text-center">
+        <div className="rounded-2xl bg-navy-foreground/10 p-3">
+          <p className="text-2xl font-extrabold tabular-nums">{totalDays}</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">{showEs ? "DÍAS" : "DAYS"}</p>
+        </div>
+        <div className="rounded-2xl bg-navy-foreground/10 p-3">
+          <p className="text-2xl font-extrabold tabular-nums">{totalDays * 5}</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">FLUENCY REPS</p>
+        </div>
+        <div className="rounded-2xl bg-navy-foreground/10 p-3">
+          <p className="text-2xl font-extrabold">⚡</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">TEST READY</p>
+        </div>
+      </div>
+
+      <div className="rounded-2xl bg-navy-foreground/10 p-4">
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+          {showEs ? "AHORA PUEDES PRACTICAR CÓMO:" : "YOU CAN NOW PRACTICE HOW TO:"}
+        </p>
+        <ul className="mt-2 space-y-1 text-[14px] font-semibold">
+          {EAGLES_OUTCOMES.map((item) => (
+            <li key={item.en}>✓ {showEs ? item.es : item.en}</li>
+          ))}
+        </ul>
+      </div>
+
+      {canCompare ? (
+        <div className="space-y-2">
+          <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+            {showEs ? "ESCUCHA TU PROGRESO" : "LISTEN TO YOUR PROGRESS"}
+          </p>
+          <RecordingPlayback url={earlyUrl} label={`${showEs ? "DÍA" : "DAY"} ${earliest!.day} · ${earliest!.finalSeconds}s`} />
+          <RecordingPlayback url={lateUrl} label={`${showEs ? "DÍA" : "DAY"} ${lastDay} · ${finalRecording?.durationSeconds ?? last?.finalSeconds ?? 0}s`} />
+          <p className="text-center text-[12px] text-navy-foreground/70">
+            {showEs ? "Tú decides qué cambió. Sin puntajes." : "You decide what changed. No scores."}
+          </p>
+        </div>
+      ) : null}
+
+      <div className="rounded-2xl border border-primary/40 p-4 text-center">
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-navy-foreground/70">
+          {showEs ? "SIGUIENTE PASO" : "NEXT STEP"}
+        </p>
+        <p className="mt-1 text-2xl font-extrabold tracking-tight">TIGERS</p>
+        <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-primary">{showEs ? "PRÓXIMAMENTE" : "COMING SOON"}</p>
+        <p className="mt-2 text-[13px] font-semibold text-navy-foreground/80">
+          {showEs ? "Sigue construyendo hacia el umbral B2." : "Continue building toward the B2 threshold."}
+        </p>
+      </div>
     </div>
   );
 }
