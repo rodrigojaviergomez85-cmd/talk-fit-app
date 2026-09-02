@@ -253,10 +253,18 @@ export const ALL_BADGES: BadgeDef[] = [...HABIT_BADGES, ...SKILL_BADGES];
 export function earnedBadgeIds(state: JourneyState, testReadyCount = 0): string[] {
   const count = habitDays(state);
   const ids: string[] = HABIT_MILESTONES.filter((m) => count >= m.days).map((m) => m.id);
-  const done = (day: number) => JourneyService.isDayCompleted(state, EAGLES, day);
-  if (ROLE_PLAY_DAYS.some(done)) ids.push("skill-conversation");
-  if (CUSTOMER_SERVICE_DAYS.every(done)) ids.push("skill-customer-service");
-  if (SALES_DAYS.every(done)) ids.push("skill-sales");
+  let conversation = false;
+  let customerService = false;
+  let sales = false;
+  for (const [moduleId, days] of Object.entries(SKILL_DAYS) as [ModuleId, NonNullable<(typeof SKILL_DAYS)[ModuleId]>][]) {
+    const done = (day: number) => JourneyService.isDayCompleted(state, moduleId, day);
+    if (days.rolePlay.some(done)) conversation = true;
+    if (days.customerService.length > 0 && days.customerService.every(done)) customerService = true;
+    if (days.sales.length > 0 && days.sales.every(done)) sales = true;
+  }
+  if (conversation) ids.push("skill-conversation");
+  if (customerService) ids.push("skill-customer-service");
+  if (sales) ids.push("skill-sales");
   if (testReadyCount >= TEST_READY_THRESHOLD) ids.push("skill-test-ready");
   return ids;
 }
