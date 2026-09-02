@@ -443,14 +443,19 @@ export const CloudSync = {
   },
 
   /**
-   * "Reset my journey": clears day progress and saved positions in the account.
-   * Stored audio is kept for the pilot and is never deleted automatically.
+   * "Reset my journey": clears day progress, saved positions and the current
+   * learning route in the account, so the learner can choose where to start
+   * again. Stored audio is kept for the pilot and is never deleted automatically.
    */
   async resetAccountProgress(): Promise<void> {
     const uid = await userId();
+    writePreferencesLocal({ currentModuleId: null });
     if (!uid) return;
     await supabase.from("day_progress").delete().eq("user_id", uid);
     await supabase.from("practice_sessions").delete().eq("user_id", uid);
+    await supabase
+      .from("user_preferences")
+      .upsert({ user_id: uid, current_module_id: null }, { onConflict: "user_id" });
     JourneyService.invalidatePull();
   },
 
@@ -459,6 +464,8 @@ export const CloudSync = {
     const uid = await userId();
     if (!uid) return;
     await CloudSync.migrateLocalData();
+    // Pre-auth self-placement lands here, only for a truly new learner.
+    await CloudSync.applyPendingPlacement();
     await CloudSync.pullPreferences();
     JourneyService.invalidatePull();
     await JourneyService.pull();
