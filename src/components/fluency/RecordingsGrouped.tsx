@@ -163,7 +163,7 @@ function WeekGroup({
         <span className="min-w-0 flex-1">
           <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
             {t("home.week")} {week}
-            {weekInfo ? ` · ${weekInfo.title}` : ""}
+            {weekInfo ? ` · ${es ? weekInfo.subtitleEs : weekInfo.subtitle}` : ""}
           </span>
           <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
             {records.length} {es ? "final reps" : "final reps"}

@@ -37,7 +37,7 @@ export function WeekMoment({ comparison, celebrate = false }: Props) {
         </p>
         <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.16em] text-primary">
           {module.label} · {es ? "SEMANA" : "WEEK"} {comparison.week}
-          {weekInfo ? ` · ${es ? weekInfo.subtitleEs : weekInfo.title}` : ""}
+          {weekInfo ? ` · ${es ? weekInfo.subtitleEs : weekInfo.subtitle}` : ""}
         </p>
       </div>
 
