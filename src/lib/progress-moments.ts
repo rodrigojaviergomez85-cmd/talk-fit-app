@@ -1,5 +1,5 @@
 import type { DayRecord, JourneyState, ModuleId } from "@/lib/types";
-import { CourseService, UPCOMING_LEVELS, type LearningModule, type UpcomingLevel } from "@/services/course-service";
+import { CourseService, type LearningModule } from "@/services/course-service";
 import { JourneyService } from "@/services/journey-service";
 
 /**
@@ -268,7 +268,7 @@ export const UPCOMING_NEXT_UP: Record<string, NextUpCopy & { title: string; labe
 
 export type NextStage =
   | { kind: "module"; module: LearningModule; copy: NextUpCopy }
-  | { kind: "upcoming"; level: UpcomingLevel; copy: NextUpCopy & { title: string; label: string } }
+  | { kind: "upcoming"; copy: NextUpCopy & { title: string; label: string } }
   | null;
 
 /**
@@ -280,10 +280,9 @@ export function nextModuleAfter(moduleId: ModuleId): NextStage {
   const index = modules.findIndex((m) => m.id === moduleId);
   const next = index >= 0 ? modules[index + 1] : undefined;
   if (next) return { kind: "module", module: next, copy: NEXT_UP[next.id] };
-  const level = UPCOMING_LEVELS[0];
-  const copy = level ? UPCOMING_NEXT_UP[level.key] : undefined;
-  if (level && copy) return { kind: "upcoming", level, copy };
-  return null;
+  // Nothing published after this module yet: preview the next level, no CTA.
+  const copy = UPCOMING_NEXT_UP.tigers;
+  return copy ? { kind: "upcoming", copy } : null;
 }
 
 /** Stable identity for a comparison — used for reflection storage and revisits. */
