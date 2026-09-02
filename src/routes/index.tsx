@@ -54,6 +54,7 @@ function HomePage() {
   // First-time learners see the intro + placement once; active learners never do.
   useEffect(() => {
     if (!state) return;
+    console.debug("[home-gate]", { onb: prefs.onboardingCompleted, cur: prefs.currentModuleId, done: JourneyService.completedCount(state), user: Boolean(user), sync, authLoading, pending: Boolean(getPendingPlacement()) });
     if (prefs.onboardingCompleted) return;
     if (prefs.currentModuleId) return;
     if (JourneyService.completedCount(state) > 0) return;
