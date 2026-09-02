@@ -10,7 +10,7 @@ import { TIGERS_WEEK_1_DAYS, TIGERS_WEEKS } from "./tigers-week-1-course";
 import { TIGERS_WEEKS_2_4_DAYS } from "./tigers-weeks-2-4-course";
 import { SHARKS_WEEK_1_DAYS, SHARKS_WEEKS } from "./sharks-week-1-course";
 import { SHARKS_WEEKS_2_4_DAYS } from "./sharks-weeks-2-4-course";
-import { ADVANCED_1_WEEK_1_DAYS, ADVANCED_1_WEEKS } from "./advanced-1-week-1-course";
+import { ADVANCED_1_WEEK_1_DAYS, ADVANCED_1_WEEKS } from "./advanced-1-course";
 
 
 
