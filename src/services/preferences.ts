@@ -51,6 +51,7 @@ const MODULE_IDS = new Set<string>([
   "simple-future",
   "mixed-tenses",
   "eagles-week-1",
+  "tigers",
 ]);
 
 function asModuleId(value: unknown): ModuleId | null {

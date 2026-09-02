@@ -143,6 +143,15 @@ const DICT = {
     "Ya converso y quiero conectar ideas, resolver problemas, comparar opciones y vender.",
     "I can hold a conversation and want to connect ideas, solve problems, compare options and sell.",
   ],
+  "place.tigers": [
+    "Ya terminé EAGLES y quiero explicar, justificar y defender mis decisiones.",
+    "I finished EAGLES and want to explain, justify and defend my decisions.",
+  ],
+  "rep.label.explain": ["EXPLICA", "EXPLAIN"],
+  "rep.label.justify": ["JUSTIFICA", "JUSTIFY"],
+  "rep.label.defend": ["DEFIENDE", "DEFEND"],
+  "rep5.scenario": ["TU ESCENARIO", "YOUR SCENARIO"],
+  "rep5.skeleton": ["ESTRUCTURA", "STRUCTURE"],
   "place.soonTitle": ["MUY PRONTO", "VERY SOON"],
   "place.soonBody": [
     "Por ahora te recomendamos comenzar en INTERMEDIO.",

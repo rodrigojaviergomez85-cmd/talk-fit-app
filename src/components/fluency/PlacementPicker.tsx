@@ -11,7 +11,8 @@ type PlacementKey =
   | "place.simple-present"
   | "place.past-stories"
   | "place.mixed-tenses"
-  | "place.eagles-week-1";
+  | "place.eagles-week-1"
+  | "place.tigers";
 
 /**
  * Self-placement: large cards in visual journey order plus a disabled
@@ -32,7 +33,8 @@ export function PlacementPicker({
   const { t, lang } = useAppLang();
   const es = lang === "es";
   const [soonOpen, setSoonOpen] = useState(false);
-  const modules = CourseService.modules();
+  // TIGERS (and later levels) are reached by finishing the previous module, never by self-placement.
+  const modules = CourseService.modules().filter((m) => !m.hiddenFromPlacement);
   const intermedio = modules.find((m) => m.id === "eagles-week-1")?.id ?? modules[modules.length - 1]!.id;
 
   return (

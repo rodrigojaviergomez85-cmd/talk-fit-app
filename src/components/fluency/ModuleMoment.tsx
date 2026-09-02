@@ -26,7 +26,9 @@ export function ModuleMoment({ comparison, state, celebrate = false }: Props) {
   const metrics = moduleMetrics(state, comparison.moduleId);
   const transformation = TRANSFORMATION[comparison.moduleId];
   const hasAny = comparison.start.playable || comparison.end.playable;
-  const name = module.title === "EAGLES" ? "EAGLES" : module.label;
+  // Intermediate modules celebrate by name (EAGLES, TIGERS); Basic levels by label (BASIC 2…).
+  const name = module.label === "INTERMEDIO" ? module.title : module.label;
+  const completion = MODULE_COMPLETION[comparison.moduleId];
 
   return (
     <section className="space-y-4 rounded-3xl bg-navy p-5 text-navy-foreground">
