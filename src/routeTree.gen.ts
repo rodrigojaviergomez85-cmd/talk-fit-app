@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LevelRouteImport } from './routes/level'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as ProfileRouteImport } from './routes/profile'
@@ -24,6 +25,11 @@ import { Route as ModuleModuleIdRouteImport } from './routes/module.$moduleId'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LevelRoute = LevelRouteImport.update({
+  id: '/level',
+  path: '/level',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -79,6 +85,7 @@ const ModuleModuleIdRoute = ModuleModuleIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/level': typeof LevelRoute
   '/onboarding': typeof OnboardingRoute
   '/practice': typeof PracticeRoute
   '/profile': typeof ProfileRoute
@@ -92,6 +99,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/level': typeof LevelRoute
   '/onboarding': typeof OnboardingRoute
   '/practice': typeof PracticeRoute
   '/profile': typeof ProfileRoute
@@ -106,6 +114,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/level': typeof LevelRoute
   '/onboarding': typeof OnboardingRoute
   '/practice': typeof PracticeRoute
   '/profile': typeof ProfileRoute
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/level'
     | '/onboarding'
     | '/practice'
     | '/profile'
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/level'
     | '/onboarding'
     | '/practice'
     | '/profile'
@@ -147,6 +158,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/level'
     | '/onboarding'
     | '/practice'
     | '/profile'
@@ -161,6 +173,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LevelRoute: typeof LevelRoute
   OnboardingRoute: typeof OnboardingRoute
   PracticeRoute: typeof PracticeRoute
   ProfileRoute: typeof ProfileRoute
@@ -180,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/level': {
+      id: '/level'
+      path: '/level'
+      fullPath: '/level'
+      preLoaderRoute: typeof LevelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -257,6 +277,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LevelRoute: LevelRoute,
   OnboardingRoute: OnboardingRoute,
   PracticeRoute: PracticeRoute,
   ProfileRoute: ProfileRoute,
