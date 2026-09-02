@@ -139,13 +139,10 @@ const day3: CourseDay = {
     line("d3-8", "Overall, we all have different routines.", "En general, todos tenemos rutinas diferentes.", ["Overall,", "we all have", "different routines."]),
   ],
   prompts: [
-    { id: "d3-p1", question: "What do you usually do?", questionEs: "¿Qué haces normalmente?", starter: "I usually…", starterEs: "Normalmente yo…" },
-    { id: "d3-p2", question: "What don't you do?", questionEs: "¿Qué no haces?", starter: "I don't…", starterEs: "Yo no…" },
-    { id: "d3-p3", question: "What do you do at work?", questionEs: "¿Qué haces en el trabajo?", starter: "We usually…", starterEs: "Nosotros normalmente…" },
-    { id: "d3-p4", question: "What don't you do at work?", questionEs: "¿Qué no haces en el trabajo?", starter: "We don't…", starterEs: "Nosotros no…" },
-    { id: "d3-p5", question: "Tell me something another person does.", questionEs: "Dime algo que hace otra persona.", starter: "My ______ works…", starterEs: "Mi ______ trabaja…" },
-    { id: "d3-p6", question: "Tell me something he / she doesn't do.", questionEs: "Dime algo que él / ella no hace.", starter: "He doesn't… / She doesn't…", starterEs: "Él no… / Ella no…" },
-    { id: "d3-p7", question: "How would you finish?", questionEs: "¿Cómo terminarías?", starter: "Overall…", starterEs: "En general…" },
+    { id: "d3-p1", cue: "WHAT", question: "What do you usually do, and what don't you do?", questionEs: "¿Qué haces normalmente y qué no haces?", starter: "I usually… but I don't…", starterEs: "Normalmente yo… pero no…" },
+    { id: "d3-p3", cue: "WHERE", question: "Where do you work, and what don't you do there?", questionEs: "¿Dónde trabajas y qué no haces ahí?", starter: "We usually… We don't…", starterEs: "Nosotros normalmente… No…" },
+    { id: "d3-p5", cue: "WHO", question: "Who has a different routine? What does he / she do?", questionEs: "¿Quién tiene una rutina diferente? ¿Qué hace él / ella?", starter: "My ______ works… He / She doesn't…", starterEs: "Mi ______ trabaja… Él / Ella no…" },
+    { id: "d3-p7", cue: "WHY", question: "Why don't you do something? Finish with overall.", questionEs: "¿Por qué no haces algo? Termina con overall.", starter: "I don't… because… Overall…", starterEs: "No… porque… En general…" },
   ],
   cues: ["I DON'T", "WE DON'T", "HE / SHE DOESN'T", "BECAUSE", "CONCLUSION"],
   rep5Prompt: {
