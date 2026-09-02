@@ -93,13 +93,11 @@ const day2: CourseDay = {
     line("d2-8", "Overall, they both enjoy their routines.", "En general, los dos disfrutan sus rutinas.", ["Overall,", "they both enjoy their routines."]),
   ],
   prompts: [
-    { id: "d2-p1", question: "Tell me about someone you know.", questionEs: "Háblame de alguien que conoces.", starter: "My ______ works…", starterEs: "Mi ______ trabaja…" },
-    { id: "d2-p2", question: "Where does he / she work?", questionEs: "¿Dónde trabaja él / ella?", starter: "He works… / She works…", starterEs: "Él trabaja… / Ella trabaja…" },
-    { id: "d2-p3", question: "What time does he / she start?", questionEs: "¿A qué hora empieza él / ella?", starter: "He starts…", starterEs: "Él empieza…" },
-    { id: "d2-p4", question: "What does he / she usually do?", questionEs: "¿Qué hace él / ella normalmente?", starter: "She usually…", starterEs: "Ella normalmente…" },
-    { id: "d2-p5", question: "What does he / she sometimes do?", questionEs: "¿Qué hace él / ella a veces?", starter: "He sometimes…", starterEs: "Él a veces…" },
-    { id: "d2-p6", question: "Why does he / she like the job?", questionEs: "¿Por qué le gusta el trabajo?", starter: "She likes it because…", starterEs: "Le gusta porque…" },
-    { id: "d2-p7", question: "How would you finish?", questionEs: "¿Cómo terminarías?", starter: "Overall…", starterEs: "En general…" },
+    { id: "d2-p1", cue: "WHO", question: "Who is someone you know, and where does he / she work?", questionEs: "¿Quién es alguien que conoces y dónde trabaja?", starter: "My ______ works at…", starterEs: "Mi ______ trabaja en…" },
+    { id: "d2-p3", cue: "WHEN", question: "When does he / she start and finish?", questionEs: "¿Cuándo empieza y termina él / ella?", starter: "He starts at… and finishes…", starterEs: "Él empieza a las… y termina…" },
+    { id: "d2-p4", cue: "WHAT", question: "What does he / she usually do at work?", questionEs: "¿Qué hace él / ella normalmente en el trabajo?", starter: "She usually…", starterEs: "Ella normalmente…" },
+    { id: "d2-p5", cue: "HOW OFTEN", question: "How often does he / she do something different?", questionEs: "¿Con qué frecuencia hace algo diferente?", starter: "He sometimes… / Twice a week, she…", starterEs: "Él a veces… / Dos veces por semana, ella…" },
+    { id: "d2-p6", cue: "WHY", question: "Why does he / she like the job?", questionEs: "¿Por qué le gusta el trabajo?", starter: "She likes it because…", starterEs: "Le gusta porque…" },
   ],
   cues: ["HE / SHE", "WORK", "USUALLY", "BECAUSE", "CONCLUSION"],
   rep5Prompt: {
