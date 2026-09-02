@@ -152,6 +152,8 @@ export const JourneyService = {
   nextPractice(state: JourneyState): { moduleId: ModuleId; day: number; started: boolean } | null {
     const modules = [...CourseService.modules()].sort((a, b) => a.order - b.order);
     for (const module of modules) {
+      // Pilot modules are opt-in only: never auto-place learners into them.
+      if (module.pilot) continue;
       if (JourneyService.moduleComplete(state, module.id)) continue;
       const day = JourneyService.currentDay(state, module.id);
       return {

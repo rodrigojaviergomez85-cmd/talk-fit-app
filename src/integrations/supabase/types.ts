@@ -179,6 +179,48 @@ export type Database = {
         }
         Relationships: []
       }
+      test_ready_progress: {
+        Row: {
+          attempts: number
+          completed_at: string
+          completion_seconds: number
+          created_at: string
+          day: number
+          id: string
+          module_id: string
+          response_seconds: number
+          sprint_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attempts?: number
+          completed_at?: string
+          completion_seconds?: number
+          created_at?: string
+          day: number
+          id?: string
+          module_id: string
+          response_seconds?: number
+          sprint_type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attempts?: number
+          completed_at?: string
+          completion_seconds?: number
+          created_at?: string
+          day?: number
+          id?: string
+          module_id?: string
+          response_seconds?: number
+          sprint_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_preferences: {
         Row: {
           app_language: string

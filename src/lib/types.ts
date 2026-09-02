@@ -51,7 +51,42 @@ export type Challenge = {
 };
 
 /** Learning module identifier. */
-export type ModuleId = "basic-zero" | "simple-present" | "past-stories" | "simple-future" | "mixed-tenses";
+export type ModuleId = "basic-zero" | "simple-present" | "past-stories" | "simple-future" | "mixed-tenses" | "eagles-week-1";
+
+/** Test Ready Sprint types (EAGLES pilot). Practice only — never scored. */
+export type TestReadyType = "repeat" | "quick-answers" | "build-sentence" | "listen-respond" | "speak-now";
+
+/** One sprint item: something to hear/see, then say. */
+export type TestReadyItem = {
+  id: string;
+  /** Audio prompt spoken by the app (sentence to repeat, question to answer). */
+  audio?: string | undefined;
+  /** Visible chunks (Build the Sentence) or cue words (Speak Now). */
+  chunks?: string[] | undefined;
+  /** Visible prompt text (questions in Listen & Respond, Speak Now topic). */
+  text?: string | undefined;
+  textEs?: string | undefined;
+  /** Max seconds for the spoken answer. */
+  maxSeconds?: number | undefined;
+};
+
+/** Optional 3–5 minute Test Ready Sprint attached to a day. */
+export type TestReadySprint = {
+  type: TestReadyType;
+  title: string;
+  titleEs: string;
+  instruction: string;
+  instructionEs: string;
+  items: TestReadyItem[];
+  /** Listen & Respond: passage played once before the questions. */
+  passage?: string | undefined;
+  /** Speak Now: seconds to think before the mic opens. */
+  thinkSeconds?: number | undefined;
+  /** Speak Now: target speaking seconds. */
+  speakSeconds?: number | undefined;
+  /** Repeat It: play each sentence only once. */
+  playOnce?: boolean | undefined;
+};
 
 /** Image → action → past verb → spoken sentence (Module 3). */
 export type VerbCard = {
@@ -124,6 +159,10 @@ export type CourseDay = {
   hideModelText?: boolean | undefined;
   /** Optional Rep 2 chunk override: groups of line ids recorded together. */
   rep2Chunks?: string[][] | undefined;
+  /** Rep 5 only: a customer/interlocutor message played before the learner answers (EAGLES). */
+  rep5Audio?: { label: string; labelEs: string; text: string; es: string; voice?: "female" | "male" | undefined } | undefined;
+  /** Separate Test Ready Sprint for this day (EAGLES pilot). */
+  testReady?: TestReadySprint | undefined;
 };
 
 /** Wall-clock seconds spent on each rep (pilot analytics, never shown). */
