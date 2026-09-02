@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          achievement_id: string
+          celebrated_at: string | null
+          created_at: string
+          earned_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          achievement_id: string
+          celebrated_at?: string | null
+          created_at?: string
+          earned_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          achievement_id?: string
+          celebrated_at?: string | null
+          created_at?: string
+          earned_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       day_progress: {
         Row: {
           completed_at: string

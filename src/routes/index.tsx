@@ -3,6 +3,7 @@ import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Check, ChevronRight, Flame, Mic, Repeat, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { ContinueCard } from "@/components/fluency/ContinueCard";
+import { HabitCard } from "@/components/fluency/HabitCard";
 import { ModuleHeading } from "@/components/fluency/ModuleHeading";
 import { CourseService, UPCOMING_LEVELS, type LearningModule } from "@/services/course-service";
 import { getPendingPlacement } from "@/services/preferences";
@@ -83,6 +84,7 @@ function HomePage() {
     <AppShell title={t("home.today")}>
       <div className="space-y-6">
         <ContinueCard state={state} />
+        <HabitCard state={state} />
 
         {failed ? (
           <div className="rounded-2xl border border-border bg-card p-4">

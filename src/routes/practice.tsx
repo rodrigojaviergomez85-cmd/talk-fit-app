@@ -107,6 +107,8 @@ function PracticePage() {
   const [finalRecording, setFinalRecording] = useState<Recording | null>(null);
   const [saveState, setSaveState] = useState<FinalRepSaveState>("idle");
   const [journeyAfterFinish, setJourneyAfterFinish] = useState<JourneyState | null>(null);
+  /** Habit snapshot taken right before completeDay, so milestones are crossed exactly once. */
+  const [habitBefore, setHabitBefore] = useState<{ days: number; lastCompletedDate?: string } | null>(null);
   const saveRef = useRef(false);
   const practiceSeconds = useRef(0);
 
@@ -270,6 +272,11 @@ function PracticePage() {
     const d = [...repDurations.current];
     d[stage] = (d[stage] ?? 0) + (Date.now() - stageEnteredAt.current) / 1000;
     const r = (i: number) => Math.round(d[i] ?? 0);
+    const before = JourneyService.load();
+    setHabitBefore({
+      days: Object.keys(before.days).length,
+      ...(before.lastCompletedDate ? { lastCompletedDate: before.lastCompletedDate } : {}),
+    });
     const next = JourneyService.completeDay({
       moduleId,
       day: day.day,
@@ -348,6 +355,7 @@ function PracticePage() {
             rep4: countFor(4, items4.map((item) => item.id)),
           }}
           saveState={saveState}
+          habitBefore={habitBefore}
           onRetrySave={() => {
             if (finalRecording && journeyAfterFinish) cloudSave(finalRecording, journeyAfterFinish);
           }}

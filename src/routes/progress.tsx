@@ -8,6 +8,8 @@ import { ThenVsNow } from "@/components/fluency/ThenVsNow";
 import { SpeakingChart } from "@/components/fluency/SpeakingChart";
 import { RecordingCard } from "@/components/fluency/RecordingCard";
 import { MomentSheet } from "@/components/fluency/MomentSheet";
+import { HabitCard } from "@/components/fluency/HabitCard";
+import { BadgeGrid } from "@/components/fluency/BadgeGrid";
 import { moduleComparison, weekComparison, type Comparison } from "@/lib/progress-moments";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
@@ -103,6 +105,10 @@ function ProgressPage() {
 
         {/* Current module — the dominant progress metric */}
         {next ? <CurrentModule state={safe} moduleId={next.moduleId} day={next.day} /> : null}
+
+        {/* 66-day habit: habit days + streak as separate numbers, no shame */}
+        <HabitCard state={safe} variant="progress" />
+        <BadgeGrid state={safe} />
 
         {/* Objective metrics */}
         <section className="grid grid-cols-2 gap-3">
