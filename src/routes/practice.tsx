@@ -35,7 +35,7 @@ import {
 import { useAuth } from "@/lib/auth";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { CloudSync } from "@/services/cloud-sync";
-import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording } from "@/lib/types";
+import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording, RepLabel } from "@/lib/types";
 import type { FinalRepSaveState } from "@/components/fluency/DayCompleteScreen";
 import { cn } from "@/lib/utils";
 import { useAppLang, useT, tPair, type TKey } from "@/lib/i18n";
