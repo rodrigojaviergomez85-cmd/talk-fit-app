@@ -336,7 +336,9 @@ function ItemCard({
             label={t("tr.record")}
             stopLabel={t("tr.stop")}
             maxSeconds={maxSeconds}
-            {...(speakNow && sprint.speakSeconds ? { targetSeconds: [sprint.speakSeconds, maxSeconds] as [number, number] } : {})}
+            {...((speakNow || sprint.type === "story-retell") && sprint.speakSeconds
+              ? { targetSeconds: [sprint.speakSeconds, maxSeconds] as [number, number] }
+              : {})}
             onComplete={onRecorded}
           />
         </>
