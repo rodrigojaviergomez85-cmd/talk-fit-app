@@ -83,6 +83,7 @@ function HomePage() {
     <AppShell title={t("home.today")}>
       <div className="space-y-6">
         <ContinueCard state={state} />
+        <HabitCard state={state} />
 
         {failed ? (
           <div className="rounded-2xl border border-border bg-card p-4">
