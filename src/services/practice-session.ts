@@ -96,10 +96,30 @@ export const PracticeSessionService = {
     if (typeof window === "undefined") return;
     try {
       window.localStorage.removeItem(keyFor(moduleId, day));
+      window.localStorage.removeItem(scenarioKeyFor(moduleId, day));
     } catch {
       /* storage unavailable */
     }
     void import("./cloud-sync").then(({ CloudSync }) => CloudSync.completeSession(moduleId, day)).catch(() => undefined);
+  },
+
+  /**
+   * Prewritten scenario bank (TIGERS FINAL): pick one id at random the first
+   * time the learner opens the day and keep it until the day is completed, so
+   * resuming never swaps the scenario. Never generated.
+   */
+  scenarioFor(moduleId: ModuleId, day: number, ids: string[]): string | null {
+    if (typeof window === "undefined" || ids.length === 0) return null;
+    const key = scenarioKeyFor(moduleId, day);
+    try {
+      const saved = window.localStorage.getItem(key);
+      if (saved && ids.includes(saved)) return saved;
+      const picked = ids[Math.floor(Math.random() * ids.length)]!;
+      window.localStorage.setItem(key, picked);
+      return picked;
+    } catch {
+      return ids[0]!;
+    }
   },
 
   /** Every saved position for the current learner (used by the migration). */
