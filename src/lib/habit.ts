@@ -201,10 +201,11 @@ export type BadgeDef = {
   kind: "habit" | "skill" | "module";
 };
 
-const EAGLES: ModuleId = "eagles-week-1";
-const ROLE_PLAY_DAYS = [4, 9, 10, 19, 20];
-const CUSTOMER_SERVICE_DAYS = [9, 10, 19];
-const SALES_DAYS = [4, 20];
+/** Skill-badge day maps per module. EAGLES values are frozen (badges already earned). */
+const SKILL_DAYS: Partial<Record<ModuleId, { rolePlay: number[]; customerService: number[]; sales: number[] }>> = {
+  "eagles-week-1": { rolePlay: [4, 9, 10, 19, 20], customerService: [9, 10, 19], sales: [4, 20] },
+  tigers: { rolePlay: [3, 5, 10, 13, 14, 15, 19, 20], customerService: [], sales: [14] },
+};
 export const TEST_READY_THRESHOLD = 5;
 
 export const HABIT_BADGES: BadgeDef[] = HABIT_MILESTONES.map((m) => ({
