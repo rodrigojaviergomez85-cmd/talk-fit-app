@@ -58,6 +58,19 @@ const DICT = {
   "practice.repeat": ["REPETIR", "REPEAT"],
   "practice.reRecord": ["VOLVER A GRABAR", "RECORD AGAIN"],
   "practice.copyChunk": ["Escucha y di las dos frases juntas.", "Listen, then say both sentences together."],
+
+  // Standard rep headers (title + one-sentence instruction)
+  "rep1.title": ["ESCUCHA", "LISTEN"],
+  "rep1.instr": ["Escucha el modelo. Todavía no hables.", "Just listen. Don't speak yet."],
+  "rep2.title": ["COPIA", "COPY"],
+  "rep2.instr": ["Escucha las 2 frases y grábalas juntas.", "Listen to the 2 sentences, then record them together."],
+  "rep3.title": ["SHADOWING", "SHADOWING"],
+  "rep3.instr": ["Habla al mismo tiempo que el audio.", "Speak at the same time as the audio."],
+  "rep3.cue": ["🔊 AUDIO + 🗣️ TÚ · AL MISMO TIEMPO", "🔊 AUDIO + 🗣️ YOU · AT THE SAME TIME"],
+  "rep4.title": ["HAZLO TUYO", "MAKE IT YOURS"],
+  "rep4.instr": ["Responde con tu propia información.", "Answer with your own information."],
+  "rep5.title": ["TU TURNO", "YOUR TURN"],
+  "rep5.instr": ["Habla solo. Conecta 5 ideas o más.", "Speak alone. Connect 5 or more ideas."],
   "practice.skipPrompt": ["SALTAR ESTA PREGUNTA", "SKIP THIS PROMPT"],
   "practice.recordOnce": ["Graba una vez para continuar.", "Record once to continue."],
   "practice.shadowTitle": ["SHADOWING", "SHADOW"],
@@ -282,4 +295,9 @@ export function useAppLang(): Ctx {
 /** Shorthand for chrome copy. */
 export function useT(): (key: TKey) => string {
   return useAppLang().t;
+}
+
+/** Both language variants of a key: [es, en]. */
+export function tPair(key: TKey): [string, string] {
+  return [DICT[key][0], DICT[key][1]];
 }

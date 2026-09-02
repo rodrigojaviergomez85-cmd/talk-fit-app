@@ -17,6 +17,7 @@ import {
   SpanishToggle,
   TranslatableText,
   useEsSupportPref,
+  useSpanishAll,
 } from "@/components/fluency/TranslatableText";
 import { CollapsibleHelp, TextToggle } from "@/components/fluency/CollapsibleHelp";
 import { supportLevel, prefersChunks, showsFullTextByDefault } from "@/lib/support-level";
@@ -36,7 +37,7 @@ import { CloudSync } from "@/services/cloud-sync";
 import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording } from "@/lib/types";
 import type { FinalRepSaveState } from "@/components/fluency/DayCompleteScreen";
 import { cn } from "@/lib/utils";
-import { useAppLang, useT } from "@/lib/i18n";
+import { useAppLang, useT, tPair, type TKey } from "@/lib/i18n";
 import { setPreferencesScope } from "@/services/preferences";
 import { VerbBank, setVerbBankScope } from "@/services/verb-bank";
 
@@ -520,11 +521,35 @@ function PrimaryButton({ children, onClick, disabled }: { children: React.ReactN
   );
 }
 
-function Instruction({ en, es }: { en: string; es: string }) {
+/**
+ * Standard rep header: one large action title + one short instruction.
+ * App language = Spanish → Spanish is primary, English small secondary.
+ * App language = English → English primary; Spanish appears only with ES SUPPORT on.
+ */
+function RepHeader({ titleKey, instrKey, cueKey, dark = false }: { titleKey: TKey; instrKey: TKey; cueKey?: TKey; dark?: boolean }) {
+  const { lang } = useAppLang();
+  const esAll = useSpanishAll();
+  const esPrimary = lang === "es";
+  const [titleEs, titleEn] = tPair(titleKey);
+  const [instrEs, instrEn] = tPair(instrKey);
+  const secondary = esPrimary ? instrEn : esAll ? instrEs : null;
+  const cue = cueKey ? tPair(cueKey)[esPrimary ? 0 : 1] : null;
+
   return (
-    <TranslatableText es={es} align="center" className="text-center" supportOnly>
-      <p className="text-center text-[17px] font-bold leading-snug">{en}</p>
-    </TranslatableText>
+    <div className="text-center">
+      <p className={cn("text-[20px] font-extrabold uppercase tracking-[0.18em]", dark ? "text-navy-foreground" : "text-foreground")}>
+        {esPrimary ? titleEs : titleEn}
+      </p>
+      <p className={cn("mt-1 text-[16px] font-bold leading-snug", dark ? "text-navy-foreground" : "text-foreground")}>
+        {esPrimary ? instrEs : instrEn}
+      </p>
+      {secondary ? (
+        <p className={cn("mt-0.5 text-[12px] leading-snug", dark ? "text-navy-foreground/60" : "text-muted-foreground")}>{secondary}</p>
+      ) : null}
+      {cue ? (
+        <p className={cn("mt-2 text-[12px] font-bold uppercase tracking-[0.14em]", dark ? "text-navy-foreground/80" : "text-muted-foreground")}>{cue}</p>
+      ) : null}
+    </div>
   );
 }
 
@@ -822,10 +847,7 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 
   return (
     <div className="space-y-5">
-      <Instruction
-        en={day.sceneImage ? "Look at the picture and just listen." : "Just listen. Don't speak yet."}
-        es={day.sceneImage ? "Mira la imagen y solo escucha." : "Solo escucha. Todavía no hables."}
-      />
+      <RepHeader titleKey="rep1.title" instrKey="rep1.instr" />
 
       <SceneImage day={day} />
       <PastVerbCards day={day} />
@@ -930,7 +952,7 @@ function Rep2Copy({
 
   return (
     <div className="space-y-5">
-      <Instruction en="Listen, then say both sentences together." es="Escucha y di las dos frases juntas." />
+      <RepHeader titleKey="rep2.title" instrKey="rep2.instr" />
 
       <SceneImage day={day} />
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
@@ -982,11 +1004,8 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
 
   return (
     <div className="space-y-5">
-      <div className="rounded-3xl bg-navy p-5 text-center text-navy-foreground">
-        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">Shadow</p>
-        <TranslatableText es="Habla al mismo tiempo que el modelo." align="center" className="mt-1" esClassName="text-navy-foreground/70" supportOnly>
-          <p className="text-[17px] font-bold leading-snug">Speak with the audio.</p>
-        </TranslatableText>
+      <div className="rounded-3xl bg-navy p-5">
+        <RepHeader titleKey="rep3.title" instrKey="rep3.instr" cueKey="rep3.cue" dark />
       </div>
 
       <SceneImage day={day} />
@@ -1027,7 +1046,7 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
       <PrimaryButton onClick={onNext}>
-        NEXT REP <ArrowRight className="size-5" />
+        {t("practice.nextRep")} <ArrowRight className="size-5" />
       </PrimaryButton>
     </div>
   );
@@ -1105,10 +1124,7 @@ function Rep4MakeItYours({
 
   return (
     <div className="space-y-5">
-      <Instruction
-        en={!hideVisuals && day.sceneImage ? "What's happening? Answer about the picture." : "Answer about YOUR life."}
-        es={!hideVisuals && day.sceneImage ? "¿Qué está pasando? Responde sobre la imagen." : "Responde sobre TU vida."}
-      />
+      <RepHeader titleKey="rep4.title" instrKey="rep4.instr" />
 
       {!hideVisuals ? (
         <>
@@ -1193,6 +1209,8 @@ function Rep5FinalRep({
 
   return (
     <div className="space-y-5">
+      <RepHeader titleKey="rep5.title" instrKey="rep5.instr" />
+
       <div className="space-y-3 rounded-3xl border border-primary/25 bg-accent p-5">
         <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-accent-foreground">
           {t("practice.answer")}
