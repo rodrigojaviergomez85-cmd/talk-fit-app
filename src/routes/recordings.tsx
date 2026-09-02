@@ -99,11 +99,13 @@ function RecordingsPage() {
                   <ComparisonPlayerCard
                     caption={es ? "PRIMERA GRABACIÓN" : "FIRST RECORDING"}
                     side={{ day: pair.first.day, record: pair.first, playable: true }}
+                    subtitle={recordHeading(pair.first)}
                     missingText=""
                   />
                   <ComparisonPlayerCard
                     caption={es ? "MÁS RECIENTE" : "LATEST"}
                     side={{ day: pair.latest.day, record: pair.latest, playable: true }}
+                    subtitle={recordHeading(pair.latest)}
                     missingText=""
                   />
                 </div>

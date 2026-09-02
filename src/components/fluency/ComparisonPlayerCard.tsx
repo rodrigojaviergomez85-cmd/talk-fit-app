@@ -11,6 +11,8 @@ type Props = {
   side: ComparisonSide;
   /** Message shown when the side has no playable Final Rep. */
   missingText: string;
+  /** Optional context line (e.g. MODULE · WEEK · DAY) when the module isn't implied by the section. */
+  subtitle?: string;
   tone?: "card" | "navy";
   className?: string;
 };
@@ -19,7 +21,7 @@ type Props = {
  * One side of a comparison: caption, DÍA n, duration, play / pause / restart.
  * References the existing saved Final Rep; the audio is fetched on first play.
  */
-export function ComparisonPlayerCard({ caption, side, missingText, tone = "card", className }: Props) {
+export function ComparisonPlayerCard({ caption, side, missingText, subtitle, tone = "card", className }: Props) {
   const { lang } = useAppLang();
   const es = lang === "es";
   const record = side.record;
@@ -59,6 +61,11 @@ export function ComparisonPlayerCard({ caption, side, missingText, tone = "card"
           </p>
         ) : null}
       </div>
+      {subtitle ? (
+        <p className={cn("truncate text-[10px] font-bold uppercase tracking-[0.14em]", navy ? "text-navy-foreground/70" : "text-muted-foreground")}>
+          {subtitle}
+        </p>
+      ) : null}
 
       {side.playable ? (
         <>
