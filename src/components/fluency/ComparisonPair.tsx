@@ -18,9 +18,13 @@ export function ComparisonPair({ comparison, startCaption, endCaption, tone = "c
       ? es
         ? "de esta semana"
         : "from this week"
-      : es
-        ? "de este módulo"
-        : "from this module";
+      : comparison.type === "module"
+        ? es
+          ? "de este módulo"
+          : "from this module"
+        : es
+          ? "de tu camino"
+          : "from your journey";
 
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
