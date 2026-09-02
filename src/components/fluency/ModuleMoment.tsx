@@ -1,12 +1,14 @@
 import { ComparisonPair } from "./ComparisonPair";
 import { ReflectionChips } from "./ReflectionChips";
 import {
+  MODULE_COMPLETION,
   MODULE_EMOJI,
   MODULE_REFLECTIONS,
   TRANSFORMATION,
   moduleMetrics,
   type Comparison,
 } from "@/lib/progress-moments";
+import { Check } from "lucide-react";
 import { CourseService } from "@/services/course-service";
 import type { JourneyState } from "@/lib/types";
 import { useAppLang } from "@/lib/i18n";
