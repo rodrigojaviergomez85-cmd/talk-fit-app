@@ -45,7 +45,7 @@ const STEPS_EN = [
 
 function OnboardingPage() {
   const navigate = useNavigate();
-  const { t, lang, setPrefs } = useAppLang();
+  const { t, lang, prefs, setPrefs } = useAppLang();
   const { user } = useAuth();
   const [screen, setScreen] = useState(0);
   const [placement, setPlacement] = useState<ModuleId | null>(() => getPendingPlacement()?.moduleId ?? null);
@@ -54,6 +54,14 @@ function OnboardingPage() {
     setPlacement(moduleId);
     // Pre-auth: kept locally until the account exists and the backend confirms.
     setPendingPlacement(moduleId);
+  };
+
+  /** Already signed in (e.g. via Mi Cuenta) but never placed: persist, then start. */
+  const confirmSignedInPlacement = async () => {
+    const { CloudSync } = await import("@/services/cloud-sync");
+    const result = await CloudSync.applyPendingPlacement();
+    if (result === "failed") return;
+    finish("day1");
   };
 
   const finish = (to: "day1" | "explore") => {
@@ -147,7 +155,7 @@ function OnboardingPage() {
               <button
                 type="button"
                 disabled={!placement}
-                onClick={() => (user ? finish("day1") : setScreen(4))}
+                onClick={() => (user ? void confirmSignedInPlacement() : setScreen(4))}
                 className="min-h-[56px] w-full rounded-2xl bg-primary px-6 text-[16px] font-bold tracking-wide text-primary-foreground active:scale-[0.98] disabled:opacity-40"
               >
                 {t("action.next")}
@@ -199,7 +207,7 @@ function OnboardingPage() {
             <>
               <button
                 type="button"
-                onClick={() => (user ? finish("day1") : setScreen(3))}
+                onClick={() => (user && prefs.currentModuleId ? finish("day1") : setScreen(3))}
                 className="min-h-[56px] w-full rounded-2xl bg-primary px-6 text-[16px] font-bold tracking-wide text-primary-foreground active:scale-[0.98]"
               >
                 {user ? t("action.startDay1") : t("action.next")}
