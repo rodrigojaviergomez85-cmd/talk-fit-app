@@ -54,7 +54,7 @@ export type Challenge = {
 export type ModuleId = "basic-zero" | "simple-present" | "past-stories" | "simple-future" | "mixed-tenses" | "eagles-week-1";
 
 /** Test Ready Sprint types (EAGLES pilot). Practice only — never scored. */
-export type TestReadyType = "repeat" | "quick-answers" | "build-sentence" | "listen-respond" | "speak-now";
+export type TestReadyType = "repeat" | "quick-answers" | "build-sentence" | "listen-respond" | "speak-now" | "story-retell";
 
 /** One sprint item: something to hear/see, then say. */
 export type TestReadyItem = {

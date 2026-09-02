@@ -1,9 +1,14 @@
 /**
- * EAGLES — WEEK 1 · RECOMMEND, ADVISE & SELL (standalone 5-day pilot)
+ * EAGLES — WEEK 1 · RECOMMEND, ADVISE & SELL
  *
  * Job-oriented week: tell what happened → offer options → give advice →
  * recommend & sell → handle hypothetical situations.
  * Each day = the normal 5 Fluency Reps + a separate 3–5 min Test Ready Sprint.
+ *
+ * DATA SAFETY: the module id ("eagles-week-1"), the day numbers 1–5 and every
+ * `e1-*`…`e5-*` id in this file are persisted in learner progress and
+ * recordings. Never rename them. Weeks 2–4 live in eagles-weeks-2-4-course.ts
+ * and are appended after these five days.
  */
 import type { CourseDay, ModelLine, PersonalPrompt, StoryPanel, TestReadySprint } from "@/lib/types";
 
@@ -21,34 +26,59 @@ import cueLimitedBudget from "@/assets/eagles/cue-limited-budget.jpg";
 import cueWorkFromHome from "@/assets/eagles/cue-work-from-home.jpg";
 import cueScholarship from "@/assets/eagles/cue-scholarship.jpg";
 
+/** The four EAGLES weeks. Week 1 title is frozen (learners already see it). */
 export const EAGLES_WEEK_1_WEEKS: {
   week: 1 | 2 | 3 | 4;
   title: string;
   subtitle: string;
   subtitleEs: string;
+  /** Primary behavior trained that week. */
+  behavior: string;
 }[] = [
   {
     week: 1,
     title: "Recommend, Advise & Sell",
     subtitle: "Tell · Offer options · Advise · Recommend · Respond",
     subtitleEs: "Contar · Ofrecer opciones · Aconsejar · Recomendar · Responder",
+    behavior: "CONNECT",
+  },
+  {
+    week: 2,
+    title: "Understand, Clarify & Solve",
+    subtitle: "Describe · Explain · Develop · Clarify · Solve",
+    subtitleEs: "Describir · Explicar · Desarrollar · Aclarar · Resolver",
+    behavior: "SOLVE",
+  },
+  {
+    week: 3,
+    title: "Compare, Explain & Choose",
+    subtitle: "Describe difference · Compare · Explain · Choose · Defend",
+    subtitleEs: "Describir diferencias · Comparar · Explicar · Elegir · Defender",
+    behavior: "JUSTIFY",
+  },
+  {
+    week: 4,
+    title: "Handle, Persuade & Close",
+    subtitle: "Plan · Reflect · Develop · Handle pressure · Persuade",
+    subtitleEs: "Planear · Reflexionar · Desarrollar · Manejar presión · Persuadir",
+    behavior: "ADAPT",
   },
 ];
 
-function l(id: string, marked: string, es: string): ModelLine {
+export function l(id: string, marked: string, es: string): ModelLine {
   const chunks = marked.split("|").map((c) => c.trim()).filter(Boolean);
   return { id, text: chunks.join(" "), es, chunks };
 }
 
-function p(id: string, question: string, questionEs: string, starter: string, starterEs: string, cue?: string): PersonalPrompt {
+export function p(id: string, question: string, questionEs: string, starter: string, starterEs: string, cue?: string): PersonalPrompt {
   return { id, question, questionEs, starter, starterEs, cue };
 }
 
-function card(id: string, src: string, alt: string, cue: string): StoryPanel {
+export function card(id: string, src: string, alt: string, cue: string): StoryPanel {
   return { id, src, alt, cue };
 }
 
-type DayInput = {
+export type EaglesDayInput = {
   day: number;
   topic: string;
   topicEs: string;
@@ -74,11 +104,13 @@ type DayInput = {
   testReady: TestReadySprint;
 };
 
-function makeDay(input: DayInput): CourseDay {
-  const week = EAGLES_WEEK_1_WEEKS[0]!;
+/** Week is derived from the day number (5 days per week). */
+export function makeDay(input: EaglesDayInput): CourseDay {
+  const weekNumber = Math.min(4, Math.max(1, Math.ceil(input.day / 5))) as 1 | 2 | 3 | 4;
+  const week = EAGLES_WEEK_1_WEEKS.find((w) => w.week === weekNumber) ?? EAGLES_WEEK_1_WEEKS[0]!;
   return {
     day: input.day,
-    week: 1,
+    week: weekNumber,
     weekTitle: week.title,
     weekTitleEs: week.subtitleEs,
     focus: input.focus,
