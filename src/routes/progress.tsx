@@ -3,6 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Check, ChevronDown, Flame, Mic, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
+import { ModuleHeading } from "@/components/fluency/ModuleHeading";
 import { ThenVsNow } from "@/components/fluency/ThenVsNow";
 import { SpeakingChart } from "@/components/fluency/SpeakingChart";
 import { RecordingCard } from "@/components/fluency/RecordingCard";
@@ -50,6 +51,10 @@ function ProgressPage() {
   const completedCount = JourneyService.completedCount(safe);
   const week = JourneyService.weekStats(safe);
   const next = JourneyService.nextPractice(safe);
+  const currentModuleId = next?.moduleId ?? JourneyService.currentModule(safe);
+  const currentIndex = CourseService.displayIndex(currentModuleId);
+  const forward = modules.filter((m) => CourseService.displayIndex(m.id) >= currentIndex);
+  const review = modules.filter((m) => CourseService.displayIndex(m.id) < currentIndex);
   const bests = JourneyService.personalBests(safe);
   const recent = useMemo(() => JourneyService.recordsByDate(safe).slice(-4).reverse(), [safe]);
   const series = useMemo(() => JourneyService.speakingSeries(safe), [safe]);
@@ -85,12 +90,15 @@ function ProgressPage() {
           </div>
         ) : null}
 
+        {/* Current module — the dominant progress metric */}
+        {next ? <CurrentModule state={safe} moduleId={next.moduleId} day={next.day} /> : null}
+
         {/* Objective metrics */}
         <section className="grid grid-cols-2 gap-3">
-          <Stat icon={<Check className="size-4 text-primary" />} label={t("home.daysCompleted")} value={`${completedCount} / ${totalDays}`} />
           <Stat icon={<Mic className="size-4 text-primary" />} label={t("home.reps")} value={`${safe.totalRepsCompleted}`} />
           <Stat icon={<Timer className="size-4 text-primary" />} label={t("home.speakingTime")} value={`${JourneyService.totalSpeakingMinutes(safe)} min`} />
           <Stat icon={<Flame className="size-4 text-primary" />} label={t("home.streak")} value={`${safe.streakDays} ${t("home.days")}`} />
+          <Stat icon={<Check className="size-4 text-primary" />} label={t("prog.fullCurriculum")} value={`${completedCount} / ${totalDays}`} />
         </section>
 
         {/* This week */}
@@ -103,48 +111,21 @@ function ProgressPage() {
           </div>
         </section>
 
-        {/* Current module */}
-        {next ? <CurrentModule state={safe} moduleId={next.moduleId} day={next.day} /> : null}
-
-        {/* Modules */}
+        {/* Forward journey, then earlier modules as optional review */}
         <section className="space-y-3">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t("prog.modules")}</h2>
-          {modules.map((module) => {
-            const done = JourneyService.completedCount(safe, module.id);
-            const total = module.days.length;
-            const status =
-              done >= total
-                ? ({ label: t("status.complete"), tone: "done" } as const)
-                : next?.moduleId === module.id
-                  ? ({ label: t("status.current"), tone: "current" } as const)
-                  : ({ label: t("status.upNext"), tone: "next" } as const);
-            return (
-              <Link
-                key={module.id}
-                to="/module/$moduleId"
-                params={{ moduleId: module.id }}
-                className={cn(
-                  "block rounded-3xl border bg-card p-4",
-                  status.tone === "current" ? "border-primary" : "border-border",
-                )}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                      {module.label.split(" · ")[0]}
-                    </p>
-                    <p className="truncate text-[15px] font-extrabold tracking-tight">{module.title}</p>
-                  </div>
-                  <StatusBadge status={status} />
-                </div>
-                <ProgressBar value={total > 0 ? done / total : 0} />
-                <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                  {done} / {total} {t("home.days")}
-                </p>
-              </Link>
-            );
-          })}
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t("prog.forward")}</h2>
+          {forward.map((module) => (
+            <ModuleRow key={module.id} module={module} state={safe} />
+          ))}
         </section>
+        {review.length ? (
+          <section className="space-y-3">
+            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t("prog.review")}</h2>
+            {review.map((module) => (
+              <ModuleRow key={module.id} module={module} state={safe} />
+            ))}
+          </section>
+        ) : null}
 
         {/* Speaking output */}
         {first ? (
@@ -197,6 +178,37 @@ function ProgressPage() {
   );
 }
 
+function ModuleRow({ module, state }: { module: ReturnType<typeof CourseService.modules>[number]; state: JourneyState }) {
+  const t = useT();
+  const done = JourneyService.completedCount(state, module.id);
+  const total = module.days.length;
+  const kind = JourneyService.moduleStatus(state, module.id);
+  const status =
+    kind === "done"
+      ? ({ label: t("status.complete"), tone: "done" } as const)
+      : kind === "current"
+        ? ({ label: t("status.current"), tone: "current" } as const)
+        : kind === "review"
+          ? ({ label: t("status.review"), tone: "next" } as const)
+          : ({ label: t("status.upNext"), tone: "next" } as const);
+  return (
+    <Link
+      to="/module/$moduleId"
+      params={{ moduleId: module.id }}
+      className={cn("block rounded-3xl border bg-card p-4", status.tone === "current" ? "border-primary" : "border-border")}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <ModuleHeading module={module} size="sm" />
+        <StatusBadge status={status} />
+      </div>
+      <ProgressBar value={total > 0 ? done / total : 0} />
+      <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+        {done} / {total} {t("home.days")}
+      </p>
+    </Link>
+  );
+}
+
 function CurrentModule({ state, moduleId, day }: { state: JourneyState; moduleId: ModuleId; day: number }) {
   const t = useT();
   const module = CourseService.getModule(moduleId);
@@ -208,11 +220,10 @@ function CurrentModule({ state, moduleId, day }: { state: JourneyState; moduleId
 
   return (
     <section className="rounded-3xl bg-navy p-5 text-navy-foreground">
-      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{t("prog.currentModule")}</p>
-      <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-navy-foreground/70">
-        {module.label.split(" · ")[0]}
-      </p>
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-navy-foreground/70">{t("prog.yourModule")}</p>
+      <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary">{module.label}</p>
       <h2 className="text-[22px] font-extrabold tracking-tight">{module.title}</h2>
+      <p className="text-[13px] font-semibold text-navy-foreground/80">{module.subtitle}</p>
       <div className="mt-3 h-2 overflow-hidden rounded-full bg-navy-foreground/15">
         <div
           className="h-full rounded-full bg-primary transition-all"
@@ -220,14 +231,14 @@ function CurrentModule({ state, moduleId, day }: { state: JourneyState; moduleId
         />
       </div>
       <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">
-        {done} / {total} {t("home.days")} · Week {week} · {weekDone} / {weekTotal} days
+        {done} / {total} {t("home.days")} · {t("home.week")} {week} · {weekDone} / {weekTotal}
       </p>
       <Link
         to="/practice"
         search={{ day, module: moduleId }}
         className="mt-4 flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 text-[14px] font-bold tracking-wide text-primary-foreground"
       >
-        CONTINUE PRACTICE <ArrowRight className="size-4" />
+        {t("action.continuePractice")} <ArrowRight className="size-4" />
       </Link>
     </section>
   );
@@ -237,8 +248,7 @@ function AllDays({ state }: { state: JourneyState }) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const modules = CourseService.modules();
-  const currentModuleId =
-    modules.find((m) => JourneyService.completedCount(state, m.id) < m.days.length)?.id ?? modules[0]?.id;
+  const currentModuleId = JourneyService.nextPractice(state)?.moduleId ?? JourneyService.currentModule(state);
 
   return (
     <section className="space-y-3">
@@ -298,7 +308,9 @@ function ModuleBlock({
         className="flex min-h-[60px] w-full items-center gap-3 px-4 py-3 text-left"
       >
         <span className="min-w-0 flex-1">
-          <span className="block truncate text-[14px] font-extrabold tracking-tight">{module.title}</span>
+          <span className="block truncate text-[14px] font-extrabold tracking-tight">
+            <span className="text-primary">{module.label}</span> · {module.title}
+          </span>
           <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
             {done} / {total} {t("home.days")}
           </span>
