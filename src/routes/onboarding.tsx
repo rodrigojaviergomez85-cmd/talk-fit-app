@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Ear, Mic, Repeat, Sparkles, User } from "lucide-react";
 import { CourseService } from "@/services/course-service";
@@ -48,7 +48,12 @@ function OnboardingPage() {
   const { t, lang, prefs, setPrefs } = useAppLang();
   const { user } = useAuth();
   const [screen, setScreen] = useState(0);
-  const [placement, setPlacement] = useState<ModuleId | null>(() => getPendingPlacement()?.moduleId ?? null);
+  const [placement, setPlacement] = useState<ModuleId | null>(null);
+
+  // Restore a choice made before an OAuth redirect (client-only storage).
+  useEffect(() => {
+    setPlacement(getPendingPlacement()?.moduleId ?? null);
+  }, []);
 
   const choosePlacement = (moduleId: ModuleId) => {
     setPlacement(moduleId);
