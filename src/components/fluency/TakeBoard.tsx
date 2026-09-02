@@ -199,6 +199,7 @@ export function TakeBoard({
         const showTurn = Boolean(turn) && (isActive || Boolean(take));
 
         const needsPrep = Boolean(turn?.prepSeconds) && isActive && !prepDone.includes(index);
+        const recruiter = /recruiter|reclutador|interviewer/i.test(`${turn?.label ?? ""} ${turn?.labelEs ?? ""}`);
 
         return (
           <div key={index} className="space-y-3">
