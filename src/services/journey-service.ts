@@ -1,5 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
-import type { DayRecord, JourneyState, ModuleId, SelfAssessment } from "@/lib/types";
+import type { DayRecord, JourneyState, ModuleId, RepDurations, SelfAssessment } from "@/lib/types";
 import { CourseService, isModuleId } from "./course-service";
 
 /**
