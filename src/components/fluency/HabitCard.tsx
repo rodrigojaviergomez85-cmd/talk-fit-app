@@ -104,9 +104,10 @@ export function HabitCard({ state, variant = "home" }: Props) {
       ) : null}
 
       {variant === "home" ? (
-        recovery ? (
+        recovery && nextPractice ? (
           <Link
             to="/practice"
+            search={{ day: nextPractice.day, module: nextPractice.moduleId }}
             className="mt-3 flex min-h-[44px] w-full items-center justify-center rounded-2xl bg-primary px-4 text-[12px] font-bold uppercase tracking-[0.14em] text-primary-foreground"
           >
             {es ? "CONTINUAR MI PRÁCTICA" : "CONTINUE MY PRACTICE"}
