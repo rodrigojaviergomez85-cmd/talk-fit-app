@@ -31,6 +31,27 @@ export const ADVANCED_1_WEEKS: (WeekMeta & { subtitle: string; behavior: string 
     subtitleEs: "Háblame de ti · Una experiencia real · Por qué contratarte · Debilidad y metas · Pressure Round del reclutador",
     behavior: "GET HIRED",
   },
+  {
+    week: 2,
+    title: "Prove What You Can Do",
+    subtitle: "A challenge · A mistake · A difficult person · Helping someone · Behavioral Interview Round",
+    subtitleEs: "Un reto · Un error · Una persona difícil · Ayudar a alguien · Ronda de entrevista conductual",
+    behavior: "PROVE IT",
+  },
+  {
+    week: 3,
+    title: "Answer the Hard Questions",
+    subtitle: "Why did you leave · A failure · Why work here · Salary & schedule · Difficult Recruiter Round",
+    subtitleEs: "Por qué te fuiste · Un fracaso · Por qué aquí · Salario y horario · Ronda del reclutador difícil",
+    behavior: "STAY CALM",
+  },
+  {
+    week: 4,
+    title: "Perform Under Job Pressure",
+    subtitle: "Your professional story · Competency interview · Unexpected recruiter · Role switch · Final Job Pressure Simulation",
+    subtitleEs: "Tu historia profesional · Entrevista por competencias · Reclutador inesperado · Cambio de rol · Simulación final",
+    behavior: "PERFORM",
+  },
 ];
 
 /** Spanish-first Advanced instructions. Learning content stays in English. */
@@ -55,14 +76,14 @@ export function advancedDay(input: AdvancedDayInput): CourseDay {
   };
 }
 
-const START = "START REP 1";
-const RECRUITER = { label: "RECRUITER", labelEs: "RECLUTADOR/A" };
-const CUSTOMER = { label: "CUSTOMER", labelEs: "CLIENTE" };
+export const START = "START REP 1";
+export const RECRUITER = { label: "RECRUITER", labelEs: "RECLUTADOR/A" };
+export const CUSTOMER = { label: "CUSTOMER", labelEs: "CLIENTE" };
 
 /** ⚡ QUICK ≈ 15–30s · 🎤 DEVELOP ≈ 30–60s · 🔥 SUSTAIN ≈ 60–120s total. */
-const QUICK: [number, number] = [20, 30];
+export const QUICK: [number, number] = [20, 30];
 
-function turn(
+export function turn(
   id: string,
   who: typeof RECRUITER,
   text: string,
