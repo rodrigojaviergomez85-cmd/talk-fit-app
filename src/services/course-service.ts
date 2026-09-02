@@ -10,6 +10,7 @@ import { TIGERS_WEEK_1_DAYS, TIGERS_WEEKS } from "./tigers-week-1-course";
 import { TIGERS_WEEKS_2_4_DAYS } from "./tigers-weeks-2-4-course";
 import { SHARKS_WEEK_1_DAYS, SHARKS_WEEKS } from "./sharks-week-1-course";
 import { SHARKS_WEEKS_2_4_DAYS } from "./sharks-weeks-2-4-course";
+import { ADVANCED_1_WEEK_1_DAYS, ADVANCED_1_WEEKS } from "./advanced-1-course";
 
 
 
@@ -329,6 +330,14 @@ export type LearningModule = {
   extra?: { en: string; es: string };
   /** Module card CTA override. */
   cta?: { en: string; es: string };
+  /**
+   * ADVANCED family: cyclical, equivalent modules (A1 → A2 → A3 → A1). A learner
+   * may enter at any cycle position — never a proficiency prerequisite.
+   */
+  family?: "advanced";
+  cyclePosition?: number;
+  /** Weeks actually built so far (out of 4). Below 4 = partial module: no "module complete" moment. */
+  builtWeeks?: number;
 };
 
 /**
@@ -495,13 +504,44 @@ const MODULES: LearningModule[] = [
     days: [...SHARKS_WEEK_1_DAYS, ...SHARKS_WEEKS_2_4_DAYS],
     weeks: SHARKS_WEEKS,
   },
+  {
+    // Internal id is frozen from day one: progress and recordings will be keyed to it.
+    // ADVANCED is cyclical: A1 / A2 / A3 are equivalent entry points, not levels.
+    id: "advanced-1",
+    order: 9,
+    label: "AVANZADO · ADVANCED 1",
+    title: "GET HIRED",
+    subtitle: "Tell your story. Answer anything. Get the job.",
+    subtitleEs: "Cuenta tu historia. Responde lo que sea. Consigue el trabajo.",
+    statusLine: { en: "Week 1 available · 5 days · 25 Fluency Reps", es: "Semana 1 disponible · 5 días · 25 Fluency Reps" },
+    description: "Build answers with reusable frameworks: tell your story, prove your value, handle recruiter follow-ups and switch to customer service under pressure.",
+    descriptionEs: "Construye respuestas con estructuras reutilizables: cuenta tu historia, prueba tu valor, maneja las repreguntas del reclutador y cambia a servicio al cliente bajo presión.",
+    meta: ["Week 1 Available", "5 Days", "25 Fluency Reps", "More Weeks Coming Soon"],
+    highlights: [
+      { en: "Tell me about yourself — without sounding memorized", es: "Tell me about yourself — sin sonar memorizado/a" },
+      { en: "Tell a real experience (behavioral story)", es: "Contar una experiencia real (historia conductual)" },
+      { en: "Why should we hire you? — with evidence", es: "Why should we hire you? — con evidencia" },
+      { en: "Talk about a real weakness and your goals", es: "Hablar de una debilidad real y tus metas" },
+      { en: "Recruiter Pressure Round + customer service switch", es: "Pressure Round del reclutador + cambio a servicio al cliente" },
+    ],
+    extra: {
+      en: "⚡ 3 TEST READY SPRINTS this week — Listen & Repeat, Describe the Scene, Mixed Sprint. Optional, never scored.",
+      es: "⚡ 3 TEST READY SPRINTS esta semana — Listen & Repeat, Describe the Scene, Mixed Sprint. Opcionales, nunca calificados.",
+    },
+    cta: { en: "START GET HIRED", es: "EMPEZAR GET HIRED" },
+    hiddenFromPlacement: true,
+    family: "advanced",
+    cyclePosition: 1,
+    builtWeeks: 1,
+    days: ADVANCED_1_WEEK_1_DAYS,
+    weeks: ADVANCED_1_WEEKS,
+  },
 ];
 
 /** Preview-only levels: not selectable, not routable, zero days, never in totals. */
 export type UpcomingLevel = { key: string; label: string; title: string; note: { en: string; es: string } };
-export const UPCOMING_LEVELS: UpcomingLevel[] = [
-  { key: "advanced", label: "AVANZADO", title: "PRÓXIMAMENTE", note: { en: "Coming soon", es: "Muy pronto" } },
-];
+/** ADVANCED 1 now ships as a real module card; nothing is left in preview-only state. */
+export const UPCOMING_LEVELS: UpcomingLevel[] = [];
 
 export const DEFAULT_MODULE: ModuleId = "basic-zero";
 
@@ -514,7 +554,8 @@ export function isModuleId(value: unknown): value is ModuleId {
     value === "mixed-tenses" ||
     value === "eagles-week-1" ||
     value === "tigers" ||
-    value === "sharks"
+    value === "sharks" ||
+    value === "advanced-1"
   );
 }
 

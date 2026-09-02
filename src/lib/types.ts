@@ -56,10 +56,13 @@ export type Challenge = {
 };
 
 /** Learning module identifier. Frozen once shipped — progress and recordings are keyed to it. */
-export type ModuleId = "basic-zero" | "simple-present" | "past-stories" | "simple-future" | "mixed-tenses" | "eagles-week-1" | "tigers" | "sharks";
+export type ModuleId = "basic-zero" | "simple-present" | "past-stories" | "simple-future" | "mixed-tenses" | "eagles-week-1" | "tigers" | "sharks" | "advanced-1";
 
 /** Test Ready Sprint types (EAGLES pilot). Practice only — never scored. */
-export type TestReadyType = "repeat" | "quick-answers" | "build-sentence" | "listen-respond" | "speak-now" | "story-retell";
+export type TestReadyType = "repeat" | "quick-answers" | "build-sentence" | "listen-respond" | "speak-now" | "story-retell" | "describe-scene" | "mixed";
+
+/** Per-rep instruction copy override (ADVANCED): [title, instruction] per language. */
+export type RepCopy = Partial<Record<"rep1" | "rep2" | "rep3" | "rep4" | "rep5", { es: [string, string]; en: [string, string] }>>;
 
 /** One sprint item: something to hear/see, then say. */
 export type TestReadyItem = {
@@ -73,6 +76,10 @@ export type TestReadyItem = {
   textEs?: string | undefined;
   /** Max seconds for the spoken answer. */
   maxSeconds?: number | undefined;
+  /** Mixed Sprint: per-item drill type (overrides the sprint type for this item). */
+  kind?: Exclude<TestReadyType, "mixed"> | undefined;
+  /** Mixed Sprint: think time for a speak-now style item. */
+  thinkSeconds?: number | undefined;
 };
 
 /** Optional 3–5 minute Test Ready Sprint attached to a day. */
@@ -93,6 +100,8 @@ export type TestReadySprint = {
   speakSeconds?: number | undefined;
   /** Repeat It: play each sentence only once. */
   playOnce?: boolean | undefined;
+  /** Describe the Scene: realistic adult visual shown with the item. */
+  image?: { src: string; alt: string; altEs: string } | undefined;
 };
 
 /** Image → action → past verb → spoken sentence (Module 3). */
@@ -188,6 +197,10 @@ export type CourseDay = {
   rep5Scenario?: Rep5Scenario | undefined;
   /** Cue skeleton shown with a scenario bank (defaults to the TIGERS list). */
   rep5Skeleton?: string[] | undefined;
+  /** ADVANCED: per-rep instruction copy override (Spanish-first). */
+  repCopy?: RepCopy | undefined;
+  /** ADVANCED: Test Ready is optional extra practice on this day (never blocks). */
+  testReadyOptional?: boolean | undefined;
 };
 
 /** One prewritten Rep 5 scenario (TIGERS FINAL bank). */
@@ -217,6 +230,18 @@ export type RolePlayTurn = {
   text: string;
   es: string;
   voice?: "female" | "male" | undefined;
+  /** ADVANCED: target speaking range for this single response (QUICK / DEVELOP / SUSTAIN). */
+  targetSeconds?: [number, number] | undefined;
+  /** ADVANCED: minimal answer-structure cues shown only for this turn. */
+  cues?: string[] | undefined;
+  /** ADVANCED: seconds of think time before the mic opens for this turn. */
+  prepSeconds?: number | undefined;
+  /** ADVANCED: Round header (Pressure Round). Shown on the first turn of the round. */
+  round?: { n: number; title: string; titleEs: string; situation?: string | undefined; situationEs?: string | undefined } | undefined;
+  /** ADVANCED: small phrase toolbox for this turn only (never a full script). */
+  toolbox?: string[] | undefined;
+  /** ADVANCED: tiny mental structure taught right before this turn (e.g. CHOOSE → WHY → EXAMPLE → CLOSE). */
+  framework?: { title: string; titleEs: string; steps: string[] } | undefined;
 };
 
 /** Wall-clock seconds spent on each rep (pilot analytics, never shown). */

@@ -225,6 +225,10 @@ export const TRANSFORMATION: Record<ModuleId, { es: string; en: string }> = {
     es: "Ahora puedes adaptarte, improvisar, pedir aclaración, reformular y mantener una conversación bajo presión.",
     en: "You can now adapt, improvise, ask for clarification, rephrase and keep a conversation going under pressure.",
   },
+  "advanced-1": {
+    es: "Ahora puedes contar tu historia, probar lo que dices y responder preguntas inesperadas de un reclutador.",
+    en: "You can now tell your story, prove what you say and answer a recruiter's unexpected questions.",
+  },
 };
 
 export const MODULE_EMOJI: Record<ModuleId, string> = {
@@ -236,6 +240,7 @@ export const MODULE_EMOJI: Record<ModuleId, string> = {
   "eagles-week-1": "🦅",
   tigers: "🐯",
   sharks: "🦈",
+  "advanced-1": "🎯",
 };
 
 /** Extra completion detail for a module: level line + "AHORA PUEDES PRACTICAR CÓMO:" list. */
@@ -385,7 +390,30 @@ export const NEXT_UP: Record<ModuleId, NextUpCopy> = {
       { es: "sostener conversaciones por más tiempo", en: "sustain longer conversations" },
     ],
   },
+  "advanced-1": {
+    emoji: "🎯",
+    promise: {
+      es: "GET HIRED — CUENTA TU HISTORIA. RESPONDE LO QUE SEA. CONSIGUE EL TRABAJO.",
+      en: "GET HIRED — TELL YOUR STORY. ANSWER ANYTHING. GET THE JOB.",
+    },
+    items: [
+      { es: "presentarte sin sonar memorizado/a", en: "introduce yourself without sounding memorized" },
+      { es: "contar una experiencia real", en: "tell a real experience" },
+      { es: "probar lo que dices con ejemplos", en: "prove what you say with examples" },
+      { es: "responder preguntas inesperadas", en: "answer unexpected questions" },
+      { es: "cambiar de entrevista a servicio al cliente", en: "switch from interview to customer service" },
+    ],
+  },
 };
+
+/** ADVANCED Week reflection: self-reflection only, never a score. */
+export const ADVANCED_WEEK_REFLECTIONS: ReflectionOption[] = [
+  { id: "unexpected", es: "PUDE RESPONDER UNA PREGUNTA INESPERADA", en: "I ANSWERED AN UNEXPECTED QUESTION" },
+  { id: "examples", es: "DI EJEMPLOS REALES", en: "I GAVE REAL EXAMPLES" },
+  { id: "developed", es: "DESARROLLÉ MEJOR MIS RESPUESTAS", en: "I DEVELOPED MY ANSWERS BETTER" },
+  { id: "switch", es: "PUDE CAMBIAR DE ENTREVISTA A CUSTOMER SERVICE", en: "I SWITCHED FROM INTERVIEW TO CUSTOMER SERVICE" },
+  { id: "more", es: "QUIERO PRACTICAR MÁS", en: "I WANT TO PRACTICE MORE" },
+];
 
 /** Preview-only levels (not published): same shape, no CTA. */
 export const UPCOMING_NEXT_UP: Record<string, NextUpCopy & { title: string; label: string }> = {
@@ -420,8 +448,13 @@ export type NextStage =
 export function nextModuleAfter(moduleId: ModuleId): NextStage {
   const modules = CourseService.modules();
   const index = modules.findIndex((m) => m.id === moduleId);
+  const current = index >= 0 ? modules[index] : undefined;
   const next = index >= 0 ? modules[index + 1] : undefined;
-  if (next) return { kind: "module", module: next, copy: NEXT_UP[next.id] };
+  // ADVANCED modules are cyclical (A1 → A2 → A3 → A1, learners may enter anywhere):
+  // never present one as the sequential "next" of another module, and never
+  // auto-route a graduating Intermediate learner into a specific Advanced cycle.
+  if (next && next.family !== "advanced") return { kind: "module", module: next, copy: NEXT_UP[next.id] };
+  if (current?.family === "advanced") return null;
   // Nothing published after this module yet: preview the next level, no CTA.
   const copy = UPCOMING_NEXT_UP["advanced"];
   return copy ? { kind: "upcoming", copy } : null;

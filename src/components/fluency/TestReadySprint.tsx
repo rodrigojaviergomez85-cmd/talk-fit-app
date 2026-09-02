@@ -7,7 +7,7 @@ import { useRecordingPlayback } from "@/hooks/use-recording-playback";
 import { AudioService } from "@/services/audio-service";
 import { TestReadyService } from "@/services/test-ready-service";
 import { useAppLang, useT } from "@/lib/i18n";
-import type { ModuleId, Recording, TestReadySprint as Sprint } from "@/lib/types";
+import type { ModuleId, Recording, TestReadySprint as Sprint, TestReadyType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type Props = { moduleId: ModuleId; day: number; sprint: Sprint };
@@ -233,6 +233,17 @@ const primaryBtn =
 const ghostBtn =
   "inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground";
 
+/** Per-item drill label for Mixed Sprints: [es, en]. */
+const KIND_LABELS: Record<Exclude<TestReadyType, "mixed">, [string, string]> = {
+  repeat: ["REPITE", "REPEAT"],
+  "quick-answers": ["RESPUESTA RÁPIDA", "QUICK ANSWER"],
+  "build-sentence": ["ARMA LA ORACIÓN", "BUILD THE SENTENCE"],
+  "listen-respond": ["ESCUCHA Y RESPONDE", "LISTEN & RESPOND"],
+  "speak-now": ["HABLA AHORA", "SPEAK NOW"],
+  "story-retell": ["CUENTA LA HISTORIA", "RETELL THE STORY"],
+  "describe-scene": ["DESCRIBE LA ESCENA", "DESCRIBE THE SCENE"],
+};
+
 function Header({ sprint, es, step }: { sprint: Sprint; es: boolean; step: string }) {
   const t = useT();
   return (
@@ -269,8 +280,11 @@ function ItemCard({
   const t = useT();
   const [played, setPlayed] = useState(false);
   const [ended, setEnded] = useState(false);
-  const speakNow = sprint.type === "speak-now";
-  const thinkSeconds = sprint.thinkSeconds ?? 10;
+  // Mixed Sprint (ADVANCED): each item carries its own drill type.
+  const kind = sprint.type === "mixed" ? (item.kind ?? "quick-answers") : sprint.type;
+  // Speak Now and Describe the Scene both open with a think-time countdown.
+  const speakNow = kind === "speak-now" || kind === "describe-scene";
+  const thinkSeconds = item.thinkSeconds ?? sprint.thinkSeconds ?? 10;
   const [countdown, setCountdown] = useState<number | null>(speakNow ? thinkSeconds : null);
 
   // Speak Now: 10 seconds to think, then the mic opens.
@@ -280,13 +294,33 @@ function ItemCard({
     return () => clearTimeout(id);
   }, [speakNow, countdown]);
 
-  const needsAudio = Boolean(item.audio) && sprint.type !== "build-sentence";
+  const needsAudio = Boolean(item.audio) && kind !== "build-sentence";
   const lockAudio = sprint.playOnce && ended;
   const canRecord = speakNow ? countdown !== null && countdown <= 0 : !needsAudio || played;
   const maxSeconds = item.maxSeconds ?? (speakNow ? 60 : 12);
+  const longForm = speakNow || kind === "story-retell";
+  const kindLabel = sprint.type === "mixed" ? KIND_LABELS[kind] : null;
 
   return (
     <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
+      {kindLabel ? (
+        <p className="text-center text-[10px] font-extrabold uppercase tracking-[0.22em] text-primary">
+          {es ? kindLabel[0] : kindLabel[1]}
+        </p>
+      ) : null}
+
+      {/* Describe the Scene: realistic visual first */}
+      {kind === "describe-scene" && sprint.image ? (
+        <img
+          src={sprint.image.src}
+          alt={es ? sprint.image.altEs : sprint.image.alt}
+          width={1024}
+          height={768}
+          loading="eager"
+          className="aspect-[4/3] w-full rounded-2xl object-cover"
+        />
+      ) : null}
+
       {/* Visible prompt (Listen & Respond questions, Speak Now topic, sentence chunks) */}
       {item.text ? (
         <div className="text-center">
@@ -352,7 +386,7 @@ function ItemCard({
             label={t("tr.record")}
             stopLabel={t("tr.stop")}
             maxSeconds={maxSeconds}
-            {...((speakNow || sprint.type === "story-retell") && sprint.speakSeconds
+            {...(longForm && sprint.speakSeconds
               ? { targetSeconds: [sprint.speakSeconds, maxSeconds] as [number, number] }
               : {})}
             onComplete={onRecorded}
