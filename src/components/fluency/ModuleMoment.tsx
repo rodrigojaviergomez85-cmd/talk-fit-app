@@ -42,12 +42,28 @@ export function ModuleMoment({ comparison, state, celebrate = false }: Props) {
           {name} {es ? "COMPLETADO" : "COMPLETE"}
         </h2>
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-navy-foreground/70">
-          {module.label} · {module.title}
+          {completion ? (es ? completion.levelLine.es : completion.levelLine.en) : `${module.label} · ${module.title}`}
         </p>
         <p className="mt-3 text-[16px] font-extrabold leading-snug">
           {es ? transformation.es : transformation.en}
         </p>
       </div>
+
+      {completion ? (
+        <div className="rounded-2xl bg-navy-foreground/10 p-4">
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+            {es ? "AHORA PUEDES PRACTICAR CÓMO:" : "YOU CAN NOW PRACTICE HOW TO:"}
+          </p>
+          <ul className="mt-2 space-y-1.5">
+            {completion.canNow.map((item) => (
+              <li key={item.en} className="flex items-start gap-2 text-[14px] font-semibold text-navy-foreground/90">
+                <Check className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
+                {es ? item.es : item.en}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
 
       <div className="grid grid-cols-2 gap-2 text-center">
         <Metric value={`${metrics.days}`} label={es ? "DÍAS COMPLETADOS" : "DAYS COMPLETED"} />
