@@ -452,8 +452,14 @@ export function isModuleId(value: unknown): value is ModuleId {
 
 
 export const CourseService = {
+  /** Modules in visual journey order (presentation only). */
   modules(): LearningModule[] {
-    return MODULES;
+    return [...MODULES].sort((a, b) => a.order - b.order);
+  },
+
+  /** Visual position of a module in the journey (1-based). */
+  displayIndex(moduleId: ModuleId): number {
+    return CourseService.getModule(moduleId).order;
   },
 
   getModule(moduleId: ModuleId): LearningModule {
@@ -464,10 +470,12 @@ export const CourseService = {
     return CourseService.getModule(moduleId).days.length;
   },
 
-  /** Total days across every existing module (used by Home / Account stats). */
+  /**
+   * Total days across every published module (Home / Account / Progress).
+   * Computed dynamically; upcoming preview levels have no days and never count.
+   */
   totalDaysAll(): number {
-    // Pilot modules are opt-in and excluded from the learner's journey total.
-    return MODULES.filter((m) => !m.pilot).reduce((sum, m) => sum + m.days.length, 0);
+    return MODULES.reduce((sum, m) => sum + m.days.length, 0);
   },
 
   getDays(moduleId: ModuleId): CourseDay[] {
