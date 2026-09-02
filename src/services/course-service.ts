@@ -513,7 +513,8 @@ export function isModuleId(value: unknown): value is ModuleId {
     value === "simple-future" ||
     value === "mixed-tenses" ||
     value === "eagles-week-1" ||
-    value === "tigers"
+    value === "tigers" ||
+    value === "sharks"
   );
 }
 
