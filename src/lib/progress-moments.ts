@@ -281,7 +281,7 @@ export function nextModuleAfter(moduleId: ModuleId): NextStage {
   const next = index >= 0 ? modules[index + 1] : undefined;
   if (next) return { kind: "module", module: next, copy: NEXT_UP[next.id] };
   // Nothing published after this module yet: preview the next level, no CTA.
-  const copy = UPCOMING_NEXT_UP.tigers;
+  const copy = UPCOMING_NEXT_UP["tigers"];
   return copy ? { kind: "upcoming", copy } : null;
 }
 
