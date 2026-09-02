@@ -5,9 +5,13 @@ import { RecordingPlayback } from "./RecordingPlayback";
 import { TranslatableText } from "./TranslatableText";
 import { JourneyService } from "@/services/journey-service";
 import { CourseService } from "@/services/course-service";
-import type { CourseDay, DayRecord, JourneyState, ModuleId, Recording, SelfAssessment } from "@/lib/types";
+import type { CourseDay, ModuleId, Recording, SelfAssessment } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { SaveProgressPrompt } from "./SaveProgressPrompt";
+import { WeekMoment } from "./WeekMoment";
+import { ModuleMoment } from "./ModuleMoment";
+import { NextUp } from "./NextUp";
+import { moduleComparison, weekComparison } from "@/lib/progress-moments";
 
 export type RepSummary = { total: number; attempted: number; skipped: number };
 
@@ -53,13 +57,11 @@ export function DayCompleteScreen({
   const seconds = finalRecording?.durationSeconds ?? 0;
   const firstSeconds = firstRecording?.durationSeconds ?? 0;
 
-  const module = CourseService.getModule(moduleId);
   const week = day.week;
-  const weekInfo = week ? module.weeks?.find((w) => w.week === week) : undefined;
   const weekJustDone = Boolean(week && JourneyService.weekComplete(state, moduleId, week));
-  const weekRecords = week ? JourneyService.weekRecords(state, moduleId, week) : [];
-  const weekSeconds = weekRecords.reduce((total, r) => total + r.practiceSeconds, 0);
   const moduleDone = JourneyService.moduleComplete(state, moduleId);
+  const weekCmp = weekJustDone && week ? weekComparison(state, moduleId, week) : null;
+  const moduleCmp = moduleDone ? moduleComparison(state, moduleId) : null;
 
   return (
     <div className="min-h-screen bg-background px-4 pb-16 pt-[max(2rem,env(safe-area-inset-top))]">
@@ -162,84 +164,14 @@ export function DayCompleteScreen({
           </TranslatableText>
         </div>
 
-        {weekJustDone && week && weekInfo ? (
-          <div className="space-y-3 rounded-3xl border border-success/30 bg-success/8 p-5">
-            <p className="text-center text-[13px] font-extrabold uppercase tracking-[0.18em] text-success">
-              WEEK {week} COMPLETE ✓
-            </p>
-            <p className="text-center text-[18px] font-extrabold leading-snug tracking-tight">
-              {showEs ? weekInfo.subtitleEs : weekInfo.title}
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              <Stat label={showEs ? "Días de la semana" : "Days completed"} value={`${weekRecords.length} / ${JourneyService.weekTotalDays(moduleId, week)}`} />
-              <Stat label={showEs ? "Fluency Reps" : "Fluency Reps"} value={`${weekRecords.length * 5}`} />
-              <Stat label={showEs ? "Minutos hablando" : "Speaking minutes"} value={`${Math.round(weekSeconds / 60)}`} />
-              <Stat label={showEs ? "Rep final" : "Final recording"} value={`${seconds}s`} />
-            </div>
-            <p className="text-center text-[12px] font-semibold text-muted-foreground">
-              {showEs ? "Oraciones estimadas en tu rep final" : "Estimated sentences in your final rep"}:{" "}
-              <span className="font-extrabold text-foreground">{finalRecording?.sentenceCount ?? "—"}</span>
-            </p>
-          </div>
+        {weekJustDone && weekCmp ? <WeekMoment comparison={weekCmp} celebrate /> : null}
+
+        {moduleDone && moduleCmp ? (
+          <>
+            <ModuleMoment comparison={moduleCmp} state={state} celebrate />
+            <NextUp afterModuleId={moduleId} />
+          </>
         ) : null}
-
-        {moduleDone && moduleId === "eagles-week-1" ? (
-          <EaglesCompleteCard state={state} showEs={showEs} finalRecording={finalRecording} lastDay={day.day} />
-        ) : null}
-
-        {moduleDone && moduleId !== "eagles-week-1" && module.weeks?.length ? (
-          <div className="space-y-4 rounded-3xl bg-navy p-6 text-navy-foreground">
-            <p className="text-center text-[13px] font-extrabold uppercase tracking-[0.2em] text-primary">
-              {`${module.label} · ${module.title} COMPLETE ✓`}
-            </p>
-            <div className="space-y-1.5">
-              {module.weeks.map((item) => (
-                <p key={item.week} className="text-[14px] font-bold">
-                  ✓ WEEK {item.week} — {showEs ? item.subtitleEs : item.title}
-                </p>
-              ))}
-            </div>
-            <div className="rounded-2xl bg-navy-foreground/10 p-4">
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
-                {showEs ? "AHORA PUEDES:" : "YOU CAN NOW:"}
-              </p>
-              <ul className="mt-2 space-y-1 text-[14px] font-semibold">
-                {moduleId === "past-stories" ? (
-                  <>
-                    <li>✓ {showEs ? "Contar lo que hiciste ayer" : "Talk about what you did yesterday"}</li>
-                    <li>✓ {showEs ? "Hablar del pasado de otras personas" : "Talk about other people's past"}</li>
-                    <li>✓ {showEs ? "Describir qué estaba pasando" : "Describe what was happening"}</li>
-                    <li>✓ {showEs ? "Contar una historia completa" : "Tell a complete story"}</li>
-                  </>
-                ) : (
-                  <>
-                    <li>✓ {showEs ? "Hablar de rutinas" : "Talk about routines"}</li>
-                    <li>✓ {showEs ? "Hablar de las rutinas de otras personas" : "Talk about other people's routines"}</li>
-                    <li>✓ {showEs ? "Explicar un proceso simple" : "Explain a simple process"}</li>
-                    <li>✓ {showEs ? "Describir lo que está pasando ahora" : "Describe what is happening right now"}</li>
-                  </>
-                )}
-              </ul>
-            </div>
-
-            <div className="space-y-2">
-              {module.weeks.map((item) => {
-                const records = JourneyService.weekRecords(state, moduleId, item.week);
-                const last = records[records.length - 1];
-                if (!last?.finalUrl) return null;
-                return (
-                  <RecordingPlayback
-                    key={item.week}
-                    url={last.finalUrl}
-                    label={`${showEs ? "SEMANA" : "WEEK"} ${item.week} · ${last.finalSeconds}s`}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        ) : null}
-
-
 
         {isLastDay ? (
           <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
@@ -274,7 +206,7 @@ export function DayCompleteScreen({
           onClick={() => void navigate({ to: "/" })}
           className="w-full rounded-2xl bg-primary px-6 py-4 text-[15px] font-bold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
         >
-          {showEs ? "TERMINAR DÍA ✓" : "COMPLETE DAY ✓"}
+          {moduleDone ? (showEs ? "CONTINUAR MI CAMINO" : "CONTINUE MY PATH") : showEs ? "CONTINUAR ✓" : "CONTINUE ✓"}
         </button>
       </div>
     </div>
@@ -300,124 +232,6 @@ function SummaryRow({ label, summary, showEs }: { label: string; summary: RepSum
         {summary.attempted} / {summary.total} {showEs ? "intentadas" : "attempted"}
         {summary.skipped ? ` · ${summary.skipped} ${showEs ? "saltadas" : "skipped"}` : ""}
       </span>
-    </div>
-  );
-}
-
-const EAGLES_OUTCOMES: { es: string; en: string }[] = [
-  { es: "conectar mejor tus ideas", en: "connect your ideas better" },
-  { es: "explicar experiencias y decisiones", en: "explain experiences and decisions" },
-  { es: "comparar opciones", en: "compare options" },
-  { es: "dar recomendaciones", en: "give recommendations" },
-  { es: "resolver situaciones de servicio al cliente", en: "solve customer service situations" },
-  { es: "manejar objeciones básicas", en: "handle basic objections" },
-  { es: "responder con menos preparación", en: "respond with less preparation" },
-];
-
-/**
- * EAGLES COMPLETE — shown once all 20 days are done.
- * Objective numbers + a self-reflective THEN vs NOW listen. No scores, no CEFR claims.
- */
-function EaglesCompleteCard({
-  state,
-  showEs,
-  finalRecording,
-  lastDay,
-}: {
-  state: JourneyState;
-  showEs: boolean;
-  finalRecording: Recording | null;
-  lastDay: number;
-}) {
-  const moduleId: ModuleId = "eagles-week-1";
-  const totalDays = CourseService.totalDays(moduleId);
-  const records = (Object.values(state.days) as DayRecord[])
-    .filter((r) => r.moduleId === moduleId)
-    .sort((a, b) => a.day - b.day);
-  const earliest = records.find((r) => r.day !== lastDay && (r.finalUrl || r.recordingPath));
-  const last = records.find((r) => r.day === lastDay);
-
-  const [earlyUrl, setEarlyUrl] = useState<string | null>(earliest?.finalUrl ?? null);
-  const [lateUrl, setLateUrl] = useState<string | null>(finalRecording?.url ?? last?.finalUrl ?? null);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      if (!earlyUrl && earliest?.recordingPath) {
-        const url = await JourneyService.signedRecordingUrl(earliest.recordingPath);
-        if (!cancelled && url) setEarlyUrl(url);
-      }
-      if (!lateUrl && last?.recordingPath) {
-        const url = await JourneyService.signedRecordingUrl(last.recordingPath);
-        if (!cancelled && url) setLateUrl(url);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [earliest?.recordingPath, last?.recordingPath]);
-
-  const canCompare = Boolean(earliest && earlyUrl && lateUrl);
-
-  return (
-    <div className="space-y-4 rounded-3xl bg-navy p-6 text-navy-foreground">
-      <div className="text-center">
-        <p className="text-[13px] font-extrabold uppercase tracking-[0.2em] text-primary">EAGLES COMPLETE</p>
-        <p className="mt-1 text-[12px] font-bold uppercase tracking-[0.16em] text-navy-foreground/70">
-          {showEs ? "INTERMEDIO · MES COMPLETADO ✓" : "INTERMEDIO · MONTH COMPLETE ✓"}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-3 gap-2 text-center">
-        <div className="rounded-2xl bg-navy-foreground/10 p-3">
-          <p className="text-2xl font-extrabold tabular-nums">{totalDays}</p>
-          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">{showEs ? "DÍAS" : "DAYS"}</p>
-        </div>
-        <div className="rounded-2xl bg-navy-foreground/10 p-3">
-          <p className="text-2xl font-extrabold tabular-nums">{totalDays * 5}</p>
-          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">FLUENCY REPS</p>
-        </div>
-        <div className="rounded-2xl bg-navy-foreground/10 p-3">
-          <p className="text-2xl font-extrabold">⚡</p>
-          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">TEST READY</p>
-        </div>
-      </div>
-
-      <div className="rounded-2xl bg-navy-foreground/10 p-4">
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
-          {showEs ? "AHORA PUEDES PRACTICAR CÓMO:" : "YOU CAN NOW PRACTICE HOW TO:"}
-        </p>
-        <ul className="mt-2 space-y-1 text-[14px] font-semibold">
-          {EAGLES_OUTCOMES.map((item) => (
-            <li key={item.en}>✓ {showEs ? item.es : item.en}</li>
-          ))}
-        </ul>
-      </div>
-
-      {canCompare ? (
-        <div className="space-y-2">
-          <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
-            {showEs ? "ESCUCHA TU PROGRESO" : "LISTEN TO YOUR PROGRESS"}
-          </p>
-          <RecordingPlayback url={earlyUrl} label={`${showEs ? "DÍA" : "DAY"} ${earliest!.day} · ${earliest!.finalSeconds}s`} />
-          <RecordingPlayback url={lateUrl} label={`${showEs ? "DÍA" : "DAY"} ${lastDay} · ${finalRecording?.durationSeconds ?? last?.finalSeconds ?? 0}s`} />
-          <p className="text-center text-[12px] text-navy-foreground/70">
-            {showEs ? "Tú decides qué cambió. Sin puntajes." : "You decide what changed. No scores."}
-          </p>
-        </div>
-      ) : null}
-
-      <div className="rounded-2xl border border-primary/40 p-4 text-center">
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-navy-foreground/70">
-          {showEs ? "SIGUIENTE PASO" : "NEXT STEP"}
-        </p>
-        <p className="mt-1 text-2xl font-extrabold tracking-tight">TIGERS</p>
-        <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-primary">{showEs ? "PRÓXIMAMENTE" : "COMING SOON"}</p>
-        <p className="mt-2 text-[13px] font-semibold text-navy-foreground/80">
-          {showEs ? "Sigue construyendo hacia el umbral B2." : "Continue building toward the B2 threshold."}
-        </p>
-      </div>
     </div>
   );
 }
