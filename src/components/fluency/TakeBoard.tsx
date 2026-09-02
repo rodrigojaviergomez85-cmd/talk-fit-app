@@ -349,9 +349,15 @@ export function TakeBoard({
                   />
                 ) : (
                   <>
-                    <TranslatableText supportOnly es={turn ? "Responde al cliente" : "Listo para grabar"} align="center" className="text-center">
+                    <TranslatableText supportOnly es={turn ? (recruiter ? "Responde al reclutador" : "Responde al cliente") : "Listo para grabar"} align="center" className="text-center">
                       <p className="text-center text-[13px] text-muted-foreground">
-                        {turn?.prepSeconds ? t("take.speakNow") : turn ? t("take.respond") : t("take.ready")}
+                        {turn?.prepSeconds
+                          ? t("take.speakNow")
+                          : turn
+                            ? recruiter
+                              ? es ? "Responde al reclutador" : "Respond to the recruiter"
+                              : t("take.respond")
+                            : t("take.ready")}
                       </p>
                     </TranslatableText>
                     <VoiceRecorder
