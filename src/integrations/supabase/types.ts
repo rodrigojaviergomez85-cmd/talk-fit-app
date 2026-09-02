@@ -225,8 +225,14 @@ export type Database = {
         Row: {
           app_language: string
           created_at: string
+          current_module_id: string | null
+          initial_placement_module_id: string | null
           migrated_local_at: string | null
           onboarding_completed: boolean
+          placement_change_count: number
+          placement_changed_at: string | null
+          placement_selected_at: string | null
+          placement_source: string | null
           spanish_support: boolean
           updated_at: string
           user_id: string
@@ -234,8 +240,14 @@ export type Database = {
         Insert: {
           app_language?: string
           created_at?: string
+          current_module_id?: string | null
+          initial_placement_module_id?: string | null
           migrated_local_at?: string | null
           onboarding_completed?: boolean
+          placement_change_count?: number
+          placement_changed_at?: string | null
+          placement_selected_at?: string | null
+          placement_source?: string | null
           spanish_support?: boolean
           updated_at?: string
           user_id: string
@@ -243,8 +255,14 @@ export type Database = {
         Update: {
           app_language?: string
           created_at?: string
+          current_module_id?: string | null
+          initial_placement_module_id?: string | null
           migrated_local_at?: string | null
           onboarding_completed?: boolean
+          placement_change_count?: number
+          placement_changed_at?: string | null
+          placement_selected_at?: string | null
+          placement_source?: string | null
           spanish_support?: boolean
           updated_at?: string
           user_id?: string
