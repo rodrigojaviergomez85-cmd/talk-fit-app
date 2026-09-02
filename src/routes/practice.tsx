@@ -260,6 +260,10 @@ function PracticePage() {
     const final = (finalIndex !== null ? takes[finalIndex] : null) ?? recorded[recorded.length - 1];
     if (!final) return;
     const first = recorded[0] ?? final;
+    // Close the timer for the current rep before snapshotting durations.
+    const d = [...repDurations.current];
+    d[stage] = (d[stage] ?? 0) + (Date.now() - stageEnteredAt.current) / 1000;
+    const r = (i: number) => Math.round(d[i] ?? 0);
     const next = JourneyService.completeDay({
       moduleId,
       day: day.day,
@@ -270,6 +274,14 @@ function PracticePage() {
       recordingsCount: Math.max(1, recorded.length),
       finalUrl: final.url,
       firstUrl: first.url,
+      repDurations: {
+        rep1: r(1),
+        rep2: r(2),
+        rep3: r(3),
+        rep4: r(4),
+        rep5: r(5),
+        total: r(0) + r(1) + r(2) + r(3) + r(4) + r(5),
+      },
     });
     setFinalRecording(final);
     setJourneyAfterFinish(next);
