@@ -1102,6 +1102,8 @@ type Rep4Item = {
   cues?: string[] | undefined;
   /** WH word shown as a chip above the question (WHERE, WHO…). */
   cue?: string | undefined;
+  /** TIGERS reasoning label for this prompt. */
+  label?: RepLabel | undefined;
 };
 
 /** Rep 4 never shows more than 5 speaking prompts per day. */
@@ -1132,6 +1134,7 @@ function rep4Items(day: CourseDay): Rep4Item[] {
         starter: prompt.starter,
         starterEs: prompt.starterEs,
         cue: prompt.cue ?? whCue(prompt.question),
+        label: prompt.label,
       }));
   return items.slice(0, REP4_MAX);
 }
@@ -1163,7 +1166,7 @@ function Rep4MakeItYours({
 
   return (
     <div className="space-y-5">
-      <RepHeader titleKey="rep4.title" instrKey="rep4.instr" />
+      <RepHeader titleKey="rep4.title" instrKey="rep4.instr" label={item.label} />
 
       {!hideVisuals ? (
         <>
@@ -1250,7 +1253,7 @@ function Rep5FinalRep({
 
   return (
     <div className="space-y-5">
-      <RepHeader titleKey="rep5.title" instrKey="rep5.instr" />
+      <RepHeader titleKey="rep5.title" instrKey="rep5.instr" label={day.rep5Label} />
 
       {day.rep5Audio && !day.rep5Turns ? (
         <div className="space-y-3 rounded-3xl bg-navy p-5 text-navy-foreground">
@@ -1261,6 +1264,28 @@ function Rep5FinalRep({
           <TranslatableText es={day.rep5Audio.es} esClassName="text-navy-foreground/70" supportOnly>
             <p className="text-[14px] font-semibold italic leading-relaxed text-navy-foreground/90">"{day.rep5Audio.text}"</p>
           </TranslatableText>
+        </div>
+      ) : null}
+
+      {day.rep5Scenario ? (
+        <div className="space-y-2 rounded-3xl bg-navy p-5 text-navy-foreground">
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">{t("rep5.scenario")}</p>
+            <span className="rounded-full bg-navy-foreground/15 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.16em]">
+              {lang === "es" ? day.rep5Scenario.labelEs : day.rep5Scenario.label}
+            </span>
+          </div>
+          <TranslatableText es={day.rep5Scenario.situationEs} esClassName="text-navy-foreground/70">
+            <p className="text-[15px] font-semibold leading-relaxed">{day.rep5Scenario.situation}</p>
+          </TranslatableText>
+          <p className="pt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-navy-foreground/60">{t("rep5.skeleton")}</p>
+          <div className="flex flex-wrap gap-1.5">
+            {["DECISION", "WHY", "EXAMPLE", "OTHER SIDE", "WHAT IF?", "CONCLUSION"].map((step) => (
+              <span key={step} className="rounded-full border border-navy-foreground/25 px-2.5 py-1 text-[10px] font-extrabold tracking-[0.12em]">
+                {step}
+              </span>
+            ))}
+          </div>
         </div>
       ) : null}
 
