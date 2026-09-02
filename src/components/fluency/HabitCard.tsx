@@ -26,6 +26,7 @@ export function HabitCard({ state, variant = "home" }: Props) {
   const countdown = final6(count);
   const recovery = streak === 0 && count > 0;
   const percent = Math.round((shown / HABIT_GOAL) * 100);
+  const nextPractice = variant === "home" && recovery ? JourneyService.nextPractice(state) : null;
 
   return (
     <section
