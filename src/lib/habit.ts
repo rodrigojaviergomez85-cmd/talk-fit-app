@@ -110,6 +110,25 @@ export const HABIT_MILESTONES: HabitMilestoneDef[] = [
   },
 ];
 
+/** Bilingual explainer: what the 66-day habit is and why it exists. */
+export const HABIT_EXPLANATION = {
+  title: { es: "¿QUÉ SON LOS 66 DÍAS?", en: "WHAT ARE THE 66 DAYS?" },
+  whatTitle: { es: "Qué es", en: "What it is" },
+  what: {
+    es: "Es tu reto de completar 66 días de práctica de speaking. No tienen que ser días seguidos: cada día que completas suma, y tu progreso nunca se pierde.",
+    en: "It's your challenge to complete 66 days of speaking practice. They don't have to be consecutive: every day you complete counts, and your progress is never lost.",
+  },
+  whyTitle: { es: "Por qué 66 días", en: "Why 66 days" },
+  why: {
+    es: "Una investigación de University College London encontró que formar un hábito toma en promedio unos 66 días de repetición. Hablar inglés funciona igual: cuando repites todos los días, tu boca y tu oído se entrenan hasta que hablar se vuelve automático — sin traducir en tu cabeza. Por eso cada día cuenta como un paso hacia tu fluidez.",
+    en: "Research from University College London found that building a habit takes about 66 days of repetition on average. Speaking English works the same way: when you repeat every day, your mouth and ears train until speaking becomes automatic — no translating in your head. That's why every day counts as a step toward your fluency.",
+  },
+  noShame: {
+    es: "Si faltas un día, no pasa nada: tu progreso sigue aquí esperándote.",
+    en: "If you miss a day, that's okay: your progress stays right here waiting for you.",
+  },
+} as const;
+
 /** Unique completed curriculum days across every module. */
 export function habitDays(state: JourneyState): number {
   return Object.keys(state.days).length;
