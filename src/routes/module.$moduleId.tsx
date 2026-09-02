@@ -308,7 +308,9 @@ function TestReadyCard({ moduleId, day }: { moduleId: ModuleId; day: CourseDay }
           <Zap className="size-3.5" aria-hidden /> {t("tr.card")} · {t("tr.minutes")}
         </span>
         <span className="mt-0.5 block truncate text-[13px] font-bold">{lang === "es" ? sprint.titleEs : sprint.title}</span>
-        <span className="block text-[11px] text-muted-foreground">{t("tr.subtitle")}</span>
+        <span className="block text-[11px] text-muted-foreground">
+          {day.testReadyOptional ? (lang === "es" ? "Práctica extra · opcional" : "Extra practice · optional") : t("tr.subtitle")}
+        </span>
       </span>
       <span
         className={cn(

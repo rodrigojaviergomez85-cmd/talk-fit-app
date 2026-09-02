@@ -6,7 +6,7 @@ import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { RepProgress } from "@/components/fluency/RepProgress";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { PowerChunks } from "@/components/fluency/PowerChunks";
-import { TakeBoard, TAKE_COUNT, REQUIRED_TAKES } from "@/components/fluency/TakeBoard";
+import { TakeBoard, isPressureRound, requiredTakes, takeSlots } from "@/components/fluency/TakeBoard";
 import { PastVerbCards } from "@/components/fluency/PastVerbCards";
 import { StoryStrip } from "@/components/fluency/StoryStrip";
 import { TodaysPastVerbs } from "@/components/fluency/TodaysPastVerbs";
@@ -105,7 +105,7 @@ function PracticePage() {
   const [stage, setStage] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [done, setDone] = useState(false);
-  const [takes, setTakes] = useState<(Recording | null)[]>(() => Array(TAKE_COUNT).fill(null));
+  const [takes, setTakes] = useState<(Recording | null)[]>(() => Array(takeSlots(day.rep5Turns)).fill(null));
   const [finalIndex, setFinalIndex] = useState<number | null>(null);
   const [finalRecording, setFinalRecording] = useState<Recording | null>(null);
   const [saveState, setSaveState] = useState<FinalRepSaveState>("idle");
@@ -491,7 +491,8 @@ function PracticePage() {
                 trackSeconds(rec);
                 const pending: Recording = { ...rec, countStatus: "pending", sentenceCount: null };
                 setTakes((list) => list.map((item, i) => (i === index ? pending : item)));
-                setFinalIndex(index);
+                // Pressure Round (ADVANCED): the Final Rep defaults to Round 1 ("Tell me about yourself").
+                setFinalIndex((current) => (isPressureRound(day.rep5Turns) ? (current ?? index) : index));
                 uploadTake(index, rec);
                 void countSentences(rec.blob ?? null).then((count) => {
                   void CloudSync.updateTakeIdeas(moduleId, day.day, index + 1, count).catch(() => undefined);
@@ -546,6 +547,7 @@ function RepHeader({
   cueKey,
   label,
   dark = false,
+  copy,
 }: {
   titleKey: TKey;
   instrKey: TKey;
@@ -553,12 +555,14 @@ function RepHeader({
   /** TIGERS reasoning label (EXPLICA · JUSTIFICA · DEFIENDE) shown as a small chip. */
   label?: RepLabel | undefined;
   dark?: boolean;
+  /** ADVANCED: day-level Spanish-first copy override ([title, instruction] per language). */
+  copy?: { es: [string, string]; en: [string, string] } | undefined;
 }) {
   const { lang } = useAppLang();
   const esAll = useSpanishAll();
   const esPrimary = lang === "es";
-  const [titleEs, titleEn] = tPair(titleKey);
-  const [instrEs, instrEn] = tPair(instrKey);
+  const [titleEs, titleEn] = copy ? [copy.es[0], copy.en[0]] : tPair(titleKey);
+  const [instrEs, instrEn] = copy ? [copy.es[1], copy.en[1]] : tPair(instrKey);
   const secondary = esPrimary ? instrEn : esAll ? instrEs : null;
   const cue = cueKey ? tPair(cueKey)[esPrimary ? 0 : 1] : null;
   const labelText = label ? tPair(`rep.label.${label}` as TKey)[esPrimary ? 0 : 1] : null;
@@ -880,7 +884,7 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 
   return (
     <div className="space-y-5">
-      <RepHeader titleKey="rep1.title" instrKey="rep1.instr" />
+      <RepHeader titleKey="rep1.title" instrKey="rep1.instr" copy={day.repCopy?.rep1} />
 
       <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} />
 
@@ -987,7 +991,7 @@ function Rep2Copy({
 
   return (
     <div className="space-y-5">
-      <RepHeader titleKey="rep2.title" instrKey="rep2.instr" />
+      <RepHeader titleKey="rep2.title" instrKey="rep2.instr" copy={day.repCopy?.rep2} />
 
       <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} />
 
@@ -1042,7 +1046,7 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
   return (
     <div className="space-y-5">
       <div className="rounded-3xl bg-navy p-5">
-        <RepHeader titleKey="rep3.title" instrKey="rep3.instr" cueKey="rep3.cue" dark />
+        <RepHeader titleKey="rep3.title" instrKey="rep3.instr" cueKey="rep3.cue" dark copy={day.repCopy?.rep3} />
       </div>
 
       <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} />
@@ -1166,7 +1170,7 @@ function Rep4MakeItYours({
 
   return (
     <div className="space-y-5">
-      <RepHeader titleKey="rep4.title" instrKey="rep4.instr" label={item.label} />
+      <RepHeader titleKey="rep4.title" instrKey="rep4.instr" label={item.label} copy={day.repCopy?.rep4} />
 
       {!hideVisuals ? (
         <>
@@ -1247,13 +1251,15 @@ function Rep5FinalRep({
   const t = useT();
   const { lang } = useAppLang();
   const completed = takes.filter(Boolean).length;
-  const requiredDone = completed >= REQUIRED_TAKES;
+  const pressure = isPressureRound(day.rep5Turns);
+  const required = requiredTakes(day.rep5Turns);
+  const requiredDone = completed >= required;
   const slotsLeft = takes.some((take) => !take);
   const [showExampleText, setShowExampleText] = useState(false);
 
   return (
     <div className="space-y-5">
-      <RepHeader titleKey="rep5.title" instrKey="rep5.instr" label={day.rep5Label} />
+      <RepHeader titleKey="rep5.title" instrKey="rep5.instr" label={day.rep5Label} copy={day.repCopy?.rep5} />
 
       {day.rep5Audio && !day.rep5Turns ? (
         <div className="space-y-3 rounded-3xl bg-navy p-5 text-navy-foreground">
@@ -1388,9 +1394,9 @@ function Rep5FinalRep({
           ) : null}
         </div>
       ) : (
-        <TranslatableText supportOnly es={`Faltan ${REQUIRED_TAKES - completed} tomas obligatorias.`} align="center">
+        <TranslatableText supportOnly es={`Faltan ${required - completed} ${pressure ? "respuestas" : "tomas obligatorias"}.`} align="center">
           <p className="text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-            {REQUIRED_TAKES - completed} required take{REQUIRED_TAKES - completed === 1 ? "" : "s"} left
+            {required - completed} {pressure ? `response${required - completed === 1 ? "" : "s"}` : `required take${required - completed === 1 ? "" : "s"}`} left
           </p>
         </TranslatableText>
       )}

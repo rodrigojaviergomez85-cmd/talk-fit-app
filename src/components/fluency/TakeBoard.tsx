@@ -15,6 +15,21 @@ export const REQUIRED_TAKES = 3;
 export const GOAL_SECONDS = 30;
 export const GOAL_SENTENCES = 5;
 
+/**
+ * PRESSURE ROUND (ADVANCED): when a role play has more turns than the classic
+ * required takes, every turn is one required response and there are no retry
+ * slots. Classic role plays (2–3 turns + retries) are unchanged.
+ */
+export function isPressureRound(turns: RolePlayTurn[] | undefined): boolean {
+  return Boolean(turns && turns.length > REQUIRED_TAKES);
+}
+export function takeSlots(turns: RolePlayTurn[] | undefined): number {
+  return isPressureRound(turns) ? turns!.length : TAKE_COUNT;
+}
+export function requiredTakes(turns: RolePlayTurn[] | undefined): number {
+  return isPressureRound(turns) ? turns!.length : REQUIRED_TAKES;
+}
+
 type TakeBoardProps = {
   takes: (Recording | null)[];
   finalIndex: number | null;
@@ -27,6 +42,38 @@ type TakeBoardProps = {
   onDelete: (index: number) => void;
   onSelectFinal: (index: number) => void;
 };
+
+/** Optional think-time countdown before the mic opens (ADVANCED crazy question). */
+function PrepCountdown({ seconds, onDone, t }: { seconds: number; onDone: () => void; t: (key: TKey) => string }) {
+  const [left, setLeft] = useState<number | null>(null);
+  useEffect(() => {
+    if (left === null || left <= 0) return;
+    const id = setTimeout(() => setLeft((c) => (c === null ? null : c - 1)), 1000);
+    return () => clearTimeout(id);
+  }, [left]);
+  useEffect(() => {
+    if (left === 0) onDone();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [left]);
+
+  if (left === null) {
+    return (
+      <button
+        type="button"
+        onClick={() => setLeft(seconds)}
+        className="inline-flex min-h-[48px] w-full items-center justify-center rounded-2xl bg-navy px-4 text-[13px] font-extrabold uppercase tracking-[0.16em] text-navy-foreground"
+      >
+        {t("take.think")} {seconds}s
+      </button>
+    );
+  }
+  return (
+    <div className="rounded-2xl bg-navy p-4 text-center text-navy-foreground">
+      <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">{t("take.think")}</p>
+      <p className="mt-1 text-5xl font-extrabold tabular-nums">{left}</p>
+    </div>
+  );
+}
 
 
 /** Static bar pattern so each completed take shows a small waveform. */
@@ -60,6 +107,7 @@ export function TakeBoard({
   const t = useT();
   const { lang } = useAppLang();
   const [playingIndex, setPlayingIndex] = useState<number | null>(null);
+  const [prepDone, setPrepDone] = useState<number[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -102,9 +150,21 @@ export function TakeBoard({
   const firstEmpty = takes.findIndex((take) => !take);
   const latest = [...takes].reverse().find((take): take is Recording => Boolean(take)) ?? null;
   const rolePlay = Boolean(turns?.length);
+  const pressure = isPressureRound(turns);
+  const required = requiredTakes(turns);
   const combinedSeconds = rolePlay
-    ? takes.slice(0, REQUIRED_TAKES).reduce((sum, take) => sum + (take?.durationSeconds ?? 0), 0)
+    ? takes.slice(0, required).reduce((sum, take) => sum + (take?.durationSeconds ?? 0), 0)
     : 0;
+  const roundsTotal = pressure ? turns!.filter((x) => x.round).length : 0;
+  const roundsDone = pressure
+    ? turns!.reduce((count, x, i) => {
+        if (!x.round) return count;
+        const end = turns!.findIndex((y, j) => j > i && y.round);
+        const last = end === -1 ? turns!.length - 1 : end - 1;
+        return takes[last] ? count + 1 : count;
+      }, 0)
+    : 0;
+  const es = lang === "es";
 
   return (
     <div className="space-y-4">
@@ -113,24 +173,50 @@ export function TakeBoard({
       ) : (
         <GoalPanel latest={latest} minSeconds={goalSeconds[0]} goalSentences={goalSentences} t={t} />
       )}
-      {rolePlay ? (
+      {rolePlay && !pressure ? (
         <p className="text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
           {t("take.turn")} 1–{turns!.length} · {t("take.retryHint").toUpperCase()}: {t("take.take")} {turns!.length + 1}–{TAKE_COUNT}
         </p>
       ) : null}
+      {pressure ? (
+        <p className="text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+          {roundsTotal > 0 ? `${roundsDone} / ${roundsTotal} ${t("take.roundsDone")} · ` : ""}
+          {takes.filter(Boolean).length} / {turns!.length} {es ? "RESPUESTAS" : "RESPONSES"}
+        </p>
+      ) : null}
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className={cn("grid gap-3", pressure ? "" : "sm:grid-cols-2")}>
       {takes.map((take, index) => {
-        const optional = index >= REQUIRED_TAKES;
+        const optional = index >= required;
         const isActive = index === firstEmpty;
         const isFinal = finalIndex === index;
         const playing = playingIndex === index;
         const turn = turns?.[index];
+        // Pressure Round: future rounds stay fully hidden until the learner gets there.
+        if (pressure && !take && !isActive) return null;
+        const turnTarget = turn?.targetSeconds ?? goalSeconds;
+        const turnMax = Math.max(90, turnTarget[1] + 15);
         const showTurn = Boolean(turn) && (isActive || Boolean(take));
 
+        const needsPrep = Boolean(turn?.prepSeconds) && isActive && !prepDone.includes(index);
+
         return (
+          <div key={index} className="space-y-3">
+          {pressure && turn?.round && (isActive || take) ? (
+            <div className="rounded-2xl bg-navy px-4 py-3 text-navy-foreground">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-primary">
+                {t("take.round")} {turn.round.n}
+              </p>
+              <p className="text-[16px] font-extrabold tracking-tight">{es ? turn.round.titleEs : turn.round.title}</p>
+              {turn.round.situation ? (
+                <p className="mt-1 text-[12px] font-semibold text-navy-foreground/80">
+                  <span className="font-extrabold uppercase tracking-[0.14em] text-primary">{t("take.situation")}: </span>
+                  {es && turn.round.situationEs ? turn.round.situationEs : turn.round.situation}
+                </p>
+              ) : null}
+            </div>
+          ) : null}
           <div
-            key={index}
             className={cn(
               "rounded-3xl border p-4 transition-colors",
               take
@@ -152,12 +238,26 @@ export function TakeBoard({
                   {rolePlay ? t("take.retry") : t("take.optional")}
                 </span>
               ) : null}
+              {turn?.targetSeconds && !take ? (
+                <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                  {t("take.target")} {turn.targetSeconds[0]}–{turn.targetSeconds[1]}s
+                </span>
+              ) : null}
               {isFinal ? (
                 <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-primary-foreground">
                   {t("take.finalRep")}
                 </span>
               ) : null}
             </div>
+
+            {showTurn && turn?.framework && isActive ? (
+              <div className="mt-3 rounded-2xl border border-primary/25 bg-accent p-3">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-accent-foreground">
+                  {es ? turn.framework.titleEs : turn.framework.title}
+                </p>
+                <p className="mt-1 text-[13px] font-extrabold tracking-wide">{turn.framework.steps.join(" → ")}</p>
+              </div>
+            ) : null}
 
             {showTurn && turn ? (
               <div className="mt-3 space-y-2 rounded-2xl bg-navy p-3 text-navy-foreground">
@@ -168,6 +268,25 @@ export function TakeBoard({
                 <TranslatableText es={turn.es} esClassName="text-navy-foreground/70" supportOnly>
                   <p className="text-[13px] font-semibold italic leading-relaxed text-navy-foreground/90">"{turn.text}"</p>
                 </TranslatableText>
+                {turn.cues?.length && !take ? (
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {turn.cues.map((cue) => (
+                      <span key={cue} className="rounded-full border border-navy-foreground/25 px-2.5 py-1 text-[10px] font-extrabold tracking-[0.12em]">
+                        {cue}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+                {turn.toolbox?.length && !take ? (
+                  <div className="pt-1">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-navy-foreground/60">{t("take.toolbox")}</p>
+                    <ul className="mt-1 space-y-0.5">
+                      {turn.toolbox.map((phrase) => (
+                        <li key={phrase} className="text-[12px] font-semibold text-navy-foreground/85">· {phrase}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
               </div>
             ) : null}
 
@@ -215,20 +334,33 @@ export function TakeBoard({
               </div>
             ) : isActive ? (
               <div className="mt-3 space-y-2">
-                <TranslatableText supportOnly es={turn ? "Responde al cliente" : "Listo para grabar"} align="center" className="text-center">
-                  <p className="text-center text-[13px] text-muted-foreground">{turn ? t("take.respond") : t("take.ready")}</p>
-                </TranslatableText>
-                <VoiceRecorder
-                  label={t("practice.record")}
-                  size="md"
-                  targetSeconds={goalSeconds}
-                  maxSeconds={90}
-                  onComplete={(rec) => onRecorded(index, rec)}
-                />
+                {needsPrep ? (
+                  <PrepCountdown
+                    seconds={turn!.prepSeconds!}
+                    onDone={() => setPrepDone((list) => [...list, index])}
+                    t={t}
+                  />
+                ) : (
+                  <>
+                    <TranslatableText supportOnly es={turn ? "Responde al cliente" : "Listo para grabar"} align="center" className="text-center">
+                      <p className="text-center text-[13px] text-muted-foreground">
+                        {turn?.prepSeconds ? t("take.speakNow") : turn ? t("take.respond") : t("take.ready")}
+                      </p>
+                    </TranslatableText>
+                    <VoiceRecorder
+                      label={t("practice.record")}
+                      size="md"
+                      targetSeconds={turnTarget}
+                      maxSeconds={turnMax}
+                      onComplete={(rec) => onRecorded(index, rec)}
+                    />
+                  </>
+                )}
               </div>
             ) : (
               <p className="mt-3 text-[13px] text-muted-foreground">{t("take.ready")}</p>
             )}
+          </div>
           </div>
         );
       })}

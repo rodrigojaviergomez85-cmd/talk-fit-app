@@ -13,7 +13,8 @@ type PlacementKey =
   | "place.mixed-tenses"
   | "place.eagles-week-1"
   | "place.tigers"
-  | "place.sharks";
+  | "place.sharks"
+  | "place.advanced-1";
 
 /**
  * Self-placement: large cards in visual journey order plus a disabled

@@ -60,15 +60,20 @@ export function DayCompleteScreen({
   useEffect(() => setState(JourneyService.load()), []);
 
   const totalDays = CourseService.totalDays(moduleId);
-  const isLastDay = day.day === totalDays;
+  const module = CourseService.getModule(moduleId);
+  // Partially built module (e.g. ADVANCED 1 with only Week 1): the last built day
+  // is a week finish, never a module completion.
+  const partialModule = (module.builtWeeks ?? 4) < 4;
+  const isLastDay = day.day === totalDays && !partialModule;
   const seconds = finalRecording?.durationSeconds ?? 0;
   const firstSeconds = firstRecording?.durationSeconds ?? 0;
 
   const week = day.week;
   const weekJustDone = Boolean(week && JourneyService.weekComplete(state, moduleId, week));
-  const moduleDone = JourneyService.moduleComplete(state, moduleId);
+  const moduleDone = !partialModule && JourneyService.moduleComplete(state, moduleId);
   const weekCmp = weekJustDone && week ? weekComparison(state, moduleId, week) : null;
   const moduleCmp = moduleDone ? moduleComparison(state, moduleId) : null;
+  const partialWeekDone = partialModule && day.day === totalDays;
 
   const habitNow = habitDays(state);
   const habitWasBefore = habitBefore?.days ?? habitNow;
@@ -239,6 +244,25 @@ export function DayCompleteScreen({
             <NextUp afterModuleId={moduleId} />
           </>
         ) : null}
+
+        {partialWeekDone ? (
+          <div className="space-y-2 rounded-3xl border border-primary/30 bg-accent p-5 text-center">
+            <p className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-accent-foreground">
+              {showEs ? "SEMANA 1 COMPLETADA" : "WEEK 1 COMPLETED"}
+            </p>
+            <p className="text-[17px] font-extrabold tracking-tight">
+              {showEs
+                ? "Ya puedes contar tu historia, responder preguntas difíciles y manejar un cliente molesto bajo presión."
+                : "You can now tell your story, answer tough questions and handle an upset customer under pressure."}
+            </p>
+            <p className="text-[13px] font-semibold text-muted-foreground">
+              {showEs
+                ? "Semanas 2–4 de GET HIRED muy pronto. Repite cualquier día para seguir afinando."
+                : "GET HIRED Weeks 2–4 are coming soon. Repeat any day to keep sharpening."}
+            </p>
+          </div>
+        ) : null}
+
 
         {isLastDay ? (
           <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
