@@ -192,12 +192,11 @@ const day4: CourseDay = {
     line("d4-8a", "No, he doesn't. He works Monday to Friday.", "No. Trabaja de lunes a viernes.", ["No, he doesn't.", "He works", "Monday to Friday."], "a"),
   ],
   prompts: [
-    { id: "d4-p1", question: "What time do you usually start work?", questionEs: "¿A qué hora empiezas a trabajar normalmente?", starter: "I usually start…", starterEs: "Normalmente empiezo…" },
-    { id: "d4-p2", question: "Do you work on weekends?", questionEs: "¿Trabajas los fines de semana?", starter: "Yes, I do… / No, I don't…", starterEs: "Sí… / No…" },
-    { id: "d4-p3", question: "Where do you work or study?", questionEs: "¿Dónde trabajas o estudias?", starter: "I work…", starterEs: "Yo trabajo…" },
-    { id: "d4-p4", question: "Does someone in your family work from home?", questionEs: "¿Alguien de tu familia trabaja desde casa?", starter: "Yes, she does… / No, he doesn't…", starterEs: "Sí… / No…" },
-    { id: "d4-p5", question: "ASK A QUESTION USING DO", questionEs: "HAZ UNA PREGUNTA CON DO", starter: "Do you…?", starterEs: "¿Tú…?" },
-    { id: "d4-p6", question: "ASK A QUESTION USING DOES", questionEs: "HAZ UNA PREGUNTA CON DOES", starter: "Does he / she…?", starterEs: "¿Él / Ella…?" },
+    { id: "d4-p1", cue: "WHEN", question: "When do you work? Do you work on weekends?", questionEs: "¿Cuándo trabajas? ¿Trabajas los fines de semana?", starter: "I usually start at… No, I don't… / Yes, I do…", starterEs: "Normalmente empiezo a las… No… / Sí…" },
+    { id: "d4-p3", cue: "WHERE", question: "Where do you work or study, and why do you like it?", questionEs: "¿Dónde trabajas o estudias y por qué te gusta?", starter: "I work at… I like it because…", starterEs: "Trabajo en… Me gusta porque…" },
+    { id: "d4-p4", cue: "WHO", question: "Who in your family works from home? Does he / she like it?", questionEs: "¿Quién de tu familia trabaja desde casa? ¿Le gusta?", starter: "My ______ works from home. Yes, she does… / No, he doesn't…", starterEs: "Mi ______ trabaja desde casa. Sí… / No…" },
+    { id: "d4-p5", cue: "ASK", question: "Ask a question using DO, then answer it.", questionEs: "Haz una pregunta con DO y respóndela.", starter: "Do you…? Yes, I do… / No, I don't…", starterEs: "¿Tú…? Sí… / No…" },
+    { id: "d4-p6", cue: "ASK", question: "Ask a question using DOES, then answer it.", questionEs: "Haz una pregunta con DOES y respóndela.", starter: "Does he / she…? Yes, she does… / No, he doesn't…", starterEs: "¿Él / Ella…? Sí… / No…" },
   ],
   cues: ["DO YOU…?", "DOES HE / SHE…?", "YES, I DO", "NO, HE DOESN'T", "BECAUSE"],
   rep5Prompt: {
