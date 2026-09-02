@@ -27,6 +27,7 @@ import {
   PracticeSessionService,
   setSessionScope,
   itemKey,
+  migrateLegacyRep2,
   type PracticeSession,
 } from "@/services/practice-session";
 import { useAuth } from "@/lib/auth";
