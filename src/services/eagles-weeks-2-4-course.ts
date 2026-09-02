@@ -10,7 +10,7 @@
  * Customer turns in role plays are FIXED and prewritten — no generative AI.
  */
 import type { CourseDay } from "@/lib/types";
-import { card, l, makeDay, p } from "./eagles-week-1-course";
+import { card, l, makeDay, p } from "./course-builders";
 
 import sceneFilmSet from "@/assets/eagles/scene-d6-film-set.jpg";
 import cueLatePackage from "@/assets/eagles/cue-d7-late-package.jpg";

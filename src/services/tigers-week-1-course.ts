@@ -10,8 +10,9 @@
  *
  * Every interlocutor turn is FIXED and prewritten — no generative AI.
  */
-import type { CourseDay, PersonalPrompt, RepLabel } from "@/lib/types";
-import { l, makeDay, type EaglesDayInput, type WeekMeta } from "./eagles-week-1-course";
+import type { CourseDay } from "@/lib/types";
+import { l, makeDay, q, chunks4, type EaglesDayInput, type WeekMeta } from "./course-builders";
+export { q, chunks4 };
 
 import sceneDecision from "@/assets/tigers/scene-d1-decision.jpg";
 import scene5000 from "@/assets/tigers/scene-d2-5000.jpg";
@@ -50,25 +51,6 @@ export const TIGERS_WEEKS: (WeekMeta & { subtitle: string; behavior: string })[]
   },
 ];
 
-/** Rep 4 prompt with a TIGERS behavior label (EXPLICA · JUSTIFICA · DEFIENDE). */
-export function q(
-  id: string,
-  question: string,
-  questionEs: string,
-  starter: string,
-  starterEs: string,
-  cue: string,
-  label?: RepLabel,
-): PersonalPrompt {
-  return label ? { id, question, questionEs, starter, starterEs, cue, label } : { id, question, questionEs, starter, starterEs, cue };
-}
-
-export const chunks4 = (prefix: string): string[][] => [
-  [`${prefix}-1`, `${prefix}-2`],
-  [`${prefix}-3`, `${prefix}-4`],
-  [`${prefix}-5`, `${prefix}-6`],
-  [`${prefix}-7`, `${prefix}-8`],
-];
 
 export function tigersDay(input: EaglesDayInput): CourseDay {
   return makeDay({ estimatedMinutes: "7–10 min", ...input }, TIGERS_WEEKS);

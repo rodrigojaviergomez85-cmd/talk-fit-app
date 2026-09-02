@@ -11,10 +11,10 @@ import { MomentSheet } from "@/components/fluency/MomentSheet";
 import { HabitCard } from "@/components/fluency/HabitCard";
 import { BadgeGrid } from "@/components/fluency/BadgeGrid";
 import { moduleComparison, weekComparison, type Comparison } from "@/lib/progress-moments";
-import { CourseService } from "@/services/course-service";
+import { CourseService, type DayOutline } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { formatDuration, ideasLabel } from "@/lib/recordings";
-import type { CourseDay, DayRecord, JourneyState, ModuleId } from "@/lib/types";
+import type { DayRecord, JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useAppLang, useT } from "@/lib/i18n";
 
@@ -369,7 +369,7 @@ function ModuleBlock({
   const currentDay = JourneyService.currentDay(state, module.id);
   const [open, setOpen] = useState(isCurrent);
 
-  const weeks = new Map<number, CourseDay[]>();
+  const weeks = new Map<number, DayOutline[]>();
   for (const item of module.days) {
     const week = item.week ?? 1;
     weeks.set(week, [...(weeks.get(week) ?? []), item]);
@@ -449,7 +449,7 @@ function WeekBlock({
 }: {
   moduleId: ModuleId;
   week: number;
-  days: CourseDay[];
+  days: DayOutline[];
   state: JourneyState;
   currentDay: number;
   onCompare: (c: Comparison) => void;

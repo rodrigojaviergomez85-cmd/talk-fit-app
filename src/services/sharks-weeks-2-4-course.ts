@@ -10,7 +10,7 @@
  * AI. Day 20 picks ONE scenario from a small prewritten bank.
  */
 import type { CourseDay } from "@/lib/types";
-import { l } from "./eagles-week-1-course";
+import { l } from "./course-builders";
 import { chunks4, q, sharksDay } from "./sharks-week-1-course";
 
 import sceneD6 from "@/assets/sharks/scene-d06.jpg";
