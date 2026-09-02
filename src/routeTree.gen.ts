@@ -18,6 +18,7 @@ import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as RecordingsRouteImport } from './routes/recordings'
 import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
+import { Route as AdminStorageReportRouteImport } from './routes/admin.storage-report'
 import { Route as ApiSentenceCountRouteImport } from './routes/api/sentence-count'
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as ModuleModuleIdRouteImport } from './routes/module.$moduleId'
@@ -67,6 +68,11 @@ const VerbBankRoute = VerbBankRouteImport.update({
   path: '/verb-bank',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminStorageReportRoute = AdminStorageReportRouteImport.update({
+  id: '/admin/storage-report',
+  path: '/admin/storage-report',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSentenceCountRoute = ApiSentenceCountRouteImport.update({
   id: '/api/sentence-count',
   path: '/api/sentence-count',
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/recordings': typeof RecordingsRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
+  '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
@@ -107,6 +114,7 @@ export interface FileRoutesByTo {
   '/recordings': typeof RecordingsRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
+  '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
@@ -122,6 +130,7 @@ export interface FileRoutesById {
   '/recordings': typeof RecordingsRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
+  '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
@@ -138,6 +147,7 @@ export interface FileRouteTypes {
     | '/recordings'
     | '/sprint'
     | '/verb-bank'
+    | '/admin/storage-report'
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
@@ -152,6 +162,7 @@ export interface FileRouteTypes {
     | '/recordings'
     | '/sprint'
     | '/verb-bank'
+    | '/admin/storage-report'
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
@@ -166,6 +177,7 @@ export interface FileRouteTypes {
     | '/recordings'
     | '/sprint'
     | '/verb-bank'
+    | '/admin/storage-report'
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
@@ -181,6 +193,7 @@ export interface RootRouteChildren {
   RecordingsRoute: typeof RecordingsRoute
   SprintRoute: typeof SprintRoute
   VerbBankRoute: typeof VerbBankRoute
+  AdminStorageReportRoute: typeof AdminStorageReportRoute
   ApiSentenceCountRoute: typeof ApiSentenceCountRoute
   ApiTtsRoute: typeof ApiTtsRoute
   ModuleModuleIdRoute: typeof ModuleModuleIdRoute
@@ -251,6 +264,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerbBankRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/storage-report': {
+      id: '/admin/storage-report'
+      path: '/admin/storage-report'
+      fullPath: '/admin/storage-report'
+      preLoaderRoute: typeof AdminStorageReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/sentence-count': {
       id: '/api/sentence-count'
       path: '/api/sentence-count'
@@ -285,6 +305,7 @@ const rootRouteChildren: RootRouteChildren = {
   RecordingsRoute: RecordingsRoute,
   SprintRoute: SprintRoute,
   VerbBankRoute: VerbBankRoute,
+  AdminStorageReportRoute: AdminStorageReportRoute,
   ApiSentenceCountRoute: ApiSentenceCountRoute,
   ApiTtsRoute: ApiTtsRoute,
   ModuleModuleIdRoute: ModuleModuleIdRoute,
