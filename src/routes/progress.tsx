@@ -1,18 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Check, ChevronDown, Flame, Mic, Timer } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, Flame, Headphones, Mic, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
 import { ModuleHeading } from "@/components/fluency/ModuleHeading";
 import { ThenVsNow } from "@/components/fluency/ThenVsNow";
 import { SpeakingChart } from "@/components/fluency/SpeakingChart";
 import { RecordingCard } from "@/components/fluency/RecordingCard";
+import { MomentSheet } from "@/components/fluency/MomentSheet";
+import { moduleComparison, weekComparison, type Comparison } from "@/lib/progress-moments";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { formatDuration, ideasLabel } from "@/lib/recordings";
 import type { CourseDay, DayRecord, JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { useT } from "@/lib/i18n";
+import { useAppLang, useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/progress")({
   head: () => ({
@@ -32,6 +34,7 @@ function ProgressPage() {
   const t = useT();
   const [state, setState] = useState<JourneyState | null>(null);
   const [failed, setFailed] = useState(false);
+  const [sheet, setSheet] = useState<Comparison | null>(null);
 
   const load = useCallback(() => {
     setFailed(false);
@@ -172,8 +175,9 @@ function ProgressPage() {
           </section>
         ) : null}
 
-        <AllDays state={safe} />
+        <AllDays state={safe} onCompare={setSheet} />
       </div>
+      <MomentSheet comparison={sheet} state={safe} onClose={() => setSheet(null)} />
     </AppShell>
   );
 }
@@ -244,7 +248,7 @@ function CurrentModule({ state, moduleId, day }: { state: JourneyState; moduleId
   );
 }
 
-function AllDays({ state }: { state: JourneyState }) {
+function AllDays({ state, onCompare }: { state: JourneyState; onCompare: (c: Comparison) => void }) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const modules = CourseService.modules();
@@ -264,7 +268,13 @@ function AllDays({ state }: { state: JourneyState }) {
 
       {open
         ? modules.map((module) => (
-            <ModuleBlock key={module.id} module={module} state={state} isCurrent={module.id === currentModuleId} />
+            <ModuleBlock
+              key={module.id}
+              module={module}
+              state={state}
+              isCurrent={module.id === currentModuleId}
+              onCompare={onCompare}
+            />
           ))
         : null}
     </section>
@@ -275,11 +285,14 @@ function ModuleBlock({
   module,
   state,
   isCurrent,
+  onCompare,
 }: {
   module: ReturnType<typeof CourseService.modules>[number];
   state: JourneyState;
   isCurrent: boolean;
+  onCompare: (c: Comparison) => void;
 }) {
+  const { lang } = useAppLang();
   const t = useT();
   const done = JourneyService.completedCount(state, module.id);
   const total = module.days.length;
@@ -321,6 +334,15 @@ function ModuleBlock({
 
       {open ? (
         <div className="space-y-2 border-t border-border px-3 py-3">
+          {done >= total ? (
+            <CompareShortcut
+              label={lang === "es" ? "ESCUCHA TU CAMBIO" : "HEAR YOUR CHANGE"}
+              onClick={() => {
+                const cmp = moduleComparison(state, module.id);
+                if (cmp) onCompare(cmp);
+              }}
+            />
+          ) : null}
           {[...weeks.entries()]
             .sort((a, b) => a[0] - b[0])
             .map(([week, days]) => (
@@ -331,6 +353,7 @@ function ModuleBlock({
                 days={days}
                 state={state}
                 currentDay={isCurrent ? currentDay : -1}
+                onCompare={onCompare}
               />
             ))}
         </div>
@@ -345,14 +368,17 @@ function WeekBlock({
   days,
   state,
   currentDay,
+  onCompare,
 }: {
   moduleId: ModuleId;
   week: number;
   days: CourseDay[];
   state: JourneyState;
   currentDay: number;
+  onCompare: (c: Comparison) => void;
 }) {
   const t = useT();
+  const { lang } = useAppLang();
   const doneCount = days.filter((d) => JourneyService.isDayCompleted(state, moduleId, d.day)).length;
   const isCurrent = days.some((d) => d.day === currentDay) && doneCount < days.length;
   const [open, setOpen] = useState(isCurrent);
@@ -385,6 +411,15 @@ function WeekBlock({
 
       {open ? (
         <div className="space-y-2 px-4 pb-4">
+          {doneCount >= days.length ? (
+            <CompareShortcut
+              label={lang === "es" ? "ESCUCHA TU SEMANA" : "HEAR YOUR WEEK"}
+              onClick={() => {
+                const cmp = weekComparison(state, moduleId, week);
+                if (cmp) onCompare(cmp);
+              }}
+            />
+          ) : null}
           {days.map((item) => {
             const record = JourneyService.getRecord(state, moduleId, item.day);
             const isToday = item.day === currentDay && !record;
@@ -422,6 +457,21 @@ function WeekBlock({
         </div>
       ) : null}
     </div>
+  );
+}
+
+function CompareShortcut({ label, onClick }: { label: string; onClick: () => void }) {
+  const { lang } = useAppLang();
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex min-h-[48px] w-full items-center gap-3 rounded-2xl border border-primary/40 bg-accent px-4 text-left"
+    >
+      <Headphones className="size-4 shrink-0 text-primary" />
+      <span className="flex-1 text-[12px] font-extrabold uppercase tracking-[0.16em] text-accent-foreground">{label}</span>
+      <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-primary">{lang === "es" ? "COMPARAR" : "COMPARE"}</span>
+    </button>
   );
 }
 
