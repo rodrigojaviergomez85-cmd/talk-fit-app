@@ -264,7 +264,14 @@ export function TakeBoard({
                 <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
                   {lang === "es" ? turn.labelEs : turn.label}
                 </p>
-                <AudioPlayer text={turn.text} label={t("take.listenCustomer")} rate={1} variant="navy" size="sm" voice={turn.voice} />
+                <AudioPlayer
+                  text={turn.text}
+                  label={recruiter ? (es ? "ESCUCHA AL RECLUTADOR" : "LISTEN TO THE RECRUITER") : t("take.listenCustomer")}
+                  rate={1}
+                  variant="navy"
+                  size="sm"
+                  voice={turn.voice}
+                />
                 <TranslatableText es={turn.es} esClassName="text-navy-foreground/70" supportOnly>
                   <p className="text-[13px] font-semibold italic leading-relaxed text-navy-foreground/90">"{turn.text}"</p>
                 </TranslatableText>
