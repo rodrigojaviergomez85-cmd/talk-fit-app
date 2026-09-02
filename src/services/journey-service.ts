@@ -422,6 +422,7 @@ export const JourneyService = {
         sentence_count: record.sentenceCount ?? null,
         recording_path: recordingPath,
         self_assessment: record.selfAssessment ?? null,
+        ...(record.repDurations ? { rep_durations: record.repDurations } : {}),
       },
       { onConflict: "user_id,module_id,day" },
     );
