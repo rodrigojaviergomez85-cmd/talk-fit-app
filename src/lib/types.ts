@@ -163,6 +163,28 @@ export type CourseDay = {
   rep5Audio?: { label: string; labelEs: string; text: string; es: string; voice?: "female" | "male" | undefined } | undefined;
   /** Separate Test Ready Sprint for this day (EAGLES pilot). */
   testReady?: TestReadySprint | undefined;
+  /** 2 core + 1 stretch connector chunks automated across the day's reps (EAGLES). */
+  powerChunks?: PowerChunks | undefined;
+  /** Rep 5 controlled multi-turn role play: fixed interlocutor line before take N (EAGLES Sales). */
+  rep5Turns?: RolePlayTurn[] | undefined;
+  /** Small fixed language toolbox shown before a role play (EAGLES Sales). */
+  rep5Toolbox?: string[] | undefined;
+};
+
+/** Small set of connector chunks: automate, don't memorize lists. */
+export type PowerChunks = {
+  core: [string, string];
+  stretch: string;
+};
+
+/** One prewritten interlocutor turn (never generated). */
+export type RolePlayTurn = {
+  id: string;
+  label: string;
+  labelEs: string;
+  text: string;
+  es: string;
+  voice?: "female" | "male" | undefined;
 };
 
 /** Wall-clock seconds spent on each rep (pilot analytics, never shown). */
