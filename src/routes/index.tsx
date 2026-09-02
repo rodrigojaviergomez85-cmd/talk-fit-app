@@ -36,7 +36,7 @@ function HomePage() {
   const [failed, setFailed] = useState(false);
   const navigate = useNavigate();
   const { t, prefs } = useAppLang();
-  const { user, sync } = useAuth();
+  const { user, sync, loading: authLoading } = useAuth();
 
   const load = useCallback(() => {
     setFailed(false);
@@ -59,10 +59,11 @@ function HomePage() {
     if (JourneyService.completedCount(state) > 0) return;
     // Right after sign-in the backend restore may still be running, and a
     // pending placement means onboarding already happened on this device.
+    if (authLoading) return;
     if (user && sync !== "ready" && sync !== "failed") return;
     if (getPendingPlacement()) return;
     void navigate({ to: "/onboarding" });
-  }, [state, prefs.onboardingCompleted, prefs.currentModuleId, user, sync, navigate]);
+  }, [state, prefs.onboardingCompleted, prefs.currentModuleId, user, sync, authLoading, navigate]);
 
   const modules = CourseService.modules();
 
