@@ -46,10 +46,12 @@ type AdvancedDayInput = EaglesDayInput & { testReadyOptional?: boolean };
 
 export function advancedDay(input: AdvancedDayInput): CourseDay {
   const { testReadyOptional, ...rest } = input;
+  // Every ADVANCED Test Ready Sprint is optional extra practice — it never blocks the day.
+  const optional = testReadyOptional ?? Boolean(rest.testReady);
   return {
     ...makeDay({ estimatedMinutes: "8–12 min", ...rest }, ADVANCED_1_WEEKS),
     repCopy: ADVANCED_REP_COPY,
-    ...(testReadyOptional ? { testReadyOptional: true } : {}),
+    ...(optional ? { testReadyOptional: true } : {}),
   };
 }
 
