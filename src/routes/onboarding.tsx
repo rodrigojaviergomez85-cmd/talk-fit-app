@@ -75,6 +75,11 @@ function OnboardingPage() {
       void navigate({ to: "/" });
       return;
     }
+    // Existing learners (already placed) go back to Home, which points to their saved position.
+    if (!placement && prefs.currentModuleId) {
+      void navigate({ to: "/" });
+      return;
+    }
     const first = CourseService.modules()[0];
     void navigate({ to: "/practice", search: { day: 1, module: placement ?? first?.id ?? "basic-zero" } });
   };
