@@ -29,8 +29,8 @@ function line(id: string, text: string, es: string, chunks: string[]): ModelLine
   return { id, text, es, chunks };
 }
 
-function prompt(id: string, question: string, questionEs: string, starter: string, starterEs: string): PersonalPrompt {
-  return { id, question, questionEs, starter, starterEs };
+function prompt(id: string, question: string, questionEs: string, starter: string, starterEs: string, cue?: string): PersonalPrompt {
+  return { id, question, questionEs, starter, starterEs, ...(cue ? { cue } : {}) };
 }
 
 type DayInput = {

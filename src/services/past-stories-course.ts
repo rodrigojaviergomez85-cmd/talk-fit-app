@@ -69,8 +69,8 @@ function l(id: string, marked: string, es: string): ModelLine {
   return { id, text: chunks.join(" "), es, chunks };
 }
 
-function p(id: string, question: string, questionEs: string, starter: string, starterEs: string): PersonalPrompt {
-  return { id, question, questionEs, starter, starterEs };
+function p(id: string, question: string, questionEs: string, starter: string, starterEs: string, cue?: string): PersonalPrompt {
+  return cue ? { id, question, questionEs, starter, starterEs, cue } : { id, question, questionEs, starter, starterEs };
 }
 
 function vc(
