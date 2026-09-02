@@ -96,6 +96,17 @@ const DICT = {
   "take.counting": ["Contando oraciones…", "Counting sentences…"],
   "take.countUnavailable": ["Conteo de oraciones no disponible", "Sentence count unavailable"],
   "take.goalReached": ["¡Meta alcanzada!", "Goal reached!"],
+  "take.totalSpeaking": ["TIEMPO TOTAL", "TOTAL SPEAKING"],
+  "take.retry": ["REPETIR", "RETRY"],
+  "take.turn": ["TURNO", "TURN"],
+  "take.listenCustomer": ["ESCUCHA AL CLIENTE", "LISTEN TO THE CUSTOMER"],
+  "take.respond": ["Responde al cliente", "Respond to the customer"],
+  "take.retryHint": ["Repite cualquier turno", "Retry any turn"],
+
+  // Power Chunks (EAGLES)
+  "power.title": ["POWER CHUNKS", "POWER CHUNKS"],
+  "power.challenge": ["RETO", "CHALLENGE"],
+  "power.toolbox": ["TU CAJA DE HERRAMIENTAS", "YOUR TOOLBOX"],
 
 
   // Status

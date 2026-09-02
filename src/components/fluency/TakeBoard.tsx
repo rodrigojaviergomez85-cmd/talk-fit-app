@@ -2,9 +2,11 @@ import { registerAudioStopper, stopOtherAudio } from "@/lib/audio-bus";
 import { useEffect, useRef, useState } from "react";
 import { Check, Play, Square, Trash2 } from "lucide-react";
 import { VoiceRecorder } from "./VoiceRecorder";
+import { AudioPlayer } from "./AudioPlayer";
 import { TranslatableText } from "./TranslatableText";
 import { useT, type TKey } from "@/lib/i18n";
-import type { Recording } from "@/lib/types";
+import type { Recording, RolePlayTurn } from "@/lib/types";
+import { useAppLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export const TAKE_COUNT = 5;
@@ -19,6 +21,8 @@ type TakeBoardProps = {
   goalSeconds: [number, number];
   /** Minimum complete spoken ideas for this day (default 5). */
   goalSentences?: number;
+  /** Controlled role play: fixed interlocutor line before take N (N < turns.length). Takes beyond are retries. */
+  turns?: RolePlayTurn[] | undefined;
   onRecorded: (index: number, recording: Recording) => void;
   onDelete: (index: number) => void;
   onSelectFinal: (index: number) => void;
@@ -48,11 +52,13 @@ export function TakeBoard({
   finalIndex,
   goalSeconds,
   goalSentences = GOAL_SENTENCES,
+  turns,
   onRecorded,
   onDelete,
   onSelectFinal,
 }: TakeBoardProps) {
   const t = useT();
+  const { lang } = useAppLang();
   const [playingIndex, setPlayingIndex] = useState<number | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -95,10 +101,23 @@ export function TakeBoard({
 
   const firstEmpty = takes.findIndex((take) => !take);
   const latest = [...takes].reverse().find((take): take is Recording => Boolean(take)) ?? null;
+  const rolePlay = Boolean(turns?.length);
+  const combinedSeconds = rolePlay
+    ? takes.slice(0, REQUIRED_TAKES).reduce((sum, take) => sum + (take?.durationSeconds ?? 0), 0)
+    : 0;
 
   return (
     <div className="space-y-4">
-      <GoalPanel latest={latest} minSeconds={goalSeconds[0]} goalSentences={goalSentences} t={t} />
+      {rolePlay ? (
+        <CombinedGoalPanel seconds={combinedSeconds} minSeconds={goalSeconds[0]} maxSeconds={goalSeconds[1]} started={Boolean(latest)} t={t} />
+      ) : (
+        <GoalPanel latest={latest} minSeconds={goalSeconds[0]} goalSentences={goalSentences} t={t} />
+      )}
+      {rolePlay ? (
+        <p className="text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+          {t("take.turn")} 1–{turns!.length} · {t("take.retryHint").toUpperCase()}: {t("take.take")} {turns!.length + 1}–{TAKE_COUNT}
+        </p>
+      ) : null}
 
       <div className="grid gap-3 sm:grid-cols-2">
       {takes.map((take, index) => {
@@ -106,6 +125,8 @@ export function TakeBoard({
         const isActive = index === firstEmpty;
         const isFinal = finalIndex === index;
         const playing = playingIndex === index;
+        const turn = turns?.[index];
+        const showTurn = Boolean(turn) && (isActive || Boolean(take));
 
         return (
           <div
@@ -123,12 +144,12 @@ export function TakeBoard({
           >
             <div className="flex items-center justify-between gap-2">
               <p className="flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.16em]">
-                {t("take.take")} {index + 1}
+                {turn ? `${t("take.turn")} ${index + 1}` : `${t("take.take")} ${index + 1}`}
                 {take ? <Check className="size-4 text-success" /> : null}
               </p>
               {optional && !take ? (
                 <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                  {t("take.optional")}
+                  {rolePlay ? t("take.retry") : t("take.optional")}
                 </span>
               ) : null}
               {isFinal ? (
@@ -137,6 +158,18 @@ export function TakeBoard({
                 </span>
               ) : null}
             </div>
+
+            {showTurn && turn ? (
+              <div className="mt-3 space-y-2 rounded-2xl bg-navy p-3 text-navy-foreground">
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
+                  {lang === "es" ? turn.labelEs : turn.label}
+                </p>
+                <AudioPlayer text={turn.text} label={t("take.listenCustomer")} rate={1} variant="navy" size="sm" voice={turn.voice} />
+                <TranslatableText es={turn.es} esClassName="text-navy-foreground/70" supportOnly>
+                  <p className="text-[13px] font-semibold italic leading-relaxed text-navy-foreground/90">"{turn.text}"</p>
+                </TranslatableText>
+              </div>
+            ) : null}
 
             {take ? (
               <div className="mt-3 space-y-3">
@@ -182,8 +215,8 @@ export function TakeBoard({
               </div>
             ) : isActive ? (
               <div className="mt-3 space-y-2">
-                <TranslatableText supportOnly es="Listo para grabar" align="center" className="text-center">
-                  <p className="text-center text-[13px] text-muted-foreground">{t("take.ready")}</p>
+                <TranslatableText supportOnly es={turn ? "Responde al cliente" : "Listo para grabar"} align="center" className="text-center">
+                  <p className="text-center text-[13px] text-muted-foreground">{turn ? t("take.respond") : t("take.ready")}</p>
                 </TranslatableText>
                 <VoiceRecorder
                   label={t("practice.record")}
@@ -199,6 +232,36 @@ export function TakeBoard({
           </div>
         );
       })}
+      </div>
+    </div>
+  );
+}
+
+/** Role play: combined speaking time across the required turns. */
+function CombinedGoalPanel({
+  seconds,
+  minSeconds,
+  maxSeconds,
+  started,
+  t,
+}: {
+  seconds: number;
+  minSeconds: number;
+  maxSeconds: number;
+  started: boolean;
+  t: (key: TKey) => string;
+}) {
+  const ok = seconds >= minSeconds;
+  return (
+    <div className="rounded-3xl border border-border bg-card p-4">
+      <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+        {t("take.goal")} · {minSeconds}–{maxSeconds} {t("take.seconds")} · {t("take.totalSpeaking")}
+      </p>
+      <div className="mt-3 rounded-2xl bg-secondary p-3 text-center">
+        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{t("take.totalSpeaking")}</p>
+        <p className={cn("mt-1 text-[16px] font-extrabold tabular-nums", started ? (ok ? "text-success" : "text-destructive") : "text-muted-foreground")}>
+          {started ? `${ok ? "🟢" : "🔴"} ${seconds} / ${minSeconds} ${t("take.seconds")}` : `— / ${minSeconds} ${t("take.seconds")}`}
+        </p>
       </div>
     </div>
   );

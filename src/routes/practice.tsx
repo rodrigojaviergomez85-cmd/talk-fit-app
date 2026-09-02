@@ -5,6 +5,7 @@ import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { RepProgress } from "@/components/fluency/RepProgress";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
+import { PowerChunks } from "@/components/fluency/PowerChunks";
 import { TakeBoard, TAKE_COUNT, REQUIRED_TAKES } from "@/components/fluency/TakeBoard";
 import { PastVerbCards } from "@/components/fluency/PastVerbCards";
 import { StoryStrip } from "@/components/fluency/StoryStrip";
@@ -849,6 +850,8 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
     <div className="space-y-5">
       <RepHeader titleKey="rep1.title" instrKey="rep1.instr" />
 
+      <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} />
+
       <SceneImage day={day} />
       <PastVerbCards day={day} />
       <StoryStrip day={day} showCaptions={false} />
@@ -954,6 +957,8 @@ function Rep2Copy({
     <div className="space-y-5">
       <RepHeader titleKey="rep2.title" instrKey="rep2.instr" />
 
+      <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} />
+
       <SceneImage day={day} />
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
         {t("practice.chunk")} {index + 1} {t("practice.of")} {chunks.length}
@@ -1007,6 +1012,8 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
       <div className="rounded-3xl bg-navy p-5">
         <RepHeader titleKey="rep3.title" instrKey="rep3.instr" cueKey="rep3.cue" dark />
       </div>
+
+      <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} />
 
       <SceneImage day={day} />
       <StoryStrip day={day} showCaptions={false} />
@@ -1139,6 +1146,7 @@ function Rep4MakeItYours({
       </p>
 
       {item.cues ? <CueRow cues={item.cues} /> : null}
+      <PowerChunks chunks={day.powerChunks} size="mini" />
 
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {item.cue ? (
@@ -1212,7 +1220,7 @@ function Rep5FinalRep({
     <div className="space-y-5">
       <RepHeader titleKey="rep5.title" instrKey="rep5.instr" />
 
-      {day.rep5Audio ? (
+      {day.rep5Audio && !day.rep5Turns ? (
         <div className="space-y-3 rounded-3xl bg-navy p-5 text-navy-foreground">
           <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-primary">
             {lang === "es" ? day.rep5Audio.labelEs : day.rep5Audio.label}
@@ -1236,6 +1244,20 @@ function Rep5FinalRep({
       <GoalChips day={day} />
 
       <CueRow cues={day.cues} />
+      <PowerChunks chunks={day.powerChunks} size="mini" />
+
+      {day.rep5Toolbox ? (
+        <div className="space-y-1.5 rounded-3xl border border-border bg-card p-3">
+          <p className="px-1 text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{t("power.toolbox")}</p>
+          <div className="flex flex-wrap gap-1.5">
+            {day.rep5Toolbox.map((phrase) => (
+              <span key={phrase} className="rounded-full bg-secondary px-2.5 py-1 text-[12px] font-semibold text-foreground">
+                {phrase}
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
       <SceneImage day={day} />
       <StoryStrip day={day} showCaptions={false} />
@@ -1278,6 +1300,7 @@ function Rep5FinalRep({
         finalIndex={finalIndex}
         goalSeconds={day.goalSeconds}
         goalSentences={day.goalSentences ?? 5}
+        turns={day.rep5Turns}
         onRecorded={onRecorded}
         onDelete={onDelete}
 
