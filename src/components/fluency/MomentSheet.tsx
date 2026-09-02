@@ -1,5 +1,11 @@
 import { useEffect } from "react";
-import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import { stopPlayback } from "@/hooks/use-recording-playback";
 import type { Comparison } from "@/lib/progress-moments";
 import type { JourneyState } from "@/lib/types";
@@ -35,12 +41,16 @@ export function MomentSheet({ comparison, state, onClose }: Props) {
                 ? "Escucha tu cambio"
                 : "Hear your change"}
           </DrawerTitle>
-          <DrawerDescription>{es ? "Compara tus grabaciones." : "Compare your recordings."}</DrawerDescription>
+          <DrawerDescription>
+            {es ? "Compara tus grabaciones." : "Compare your recordings."}
+          </DrawerDescription>
         </DrawerHeader>
         <div className="overflow-y-auto px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-2">
           <div className="mx-auto w-full max-w-lg">
             {comparison?.type === "week" ? <WeekMoment comparison={comparison} /> : null}
-            {comparison?.type === "module" ? <ModuleMoment comparison={comparison} state={state} /> : null}
+            {comparison?.type === "module" ? (
+              <ModuleMoment comparison={comparison} state={state} />
+            ) : null}
             <button
               type="button"
               onClick={onClose}

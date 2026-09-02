@@ -37,12 +37,22 @@ function side(state: JourneyState, moduleId: ModuleId, day: number): ComparisonS
 }
 
 /** Week day 1 vs week day 5 — by position inside the week, never calendar. */
-export function weekComparison(state: JourneyState, moduleId: ModuleId, week: number): Comparison | null {
+export function weekComparison(
+  state: JourneyState,
+  moduleId: ModuleId,
+  week: number,
+): Comparison | null {
   const days = CourseService.getDays(moduleId).filter((d) => (d.week ?? 1) === week);
   if (days.length < 2) return null;
   const first = days[0]!.day;
   const last = days[days.length - 1]!.day;
-  return { type: "week", moduleId, week, start: side(state, moduleId, first), end: side(state, moduleId, last) };
+  return {
+    type: "week",
+    moduleId,
+    week,
+    start: side(state, moduleId, first),
+    end: side(state, moduleId, last),
+  };
 }
 
 /** First active day vs final active day of the module (never hard-coded to 20). */
@@ -51,7 +61,13 @@ export function moduleComparison(state: JourneyState, moduleId: ModuleId): Compa
   if (days.length < 2) return null;
   const first = days[0]!.day;
   const last = days[days.length - 1]!.day;
-  return { type: "module", moduleId, week: 0, start: side(state, moduleId, first), end: side(state, moduleId, last) };
+  return {
+    type: "module",
+    moduleId,
+    week: 0,
+    start: side(state, moduleId, first),
+    end: side(state, moduleId, last),
+  };
 }
 
 /** First saved Final Rep vs the most recent one (by completion date). */
@@ -91,7 +107,8 @@ export function milestones(state: JourneyState): Milestone[] {
       push(`end:${module.id}`, { es: `FIN ${module.label}`, en: `${module.label} END` }, record);
     }
   }
-  if (playable.length > 1) push("latest", { es: "MÁS RECIENTE", en: "LATEST" }, playable[playable.length - 1]!);
+  if (playable.length > 1)
+    push("latest", { es: "MÁS RECIENTE", en: "LATEST" }, playable[playable.length - 1]!);
   return list;
 }
 
@@ -215,7 +232,10 @@ export const NEXT_UP: Record<ModuleId, NextUpCopy> = {
   },
   "mixed-tenses": {
     emoji: "🔀",
-    promise: { es: "PASADO, PRESENTE Y FUTURO — SIN TRABARTE.", en: "PAST, PRESENT AND FUTURE — WITHOUT FREEZING." },
+    promise: {
+      es: "PASADO, PRESENTE Y FUTURO — SIN TRABARTE.",
+      en: "PAST, PRESENT AND FUTURE — WITHOUT FREEZING.",
+    },
     items: [
       { es: "cambiar de tiempo mientras hablas", en: "switch tenses while you speak" },
       { es: "hacer y responder preguntas", en: "ask and answer questions" },
@@ -225,13 +245,19 @@ export const NEXT_UP: Record<ModuleId, NextUpCopy> = {
   },
   "eagles-week-1": {
     emoji: "🦅",
-    promise: { es: "TU INGLÉS EMPIEZA A TRABAJAR PARA VOS.", en: "YOUR ENGLISH STARTS WORKING FOR YOU." },
+    promise: {
+      es: "TU INGLÉS EMPIEZA A TRABAJAR PARA VOS.",
+      en: "YOUR ENGLISH STARTS WORKING FOR YOU.",
+    },
     items: [
       { es: "resolver problemas", en: "solve problems" },
       { es: "hablar con clientes", en: "talk with customers" },
       { es: "recomendar opciones", en: "recommend options" },
       { es: "manejar situaciones de ventas", en: "handle sales situations" },
-      { es: "prepararte para evaluaciones de inglés laboral", en: "prepare for workplace English evaluations" },
+      {
+        es: "prepararte para evaluaciones de inglés laboral",
+        en: "prepare for workplace English evaluations",
+      },
     ],
   },
 };
@@ -242,7 +268,10 @@ export const UPCOMING_NEXT_UP: Record<string, NextUpCopy & { title: string; labe
     label: "INTERMEDIO ALTO",
     title: "TIGERS",
     emoji: "🐯",
-    promise: { es: "NO SOLO RESPONDAS. EXPLICA Y DEFIENDE TUS IDEAS.", en: "DON'T JUST ANSWER. EXPLAIN AND DEFEND YOUR IDEAS." },
+    promise: {
+      es: "NO SOLO RESPONDAS. EXPLICA Y DEFIENDE TUS IDEAS.",
+      en: "DON'T JUST ANSWER. EXPLAIN AND DEFEND YOUR IDEAS.",
+    },
     items: [
       { es: "explicar mejor", en: "explain better" },
       { es: "comparar opciones", en: "compare options" },
@@ -255,7 +284,10 @@ export const UPCOMING_NEXT_UP: Record<string, NextUpCopy & { title: string; labe
     label: "AVANZADO",
     title: "SHARKS",
     emoji: "🦈",
-    promise: { es: "RESPONDE CUANDO NO SABES QUÉ VIENE.", en: "RESPOND WHEN YOU DON'T KNOW WHAT'S COMING." },
+    promise: {
+      es: "RESPONDE CUANDO NO SABES QUÉ VIENE.",
+      en: "RESPOND WHEN YOU DON'T KNOW WHAT'S COMING.",
+    },
     items: [
       { es: "improvisar", en: "improvise" },
       { es: "adaptarte", en: "adapt" },

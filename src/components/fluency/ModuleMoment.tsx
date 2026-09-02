@@ -40,14 +40,26 @@ export function ModuleMoment({ comparison, state, celebrate = false }: Props) {
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-navy-foreground/70">
           {module.label} · {module.title}
         </p>
-        <p className="mt-3 text-[16px] font-extrabold leading-snug">{es ? transformation.es : transformation.en}</p>
+        <p className="mt-3 text-[16px] font-extrabold leading-snug">
+          {es ? transformation.es : transformation.en}
+        </p>
       </div>
 
       <div className="grid grid-cols-2 gap-2 text-center">
         <Metric value={`${metrics.days}`} label={es ? "DÍAS COMPLETADOS" : "DAYS COMPLETED"} />
         <Metric value={`${metrics.reps}`} label="FLUENCY REPS" />
-        {metrics.minutes > 0 ? <Metric value={`${metrics.minutes}`} label={es ? "MINUTOS HABLANDO" : "MINUTES SPEAKING"} /> : null}
-        {metrics.finalReps > 0 ? <Metric value={`${metrics.finalReps}`} label={es ? "FINAL REPS GUARDADOS" : "FINAL REPS SAVED"} /> : null}
+        {metrics.minutes > 0 ? (
+          <Metric
+            value={`${metrics.minutes}`}
+            label={es ? "MINUTOS HABLANDO" : "MINUTES SPEAKING"}
+          />
+        ) : null}
+        {metrics.finalReps > 0 ? (
+          <Metric
+            value={`${metrics.finalReps}`}
+            label={es ? "FINAL REPS GUARDADOS" : "FINAL REPS SAVED"}
+          />
+        ) : null}
       </div>
 
       <div className="space-y-3">
@@ -82,7 +94,9 @@ function Metric({ value, label }: { value: string; label: string }) {
   return (
     <div className="rounded-2xl bg-navy-foreground/10 p-3">
       <p className="text-2xl font-extrabold tabular-nums">{value}</p>
-      <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">{label}</p>
+      <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">
+        {label}
+      </p>
     </div>
   );
 }

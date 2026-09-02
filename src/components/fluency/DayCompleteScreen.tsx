@@ -96,7 +96,6 @@ export function DayCompleteScreen({
           </div>
         ) : null}
 
-
         <div className="grid grid-cols-2 gap-3">
           <Stat label={showEs ? "Reps hoy" : "Reps today"} value="5 / 5" />
           <Stat label={showEs ? "Rep final" : "Final rep"} value={`${seconds}s`} />
@@ -149,9 +148,15 @@ export function DayCompleteScreen({
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
               {showEs ? "Tu grabación final" : "Your final recording"}
             </p>
-            <RecordingPlayback url={finalRecording.url} label={showEs ? "ESCUCHAR MI REP" : "LISTEN TO MY REP"} />
+            <RecordingPlayback
+              url={finalRecording.url}
+              label={showEs ? "ESCUCHAR MI REP" : "LISTEN TO MY REP"}
+            />
             {firstRecording && firstRecording.id !== finalRecording.id ? (
-              <RecordingPlayback url={firstRecording.url} label={showEs ? `PRIMERA TOMA (${firstSeconds}s)` : `FIRST TAKE (${firstSeconds}s)`} />
+              <RecordingPlayback
+                url={firstRecording.url}
+                label={showEs ? `PRIMERA TOMA (${firstSeconds}s)` : `FIRST TAKE (${firstSeconds}s)`}
+              />
             ) : null}
           </div>
         ) : null}
@@ -176,7 +181,9 @@ export function DayCompleteScreen({
         {isLastDay ? (
           <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
             <p className="text-[17px] font-extrabold tracking-tight">
-              {showEs ? "¿Sientes que hablar es más fácil que el Día 1?" : "Does speaking feel easier than Day 1?"}
+              {showEs
+                ? "¿Sientes que hablar es más fácil que el Día 1?"
+                : "Does speaking feel easier than Day 1?"}
             </p>
             <div className="grid gap-2">
               {ASSESSMENTS.map((option) => (
@@ -189,7 +196,9 @@ export function DayCompleteScreen({
                   }}
                   className={cn(
                     "rounded-2xl border px-4 py-3 text-[15px] font-bold transition-colors",
-                    answer === option.value ? "border-primary bg-primary/10 text-primary" : "border-border bg-card text-foreground",
+                    answer === option.value
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-border bg-card text-foreground",
                   )}
                 >
                   {showEs ? option.es : option.en}
@@ -206,7 +215,13 @@ export function DayCompleteScreen({
           onClick={() => void navigate({ to: "/" })}
           className="w-full rounded-2xl bg-primary px-6 py-4 text-[15px] font-bold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
         >
-          {moduleDone ? (showEs ? "CONTINUAR MI CAMINO" : "CONTINUE MY PATH") : showEs ? "CONTINUAR ✓" : "CONTINUE ✓"}
+          {moduleDone
+            ? showEs
+              ? "CONTINUAR MI CAMINO"
+              : "CONTINUE MY PATH"
+            : showEs
+              ? "CONTINUAR ✓"
+              : "CONTINUE ✓"}
         </button>
       </div>
     </div>
@@ -224,7 +239,15 @@ function Stat({ label, value, icon }: { label: string; value: string; icon?: Rea
   );
 }
 
-function SummaryRow({ label, summary, showEs }: { label: string; summary: RepSummary; showEs: boolean }) {
+function SummaryRow({
+  label,
+  summary,
+  showEs,
+}: {
+  label: string;
+  summary: RepSummary;
+  showEs: boolean;
+}) {
   return (
     <div className="flex items-center justify-between text-[13px] font-semibold">
       <span className="font-bold uppercase tracking-[0.14em] text-muted-foreground">{label}</span>

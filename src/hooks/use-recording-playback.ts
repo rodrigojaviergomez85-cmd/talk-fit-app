@@ -38,7 +38,14 @@ type Snapshot = {
   duration: number;
 };
 
-let cached: Snapshot = { currentId: null, loadingId: null, failedId: null, paused: false, currentTime: 0, duration: 0 };
+let cached: Snapshot = {
+  currentId: null,
+  loadingId: null,
+  failedId: null,
+  paused: false,
+  currentTime: 0,
+  duration: 0,
+};
 const SERVER: Snapshot = cached;
 
 function snapshot(): Snapshot {

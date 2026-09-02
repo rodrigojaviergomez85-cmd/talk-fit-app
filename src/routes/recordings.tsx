@@ -17,9 +17,16 @@ export const Route = createFileRoute("/recordings")({
   head: () => ({
     meta: [
       { title: "My Recordings — Fluency Reps" },
-      { name: "description", content: "Listen to your saved Final Rep from each practice and hear how your speaking changes." },
+      {
+        name: "description",
+        content:
+          "Listen to your saved Final Rep from each practice and hear how your speaking changes.",
+      },
       { property: "og:title", content: "My Recordings — Fluency Reps" },
-      { property: "og:description", content: "Your saved Final Reps, organized by module and week." },
+      {
+        property: "og:description",
+        content: "Your saved Final Reps, organized by module and week.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -71,7 +78,9 @@ function RecordingsPage() {
         {total === 0 ? (
           <section className="rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-card)]">
             <Mic className="mx-auto size-8 text-primary" />
-            <h2 className="mt-3 text-[18px] font-extrabold uppercase tracking-tight">{t("rec.emptyTitle")}</h2>
+            <h2 className="mt-3 text-[18px] font-extrabold uppercase tracking-tight">
+              {t("rec.emptyTitle")}
+            </h2>
             <p className="mt-2 text-[14px] text-muted-foreground">{t("rec.emptyBody")}</p>
             {next ? (
               <Link
@@ -79,7 +88,9 @@ function RecordingsPage() {
                 search={{ day: next.day, module: next.moduleId }}
                 className="mt-5 flex min-h-[52px] w-full items-center justify-center rounded-2xl bg-primary px-6 text-[14px] font-bold tracking-wide text-primary-foreground"
               >
-                {next.day === 1 && total === 0 ? t("action.startDay1") : t("action.continuePractice")}
+                {next.day === 1 && total === 0
+                  ? t("action.startDay1")
+                  : t("action.continuePractice")}
               </Link>
             ) : null}
           </section>
@@ -88,9 +99,13 @@ function RecordingsPage() {
             {/* ESCUCHA TU PROGRESO */}
             <section className="space-y-3">
               <div>
-                <h2 className="text-[20px] font-extrabold tracking-tight">{es ? "ESCUCHA TU PROGRESO" : "HEAR YOUR PROGRESS"}</h2>
+                <h2 className="text-[20px] font-extrabold tracking-tight">
+                  {es ? "ESCUCHA TU PROGRESO" : "HEAR YOUR PROGRESS"}
+                </h2>
                 <p className="text-[13px] font-semibold text-muted-foreground">
-                  {es ? "Compara diferentes momentos de tu camino." : "Compare different moments of your journey."}
+                  {es
+                    ? "Compara diferentes momentos de tu camino."
+                    : "Compare different moments of your journey."}
                 </p>
               </div>
 
@@ -124,12 +139,19 @@ function RecordingsPage() {
                   </p>
                   <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
                     {marks.map((m) => (
-                      <div key={m.key} className="w-[220px] shrink-0 rounded-3xl bg-card p-3 shadow-[var(--shadow-card)]">
-                        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">{es ? m.label.es : m.label.en}</p>
+                      <div
+                        key={m.key}
+                        className="w-[220px] shrink-0 rounded-3xl bg-card p-3 shadow-[var(--shadow-card)]"
+                      >
+                        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
+                          {es ? m.label.es : m.label.en}
+                        </p>
                         <p className="mt-0.5 truncate text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
                           {recordHeading(m.record)}
                         </p>
-                        <p className="text-[13px] font-extrabold tabular-nums">{formatDuration(m.record.finalSeconds)}</p>
+                        <p className="text-[13px] font-extrabold tabular-nums">
+                          {formatDuration(m.record.finalSeconds)}
+                        </p>
                         <RecordingPlayButton record={m.record} className="mt-2 w-full" />
                       </div>
                     ))}

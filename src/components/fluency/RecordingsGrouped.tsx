@@ -20,15 +20,24 @@ type Props = {
  * a week is open (metadata only — audio loads on play).
  */
 export function RecordingsGrouped({ state, onCompare }: Props) {
-  const currentModuleId = JourneyService.nextPractice(state)?.moduleId ?? JourneyService.currentModule(state);
+  const currentModuleId =
+    JourneyService.nextPractice(state)?.moduleId ?? JourneyService.currentModule(state);
   const latest = JourneyService.recordsByDate(state).at(-1);
   const openId: ModuleId = latest?.moduleId ?? currentModuleId;
-  const modules = CourseService.modules().filter((m) => JourneyService.completedCount(state, m.id) > 0);
+  const modules = CourseService.modules().filter(
+    (m) => JourneyService.completedCount(state, m.id) > 0,
+  );
 
   return (
     <div className="space-y-3">
       {modules.map((module) => (
-        <ModuleGroup key={module.id} module={module} state={state} defaultOpen={module.id === openId} onCompare={onCompare} />
+        <ModuleGroup
+          key={module.id}
+          module={module}
+          state={state}
+          defaultOpen={module.id === openId}
+          onCompare={onCompare}
+        />
       ))}
     </div>
   );
@@ -58,7 +67,8 @@ function ModuleGroup({
     const w = d.week ?? 1;
     weeks.set(w, [...(weeks.get(w) ?? []), d.day]);
   }
-  const currentWeek = CourseService.getDay(module.id, JourneyService.currentDay(state, module.id)).week ?? 1;
+  const currentWeek =
+    CourseService.getDay(module.id, JourneyService.currentDay(state, module.id)).week ?? 1;
 
   return (
     <section className="rounded-3xl border border-border bg-card">
@@ -77,7 +87,12 @@ function ModuleGroup({
           </span>
         </span>
         {complete ? <StatusBadge status={{ label: t("status.complete"), tone: "done" }} /> : null}
-        <ChevronDown className={cn("size-5 shrink-0 text-muted-foreground transition-transform", open && "rotate-180")} />
+        <ChevronDown
+          className={cn(
+            "size-5 shrink-0 text-muted-foreground transition-transform",
+            open && "rotate-180",
+          )}
+        />
       </button>
 
       {open ? (
@@ -154,7 +169,12 @@ function WeekGroup({
             {records.length} {es ? "final reps" : "final reps"}
           </span>
         </span>
-        <ChevronDown className={cn("size-5 shrink-0 text-muted-foreground transition-transform", open && "rotate-180")} />
+        <ChevronDown
+          className={cn(
+            "size-5 shrink-0 text-muted-foreground transition-transform",
+            open && "rotate-180",
+          )}
+        />
       </button>
 
       {open ? (
@@ -178,7 +198,15 @@ function WeekGroup({
   );
 }
 
-function CompareButton({ label, detail, onClick }: { label: string; detail: string; onClick: () => void }) {
+function CompareButton({
+  label,
+  detail,
+  onClick,
+}: {
+  label: string;
+  detail: string;
+  onClick: () => void;
+}) {
   const { lang } = useAppLang();
   return (
     <button
@@ -188,8 +216,12 @@ function CompareButton({ label, detail, onClick }: { label: string; detail: stri
     >
       <Headphones className="size-5 shrink-0 text-primary" />
       <span className="min-w-0 flex-1">
-        <span className="block text-[12px] font-extrabold uppercase tracking-[0.16em] text-accent-foreground">{label}</span>
-        <span className="block text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">{detail}</span>
+        <span className="block text-[12px] font-extrabold uppercase tracking-[0.16em] text-accent-foreground">
+          {label}
+        </span>
+        <span className="block text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+          {detail}
+        </span>
       </span>
       <span className="shrink-0 text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
         {lang === "es" ? "COMPARAR" : "COMPARE"}

@@ -27,9 +27,13 @@ export function WeekMoment({ comparison, celebrate = false }: Props) {
   return (
     <section className="space-y-4">
       <div className="text-center">
-        <h2 className="text-[22px] font-extrabold tracking-tight">{es ? "ESCUCHA TU SEMANA" : "HEAR YOUR WEEK"}</h2>
+        <h2 className="text-[22px] font-extrabold tracking-tight">
+          {es ? "ESCUCHA TU SEMANA" : "HEAR YOUR WEEK"}
+        </h2>
         <p className="mt-1 text-[14px] font-semibold text-muted-foreground">
-          {es ? "Compara cómo empezaste con cómo terminaste." : "Compare how you started with how you finished."}
+          {es
+            ? "Compara cómo empezaste con cómo terminaste."
+            : "Compare how you started with how you finished."}
         </p>
         <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.16em] text-primary">
           {module.label} · {es ? "SEMANA" : "WEEK"} {comparison.week}
@@ -77,7 +81,9 @@ export function WeekMoment({ comparison, celebrate = false }: Props) {
               <p className="mt-1 text-[16px] font-extrabold tracking-tight">
                 {es ? "SEMANA" : "WEEK"} {nextWeek.week} · {nextWeek.title}
               </p>
-              <p className="text-[13px] font-semibold text-muted-foreground">{es ? nextWeek.subtitleEs : nextWeek.subtitle}</p>
+              <p className="text-[13px] font-semibold text-muted-foreground">
+                {es ? nextWeek.subtitleEs : nextWeek.subtitle}
+              </p>
               <Link
                 to="/practice"
                 search={{ day: nextWeekFirstDay, module: comparison.moduleId }}

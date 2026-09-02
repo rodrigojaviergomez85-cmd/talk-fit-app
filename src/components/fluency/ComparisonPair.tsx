@@ -13,7 +13,14 @@ type Props = {
 export function ComparisonPair({ comparison, startCaption, endCaption, tone = "card" }: Props) {
   const { lang } = useAppLang();
   const es = lang === "es";
-  const scope = comparison.type === "week" ? (es ? "de esta semana" : "from this week") : es ? "de este módulo" : "from this module";
+  const scope =
+    comparison.type === "week"
+      ? es
+        ? "de esta semana"
+        : "from this week"
+      : es
+        ? "de este módulo"
+        : "from this module";
 
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">

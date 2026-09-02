@@ -20,7 +20,13 @@ export function NextUp({ afterModuleId }: { afterModuleId: ModuleId }) {
   return (
     <section className="rounded-3xl border-2 border-primary/40 bg-card p-5 shadow-[var(--shadow-card)]">
       <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
-        {next.kind === "module" ? (es ? "LO QUE VIENE" : "NEXT UP") : es ? "PRÓXIMO NIVEL" : "NEXT LEVEL"}
+        {next.kind === "module"
+          ? es
+            ? "LO QUE VIENE"
+            : "NEXT UP"
+          : es
+            ? "PRÓXIMO NIVEL"
+            : "NEXT LEVEL"}
       </p>
       <div className="mt-2 flex items-center gap-3">
         <span className="text-4xl" aria-hidden>

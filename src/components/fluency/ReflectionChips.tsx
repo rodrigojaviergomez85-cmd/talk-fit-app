@@ -50,7 +50,12 @@ export function ReflectionChips({ title, options, moduleId, week, type, tone = "
 
   return (
     <div className="space-y-3">
-      <p className={cn("text-[13px] font-extrabold uppercase tracking-[0.16em]", navy ? "text-navy-foreground" : "text-foreground")}>
+      <p
+        className={cn(
+          "text-[13px] font-extrabold uppercase tracking-[0.16em]",
+          navy ? "text-navy-foreground" : "text-foreground",
+        )}
+      >
         {title}
       </p>
       <div className="flex flex-wrap gap-2">
@@ -77,7 +82,13 @@ export function ReflectionChips({ title, options, moduleId, week, type, tone = "
           );
         })}
       </div>
-      <p className={cn("text-[11px] font-semibold", navy ? "text-navy-foreground/60" : "text-muted-foreground")} aria-live="polite">
+      <p
+        className={cn(
+          "text-[11px] font-semibold",
+          navy ? "text-navy-foreground/60" : "text-muted-foreground",
+        )}
+        aria-live="polite"
+      >
         {saved
           ? es
             ? "Guardado ✓ · Tú decides qué cambió. Sin puntajes."
