@@ -93,7 +93,10 @@ function PracticePage() {
   const navigate = useNavigate();
   const { user, loading: authLoading, sync } = useAuth();
   const tt = useT();
-  const day = useMemo(() => CourseService.getDay(moduleId, dayNumber), [moduleId, dayNumber]);
+  const baseDay = useMemo(() => CourseService.getDay(moduleId, dayNumber), [moduleId, dayNumber]);
+  /** TIGERS FINAL: one prewritten scenario, chosen once per day and kept across resumes. */
+  const [scenarioId, setScenarioId] = useState<string | null>(null);
+  const day = useMemo(() => CourseService.withScenario(baseDay, scenarioId), [baseDay, scenarioId]);
 
   const [showEs, setShowEs] = useEsSupportPref();
   const { lang } = useAppLang();
@@ -130,10 +133,12 @@ function PracticePage() {
     setSessionScope(user.id);
     setPreferencesScope(user.id);
     setVerbBankScope(user.id);
+    const bank = baseDay.rep5Scenarios?.map((s) => s.id) ?? [];
+    setScenarioId(bank.length ? PracticeSessionService.scenarioFor(moduleId, dayNumber, bank) : null);
     const saved = PracticeSessionService.load(moduleId, dayNumber);
     if (PracticeSessionService.isResumable(saved) && saved) {
       // Sessions saved with the old sentence-by-sentence Rep 2 map to the closest chunk.
-      setResume(migrateLegacyRep2(saved, rep2Chunks(day), rep4Items(day).length));
+      setResume(migrateLegacyRep2(saved, rep2Chunks(baseDay), rep4Items(baseDay).length));
     }
     setReady(true);
   }, [moduleId, dayNumber, user?.id, sync]);

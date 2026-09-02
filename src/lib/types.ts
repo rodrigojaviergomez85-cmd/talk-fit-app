@@ -182,6 +182,8 @@ export type CourseDay = {
    * that day's session. Overrides rep5Prompt / rep5Turns / rep5Tips.
    */
   rep5Scenarios?: Rep5Scenario[] | undefined;
+  /** The scenario applied for this session (set by CourseService.withScenario, never authored). */
+  rep5Scenario?: Rep5Scenario | undefined;
 };
 
 /** One prewritten Rep 5 scenario (TIGERS FINAL bank). */
