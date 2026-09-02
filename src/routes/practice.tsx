@@ -272,6 +272,11 @@ function PracticePage() {
     const d = [...repDurations.current];
     d[stage] = (d[stage] ?? 0) + (Date.now() - stageEnteredAt.current) / 1000;
     const r = (i: number) => Math.round(d[i] ?? 0);
+    const before = JourneyService.load();
+    setHabitBefore({
+      days: Object.keys(before.days).length,
+      ...(before.lastCompletedDate ? { lastCompletedDate: before.lastCompletedDate } : {}),
+    });
     const next = JourneyService.completeDay({
       moduleId,
       day: day.day,
