@@ -160,12 +160,24 @@ function PracticePage() {
     window.scrollTo({ top: 0 });
   }, [stage, subIndex]);
 
+  // Lightweight per-rep wall-clock timing (pilot analytics, never shown).
+  const repDurations = useRef<number[]>([0, 0, 0, 0, 0, 0]);
+  const stageEnteredAt = useRef(Date.now());
+  useEffect(() => {
+    stageEnteredAt.current = Date.now();
+    return () => {
+      const spent = (Date.now() - stageEnteredAt.current) / 1000;
+      repDurations.current[stage] = (repDurations.current[stage] ?? 0) + spent;
+    };
+  }, [stage]);
+
+  const chunks2 = useMemo(() => rep2Chunks(day), [day]);
   const items4 = useMemo(() => rep4Items(day), [day]);
-  const subTotal = stage === 2 ? day.lines.length : stage === 4 ? items4.length : 1;
+  const subTotal = stage === 2 ? chunks2.length : stage === 4 ? items4.length : 1;
 
   const currentItemKey =
     stage === 2
-      ? itemKey(2, day.lines[subIndex]?.id ?? String(subIndex))
+      ? itemKey("2c", chunks2[subIndex]?.id ?? String(subIndex))
       : stage === 4
         ? itemKey(4, items4[subIndex]?.id ?? String(subIndex))
         : null;
