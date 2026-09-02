@@ -11,7 +11,10 @@ import { SaveProgressPrompt } from "./SaveProgressPrompt";
 import { WeekMoment } from "./WeekMoment";
 import { ModuleMoment } from "./ModuleMoment";
 import { NextUp } from "./NextUp";
+import { HabitMilestone } from "./HabitMilestone";
 import { moduleComparison, weekComparison } from "@/lib/progress-moments";
+import { HABIT_GOAL, final6, habitDays, milestonesCrossed, wasOnBreak, type HabitMilestoneDef } from "@/lib/habit";
+import { AchievementsService } from "@/services/achievements-service";
 
 export type RepSummary = { total: number; attempted: number; skipped: number };
 
@@ -26,6 +29,8 @@ type Props = {
   showEs: boolean;
   summary?: { rep2: RepSummary; rep4: RepSummary };
   saveState?: FinalRepSaveState;
+  /** Habit snapshot captured before this completion (for milestone + welcome-back detection). */
+  habitBefore?: { days: number; lastCompletedDate?: string } | null;
   onRetrySave?: () => void;
 };
 
@@ -44,11 +49,13 @@ export function DayCompleteScreen({
   showEs,
   summary,
   saveState = "idle",
+  habitBefore = null,
   onRetrySave,
 }: Props) {
   const navigate = useNavigate();
   const [state, setState] = useState(() => JourneyService.load());
   const [answer, setAnswer] = useState<SelfAssessment | null>(state.selfAssessment ?? null);
+  const [milestones, setMilestones] = useState<HabitMilestoneDef[]>([]);
 
   useEffect(() => setState(JourneyService.load()), []);
 
@@ -62,6 +69,38 @@ export function DayCompleteScreen({
   const moduleDone = JourneyService.moduleComplete(state, moduleId);
   const weekCmp = weekJustDone && week ? weekComparison(state, moduleId, week) : null;
   const moduleCmp = moduleDone ? moduleComparison(state, moduleId) : null;
+
+  const habitNow = habitDays(state);
+  const habitWasBefore = habitBefore?.days ?? habitNow;
+  const habitGrew = habitNow > habitWasBefore;
+  const welcomeBack = habitGrew && wasOnBreak(habitBefore?.lastCompletedDate, habitWasBefore);
+  const countdown = final6(habitNow);
+
+  // Milestones crossed by THIS completion, claimed once in the backend so a
+  // repeated day or a reload never re-celebrates them.
+  useEffect(() => {
+    if (!habitBefore || !habitGrew) return;
+    const crossed = milestonesCrossed(habitBefore.days, habitNow);
+    if (crossed.length === 0) return;
+    let alive = true;
+    void AchievementsService.claimCelebration(crossed.map((m) => m.id))
+      .then((fresh) => {
+        if (!alive) return;
+        setMilestones(crossed.filter((m) => fresh.includes(m.id)));
+      })
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [habitBefore?.days, habitNow]);
+
+  // Silent backfill for everything else (skill badges, module badges).
+  useEffect(() => {
+    void AchievementsService.sync(state).catch(() => undefined);
+  }, [state]);
+
+  const bigCelebration = (weekJustDone && weekCmp) || (moduleDone && moduleCmp);
 
   return (
     <div className="min-h-screen bg-background px-4 pb-16 pt-[max(2rem,env(safe-area-inset-top))]">
