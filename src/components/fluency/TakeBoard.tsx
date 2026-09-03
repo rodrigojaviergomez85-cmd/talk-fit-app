@@ -424,7 +424,7 @@ export function TakeBoard({
                       size="md"
                       targetSeconds={turnTarget}
                       maxSeconds={turnMax}
-                      onComplete={(rec) => onRecorded(index, rec)}
+                      onComplete={(rec) => onRecorded(index, isRetrySlot ? { ...rec, label: `turn:${retryIndex}` } : rec)}
                     />
                   </>
                 )}
