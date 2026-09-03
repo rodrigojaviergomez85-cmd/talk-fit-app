@@ -75,10 +75,6 @@ function ProfilePage() {
     if (error) {
       if (error.code === "invalid_credentials") {
         setMessage(t("account.wrongCredentials"));
-        await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/reset-password`,
-        });
-        setMessage(`${t("account.wrongCredentials")} ${t("account.resetSent")}`);
       } else if (error.code === "email_not_confirmed") {
         setMessage(t("account.emailNotConfirmed"));
         await supabase.auth.resend({
