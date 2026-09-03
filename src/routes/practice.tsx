@@ -652,7 +652,6 @@ function QuestionBanner({ day }: { day: CourseDay }) {
       <TranslatableText es={day.rep5Prompt.questionEs}>
         <p className="text-[16px] font-extrabold leading-snug">{day.rep5Prompt.question}</p>
       </TranslatableText>
-      <AudioPlayer text={day.rep5Prompt.question} label={t("practice.hearQuestion")} variant="ghost" size="sm" voice={day.speakerVoice} />
     </div>
   );
 }
@@ -769,7 +768,6 @@ function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseD
       {first ? (
         <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
           <p className="text-[20px] font-extrabold leading-tight tracking-tight">{first}</p>
-          <AudioPlayer text={first} label={t("practice.listen")} voice={day.speakerVoice} />
         </div>
       ) : null}
 
