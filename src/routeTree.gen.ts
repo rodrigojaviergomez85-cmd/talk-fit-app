@@ -19,7 +19,6 @@ import { Route as RecordingsRouteImport } from './routes/recordings'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
-import { Route as ZzDevRecognitionRouteImport } from './routes/zz-dev-recognition'
 import { Route as AdminStorageReportRouteImport } from './routes/admin.storage-report'
 import { Route as ApiSentenceCountRouteImport } from './routes/api/sentence-count'
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
@@ -75,11 +74,6 @@ const VerbBankRoute = VerbBankRouteImport.update({
   path: '/verb-bank',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ZzDevRecognitionRoute = ZzDevRecognitionRouteImport.update({
-  id: '/zz-dev-recognition',
-  path: '/zz-dev-recognition',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminStorageReportRoute = AdminStorageReportRouteImport.update({
   id: '/admin/storage-report',
   path: '/admin/storage-report',
@@ -112,7 +106,6 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
-  '/zz-dev-recognition': typeof ZzDevRecognitionRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
@@ -129,7 +122,6 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
-  '/zz-dev-recognition': typeof ZzDevRecognitionRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
@@ -147,7 +139,6 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
-  '/zz-dev-recognition': typeof ZzDevRecognitionRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
@@ -166,7 +157,6 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sprint'
     | '/verb-bank'
-    | '/zz-dev-recognition'
     | '/admin/storage-report'
     | '/api/sentence-count'
     | '/api/tts'
@@ -183,7 +173,6 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sprint'
     | '/verb-bank'
-    | '/zz-dev-recognition'
     | '/admin/storage-report'
     | '/api/sentence-count'
     | '/api/tts'
@@ -200,7 +189,6 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sprint'
     | '/verb-bank'
-    | '/zz-dev-recognition'
     | '/admin/storage-report'
     | '/api/sentence-count'
     | '/api/tts'
@@ -218,7 +206,6 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SprintRoute: typeof SprintRoute
   VerbBankRoute: typeof VerbBankRoute
-  ZzDevRecognitionRoute: typeof ZzDevRecognitionRoute
   AdminStorageReportRoute: typeof AdminStorageReportRoute
   ApiSentenceCountRoute: typeof ApiSentenceCountRoute
   ApiTtsRoute: typeof ApiTtsRoute
@@ -297,13 +284,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerbBankRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/zz-dev-recognition': {
-      id: '/zz-dev-recognition'
-      path: '/zz-dev-recognition'
-      fullPath: '/zz-dev-recognition'
-      preLoaderRoute: typeof ZzDevRecognitionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/storage-report': {
       id: '/admin/storage-report'
       path: '/admin/storage-report'
@@ -346,7 +326,6 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SprintRoute: SprintRoute,
   VerbBankRoute: VerbBankRoute,
-  ZzDevRecognitionRoute: ZzDevRecognitionRoute,
   AdminStorageReportRoute: AdminStorageReportRoute,
   ApiSentenceCountRoute: ApiSentenceCountRoute,
   ApiTtsRoute: ApiTtsRoute,
