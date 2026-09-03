@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 /** Never render NaN/undefined in a stat. */
 const num = (value: unknown): number => (typeof value === "number" && Number.isFinite(value) ? value : 0);
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
+import { AuthGate } from "@/components/fluency/AuthGate";
 import type { JourneyState } from "@/lib/types";
 
 export const Route = createFileRoute("/profile")({
@@ -40,11 +40,7 @@ function ProfilePage() {
   const navigate = useNavigate();
   const esUi = lang === "es";
   const [state, setState] = useState<JourneyState>(emptyJourney);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
   const [micTest, setMicTest] = useState(false);
   const currentModule = CourseService.getModule(prefs.currentModuleId ?? JourneyService.currentModule(state));
@@ -68,32 +64,6 @@ function ProfilePage() {
     return () => sub.subscription.unsubscribe();
   }, []);
 
-  const signIn = async () => {
-    setBusy(true);
-    setMessage(null);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      if (error.code === "invalid_credentials") {
-        setMessage(t("account.wrongCredentials"));
-      } else if (error.code === "email_not_confirmed") {
-        setMessage(t("account.emailNotConfirmed"));
-        await supabase.auth.resend({
-          type: "signup",
-          email,
-          options: { emailRedirectTo: window.location.origin },
-        });
-      } else {
-        setMessage(error.message);
-      }
-    }
-    setBusy(false);
-  };
-
-  const signInWithGoogle = async () => {
-    setMessage(null);
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
-    if (result.error) setMessage(t("account.googleFailed"));
-  };
 
   return (
     <AppShell title={t("account.title")}>
@@ -171,40 +141,7 @@ function ProfilePage() {
             </button>
           </section>
         ) : (
-          <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-            <p className="text-[17px] font-extrabold tracking-tight">{t("account.saveProgress")}</p>
-            <p className="text-[13px] text-muted-foreground">{t("account.saveProgressBody")}</p>
-            <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@email.com"
-              className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-[15px]"
-            />
-            <input
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder={t("account.password")}
-              className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-[15px]"
-            />
-            <button
-              type="button"
-              disabled={busy || !email || !password}
-              onClick={() => void signIn()}
-              className="w-full rounded-2xl bg-primary px-5 py-3.5 text-[15px] font-bold tracking-wide text-primary-foreground disabled:opacity-40"
-            >
-              {t("account.continueEmail")}
-            </button>
-            <button
-              type="button"
-              onClick={() => void signInWithGoogle()}
-              className="w-full rounded-2xl border border-border px-5 py-3.5 text-[15px] font-bold tracking-wide"
-            >
-              {t("account.continueGoogle")}
-            </button>
-            {message ? <p className="text-[13px] text-muted-foreground">{message}</p> : null}
-          </section>
+          <AuthGate title={t("account.saveProgress")} />
         )}
 
         <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
