@@ -94,6 +94,57 @@ export function turn(
   return { id, label: who.label, labelEs: who.labelEs, text, es, voice, ...extra };
 }
 
+/* ---------------------------------------------------------------------- */
+/* DELIBERATE REPAIR MOMENTS — one per day, rotating by function.          */
+/* Never scored: the learner is never graded on using a survival phrase.  */
+/* ---------------------------------------------------------------------- */
+
+/** The same Spanish-first tip on every repair turn. */
+export const REPAIR_TIP = {
+  es: "No tienes que entender todo. Pide que te la repitan, confirma, o tómate un segundo — y responde.",
+  text: "You don't have to understand everything. Ask for a repeat, confirm, or take a second — then answer.",
+};
+
+export type RepairKind = "time" | "catch" | "confirm" | "restart" | "mixed";
+
+const REPAIR_CUES: Record<RepairKind, string[]> = {
+  time: ["That's a good question —", "let me think for a moment.", "ANSWER"],
+  catch: ["Sorry, could you repeat that?", "I didn't catch the last part.", "ANSWER"],
+  confirm: ["So you're asking about…, right?", "ANSWER"],
+  restart: ["Sorry, let me start again.", "What I mean is…", "ANSWER"],
+  mixed: ["REPEAT · CONFIRM · TAKE A SECOND", "ANSWER"],
+};
+
+const REPAIR_FRAMEWORK: Record<RepairKind, { title: string; titleEs: string }> = {
+  time: { title: "NEEDS TIME", titleEs: "TÓMATE UN SEGUNDO" },
+  catch: { title: "DIDN'T CATCH IT", titleEs: "NO LO ESCUCHASTE BIEN" },
+  confirm: { title: "CONFIRM", titleEs: "CONFIRMA" },
+  restart: { title: "RESTART", titleEs: "EMPIEZA DE NUEVO" },
+  mixed: { title: "REPAIR UNDER PRESSURE", titleEs: "REPARA BAJO PRESIÓN" },
+};
+
+/**
+ * One prewritten recruiter turn that REQUIRES a repair move before answering.
+ * Added to a day's existing rep5Turns — never replaces a turn.
+ */
+export function repairTurn(
+  id: string,
+  kind: RepairKind,
+  bankId: string,
+  voice: "female" | "male",
+  extra: Partial<RolePlayTurn> = {},
+): RolePlayTurn {
+  const q = bankQuestion(bankId);
+  const meta = REPAIR_FRAMEWORK[kind];
+  return turn(id, RECRUITER, q.text, q.es, voice, {
+    targetSeconds: QUICK,
+    cues: REPAIR_CUES[kind],
+    framework: { title: meta.title, titleEs: meta.titleEs, steps: REPAIR_CUES[kind].slice(0, -1) },
+    repairTip: REPAIR_TIP,
+    ...extra,
+  });
+}
+
 /* ============================ DAY 1 — TELL ME ABOUT YOURSELF ============================ */
 
 const tmay = bankQuestion("tmay-1");
@@ -146,6 +197,8 @@ const d1 = advancedDay({
   rep5Turns: [
     turn("a1d1-turn1", RECRUITER, tmay.text, tmay.es, "female", { targetSeconds: [60, 75], cues: ["NOW", "BACKGROUND", "STRENGTH", "EXAMPLE", "GOAL"] }),
     turn("a1d1-turn2", RECRUITER, tmay.followUp!.text, tmay.followUp!.es, "female", { targetSeconds: QUICK }),
+    // REPAIR — NEEDS TIME
+    repairTurn("a1d1-repair", "time", "repair-time-1", "female"),
   ],
   speakerVoice: "female",
 });
@@ -217,6 +270,8 @@ const d2 = advancedDay({
   rep5Turns: [
     turn("a1d2-turn1", RECRUITER, story.text, story.es, "male", { targetSeconds: [60, 75], cues: ["SETTING", "ACTION", "PROBLEM", "REACTION", "LESSON"] }),
     turn("a1d2-turn2", RECRUITER, story.followUp!.text, story.followUp!.es, "male", { targetSeconds: QUICK }),
+    // REPAIR — DIDN'T CATCH IT
+    repairTurn("a1d2-repair", "catch", "repair-catch-1", "male"),
   ],
   speakerVoice: "male",
   testReady: d2Sprint,
@@ -274,6 +329,8 @@ const d3 = advancedDay({
   rep5Turns: [
     turn("a1d3-turn1", RECRUITER, hire.text, hire.es, "female", { targetSeconds: [60, 75], cues: ["CLAIM", "EVIDENCE", "VALUE"] }),
     turn("a1d3-turn2", RECRUITER, hire.followUp!.text, hire.followUp!.es, "female", { targetSeconds: [30, 45], cues: ["NEW REASON", "PROOF", "RESULT"] }),
+    // REPAIR — CONFIRM
+    repairTurn("a1d3-repair", "confirm", "repair-confirm-1", "female"),
   ],
   speakerVoice: "female",
 });
@@ -352,6 +409,8 @@ const d4 = advancedDay({
     turn("a1d4-turn1", RECRUITER, weak.text, weak.es, "male", { targetSeconds: [45, 60], cues: ["WEAKNESS", "ACTION", "PROGRESS", "NEXT STEP"] }),
     turn("a1d4-turn2", RECRUITER, weak.followUp!.text, weak.followUp!.es, "male", { targetSeconds: [30, 45] }),
     turn("a1d4-turn3", RECRUITER, goal.text, goal.es, "male", { targetSeconds: [30, 45], cues: ["FIRST", "SECOND", "THIRD"] }),
+    // REPAIR — RESTART
+    repairTurn("a1d4-repair", "restart", "repair-restart-1", "male"),
   ],
   speakerVoice: "male",
   testReady: d4Sprint,
@@ -471,6 +530,10 @@ const d5 = advancedDay({
       targetSeconds: [30, 45],
       cues: ["SOLUTION", "CONFIRM"],
       toolbox: ["Here's what I can do.", "Does that work for you?"],
+    }),
+    // REPAIR — MIXED, under pressure (Round 6)
+    repairTurn("a1d5-repair", "mixed", "repair-mixed-1", "female", {
+      round: { n: 6, title: "REPAIR UNDER PRESSURE", titleEs: "REPARA BAJO PRESIÓN" },
     }),
   ],
   speakerVoice: "female",

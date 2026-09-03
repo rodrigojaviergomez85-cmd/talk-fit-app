@@ -285,6 +285,12 @@ export function TakeBoard({
                     ))}
                   </div>
                 ) : null}
+                {turn.repairTip && !take ? (
+                  <div className="rounded-2xl border border-primary/30 bg-primary/10 p-3">
+                    <p className="text-[13px] font-bold leading-snug text-navy-foreground">{turn.repairTip.es}</p>
+                    <p className="mt-1 text-[12px] leading-snug text-navy-foreground/70">{turn.repairTip.text}</p>
+                  </div>
+                ) : null}
                 {turn.toolbox?.length && !take ? (
                   <div className="pt-1">
                     <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-navy-foreground/60">{t("take.toolbox")}</p>

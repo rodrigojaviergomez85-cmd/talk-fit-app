@@ -242,6 +242,8 @@ export type RolePlayTurn = {
   toolbox?: string[] | undefined;
   /** ADVANCED: tiny mental structure taught right before this turn (e.g. CHOOSE → WHY → EXAMPLE → CLOSE). */
   framework?: { title: string; titleEs: string; steps: string[] } | undefined;
+  /** ADVANCED: Spanish-first survival tip on a deliberate repair turn. Never scored. */
+  repairTip?: { text: string; es: string } | undefined;
 };
 
 /** Wall-clock seconds spent on each rep (pilot analytics, never shown). */

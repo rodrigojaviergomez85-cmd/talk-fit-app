@@ -17,7 +17,8 @@ export type AdvancedQuestionCategory =
   | "crazy_question"
   | "customer_service"
   | "sales"
-  | "future_goal";
+  | "future_goal"
+  | "repair";
 
 export type AdvancedQuestion = {
   id: string;
@@ -355,6 +356,153 @@ export const ADVANCED_QUESTION_BANK: Record<string, AdvancedQuestion> = {
     speaker: "recruiter",
     text: "Where do you want to be professionally in three years?",
     es: "¿Dónde quieres estar profesionalmente en tres años?",
+  },
+
+  /* ---------------- REPAIR MOMENTS (one per day, rotating by type) ---------------- */
+  /* Day 1 of each week — NEEDS TIME: a big, open question that deserves a pause. */
+  "repair-time-1": {
+    id: "repair-time-1",
+    category: "repair",
+    speaker: "recruiter",
+    text: "If I asked you to describe the professional you want to become, and the experiences that shaped that vision the most, what would you say?",
+    es: "Si te pidiera describir el profesional en el que quieres convertirte y las experiencias que más han formado esa visión, ¿qué dirías?",
+  },
+  "repair-time-2": {
+    id: "repair-time-2",
+    category: "repair",
+    speaker: "recruiter",
+    text: "Looking back at everything you've handled so far, what would you say has been the defining challenge of your career, and how has it changed the way you work?",
+    es: "Mirando todo lo que has manejado hasta ahora, ¿cuál dirías que ha sido el reto que ha definido tu carrera y cómo ha cambiado tu forma de trabajar?",
+  },
+  "repair-time-3": {
+    id: "repair-time-3",
+    category: "repair",
+    speaker: "recruiter",
+    text: "When you think about your career so far — the jobs, the learning, the changes — what does this next move really mean for you?",
+    es: "Cuando piensas en tu carrera hasta ahora — los trabajos, el aprendizaje, los cambios — ¿qué significa realmente para ti este próximo paso?",
+  },
+  "repair-time-4": {
+    id: "repair-time-4",
+    category: "repair",
+    speaker: "recruiter",
+    text: "If you had to summarize what your whole journey — work, study, everything — has prepared you to do next, what would that be?",
+    es: "Si tuvieras que resumir para qué te ha preparado todo tu camino — trabajo, estudios, todo — ¿qué sería?",
+  },
+  /* Day 2 of each week — DIDN'T CATCH IT: spoken as one long compound question. */
+  "repair-catch-1": {
+    id: "repair-catch-1",
+    category: "repair",
+    speaker: "recruiter",
+    text: "So, thinking about that experience, what was the most difficult part, how did you react in the moment, and looking back now, what would you say it taught you?",
+    es: "Entonces, pensando en esa experiencia, ¿cuál fue la parte más difícil, cómo reaccionaste en el momento y, mirando atrás, qué dirías que te enseñó?",
+  },
+  "repair-catch-2": {
+    id: "repair-catch-2",
+    category: "repair",
+    speaker: "recruiter",
+    text: "So after that mistake, what changed in the way you work, who noticed the difference, and what would you tell someone in the same situation?",
+    es: "Entonces, después de ese error, ¿qué cambió en tu forma de trabajar, quién notó la diferencia y qué le dirías a alguien en la misma situación?",
+  },
+  "repair-catch-3": {
+    id: "repair-catch-3",
+    category: "repair",
+    speaker: "recruiter",
+    text: "When you think about that failure, what was really the cause, what did you change afterward, and how do you make sure it never happens again?",
+    es: "Cuando piensas en ese fracaso, ¿cuál fue realmente la causa, qué cambiaste después y cómo te aseguras de que no vuelva a pasar?",
+  },
+  "repair-catch-4": {
+    id: "repair-catch-4",
+    category: "repair",
+    speaker: "recruiter",
+    text: "Considering that situation, what options did you have at that moment, why did you choose the one you chose, and what did the result tell you about yourself?",
+    es: "Considerando esa situación, ¿qué opciones tenías en ese momento, por qué elegiste la que elegiste y qué te dijo el resultado sobre ti?",
+  },
+  /* Day 3 of each week — CONFIRM: an ambiguous question with two possible readings. */
+  "repair-confirm-1": {
+    id: "repair-confirm-1",
+    category: "repair",
+    speaker: "recruiter",
+    text: "So, how did you find the transition?",
+    es: "Entonces, ¿cómo encontraste la transición?",
+  },
+  "repair-confirm-2": {
+    id: "repair-confirm-2",
+    category: "repair",
+    speaker: "recruiter",
+    text: "And looking back, was it worth it?",
+    es: "Y mirando atrás, ¿valió la pena?",
+  },
+  "repair-confirm-3": {
+    id: "repair-confirm-3",
+    category: "repair",
+    speaker: "recruiter",
+    text: "Where do you see yourself growing?",
+    es: "¿Dónde te ves creciendo?",
+  },
+  "repair-confirm-4": {
+    id: "repair-confirm-4",
+    category: "repair",
+    speaker: "recruiter",
+    text: "If you could start over, what would change?",
+    es: "Si pudieras empezar de nuevo, ¿qué cambiaría?",
+  },
+  /* Day 4 of each week — RESTART: a question that invites a false start. */
+  "repair-restart-1": {
+    id: "repair-restart-1",
+    category: "repair",
+    speaker: "recruiter",
+    text: "Tell me everything about that — actually, just the part that matters for this job.",
+    es: "Cuéntame todo sobre eso — mejor, solo la parte que importa para este trabajo.",
+  },
+  "repair-restart-2": {
+    id: "repair-restart-2",
+    category: "repair",
+    speaker: "recruiter",
+    text: "Tell me about that person — actually, start with what you did for them.",
+    es: "Cuéntame sobre esa persona — mejor, empieza con lo que hiciste por ella.",
+  },
+  "repair-restart-3": {
+    id: "repair-restart-3",
+    category: "repair",
+    speaker: "recruiter",
+    text: "Walk me through your availability — actually, first: can you start immediately?",
+    es: "Cuéntame tu disponibilidad — mejor, primero: ¿puedes empezar de inmediato?",
+  },
+  "repair-restart-4": {
+    id: "repair-restart-4",
+    category: "repair",
+    speaker: "recruiter",
+    text: "Describe your ideal job — actually, tell me first: what job would you never accept?",
+    es: "Describe tu trabajo ideal — mejor, dime primero: ¿qué trabajo nunca aceptarías?",
+  },
+  /* Day 5 of each week — MIXED, under pressure: any of the four inside the challenge round. */
+  "repair-mixed-1": {
+    id: "repair-mixed-1",
+    category: "repair",
+    speaker: "recruiter",
+    text: "Before we finish — how does this role fit your goals, what would you do in your first month, and why this company?",
+    es: "Antes de terminar — ¿cómo encaja este puesto en tus metas, qué harías en tu primer mes y por qué esta empresa?",
+  },
+  "repair-mixed-2": {
+    id: "repair-mixed-2",
+    category: "repair",
+    speaker: "recruiter",
+    text: "One more thing — what did you take from all that?",
+    es: "Una cosa más — ¿qué te llevaste de todo eso?",
+  },
+  "repair-mixed-3": {
+    id: "repair-mixed-3",
+    category: "repair",
+    speaker: "recruiter",
+    text: "Last question — tell me why you're here — actually, no: tell me why I should remember you tomorrow.",
+    es: "Última pregunta — dime por qué estás aquí — mejor no: dime por qué debería recordarte mañana.",
+  },
+  "repair-mixed-4": {
+    id: "repair-mixed-4",
+    category: "repair",
+    speaker: "recruiter",
+    text: "One last thing: if you could design your perfect first year with us, what would it look like?",
+    es: "Una última cosa: si pudieras diseñar tu primer año perfecto con nosotros, ¿cómo sería?",
   },
 };
 

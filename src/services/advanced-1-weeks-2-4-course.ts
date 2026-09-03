@@ -16,7 +16,7 @@
 import type { CourseDay, TestReadySprint } from "@/lib/types";
 import { l, q, chunks4 } from "./course-builders";
 import { bankQuestion } from "./advanced-question-bank";
-import { advancedDay, turn, START, RECRUITER, CUSTOMER, QUICK } from "./advanced-1-course";
+import { advancedDay, turn, repairTurn, START, RECRUITER, CUSTOMER, QUICK } from "./advanced-1-course";
 
 import sceneD6 from "@/assets/advanced-1/scene-d06.jpg";
 import sceneD7 from "@/assets/advanced-1/scene-d07.jpg";
@@ -93,6 +93,8 @@ const d6 = advancedDay({
   rep5Turns: [
     turn("a1d6-turn1", RECRUITER, challenge.text, challenge.es, "female", { targetSeconds: SUSTAIN, cues: ["SITUATION", "ACTION", "RESULT", "LESSON"] }),
     turn("a1d6-turn2", RECRUITER, challenge.followUp!.text, challenge.followUp!.es, "female", { targetSeconds: DEVELOP, cues: ["I decided…", "I talked to…", "I took…"] }),
+    // REPAIR — NEEDS TIME
+    repairTurn("a1d6-repair", "time", "repair-time-2", "female"),
   ],
   speakerVoice: "female",
 });
@@ -164,6 +166,8 @@ const d7 = advancedDay({
   rep5Turns: [
     turn("a1d7-turn1", RECRUITER, mistake.text, mistake.es, "male", { targetSeconds: SUSTAIN, cues: ["MISTAKE", "RESPONSIBILITY", "ACTION", "LESSON"] }),
     turn("a1d7-turn2", RECRUITER, mistake.followUp!.text, mistake.followUp!.es, "male", { targetSeconds: DEVELOP, cues: ["TODAY I WOULD…", "BECAUSE…"] }),
+    // REPAIR — DIDN'T CATCH IT
+    repairTurn("a1d7-repair", "catch", "repair-catch-2", "male"),
   ],
   speakerVoice: "male",
   testReady: d7Sprint,
@@ -221,6 +225,8 @@ const d8 = advancedDay({
   rep5Turns: [
     turn("a1d8-turn1", RECRUITER, difficult.text, difficult.es, "female", { targetSeconds: SUSTAIN, cues: ["SITUATION", "PROBLEM", "RESPONSE", "RESULT"] }),
     turn("a1d8-turn2", RECRUITER, difficult.followUp!.text, difficult.followUp!.es, "female", { targetSeconds: DEVELOP, cues: ["I stayed calm…", "I asked…", "I focused on…"] }),
+    // REPAIR — CONFIRM
+    repairTurn("a1d8-repair", "confirm", "repair-confirm-2", "female"),
   ],
   speakerVoice: "female",
 });
@@ -292,6 +298,8 @@ const d9 = advancedDay({
   rep5Turns: [
     turn("a1d9-turn1", RECRUITER, helped.text, helped.es, "male", { targetSeconds: SUSTAIN, cues: ["NEED", "ACTION", "RESULT", "WHY"] }),
     turn("a1d9-turn2", RECRUITER, helped.followUp!.text, helped.followUp!.es, "male", { targetSeconds: DEVELOP, cues: ["FOR THAT PERSON…", "FOR THE TEAM…"] }),
+    // REPAIR — RESTART
+    repairTurn("a1d9-repair", "restart", "repair-restart-2", "male"),
   ],
   speakerVoice: "male",
   testReady: d9Sprint,
@@ -374,6 +382,10 @@ const d10 = advancedDay({
     turn("a1d10-turn5", RECRUITER, b3.text, b3.es, "female", { round: { n: 3, title: "HELPING SOMEONE", titleEs: "AYUDAR A ALGUIEN" }, targetSeconds: [45, 60], cues: ["NEED", "ACTION", "WHY"] }),
     turn("a1d10-turn6", RECRUITER, b4.text, b4.es, "female", { round: { n: 4, title: "UNDER PRESSURE", titleEs: "BAJO PRESIÓN" }, targetSeconds: [45, 60], cues: ["SITUATION", "ACTION", "RESULT"] }),
     turn("a1d10-turn7", RECRUITER, fuLearn.text, fuLearn.es, "female", { targetSeconds: QUICK, cues: ["LESSON → THIS JOB"] }),
+    // REPAIR — REPAIR UNDER PRESSURE
+    repairTurn("a1d10-repair", "mixed", "repair-mixed-2", "female", {
+      round: { n: 5, title: "REPAIR UNDER PRESSURE", titleEs: "REPARA BAJO PRESIÓN" },
+    }),
   ],
   speakerVoice: "female",
   testReady: d10Sprint,
@@ -436,6 +448,8 @@ const d11 = advancedDay({
   rep5Turns: [
     turn("a1d11-turn1", RECRUITER, leave.text, leave.es, "male", { targetSeconds: SUSTAIN, cues: ["FACT", "POSITIVE", "NEXT"] }),
     turn("a1d11-turn2", RECRUITER, leave.followUp!.text, leave.followUp!.es, "male", { targetSeconds: DEVELOP }),
+    // REPAIR — NEEDS TIME
+    repairTurn("a1d11-repair", "time", "repair-time-3", "male"),
   ],
   speakerVoice: "male",
 });
@@ -507,6 +521,8 @@ const d12 = advancedDay({
   rep5Turns: [
     turn("a1d12-turn1", RECRUITER, failure.text, failure.es, "female", { targetSeconds: SUSTAIN, cues: ["FAILURE", "CHANGE", "RESULT"] }),
     turn("a1d12-turn2", RECRUITER, failure.followUp!.text, failure.followUp!.es, "female", { targetSeconds: DEVELOP, cues: ["EVIDENCE"] }),
+    // REPAIR — DIDN'T CATCH IT
+    repairTurn("a1d12-repair", "catch", "repair-catch-3", "female"),
   ],
   speakerVoice: "female",
   testReady: d12Sprint,
@@ -564,6 +580,8 @@ const d13 = advancedDay({
   rep5Turns: [
     turn("a1d13-turn1", RECRUITER, whyHere.text, whyHere.es, "male", { targetSeconds: SUSTAIN, cues: ["COMPANY", "MATCH", "VALUE", "FUTURE"] }),
     turn("a1d13-turn2", RECRUITER, whyHere.followUp!.text, whyHere.followUp!.es, "male", { targetSeconds: DEVELOP }),
+    // REPAIR — CONFIRM
+    repairTurn("a1d13-repair", "confirm", "repair-confirm-3", "male"),
   ],
   speakerVoice: "male",
 });
@@ -640,6 +658,10 @@ const d14 = advancedDay({
     turn("a1d14-turn2", RECRUITER, cSalary.text, cSalary.es, "female", { round: { n: 2, title: "SALARY", titleEs: "SALARIO" }, targetSeconds: DEVELOP }),
     turn("a1d14-turn3", RECRUITER, cSched.text, cSched.es, "female", { round: { n: 3, title: "SCHEDULE CHANGE", titleEs: "CAMBIO DE HORARIO" }, targetSeconds: DEVELOP }),
     turn("a1d14-turn4", RECRUITER, cPress.text, cPress.es, "female", { round: { n: 4, title: "PRESSURE", titleEs: "PRESIÓN" }, targetSeconds: [30, 50] }),
+    // REPAIR — RESTART
+    repairTurn("a1d14-repair", "restart", "repair-restart-3", "female", {
+      round: { n: 5, title: "RESTART", titleEs: "EMPIEZA DE NUEVO" },
+    }),
   ],
   speakerVoice: "female",
   testReady: d14Sprint,
@@ -720,6 +742,10 @@ const d15 = advancedDay({
     turn("a1d15-turn5", RECRUITER, hCrit.text, hCrit.es, "male", { round: { n: 4, title: "WHAT THEY'D CRITICIZE", titleEs: "QUÉ CRITICARÍAN" }, targetSeconds: DEVELOP, cues: ["TRUE & SMALL", "WHAT I DID"] }),
     turn("a1d15-turn6", RECRUITER, hNot.text, hNot.es, "male", { round: { n: 5, title: "WHY NOT HIRE YOU", titleEs: "POR QUÉ NO CONTRATARTE" }, targetSeconds: DEVELOP, cues: ["HONEST RISK", "WHY IT'S OK"] }),
     turn("a1d15-turn7", RECRUITER, hNot.followUp!.text, hNot.followUp!.es, "male", { targetSeconds: QUICK }),
+    // REPAIR — REPAIR UNDER PRESSURE
+    repairTurn("a1d15-repair", "mixed", "repair-mixed-3", "male", {
+      round: { n: 6, title: "REPAIR UNDER PRESSURE", titleEs: "REPARA BAJO PRESIÓN" },
+    }),
   ],
   speakerVoice: "male",
   testReady: d15Sprint,
@@ -796,6 +822,8 @@ const d16 = advancedDay({
   rep5Turns: [
     turn("a1d16-turn1", RECRUITER, journey.text, journey.es, "female", { targetSeconds: [75, 90], cues: ["PAST", "PRESENT", "FUTURE"] }),
     turn("a1d16-turn2", RECRUITER, journey.followUp!.text, journey.followUp!.es, "female", { targetSeconds: DEVELOP }),
+    // REPAIR — NEEDS TIME
+    repairTurn("a1d16-repair", "time", "repair-time-4", "female"),
   ],
   speakerVoice: "female",
   testReady: d16Sprint,
@@ -855,6 +883,8 @@ const d17 = advancedDay({
   rep5Turns: [
     turn("a1d17-turn1", RECRUITER, compProblem.text, compProblem.es, "male", { targetSeconds: SUSTAIN, cues: ["SITUATION", "WHAT I DID", "RESULT"] }),
     turn("a1d17-turn2", RECRUITER, compProblem.followUp!.text, compProblem.followUp!.es, "male", { targetSeconds: DEVELOP }),
+    // REPAIR — DIDN'T CATCH IT
+    repairTurn("a1d17-repair", "catch", "repair-catch-4", "male"),
   ],
   rep5Skeleton: ["SITUATION", "WHAT I DID", "RESULT", "NEW DETAIL"],
   rep5Scenarios: [
@@ -868,6 +898,8 @@ const d17 = advancedDay({
       rep5Turns: [
         turn("a1d17-s1-turn1", RECRUITER, compProblem.text, compProblem.es, "male", { targetSeconds: SUSTAIN, cues: ["SITUATION", "WHAT I DID", "RESULT"] }),
         turn("a1d17-s1-turn2", RECRUITER, compProblem.followUp!.text, compProblem.followUp!.es, "male", { targetSeconds: DEVELOP }),
+        // REPAIR — DIDN'T CATCH IT
+        repairTurn("a1d17-s1-repair", "catch", "repair-catch-4", "male"),
       ],
     },
     {
@@ -880,6 +912,8 @@ const d17 = advancedDay({
       rep5Turns: [
         turn("a1d17-s2-turn1", RECRUITER, compLearn.text, compLearn.es, "female", { targetSeconds: SUSTAIN, cues: ["SITUATION", "WHAT I DID", "RESULT"] }),
         turn("a1d17-s2-turn2", RECRUITER, compLearn.followUp!.text, compLearn.followUp!.es, "female", { targetSeconds: DEVELOP }),
+        // REPAIR — DIDN'T CATCH IT
+        repairTurn("a1d17-s2-repair", "catch", "repair-catch-4", "female"),
       ],
     },
     {
@@ -892,6 +926,8 @@ const d17 = advancedDay({
       rep5Turns: [
         turn("a1d17-s3-turn1", RECRUITER, compPressure.text, compPressure.es, "male", { targetSeconds: SUSTAIN, cues: ["SITUATION", "WHAT I DID", "RESULT"] }),
         turn("a1d17-s3-turn2", RECRUITER, compPressure.followUp!.text, compPressure.followUp!.es, "male", { targetSeconds: DEVELOP }),
+        // REPAIR — DIDN'T CATCH IT
+        repairTurn("a1d17-s3-repair", "catch", "repair-catch-4", "male"),
       ],
     },
   ],
@@ -969,6 +1005,10 @@ const d18 = advancedDay({
     turn("a1d18-turn1", RECRUITER, czDecision.text, czDecision.es, "female", { round: { n: 1, title: "UNEXPECTED QUESTION", titleEs: "PREGUNTA INESPERADA" }, prepSeconds: 10, targetSeconds: [45, 60], framework: THINK }),
     turn("a1d18-turn2", RECRUITER, czMoney.text, czMoney.es, "female", { round: { n: 2, title: "UNEXPECTED QUESTION", titleEs: "PREGUNTA INESPERADA" }, prepSeconds: 10, targetSeconds: [45, 60], cues: ["ANSWER", "WHY", "EXAMPLE", "CLOSE"] }),
     turn("a1d18-turn3", RECRUITER, czLive.text, czLive.es, "female", { round: { n: 3, title: "UNEXPECTED QUESTION", titleEs: "PREGUNTA INESPERADA" }, prepSeconds: 10, targetSeconds: [45, 60] }),
+    // REPAIR — CONFIRM
+    repairTurn("a1d18-repair", "confirm", "repair-confirm-4", "female", {
+      round: { n: 4, title: "CONFIRM", titleEs: "CONFIRMA" },
+    }),
   ],
   speakerVoice: "female",
   testReady: d18Sprint,
@@ -1036,6 +1076,10 @@ const d19 = advancedDay({
     turn("a1d19-turn3", CUSTOMER, csCalls.followUp!.text, csCalls.followUp!.es, "female", { targetSeconds: DEVELOP, toolbox: ["Here's exactly what happens next:", "I'll call you back myself before…"] }),
     turn("a1d19-turn4", RECRUITER, sellPhone.text, sellPhone.es, "male", { round: { n: 3, title: "SALES CHALLENGE", titleEs: "RETO DE VENTAS" }, targetSeconds: [45, 60], cues: ["THEIR NEED", "ONE DIFFERENCE", "CLOSE"] }),
     turn("a1d19-turn5", RECRUITER, sellPhone.followUp!.text, sellPhone.followUp!.es, "male", { targetSeconds: QUICK }),
+    // REPAIR — RESTART
+    repairTurn("a1d19-repair", "restart", "repair-restart-4", "male", {
+      round: { n: 4, title: "RESTART", titleEs: "EMPIEZA DE NUEVO" },
+    }),
   ],
   speakerVoice: "male",
 });
@@ -1136,6 +1180,10 @@ const d20 = advancedDay({
     turn("a1d20-turn10", CUSTOMER, f7.followUp!.text, f7.followUp!.es, "male", { targetSeconds: QUICK, toolbox: ["Here's exactly what happens next:", "I'll confirm with you by…"] }),
     // ROUND 8 — FUTURE
     turn("a1d20-turn11", RECRUITER, f8.text, f8.es, "female", { round: { n: 8, title: "FUTURE", titleEs: "FUTURO" }, targetSeconds: DEVELOP }),
+    // REPAIR — REPAIR UNDER PRESSURE
+    repairTurn("a1d20-repair", "mixed", "repair-mixed-4", "female", {
+      round: { n: 9, title: "REPAIR UNDER PRESSURE", titleEs: "REPARA BAJO PRESIÓN" },
+    }),
   ],
   speakerVoice: "female",
   testReady: d20Sprint,
