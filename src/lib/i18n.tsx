@@ -40,6 +40,7 @@ const DICT = {
   "practice.recordMe": ["GRABARME", "RECORD ME"],
   "practice.listenToMe": ["ESCUCHARME", "LISTEN TO ME"],
   "practice.answer": ["RESPONDER", "ANSWER"],
+  "practice.todayYouAnswer": ["HOY RESPONDES:", "TODAY YOU ANSWER:"],
   "practice.nextRep": ["SIGUIENTE REP", "NEXT REP"],
   "practice.nextSentence": ["SIGUIENTE FRASE", "NEXT SENTENCE"],
   "practice.nextQuestion": ["SIGUIENTE PREGUNTA", "NEXT QUESTION"],
