@@ -195,7 +195,16 @@ export function TakeBoard({
         const isActive = index === firstEmpty;
         const isFinal = finalIndex === index;
         const playing = playingIndex === index;
-        const turn = turns?.[index];
+        // Classic role play: takes beyond the scripted turns are retries of a chosen turn.
+        const isRetrySlot = rolePlay && !pressure && index >= turns!.length;
+        let retryIndex: number | null = null;
+        if (isRetrySlot) {
+          const fromLabel = take?.label?.match(/^turn:(\d+)$/);
+          const lastRecorded = takes.slice(0, turns!.length).reduce((acc, x, i) => (x ? i : acc), -1);
+          retryIndex = fromLabel ? Number(fromLabel[1]) : (retryTurn[index] ?? (lastRecorded >= 0 ? lastRecorded : 0));
+          retryIndex = Math.min(Math.max(retryIndex, 0), turns!.length - 1);
+        }
+        const turn = isRetrySlot ? turns![retryIndex!] : turns?.[index];
         // Pressure Round: future rounds stay fully hidden until the learner gets there.
         if (pressure && !take && !isActive) return null;
         const turnTarget = turn?.targetSeconds ?? goalSeconds;
@@ -207,7 +216,7 @@ export function TakeBoard({
 
         return (
           <div key={index} className="space-y-3">
-          {pressure && turn?.round && (isActive || take) ? (
+            {pressure && turn?.round && (isActive || take) ? (
             <div className="rounded-2xl bg-navy px-4 py-3 text-navy-foreground">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-primary">
                 {t("take.round")} {turn.round.n}
