@@ -316,6 +316,31 @@ const DICT = {
   "account.cancel": ["Cancelar", "Cancel"],
   "account.resetAll": ["Borrar todo", "Reset everything"],
   "account.checkEmail": ["Revisa tu correo para confirmar tu cuenta.", "Check your email to confirm your account."],
+  "account.modeLabel": ["Entrar o crear cuenta", "Sign in or create account"],
+  "account.modeSignIn": ["ENTRAR", "SIGN IN"],
+  "account.modeSignUp": ["CREAR CUENTA", "CREATE ACCOUNT"],
+  "account.wrongCredentials": [
+    "Correo o contraseña incorrectos. Intenta de nuevo o restablece tu contraseña.",
+    "Wrong email or password. Try again or reset your password.",
+  ],
+  "account.emailNotConfirmed": [
+    "Tu correo aún no está confirmado. Revisa tu bandeja o reenvía el correo de confirmación.",
+    "Your email is not confirmed yet. Check your inbox or resend the confirmation email.",
+  ],
+  "account.forgotPassword": ["¿Olvidaste tu contraseña?", "Forgot your password?"],
+  "account.resetSent": [
+    "Te enviamos un enlace para restablecer tu contraseña. Revisa tu correo.",
+    "We sent you a password reset link. Check your email.",
+  ],
+  "account.resendConfirmation": ["REENVIAR CORREO DE CONFIRMACIÓN", "RESEND CONFIRMATION EMAIL"],
+  "reset.title": ["NUEVA CONTRASEÑA", "NEW PASSWORD"],
+  "reset.newPassword": ["Nueva contraseña (mínimo 6 caracteres)", "New password (min 6 characters)"],
+  "reset.submit": ["GUARDAR CONTRASEÑA", "SAVE PASSWORD"],
+  "reset.done": ["Listo. Tu contraseña fue actualizada.", "Done. Your password was updated."],
+  "reset.invalid": [
+    "Este enlace no es válido o ya expiró. Pide un nuevo enlace desde la pantalla de inicio de sesión.",
+    "This link is invalid or has expired. Request a new one from the sign-in screen.",
+  ],
   "account.googleFailed": [
     "No se pudo iniciar sesión con Google. Intenta de nuevo.",
     "Google sign-in failed. Try again.",
