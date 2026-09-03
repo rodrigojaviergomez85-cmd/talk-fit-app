@@ -103,6 +103,7 @@ const DICT = {
   "take.listenCustomer": ["ESCUCHA AL CLIENTE", "LISTEN TO THE CUSTOMER"],
   "take.respond": ["Responde al cliente", "Respond to the customer"],
   "take.retryHint": ["Repite cualquier turno", "Retry any turn"],
+  "take.whichTurn": ["¿Qué turno repites?", "Which turn are you retrying?"],
 
   // Power Chunks (EAGLES)
   "power.title": ["POWER CHUNKS", "POWER CHUNKS"],

@@ -110,6 +110,8 @@ export function TakeBoard({
   const [prepDone, setPrepDone] = useState<number[]>([]);
   /** Recognition step: which framework the learner tapped per slot. Never scored, never persisted. */
   const [picked, setPicked] = useState<Record<number, string>>({});
+  /** Retry takes (classic role play): which turn the learner is repeating per slot. */
+  const [retryTurn, setRetryTurn] = useState<Record<number, number>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -193,7 +195,16 @@ export function TakeBoard({
         const isActive = index === firstEmpty;
         const isFinal = finalIndex === index;
         const playing = playingIndex === index;
-        const turn = turns?.[index];
+        // Classic role play: takes beyond the scripted turns are retries of a chosen turn.
+        const isRetrySlot = rolePlay && !pressure && index >= turns!.length;
+        let retryIndex: number | null = null;
+        if (isRetrySlot) {
+          const fromLabel = take?.label?.match(/^turn:(\d+)$/);
+          const lastRecorded = takes.slice(0, turns!.length).reduce((acc, x, i) => (x ? i : acc), -1);
+          retryIndex = fromLabel ? Number(fromLabel[1]) : (retryTurn[index] ?? (lastRecorded >= 0 ? lastRecorded : 0));
+          retryIndex = Math.min(Math.max(retryIndex, 0), turns!.length - 1);
+        }
+        const turn = isRetrySlot ? turns![retryIndex!] : turns?.[index];
         // Pressure Round: future rounds stay fully hidden until the learner gets there.
         if (pressure && !take && !isActive) return null;
         const turnTarget = turn?.targetSeconds ?? goalSeconds;
@@ -205,7 +216,7 @@ export function TakeBoard({
 
         return (
           <div key={index} className="space-y-3">
-          {pressure && turn?.round && (isActive || take) ? (
+            {pressure && turn?.round && (isActive || take) ? (
             <div className="rounded-2xl bg-navy px-4 py-3 text-navy-foreground">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-primary">
                 {t("take.round")} {turn.round.n}
@@ -233,7 +244,11 @@ export function TakeBoard({
           >
             <div className="flex items-center justify-between gap-2">
               <p className="flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.16em]">
-                {turn ? `${t("take.turn")} ${index + 1}` : `${t("take.take")} ${index + 1}`}
+                {isRetrySlot
+                  ? `${t("take.take")} ${index + 1} · ${t("take.turn")} ${retryIndex! + 1}`
+                  : turn
+                    ? `${t("take.turn")} ${index + 1}`
+                    : `${t("take.take")} ${index + 1}`}
                 {take ? <Check className="size-4 text-success" /> : null}
               </p>
               {optional && !take ? (
@@ -252,6 +267,27 @@ export function TakeBoard({
                 </span>
               ) : null}
             </div>
+
+            {isRetrySlot && isActive && !take ? (
+              <div className="mt-3 space-y-2">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted-foreground">{t("take.whichTurn")}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {turns!.map((_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setRetryTurn((prev) => ({ ...prev, [index]: i }))}
+                      className={cn(
+                        "min-h-[40px] rounded-full border px-3.5 text-[11px] font-extrabold uppercase tracking-[0.14em] transition-colors",
+                        i === retryIndex ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground",
+                      )}
+                    >
+                      {t("take.turn")} {i + 1}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
 
             {showTurn && turn?.framework && isActive ? (
               <div className="mt-3 rounded-2xl border border-primary/25 bg-accent p-3">
@@ -388,7 +424,7 @@ export function TakeBoard({
                       size="md"
                       targetSeconds={turnTarget}
                       maxSeconds={turnMax}
-                      onComplete={(rec) => onRecorded(index, rec)}
+                      onComplete={(rec) => onRecorded(index, isRetrySlot ? { ...rec, label: `turn:${retryIndex}` } : rec)}
                     />
                   </>
                 )}
