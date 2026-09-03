@@ -110,6 +110,8 @@ export function TakeBoard({
   const [prepDone, setPrepDone] = useState<number[]>([]);
   /** Recognition step: which framework the learner tapped per slot. Never scored, never persisted. */
   const [picked, setPicked] = useState<Record<number, string>>({});
+  /** Retry takes (classic role play): which turn the learner is repeating per slot. */
+  const [retryTurn, setRetryTurn] = useState<Record<number, number>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
