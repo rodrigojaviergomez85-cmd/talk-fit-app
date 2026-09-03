@@ -762,6 +762,8 @@ function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseD
         </TranslatableText>
       </div>
 
+      <QuestionBanner day={day} />
+
       <SceneImage day={day} />
 
       {first ? (
@@ -953,6 +955,8 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
     <div className="space-y-5">
       <RepHeader titleKey="rep1.title" instrKey="rep1.instr" copy={day.repCopy?.rep1} />
 
+      <QuestionBanner day={day} />
+
       <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} />
 
       <SceneImage day={day} />
@@ -1060,6 +1064,8 @@ function Rep2Copy({
     <div className="space-y-5">
       <RepHeader titleKey="rep2.title" instrKey="rep2.instr" copy={day.repCopy?.rep2} />
 
+      <QuestionBanner day={day} />
+
       <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} />
 
       <SceneImage day={day} />
@@ -1115,6 +1121,8 @@ function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (
       <div className="rounded-3xl bg-navy p-5">
         <RepHeader titleKey="rep3.title" instrKey="rep3.instr" cueKey="rep3.cue" dark copy={day.repCopy?.rep3} />
       </div>
+
+      <QuestionBanner day={day} />
 
       <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} />
 
