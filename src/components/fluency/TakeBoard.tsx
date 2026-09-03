@@ -108,6 +108,8 @@ export function TakeBoard({
   const { lang } = useAppLang();
   const [playingIndex, setPlayingIndex] = useState<number | null>(null);
   const [prepDone, setPrepDone] = useState<number[]>([]);
+  /** Recognition step: which framework the learner tapped per slot. Never scored, never persisted. */
+  const [picked, setPicked] = useState<Record<number, string>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -285,11 +287,25 @@ export function TakeBoard({
                     ))}
                   </div>
                 ) : null}
+                {turn.variantTip && !take ? (
+                  <div className="rounded-2xl border border-primary/30 bg-primary/10 p-3">
+                    <p className="text-[13px] font-bold leading-snug text-navy-foreground">{turn.variantTip.es}</p>
+                    <p className="mt-1 text-[12px] leading-snug text-navy-foreground/70">{turn.variantTip.text}</p>
+                  </div>
+                ) : null}
                 {turn.repairTip && !take ? (
                   <div className="rounded-2xl border border-primary/30 bg-primary/10 p-3">
                     <p className="text-[13px] font-bold leading-snug text-navy-foreground">{turn.repairTip.es}</p>
                     <p className="mt-1 text-[12px] leading-snug text-navy-foreground/70">{turn.repairTip.text}</p>
                   </div>
+                ) : null}
+                {turn.recognition && !take ? (
+                  <RecognitionStep
+                    recognition={turn.recognition}
+                    picked={picked[index] ?? null}
+                    onPick={(id) => setPicked((prev) => ({ ...prev, [index]: id }))}
+                    es={es}
+                  />
                 ) : null}
                 {turn.toolbox?.length && !take ? (
                   <div className="pt-1">
@@ -487,3 +503,77 @@ function SentenceLine({ take, goal, t }: { take: Recording; goal: number; t: (ke
   );
 }
 
+
+/* ------------------------------ Recognition ------------------------------ */
+
+/**
+ * "¿QUÉ TE ESTÁN PIDIENDO?" — one tap among the week's frameworks. Practice,
+ * not a test: no score, no penalty, and recording is never gated on it. If the
+ * pick differs from the expected type, both are shown side by side.
+ */
+function RecognitionStep({
+  recognition,
+  picked,
+  onPick,
+  es,
+}: {
+  recognition: NonNullable<RolePlayTurn["recognition"]>;
+  picked: string | null;
+  onPick: (id: string) => void;
+  es: boolean;
+}) {
+  const chosen = recognition.options.find((o) => o.id === picked) ?? null;
+  const expected = recognition.options.find((o) => o.id === recognition.expected) ?? null;
+  const differs = Boolean(chosen && expected && chosen.id !== expected.id);
+
+  return (
+    <div className="space-y-2 rounded-2xl border border-primary/30 bg-primary/10 p-3">
+      <p className="text-[13px] font-extrabold tracking-wide text-navy-foreground">{es ? recognition.promptEs : recognition.prompt}</p>
+      <p className="text-[11px] text-navy-foreground/60">{es ? recognition.prompt : recognition.promptEs}</p>
+      <div className="flex flex-wrap gap-1.5">
+        {recognition.options.map((option) => {
+          const active = option.id === picked;
+          return (
+            <button
+              key={option.id}
+              type="button"
+              onClick={() => onPick(option.id)}
+              aria-pressed={active}
+              className={cn(
+                "min-h-[44px] rounded-full border px-3.5 py-2 text-[11px] font-extrabold uppercase tracking-[0.12em] transition-colors",
+                active ? "border-primary bg-primary text-primary-foreground" : "border-navy-foreground/30 text-navy-foreground",
+              )}
+            >
+              {es ? option.labelEs : option.label}
+            </button>
+          );
+        })}
+      </div>
+      {chosen ? (
+        <div className="space-y-2 pt-1">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
+              {es ? "TU ESTRUCTURA" : "YOUR STRUCTURE"} · {es ? chosen.labelEs : chosen.label}
+            </p>
+            <p className="mt-1 text-[12px] font-extrabold tracking-wide text-navy-foreground">{chosen.cues.join(" → ")}</p>
+          </div>
+          {differs && expected ? (
+            <div className="rounded-xl border border-navy-foreground/20 p-2.5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-navy-foreground/70">
+                {es ? "ESPERÁBAMOS" : "WE EXPECTED"} · {es ? expected.labelEs : expected.label}
+              </p>
+              <p className="mt-1 text-[12px] font-extrabold tracking-wide text-navy-foreground/85">{expected.cues.join(" → ")}</p>
+              <p className="mt-1.5 text-[12px] font-semibold leading-snug text-navy-foreground/80">
+                {es ? "Tu estructura también sirve. Graba con la que prefieras." : "Your structure works too. Record with whichever you prefer."}
+              </p>
+            </div>
+          ) : null}
+        </div>
+      ) : (
+        <p className="text-[11px] leading-snug text-navy-foreground/70">
+          {es ? "Toca una opción o graba directo — no hay respuesta incorrecta." : "Tap an option or record right away — there is no wrong answer."}
+        </p>
+      )}
+    </div>
+  );
+}

@@ -14,7 +14,7 @@
 import type { CourseDay, RepCopy, RolePlayTurn, TestReadySprint } from "@/lib/types";
 import { l, makeDay, type EaglesDayInput, type WeekMeta } from "./course-builders";
 import { q, chunks4 } from "./course-builders";
-import { bankQuestion } from "./advanced-question-bank";
+import { bankQuestion, bankVariant } from "./advanced-question-bank";
 
 import sceneD1 from "@/assets/advanced-1/scene-d01.jpg";
 import sceneD2 from "@/assets/advanced-1/scene-d02.jpg";
@@ -145,6 +145,79 @@ export function repairTurn(
   });
 }
 
+/* ---------------------------------------------------------------------- */
+/* QUESTION VARIANTS — recognition training, not memorization.            */
+/* Reps 1–3 always use the canonical question. Rep 5 turn 1 asks the SAME */
+/* question in different recruiter words (one FIXED variant per day).     */
+/* ---------------------------------------------------------------------- */
+
+export const VARIANT_TIP = {
+  es: "Es la misma pregunta con otras palabras. Usa la misma estructura.",
+  text: "Same question, different words. Use the same structure.",
+};
+
+/** Rep 5 turn 1 built from a fixed variant of the day's canonical bank question. */
+export function variantTurn(
+  id: string,
+  who: typeof RECRUITER,
+  bankId: string,
+  variantIndex: number,
+  voice: "female" | "male",
+  extra: Partial<RolePlayTurn> = {},
+): RolePlayTurn {
+  const v = bankVariant(bankId, variantIndex);
+  return turn(id, who, v.text, v.es, voice, { variantTip: VARIANT_TIP, ...extra });
+}
+
+/* ---------------------------------------------------------------------- */
+/* ACTIVE RECOGNITION — Day 5 of each week.                                */
+/* "¿QUÉ TE ESTÁN PIDIENDO?" → one tap among the frameworks taught that    */
+/* week. Never scored, never blocks recording.                            */
+/* ---------------------------------------------------------------------- */
+
+export type RecognitionFrameworkId = "story" | "evidence" | "opinion" | "weakness" | "service" | "sales" | "unexpected" | "future";
+
+export const RECOGNITION_FRAMEWORKS: Record<RecognitionFrameworkId, { label: string; labelEs: string; cues: string[] }> = {
+  story: { label: "A STORY", labelEs: "UNA HISTORIA", cues: ["SITUATION", "WHAT YOU DID", "RESULT", "LESSON"] },
+  evidence: { label: "EVIDENCE", labelEs: "EVIDENCIA", cues: ["CLAIM", "EVIDENCE", "VALUE"] },
+  opinion: { label: "AN OPINION", labelEs: "UNA OPINIÓN", cues: ["CHOOSE", "WHY", "EXAMPLE", "CLOSE"] },
+  weakness: { label: "A WEAKNESS", labelEs: "UNA DEBILIDAD", cues: ["WEAKNESS", "ACTION", "PROGRESS"] },
+  service: { label: "CUSTOMER SERVICE", labelEs: "SERVICIO AL CLIENTE", cues: ["ACKNOWLEDGE", "CLARIFY", "SOLUTION", "CONFIRM"] },
+  sales: { label: "A SALE", labelEs: "UNA VENTA", cues: ["NEED", "BENEFIT", "OBJECTION", "CLOSE"] },
+  unexpected: { label: "UNEXPECTED QUESTION", labelEs: "PREGUNTA INESPERADA", cues: ["CHOOSE", "WHY", "EXAMPLE / CONSEQUENCE", "CLOSE"] },
+  future: { label: "YOUR FUTURE", labelEs: "TU FUTURO", cues: ["GOAL", "WHY", "PLAN", "FIT"] },
+};
+
+export const RECOGNITION_ROUND = { title: "RECOGNIZE THE QUESTION", titleEs: "RECONOCE LA PREGUNTA" };
+
+/**
+ * One recognition turn: a NON-canonical phrasing of a bank question plus the
+ * week's framework options. `expected` is shown alongside the learner's pick
+ * when they differ — never as a wrong answer.
+ */
+export function recognitionTurn(
+  id: string,
+  who: typeof RECRUITER,
+  bankId: string,
+  variantIndex: number,
+  voice: "female" | "male",
+  options: RecognitionFrameworkId[],
+  expected: RecognitionFrameworkId,
+  extra: Partial<RolePlayTurn> = {},
+): RolePlayTurn {
+  const v = bankVariant(bankId, variantIndex);
+  return turn(id, who, v.text, v.es, voice, {
+    targetSeconds: [25, 40],
+    recognition: {
+      prompt: "WHAT ARE THEY ASKING YOU FOR?",
+      promptEs: "¿QUÉ TE ESTÁN PIDIENDO?",
+      options: options.map((fid) => ({ id: fid, ...RECOGNITION_FRAMEWORKS[fid] })),
+      expected,
+    },
+    ...extra,
+  });
+}
+
 /* ============================ DAY 1 — TELL ME ABOUT YOURSELF ============================ */
 
 const tmay = bankQuestion("tmay-1");
@@ -195,7 +268,7 @@ const d1 = advancedDay({
     es: "Usa la estructura, no el modelo: AHORA → EXPERIENCIA → FORTALEZA → EJEMPLO → META. Detalles reales de TU vida.",
   },
   rep5Turns: [
-    turn("a1d1-turn1", RECRUITER, tmay.text, tmay.es, "female", { targetSeconds: [60, 75], cues: ["NOW", "BACKGROUND", "STRENGTH", "EXAMPLE", "GOAL"] }),
+    variantTurn("a1d1-turn1", RECRUITER, "tmay-1", 0, "female", { targetSeconds: [60, 75], cues: ["NOW", "BACKGROUND", "STRENGTH", "EXAMPLE", "GOAL"] }),
     turn("a1d1-turn2", RECRUITER, tmay.followUp!.text, tmay.followUp!.es, "female", { targetSeconds: QUICK }),
     // REPAIR — NEEDS TIME
     repairTurn("a1d1-repair", "time", "repair-time-1", "female"),
@@ -268,7 +341,7 @@ const d2 = advancedDay({
     es: "Tu propia historia: ESCENA → ACCIÓN (was/were + -ing) → PROBLEMA → REACCIÓN → RESULTADO / LECCIÓN.",
   },
   rep5Turns: [
-    turn("a1d2-turn1", RECRUITER, story.text, story.es, "male", { targetSeconds: [60, 75], cues: ["SETTING", "ACTION", "PROBLEM", "REACTION", "LESSON"] }),
+    variantTurn("a1d2-turn1", RECRUITER, "story-1", 0, "male", { targetSeconds: [60, 75], cues: ["SETTING", "ACTION", "PROBLEM", "REACTION", "LESSON"] }),
     turn("a1d2-turn2", RECRUITER, story.followUp!.text, story.followUp!.es, "male", { targetSeconds: QUICK }),
     // REPAIR — DIDN'T CATCH IT
     repairTurn("a1d2-repair", "catch", "repair-catch-1", "male"),
@@ -327,7 +400,7 @@ const d3 = advancedDay({
     es: "AFIRMACIÓN → EVIDENCIA → VALOR. Si el reclutador insiste: no repitas tu respuesta — agrega un ejemplo, prueba o resultado nuevo.",
   },
   rep5Turns: [
-    turn("a1d3-turn1", RECRUITER, hire.text, hire.es, "female", { targetSeconds: [60, 75], cues: ["CLAIM", "EVIDENCE", "VALUE"] }),
+    variantTurn("a1d3-turn1", RECRUITER, "hire-1", 0, "female", { targetSeconds: [60, 75], cues: ["CLAIM", "EVIDENCE", "VALUE"] }),
     turn("a1d3-turn2", RECRUITER, hire.followUp!.text, hire.followUp!.es, "female", { targetSeconds: [30, 45], cues: ["NEW REASON", "PROOF", "RESULT"] }),
     // REPAIR — CONFIRM
     repairTurn("a1d3-repair", "confirm", "repair-confirm-1", "female"),
@@ -406,7 +479,7 @@ const d4 = advancedDay({
     es: "DEBILIDAD → ACCIÓN → PROGRESO → SIGUIENTE PASO. Luego conéctala con un call center y después tus tres metas concretas.",
   },
   rep5Turns: [
-    turn("a1d4-turn1", RECRUITER, weak.text, weak.es, "male", { targetSeconds: [45, 60], cues: ["WEAKNESS", "ACTION", "PROGRESS", "NEXT STEP"] }),
+    variantTurn("a1d4-turn1", RECRUITER, "weak-1", 0, "male", { targetSeconds: [45, 60], cues: ["WEAKNESS", "ACTION", "PROGRESS", "NEXT STEP"] }),
     turn("a1d4-turn2", RECRUITER, weak.followUp!.text, weak.followUp!.es, "male", { targetSeconds: [30, 45] }),
     turn("a1d4-turn3", RECRUITER, goal.text, goal.es, "male", { targetSeconds: [30, 45], cues: ["FIRST", "SECOND", "THIRD"] }),
     // REPAIR — RESTART
@@ -423,6 +496,7 @@ const r2 = bankQuestion("hire-2");
 const r3 = bankQuestion("weak-2");
 const r4 = bankQuestion("crazy-1");
 const r5 = bankQuestion("cs-tour-1");
+const W1_RECOGNITION: RecognitionFrameworkId[] = ["story", "evidence", "opinion", "service"];
 
 const d5Sprint: TestReadySprint = {
   type: "mixed",
@@ -531,9 +605,14 @@ const d5 = advancedDay({
       cues: ["SOLUTION", "CONFIRM"],
       toolbox: ["Here's what I can do.", "Does that work for you?"],
     }),
-    // REPAIR — MIXED, under pressure (Round 6)
+    // ROUND 6 — RECOGNIZE THE QUESTION (different types, non-canonical words)
+    recognitionTurn("a1d5-rec1", RECRUITER, "hire-1", 1, "female", W1_RECOGNITION, "evidence", { round: { n: 6, ...RECOGNITION_ROUND } }),
+    recognitionTurn("a1d5-rec2", RECRUITER, "story-1", 2, "female", W1_RECOGNITION, "story"),
+    recognitionTurn("a1d5-rec3", RECRUITER, "crazy-live", 0, "female", W1_RECOGNITION, "opinion"),
+    recognitionTurn("a1d5-rec4", CUSTOMER, "cs-calls-1", 0, "male", W1_RECOGNITION, "service"),
+    // REPAIR — MIXED, under pressure (Round 7)
     repairTurn("a1d5-repair", "mixed", "repair-mixed-1", "female", {
-      round: { n: 6, title: "REPAIR UNDER PRESSURE", titleEs: "REPARA BAJO PRESIÓN" },
+      round: { n: 7, title: "REPAIR UNDER PRESSURE", titleEs: "REPARA BAJO PRESIÓN" },
     }),
   ],
   speakerVoice: "female",

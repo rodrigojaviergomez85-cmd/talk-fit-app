@@ -16,7 +16,19 @@
 import type { CourseDay, TestReadySprint } from "@/lib/types";
 import { l, q, chunks4 } from "./course-builders";
 import { bankQuestion } from "./advanced-question-bank";
-import { advancedDay, turn, repairTurn, START, RECRUITER, CUSTOMER, QUICK } from "./advanced-1-course";
+import {
+  advancedDay,
+  turn,
+  repairTurn,
+  variantTurn,
+  recognitionTurn,
+  RECOGNITION_ROUND,
+  type RecognitionFrameworkId,
+  START,
+  RECRUITER,
+  CUSTOMER,
+  QUICK,
+} from "./advanced-1-course";
 
 import sceneD6 from "@/assets/advanced-1/scene-d06.jpg";
 import sceneD7 from "@/assets/advanced-1/scene-d07.jpg";
@@ -91,7 +103,7 @@ const d6 = advancedDay({
     es: "SITUACIÓN → ACCIÓN → RESULTADO → LECCIÓN. Usa 'I', no 'we', cuando describas la acción.",
   },
   rep5Turns: [
-    turn("a1d6-turn1", RECRUITER, challenge.text, challenge.es, "female", { targetSeconds: SUSTAIN, cues: ["SITUATION", "ACTION", "RESULT", "LESSON"] }),
+    variantTurn("a1d6-turn1", RECRUITER, "challenge-1", 0, "female", { targetSeconds: SUSTAIN, cues: ["SITUATION", "ACTION", "RESULT", "LESSON"] }),
     turn("a1d6-turn2", RECRUITER, challenge.followUp!.text, challenge.followUp!.es, "female", { targetSeconds: DEVELOP, cues: ["I decided…", "I talked to…", "I took…"] }),
     // REPAIR — NEEDS TIME
     repairTurn("a1d6-repair", "time", "repair-time-2", "female"),
@@ -164,7 +176,7 @@ const d7 = advancedDay({
     es: "ERROR → RESPONSABILIDAD → ACCIÓN → LECCIÓN. Si te escuchas culpando a alguien, detente y vuelve a empezar la oración con 'I'.",
   },
   rep5Turns: [
-    turn("a1d7-turn1", RECRUITER, mistake.text, mistake.es, "male", { targetSeconds: SUSTAIN, cues: ["MISTAKE", "RESPONSIBILITY", "ACTION", "LESSON"] }),
+    variantTurn("a1d7-turn1", RECRUITER, "mistake-1", 0, "male", { targetSeconds: SUSTAIN, cues: ["MISTAKE", "RESPONSIBILITY", "ACTION", "LESSON"] }),
     turn("a1d7-turn2", RECRUITER, mistake.followUp!.text, mistake.followUp!.es, "male", { targetSeconds: DEVELOP, cues: ["TODAY I WOULD…", "BECAUSE…"] }),
     // REPAIR — DIDN'T CATCH IT
     repairTurn("a1d7-repair", "catch", "repair-catch-2", "male"),
@@ -223,7 +235,7 @@ const d8 = advancedDay({
     es: "SITUACIÓN → PROBLEMA → RESPUESTA → RESULTADO. Dedica más tiempo a TU respuesta, no a lo mala que era la otra persona.",
   },
   rep5Turns: [
-    turn("a1d8-turn1", RECRUITER, difficult.text, difficult.es, "female", { targetSeconds: SUSTAIN, cues: ["SITUATION", "PROBLEM", "RESPONSE", "RESULT"] }),
+    variantTurn("a1d8-turn1", RECRUITER, "difficult-1", 0, "female", { targetSeconds: SUSTAIN, cues: ["SITUATION", "PROBLEM", "RESPONSE", "RESULT"] }),
     turn("a1d8-turn2", RECRUITER, difficult.followUp!.text, difficult.followUp!.es, "female", { targetSeconds: DEVELOP, cues: ["I stayed calm…", "I asked…", "I focused on…"] }),
     // REPAIR — CONFIRM
     repairTurn("a1d8-repair", "confirm", "repair-confirm-2", "female"),
@@ -296,7 +308,7 @@ const d9 = advancedDay({
     es: "NECESIDAD → ACCIÓN → RESULTADO → POR QUÉ IMPORTÓ. El último paso es lo que te hace sonar como alguien a quien le importan los clientes.",
   },
   rep5Turns: [
-    turn("a1d9-turn1", RECRUITER, helped.text, helped.es, "male", { targetSeconds: SUSTAIN, cues: ["NEED", "ACTION", "RESULT", "WHY"] }),
+    variantTurn("a1d9-turn1", RECRUITER, "helped-1", 0, "male", { targetSeconds: SUSTAIN, cues: ["NEED", "ACTION", "RESULT", "WHY"] }),
     turn("a1d9-turn2", RECRUITER, helped.followUp!.text, helped.followUp!.es, "male", { targetSeconds: DEVELOP, cues: ["FOR THAT PERSON…", "FOR THE TEAM…"] }),
     // REPAIR — RESTART
     repairTurn("a1d9-repair", "restart", "repair-restart-2", "male"),
@@ -311,6 +323,7 @@ const b1 = bankQuestion("challenge-1");
 const b2 = bankQuestion("mistake-1");
 const b3 = bankQuestion("helped-1");
 const b4 = bankQuestion("pressure-1");
+const W2_RECOGNITION: RecognitionFrameworkId[] = ["story", "evidence", "weakness", "service"];
 const fuNext = bankQuestion("fu-next");
 const fuLearn = bankQuestion("fu-learn");
 
@@ -383,8 +396,13 @@ const d10 = advancedDay({
     turn("a1d10-turn6", RECRUITER, b4.text, b4.es, "female", { round: { n: 4, title: "UNDER PRESSURE", titleEs: "BAJO PRESIÓN" }, targetSeconds: [45, 60], cues: ["SITUATION", "ACTION", "RESULT"] }),
     turn("a1d10-turn7", RECRUITER, fuLearn.text, fuLearn.es, "female", { targetSeconds: QUICK, cues: ["LESSON → THIS JOB"] }),
     // REPAIR — REPAIR UNDER PRESSURE
+    // ROUND 5 — RECOGNIZE THE QUESTION
+    recognitionTurn("a1d10-rec1", RECRUITER, "difficult-1", 1, "female", W2_RECOGNITION, "story", { round: { n: 5, ...RECOGNITION_ROUND } }),
+    recognitionTurn("a1d10-rec2", RECRUITER, "hire-2", 1, "female", W2_RECOGNITION, "evidence"),
+    recognitionTurn("a1d10-rec3", RECRUITER, "weak-2", 0, "female", W2_RECOGNITION, "weakness"),
+    recognitionTurn("a1d10-rec4", CUSTOMER, "cs-tour-1", 1, "male", W2_RECOGNITION, "service"),
     repairTurn("a1d10-repair", "mixed", "repair-mixed-2", "female", {
-      round: { n: 5, title: "REPAIR UNDER PRESSURE", titleEs: "REPARA BAJO PRESIÓN" },
+      round: { n: 6, title: "REPAIR UNDER PRESSURE", titleEs: "REPARA BAJO PRESIÓN" },
     }),
   ],
   speakerVoice: "female",
@@ -446,7 +464,7 @@ const d11 = advancedDay({
     es: "HECHO → ENFOQUE POSITIVO → LO QUE QUIERO AHORA. Si sientes que viene una queja, reemplázala con lo que quieres en su lugar.",
   },
   rep5Turns: [
-    turn("a1d11-turn1", RECRUITER, leave.text, leave.es, "male", { targetSeconds: SUSTAIN, cues: ["FACT", "POSITIVE", "NEXT"] }),
+    variantTurn("a1d11-turn1", RECRUITER, "leave-1", 0, "male", { targetSeconds: SUSTAIN, cues: ["FACT", "POSITIVE", "NEXT"] }),
     turn("a1d11-turn2", RECRUITER, leave.followUp!.text, leave.followUp!.es, "male", { targetSeconds: DEVELOP }),
     // REPAIR — NEEDS TIME
     repairTurn("a1d11-repair", "time", "repair-time-3", "male"),
@@ -519,7 +537,7 @@ const d12 = advancedDay({
     es: "FRACASO → RESPONSABILIDAD → CAMBIO → RESULTADO. Cuando te reten, no te disculpes otra vez — da EVIDENCIA.",
   },
   rep5Turns: [
-    turn("a1d12-turn1", RECRUITER, failure.text, failure.es, "female", { targetSeconds: SUSTAIN, cues: ["FAILURE", "CHANGE", "RESULT"] }),
+    variantTurn("a1d12-turn1", RECRUITER, "failure-1", 0, "female", { targetSeconds: SUSTAIN, cues: ["FAILURE", "CHANGE", "RESULT"] }),
     turn("a1d12-turn2", RECRUITER, failure.followUp!.text, failure.followUp!.es, "female", { targetSeconds: DEVELOP, cues: ["EVIDENCE"] }),
     // REPAIR — DIDN'T CATCH IT
     repairTurn("a1d12-repair", "catch", "repair-catch-3", "female"),
@@ -578,7 +596,7 @@ const d13 = advancedDay({
     es: "EMPRESA → ENCAJE → VALOR → FUTURO. Inventa una empresa realista si lo necesitas — lo que entrenas es la estructura.",
   },
   rep5Turns: [
-    turn("a1d13-turn1", RECRUITER, whyHere.text, whyHere.es, "male", { targetSeconds: SUSTAIN, cues: ["COMPANY", "MATCH", "VALUE", "FUTURE"] }),
+    variantTurn("a1d13-turn1", RECRUITER, "why-here-1", 0, "male", { targetSeconds: SUSTAIN, cues: ["COMPANY", "MATCH", "VALUE", "FUTURE"] }),
     turn("a1d13-turn2", RECRUITER, whyHere.followUp!.text, whyHere.followUp!.es, "male", { targetSeconds: DEVELOP }),
     // REPAIR — CONFIRM
     repairTurn("a1d13-repair", "confirm", "repair-confirm-3", "male"),
@@ -670,6 +688,7 @@ const d14 = advancedDay({
 /* ---------------------------- DAY 15 — DIFFICULT RECRUITER ROUND ---------------------------- */
 
 const hJob = bankQuestion("why-job-1");
+const W3_RECOGNITION: RecognitionFrameworkId[] = ["story", "evidence", "weakness", "future"];
 const hFail = bankQuestion("failure-1");
 const hCrit = bankQuestion("criticize-1");
 const hNot = bankQuestion("not-hire-1");
@@ -743,8 +762,13 @@ const d15 = advancedDay({
     turn("a1d15-turn6", RECRUITER, hNot.text, hNot.es, "male", { round: { n: 5, title: "WHY NOT HIRE YOU", titleEs: "POR QUÉ NO CONTRATARTE" }, targetSeconds: DEVELOP, cues: ["HONEST RISK", "WHY IT'S OK"] }),
     turn("a1d15-turn7", RECRUITER, hNot.followUp!.text, hNot.followUp!.es, "male", { targetSeconds: QUICK }),
     // REPAIR — REPAIR UNDER PRESSURE
+    // ROUND 6 — RECOGNIZE THE QUESTION
+    recognitionTurn("a1d15-rec1", RECRUITER, "improve-1", 0, "male", W3_RECOGNITION, "weakness", { round: { n: 6, ...RECOGNITION_ROUND } }),
+    recognitionTurn("a1d15-rec2", RECRUITER, "pressure-1", 1, "male", W3_RECOGNITION, "story"),
+    recognitionTurn("a1d15-rec3", RECRUITER, "three-years", 0, "male", W3_RECOGNITION, "future"),
+    recognitionTurn("a1d15-rec4", RECRUITER, "strong-1", 0, "male", W3_RECOGNITION, "evidence"),
     repairTurn("a1d15-repair", "mixed", "repair-mixed-3", "male", {
-      round: { n: 6, title: "REPAIR UNDER PRESSURE", titleEs: "REPARA BAJO PRESIÓN" },
+      round: { n: 7, title: "REPAIR UNDER PRESSURE", titleEs: "REPARA BAJO PRESIÓN" },
     }),
   ],
   speakerVoice: "male",
@@ -820,7 +844,7 @@ const d16 = advancedDay({
     es: "PASADO → PRESENTE → FUTURO. Conecta los pasos con 'That's where…', 'That led me to…', 'So…'.",
   },
   rep5Turns: [
-    turn("a1d16-turn1", RECRUITER, journey.text, journey.es, "female", { targetSeconds: [75, 90], cues: ["PAST", "PRESENT", "FUTURE"] }),
+    variantTurn("a1d16-turn1", RECRUITER, "journey-1", 0, "female", { targetSeconds: [75, 90], cues: ["PAST", "PRESENT", "FUTURE"] }),
     turn("a1d16-turn2", RECRUITER, journey.followUp!.text, journey.followUp!.es, "female", { targetSeconds: DEVELOP }),
     // REPAIR — NEEDS TIME
     repairTurn("a1d16-repair", "time", "repair-time-4", "female"),
@@ -881,7 +905,7 @@ const d17 = advancedDay({
     es: "SITUACIÓN → LO QUE HICE → RESULTADO. La repregunta aparece después de tu historia — respóndela con un detalle nuevo.",
   },
   rep5Turns: [
-    turn("a1d17-turn1", RECRUITER, compProblem.text, compProblem.es, "male", { targetSeconds: SUSTAIN, cues: ["SITUATION", "WHAT I DID", "RESULT"] }),
+    variantTurn("a1d17-turn1", RECRUITER, "comp-problem", 0, "male", { targetSeconds: SUSTAIN, cues: ["SITUATION", "WHAT I DID", "RESULT"] }),
     turn("a1d17-turn2", RECRUITER, compProblem.followUp!.text, compProblem.followUp!.es, "male", { targetSeconds: DEVELOP }),
     // REPAIR — DIDN'T CATCH IT
     repairTurn("a1d17-repair", "catch", "repair-catch-4", "male"),
@@ -896,7 +920,7 @@ const d17 = advancedDay({
       situationEs: "RESOLVER PROBLEMAS",
       rep5Prompt: { question: compProblem.text, questionEs: compProblem.es },
       rep5Turns: [
-        turn("a1d17-s1-turn1", RECRUITER, compProblem.text, compProblem.es, "male", { targetSeconds: SUSTAIN, cues: ["SITUATION", "WHAT I DID", "RESULT"] }),
+        variantTurn("a1d17-s1-turn1", RECRUITER, "comp-problem", 0, "male", { targetSeconds: SUSTAIN, cues: ["SITUATION", "WHAT I DID", "RESULT"] }),
         turn("a1d17-s1-turn2", RECRUITER, compProblem.followUp!.text, compProblem.followUp!.es, "male", { targetSeconds: DEVELOP }),
         // REPAIR — DIDN'T CATCH IT
         repairTurn("a1d17-s1-repair", "catch", "repair-catch-4", "male"),
@@ -910,7 +934,7 @@ const d17 = advancedDay({
       situationEs: "APRENDER RÁPIDO",
       rep5Prompt: { question: compLearn.text, questionEs: compLearn.es },
       rep5Turns: [
-        turn("a1d17-s2-turn1", RECRUITER, compLearn.text, compLearn.es, "female", { targetSeconds: SUSTAIN, cues: ["SITUATION", "WHAT I DID", "RESULT"] }),
+        variantTurn("a1d17-s2-turn1", RECRUITER, "comp-learn", 0, "female", { targetSeconds: SUSTAIN, cues: ["SITUATION", "WHAT I DID", "RESULT"] }),
         turn("a1d17-s2-turn2", RECRUITER, compLearn.followUp!.text, compLearn.followUp!.es, "female", { targetSeconds: DEVELOP }),
         // REPAIR — DIDN'T CATCH IT
         repairTurn("a1d17-s2-repair", "catch", "repair-catch-4", "female"),
@@ -924,7 +948,7 @@ const d17 = advancedDay({
       situationEs: "TRABAJAR BAJO PRESIÓN",
       rep5Prompt: { question: compPressure.text, questionEs: compPressure.es },
       rep5Turns: [
-        turn("a1d17-s3-turn1", RECRUITER, compPressure.text, compPressure.es, "male", { targetSeconds: SUSTAIN, cues: ["SITUATION", "WHAT I DID", "RESULT"] }),
+        variantTurn("a1d17-s3-turn1", RECRUITER, "comp-pressure", 0, "male", { targetSeconds: SUSTAIN, cues: ["SITUATION", "WHAT I DID", "RESULT"] }),
         turn("a1d17-s3-turn2", RECRUITER, compPressure.followUp!.text, compPressure.followUp!.es, "male", { targetSeconds: DEVELOP }),
         // REPAIR — DIDN'T CATCH IT
         repairTurn("a1d17-s3-repair", "catch", "repair-catch-4", "male"),
@@ -1094,6 +1118,7 @@ const f5 = bankQuestion("crazy-animal");
 const f6 = bankQuestion("listen-situation");
 const f7 = bankQuestion("cs-charge-1");
 const f8 = bankQuestion("three-years");
+const W4_RECOGNITION: RecognitionFrameworkId[] = ["story", "evidence", "unexpected", "sales", "future"];
 
 const d20Sprint: TestReadySprint = {
   type: "mixed",
@@ -1181,8 +1206,14 @@ const d20 = advancedDay({
     // ROUND 8 — FUTURE
     turn("a1d20-turn11", RECRUITER, f8.text, f8.es, "female", { round: { n: 8, title: "FUTURE", titleEs: "FUTURO" }, targetSeconds: DEVELOP }),
     // REPAIR — REPAIR UNDER PRESSURE
+    // ROUND 9 — RECOGNIZE THE QUESTION
+    recognitionTurn("a1d20-rec1", RECRUITER, "comp-learn", 1, "female", W4_RECOGNITION, "story", { round: { n: 9, ...RECOGNITION_ROUND } }),
+    recognitionTurn("a1d20-rec2", RECRUITER, "why-job-1", 0, "female", W4_RECOGNITION, "evidence"),
+    recognitionTurn("a1d20-rec3", RECRUITER, "crazy-money", 0, "female", W4_RECOGNITION, "unexpected"),
+    recognitionTurn("a1d20-rec4", CUSTOMER, "sell-phone", 1, "male", W4_RECOGNITION, "sales"),
+    recognitionTurn("a1d20-rec5", RECRUITER, "goal-1", 0, "female", W4_RECOGNITION, "future"),
     repairTurn("a1d20-repair", "mixed", "repair-mixed-4", "female", {
-      round: { n: 9, title: "REPAIR UNDER PRESSURE", titleEs: "REPARA BAJO PRESIÓN" },
+      round: { n: 10, title: "REPAIR UNDER PRESSURE", titleEs: "REPARA BAJO PRESIÓN" },
     }),
   ],
   speakerVoice: "female",

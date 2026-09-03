@@ -5,8 +5,12 @@
  * entries from this bank so future weeks can rotate controlled variations
  * without ever repeating the same personal details or follow-ups by accident.
  *
- * Week 1 uses only the approved GET HIRED content below. No rotation logic yet.
+ * Variants: each non-repair question has 3–4 fixed alternative phrasings
+ * (advanced-question-variants.ts). Reps 1–3 always show the canonical text;
+ * Rep 5 turn 1 and the week-end recognition round use a variant.
  */
+
+import { ADVANCED_QUESTION_VARIANTS, type QuestionVariant } from "./advanced-question-variants";
 
 export type AdvancedQuestionCategory =
   | "tell_me_about_yourself"
@@ -29,6 +33,8 @@ export type AdvancedQuestion = {
   es: string;
   /** Fixed follow-up that is only revealed after the learner records the first answer. */
   followUp?: { text: string; es: string } | undefined;
+  /** Fixed alternative recruiter/customer phrasings of the SAME question type (see advanced-question-variants.ts). */
+  variants?: QuestionVariant[] | undefined;
 };
 
 export const ADVANCED_QUESTION_BANK: Record<string, AdvancedQuestion> = {
@@ -506,8 +512,24 @@ export const ADVANCED_QUESTION_BANK: Record<string, AdvancedQuestion> = {
   },
 };
 
+for (const [id, variants] of Object.entries(ADVANCED_QUESTION_VARIANTS)) {
+  const q = ADVANCED_QUESTION_BANK[id];
+  if (q) q.variants = variants;
+}
+
 export function bankQuestion(id: string): AdvancedQuestion {
   const q = ADVANCED_QUESTION_BANK[id];
   if (!q) throw new Error(`Unknown advanced question: ${id}`);
   return q;
+}
+
+/**
+ * A fixed non-canonical phrasing of a bank question. Falls back to the
+ * canonical text when no variant exists, so it can never throw.
+ */
+export function bankVariant(id: string, index = 0): QuestionVariant {
+  const q = bankQuestion(id);
+  const list = q.variants ?? [];
+  if (!list.length) return { text: q.text, es: q.es };
+  return list[((index % list.length) + list.length) % list.length]!;
 }
