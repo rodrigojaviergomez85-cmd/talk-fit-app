@@ -16,6 +16,7 @@ import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as RecordingsRouteImport } from './routes/recordings'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
 import { Route as AdminStorageReportRouteImport } from './routes/admin.storage-report'
@@ -58,6 +59,11 @@ const RecordingsRoute = RecordingsRouteImport.update({
   path: '/recordings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SprintRoute = SprintRouteImport.update({
   id: '/sprint',
   path: '/sprint',
@@ -97,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/recordings': typeof RecordingsRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/recordings': typeof RecordingsRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/recordings': typeof RecordingsRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/recordings'
+    | '/reset-password'
     | '/sprint'
     | '/verb-bank'
     | '/admin/storage-report'
@@ -160,6 +170,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/recordings'
+    | '/reset-password'
     | '/sprint'
     | '/verb-bank'
     | '/admin/storage-report'
@@ -175,6 +186,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/recordings'
+    | '/reset-password'
     | '/sprint'
     | '/verb-bank'
     | '/admin/storage-report'
@@ -191,6 +203,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   ProgressRoute: typeof ProgressRoute
   RecordingsRoute: typeof RecordingsRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SprintRoute: typeof SprintRoute
   VerbBankRoute: typeof VerbBankRoute
   AdminStorageReportRoute: typeof AdminStorageReportRoute
@@ -250,6 +263,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecordingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sprint': {
       id: '/sprint'
       path: '/sprint'
@@ -303,6 +323,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   ProgressRoute: ProgressRoute,
   RecordingsRoute: RecordingsRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SprintRoute: SprintRoute,
   VerbBankRoute: VerbBankRoute,
   AdminStorageReportRoute: AdminStorageReportRoute,

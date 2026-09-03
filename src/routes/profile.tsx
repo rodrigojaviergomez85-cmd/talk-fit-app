@@ -73,12 +73,18 @@ function ProfilePage() {
     setMessage(null);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
-      const signUp = await supabase.auth.signUp({
-        email,
-        password,
-        options: { emailRedirectTo: window.location.origin },
-      });
-      setMessage(signUp.error ? signUp.error.message : t("account.checkEmail"));
+      if (error.code === "invalid_credentials") {
+        setMessage(t("account.wrongCredentials"));
+      } else if (error.code === "email_not_confirmed") {
+        setMessage(t("account.emailNotConfirmed"));
+        await supabase.auth.resend({
+          type: "signup",
+          email,
+          options: { emailRedirectTo: window.location.origin },
+        });
+      } else {
+        setMessage(error.message);
+      }
     }
     setBusy(false);
   };
