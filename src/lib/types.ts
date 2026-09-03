@@ -244,6 +244,20 @@ export type RolePlayTurn = {
   framework?: { title: string; titleEs: string; steps: string[] } | undefined;
   /** ADVANCED: Spanish-first survival tip on a deliberate repair turn. Never scored. */
   repairTip?: { text: string; es: string } | undefined;
+  /** Rep 5 turn 1 asked in different words than Reps 1–3 (recognition training). Spanish-first tip. */
+  variantTip?: { text: string; es: string } | undefined;
+  /**
+   * Week-end recognition step: before recording, the learner taps which
+   * framework the question is asking for. Never scored, never blocks recording.
+   */
+  recognition?:
+    | {
+        prompt: string;
+        promptEs: string;
+        options: { id: string; label: string; labelEs: string; cues: string[] }[];
+        expected: string;
+      }
+    | undefined;
 };
 
 /** Wall-clock seconds spent on each rep (pilot analytics, never shown). */
