@@ -26,7 +26,7 @@ export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalD
     <section className="rounded-3xl bg-card p-6 shadow-[var(--shadow-card)]">
       <div className="flex items-center justify-between">
         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
-          {t("home.day")} {day.day} / {totalDays}
+          {t("home.dayOfTotal").replace("{day}", String(day.day)).replace("{total}", String(totalDays))}
         </p>
         {completed ? (
           <span className="inline-flex items-center gap-1.5 rounded-full bg-success/12 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-success">
