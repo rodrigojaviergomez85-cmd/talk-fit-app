@@ -376,7 +376,7 @@ function TestReadyCard({
             {lang === "es" ? sprint.titleEs : sprint.title}
           </span>
           <span className="block text-[11px] text-muted-foreground">{optional}</span>
-          <span className="mt-1 block text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
+          <span className="mt-1 block text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
             {t("tr.availableAfter")}
           </span>
         </span>
