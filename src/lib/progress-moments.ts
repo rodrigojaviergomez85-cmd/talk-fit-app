@@ -1,5 +1,5 @@
 import type { DayRecord, JourneyState, ModuleId } from "@/lib/types";
-import { CourseService, type LearningModule } from "@/services/course-service";
+import { CourseService, UPCOMING_LEVELS, type LearningModule } from "@/services/course-service";
 import { JourneyService } from "@/services/journey-service";
 
 /**

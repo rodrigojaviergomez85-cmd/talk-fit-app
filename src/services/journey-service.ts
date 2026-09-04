@@ -184,14 +184,26 @@ export const JourneyService = {
 
   /**
    * Presentation status for a module card. Modules before the current one are
-   * "review" (never blockers); no module is ever locked.
+   * "review"; modules ahead are "next" when the previous one is complete, else "locked".
    */
-  moduleStatus(state: JourneyState, moduleId: ModuleId): "done" | "current" | "review" | "next" {
+  moduleStatus(state: JourneyState, moduleId: ModuleId): "done" | "current" | "review" | "next" | "locked" {
     if (JourneyService.moduleComplete(state, moduleId)) return "done";
     const next = JourneyService.nextPractice(state);
     if (next?.moduleId === moduleId) return "current";
     const currentIndex = CourseService.displayIndex(next?.moduleId ?? JourneyService.currentModule(state));
-    return CourseService.displayIndex(moduleId) < currentIndex ? "review" : "next";
+    if (CourseService.displayIndex(moduleId) < currentIndex) return "review";
+    return JourneyService.isModuleUnlocked(state, moduleId) ? "next" : "locked";
+  },
+
+  /** Ladder rule (see Progression.isUnlocked): first module, previous complete, at/before saved placement, or has records. */
+  isModuleUnlocked(state: JourneyState, moduleId: ModuleId): boolean {
+    const modules = CourseService.modules();
+    const index = modules.findIndex((m) => m.id === moduleId);
+    if (index <= 0) return true;
+    if (JourneyService.moduleComplete(state, modules[index - 1]!.id)) return true;
+    if (JourneyService.completedCount(state, moduleId) > 0) return true;
+    const saved = loadPreferences().currentModuleId;
+    return Boolean(saved && isModuleId(saved) && index <= CourseService.displayIndex(saved));
   },
 
   /** Completed day records inside one week of a module, in day order. */
