@@ -1341,125 +1341,200 @@ function Rep5FinalRep({
   const slotsLeft = takes.some((take) => !take);
   const [showExampleText, setShowExampleText] = useState(false);
 
-  return (
-    <div className="space-y-5">
-      <RepHeader titleKey="rep5.title" instrKey="rep5.instr" label={day.rep5Label} copy={day.repCopy?.rep5} />
+  const hasTurns = Boolean(day.rep5Turns?.length);
+  const goalLine = hasTurns
+    ? t("rep5.turnsGoal")
+        .replace("{turns}", String(day.rep5Turns!.length))
+        .replace("{min}", String(day.goalSeconds[0]))
+        .replace("{max}", String(day.goalSeconds[1]))
+    : null;
 
-      {day.rep5Audio && !day.rep5Turns ? (
-        <div className="space-y-3 rounded-3xl bg-navy p-5 text-navy-foreground">
-          <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-primary">
-            {lang === "es" ? day.rep5Audio.labelEs : day.rep5Audio.label}
-          </p>
-          <AudioPlayer
-            text={day.rep5Audio.text}
-            label={t("practice.listen")}
-            rate={1}
-            variant="navy"
-            voice={day.rep5Audio.voice}
-            tone={toneForTurn({ id: "rep5-audio", ...day.rep5Audio }, day.rep5Turns)}
-          />
-          <TranslatableText es={day.rep5Audio.es} esClassName="text-navy-foreground/70" supportOnly>
-            <p className="text-[14px] font-semibold italic leading-relaxed text-navy-foreground/90">"{day.rep5Audio.text}"</p>
+  const supportContent = (
+    <>
+      {hasTurns && day.rep5Scenario ? (
+        <div className="space-y-2">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{t("rep5.scenario")}</p>
+          <TranslatableText es={day.rep5Scenario.situationEs} supportOnly>
+            <p className="text-[14px] font-semibold leading-relaxed text-foreground">{day.rep5Scenario.situation}</p>
           </TranslatableText>
-        </div>
-      ) : null}
-
-      {day.rep5Scenario ? (
-        <div className="space-y-2 rounded-3xl bg-navy p-5 text-navy-foreground">
-          <div className="flex items-center justify-between gap-2">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">{t("rep5.scenario")}</p>
-            <span className="rounded-full bg-navy-foreground/15 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.16em]">
-              {lang === "es" ? day.rep5Scenario.labelEs : day.rep5Scenario.label}
-            </span>
-          </div>
-          <TranslatableText es={day.rep5Scenario.situationEs} esClassName="text-navy-foreground/70">
-            <p className="text-[15px] font-semibold leading-relaxed">{day.rep5Scenario.situation}</p>
-          </TranslatableText>
-          <p className="pt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-navy-foreground/60">{t("rep5.skeleton")}</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">{t("rep5.skeleton")}</p>
           <div className="flex flex-wrap gap-1.5">
             {(day.rep5Skeleton ?? ["DECISION", "WHY", "EXAMPLE", "OTHER SIDE", "WHAT IF?", "CONCLUSION"]).map((step) => (
-              <span key={step} className="rounded-full border border-navy-foreground/25 px-2.5 py-1 text-[10px] font-extrabold tracking-[0.12em]">
+              <span key={step} className="rounded-full bg-secondary px-2.5 py-1 text-[10px] font-extrabold tracking-[0.12em] text-muted-foreground">
                 {step}
               </span>
             ))}
           </div>
         </div>
       ) : null}
-
-      <div className="space-y-3 rounded-3xl border border-primary/25 bg-accent p-5">
-        <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-accent-foreground">
-          {t("practice.answer")}
-        </p>
-        <TranslatableText es={day.rep5Prompt.questionEs}>
-          <p className="text-[19px] font-extrabold leading-snug">{day.rep5Prompt.question}</p>
-        </TranslatableText>
-      </div>
-
-      <GoalChips day={day} />
-
-      <CueRow cues={day.cues} />
-      <PowerChunks chunks={day.powerChunks} size="mini" />
-
-      {day.rep5Toolbox ? (
-        <div className="space-y-1.5 rounded-3xl border border-border bg-card p-3">
-          <p className="px-1 text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{t("power.toolbox")}</p>
-          <div className="flex flex-wrap gap-1.5">
-            {day.rep5Toolbox.map((phrase) => (
-              <span key={phrase} className="rounded-full bg-secondary px-2.5 py-1 text-[12px] font-semibold text-foreground">
-                {phrase}
-              </span>
-            ))}
-          </div>
-        </div>
+      {hasTurns ? (
+        <>
+          <CueRow cues={day.cues} />
+          <PowerChunks chunks={day.powerChunks} size="mini" />
+          {day.rep5Toolbox ? (
+            <div className="space-y-1.5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{t("power.toolbox")}</p>
+              <div className="flex flex-wrap gap-1.5">
+                {day.rep5Toolbox.map((phrase) => (
+                  <span key={phrase} className="rounded-full bg-secondary px-2.5 py-1 text-[12px] font-semibold text-foreground">
+                    {phrase}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : null}
+          <SceneImage day={day} />
+          <StoryStrip day={day} showCaptions={false} />
+        </>
       ) : null}
+      {day.rep5Tips ? (
+        <TranslatableText es={day.rep5Tips.es} supportOnly>
+          <p className="text-[14px] leading-relaxed text-foreground">{day.rep5Tips.en}</p>
+        </TranslatableText>
+      ) : (
+        <TranslatableText es="Usa conectores como after, later y then. Si puedes, agrega un because." supportOnly>
+          <p className="text-[14px] leading-relaxed text-foreground">
+            Use connectors like <strong>after</strong>, <strong>later</strong> and <strong>then</strong>. If you can, add a <strong>because</strong>.
+          </p>
+        </TranslatableText>
+      )}
+      {day.modelExample ? (
+        <>
+          <AudioPlayer text={day.modelExample.text} label={t("practice.listenExample")} rate={1} variant="navy" voice={day.speakerVoice} />
+          <button
+            type="button"
+            onClick={() => setShowExampleText((v) => !v)}
+            className="inline-flex min-h-[44px] w-full items-center justify-center text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-primary"
+          >
+            {showExampleText ? t("practice.hideExampleText") : t("practice.showExampleText")}
+          </button>
+          {showExampleText ? (
+            <TranslatableText es={day.modelExample.es}>
+              <p className="text-[14px] leading-relaxed text-foreground">{day.modelExample.text}</p>
+            </TranslatableText>
+          ) : null}
+        </>
+      ) : null}
+    </>
+  );
 
-      <SceneImage day={day} />
-      <StoryStrip day={day} showCaptions={false} />
-      <VariantPicker day={day} />
+  return (
+    <div className="space-y-5">
+      <RepHeader titleKey="rep5.title" instrKey="rep5.instr" label={day.rep5Label} copy={day.repCopy?.rep5} />
 
-      <CollapsibleHelp label="Need help?" labelEs="¿Necesitas ayuda?">
-        {day.rep5Tips ? (
-          <TranslatableText es={day.rep5Tips.es} supportOnly>
-            <p className="text-[14px] leading-relaxed text-foreground">{day.rep5Tips.en}</p>
-          </TranslatableText>
-        ) : (
-          <TranslatableText es="Usa conectores como after, later y then. Si puedes, agrega un because." supportOnly>
-            <p className="text-[14px] leading-relaxed text-foreground">
-              Use connectors like <strong>after</strong>, <strong>later</strong> and <strong>then</strong>. If you can, add a <strong>because</strong>.
-            </p>
-          </TranslatableText>
-        )}
-        {day.modelExample ? (
-          <>
-            <AudioPlayer text={day.modelExample.text} label={t("practice.listenExample")} rate={1} variant="navy" voice={day.speakerVoice} />
-            <button
-              type="button"
-              onClick={() => setShowExampleText((v) => !v)}
-              className="inline-flex min-h-[44px] w-full items-center justify-center text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-primary"
-            >
-              {showExampleText ? t("practice.hideExampleText") : t("practice.showExampleText")}
-            </button>
-            {showExampleText ? (
-              <TranslatableText es={day.modelExample.es}>
-                <p className="text-[14px] leading-relaxed text-foreground">{day.modelExample.text}</p>
+      {hasTurns ? (
+        <>
+          {/* One compact goal line — no duplicate goal card before Turn 1. */}
+          <p className="text-center text-[12px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">{goalLine}</p>
+
+          <VariantPicker day={day} />
+
+          {/* Turn 1 LISTEN + RECORD must be above the fold. */}
+          <TakeBoard
+            takes={takes}
+            finalIndex={finalIndex}
+            goalSeconds={day.goalSeconds}
+            goalSentences={day.goalSentences ?? 5}
+            turns={day.rep5Turns}
+            onRecorded={onRecorded}
+            onDelete={onDelete}
+            onSelectFinal={onSelectFinal}
+          />
+
+          <CollapsibleHelp label="Need help?" labelEs="¿Necesitas ayuda?">
+            {supportContent}
+          </CollapsibleHelp>
+        </>
+      ) : (
+        <>
+          {day.rep5Audio ? (
+            <div className="space-y-3 rounded-3xl bg-navy p-5 text-navy-foreground">
+              <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-primary">
+                {lang === "es" ? day.rep5Audio.labelEs : day.rep5Audio.label}
+              </p>
+              <AudioPlayer
+                text={day.rep5Audio.text}
+                label={t("practice.listen")}
+                rate={1}
+                variant="navy"
+                voice={day.rep5Audio.voice}
+                tone={toneForTurn({ id: "rep5-audio", ...day.rep5Audio }, day.rep5Turns)}
+              />
+              <TranslatableText es={day.rep5Audio.es} esClassName="text-navy-foreground/70" supportOnly>
+                <p className="text-[14px] font-semibold italic leading-relaxed text-navy-foreground/90">"{day.rep5Audio.text}"</p>
               </TranslatableText>
-            ) : null}
-          </>
-        ) : null}
-      </CollapsibleHelp>
+            </div>
+          ) : null}
 
+          {day.rep5Scenario ? (
+            <div className="space-y-2 rounded-3xl bg-navy p-5 text-navy-foreground">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">{t("rep5.scenario")}</p>
+                <span className="rounded-full bg-navy-foreground/15 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.16em]">
+                  {lang === "es" ? day.rep5Scenario.labelEs : day.rep5Scenario.label}
+                </span>
+              </div>
+              <TranslatableText es={day.rep5Scenario.situationEs} esClassName="text-navy-foreground/70">
+                <p className="text-[15px] font-semibold leading-relaxed">{day.rep5Scenario.situation}</p>
+              </TranslatableText>
+              <p className="pt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-navy-foreground/60">{t("rep5.skeleton")}</p>
+              <div className="flex flex-wrap gap-1.5">
+                {(day.rep5Skeleton ?? ["DECISION", "WHY", "EXAMPLE", "OTHER SIDE", "WHAT IF?", "CONCLUSION"]).map((step) => (
+                  <span key={step} className="rounded-full border border-navy-foreground/25 px-2.5 py-1 text-[10px] font-extrabold tracking-[0.12em]">
+                    {step}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : null}
 
-      <TakeBoard
-        takes={takes}
-        finalIndex={finalIndex}
-        goalSeconds={day.goalSeconds}
-        goalSentences={day.goalSentences ?? 5}
-        turns={day.rep5Turns}
-        onRecorded={onRecorded}
-        onDelete={onDelete}
+          <div className="space-y-3 rounded-3xl border border-primary/25 bg-accent p-5">
+            <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-accent-foreground">
+              {t("practice.answer")}
+            </p>
+            <TranslatableText es={day.rep5Prompt.questionEs}>
+              <p className="text-[19px] font-extrabold leading-snug">{day.rep5Prompt.question}</p>
+            </TranslatableText>
+          </div>
 
-        onSelectFinal={onSelectFinal}
-      />
+          <GoalChips day={day} />
+
+          <CueRow cues={day.cues} />
+          <PowerChunks chunks={day.powerChunks} size="mini" />
+
+          {day.rep5Toolbox ? (
+            <div className="space-y-1.5 rounded-3xl border border-border bg-card p-3">
+              <p className="px-1 text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{t("power.toolbox")}</p>
+              <div className="flex flex-wrap gap-1.5">
+                {day.rep5Toolbox.map((phrase) => (
+                  <span key={phrase} className="rounded-full bg-secondary px-2.5 py-1 text-[12px] font-semibold text-foreground">
+                    {phrase}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          <SceneImage day={day} />
+          <StoryStrip day={day} showCaptions={false} />
+          <VariantPicker day={day} />
+
+          <CollapsibleHelp label="Need help?" labelEs="¿Necesitas ayuda?">
+            {supportContent}
+          </CollapsibleHelp>
+
+          <TakeBoard
+            takes={takes}
+            finalIndex={finalIndex}
+            goalSeconds={day.goalSeconds}
+            goalSentences={day.goalSentences ?? 5}
+            turns={day.rep5Turns}
+            onRecorded={onRecorded}
+            onDelete={onDelete}
+            onSelectFinal={onSelectFinal}
+          />
+        </>
+      )}
 
       {requiredDone ? (
         <div className="space-y-3">
