@@ -28,6 +28,7 @@ import { CourseService, DEFAULT_MODULE, isModuleId, type LoadedModule } from "@/
 import { ModuleLoadError } from "@/components/fluency/ModuleLoadState";
 import { useModuleContent } from "@/hooks/use-module-content";
 import { JourneyService } from "@/services/journey-service";
+import { habitDays, lastHabitDate } from "@/lib/habit";
 import { AudioService } from "@/services/audio-service";
 import {
   PracticeSessionService,
@@ -324,9 +325,10 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
     d[stage] = (d[stage] ?? 0) + (Date.now() - stageEnteredAt.current) / 1000;
     const r = (i: number) => Math.round(d[i] ?? 0);
     const before = JourneyService.load();
+    const lastDate = lastHabitDate(before);
     setHabitBefore({
-      days: Object.keys(before.days).length,
-      ...(before.lastCompletedDate ? { lastCompletedDate: before.lastCompletedDate } : {}),
+      days: habitDays(before),
+      ...(lastDate ? { lastCompletedDate: lastDate } : {}),
     });
     const next = JourneyService.completeDay({
       moduleId,
