@@ -178,8 +178,10 @@ export function TakeBoard({
         <GoalPanel latest={latest} minSeconds={goalSeconds[0]} goalSentences={goalSentences} t={t} />
       )}
       {rolePlay && !pressure ? (
-        <p className="text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-          {t("take.turn")} 1–{turns!.length} · {t("take.retryHint").toUpperCase()}: {t("take.take")} {turns!.length + 1}–{TAKE_COUNT}
+        <p className="text-center text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
+          {es
+            ? `TURNOS 1–${turns!.length} · TOMAS ${turns!.length + 1}–${TAKE_COUNT}: REPITE EL TURNO QUE QUIERAS`
+            : `TURNS 1–${turns!.length} · TAKES ${turns!.length + 1}–${TAKE_COUNT}: RETRY ANY TURN YOU LIKE`}
         </p>
       ) : null}
       {pressure ? (
@@ -209,7 +211,8 @@ export function TakeBoard({
         if (pressure && !take && !isActive) return null;
         const turnTarget = turn?.targetSeconds ?? goalSeconds;
         const turnMax = Math.max(90, turnTarget[1] + 15);
-        const showTurn = Boolean(turn) && (isActive || Boolean(take));
+        // Retry slots always show the question being answered — before, during, and after recording.
+        const showTurn = Boolean(turn) && (isActive || Boolean(take) || isRetrySlot);
 
         const needsPrep = Boolean(turn?.prepSeconds) && isActive && !prepDone.includes(index);
         const recruiter = /recruiter|reclutador|interviewer/i.test(`${turn?.label ?? ""} ${turn?.labelEs ?? ""}`);
@@ -271,20 +274,24 @@ export function TakeBoard({
             {isRetrySlot && isActive && !take ? (
               <div className="mt-3 space-y-2">
                 <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted-foreground">{t("take.whichTurn")}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {turns!.map((_, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => setRetryTurn((prev) => ({ ...prev, [index]: i }))}
-                      className={cn(
-                        "min-h-[40px] rounded-full border px-3.5 text-[11px] font-extrabold uppercase tracking-[0.14em] transition-colors",
-                        i === retryIndex ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground",
-                      )}
-                    >
-                      {t("take.turn")} {i + 1}
-                    </button>
-                  ))}
+                <div className="flex flex-col gap-1.5">
+                  {turns!.map((option, i) => {
+                    const excerpt = option.text.length > 40 ? `${option.text.slice(0, 40).trimEnd()}…` : option.text;
+                    return (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => setRetryTurn((prev) => ({ ...prev, [index]: i }))}
+                        className={cn(
+                          "min-h-[44px] rounded-2xl border px-3.5 py-2 text-left text-[13px] font-bold transition-colors",
+                          i === retryIndex ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground",
+                        )}
+                      >
+                        <span className="mr-1.5 text-[11px] font-extrabold uppercase tracking-[0.12em] opacity-70">{i + 1} ·</span>
+                        {excerpt}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             ) : null}
