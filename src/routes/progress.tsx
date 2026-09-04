@@ -1,22 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Check, ChevronDown, Flame, Headphones, Mic, Timer } from "lucide-react";
+import { Check, ChevronDown, Mic, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
 import { ModuleHeading } from "@/components/fluency/ModuleHeading";
-import { ThenVsNow } from "@/components/fluency/ThenVsNow";
 import { SpeakingChart } from "@/components/fluency/SpeakingChart";
-import { RecordingCard } from "@/components/fluency/RecordingCard";
-import { MomentSheet } from "@/components/fluency/MomentSheet";
-import { HabitCard } from "@/components/fluency/HabitCard";
 import { BadgeGrid } from "@/components/fluency/BadgeGrid";
-import { moduleComparison, weekComparison, type Comparison } from "@/lib/progress-moments";
+import { HABIT_GOAL, habitDays, habitDisplay } from "@/lib/habit";
 import { CourseService, type DayOutline } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
-import { formatDuration, ideasLabel } from "@/lib/recordings";
-import type { DayRecord, JourneyState, ModuleId } from "@/lib/types";
+import type { JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { useAppLang, useT } from "@/lib/i18n";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/progress")({
   head: () => ({
@@ -24,12 +19,12 @@ export const Route = createFileRoute("/progress")({
       { title: "My Progress — Fluency Reps" },
       {
         name: "description",
-        content: "Objective speaking progress: days completed, reps, speaking minutes and streak.",
+        content: "Am I improving? Weekly practice, speaking minutes, personal bests, module journey and badges.",
       },
       { property: "og:title", content: "My Progress — Fluency Reps" },
       {
         property: "og:description",
-        content: "See your days completed, total reps and speaking minutes.",
+        content: "See your weekly practice, speaking minutes, personal bests and badges.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -38,11 +33,14 @@ export const Route = createFileRoute("/progress")({
   component: ProgressPage,
 });
 
+/**
+ * PROGRESS = "am I improving?" — analytics + achievements only.
+ * The next action lives on HOME; audio playback lives in RECORDINGS.
+ */
 function ProgressPage() {
   const t = useT();
   const [state, setState] = useState<JourneyState | null>(null);
   const [failed, setFailed] = useState(false);
-  const [sheet, setSheet] = useState<Comparison | null>(null);
 
   const load = useCallback(() => {
     setFailed(false);
@@ -67,15 +65,14 @@ function ProgressPage() {
   const forward = modules.filter((m) => CourseService.displayIndex(m.id) >= currentIndex);
   const review = modules.filter((m) => CourseService.displayIndex(m.id) < currentIndex);
   const bests = JourneyService.personalBests(safe);
-  const recent = useMemo(() => JourneyService.recordsByDate(safe).slice(-4).reverse(), [safe]);
   const series = useMemo(() => JourneyService.speakingSeries(safe), [safe]);
-  const dated = useMemo(() => JourneyService.recordsByDate(safe), [safe]);
-  const first = dated[0];
-  const latest = dated.length > 1 ? dated[dated.length - 1] : undefined;
+  const habitCount = habitDays(safe);
+  const habit = habitDisplay(habitCount);
+  const habitPercent = Math.round((habit.shown / HABIT_GOAL) * 100);
 
   if (!state) {
     return (
-      <AppShell title={t("nav.progress")}>
+      <AppShell title={t("prog.title")}>
         <div className="space-y-3" aria-busy="true">
           {[0, 1, 2, 3].map((i) => (
             <div key={i} className="h-24 animate-pulse rounded-3xl bg-secondary" />
@@ -86,7 +83,7 @@ function ProgressPage() {
   }
 
   return (
-    <AppShell title={t("nav.progress")}>
+    <AppShell title={t("prog.title")}>
       <div className="space-y-6">
         {failed ? (
           <div className="rounded-2xl border border-border bg-card p-4">
@@ -98,41 +95,10 @@ function ProgressPage() {
               onClick={load}
               className="mt-3 min-h-[44px] w-full rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
             >
-              Try again
+              {t("action.tryAgain")}
             </button>
           </div>
         ) : null}
-
-        {/* Current module — the dominant progress metric */}
-        {next ? <CurrentModule state={safe} moduleId={next.moduleId} day={next.day} /> : null}
-
-        {/* 66-day habit: habit days + streak as separate numbers, no shame */}
-        <HabitCard state={safe} variant="progress" />
-        <BadgeGrid state={safe} />
-
-        {/* Objective metrics */}
-        <section className="grid grid-cols-2 gap-3">
-          <Stat
-            icon={<Mic className="size-4 text-primary" />}
-            label={t("home.reps")}
-            value={`${safe.totalRepsCompleted}`}
-          />
-          <Stat
-            icon={<Timer className="size-4 text-primary" />}
-            label={t("home.speakingTime")}
-            value={`${JourneyService.totalSpeakingMinutes(safe)} min`}
-          />
-          <Stat
-            icon={<Flame className="size-4 text-primary" />}
-            label={t("home.streak")}
-            value={`${safe.streakDays} ${t("home.days")}`}
-          />
-          <Stat
-            icon={<Check className="size-4 text-primary" />}
-            label={t("prog.fullCurriculum")}
-            value={`${completedCount} / ${totalDays}`}
-          />
-        </section>
 
         {/* This week */}
         <section className="rounded-3xl bg-card p-4 shadow-[var(--shadow-card)]">
@@ -146,35 +112,63 @@ function ProgressPage() {
           </div>
         </section>
 
-        {/* Forward journey, then earlier modules as optional review */}
+        {/* 66-day journey — compact accumulated view (the motivational card is on Home) */}
+        <section className="rounded-3xl bg-card p-4 shadow-[var(--shadow-card)]">
+          <div className="flex items-baseline justify-between gap-3">
+            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+              {t("prog.journey66")}
+            </h2>
+            <p className="text-[15px] font-extrabold tabular-nums tracking-tight">
+              {habit.complete ? (
+                <>
+                  66 / {HABIT_GOAL} <span className="text-success">✓</span>
+                </>
+              ) : (
+                `${habit.shown} / ${HABIT_GOAL}`
+              )}
+            </p>
+          </div>
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary">
+            <div
+              className={cn("h-full rounded-full transition-all", habit.complete ? "bg-success" : "bg-primary")}
+              style={{ width: `${habitPercent}%` }}
+            />
+          </div>
+          <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+            {habitCount} {t("prog.practiceDays")}
+          </p>
+        </section>
+
+        {/* Totals */}
         <section className="space-y-3">
           <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-            {t("prog.forward")}
+            {t("prog.totals")}
           </h2>
-          {forward.map((module) => (
-            <ModuleRow key={module.id} module={module} state={safe} />
-          ))}
+          <div className="grid grid-cols-3 gap-3">
+            <Stat icon={<Mic className="size-4 text-primary" />} label={t("home.reps")} value={`${safe.totalRepsCompleted}`} />
+            <Stat
+              icon={<Timer className="size-4 text-primary" />}
+              label={t("prog.minutes")}
+              value={`${JourneyService.totalSpeakingMinutes(safe)}`}
+            />
+            <Stat
+              icon={<Check className="size-4 text-primary" />}
+              label={t("prog.fullCurriculum")}
+              value={`${completedCount} / ${totalDays}`}
+            />
+          </div>
         </section>
-        {review.length ? (
-          <section className="space-y-3">
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              {t("prog.review")}
-            </h2>
-            {review.map((module) => (
-              <ModuleRow key={module.id} module={module} state={safe} />
-            ))}
-          </section>
-        ) : null}
 
-        {/* Speaking output */}
-        {first ? (
+        {/* Speaking output over time (numbers only — playback lives in Recordings) */}
+        <SpeakingChart data={series} />
+
+        {/* Personal bests */}
+        {bests.longestSeconds || bests.mostIdeas ? (
           <section className="space-y-3">
             <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              {t("prog.speaking")}
+              {t("prog.bests")}
             </h2>
             <div className="grid grid-cols-2 gap-3">
-              <OutputStat label={t("prog.firstRec")} record={first} />
-              {latest ? <OutputStat label={t("prog.latestRec")} record={latest} /> : null}
               {bests.longestSeconds ? (
                 <Stat
                   icon={<Timer className="size-4 text-primary" />}
@@ -193,31 +187,30 @@ function ProgressPage() {
           </section>
         ) : null}
 
-        <ThenVsNow pair={JourneyService.thenVsNow(safe)} />
-
-        <SpeakingChart data={series} />
-
-        {/* Speaking history */}
-        {recent.length ? (
+        {/* Forward journey, then earlier modules as optional review */}
+        <section className="space-y-3">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+            {t("prog.myJourney")}
+          </h2>
+          {forward.map((module) => (
+            <ModuleRow key={module.id} module={module} state={safe} />
+          ))}
+        </section>
+        {review.length ? (
           <section className="space-y-3">
             <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              {t("prog.history")}
+              {t("prog.review")}
             </h2>
-            {recent.map((record) => (
-              <RecordingCard key={`${record.moduleId}:${record.day}`} record={record} />
+            {review.map((module) => (
+              <ModuleRow key={module.id} module={module} state={safe} />
             ))}
-            <Link
-              to="/recordings"
-              className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
-            >
-              View all recordings <ArrowRight className="size-4" />
-            </Link>
           </section>
         ) : null}
 
-        <AllDays state={safe} onCompare={setSheet} />
+        <BadgeGrid state={safe} />
+
+        <AllDays state={safe} />
       </div>
-      <MomentSheet comparison={sheet} state={safe} onClose={() => setSheet(null)} />
     </AppShell>
   );
 }
