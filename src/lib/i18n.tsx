@@ -176,6 +176,7 @@ const DICT = {
   "rep.label.adapt": ["ADAPTA", "ADAPT"],
   "rep5.scenario": ["TU ESCENARIO", "YOUR SCENARIO"],
   "rep5.skeleton": ["ESTRUCTURA", "STRUCTURE"],
+  "rep5.turnsGoal": ["{turns} TURNOS · {min}–{max} SEG EN TOTAL", "{turns} TURNS · {min}–{max} SEC TOTAL"],
   "journey.title": ["🔥 60 DÍAS HABLANDO INGLÉS", "🔥 60 DAYS SPEAKING ENGLISH"],
   "journey.sub": ["Escucha cómo empezó este camino y cómo hablas hoy.", "Hear how this journey started and how you speak today."],
   "journey.start": ["ASÍ EMPEZÓ TU CAMINO", "HOW YOUR JOURNEY STARTED"],
