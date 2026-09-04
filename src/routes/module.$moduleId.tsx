@@ -361,10 +361,13 @@ function TestReadyCard({
     return (
       <div
         className={cn(
-          "flex items-center justify-between gap-3 rounded-2xl border border-dashed p-3.5 opacity-70",
+          "flex items-center gap-3 rounded-2xl border border-dashed p-3.5 opacity-70",
           "border-border bg-card",
         )}
       >
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-muted-foreground">
+          <Lock className="size-4" aria-hidden />
+        </span>
         <span className="min-w-0">
           <span className="flex items-center gap-1.5 text-[12px] font-extrabold uppercase tracking-[0.14em] text-muted-foreground">
             <Zap className="size-3.5" aria-hidden /> {t("tr.card")} · {t("tr.minutes")}
@@ -373,12 +376,9 @@ function TestReadyCard({
             {lang === "es" ? sprint.titleEs : sprint.title}
           </span>
           <span className="block text-[11px] text-muted-foreground">{optional}</span>
-          <span className="mt-1 block text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground/80">
+          <span className="mt-1 block text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
             {t("tr.availableAfter")}
           </span>
-        </span>
-        <span className="inline-flex min-h-[40px] shrink-0 items-center gap-1 rounded-xl border border-border bg-secondary px-3 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-          {t("tr.start")}
         </span>
       </div>
     );
