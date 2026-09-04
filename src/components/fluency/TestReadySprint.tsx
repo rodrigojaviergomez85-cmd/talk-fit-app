@@ -128,13 +128,13 @@ export function TestReadySprint({ moduleId, day, sprint }: Props) {
                     {part.voice === "female" ? "A" : "B"}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <AudioPlayer text={part.text} label={`${t("tr.play")} ${i + 1}`} rate={1} variant="navy" voice={part.voice} />
+                    <AudioPlayer text={part.text} label={`${t("tr.play")} ${i + 1}`} rate={1} variant="navy" voice={part.voice} tone="neutral" />
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <AudioPlayer text={sprint.passage} label={t("tr.play")} rate={1} variant="navy" voice="male" />
+            <AudioPlayer text={sprint.passage} label={t("tr.play")} rate={1} variant="navy" voice="male" tone="neutral" />
           )}
           <p className="text-center text-[12px] text-navy-foreground/70">
             {retell ? t("tr.listenOnce") : t("tr.listenFirst")}
@@ -352,6 +352,7 @@ function ItemCard({
             label={t("tr.play")}
             rate={1}
             voice="female"
+            tone="neutral"
             onStart={() => setPlayed(true)}
             onEnd={() => setEnded(true)}
           />

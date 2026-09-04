@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Loader2, Pause, Play, RotateCcw, Volume2 } from "lucide-react";
 import { AudioService } from "@/services/audio-service";
+import type { ModelTone } from "@/lib/model-tone";
 import { useAppLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -10,6 +11,8 @@ type AudioPlayerProps = {
   rate?: number;
   /** Model voice: female or male character voice. */
   voice?: "female" | "male" | undefined;
+  /** Delivery tone: coach (default), neutral (recruiter), tense (frustrated customer). */
+  tone?: ModelTone | undefined;
   size?: "sm" | "md" | "lg";
   variant?: "primary" | "navy" | "ghost";
   onEnd?: () => void;
@@ -33,6 +36,7 @@ export function AudioPlayer({
   label = "LISTEN",
   rate = 1,
   voice,
+  tone,
   size = "md",
   variant = "primary",
   onEnd,
@@ -55,7 +59,7 @@ export function AudioPlayer({
     setStatus("idle");
     setCurrent(0);
     setDuration(0);
-  }, [text, rate]);
+  }, [text, rate, tone]);
 
   const start = () => {
     setStatus("loading");
@@ -64,6 +68,7 @@ export function AudioPlayer({
     stopRef.current = AudioService.speak(text, {
       rate,
       voice,
+      tone,
       onStart: () => setStatus("playing"),
       onProgress: (position, total) => {
         setCurrent(position);

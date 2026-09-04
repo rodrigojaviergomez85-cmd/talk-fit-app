@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
+import { toneForTurn, type ModelTone } from "@/lib/model-tone";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { RepProgress } from "@/components/fluency/RepProgress";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
@@ -500,6 +501,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               onSkip={skipCurrent}
               onNext={goForward}
               hideVisuals={moduleId === "past-stories"}
+              promptTone={moduleId === "advanced-1" ? "neutral" : "coach"}
             />
 
           ) : null}
@@ -1224,6 +1226,7 @@ function Rep4MakeItYours({
   onSkip,
   onNext,
   hideVisuals = false,
+  promptTone = "coach",
 }: {
   day: CourseDay;
   index: number;
@@ -1233,6 +1236,8 @@ function Rep4MakeItYours({
   onSkip: () => void;
   onNext: () => void;
   hideVisuals?: boolean;
+  /** Interview questions (ADVANCED) are read in a neutral recruiter tone. */
+  promptTone?: ModelTone;
 }) {
   const t = useT();
   const items = rep4Items(day);
@@ -1276,7 +1281,7 @@ function Rep4MakeItYours({
         </div>
       </div>
 
-      <AudioPlayer text={item.question} label={t("practice.hearQuestion")} variant="ghost" size="sm" voice={day.speakerVoice} />
+      <AudioPlayer text={item.question} label={t("practice.hearQuestion")} variant="ghost" size="sm" voice={day.speakerVoice} tone={promptTone} />
 
       <VoiceRecorder
         label={mine ? t("practice.reRecord") : t("practice.answer")}
@@ -1339,7 +1344,14 @@ function Rep5FinalRep({
           <p className="text-center text-[11px] font-bold uppercase tracking-[0.16em] text-primary">
             {lang === "es" ? day.rep5Audio.labelEs : day.rep5Audio.label}
           </p>
-          <AudioPlayer text={day.rep5Audio.text} label={t("practice.listen")} rate={1} variant="navy" voice={day.rep5Audio.voice} />
+          <AudioPlayer
+            text={day.rep5Audio.text}
+            label={t("practice.listen")}
+            rate={1}
+            variant="navy"
+            voice={day.rep5Audio.voice}
+            tone={toneForTurn({ id: "rep5-audio", ...day.rep5Audio }, day.rep5Turns)}
+          />
           <TranslatableText es={day.rep5Audio.es} esClassName="text-navy-foreground/70" supportOnly>
             <p className="text-[14px] font-semibold italic leading-relaxed text-navy-foreground/90">"{day.rep5Audio.text}"</p>
           </TranslatableText>

@@ -8,6 +8,7 @@
  */
 
 import { registerAudioStopper, stopOtherAudio } from "@/lib/audio-bus";
+import type { ModelTone } from "@/lib/model-tone";
 
 export type ModelVoice = "neutral" | "female" | "male";
 type AudioVoice = "female" | "male";
@@ -15,6 +16,8 @@ type AudioVoice = "female" | "male";
 export type SpeakOptions = {
   rate?: number;
   voice?: ModelVoice | undefined;
+  /** Delivery tone: coach (default), neutral (recruiter), tense (frustrated customer). */
+  tone?: ModelTone | undefined;
   onStart?: () => void;
   onEnd?: () => void;
   onBoundary?: (charIndex: number) => void;
@@ -41,20 +44,20 @@ function pickVoice(voice: ModelVoice): SpeechSynthesisVoice | undefined {
   return voices.find((v) => v.lang === "en-US") ?? voices[0];
 }
 
-/** Cache of generated model audio, keyed by voice + text. */
+/** Session cache of model audio, keyed by tone + voice + text. Persistent storage lives server-side. */
 const audioCache = new Map<string, Promise<string>>();
 let currentAudio: HTMLAudioElement | null = null;
 
-async function loadModelAudio(text: string, voice?: AudioVoice): Promise<string> {
-  // v2: energetic voice instructions on the server — don't reuse v1 audio.
-  const key = `v2::${voice ?? "neutral"}::${text}`;
+async function loadModelAudio(text: string, voice?: AudioVoice, tone: ModelTone = "coach"): Promise<string> {
+  // v3: per-speaker tone — never reuse v2 (all-coach) clips.
+  const key = `v3::${tone}::${voice ?? "neutral"}::${text}`;
   const cached = audioCache.get(key);
   if (cached) return cached;
   const promise = (async () => {
     const response = await fetch("/api/tts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text, voice }),
+      body: JSON.stringify({ text, voice, tone }),
     });
     if (!response.ok) throw new Error(`TTS ${response.status}`);
     const blob = await response.blob();
@@ -109,7 +112,11 @@ export const AudioService = {
     let stopFallback: (() => void) | null = null;
     let element: HTMLAudioElement | null = null;
 
-    void loadModelAudio(text, options.voice === "female" || options.voice === "male" ? options.voice : undefined)
+    void loadModelAudio(
+      text,
+      options.voice === "female" || options.voice === "male" ? options.voice : undefined,
+      options.tone ?? "coach",
+    )
       .then((url) => {
         if (cancelled) return;
         const audio = new Audio(url);
