@@ -1,15 +1,17 @@
 import type { JourneyState, ModuleId } from "@/lib/types";
 import { CourseService } from "@/services/course-service";
-import { JourneyService } from "@/services/journey-service";
+import { JourneyService, habitDatesOf } from "@/services/journey-service";
 import type { Comparison } from "@/lib/progress-moments";
 
 /**
  * 66-Day Habit Journey — pure helpers over the existing JourneyState.
  *
- * Habit days = number of UNIQUE completed curriculum days (any module). It is
- * always derived from real completion records, never incremented by hand, so
- * replaying a day or refreshing can't inflate it. The current streak is a
- * separate metric and may drop to 0 while habit days stay put.
+ * Habit days = number of UNIQUE LOCAL CALENDAR DATES with a qualifying
+ * completion (max one per date, any module). Never the curriculum-day count:
+ * ten curriculum days finished in one afternoon are one habit day. It is
+ * derived from real completion dates, never incremented by hand, so replaying
+ * a day or refreshing can't inflate it. The current streak is a separate metric
+ * (consecutive dates) and may drop to 0 while habit days stay put.
  */
 
 export const HABIT_GOAL = 66;
@@ -115,8 +117,8 @@ export const HABIT_EXPLANATION = {
   title: { es: "¿QUÉ SON LOS 66 DÍAS?", en: "WHAT ARE THE 66 DAYS?" },
   whatTitle: { es: "Qué es", en: "What it is" },
   what: {
-    es: "Es tu reto de completar 66 días de práctica de speaking. No tienen que ser días seguidos: cada día que completas suma, y tu progreso nunca se pierde.",
-    en: "It's your challenge to complete 66 days of speaking practice. They don't have to be consecutive: every day you complete counts, and your progress is never lost.",
+    es: "Tu reto es practicar inglés en 66 días diferentes. Cada día calendario en el que completas tu práctica suma 1. Si haces varias prácticas el mismo día, ese día cuenta una sola vez. No tienen que ser días seguidos y tu progreso nunca se pierde.",
+    en: "Your goal is to practice English on 66 different calendar days. Each calendar day you complete your practice adds 1. If you complete several practices on the same day, that day still counts once. They don't have to be consecutive, and your progress is never lost.",
   },
   whyTitle: { es: "Por qué 66 días", en: "Why 66 days" },
   why: {
@@ -129,9 +131,14 @@ export const HABIT_EXPLANATION = {
   },
 } as const;
 
-/** Unique completed curriculum days across every module. */
+/** Unique local calendar dates with qualifying practice (never the curriculum-day count). */
 export function habitDays(state: JourneyState): number {
-  return Object.keys(state.days).length;
+  return habitDatesOf(state).length;
+}
+
+/** Most recent habit date (YYYY-MM-DD), if any. */
+export function lastHabitDate(state: JourneyState): string | undefined {
+  return habitDatesOf(state).at(-1);
 }
 
 /** Shown in the main milestone: clamps at 66 / 66. */
@@ -181,10 +188,9 @@ export function journeyComparison(state: JourneyState): Comparison | null {
 /** Objective numbers for the 66 / 100 celebration. Zero values are hidden by the caller. */
 export function journeyMetrics(state: JourneyState) {
   const records = Object.values(state.days);
-  const days = records.length;
   return {
-    days,
-    reps: days * 5,
+    days: habitDays(state),
+    reps: records.length * 5,
     minutes: JourneyService.totalSpeakingMinutes(state),
     finalReps: records.filter((r) => Boolean(r.recordingPath || r.finalUrl)).length,
     modules: CourseService.modules().filter((m) => JourneyService.moduleComplete(state, m.id)).length,
@@ -215,7 +221,7 @@ export const HABIT_BADGES: BadgeDef[] = HABIT_MILESTONES.map((m) => ({
   id: m.id,
   emoji: m.emoji,
   name: m.badge[1] === "HABIT" ? "66-DAY HABIT" : m.badge[1],
-  detail: { es: `${m.days} días de práctica`, en: `${m.days} practice days` },
+  detail: { es: `${m.days} días diferentes de práctica`, en: `${m.days} different practice days` },
   kind: "habit",
 }));
 

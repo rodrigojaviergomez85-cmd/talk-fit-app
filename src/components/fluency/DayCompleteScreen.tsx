@@ -127,13 +127,19 @@ export function DayCompleteScreen({
               {showEs ? "Bienvenido de vuelta. Tu progreso sigue aquí." : "Welcome back. Your progress is still here."}
             </p>
           ) : null}
-          {habitGrew ? (
-            <p className="mt-3 inline-block rounded-full bg-navy-foreground/10 px-4 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.16em]">
-              {habitNow >= HABIT_GOAL
-                ? `66-DAY HABIT ✓ · ${habitNow} ${showEs ? "DÍAS" : "DAYS"}`
-                : `${showEs ? "DÍA" : "DAY"} ${habitNow} / ${HABIT_GOAL} ${showEs ? "DEL HÁBITO" : "OF YOUR HABIT"}`}
-            </p>
-          ) : null}
+          <p className="mt-3 inline-block rounded-full bg-navy-foreground/10 px-4 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.16em]">
+            {habitGrew
+              ? showEs
+                ? "HOY CUENTA ✓"
+                : "TODAY COUNTS ✓"
+              : showEs
+                ? "HOY YA CONTABA ✓"
+                : "TODAY ALREADY COUNTED ✓"}
+            {" · "}
+            {habitNow >= HABIT_GOAL
+              ? `66-DAY HABIT ✓ · ${habitNow} ${showEs ? "DÍAS" : "DAYS"}`
+              : `${habitNow} / ${HABIT_GOAL} ${showEs ? "DÍAS" : "DAYS"}`}
+          </p>
           {countdown !== null && habitGrew ? (
             <p className="mt-2 text-[13px] font-extrabold text-primary">
               {showEs

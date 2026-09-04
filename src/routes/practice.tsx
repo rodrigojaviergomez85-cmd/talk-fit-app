@@ -324,9 +324,10 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
     d[stage] = (d[stage] ?? 0) + (Date.now() - stageEnteredAt.current) / 1000;
     const r = (i: number) => Math.round(d[i] ?? 0);
     const before = JourneyService.load();
+    const lastDate = lastHabitDate(before);
     setHabitBefore({
-      days: Object.keys(before.days).length,
-      ...(before.lastCompletedDate ? { lastCompletedDate: before.lastCompletedDate } : {}),
+      days: habitDays(before),
+      ...(lastDate ? { lastCompletedDate: lastDate } : {}),
     });
     const next = JourneyService.completeDay({
       moduleId,
