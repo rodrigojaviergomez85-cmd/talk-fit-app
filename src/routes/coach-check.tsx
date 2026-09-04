@@ -94,7 +94,9 @@ function CoachCheckPage() {
     );
   }
 
-  const learner = user.user_metadata?.display_name ?? user.user_metadata?.full_name ?? user.email ?? null;
+  const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
+  const metaName = [meta["display_name"], meta["full_name"]].find((v): v is string => typeof v === "string" && v.length > 0);
+  const learner = metaName ?? user.email ?? null;
 
   return (
     <AppShell title={t("coach.title")}>
