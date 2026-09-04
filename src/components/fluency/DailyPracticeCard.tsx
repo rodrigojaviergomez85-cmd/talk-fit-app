@@ -3,21 +3,30 @@ import { Check, Clock, Mic } from "lucide-react";
 import { TranslatableText } from "./TranslatableText";
 import type { CourseDay, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
+
 
 type Props = {
   moduleId: ModuleId;
   day: CourseDay;
   completed: boolean;
+  inProgress?: boolean;
   totalDays: number;
 };
 
-/** The one clear action on Home: start (or replay) today's day. */
-export function DailyPracticeCard({ moduleId, day, completed, totalDays }: Props) {
+/** The one clear action on the module page: start or continue today's day. */
+export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalDays }: Props) {
+  const t = useT();
+  const ctaText = completed
+    ? t("home.practiceDayAgain").replace("{day}", String(day.day))
+    : inProgress
+      ? `${t("home.continueDay")} ${day.day}`
+      : `${t("home.startDay")} ${day.day}`;
   return (
     <section className="rounded-3xl bg-card p-6 shadow-[var(--shadow-card)]">
       <div className="flex items-center justify-between">
         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
-          DAY {day.day} OF {totalDays}
+          {t("home.dayOfTotal").replace("{day}", String(day.day)).replace("{total}", String(totalDays))}
         </p>
         {completed ? (
           <span className="inline-flex items-center gap-1.5 rounded-full bg-success/12 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-success">
@@ -50,7 +59,7 @@ export function DailyPracticeCard({ moduleId, day, completed, totalDays }: Props
             : "bg-primary text-primary-foreground shadow-[var(--shadow-lift)]",
         )}
       >
-        {completed ? `PRACTICE DAY ${day.day} AGAIN` : `START DAY ${day.day}`}
+        {ctaText}
       </Link>
     </section>
   );
