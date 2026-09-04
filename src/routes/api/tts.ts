@@ -5,7 +5,7 @@ import { createFileRoute } from "@tanstack/react-router";
  * Proxies Lovable AI text-to-speech and returns a plain MP3 the browser can
  * play (and cache) with an <audio> element.
  *
- * Generated clips are persisted in the public-read "course-audio" storage
+ * Generated clips are persisted in the private "course-audio" storage
  * bucket keyed by sha256(text + voice + tone), so a clip is generated once
  * across all learners and served from storage afterwards.
  */
