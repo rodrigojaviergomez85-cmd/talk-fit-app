@@ -530,6 +530,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
           ) : null}
           {stage === 5 ? (
             <Rep5FinalRep
+              moduleId={moduleId}
               day={day}
               takes={takes}
               finalIndex={finalIndex}
