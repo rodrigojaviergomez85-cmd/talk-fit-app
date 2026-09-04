@@ -112,7 +112,11 @@ export const AudioService = {
     let stopFallback: (() => void) | null = null;
     let element: HTMLAudioElement | null = null;
 
-    void loadModelAudio(text, options.voice === "female" || options.voice === "male" ? options.voice : undefined)
+    void loadModelAudio(
+      text,
+      options.voice === "female" || options.voice === "male" ? options.voice : undefined,
+      options.tone ?? "coach",
+    )
       .then((url) => {
         if (cancelled) return;
         const audio = new Audio(url);
