@@ -12,6 +12,8 @@ type Props = {
   voice?: "female" | "male" | undefined;
   /** false: text-only rows, no per-chunk audio buttons (Rep 1). */
   audio?: boolean;
+  /** mini only: show just the 2 core chunks (stretch lives elsewhere). */
+  coreOnly?: boolean;
   className?: string;
 };
 
@@ -19,7 +21,7 @@ type Props = {
  * POWER CHUNKS — 2 core connectors + 1 stretch connector for the day.
  * Support only: no recording, no lesson. Automate through repeated use.
  */
-export function PowerChunks({ chunks, size = "full", voice, audio = true, className }: Props) {
+export function PowerChunks({ chunks, size = "full", voice, audio = true, coreOnly = false, className }: Props) {
   const t = useT();
   const [playing, setPlaying] = useState<string | null>(null);
   const stopRef = useRef<(() => void) | null>(null);
