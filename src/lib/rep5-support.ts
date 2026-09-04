@@ -28,3 +28,37 @@ export function primaryVisual(day: CourseDay, tier: Rep5Tier): "story" | "scene"
   if (day.sceneImage) return "scene";
   return null;
 }
+
+/** How much pre-teaching the Step 0 intro shows before START REP 1. Layout only. */
+export type IntroTier = "basic-low" | "basic-high" | "eagles" | "spontaneous" | "advanced";
+
+export function introTier(moduleId: ModuleId): IntroTier {
+  switch (moduleId) {
+    case "basic-zero":
+    case "simple-future":
+    case "simple-present":
+      return "basic-low";
+    case "past-stories":
+    case "mixed-tenses":
+      return "basic-high";
+    case "eagles-week-1":
+      return "eagles";
+    case "tigers":
+    case "sharks":
+      return "spontaneous";
+    case "advanced-1":
+      return "advanced";
+  }
+}
+
+/** Max intro examples visible above the START button. */
+export function introExampleLimit(tier: IntroTier): number {
+  return tier === "basic-low" ? 3 : tier === "basic-high" ? 2 : 0;
+}
+
+/** The picture is the task (describe what's happening) — keep it above the button. */
+export function introImageIsEssential(day: CourseDay, tier: IntroTier): boolean {
+  if (!day.sceneImage) return false;
+  if (tier !== "basic-low" && tier !== "basic-high") return false;
+  return /progressive/i.test(`${day.focus} ${day.weekTitle ?? ""}`);
+}

@@ -23,7 +23,7 @@ import {
 } from "@/components/fluency/TranslatableText";
 import { CollapsibleHelp, TextToggle } from "@/components/fluency/CollapsibleHelp";
 import { supportLevel, prefersChunks, showsFullTextByDefault } from "@/lib/support-level";
-import { rep5Tier, primaryVisual } from "@/lib/rep5-support";
+import { rep5Tier, primaryVisual, introTier, introExampleLimit, introImageIsEssential } from "@/lib/rep5-support";
 import { CourseService, DEFAULT_MODULE, isModuleId, type LoadedModule } from "@/services/course-service";
 import { ModuleLoadError } from "@/components/fluency/ModuleLoadState";
 import { useModuleContent } from "@/hooks/use-module-content";

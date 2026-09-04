@@ -41,6 +41,8 @@ const DICT = {
   "practice.listenToMe": ["ESCUCHARME", "LISTEN TO ME"],
   "practice.answer": ["RESPONDER", "ANSWER"],
   "practice.todayYouAnswer": ["HOY RESPONDES:", "TODAY YOU ANSWER:"],
+  "intro.today": ["HOY:", "TODAY:"],
+  "intro.moreHelp": ["MÁS AYUDA", "MORE HELP"],
   "practice.nextRep": ["SIGUIENTE REP", "NEXT REP"],
   "practice.nextSentence": ["SIGUIENTE FRASE", "NEXT SENTENCE"],
   "practice.nextQuestion": ["SIGUIENTE PREGUNTA", "NEXT QUESTION"],
