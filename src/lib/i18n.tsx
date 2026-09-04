@@ -155,9 +155,10 @@ const DICT = {
     "I finished TIGERS and want to improvise, adapt and keep the conversation going.",
   ],
   "place.advanced-1": [
-    "Nivel Avanzado (cíclico): quiero prepararme para entrevistas reales de reclutamiento.",
-    "Advanced level (cyclical): I want to prepare for real recruitment interviews.",
+    "Terminé SHARKS y quiero prepararme para entrevistas reales de reclutamiento.",
+    "I finished SHARKS and want to prepare for real recruitment interviews.",
   ],
+  "place.locked": ["BLOQUEADO", "LOCKED"],
   "take.round": ["ROUND", "ROUND"],
   "take.target": ["META", "TARGET"],
   "take.think": ["PIENSA", "THINK"],
@@ -233,6 +234,17 @@ const DICT = {
   "home.day": ["DÍA", "DAY"],
   "home.continueDay": ["CONTINUAR DÍA", "CONTINUE DAY"],
   "home.rep": ["REP", "REP"],
+  "home.currentModule": ["MÓDULO ACTUAL", "CURRENT MODULE"],
+  "home.upNext": ["LO QUE SIGUE 🔒", "UP NEXT 🔒"],
+  "home.unlockAfter": ["Se desbloquea al completar", "Unlock after completing"],
+  "home.seeAllDays": ["VER TODOS LOS DÍAS", "SEE ALL DAYS"],
+  "home.lockedTitle": ["MÓDULO BLOQUEADO", "MODULE LOCKED"],
+  "home.lockedBody": [
+    "Termina tu módulo actual para desbloquear este. Tu progreso se guarda automáticamente.",
+    "Finish your current module to unlock this one. Your progress is saved automatically.",
+  ],
+  "home.backToCurrent": ["IR A MI MÓDULO ACTUAL", "GO TO MY CURRENT MODULE"],
+  "status.locked": ["BLOQUEADO 🔒", "LOCKED 🔒"],
 
 
   // Recordings

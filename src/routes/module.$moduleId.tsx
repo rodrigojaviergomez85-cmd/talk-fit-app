@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, ChevronDown, Sparkles, Zap } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronDown, Lock, Sparkles, Zap } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { DailyPracticeCard, JourneyDayRow } from "@/components/fluency/DailyPracticeCard";
 import { CourseService, isModuleId } from "@/services/course-service";
+import { Progression } from "@/services/progression";
 import { ModuleLoadError } from "@/components/fluency/ModuleLoadState";
 import { useModuleContent } from "@/hooks/use-module-content";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
@@ -85,6 +86,49 @@ function ModulePage() {
     }
     return [...groups.entries()].sort((a, b) => a[0] - b[0]);
   }, [fullDays]);
+
+  // Ladder guard: a module ahead of the learner opens only once the previous one is complete.
+  const locked = state ? !JourneyService.isModuleUnlocked(state, meta.id) : false;
+  if (locked) {
+    const prereq = Progression.prerequisiteOf(meta.id);
+    const active = Progression.activeModuleId(safeState);
+    return (
+      <AppShell title={`${meta.label} · ${meta.title}`}>
+        <div className="space-y-6">
+          <Link
+            to="/"
+            className="inline-flex min-h-[44px] items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
+          >
+            <ArrowLeft className="size-4" /> {t("nav.home")}
+          </Link>
+          <section className="rounded-3xl border border-dashed border-border bg-secondary/40 p-6 text-center">
+            <Lock className="mx-auto size-8 text-muted-foreground" aria-hidden />
+            <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">{t("home.lockedTitle")}</p>
+            <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{meta.label}</p>
+            <h2 className="text-[24px] font-extrabold tracking-tight">{meta.title}</h2>
+            <p className="mt-1 text-[13px] font-semibold text-muted-foreground">
+              {lang === "es" ? meta.subtitleEs : meta.subtitle}
+            </p>
+            {prereq ? (
+              <p className="mt-4 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                🔒 {t("home.unlockAfter")} {CourseService.getModule(prereq).title}
+              </p>
+            ) : null}
+            <p className="mt-2 text-[13px] font-semibold text-muted-foreground">{t("home.lockedBody")}</p>
+            {active ? (
+              <Link
+                to="/module/$moduleId"
+                params={{ moduleId: active }}
+                className="mt-5 flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 text-[14px] font-bold tracking-wide text-primary-foreground active:scale-[0.98]"
+              >
+                {t("home.backToCurrent")} <ArrowRight className="size-4" />
+              </Link>
+            ) : null}
+          </section>
+        </div>
+      </AppShell>
+    );
+  }
 
   return (
     <AppShell title={`${meta.label} · ${meta.title}`}>

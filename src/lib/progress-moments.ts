@@ -1,5 +1,5 @@
 import type { DayRecord, JourneyState, ModuleId } from "@/lib/types";
-import { CourseService, type LearningModule } from "@/services/course-service";
+import { CourseService, UPCOMING_LEVELS, type LearningModule } from "@/services/course-service";
 import { JourneyService } from "@/services/journey-service";
 
 /**
@@ -442,22 +442,28 @@ export type NextStage =
   | null;
 
 /**
- * What comes after a module in the visual journey. Published modules route;
- * unpublished levels render as PRÓXIMAMENTE with no CTA.
+ * What comes after a module on the ladder (strictly sequential, Advanced included).
+ * Published modules route; unbuilt levels render as PRÓXIMAMENTE with no CTA.
  */
 export function nextModuleAfter(moduleId: ModuleId): NextStage {
   const modules = CourseService.modules();
   const index = modules.findIndex((m) => m.id === moduleId);
-  const current = index >= 0 ? modules[index] : undefined;
   const next = index >= 0 ? modules[index + 1] : undefined;
-  // ADVANCED modules are cyclical (A1 → A2 → A3 → A1, learners may enter anywhere):
-  // never present one as the sequential "next" of another module, and never
-  // auto-route a graduating Intermediate learner into a specific Advanced cycle.
-  if (next && next.family !== "advanced") return { kind: "module", module: next, copy: NEXT_UP[next.id] };
-  if (current?.family === "advanced") return null;
-  // Nothing published after this module yet: preview the next level, no CTA.
-  const copy = UPCOMING_NEXT_UP["advanced"];
-  return copy ? { kind: "upcoming", copy } : null;
+  if (next) return { kind: "module", module: next, copy: NEXT_UP[next.id] };
+  // Last published module: preview the next (unbuilt) ladder rung, no CTA.
+  const upcoming = UPCOMING_LEVELS[0];
+  if (!upcoming) return null;
+  const base = UPCOMING_NEXT_UP["advanced"];
+  return {
+    kind: "upcoming",
+    copy: {
+      label: upcoming.label,
+      title: upcoming.title,
+      emoji: upcoming.emoji,
+      promise: { es: upcoming.subtitleEs.toUpperCase(), en: upcoming.subtitle.toUpperCase() },
+      items: base?.items ?? [],
+    },
+  };
 }
 
 /** Stable identity for a comparison — used for reflection storage and revisits. */

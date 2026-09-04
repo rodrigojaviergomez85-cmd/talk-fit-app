@@ -1,5 +1,7 @@
+import { useEffect, useMemo } from "react";
 import { Link, createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { JourneyService } from "@/services/journey-service";
 import { AppShell } from "@/components/fluency/AppShell";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { TestReadySprint } from "@/components/fluency/TestReadySprint";
@@ -44,8 +46,13 @@ function SprintPage() {
   const navigate = useNavigate();
   const content = useModuleContent(moduleId);
   const outline = CourseService.getDay(moduleId, dayNumber);
+  // Ladder guard: sprints of a locked module are not reachable.
+  const locked = useMemo(() => !JourneyService.isModuleUnlocked(JourneyService.load(), moduleId), [moduleId]);
+  useEffect(() => {
+    if (locked) void navigate({ to: "/module/$moduleId", params: { moduleId }, replace: true });
+  }, [locked, moduleId, navigate]);
 
-  if (loading || content.status === "loading") {
+  if (locked || loading || content.status === "loading") {
     return (
       <AppShell title={t("tr.card")}>
         <div className="h-40 animate-pulse rounded-3xl bg-secondary" aria-busy="true" />

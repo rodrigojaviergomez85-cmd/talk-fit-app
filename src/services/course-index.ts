@@ -44,12 +44,8 @@ export type LearningModule = {
   extra?: { en: string; es: string };
   /** Module card CTA override. */
   cta?: { en: string; es: string };
-  /**
-   * ADVANCED family: cyclical, equivalent modules (A1 → A2 → A3 → A1). A learner
-   * may enter at any cycle position — never a proficiency prerequisite.
-   */
+  /** ADVANCED family: a strictly sequential ladder (A1 → A2 → A3). */
   family?: "advanced";
-  cyclePosition?: number;
   /** Weeks actually built so far (out of 4). Below 4 = partial module: no "module complete" moment. */
   builtWeeks?: number;
 };
@@ -212,7 +208,7 @@ export const MODULE_INDEX: LearningModule[] = [
   },
   {
     // Internal id is frozen from day one: progress and recordings will be keyed to it.
-    // ADVANCED is cyclical: A1 / A2 / A3 are equivalent entry points, not levels.
+    // ADVANCED is sequential: A1 unlocks after SHARKS, A2 after A1, A3 after A2.
     id: "advanced-1",
     ...outline("advanced-1"),
     order: 9,
@@ -223,7 +219,7 @@ export const MODULE_INDEX: LearningModule[] = [
     statusLine: { en: "4 Weeks · 20 Days · 100 Fluency Reps", es: "4 semanas · 20 días · 100 Fluency Reps" },
     description: "Build answers with reusable frameworks: tell your story, prove it with real examples, survive the hard questions and perform under job pressure — recruiter, customer and sales.",
     descriptionEs: "Construye respuestas con estructuras reutilizables: cuenta tu historia, pruébala con ejemplos reales, sobrevive a las preguntas difíciles y rinde bajo presión laboral — reclutador, cliente y ventas.",
-    meta: ["4 Weeks", "20 Days", "100 Fluency Reps", "Cyclical Advanced Module"],
+    meta: ["4 Weeks", "20 Days", "100 Fluency Reps", "12 Test Ready Sprints"],
     highlights: [
       { en: "Tell me about yourself — without sounding memorized", es: "Tell me about yourself — sin sonar memorizado/a" },
       { en: "Prove what you can do: challenge, mistake, difficult person", es: "Prueba lo que puedes hacer: reto, error, persona difícil" },
@@ -239,15 +235,47 @@ export const MODULE_INDEX: LearningModule[] = [
     cta: { en: "START GET HIRED", es: "EMPEZAR GET HIRED" },
     hiddenFromPlacement: true,
     family: "advanced",
-    cyclePosition: 1,
     builtWeeks: 4,
   },
 ];
 
-/** Preview-only levels: not selectable, not routable, zero days, never in totals. */
-export type UpcomingLevel = { key: string; label: string; title: string; note: { en: string; es: string } };
-/** ADVANCED 1 now ships as a real module card; nothing is left in preview-only state. */
-export const UPCOMING_LEVELS: UpcomingLevel[] = [];
+/**
+ * Preview-only levels: not selectable, not routable, zero days, never in totals.
+ * They sit on the ladder after the last published module and stay locked until built.
+ */
+export type UpcomingLevel = {
+  key: string;
+  label: string;
+  title: string;
+  subtitle: string;
+  subtitleEs: string;
+  emoji: string;
+  /** Ladder rung that must be completed first (a real module id or another upcoming key). */
+  unlockAfter: ModuleId | string;
+  note: { en: string; es: string };
+};
+export const UPCOMING_LEVELS: UpcomingLevel[] = [
+  {
+    key: "advanced-2",
+    label: "AVANZADO · ADVANCED 2",
+    title: "HANDLE & SELL",
+    subtitle: "Handle difficult customers and close the sale.",
+    subtitleEs: "Maneja clientes difíciles y cierra la venta.",
+    emoji: "🤝",
+    unlockAfter: "advanced-1",
+    note: { en: "Unlocks after completing GET HIRED.", es: "Se desbloquea al completar GET HIRED." },
+  },
+  {
+    key: "advanced-3",
+    label: "AVANZADO · ADVANCED 3",
+    title: "THINK FAST",
+    subtitle: "Respond instantly under real pressure.",
+    subtitleEs: "Responde al instante bajo presión real.",
+    emoji: "⚡",
+    unlockAfter: "advanced-2",
+    note: { en: "Unlocks after completing HANDLE & SELL.", es: "Se desbloquea al completar HANDLE & SELL." },
+  },
+];
 
 export const DEFAULT_MODULE: ModuleId = "basic-zero";
 

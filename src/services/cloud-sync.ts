@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { JourneyService } from "./journey-service";
+import { CourseService } from "./course-service";
 import { PracticeSessionService, type PracticeSession } from "./practice-session";
 import { VerbBank, type VerbBankState } from "./verb-bank";
 import {
@@ -358,6 +359,12 @@ export const CloudSync = {
    * sessions and the original placement are untouched.
    */
   async changeLevel(moduleId: ModuleId): Promise<boolean> {
+    // Safety net for the ADVANCED ladder: Change Level never bypasses a locked prerequisite.
+    const target = CourseService.getModule(moduleId);
+    if (target.family === "advanced" && !JourneyService.isModuleUnlocked(JourneyService.load(), moduleId)) {
+      console.warn("[placement] refused: module is locked", moduleId);
+      return false;
+    }
     const uid = await userId();
     const prefs = loadPreferences();
     const now = new Date().toISOString();
