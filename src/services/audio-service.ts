@@ -8,6 +8,7 @@
  */
 
 import { registerAudioStopper, stopOtherAudio } from "@/lib/audio-bus";
+import type { ModelTone } from "@/lib/model-tone";
 
 export type ModelVoice = "neutral" | "female" | "male";
 type AudioVoice = "female" | "male";
@@ -15,6 +16,8 @@ type AudioVoice = "female" | "male";
 export type SpeakOptions = {
   rate?: number;
   voice?: ModelVoice | undefined;
+  /** Delivery tone: coach (default), neutral (recruiter), tense (frustrated customer). */
+  tone?: ModelTone | undefined;
   onStart?: () => void;
   onEnd?: () => void;
   onBoundary?: (charIndex: number) => void;
