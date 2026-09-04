@@ -54,9 +54,11 @@ export function PowerChunks({ chunks, size = "full", voice, audio = true, coreOn
             {c}
           </span>
         ))}
-        <span className="rounded-full border border-dashed border-primary/40 px-2.5 py-1 text-[12px] font-semibold text-muted-foreground">
-          {chunks.stretch}
-        </span>
+        {coreOnly ? null : (
+          <span className="rounded-full border border-dashed border-primary/40 px-2.5 py-1 text-[12px] font-semibold text-muted-foreground">
+            {chunks.stretch}
+          </span>
+        )}
       </div>
     );
   }
