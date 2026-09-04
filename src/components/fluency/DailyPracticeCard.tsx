@@ -8,11 +8,12 @@ type Props = {
   moduleId: ModuleId;
   day: CourseDay;
   completed: boolean;
+  inProgress?: boolean;
   totalDays: number;
 };
 
-/** The one clear action on Home: start (or replay) today's day. */
-export function DailyPracticeCard({ moduleId, day, completed, totalDays }: Props) {
+/** The one clear action on the module page: start or continue today's day. */
+export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalDays }: Props) {
   return (
     <section className="rounded-3xl bg-card p-6 shadow-[var(--shadow-card)]">
       <div className="flex items-center justify-between">
