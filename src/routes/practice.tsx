@@ -28,6 +28,7 @@ import { CourseService, DEFAULT_MODULE, isModuleId, type LoadedModule } from "@/
 import { ModuleLoadError } from "@/components/fluency/ModuleLoadState";
 import { useModuleContent } from "@/hooks/use-module-content";
 import { JourneyService } from "@/services/journey-service";
+import { habitDays, lastHabitDate } from "@/lib/habit";
 import { AudioService } from "@/services/audio-service";
 import {
   PracticeSessionService,
