@@ -308,6 +308,13 @@ const DICT = {
   "prog.history": ["Historial de speaking", "Speaking history"],
   "prog.viewAll": ["Ver todos los días", "View all days"],
   "prog.currentModule": ["Módulo actual", "Current module"],
+  "prog.title": ["Mi progreso", "My progress"],
+  "prog.journey66": ["Camino de 66 días", "66-day journey"],
+  "prog.practiceDays": ["días de práctica", "practice days"],
+  "prog.totals": ["Totales", "Totals"],
+  "prog.bests": ["Mejores marcas", "Personal bests"],
+  "prog.myJourney": ["Tu camino", "Your journey"],
+  "prog.badges": ["Logros", "Badges"],
 
   // Account
   // Account gate + sync

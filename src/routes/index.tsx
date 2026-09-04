@@ -1,11 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Check, Flame, Repeat, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { CurrentModuleCard } from "@/components/fluency/CurrentModuleCard";
 import { NextModuleLocked } from "@/components/fluency/NextModuleLocked";
 import { HabitCard } from "@/components/fluency/HabitCard";
-import { CourseService } from "@/services/course-service";
 import { Progression } from "@/services/progression";
 import { getPendingPlacement } from "@/services/preferences";
 import { useAuth } from "@/lib/auth";
@@ -75,9 +73,9 @@ function HomePage() {
 
   const active = Progression.activeModuleId(state);
   const upNext = active ? Progression.entryAfter(active) : null;
-  const totalDays = CourseService.totalDaysAll();
-  const completed = JourneyService.completedCount(state);
 
+  // HOME = "what do I do today?" — action first. Analytics live in PROGRESS,
+  // audio history in RECORDINGS; the streak is shown once, inside HabitCard.
   return (
     <AppShell title={t("home.today")}>
       <div className="space-y-6">
@@ -103,31 +101,9 @@ function HomePage() {
           </div>
         ) : null}
 
-        <section className="grid grid-cols-2 gap-3">
-          <Stat icon={<Flame className="size-4 text-primary" />} label={t("home.streak")} value={`${state.streakDays || 0} ${t("home.days")}`} />
-          <Stat
-            icon={<Timer className="size-4 text-primary" />}
-            label={t("home.speakingTime")}
-            value={`${JourneyService.totalSpeakingMinutes(state) || 0} min`}
-          />
-          <Stat icon={<Check className="size-4 text-primary" />} label={t("home.daysCompleted")} value={`${completed} / ${totalDays}`} />
-          <Stat icon={<Repeat className="size-4 text-primary" />} label={t("home.reps")} value={`${state.totalRepsCompleted || 0}`} />
-        </section>
-
         {active && upNext ? <NextModuleLocked entry={upNext} afterModuleId={active} /> : null}
       </div>
     </AppShell>
-  );
-}
-
-function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
-  return (
-    <div className="rounded-3xl bg-card p-4 text-center shadow-[var(--shadow-card)]">
-      <p className="flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-        {icon} {label}
-      </p>
-      <p className="mt-1.5 text-[20px] font-extrabold tabular-nums tracking-tight">{value}</p>
-    </div>
   );
 }
 
@@ -135,12 +111,8 @@ function HomeSkeleton() {
   return (
     <div className="space-y-6" aria-busy="true">
       <div className="h-56 animate-pulse rounded-3xl bg-secondary" />
-      <div className="grid grid-cols-2 gap-3">
-        {[0, 1, 2, 3].map((i) => (
-          <div key={i} className="h-20 animate-pulse rounded-3xl bg-secondary" />
-        ))}
-      </div>
-      <div className="h-32 animate-pulse rounded-3xl bg-secondary" />
+      <div className="h-12 animate-pulse rounded-2xl bg-secondary" />
+      <div className="h-40 animate-pulse rounded-3xl bg-secondary" />
     </div>
   );
 }
