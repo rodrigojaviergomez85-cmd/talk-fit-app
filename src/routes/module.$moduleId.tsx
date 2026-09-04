@@ -74,6 +74,11 @@ function ModulePage() {
   const currentDay = JourneyService.currentDay(safeState, meta.id);
   const day = content.module ? CourseService.dayOf(content.module, currentDay) : null;
   const completed = JourneyService.isDayCompleted(safeState, meta.id, currentDay);
+  const session = useMemo(
+    () => (day ? PracticeSessionService.load(meta.id, day.day) : null),
+    [meta.id, day?.day],
+  );
+  const inProgress = day ? !completed && PracticeSessionService.isResumable(session) : false;
   const percent = total > 0 ? Math.round((completedCount / total) * 100) : 0;
 
   const fullDays = content.module?.days;
