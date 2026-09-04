@@ -72,11 +72,27 @@ function write(state: JourneyState) {
 }
 
 /**
- * Streak recomputed from real completion dates, so restoring on a new device
- * never inflates it by adding two stored numbers together.
+ * Unique local calendar dates with qualifying practice: the authoritative
+ * habit list (backend + pending) unioned with the dates on the day records,
+ * so a state that predates the habit table still counts correctly.
  */
-function streakFrom(days: Record<string, DayRecord>): number {
-  const keys = new Set(Object.values(days).map((r) => r.dayKey));
+export function habitDatesOf(state: Pick<JourneyState, "days" | "habitDates" | "pendingHabitDates">): string[] {
+  const keys = new Set<string>();
+  for (const key of state.habitDates ?? []) keys.add(key);
+  for (const key of state.pendingHabitDates ?? []) keys.add(key);
+  for (const record of Object.values(state.days)) {
+    const key = record.dayKey || dayKey(new Date(record.completedAt));
+    keys.add(key);
+  }
+  return [...keys].filter((k) => /^\d{4}-\d{2}-\d{2}$/.test(k)).sort();
+}
+
+/**
+ * Streak recomputed from real calendar practice dates, so restoring on a new
+ * device never inflates it, and ten curriculum days in one date count once.
+ */
+export function streakFrom(dates: Iterable<string>): number {
+  const keys = new Set(dates);
   if (keys.size === 0) return 0;
   const today = dayKey();
   const yesterday = dayKey(new Date(Date.now() - 86400000));
@@ -337,13 +353,13 @@ export const JourneyService = {
     const key = recordKey(input.moduleId, input.day);
     const existing = state.days[key];
 
-    let streakDays = state.streakDays;
-    if (!existing) {
-      const yesterday = dayKey(new Date(Date.now() - 86400000));
-      if (state.lastCompletedDate === today) streakDays = Math.max(1, state.streakDays);
-      else if (state.lastCompletedDate === yesterday) streakDays = state.streakDays + 1;
-      else streakDays = 1;
-    }
+    // Habit: today's local date counts once, even when this curriculum day was
+    // completed before (a genuine repeat on a new date is still practice).
+    const habitDates = habitDatesOf(state);
+    if (!habitDates.includes(today)) habitDates.push(today);
+    habitDates.sort();
+    const pendingHabitDates = [...new Set([...(state.pendingHabitDates ?? []), today])];
+    const streakDays = streakFrom(habitDates);
 
     const record: DayRecord = {
       day: input.day,
@@ -371,7 +387,9 @@ export const JourneyService = {
       ...state,
       days: { ...state.days, [key]: record },
       streakDays,
-      lastCompletedDate: existing ? state.lastCompletedDate : today,
+      habitDates,
+      pendingHabitDates,
+      lastCompletedDate: today,
       totalRepsCompleted: existing ? state.totalRepsCompleted : state.totalRepsCompleted + 5,
       totalSpeakingSeconds: existing
         ? state.totalSpeakingSeconds
@@ -482,6 +500,31 @@ export const JourneyService = {
       console.error("[journey] day progress save failed", error.message);
       return "failed";
     }
+
+    // Habit days: flush every pending local calendar date (original practice
+    // date, never the sync date). The unique (user, date) constraint makes
+    // retries and second same-day completions harmless.
+    const pending = [...new Set(read().pendingHabitDates ?? [])].filter((k) => /^\d{4}-\d{2}-\d{2}$/.test(k));
+    if (pending.length > 0) {
+      const nowIso = new Date().toISOString();
+      const { error: habitError } = await supabase.from("habit_practice_days").upsert(
+        pending.map((practiceDate) => ({
+          user_id: user.id,
+          practice_date: practiceDate,
+          first_qualified_at: record.completedAt,
+          last_qualified_at: nowIso,
+          module_id: moduleId,
+          curriculum_day: day,
+        })),
+        { onConflict: "user_id,practice_date", ignoreDuplicates: true },
+      );
+      if (habitError) {
+        console.error("[journey] habit day save failed", habitError.message);
+        return "failed";
+      }
+      const current = read();
+      write({ ...current, pendingHabitDates: (current.pendingHabitDates ?? []).filter((k) => !pending.includes(k)) });
+    }
     pullCache = null;
     return "saved";
   },
@@ -549,10 +592,18 @@ export const JourneyService = {
       if (!localRecord) totalSeconds += row.practice_seconds;
     }
 
+    const { data: habitRows } = await supabase.from("habit_practice_days").select("practice_date").eq("user_id", user.id);
+    const remoteHabit = (habitRows ?? []).map((r) => String(r.practice_date).slice(0, 10));
+    const pendingHabitDates = (local.pendingHabitDates ?? []).filter((k) => !remoteHabit.includes(k));
+    const habitDates = habitDatesOf({ days, habitDates: remoteHabit, pendingHabitDates });
+
     const merged: JourneyState = {
       ...local,
       days,
-      streakDays: streakFrom(days),
+      habitDates,
+      pendingHabitDates,
+      streakDays: streakFrom(habitDates),
+      ...(habitDates.length > 0 ? { lastCompletedDate: habitDates[habitDates.length - 1] } : {}),
       totalSpeakingSeconds: totalSeconds,
       totalRepsCompleted: Object.keys(days).length * 5,
     };

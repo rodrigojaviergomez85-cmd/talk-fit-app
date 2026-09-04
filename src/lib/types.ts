@@ -325,6 +325,13 @@ export type JourneyState = {
   streakDays: number;
   /** Local YYYY-MM-DD key of the last completed day. */
   lastCompletedDate?: string | undefined;
+  /**
+   * 66-Day Habit: unique local calendar dates (YYYY-MM-DD) with a qualifying
+   * completion, sorted ascending. Separate from curriculum progress.
+   */
+  habitDates?: string[] | undefined;
+  /** Habit dates completed on this device but not yet confirmed by the backend. */
+  pendingHabitDates?: string[] | undefined;
   totalRepsCompleted: number;
   totalSpeakingSeconds: number;
   /** Speaking seconds keyed by local day, used for the weekly total. */
