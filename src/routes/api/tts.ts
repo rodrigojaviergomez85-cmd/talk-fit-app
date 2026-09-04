@@ -78,17 +78,15 @@ export const Route = createFileRoute("/api/tts")({
         const key = await clipKey(text, voice, tone);
 
         // 1. Stored clip? Serve it without touching the TTS API.
-        const supabaseUrl = process.env["SUPABASE_URL"];
-        const publicUrl = supabaseUrl ? `${supabaseUrl}/storage/v1/object/public/${BUCKET}/${key}` : null;
-        if (publicUrl) {
-          try {
-            const stored = await fetch(publicUrl, { method: "GET" });
-            if (stored.ok && stored.body) {
-              return audioResponse(stored.body, "store");
-            }
-          } catch (error) {
-            console.warn("course-audio lookup failed, generating instead:", error);
+        //    The bucket is private (workspace policy); the server reads it with the admin client.
+        try {
+          const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+          const { data, error } = await supabaseAdmin.storage.from(BUCKET).download(key);
+          if (data && !error) {
+            return audioResponse(await data.arrayBuffer(), "store");
           }
+        } catch (error) {
+          console.warn("course-audio lookup failed, generating instead:", error);
         }
 
         // 2. Generate.
