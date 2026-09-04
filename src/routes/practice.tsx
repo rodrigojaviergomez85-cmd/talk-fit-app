@@ -23,6 +23,7 @@ import {
 } from "@/components/fluency/TranslatableText";
 import { CollapsibleHelp, TextToggle } from "@/components/fluency/CollapsibleHelp";
 import { supportLevel, prefersChunks, showsFullTextByDefault } from "@/lib/support-level";
+import { rep5Tier, primaryVisual } from "@/lib/rep5-support";
 import { CourseService, DEFAULT_MODULE, isModuleId, type LoadedModule } from "@/services/course-service";
 import { ModuleLoadError } from "@/components/fluency/ModuleLoadState";
 import { useModuleContent } from "@/hooks/use-module-content";
@@ -530,6 +531,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
           ) : null}
           {stage === 5 ? (
             <Rep5FinalRep
+              moduleId={moduleId}
               day={day}
               takes={takes}
               finalIndex={finalIndex}
@@ -1316,6 +1318,7 @@ function Rep4MakeItYours({
 /* -------------------------------- Rep 5 ---------------------------------- */
 
 function Rep5FinalRep({
+  moduleId,
   day,
   takes,
   finalIndex,
@@ -1324,6 +1327,7 @@ function Rep5FinalRep({
   onSelectFinal,
   onFinish,
 }: {
+  moduleId: ModuleId;
   day: CourseDay;
   takes: (Recording | null)[];
   finalIndex: number | null;
@@ -1342,12 +1346,35 @@ function Rep5FinalRep({
   const [showExampleText, setShowExampleText] = useState(false);
 
   const hasTurns = Boolean(day.rep5Turns?.length);
+  const tier = rep5Tier(moduleId);
+  const visual = primaryVisual(day, tier);
   const goalLine = hasTurns
     ? t("rep5.turnsGoal")
         .replace("{turns}", String(day.rep5Turns!.length))
         .replace("{min}", String(day.goalSeconds[0]))
         .replace("{max}", String(day.goalSeconds[1]))
-    : null;
+    : t("rep5.goalLine")
+        .replace("{sec}", String(day.goalSeconds[0]))
+        .replace("{ideas}", String(day.goalSentences ?? 5));
+
+  // What stays visible above the microphone, per tier. Everything else goes into Help (never deleted).
+  const cuesAbove = !hasTurns && tier === "eagles" && !day.powerChunks ? day.cues.slice(0, 3) : [];
+  const chunksAbove = !hasTurns && tier === "eagles" && Boolean(day.powerChunks);
+  const cuesInHelp = cuesAbove.length ? day.cues.slice(cuesAbove.length) : day.cues;
+  const skeletonSteps = day.rep5Skeleton ?? ["DECISION", "WHY", "EXAMPLE", "OTHER SIDE", "WHAT IF?", "CONCLUSION"];
+
+  const toolbox = day.rep5Toolbox ? (
+    <div className="space-y-1.5">
+      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{t("power.toolbox")}</p>
+      <div className="flex flex-wrap gap-1.5">
+        {day.rep5Toolbox.map((phrase) => (
+          <span key={phrase} className="rounded-full bg-secondary px-2.5 py-1 text-[12px] font-semibold text-foreground">
+            {phrase}
+          </span>
+        ))}
+      </div>
+    </div>
+  ) : null;
 
   const supportContent = (
     <>
@@ -1357,9 +1384,13 @@ function Rep5FinalRep({
           <TranslatableText es={day.rep5Scenario.situationEs} supportOnly>
             <p className="text-[14px] font-semibold leading-relaxed text-foreground">{day.rep5Scenario.situation}</p>
           </TranslatableText>
+        </div>
+      ) : null}
+      {day.rep5Scenario ? (
+        <div className="space-y-1.5">
           <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">{t("rep5.skeleton")}</p>
           <div className="flex flex-wrap gap-1.5">
-            {(day.rep5Skeleton ?? ["DECISION", "WHY", "EXAMPLE", "OTHER SIDE", "WHAT IF?", "CONCLUSION"]).map((step) => (
+            {skeletonSteps.map((step) => (
               <span key={step} className="rounded-full bg-secondary px-2.5 py-1 text-[10px] font-extrabold tracking-[0.12em] text-muted-foreground">
                 {step}
               </span>
@@ -1367,26 +1398,21 @@ function Rep5FinalRep({
           </div>
         </div>
       ) : null}
-      {hasTurns ? (
-        <>
-          <CueRow cues={day.cues} />
-          <PowerChunks chunks={day.powerChunks} size="mini" />
-          {day.rep5Toolbox ? (
-            <div className="space-y-1.5">
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{t("power.toolbox")}</p>
-              <div className="flex flex-wrap gap-1.5">
-                {day.rep5Toolbox.map((phrase) => (
-                  <span key={phrase} className="rounded-full bg-secondary px-2.5 py-1 text-[12px] font-semibold text-foreground">
-                    {phrase}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ) : null}
-          <SceneImage day={day} />
-          <StoryStrip day={day} showCaptions={false} />
-        </>
-      ) : null}
+      {cuesInHelp.length ? <CueRow cues={cuesInHelp} /> : null}
+      {chunksAbove ? (
+        day.powerChunks ? (
+          <div className="flex flex-wrap items-center justify-center gap-1.5">
+            <span className="rounded-full border border-dashed border-primary/40 px-2.5 py-1 text-[12px] font-semibold text-muted-foreground">
+              {day.powerChunks.stretch}
+            </span>
+          </div>
+        ) : null
+      ) : (
+        <PowerChunks chunks={day.powerChunks} size="mini" />
+      )}
+      {toolbox}
+      {visual !== "scene" ? <SceneImage day={day} /> : null}
+      {visual !== "story" ? <StoryStrip day={day} showCaptions={false} /> : null}
       {day.rep5Tips ? (
         <TranslatableText es={day.rep5Tips.es} supportOnly>
           <p className="text-[14px] leading-relaxed text-foreground">{day.rep5Tips.en}</p>
@@ -1418,34 +1444,25 @@ function Rep5FinalRep({
     </>
   );
 
+  const board = (
+    <TakeBoard
+      takes={takes}
+      finalIndex={finalIndex}
+      goalSeconds={day.goalSeconds}
+      goalSentences={day.goalSentences ?? 5}
+      turns={day.rep5Turns}
+      onRecorded={onRecorded}
+      onDelete={onDelete}
+      onSelectFinal={onSelectFinal}
+    />
+  );
+
   return (
     <div className="space-y-5">
       <RepHeader titleKey="rep5.title" instrKey="rep5.instr" label={day.rep5Label} copy={day.repCopy?.rep5} />
 
-      {hasTurns ? (
-        <>
-          {/* One compact goal line — no duplicate goal card before Turn 1. */}
-          <p className="text-center text-[12px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">{goalLine}</p>
-
-          <VariantPicker day={day} />
-
-          {/* Turn 1 LISTEN + RECORD must be above the fold. */}
-          <TakeBoard
-            takes={takes}
-            finalIndex={finalIndex}
-            goalSeconds={day.goalSeconds}
-            goalSentences={day.goalSentences ?? 5}
-            turns={day.rep5Turns}
-            onRecorded={onRecorded}
-            onDelete={onDelete}
-            onSelectFinal={onSelectFinal}
-          />
-
-          <CollapsibleHelp label="Need help?" labelEs="¿Necesitas ayuda?">
-            {supportContent}
-          </CollapsibleHelp>
-        </>
-      ) : (
+      {/* PROMPT / SITUATION — hidden on role-play days: Turn 1 audio delivers the question. */}
+      {!hasTurns ? (
         <>
           {day.rep5Audio ? (
             <div className="space-y-3 rounded-3xl bg-navy p-5 text-navy-foreground">
@@ -1477,14 +1494,6 @@ function Rep5FinalRep({
               <TranslatableText es={day.rep5Scenario.situationEs} esClassName="text-navy-foreground/70">
                 <p className="text-[15px] font-semibold leading-relaxed">{day.rep5Scenario.situation}</p>
               </TranslatableText>
-              <p className="pt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-navy-foreground/60">{t("rep5.skeleton")}</p>
-              <div className="flex flex-wrap gap-1.5">
-                {(day.rep5Skeleton ?? ["DECISION", "WHY", "EXAMPLE", "OTHER SIDE", "WHAT IF?", "CONCLUSION"]).map((step) => (
-                  <span key={step} className="rounded-full border border-navy-foreground/25 px-2.5 py-1 text-[10px] font-extrabold tracking-[0.12em]">
-                    {step}
-                  </span>
-                ))}
-              </div>
             </div>
           ) : null}
 
@@ -1496,45 +1505,25 @@ function Rep5FinalRep({
               <p className="text-[19px] font-extrabold leading-snug">{day.rep5Prompt.question}</p>
             </TranslatableText>
           </div>
-
-          <GoalChips day={day} />
-
-          <CueRow cues={day.cues} />
-          <PowerChunks chunks={day.powerChunks} size="mini" />
-
-          {day.rep5Toolbox ? (
-            <div className="space-y-1.5 rounded-3xl border border-border bg-card p-3">
-              <p className="px-1 text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{t("power.toolbox")}</p>
-              <div className="flex flex-wrap gap-1.5">
-                {day.rep5Toolbox.map((phrase) => (
-                  <span key={phrase} className="rounded-full bg-secondary px-2.5 py-1 text-[12px] font-semibold text-foreground">
-                    {phrase}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ) : null}
-
-          <SceneImage day={day} />
-          <StoryStrip day={day} showCaptions={false} />
-          <VariantPicker day={day} />
-
-          <CollapsibleHelp label="Need help?" labelEs="¿Necesitas ayuda?">
-            {supportContent}
-          </CollapsibleHelp>
-
-          <TakeBoard
-            takes={takes}
-            finalIndex={finalIndex}
-            goalSeconds={day.goalSeconds}
-            goalSentences={day.goalSentences ?? 5}
-            turns={day.rep5Turns}
-            onRecorded={onRecorded}
-            onDelete={onDelete}
-            onSelectFinal={onSelectFinal}
-          />
         </>
-      )}
+      ) : null}
+
+      {/* GOAL — stated exactly once before the first speaking action. */}
+      <p className="text-center text-[12px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">{goalLine}</p>
+
+      {/* MINIMAL SUPPORT — tiered. */}
+      {cuesAbove.length ? <CueRow cues={cuesAbove} /> : null}
+      {chunksAbove ? <PowerChunks chunks={day.powerChunks} size="mini" coreOnly /> : null}
+      {visual === "story" ? <StoryStrip day={day} showCaptions={false} /> : null}
+      {visual === "scene" ? <SceneImage day={day} /> : null}
+      <VariantPicker day={day} />
+
+      {/* SPEAK */}
+      {board}
+
+      <CollapsibleHelp label="Need help?" labelEs="¿Necesitas ayuda?">
+        {supportContent}
+      </CollapsibleHelp>
 
       {requiredDone ? (
         <div className="space-y-3">
