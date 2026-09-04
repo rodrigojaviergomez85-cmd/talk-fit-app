@@ -209,7 +209,7 @@ function ModulePage() {
 
         {state && day ? (
           <>
-            <DailyPracticeCard moduleId={meta.id} day={day} completed={completed} totalDays={total} />
+            <DailyPracticeCard moduleId={meta.id} day={day} completed={completed} inProgress={inProgress} totalDays={total} />
 
             {meta.id === "past-stories" ? <VerbBankCard /> : null}
 
