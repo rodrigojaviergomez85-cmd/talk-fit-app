@@ -3,6 +3,8 @@ import { Check, Clock, Mic } from "lucide-react";
 import { TranslatableText } from "./TranslatableText";
 import type { CourseDay, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
+
 
 type Props = {
   moduleId: ModuleId;
