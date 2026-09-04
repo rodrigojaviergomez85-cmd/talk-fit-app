@@ -84,6 +84,7 @@ const DICT = {
 
   // Rep 5 take board
   "take.take": ["TOMA", "TAKE"],
+  "take.audio": ["AUDIO", "AUDIO"],
   "take.optional": ["OPCIONAL", "OPTIONAL"],
   "take.ready": ["Listo para grabar", "Ready to record"],
   "take.time": ["TIEMPO", "TIME"],
