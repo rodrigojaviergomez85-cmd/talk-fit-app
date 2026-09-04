@@ -211,7 +211,8 @@ export function TakeBoard({
         if (pressure && !take && !isActive) return null;
         const turnTarget = turn?.targetSeconds ?? goalSeconds;
         const turnMax = Math.max(90, turnTarget[1] + 15);
-        const showTurn = Boolean(turn) && (isActive || Boolean(take));
+        // Retry slots always show the question being answered — before, during, and after recording.
+        const showTurn = Boolean(turn) && (isActive || Boolean(take) || isRetrySlot);
 
         const needsPrep = Boolean(turn?.prepSeconds) && isActive && !prepDone.includes(index);
         const recruiter = /recruiter|reclutador|interviewer/i.test(`${turn?.label ?? ""} ${turn?.labelEs ?? ""}`);
