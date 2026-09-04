@@ -326,16 +326,7 @@ function WeekSection({
                   </span>
                 </div>
                 <JourneyDayRow moduleId={moduleId} day={item} completed={done} current={current} />
-                {current ? (
-                  <Link
-                    to="/practice"
-                    search={{ day: item.day, module: moduleId }}
-                    className="flex min-h-[48px] w-full items-center justify-center rounded-2xl bg-primary px-5 text-[14px] font-bold tracking-wide text-primary-foreground"
-                  >
-                    {JourneyService.completedCount(state, moduleId) > 0 ? "CONTINUE" : "START"}
-                  </Link>
-                ) : null}
-                {item.testReady ? <TestReadyCard moduleId={moduleId} day={item} /> : null}
+                {item.testReady ? <TestReadyCard moduleId={moduleId} day={item} dayCompleted={done} /> : null}
               </div>
             );
           })}
@@ -346,19 +337,60 @@ function WeekSection({
 }
 
 /** Separate, optional 3–5 minute sprint — clearly distinct from Daily Practice. */
-function TestReadyCard({ moduleId, day }: { moduleId: ModuleId; day: CourseDay }) {
+function TestReadyCard({
+  moduleId,
+  day,
+  dayCompleted,
+}: {
+  moduleId: ModuleId;
+  day: CourseDay;
+  dayCompleted: boolean;
+}) {
   const t = useT();
   const { lang } = useAppLang();
   const records = useSyncExternalStore(TestReadyService.subscribe, TestReadyService.snapshot, TestReadyService.snapshot);
   const record = records[`${moduleId}:${day.day}`];
   const sprint = day.testReady!;
+  const optional = day.testReadyOptional
+    ? lang === "es"
+      ? "Práctica extra · opcional"
+      : "Extra practice · optional"
+    : t("tr.subtitle");
+
+  if (!dayCompleted) {
+    return (
+      <div
+        className={cn(
+          "flex items-center justify-between gap-3 rounded-2xl border border-dashed p-3.5 opacity-70",
+          "border-border bg-card",
+        )}
+      >
+        <span className="min-w-0">
+          <span className="flex items-center gap-1.5 text-[12px] font-extrabold uppercase tracking-[0.14em] text-muted-foreground">
+            <Zap className="size-3.5" aria-hidden /> {t("tr.card")} · {t("tr.minutes")}
+          </span>
+          <span className="mt-0.5 block truncate text-[13px] font-bold text-muted-foreground">
+            {lang === "es" ? sprint.titleEs : sprint.title}
+          </span>
+          <span className="block text-[11px] text-muted-foreground">{optional}</span>
+          <span className="mt-1 block text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground/80">
+            {t("tr.availableAfter")}
+          </span>
+        </span>
+        <span className="inline-flex min-h-[40px] shrink-0 items-center gap-1 rounded-xl border border-border bg-secondary px-3 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+          {t("tr.start")}
+        </span>
+      </div>
+    );
+  }
+
   return (
     <Link
       to="/sprint"
       search={{ day: day.day, module: moduleId }}
       className={cn(
         "flex items-center justify-between gap-3 rounded-2xl border border-dashed p-3.5",
-        record ? "border-success/40 bg-success/8" : "border-primary/40 bg-primary/5",
+        record ? "border-success/40 bg-success/8" : "border-border bg-card",
       )}
     >
       <span className="min-w-0">
@@ -366,24 +398,17 @@ function TestReadyCard({ moduleId, day }: { moduleId: ModuleId; day: CourseDay }
           <Zap className="size-3.5" aria-hidden /> {t("tr.card")} · {t("tr.minutes")}
         </span>
         <span className="mt-0.5 block truncate text-[13px] font-bold">{lang === "es" ? sprint.titleEs : sprint.title}</span>
-        <span className="block text-[11px] text-muted-foreground">
-          {day.testReadyOptional ? (lang === "es" ? "Práctica extra · opcional" : "Extra practice · optional") : t("tr.subtitle")}
+        <span className="block text-[11px] text-muted-foreground">{optional}</span>
+      </span>
+      {record ? (
+        <span className="inline-flex min-h-[40px] shrink-0 items-center gap-1 rounded-xl border border-success/40 bg-success/12 px-3 text-[11px] font-bold uppercase tracking-[0.12em] text-success">
+          <Check className="size-3.5" /> {t("tr.repeat")}
         </span>
-      </span>
-      <span
-        className={cn(
-          "inline-flex min-h-[40px] shrink-0 items-center gap-1 rounded-xl px-3 text-[11px] font-bold uppercase tracking-[0.12em]",
-          record ? "bg-success text-success-foreground" : "bg-primary text-primary-foreground",
-        )}
-      >
-        {record ? (
-          <>
-            <Check className="size-3.5" /> {t("tr.again")}
-          </>
-        ) : (
-          t("tr.start")
-        )}
-      </span>
+      ) : (
+        <span className="inline-flex min-h-[40px] shrink-0 items-center gap-1 rounded-xl border border-primary/40 bg-primary/8 px-3 text-[11px] font-bold uppercase tracking-[0.12em] text-primary">
+          {t("tr.doTestReady")} <ArrowRight className="size-3.5" />
+        </span>
+      )}
     </Link>
   );
 }
