@@ -1,10 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { BarChart3, Dumbbell, Home, Mic, User } from "lucide-react";
+import { BarChart3, Home, Mic, User } from "lucide-react";
 import { useT, type TKey } from "@/lib/i18n";
 
+// HOME = do · PROGRESS = see · RECORDINGS = hear · ACCOUNT = manage.
+// Practice is reached from Home / module CTAs, not from the tab bar.
 const ITEMS = [
   { to: "/", key: "nav.home", icon: Home },
-  { to: "/practice", key: "nav.practice", icon: Dumbbell },
   { to: "/progress", key: "nav.progress", icon: BarChart3 },
   { to: "/recordings", key: "nav.recordings", icon: Mic },
   { to: "/profile", key: "nav.account", icon: User },
