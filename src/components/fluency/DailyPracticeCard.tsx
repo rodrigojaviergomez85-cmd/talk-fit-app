@@ -18,7 +18,7 @@ type Props = {
 export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalDays }: Props) {
   const t = useT();
   const ctaText = completed
-    ? `${t("home.startDay")} ${day.day} ${t("action.tryAgain")}`
+    ? t("home.practiceDayAgain").replace("{day}", String(day.day))
     : inProgress
       ? `${t("home.continueDay")} ${day.day}`
       : `${t("home.startDay")} ${day.day}`;
