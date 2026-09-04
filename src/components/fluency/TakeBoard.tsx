@@ -460,6 +460,9 @@ function CombinedGoalPanel({
   started: boolean;
   t: (key: TKey) => string;
 }) {
+  // Hidden until the first take exists: the goal is already stated once in the
+  // Rep 5 header line, and this live tracker is only useful during the round.
+  if (!started) return null;
   const ok = seconds >= minSeconds;
   return (
     <div className="rounded-3xl border border-border bg-card p-4">
