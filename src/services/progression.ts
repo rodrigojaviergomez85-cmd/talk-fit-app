@@ -1,7 +1,6 @@
 import type { JourneyState, ModuleId } from "@/lib/types";
 import { CourseService, UPCOMING_LEVELS, type LearningModule, type UpcomingLevel } from "./course-service";
 import { JourneyService } from "./journey-service";
-import { loadPreferences } from "./preferences";
 
 /**
  * The learner ladder: one active module at a time, strictly sequential.
@@ -35,13 +34,7 @@ export const Progression = {
    *  - already has a completed day (records stay reachable).
    */
   isUnlocked(state: JourneyState, moduleId: ModuleId): boolean {
-    const prev = Progression.prerequisiteOf(moduleId);
-    if (!prev) return true;
-    if (JourneyService.moduleComplete(state, prev)) return true;
-    if (JourneyService.completedCount(state, moduleId) > 0) return true;
-    const saved = loadPreferences().currentModuleId;
-    if (saved && CourseService.displayIndex(moduleId) <= CourseService.displayIndex(saved)) return true;
-    return false;
+    return JourneyService.isModuleUnlocked(state, moduleId);
   },
 
   /** The one module the learner is working on right now (null when the ladder is done). */
