@@ -1317,6 +1317,7 @@ function Rep4MakeItYours({
 /* -------------------------------- Rep 5 ---------------------------------- */
 
 function Rep5FinalRep({
+  moduleId,
   day,
   takes,
   finalIndex,
@@ -1325,6 +1326,7 @@ function Rep5FinalRep({
   onSelectFinal,
   onFinish,
 }: {
+  moduleId: ModuleId;
   day: CourseDay;
   takes: (Recording | null)[];
   finalIndex: number | null;
