@@ -16,11 +16,17 @@ type Props = {
 
 /** The one clear action on the module page: start or continue today's day. */
 export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalDays }: Props) {
+  const t = useT();
+  const ctaText = completed
+    ? `${t("home.startDay")} ${day.day} ${t("action.tryAgain")}`
+    : inProgress
+      ? `${t("home.continueDay")} ${day.day}`
+      : `${t("home.startDay")} ${day.day}`;
   return (
     <section className="rounded-3xl bg-card p-6 shadow-[var(--shadow-card)]">
       <div className="flex items-center justify-between">
         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
-          DAY {day.day} OF {totalDays}
+          {t("home.day")} {day.day} / {totalDays}
         </p>
         {completed ? (
           <span className="inline-flex items-center gap-1.5 rounded-full bg-success/12 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-success">
@@ -53,7 +59,7 @@ export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalD
             : "bg-primary text-primary-foreground shadow-[var(--shadow-lift)]",
         )}
       >
-        {completed ? `PRACTICE DAY ${day.day} AGAIN` : `START DAY ${day.day}`}
+        {ctaText}
       </Link>
     </section>
   );
