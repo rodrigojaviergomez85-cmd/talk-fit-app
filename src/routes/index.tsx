@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Check, Flame, Repeat, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { CurrentModuleCard } from "@/components/fluency/CurrentModuleCard";
@@ -82,6 +82,12 @@ function HomePage() {
     <AppShell title={t("home.today")}>
       <div className="space-y-6">
         <CurrentModuleCard state={state} />
+        <Link
+          to="/coach-check"
+          className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl border border-border bg-card px-4 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground transition-colors hover:bg-secondary"
+        >
+          <span aria-hidden="true">👨‍🏫</span> {t("coach.showMyCoach")}
+        </Link>
         <HabitCard state={state} />
 
         {failed ? (

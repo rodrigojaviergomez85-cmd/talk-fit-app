@@ -75,6 +75,12 @@ function RecordingsPage() {
   return (
     <AppShell title={t("rec.title")}>
       <div className="space-y-6">
+        <Link
+          to="/coach-check"
+          className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-2xl border border-border bg-card px-4 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground transition-colors hover:bg-secondary"
+        >
+          <span aria-hidden="true">👨‍🏫</span> {t("coach.title")}
+        </Link>
         {total === 0 ? (
           <section className="rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-card)]">
             <Mic className="mx-auto size-8 text-primary" />
