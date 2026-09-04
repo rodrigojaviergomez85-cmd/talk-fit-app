@@ -134,11 +134,7 @@ function HomeSkeleton() {
           <div key={i} className="h-20 animate-pulse rounded-3xl bg-secondary" />
         ))}
       </div>
-      <div className="space-y-3">
-        {[0, 1, 2].map((i) => (
-          <div key={i} className="h-32 animate-pulse rounded-3xl bg-secondary" />
-        ))}
-      </div>
+      <div className="h-32 animate-pulse rounded-3xl bg-secondary" />
     </div>
   );
 }
