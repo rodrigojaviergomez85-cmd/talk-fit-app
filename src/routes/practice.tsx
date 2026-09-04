@@ -105,8 +105,14 @@ function PracticePage() {
   const { module: moduleId } = Route.useSearch();
   const { lang } = useAppLang();
   const content = useModuleContent(moduleId);
+  const navigate = useNavigate();
+  // Ladder guard: a locked module never opens in Practice — send the learner to its locked screen.
+  const locked = useMemo(() => !JourneyService.isModuleUnlocked(JourneyService.load(), moduleId), [moduleId]);
+  useEffect(() => {
+    if (locked) void navigate({ to: "/module/$moduleId", params: { moduleId }, replace: true });
+  }, [locked, moduleId, navigate]);
 
-  if (content.status === "loading") {
+  if (locked || content.status === "loading") {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background px-5">
         <p className="text-[13px] font-bold uppercase tracking-[0.14em] text-muted-foreground">

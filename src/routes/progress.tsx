@@ -240,7 +240,9 @@ function ModuleRow({
         ? ({ label: t("status.current"), tone: "current" } as const)
         : kind === "review"
           ? ({ label: t("status.review"), tone: "next" } as const)
-          : ({ label: t("status.upNext"), tone: "next" } as const);
+          : kind === "locked"
+            ? ({ label: t("status.locked"), tone: "next" } as const)
+            : ({ label: t("status.upNext"), tone: "next" } as const);
   return (
     <Link
       to="/module/$moduleId"
