@@ -8,6 +8,7 @@ import { Progression } from "@/services/progression";
 import { ModuleLoadError } from "@/components/fluency/ModuleLoadState";
 import { useModuleContent } from "@/hooks/use-module-content";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
+import { PracticeSessionService } from "@/services/practice-session";
 import { TestReadyService } from "@/services/test-ready-service";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
 import type { CourseDay, JourneyState, ModuleId } from "@/lib/types";
