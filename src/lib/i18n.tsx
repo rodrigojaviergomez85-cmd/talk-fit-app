@@ -232,6 +232,7 @@ const DICT = {
   "home.startDay": ["EMPEZAR DÍA", "START DAY"],
   "home.week": ["SEMANA", "WEEK"],
   "home.day": ["DÍA", "DAY"],
+  "home.dayOfTotal": ["DÍA {day} DE {total}", "DAY {day} OF {total}"],
   "home.continueDay": ["CONTINUAR DÍA", "CONTINUE DAY"],
   "home.practiceDayAgain": ["PRACTICAR DÍA {day} DE NUEVO", "PRACTICE DAY {day} AGAIN"],
   "home.rep": ["REP", "REP"],
