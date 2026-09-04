@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Check, Play, Square, Trash2 } from "lucide-react";
 import { VoiceRecorder } from "./VoiceRecorder";
 import { AudioPlayer } from "./AudioPlayer";
+import { toneForTurn } from "@/lib/model-tone";
 import { TranslatableText } from "./TranslatableText";
 import { useT, type TKey } from "@/lib/i18n";
 import type { Recording, RolePlayTurn } from "@/lib/types";
@@ -313,6 +314,7 @@ export function TakeBoard({
                   variant="navy"
                   size="sm"
                   voice={turn.voice}
+                  tone={toneForTurn(turn, turns)}
                 />
                 <TranslatableText es={turn.es} esClassName="text-navy-foreground/70" supportOnly>
                   <p className="text-[13px] font-semibold italic leading-relaxed text-navy-foreground/90">"{turn.text}"</p>
