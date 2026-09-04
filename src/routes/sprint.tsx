@@ -1,5 +1,7 @@
+import { useEffect, useMemo } from "react";
 import { Link, createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
+import { JourneyService } from "@/services/journey-service";
 import { AppShell } from "@/components/fluency/AppShell";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { TestReadySprint } from "@/components/fluency/TestReadySprint";
