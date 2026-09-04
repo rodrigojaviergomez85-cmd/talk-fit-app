@@ -754,39 +754,87 @@ function VariantPicker({ day }: { day: CourseDay }) {
 
 function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseDay; onNext: () => void }) {
   const t = useT();
+  const { lang } = useAppLang();
   const intro = day.intro;
-  const [first, ...rest] = intro.examples;
+  const tier = introTier(moduleId);
+  const isBasic = tier === "basic-low" || tier === "basic-high";
+  const limit = introExampleLimit(tier);
+  const shown = intro.examples.slice(0, limit);
+  const rest = intro.examples.slice(limit);
+  const essentialImage = introImageIsEssential(day, tier);
+  // One goal line: the authored goal, plus the seconds range only when it isn't already in the text.
+  const mentionsSeconds = /\d+\s*(–|-|to)\s*\d+|\bsec|segundo/i.test(`${intro.goal} ${intro.goalEs}`);
+  const range = `${day.goalSeconds[0]}–${day.goalSeconds[1]} ${lang === "es" ? "seg" : "sec"}`;
 
   return (
     <div className="space-y-5">
-      <div className="rounded-3xl bg-navy p-6 text-navy-foreground">
-        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
-          DAY {day.day} OF {CourseService.totalDays(moduleId)}
-        </p>
-        <TranslatableText es={intro.titleEs} esClassName="text-navy-foreground/70" supportOnly>
-          <h2 className="mt-2 text-3xl font-extrabold tracking-tight">{intro.title}</h2>
-        </TranslatableText>
-        <TranslatableText es={intro.goalEs} className="mt-3" esClassName="text-navy-foreground/70" supportOnly>
-          <p className="text-[16px] font-semibold leading-snug text-navy-foreground/85">{intro.goal}</p>
-        </TranslatableText>
+      <div className="space-y-4 rounded-3xl bg-navy p-6 text-navy-foreground">
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+            DAY {day.day} OF {CourseService.totalDays(moduleId)}
+          </p>
+          <TranslatableText es={intro.titleEs} esClassName="text-navy-foreground/70" supportOnly>
+            <h2 className="mt-2 text-3xl font-extrabold tracking-tight">{intro.title}</h2>
+          </TranslatableText>
+        </div>
+
+        {/* BASIC: the 20–30 second explanation. Lower basics see Spanish first. */}
+        {tier === "basic-low" ? (
+          <div className="space-y-1">
+            <p className="text-[16px] font-semibold leading-snug">{intro.leadEs}</p>
+            <p className="text-[14px] leading-snug text-navy-foreground/75">{intro.lead}</p>
+          </div>
+        ) : tier === "basic-high" ? (
+          <TranslatableText es={intro.leadEs} esClassName="text-navy-foreground/70" supportOnly>
+            <p className="text-[15px] font-semibold leading-snug">{intro.lead}</p>
+          </TranslatableText>
+        ) : null}
+
+        {shown.length ? (
+          <div className="space-y-1.5 rounded-2xl bg-navy-foreground/10 p-3">
+            {shown.map((example) => (
+              <p key={example} className="text-[17px] font-extrabold leading-tight tracking-tight">
+                {example}
+              </p>
+            ))}
+          </div>
+        ) : null}
+
+        {/* EAGLES: remember the structure. TIGERS/SHARKS: framework cues only. */}
+        {tier === "eagles" && day.powerChunks ? <PowerChunks chunks={day.powerChunks} size="mini" audio={false} className="bg-navy-foreground/10" /> : null}
+        {tier === "spontaneous" && day.cues.length ? (
+          <div className="flex flex-wrap gap-1.5">
+            {day.cues.map((cue) => (
+              <span key={cue} className="rounded-full border border-navy-foreground/25 px-2.5 py-1 text-[10px] font-extrabold tracking-[0.12em]">
+                {cue}
+              </span>
+            ))}
+          </div>
+        ) : null}
+
+        <div className="border-t border-navy-foreground/15 pt-3">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
+            {t("intro.today")}
+            {mentionsSeconds ? "" : ` · ${range}`}
+          </p>
+          <TranslatableText es={intro.goalEs} className="mt-1" esClassName="text-navy-foreground/70" supportOnly>
+            <p className="text-[15px] font-semibold leading-snug text-navy-foreground/90">{intro.goal}</p>
+          </TranslatableText>
+        </div>
       </div>
 
-      <QuestionBanner day={day} />
+      {essentialImage ? <SceneImage day={day} /> : null}
 
-      <SceneImage day={day} />
+      <PrimaryButton onClick={onNext}>
+        {intro.cta} <ArrowRight className="size-5" />
+      </PrimaryButton>
 
-      {first ? (
-        <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-          <p className="text-[20px] font-extrabold leading-tight tracking-tight">{first}</p>
-        </div>
-      ) : null}
-
-      <GoalChips day={day} />
-
-      <CollapsibleHelp>
-        <TranslatableText es={intro.leadEs} supportOnly>
-          <p className="text-[15px] leading-relaxed text-foreground">{intro.lead}</p>
-        </TranslatableText>
+      <CollapsibleHelp label="More help" labelEs="Más ayuda">
+        {!isBasic ? (
+          <TranslatableText es={intro.leadEs} supportOnly>
+            <p className="text-[15px] leading-relaxed text-foreground">{intro.lead}</p>
+          </TranslatableText>
+        ) : null}
         {rest.length ? (
           <div className="space-y-1.5">
             {rest.map((example) => (
@@ -796,14 +844,13 @@ function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseD
             ))}
           </div>
         ) : null}
+        <QuestionBanner day={day} />
+        {!essentialImage ? <SceneImage day={day} /> : null}
+        <StoryStrip day={day} showCaptions={false} />
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
           {day.focus} · {day.topic}
         </p>
       </CollapsibleHelp>
-
-      <PrimaryButton onClick={onNext}>
-        {intro.cta} <ArrowRight className="size-5" />
-      </PrimaryButton>
     </div>
   );
 }
