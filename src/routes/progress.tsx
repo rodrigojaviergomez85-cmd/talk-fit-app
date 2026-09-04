@@ -257,60 +257,7 @@ function ModuleRow({
   );
 }
 
-function CurrentModule({
-  state,
-  moduleId,
-  day,
-}: {
-  state: JourneyState;
-  moduleId: ModuleId;
-  day: number;
-}) {
-  const t = useT();
-  const module = CourseService.getModule(moduleId);
-  const done = JourneyService.completedCount(state, moduleId);
-  const total = module.days.length;
-  const week = CourseService.getDay(moduleId, day).week ?? 1;
-  const weekDone = JourneyService.weekRecords(state, moduleId, week).length;
-  const weekTotal = JourneyService.weekTotalDays(moduleId, week);
-
-  return (
-    <section className="rounded-3xl bg-navy p-5 text-navy-foreground">
-      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-navy-foreground/70">
-        {t("prog.yourModule")}
-      </p>
-      <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
-        {module.label}
-      </p>
-      <h2 className="text-[22px] font-extrabold tracking-tight">{module.title}</h2>
-      <p className="text-[13px] font-semibold text-navy-foreground/80">{module.subtitle}</p>
-      <div className="mt-3 h-2 overflow-hidden rounded-full bg-navy-foreground/15">
-        <div
-          className="h-full rounded-full bg-primary transition-all"
-          style={{ width: `${total > 0 ? Math.round((done / total) * 100) : 0}%` }}
-        />
-      </div>
-      <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-navy-foreground/70">
-        {done} / {total} {t("home.days")} · {t("home.week")} {week} · {weekDone} / {weekTotal}
-      </p>
-      <Link
-        to="/practice"
-        search={{ day, module: moduleId }}
-        className="mt-4 flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 text-[14px] font-bold tracking-wide text-primary-foreground"
-      >
-        {t("action.continuePractice")} <ArrowRight className="size-4" />
-      </Link>
-    </section>
-  );
-}
-
-function AllDays({
-  state,
-  onCompare,
-}: {
-  state: JourneyState;
-  onCompare: (c: Comparison) => void;
-}) {
+function AllDays({ state }: { state: JourneyState }) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const modules = CourseService.modules();
@@ -338,7 +285,6 @@ function AllDays({
               module={module}
               state={state}
               isCurrent={module.id === currentModuleId}
-              onCompare={onCompare}
             />
           ))
         : null}
@@ -350,14 +296,11 @@ function ModuleBlock({
   module,
   state,
   isCurrent,
-  onCompare,
 }: {
   module: ReturnType<typeof CourseService.modules>[number];
   state: JourneyState;
   isCurrent: boolean;
-  onCompare: (c: Comparison) => void;
 }) {
-  const { lang } = useAppLang();
   const t = useT();
   const done = JourneyService.completedCount(state, module.id);
   const total = module.days.length;
@@ -406,15 +349,6 @@ function ModuleBlock({
 
       {open ? (
         <div className="space-y-2 border-t border-border px-3 py-3">
-          {done >= total ? (
-            <CompareShortcut
-              label={lang === "es" ? "ESCUCHA TU CAMBIO" : "HEAR YOUR CHANGE"}
-              onClick={() => {
-                const cmp = moduleComparison(state, module.id);
-                if (cmp) onCompare(cmp);
-              }}
-            />
-          ) : null}
           {[...weeks.entries()]
             .sort((a, b) => a[0] - b[0])
             .map(([week, days]) => (
@@ -425,7 +359,6 @@ function ModuleBlock({
                 days={days}
                 state={state}
                 currentDay={isCurrent ? currentDay : -1}
-                onCompare={onCompare}
               />
             ))}
         </div>
@@ -440,17 +373,14 @@ function WeekBlock({
   days,
   state,
   currentDay,
-  onCompare,
 }: {
   moduleId: ModuleId;
   week: number;
   days: DayOutline[];
   state: JourneyState;
   currentDay: number;
-  onCompare: (c: Comparison) => void;
 }) {
   const t = useT();
-  const { lang } = useAppLang();
   const doneCount = days.filter((d) =>
     JourneyService.isDayCompleted(state, moduleId, d.day),
   ).length;
@@ -492,15 +422,6 @@ function WeekBlock({
 
       {open ? (
         <div className="space-y-2 px-4 pb-4">
-          {doneCount >= days.length ? (
-            <CompareShortcut
-              label={lang === "es" ? "ESCUCHA TU SEMANA" : "HEAR YOUR WEEK"}
-              onClick={() => {
-                const cmp = weekComparison(state, moduleId, week);
-                if (cmp) onCompare(cmp);
-              }}
-            />
-          ) : null}
           {days.map((item) => {
             const record = JourneyService.getRecord(state, moduleId, item.day);
             const isToday = item.day === currentDay && !record;
@@ -541,40 +462,6 @@ function WeekBlock({
   );
 }
 
-function CompareShortcut({ label, onClick }: { label: string; onClick: () => void }) {
-  const { lang } = useAppLang();
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="flex min-h-[48px] w-full items-center gap-3 rounded-2xl border border-primary/40 bg-accent px-4 text-left"
-    >
-      <Headphones className="size-4 shrink-0 text-primary" />
-      <span className="flex-1 text-[12px] font-extrabold uppercase tracking-[0.16em] text-accent-foreground">
-        {label}
-      </span>
-      <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
-        {lang === "es" ? "COMPARAR" : "COMPARE"}
-      </span>
-    </button>
-  );
-}
-
-function OutputStat({ label, record }: { label: string; record: DayRecord }) {
-  const ideas = ideasLabel(record.sentenceCount);
-  return (
-    <div className="rounded-3xl bg-card p-4 shadow-[var(--shadow-card)]">
-      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-        {label}
-      </p>
-      <p className="mt-1.5 text-xl font-extrabold tabular-nums tracking-tight">
-        {formatDuration(record.finalSeconds)}
-      </p>
-      {ideas ? <p className="text-[12px] font-bold text-muted-foreground">{ideas}</p> : null}
-    </div>
-  );
-}
-
 function ProgressBar({ value }: { value: number }) {
   return (
     <div className="mt-3 h-2 overflow-hidden rounded-full bg-secondary">
@@ -599,11 +486,11 @@ function WeekStat({ value, label }: { value: string; label: string }) {
 
 function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <div className="rounded-3xl bg-card p-4 text-center shadow-[var(--shadow-card)]">
-      <p className="flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+    <div className="rounded-3xl bg-card p-3 text-center shadow-[var(--shadow-card)]">
+      <p className="flex items-center justify-center gap-1 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
         {icon} {label}
       </p>
-      <p className="mt-1.5 text-2xl font-extrabold tabular-nums tracking-tight">{value}</p>
+      <p className="mt-1.5 text-xl font-extrabold tabular-nums tracking-tight">{value}</p>
     </div>
   );
 }
