@@ -247,16 +247,12 @@ export function TakeBoard({
           >
             <div className="flex items-center justify-between gap-2">
               <p className="flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.16em]">
-                {isRetrySlot
-                  ? `${t("take.take")} ${index + 1} · ${t("take.turn")} ${retryIndex! + 1}`
-                  : turn
-                    ? `${t("take.turn")} ${index + 1}`
-                    : `${t("take.take")} ${index + 1}`}
+                {t("take.audio")} {index + 1}
                 {take ? <Check className="size-4 text-success" /> : null}
               </p>
               {optional && !take ? (
                 <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                  {rolePlay ? t("take.retry") : t("take.optional")}
+                  {t("take.optional")}
                 </span>
               ) : null}
               {turn?.targetSeconds && !take ? (
