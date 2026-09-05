@@ -513,7 +513,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               onNext={goForward}
             />
           ) : null}
-          {stage === 3 ? <Rep3Shadow day={day} onNext={goForward} /> : null}
+          {stage === 3 ? <Rep3Shadow day={day} onNext={goForward} onSkip={goForward} /> : null}
           {stage === 4 ? (
             <Rep4MakeItYours
               day={day}
@@ -1161,14 +1161,20 @@ function Rep2Copy({
  * Live shadowing only: continuous model audio + chunk highlight, the learner
  * speaks WITH the model. No recording, no images — deliberately unlike Rep 2.
  */
-function Rep3Shadow({ day, onNext }: { day: CourseDay; onNext: () => void }) {
+function Rep3Shadow({ day, onNext, onSkip }: { day: CourseDay; onNext: () => void; onSkip: () => void }) {
   return (
     <div className="space-y-4">
       <div className="rounded-3xl bg-navy p-5">
         <RepHeader titleKey="rep3.title" instrKey="rep3.instr" cueKey="rep3.cue" dark />
       </div>
 
-      <ShadowKaraoke lines={day.lines} text={CourseService.getModelText(day)} voice={day.speakerVoice} onNext={onNext} />
+      <ShadowKaraoke
+        lines={day.lines}
+        text={CourseService.getModelText(day)}
+        voice={day.speakerVoice}
+        onNext={onNext}
+        onSkip={onSkip}
+      />
     </div>
   );
 }
