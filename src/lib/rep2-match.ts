@@ -1,6 +1,7 @@
 /**
- * Deterministic comparison for Rep 2 spoken-correction MVP.
- * No LLM. Compares the learner's transcript to the curriculum target and
+ * GENERIC deterministic comparison engine for spoken correction.
+ * No LLM, no module grammar knowledge — pedagogy comes from a
+ * `Rep2CorrectionProfile` (see rep2-correction-profiles.ts). Compares the learner's transcript to the curriculum target and
  * returns one of three internal outcomes:
  *  - good           → matches the target
  *  - correct        → speech was clear but differs from the target
@@ -8,6 +9,12 @@
  *                     no speech, empty / truncated) — the only case that
  *                     justifies a second, more expensive STT pass.
  */
+
+import {
+  GENERIC_PROFILE,
+  type CorrectionFocusRule,
+  type Rep2CorrectionProfile,
+} from "@/lib/rep2-correction-profiles";
 
 export type Rep2Outcome = "good" | "correct" | "asr_uncertain";
 /** Outcome shape exposed to the browser. */
@@ -43,9 +50,6 @@ type DiffOp =
 /** Confidence thresholds (tunable by QA). Below these the ASR is unusable. */
 const AVG_LOGPROB_THRESHOLD = -0.7;
 const NO_SPEECH_THRESHOLD = 0.5;
-
-/** Future-structure words, in priority order for choosing ONE correction focus. */
-const FOCUS_PRIORITY = ["am", "going", "to", "not", "will"];
 
 const NUMBER_WORDS: Record<string, string> = {
   "0": "zero",
@@ -247,30 +251,48 @@ function opTargetWord(op: DiffOp): string | undefined {
   return undefined;
 }
 
-function focusFromOp(op: DiffOp, targetWords: string[]): string | undefined {
-  const word = opTargetWord(op);
-  if (!word) return undefined;
-  const idx = targetWords.indexOf(word);
-  if (word === "to" && idx > 0 && targetWords[idx - 1] === "going") {
-    return "going TO";
+/** Does `phrase` occur as a contiguous token sequence in `words`? */
+function containsPhrase(words: string[], phrase: string[]): boolean {
+  if (phrase.length === 0) return false;
+  outer: for (let i = 0; i + phrase.length <= words.length; i++) {
+    for (let k = 0; k < phrase.length; k++) {
+      if (words[i + k] !== phrase[k]) continue outer;
+    }
+    return true;
   }
-  if (word === "am") return idx === 0 ? "I AM" : "AM";
-  if (word === "not") return "NOT";
-  return word.toUpperCase();
+  return false;
+}
+
+function ruleMatches(rule: CorrectionFocusRule, missed: Set<string>, targetWords: string[]): boolean {
+  if (!containsPhrase(targetWords, rule.phrase)) return false;
+  const trigger = rule.trigger ?? rule.phrase;
+  return trigger.some((t) => missed.has(t));
+}
+
+function ruleLabel(rule: CorrectionFocusRule): string {
+  return rule.label ?? rule.phrase.join(" ").toUpperCase();
 }
 
 /**
- * Pick ONE useful correction focus:
- *  1. the highest-priority Future-structure word the learner dropped/changed,
- *  2. otherwise, if there is exactly one difference, that word,
+ * Pick at most ONE correction focus. Generic priority:
+ *  1. the first configured high-value structure (from the profile) the learner dropped/changed,
+ *  2. otherwise, if there is exactly one isolated difference, that word,
  *  3. otherwise no focus — the UI shows the whole target line instead.
  */
-function pickFocus(mismatches: DiffOp[], targetWords: string[]): string | undefined {
-  for (const structureWord of FOCUS_PRIORITY) {
-    const op = mismatches.find((m) => opTargetWord(m) === structureWord);
-    if (op) return focusFromOp(op, targetWords);
+function pickFocus(
+  mismatches: DiffOp[],
+  targetWords: string[],
+  profile: Rep2CorrectionProfile,
+): string | undefined {
+  if (!profile.allowSpecificFocus) return undefined;
+  const missed = new Set(mismatches.map(opTargetWord).filter((w): w is string => Boolean(w)));
+  for (const rule of profile.focusRules) {
+    if (ruleMatches(rule, missed, targetWords)) return ruleLabel(rule);
   }
-  if (mismatches.length === 1) return focusFromOp(mismatches[0]!, targetWords);
+  if (mismatches.length === 1) {
+    const word = opTargetWord(mismatches[0]!);
+    return word ? word.toUpperCase() : undefined;
+  }
   return undefined;
 }
 
@@ -278,6 +300,7 @@ export function compareRep2(
   target: string,
   transcript: string,
   confidence?: Rep2Confidence,
+  profile: Rep2CorrectionProfile = GENERIC_PROFILE,
 ): Rep2MatchResult {
   const targetWords = tokenize(target);
   const transcriptWords = tokenize(transcript);
@@ -304,7 +327,7 @@ export function compareRep2(
   return {
     status: "correct",
     correction: target,
-    focus: pickFocus(mismatches, targetWords),
+    focus: pickFocus(mismatches, targetWords, profile),
     retryRecommended: true,
   };
 }

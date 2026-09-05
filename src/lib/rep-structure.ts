@@ -1,4 +1,5 @@
 import type { CourseDay, ModelLine, ModuleId, RepLabel } from "@/lib/types";
+import { isRep2CorrectionEnabledFor } from "@/lib/rep2-correction-profiles";
 
 /**
  * Pure helpers that decide HOW a day's authored content is split into
@@ -6,9 +7,9 @@ import type { CourseDay, ModelLine, ModuleId, RepLabel } from "@/lib/types";
  * inventory (pre-generation) so both see exactly the same chunks and prompts.
  */
 
-/** Spoken-correction MVP is limited to BASIC 1 · FUTURE Days 1–2 Rep 2. */
+/** Spoken-correction rollout — single source of truth lives in rep2-correction-profiles. */
 export function isRep2CorrectionEnabled(moduleId: ModuleId, day: CourseDay): boolean {
-  return moduleId === "simple-future" && day.day <= 2;
+  return isRep2CorrectionEnabledFor(moduleId, day.day);
 }
 
 /* -------------------------------- Rep 2 ---------------------------------- */
