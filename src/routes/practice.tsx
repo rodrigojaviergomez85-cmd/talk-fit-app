@@ -1204,8 +1204,8 @@ type Rep4Item = {
   label?: RepLabel | undefined;
 };
 
-/** Rep 4 never shows more than 5 speaking prompts per day. */
-export const REP4_MAX = 5;
+/** Rep 4 never shows more than 3 speaking prompts per day. */
+export const REP4_MAX = 3;
 
 const WH_WORDS = ["HOW OFTEN", "HOW LONG", "HOW MANY", "HOW MUCH", "WHAT TIME", "WHAT", "WHERE", "WHEN", "WHO", "WHY", "HOW", "WHICH"];
 
