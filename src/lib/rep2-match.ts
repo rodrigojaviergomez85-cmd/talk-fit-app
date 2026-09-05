@@ -49,23 +49,6 @@ const MIN_LENGTH_RATIO = 0.4;
 /** Future-structure words, in priority order for choosing ONE correction focus. */
 const FOCUS_PRIORITY = ["am", "going", "to", "not", "will"];
 
-/** Grammar words we are actively teaching in BASIC 1 · FUTURE. */
-const STRUCTURE_WORDS = new Set([
-  "am",
-  "is",
-  "are",
-  "be",
-  "going",
-  "to",
-  "not",
-  "will",
-  "do",
-  "does",
-  "did",
-  "can",
-  "could",
-]);
-
 const NUMBER_WORDS: Record<string, string> = {
   "0": "zero",
   "1": "one",
