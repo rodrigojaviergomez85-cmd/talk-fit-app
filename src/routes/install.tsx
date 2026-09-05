@@ -151,8 +151,11 @@ function InstallPage() {
   const [promptEvent, setPromptEvent] = useState<BeforeInstallPromptEvent | null>(null);
   const [justInstalled, setJustInstalled] = useState(false);
   const [copied, setCopied] = useState(false);
+  // Detect the environment only after mount so SSR and first client render match.
+  const [env, setEnv] = useState<Env | null>(null);
 
   useEffect(() => {
+    setEnv(detectEnv(false));
     const onPrompt = (e: Event) => {
       e.preventDefault();
       setPromptEvent(e as BeforeInstallPromptEvent);
@@ -169,7 +172,9 @@ function InstallPage() {
     };
   }, []);
 
-  const env = useMemo(() => detectEnv(promptEvent !== null), [promptEvent]);
+  useEffect(() => {
+    if (promptEvent && env === "android-browser") setEnv("android-prompt");
+  }, [promptEvent, env]);
 
   const install = async () => {
     if (!promptEvent) return;
