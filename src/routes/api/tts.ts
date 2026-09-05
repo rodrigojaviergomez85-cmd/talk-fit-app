@@ -54,9 +54,10 @@ function audioResponse(body: BodyInit, source: "store" | "generated", extra: Rec
 }
 
 /**
- * Guarded flow: auth → validate → total request quota → cache lookup →
- * (miss only) generation quota → AI → persist. Cache hits never consume the
- * generation quota; quota failures fail closed.
+ * Guarded flow: auth → validate → total request quota → cache lookup.
+ * A cache hit returns immediately with no AI dependency. On a miss only:
+ * require LOVABLE_API_KEY → generation quota → AI → persist.
+ * Cache hits never consume the generation quota; quota failures fail closed.
  */
 export const Route = createFileRoute("/api/tts")({
   server: {
@@ -67,8 +68,8 @@ export const Route = createFileRoute("/api/tts")({
         const userId = await verifyRequestUser(request);
         if (!userId) return json({ error: "Sign in to use the model voice." }, 401);
 
-        const apiKey = process.env["LOVABLE_API_KEY"];
-        if (!apiKey) return json({ error: "Voice service is not configured." }, 500);
+
+
 
         // 1) Strict input validation. Server controls model/instructions/format.
         let body: { text?: unknown; voice?: unknown; tone?: unknown };
@@ -108,7 +109,10 @@ export const Route = createFileRoute("/api/tts")({
           console.warn("course-audio lookup failed, treating as miss:", error);
         }
 
-        // 4) Cache miss → paid generation quota (durable, fails closed).
+        // 4) Cache miss → paid work. Only now require the AI key.
+        const apiKey = process.env["LOVABLE_API_KEY"];
+        if (!apiKey) return json({ error: "Voice service is not configured." }, 500);
+
         const gen = await consumeQuota(userId, "tts-generate", GENERATE_LIMIT, WINDOW_SECONDS);
         if (!gen.allowed) return json({ error: "Voice generation limit reached. Try again later." }, 429);
 
