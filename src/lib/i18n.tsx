@@ -350,9 +350,21 @@ const DICT = {
   // Account gate + sync
   "gate.title": ["GUARDA TU PROGRESO", "SAVE YOUR PROGRESS"],
   "gate.practiceTitle": ["INICIA SESIÓN PARA PRACTICAR", "SIGN IN TO PRACTICE"],
-  "gate.b1": ["Tu progreso se guarda en tu cuenta.", "Your progress is saved to your account."],
-  "gate.b2": ["Tus grabaciones te siguen a cualquier teléfono.", "Your recordings follow you to any phone."],
-  "gate.b3": ["Continúa justo donde te quedaste.", "Continue right where you left off."],
+  "gate.subtitle": [
+    "Tu progreso y tus grabaciones se guardan en tu cuenta.",
+    "Your progress and recordings are saved to your account.",
+  ],
+  "gate.b1": ["Tu avance se guarda automáticamente", "Your progress is saved automatically"],
+  "gate.b2": [
+    "Tus grabaciones estarán disponibles en cualquier teléfono",
+    "Your recordings will be available on any phone",
+  ],
+  "gate.b3": ["Continúa justo donde te quedaste", "Continue right where you left off"],
+  "gate.fast": ["Rápido y seguro", "Fast and secure"],
+  "gate.or": ["o", "or"],
+  "gate.email": ["Email", "Email"],
+  "gate.showPassword": ["Mostrar contraseña", "Show password"],
+  "gate.hidePassword": ["Ocultar contraseña", "Hide password"],
   "gate.haveAccount": [
     "¿Ya tienes cuenta? Usa el mismo correo o Google.",
     "Already have an account? Use the same email or Google.",
