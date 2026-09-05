@@ -43,8 +43,6 @@ type DiffOp =
 /** Confidence thresholds (tunable by QA). Below these the ASR is unusable. */
 const AVG_LOGPROB_THRESHOLD = -0.7;
 const NO_SPEECH_THRESHOLD = 0.5;
-/** A transcript with fewer than this share of the target's word count is treated as truncated ASR. */
-const MIN_LENGTH_RATIO = 0.4;
 
 /** Future-structure words, in priority order for choosing ONE correction focus. */
 const FOCUS_PRIORITY = ["am", "going", "to", "not", "will"];
@@ -249,10 +247,8 @@ export function compareRep2(
   if (transcriptWords.length === 0) {
     return { status: "asr_uncertain", correction: target, retryRecommended: true };
   }
-  if (targetWords.length > 0 && transcriptWords.length / targetWords.length < MIN_LENGTH_RATIO) {
-    // Truncated / cut-off transcription — not a language judgement.
-    return { status: "asr_uncertain", correction: target, retryRecommended: true };
-  }
+  // NOTE: a short transcript is NOT ASR uncertainty. If confidence is good and the
+  // learner simply said too little, that is a learner-output problem → "correct".
 
   // --- B. Speech is clear: compare against the target. ---
   const ops = wordDiff(targetWords, transcriptWords);

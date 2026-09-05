@@ -1109,6 +1109,8 @@ function Rep2Copy({
   const [correction, setCorrection] = useState<Rep2CorrectionResult | null>(null);
   const [checking, setChecking] = useState(false);
   const [retries, setRetries] = useState(0);
+  /** True between TRY AGAIN and the next completed recording: NEXT stays hidden, only record or SKIP. */
+  const [retryPending, setRetryPending] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
@@ -1116,13 +1118,14 @@ function Rep2Copy({
     setCorrection(null);
     setChecking(false);
     setRetries(0);
+    setRetryPending(false);
     setErrorMsg(null);
   }, [index, moduleId, day.day]);
 
   const level = supportLevel(day);
   const chunkText = rep2ChunkText(chunk);
   const isLast = index >= chunks.length - 1;
-  const feedbackOwnsNav = correctionEnabled && (checking || correction !== null);
+  const feedbackOwnsNav = correctionEnabled && (checking || correction !== null || retryPending);
 
   const checkCorrection = async (blob: Blob) => {
     const { data } = await supabase.auth.getSession();
@@ -1159,6 +1162,7 @@ function Rep2Copy({
     setCorrection(null);
     setErrorMsg(null);
     setRetries((r) => r + 1);
+    setRetryPending(true);
   };
 
   return (
@@ -1189,6 +1193,7 @@ function Rep2Copy({
         showTimer
         onComplete={(rec) => {
           setMine(rec);
+          setRetryPending(false);
           onRecorded(rec);
           if (correctionEnabled && rec.blob) {
             void checkCorrection(rec.blob);
@@ -1197,6 +1202,13 @@ function Rep2Copy({
       />
 
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
+
+      {retryPending && !checking && !correction ? (
+        <>
+          <HelperText text={t("practice.recordOnce")} />
+          <SkipLink label={t("practice.skipChunk")} onClick={onSkip} />
+        </>
+      ) : null}
 
       {checking ? (
         <div className="flex items-center justify-center gap-2 rounded-2xl bg-muted py-4 text-[13px] font-semibold text-muted-foreground">

@@ -66,8 +66,23 @@ describe("compareRep2", () => {
     expect(res.status).toBe("asr_uncertain");
   });
 
-  it("truncated transcript → asr_uncertain", () => {
-    expect(compareRep2(target, "Tonight I").status).toBe("asr_uncertain");
+  it("CASE A: clear but very short answer → CORRECT, never asr_uncertain", () => {
+    const res = compareRep2("I'm going to study English tonight.", "Study tonight", { avgLogprob: -0.2, noSpeechProb: 0.01 });
+    expect(res.status).toBe("correct");
+    expect(res.focus).toMatch(/am/i);
+  });
+
+  it("CASE B: 'I go home' against a long two-sentence target → CORRECT", () => {
+    const res = compareRep2(
+      "Tonight I'm going to go home early. I'm going to eat dinner with my family.",
+      "I go home",
+      { avgLogprob: -0.3, noSpeechProb: 0.02 },
+    );
+    expect(res.status).toBe("correct");
+  });
+
+  it("CASE C: silent / punctuation-only transcript → asr_uncertain", () => {
+    expect(compareRep2(target, ".").status).toBe("asr_uncertain");
   });
 
   it("accepts a number word instead of digits", () => {
