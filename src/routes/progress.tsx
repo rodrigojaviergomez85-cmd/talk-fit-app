@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Check, ChevronDown, Mic, Timer } from "lucide-react";
+import { Check, ChevronDown, Lock, Mic, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
 import { ModuleHeading } from "@/components/fluency/ModuleHeading";
@@ -9,6 +9,7 @@ import { BadgeGrid } from "@/components/fluency/BadgeGrid";
 import { HABIT_GOAL, habitDays, habitDisplay } from "@/lib/habit";
 import { CourseService, type DayOutline } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
+import { Progression } from "@/services/progression";
 import type { JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
