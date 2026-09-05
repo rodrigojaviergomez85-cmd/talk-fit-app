@@ -22,6 +22,7 @@ import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
 import { Route as AdminCourseAudioRouteImport } from './routes/admin.course-audio'
 import { Route as AdminStorageReportRouteImport } from './routes/admin.storage-report'
+import { Route as ApiRep2CorrectionRouteImport } from './routes/api/rep2-correction'
 import { Route as ApiSentenceCountRouteImport } from './routes/api/sentence-count'
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as ModuleModuleIdRouteImport } from './routes/module.$moduleId'
@@ -91,6 +92,11 @@ const AdminStorageReportRoute = AdminStorageReportRouteImport.update({
   path: '/admin/storage-report',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiRep2CorrectionRoute = ApiRep2CorrectionRouteImport.update({
+  id: '/api/rep2-correction',
+  path: '/api/rep2-correction',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSentenceCountRoute = ApiSentenceCountRouteImport.update({
   id: '/api/sentence-count',
   path: '/api/sentence-count',
@@ -121,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/verb-bank': typeof VerbBankRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
+  '/api/rep2-correction': typeof ApiRep2CorrectionRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
@@ -139,6 +146,7 @@ export interface FileRoutesByTo {
   '/verb-bank': typeof VerbBankRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
+  '/api/rep2-correction': typeof ApiRep2CorrectionRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
@@ -158,6 +166,7 @@ export interface FileRoutesById {
   '/verb-bank': typeof VerbBankRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
+  '/api/rep2-correction': typeof ApiRep2CorrectionRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
@@ -178,6 +187,7 @@ export interface FileRouteTypes {
     | '/verb-bank'
     | '/admin/course-audio'
     | '/admin/storage-report'
+    | '/api/rep2-correction'
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
@@ -196,6 +206,7 @@ export interface FileRouteTypes {
     | '/verb-bank'
     | '/admin/course-audio'
     | '/admin/storage-report'
+    | '/api/rep2-correction'
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
@@ -214,6 +225,7 @@ export interface FileRouteTypes {
     | '/verb-bank'
     | '/admin/course-audio'
     | '/admin/storage-report'
+    | '/api/rep2-correction'
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
@@ -233,6 +245,7 @@ export interface RootRouteChildren {
   VerbBankRoute: typeof VerbBankRoute
   AdminCourseAudioRoute: typeof AdminCourseAudioRoute
   AdminStorageReportRoute: typeof AdminStorageReportRoute
+  ApiRep2CorrectionRoute: typeof ApiRep2CorrectionRoute
   ApiSentenceCountRoute: typeof ApiSentenceCountRoute
   ApiTtsRoute: typeof ApiTtsRoute
   ModuleModuleIdRoute: typeof ModuleModuleIdRoute
@@ -331,6 +344,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminStorageReportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/rep2-correction': {
+      id: '/api/rep2-correction'
+      path: '/api/rep2-correction'
+      fullPath: '/api/rep2-correction'
+      preLoaderRoute: typeof ApiRep2CorrectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/sentence-count': {
       id: '/api/sentence-count'
       path: '/api/sentence-count'
@@ -369,6 +389,7 @@ const rootRouteChildren: RootRouteChildren = {
   VerbBankRoute: VerbBankRoute,
   AdminCourseAudioRoute: AdminCourseAudioRoute,
   AdminStorageReportRoute: AdminStorageReportRoute,
+  ApiRep2CorrectionRoute: ApiRep2CorrectionRoute,
   ApiSentenceCountRoute: ApiSentenceCountRoute,
   ApiTtsRoute: ApiTtsRoute,
   ModuleModuleIdRoute: ModuleModuleIdRoute,
