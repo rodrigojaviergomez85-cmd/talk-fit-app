@@ -38,10 +38,22 @@ type Person = {
   relation?: string;
   relationEs?: string;
   gender?: "m" | "f";
+  /** Third-person variants used only when talking ABOUT this person (Weeks 3–4). */
+  colorWhyOther?: string;
+  colorWhyOtherEs?: string;
+  foodWhyOther?: string;
+  foodWhyOtherEs?: string;
+  freeOther?: string;
+  freeOtherEs?: string;
 };
 
 function line(id: string, text: string, es: string, chunks: string[]): ModelLine {
   return { id, text, es, chunks };
+}
+
+/** Plural foods ("los tacos", "las baleadas") need "son", singular ones "es". */
+function foodVerb(foodEs: string): string {
+  return /^(los|las)\s/i.test(foodEs) ? "son" : "es";
 }
 
 /* ------------------------------- Week 1–2 -------------------------------- */
