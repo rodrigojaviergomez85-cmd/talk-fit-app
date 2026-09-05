@@ -355,7 +355,7 @@ function OnboardingPage() {
             </section>
           ) : null}
 
-          {screen === PLACEMENT_SCREEN ? <PlacementPicker value={placement} onSelect={choosePlacement} /> : null}
+          {screen === PLACEMENT_SCREEN ? <PlacementPicker value={placement} onSelect={choosePlacement} initialPlacement /> : null}
           {screen === AUTH_SCREEN ? (
             <section className="space-y-4">
               <AuthGate />
