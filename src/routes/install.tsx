@@ -406,6 +406,17 @@ function InstallPage() {
           </>
         ) : env === "ios-safari" ? (
           <IphoneGuide s={s} />
+        ) : env === "ios-chrome" ? (
+          <>
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground">{s.iosChromeTitle}</h1>
+            <p className="text-sm leading-6 text-muted-foreground">{s.iosChromeIntro}</p>
+            <div className="flex w-full flex-col gap-2.5">
+              <StepRow n={1}>{s.iosChromeOpenStep1}</StepRow>
+              <StepRow n={2}>{s.iosChromeOpenStep2}</StepRow>
+            </div>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary">{s.iosChromeThen}</p>
+            <IphoneGuide s={s} titleAs="h2" />
+          </>
         ) : (
           <>
             <h1 className="text-2xl font-extrabold tracking-tight text-foreground">{s.desktopTitle}</h1>
