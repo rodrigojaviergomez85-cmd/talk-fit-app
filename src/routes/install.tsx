@@ -362,7 +362,7 @@ function InstallPage() {
               <StepRow n={2}>{s.iosChromeOpenStep2}</StepRow>
             </div>
             <p className="text-xs font-bold uppercase tracking-widest text-primary">{s.iosChromeThen}</p>
-            <IphoneGuide s={s} />
+            <IphoneGuide s={s} titleAs="h2" />
           </>
         ) : env === "android-inapp" ? (
           <>
