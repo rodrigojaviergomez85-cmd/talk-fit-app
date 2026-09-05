@@ -564,7 +564,10 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
                 const pending: Recording = { ...rec, countStatus: "pending", sentenceCount: null };
                 setTakes((list) => list.map((item, i) => (i === index ? pending : item)));
                 // Pressure Round (ADVANCED): the Final Rep defaults to Round 1 ("Tell me about yourself").
-                setFinalIndex((current) => (isPressureRound(day.rep5Turns) ? (current ?? index) : index));
+                // Classic: auto-default to the newest take only until the learner picks one manually.
+                setFinalIndex((current) =>
+                  isPressureRound(day.rep5Turns) ? (current ?? index) : finalManual ? current : index,
+                );
                 uploadTake(index, rec);
                 void countSentences(rec.blob ?? null).then((count) => {
                   void CloudSync.updateTakeIdeas(moduleId, day.day, index + 1, count).catch(() => undefined);
