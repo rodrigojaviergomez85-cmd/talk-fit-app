@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { compareRep2, toPublicStatus, type Rep2Confidence } from "@/lib/rep2-match";
-import { getRep2CorrectionProfile, isRep2CorrectionEnabledFor } from "@/lib/rep2-correction-profiles";
+import { getRep2CorrectionProfile, hasRep2CorrectionRollout, isRep2CorrectionEnabledFor } from "@/lib/rep2-correction-profiles";
 import type { ModuleId } from "@/lib/types";
 
 /** Only the audio formats the app itself records/uploads. */
@@ -24,7 +24,6 @@ const MODEL_FALLBACK = "whisper-large-v3";
 /** Neutral context only — must never contain the target sentence or the words we detect. */
 const NEUTRAL_PROMPT = "English learner speaking about future plans.";
 
-const KNOWN_MODULES = new Set<ModuleId>(["simple-future"]);
 
 type Metrics = {
   total: number;
@@ -83,7 +82,7 @@ export const Route = createFileRoute("/api/rep2-correction")({
         }
 
         // Rollout is enforced server-side from the shared authoritative rule.
-        if (!moduleId || !KNOWN_MODULES.has(moduleId as ModuleId)) {
+        if (!moduleId || !hasRep2CorrectionRollout(moduleId)) {
           log({ outcome: "403-module", duration: Date.now() - startedAt });
           return json({ error: "Corrections are not enabled for this module yet." }, 403);
         }

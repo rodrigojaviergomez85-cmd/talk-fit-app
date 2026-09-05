@@ -97,6 +97,11 @@ const ROLLOUT: Partial<Record<ModuleId, ReadonlySet<number>>> = {
   "simple-future": new Set([1, 2]),
 };
 
+/** Does any day of this module have spoken correction rolled out? */
+export function hasRep2CorrectionRollout(moduleId: ModuleId | string): boolean {
+  return (ROLLOUT[moduleId as ModuleId]?.size ?? 0) > 0;
+}
+
 export function isRep2CorrectionEnabledFor(moduleId: ModuleId | string, day: number): boolean {
   return ROLLOUT[moduleId as ModuleId]?.has(day) ?? false;
 }
