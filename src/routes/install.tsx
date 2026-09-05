@@ -225,15 +225,22 @@ function IphoneStepVisual({ step, labels }: { step: 1 | 2 | 3; labels: { share: 
   );
 }
 
-function IphoneGuide({ s }: { s: (typeof STRINGS)["es"] | (typeof STRINGS)["en"] }) {
+function IphoneGuide({
+  s,
+  titleAs: Title = "h1",
+}: {
+  s: (typeof STRINGS)["es"] | (typeof STRINGS)["en"];
+  titleAs?: "h1" | "h2";
+}) {
   const steps = [s.iosStep1, s.iosStep2, s.iosStep3] as const;
   const labels = { share: s.iosShareLabel, addHome: s.iosAddHomeLabel, add: s.iosAddLabel };
+  const titleClass = "text-balance text-2xl font-extrabold text-foreground";
   return (
     <>
       <div className="flex size-12 items-center justify-center rounded-full bg-navy text-navy-foreground">
         <Compass className="size-6" />
       </div>
-      <h1 className="text-balance text-2xl font-extrabold text-foreground">{s.iphoneTitle}</h1>
+      <Title className={titleClass}>{s.iphoneTitle}</Title>
       <p className="text-sm leading-6 text-muted-foreground">{s.iphoneIntro}</p>
       <div className="flex w-full flex-col gap-4">
         {steps.map((instruction, index) => (
