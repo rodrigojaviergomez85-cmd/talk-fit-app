@@ -353,6 +353,30 @@ export type Database = {
         }
         Relationships: []
       }
+      tts_generation_locks: {
+        Row: {
+          clip_key: string
+          created_at: string
+          locked_until: string
+          owner_token: string
+          updated_at: string
+        }
+        Insert: {
+          clip_key: string
+          created_at?: string
+          locked_until: string
+          owner_token: string
+          updated_at?: string
+        }
+        Update: {
+          clip_key?: string
+          created_at?: string
+          locked_until?: string
+          owner_token?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_preferences: {
         Row: {
           app_language: string
@@ -463,6 +487,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      acquire_tts_lock: {
+        Args: { _clip_key: string; _lease_seconds: number; _owner: string }
+        Returns: boolean
+      }
       consume_ai_quota: {
         Args: {
           _endpoint: string
@@ -481,6 +509,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      release_tts_lock: {
+        Args: { _clip_key: string; _owner: string }
         Returns: boolean
       }
     }
