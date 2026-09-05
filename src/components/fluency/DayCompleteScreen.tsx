@@ -66,7 +66,6 @@ export function DayCompleteScreen({
   const partialModule = (module.builtWeeks ?? 4) < 4;
   const isLastDay = day.day === totalDays && !partialModule;
   const seconds = finalRecording?.durationSeconds ?? 0;
-  const firstSeconds = firstRecording?.durationSeconds ?? 0;
 
   const week = day.week;
   const weekJustDone = Boolean(week && JourneyService.weekComplete(state, moduleId, week));
