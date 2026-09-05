@@ -54,6 +54,27 @@ function audioResponse(body: BodyInit, source: "store" | "generated", extra: Rec
 }
 
 /**
+ * True only when storage clearly reports the object does not exist.
+ * Anything else (5xx, timeout, permission, config, unknown) must be treated
+ * as a STORAGE ERROR so we never pay to regenerate an existing clip.
+ */
+function isObjectNotFound(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const e = error as { statusCode?: unknown; status?: unknown; message?: unknown; error?: unknown };
+  const code = String(e.statusCode ?? e.status ?? "");
+  if (code === "404" || code === "400" && /not.?found/i.test(String(e.message ?? ""))) return true;
+  const msg = `${String(e.message ?? "")} ${String(e.error ?? "")}`;
+  return /not.?found/i.test(msg) || /object not found/i.test(msg) || /the resource was not found/i.test(msg);
+}
+
+function storageErrorDescription(error: unknown): string {
+  if (!error || typeof error !== "object") return "unknown";
+  const e = error as { statusCode?: unknown; status?: unknown; message?: unknown };
+  return `status=${String(e.statusCode ?? e.status ?? "?")} message=${String(e.message ?? "?").slice(0, 120)}`;
+}
+
+
+/**
  * Guarded flow: auth → validate → total request quota → cache lookup.
  * A cache hit returns immediately with no AI dependency. On a miss only:
  * require LOVABLE_API_KEY → generation quota → AI → persist.
