@@ -38,10 +38,11 @@ type Props = {
   text: string;
   voice?: ModelVoice | undefined;
   onNext: () => void;
+  onSkip: () => void;
 };
 
 /** ShadowKaraoke — continuous model audio + chunk-level highlight; the learner speaks WITH it. */
-export function ShadowKaraoke({ lines, text, voice, onNext }: Props) {
+export function ShadowKaraoke({ lines, text, voice, onNext, onSkip }: Props) {
   const t = useT();
   const [speed, setSpeed] = useState<number>(0.75);
   const [status, setStatus] = useState<Status>("idle");
@@ -279,6 +280,14 @@ export function ShadowKaraoke({ lines, text, voice, onNext }: Props) {
         {t("rep3.continue")} <ArrowRight className="size-5" />
       </button>
       {!done ? <p className="text-center text-[12px] font-semibold text-muted-foreground">{t("rep3.listenOnce")}</p> : null}
+      <button
+        type="button"
+        onClick={onSkip}
+        aria-label={t("action.skip")}
+        className="inline-flex min-h-[44px] w-full items-center justify-center text-center text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+      >
+        {t("action.skip")}
+      </button>
     </div>
   );
 }
