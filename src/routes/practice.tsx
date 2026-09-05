@@ -502,6 +502,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
           ) : null}
           {stage === 2 && micChecked ? (
             <Rep2Copy
+              moduleId={moduleId}
               day={day}
               index={subIndex}
               showEs={esUi}
