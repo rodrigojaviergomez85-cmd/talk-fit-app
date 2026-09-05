@@ -1122,6 +1122,7 @@ function Rep2Copy({
   const level = supportLevel(day);
   const chunkText = rep2ChunkText(chunk);
   const isLast = index >= chunks.length - 1;
+  const feedbackOwnsNav = correctionEnabled && (checking || correction !== null);
 
   const checkCorrection = async (blob: Blob) => {
     const { data } = await supabase.auth.getSession();
