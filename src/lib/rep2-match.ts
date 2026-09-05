@@ -77,6 +77,9 @@ const NUMBER_WORDS: Record<string, string> = {
   "40": "forty",
   "50": "fifty",
   "60": "sixty",
+  "70": "seventy",
+  "80": "eighty",
+  "90": "ninety",
 };
 
 /**
@@ -169,10 +172,20 @@ function expandContractions(text: string): string {
     .replace(/\bhadn't\b/g, "had not");
 }
 
+/** Spoken form of 0–99: "22" → "twenty two" (hyphens are already spaces after normalize). */
+function numberToWords(word: string): string | undefined {
+  if (NUMBER_WORDS[word]) return NUMBER_WORDS[word];
+  if (!/^\d{2}$/.test(word)) return undefined;
+  const tens = NUMBER_WORDS[`${word[0]}0`];
+  const ones = NUMBER_WORDS[word[1]!];
+  if (!tens || !ones || word[1] === "0") return undefined;
+  return `${tens} ${ones}`;
+}
+
 function expandNumbers(text: string): string {
   return text
     .split(/\s+/)
-    .map((word) => NUMBER_WORDS[word] ?? word)
+    .map((word) => numberToWords(word) ?? word)
     .join(" ");
 }
 
@@ -286,6 +299,9 @@ function pickFocus(
   profile: Rep2CorrectionProfile,
 ): string | undefined {
   if (!profile.allowSpecificFocus) return undefined;
+  if (profile.maxMismatchesForFocus !== undefined && mismatches.length > profile.maxMismatchesForFocus) {
+    return undefined;
+  }
   const missed = new Set(mismatches.map(opTargetWord).filter((w): w is string => Boolean(w)));
   for (const rule of profile.focusRules) {
     if (ruleMatches(rule, missed, targetWords)) return ruleLabel(rule);

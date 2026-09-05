@@ -51,6 +51,12 @@ export type Rep2CorrectionProfile = {
    */
   formChecks?: Array<(targetWord: string, learnerWord: string) => boolean>;
   /**
+   * If the attempt has MORE differences than this, never name a specific
+   * focus — the learner clearly said something else, so show the full target.
+   * Unset = no cap (configured structures always win).
+   */
+  maxMismatchesForFocus?: number;
+  /**
    * When false the engine never names a specific word — it always falls back
    * to showing the whole target. Useful for staged QA of a new module.
    */
@@ -86,6 +92,7 @@ export const GENERIC_PROFILE: Rep2CorrectionProfile = {
 export const BASIC_ZERO_PROFILE: Rep2CorrectionProfile = {
   moduleId: "basic-zero",
   allowSpecificFocus: true,
+  maxMismatchesForFocus: 3,
   focusRules: [
     { phrase: ["am"], label: "AM" },
     { phrase: ["is"], label: "IS" },

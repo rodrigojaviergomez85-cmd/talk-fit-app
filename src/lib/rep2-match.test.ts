@@ -103,6 +103,11 @@ describe("compareRep2 (Future profile)", () => {
     expect(compareRep2(target, ".").status).toBe("asr_uncertain");
   });
 
+  it("accepts compound ages as digits or words (Basic Zero: 22, 41)", () => {
+    expect(compareRep2("I am 41 years old.", "I am forty-one years old").status).toBe("good");
+    expect(compareRep2("I am twenty-two years old.", "I am 22 years old").status).toBe("good");
+  });
+
   it("accepts a number word instead of digits", () => {
     const res = compareRep2("I will wake up at eleven tomorrow.", "I will wake up at 11 tomorrow");
     expect(res.status).toBe("good");
