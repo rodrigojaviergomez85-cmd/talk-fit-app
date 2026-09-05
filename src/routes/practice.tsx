@@ -1158,6 +1158,9 @@ function Rep2Copy({
       }
       const result = (await res.json()) as Rep2CorrectionResult;
       setCorrection(result);
+      // Fires once per NEW result (never on rerender), only after recording
+      // has stopped, and never over learning audio. UNCERTAIN stays silent.
+      playFeedbackSoundOnce(result.status);
     } catch (err) {
       console.error("[rep2-correction]", err);
       setErrorMsg("Correction unavailable.");
