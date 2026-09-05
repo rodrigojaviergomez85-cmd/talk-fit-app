@@ -1,0 +1,326 @@
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
+import {
+  Share,
+  PlusSquare,
+  MoreVertical,
+  Copy,
+  Check,
+  Smartphone,
+  Chrome,
+  Download,
+} from "lucide-react";
+import { useAppLang } from "@/lib/i18n";
+
+const INSTALL_URL = "https://talk-fit-app.lovable.app/install";
+
+type Env =
+  | "installed"
+  | "android-prompt" // beforeinstallprompt captured
+  | "android-inapp"
+  | "android-browser"
+  | "ios-inapp"
+  | "ios-safari"
+  | "ios-other"
+  | "desktop";
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
+}
+
+function detectEnv(hasInstallPrompt: boolean): Env {
+  if (typeof window === "undefined") return "desktop";
+  const ua = navigator.userAgent;
+
+  // Already running as installed PWA
+  const standalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    (navigator as Navigator & { standalone?: boolean }).standalone === true;
+  if (standalone) return "installed";
+
+  const isIOS = /iP(hone|ad|od)/.test(ua);
+  const isAndroid = /Android/i.test(ua);
+  // In-app / embedded browsers (WhatsApp, Instagram, Facebook, Messenger, TikTok, Telegram)
+  const isInApp =
+    /WhatsApp|Instagram|FBAN|FBAV|FB_IAB|Messenger|TikTok|Telegram/i.test(ua) ||
+    (/; wv\)/.test(ua) && isAndroid);
+
+  if (isIOS) {
+    if (isInApp) return "ios-inapp";
+    const isSafari = /Safari/i.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua);
+    return isSafari ? "ios-safari" : "ios-other";
+  }
+  if (isAndroid) {
+    if (isInApp) return "android-inapp";
+    if (hasInstallPrompt) return "android-prompt";
+    return "android-browser";
+  }
+  return "desktop";
+}
+
+const STRINGS = {
+  es: {
+    title: "INSTALA FLUENCY APP",
+    subtitle: "Practica tu inglés todos los días desde tu celular.",
+    installNow: "INSTALAR FLUENCY APP",
+    openApp: "ABRIR FLUENCY APP",
+    alreadyInstalled: "FLUENCY APP YA ESTÁ INSTALADA",
+    installedOk: "FLUENCY APP INSTALADA ✅",
+    iphoneTitle: "INSTALA FLUENCY APP EN TU IPHONE",
+    iosStep1: 'Toca COMPARTIR',
+    iosStep2: 'Toca "Agregar a pantalla de inicio"',
+    iosStep3: 'Toca "Agregar"',
+    openSafariTitle: "PARA INSTALAR FLUENCY APP, ÁBRELA EN SAFARI",
+    openSafariCta: "ABRIR EN SAFARI",
+    openSafariSteps: ['Toca el menú del navegador', 'Elige "Abrir en Safari"'],
+    openChromeTitle: "PARA INSTALAR FLUENCY APP, ÁBRELA EN CHROME",
+    openChromeCta: "ABRIR EN CHROME",
+    openChromeSteps: ["Toca el menú", 'Elige "Abrir en Chrome"'],
+    chromeMenuTitle: "EN CHROME:",
+    chromeStep1: "Toca el menú ⋮",
+    chromeStep2: 'Toca "Instalar app" o "Agregar a pantalla principal"',
+    desktopTitle: "INSTALA FLUENCY APP EN TU CELULAR",
+    desktopHint: "Abre este enlace en tu celular:",
+    copyLink: "COPIAR LINK",
+    copied: "¡COPIADO!",
+    continueBrowser: "CONTINUAR EN EL NAVEGADOR",
+  },
+  en: {
+    title: "INSTALL FLUENCY APP",
+    subtitle: "Practice your English every day from your phone.",
+    installNow: "INSTALL FLUENCY APP",
+    openApp: "OPEN FLUENCY APP",
+    alreadyInstalled: "FLUENCY APP IS ALREADY INSTALLED",
+    installedOk: "FLUENCY APP INSTALLED ✅",
+    iphoneTitle: "INSTALL FLUENCY APP ON YOUR IPHONE",
+    iosStep1: "Tap SHARE",
+    iosStep2: 'Tap "Add to Home Screen"',
+    iosStep3: 'Tap "Add"',
+    openSafariTitle: "TO INSTALL FLUENCY APP, OPEN IT IN SAFARI",
+    openSafariCta: "OPEN IN SAFARI",
+    openSafariSteps: ["Tap the browser menu", 'Choose "Open in Safari"'],
+    openChromeTitle: "TO INSTALL FLUENCY APP, OPEN IT IN CHROME",
+    openChromeCta: "OPEN IN CHROME",
+    openChromeSteps: ["Tap the menu", 'Choose "Open in Chrome"'],
+    chromeMenuTitle: "IN CHROME:",
+    chromeStep1: "Tap the ⋮ menu",
+    chromeStep2: 'Tap "Install app" or "Add to Home screen"',
+    desktopTitle: "INSTALL FLUENCY APP ON YOUR PHONE",
+    desktopHint: "Open this link on your phone:",
+    copyLink: "COPY LINK",
+    copied: "COPIED!",
+    continueBrowser: "CONTINUE IN BROWSER",
+  },
+} as const;
+
+export const Route = createFileRoute("/install")({
+  head: () => ({
+    meta: [
+      { title: "Install Fluency App" },
+      {
+        name: "description",
+        content: "Install Fluency App on your phone — daily English speaking practice from your home screen.",
+      },
+      { property: "og:title", content: "Install Fluency App" },
+      {
+        property: "og:description",
+        content: "Install Fluency App on your phone — daily English speaking practice from your home screen.",
+      },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
+  component: InstallPage,
+});
+
+function StepRow({ n, children }: { n: number; children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3">
+      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+        {n}
+      </span>
+      <span className="text-left text-sm font-semibold text-foreground">{children}</span>
+    </div>
+  );
+}
+
+function InstallPage() {
+  const { lang } = useAppLang();
+  const s = STRINGS[lang === "es" ? "es" : "en"];
+  const navigate = useNavigate();
+  const [promptEvent, setPromptEvent] = useState<BeforeInstallPromptEvent | null>(null);
+  const [justInstalled, setJustInstalled] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const onPrompt = (e: Event) => {
+      e.preventDefault();
+      setPromptEvent(e as BeforeInstallPromptEvent);
+    };
+    const onInstalled = () => {
+      setJustInstalled(true);
+      setPromptEvent(null);
+    };
+    window.addEventListener("beforeinstallprompt", onPrompt);
+    window.addEventListener("appinstalled", onInstalled);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", onPrompt);
+      window.removeEventListener("appinstalled", onInstalled);
+    };
+  }, []);
+
+  const env = useMemo(() => detectEnv(promptEvent !== null), [promptEvent]);
+
+  const install = async () => {
+    if (!promptEvent) return;
+    await promptEvent.prompt();
+    const choice = await promptEvent.userChoice;
+    if (choice.outcome === "accepted") setJustInstalled(true);
+    setPromptEvent(null); // single-shot: never nag repeatedly
+  };
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(INSTALL_URL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // clipboard unavailable — fail silently, URL stays visible
+    }
+  };
+
+  const goHome = () => navigate({ to: "/" });
+
+  return (
+    <div className="flex min-h-screen flex-col items-center bg-background px-5 py-10">
+      <div className="flex w-full max-w-sm flex-1 flex-col items-center gap-6 text-center">
+        <img
+          src="/icon-192.png"
+          alt="Fluency App"
+          className="size-24 rounded-3xl shadow-lg"
+          width={96}
+          height={96}
+        />
+
+        {justInstalled || env === "installed" ? (
+          <>
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground">
+              {justInstalled ? s.installedOk : s.alreadyInstalled}
+            </h1>
+            <button
+              type="button"
+              onClick={goHome}
+              className="flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 text-sm font-bold uppercase tracking-wide text-primary-foreground shadow-md"
+            >
+              {s.openApp}
+            </button>
+          </>
+        ) : env === "ios-inapp" ? (
+          <>
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground">{s.openSafariTitle}</h1>
+            <div className="flex w-full flex-col gap-2.5">
+              {s.openSafariSteps.map((step, i) => (
+                <StepRow key={i} n={i + 1}>{step}</StepRow>
+              ))}
+            </div>
+          </>
+        ) : env === "android-inapp" ? (
+          <>
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground">{s.openChromeTitle}</h1>
+            <div className="flex w-full flex-col gap-2.5">
+              {s.openChromeSteps.map((step, i) => (
+                <StepRow key={i} n={i + 1}>
+                  <span className="inline-flex items-center gap-1.5">
+                    {step} {i === s.openChromeSteps.length - 1 ? <Chrome className="size-4 text-primary" /> : null}
+                  </span>
+                </StepRow>
+              ))}
+            </div>
+          </>
+        ) : env === "android-prompt" ? (
+          <>
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground">{s.title}</h1>
+            <p className="text-sm text-muted-foreground">{s.subtitle}</p>
+            <button
+              type="button"
+              onClick={install}
+              className="flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 text-sm font-bold uppercase tracking-wide text-primary-foreground shadow-md"
+            >
+              <Download className="size-4" />
+              {s.installNow}
+            </button>
+          </>
+        ) : env === "android-browser" ? (
+          <>
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground">{s.title}</h1>
+            <p className="text-sm text-muted-foreground">{s.subtitle}</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary">{s.chromeMenuTitle}</p>
+            <div className="flex w-full flex-col gap-2.5">
+              <StepRow n={1}>
+                <span className="inline-flex items-center gap-1.5">
+                  {s.chromeStep1} <MoreVertical className="size-4 text-primary" />
+                </span>
+              </StepRow>
+              <StepRow n={2}>{s.chromeStep2}</StepRow>
+            </div>
+          </>
+        ) : env === "ios-safari" || env === "ios-other" ? (
+          <>
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground">{s.iphoneTitle}</h1>
+            <div className="flex w-full flex-col gap-2.5">
+              <StepRow n={1}>
+                <span className="inline-flex items-center gap-1.5">
+                  {s.iosStep1} <Share className="size-4 text-primary" />
+                </span>
+              </StepRow>
+              <StepRow n={2}>
+                <span className="inline-flex items-center gap-1.5">
+                  {s.iosStep2} <PlusSquare className="size-4 text-primary" />
+                </span>
+              </StepRow>
+              <StepRow n={3}>{s.iosStep3}</StepRow>
+            </div>
+          </>
+        ) : (
+          <>
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground">{s.desktopTitle}</h1>
+            <p className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Smartphone className="size-4" /> {s.desktopHint}
+            </p>
+            <p className="w-full break-all rounded-2xl border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground">
+              {INSTALL_URL}
+            </p>
+            <button
+              type="button"
+              onClick={copy}
+              className="flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 text-sm font-bold uppercase tracking-wide text-primary-foreground shadow-md"
+            >
+              {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+              {copied ? s.copied : s.copyLink}
+            </button>
+          </>
+        )}
+
+        {/* Secondary actions */}
+        <div className="mt-auto flex w-full flex-col items-center gap-4 pt-8">
+          {env !== "desktop" && env !== "installed" && !justInstalled ? (
+            <button
+              type="button"
+              onClick={copy}
+              className="flex min-h-11 items-center gap-1.5 text-xs font-semibold text-muted-foreground"
+            >
+              {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+              {copied ? s.copied : s.copyLink}
+            </button>
+          ) : null}
+          <Link
+            to="/"
+            className="flex min-h-11 items-center text-xs font-semibold text-muted-foreground underline underline-offset-4"
+          >
+            {s.continueBrowser}
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
