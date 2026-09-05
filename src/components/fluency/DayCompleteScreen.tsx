@@ -219,16 +219,21 @@ export function DayCompleteScreen({
         {finalRecording ? (
           <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-              {showEs ? "Tu grabación final" : "Your final recording"}
+              {showEs ? "Compara tu práctica de hoy" : "Compare today's practice"}
+            </p>
+            <p className="text-[13px] text-muted-foreground">
+              {showEs
+                ? "Escucha cómo empezaste y cómo terminaste hoy."
+                : "Hear how you started and how you finished today."}
             </p>
             <RecordingPlayback
               url={finalRecording.url}
-              label={showEs ? "ESCUCHAR MI REP" : "LISTEN TO MY REP"}
+              label={showEs ? "▶ Escuchar mi audio final" : "▶ Listen to my final audio"}
             />
             {firstRecording && firstRecording.id !== finalRecording.id ? (
               <RecordingPlayback
                 url={firstRecording.url}
-                label={showEs ? `PRIMERA TOMA (${firstSeconds}s)` : `FIRST TAKE (${firstSeconds}s)`}
+                label={showEs ? "▶ Escuchar mi primer audio" : "▶ Listen to my first audio"}
               />
             ) : null}
           </div>
