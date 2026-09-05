@@ -1128,6 +1128,17 @@ function Rep2Copy({
   const isLast = index >= chunks.length - 1;
   const feedbackOwnsNav = correctionEnabled && (checking || correction !== null || retryPending);
 
+  const playFeedbackSoundOnce = (status: Rep2CorrectionResult["status"]) => {
+    try {
+      if (!loadPreferences().feedbackSoundsEnabled) return;
+      if (AudioService.isPlaying()) return; // learning audio always has priority
+      if (status === "good") playGoodFeedbackSound();
+      else if (status === "correct") playCorrectFeedbackSound();
+    } catch {
+      /* sound is enhancement only */
+    }
+  };
+
   const checkCorrection = async (blob: Blob) => {
     // Set checking BEFORE any async work so the feedback card owns navigation
     // immediately and the generic NEXT button cannot flash.
