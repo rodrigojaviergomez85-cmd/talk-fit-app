@@ -84,13 +84,26 @@ const REP_TITLES = [
   { en: "REP 5 OF 5 · YOUR TURN", es: "REP 5 DE 5 · TU TURNO" },
 ];
 
-/** Estimated complete spoken ideas for one take. Returns null when unavailable. */
+/** Server accepts at most 3 MB; skip the call locally for anything larger. */
+const SENTENCE_COUNT_MAX_BYTES = 3 * 1024 * 1024;
+
+/**
+ * Estimated complete spoken ideas for one take. Returns null when unavailable
+ * (no session, oversized, rate-limited, or any server/AI error) — never throws.
+ */
 async function countSentences(blob: Blob | null): Promise<number | null> {
-  if (!blob || blob.size < 2048) return null;
+  if (!blob || blob.size < 2048 || blob.size > SENTENCE_COUNT_MAX_BYTES) return null;
   try {
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+    if (!token) return null;
     const form = new FormData();
     form.append("file", blob, "take");
-    const res = await fetch("/api/sentence-count", { method: "POST", body: form });
+    const res = await fetch("/api/sentence-count", {
+      method: "POST",
+      body: form,
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (!res.ok) return null;
     const body = (await res.json()) as { sentences?: unknown };
     return typeof body.sentences === "number" ? body.sentences : null;
