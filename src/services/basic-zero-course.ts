@@ -111,7 +111,10 @@ function esEste(p: Person) {
 function otherLinesFoundation(id: string, p: Person): ModelLine[] {
   return [
     line(`${id}-1`, `This is my ${p.relation}.`, `${esEste(p)} es mi ${p.relationEs}.`, ["This is", `my ${p.relation}.`]),
-...
+    line(`${id}-2`, `${his(p)} name is ${p.name}.`, `${esSu()} nombre es ${p.name}.`, [`${his(p)} name is`, `${p.name}.`]),
+    line(`${id}-3`, `${he(p)} is ${p.age} years old.`, `${esEl(p)} tiene ${p.age} años.`, [`${he(p)} is`, `${p.age} years old.`]),
+    line(`${id}-4`, `${he(p)} is from ${p.country}.`, `${esEl(p)} es de ${p.countryEs}.`, [`${he(p)} is from`, `${p.country}.`]),
+    line(`${id}-5`, `${he(p)} lives in ${p.city}.`, `${esEl(p)} vive en ${p.city}.`, [`${he(p)} lives in`, `${p.city}.`]),
     line(`${id}-6`, `${his(p)} favorite color is ${p.color}.`, `${esSu()} color favorito es el ${p.colorEs}.`, [`${his(p)} favorite color is`, `${p.color}.`]),
     line(`${id}-7`, `${his(p)} favorite food is ${p.food}.`, `${esSu()} comida favorita ${foodVerb(p.foodEs)} ${p.foodEs}.`, [`${his(p)} favorite food is`, `${p.food}.`]),
     line(`${id}-8`, `${his(p)} hobbies are ${p.hobby1} and ${p.hobby2}.`, `${esSu()}s pasatiempos son ${p.hobby1Es} y ${p.hobby2Es}.`, [`${his(p)} hobbies are`, `${p.hobby1}`, `and ${p.hobby2}.`]),
