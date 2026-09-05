@@ -20,6 +20,7 @@ import { Route as RecordingsRouteImport } from './routes/recordings'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
+import { Route as AdminCourseAudioRouteImport } from './routes/admin.course-audio'
 import { Route as AdminStorageReportRouteImport } from './routes/admin.storage-report'
 import { Route as ApiSentenceCountRouteImport } from './routes/api/sentence-count'
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
@@ -80,6 +81,11 @@ const VerbBankRoute = VerbBankRouteImport.update({
   path: '/verb-bank',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminCourseAudioRoute = AdminCourseAudioRouteImport.update({
+  id: '/admin/course-audio',
+  path: '/admin/course-audio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminStorageReportRoute = AdminStorageReportRouteImport.update({
   id: '/admin/storage-report',
   path: '/admin/storage-report',
@@ -113,6 +119,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
+  '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
@@ -130,6 +137,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
+  '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
@@ -148,6 +156,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
+  '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
@@ -167,6 +176,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sprint'
     | '/verb-bank'
+    | '/admin/course-audio'
     | '/admin/storage-report'
     | '/api/sentence-count'
     | '/api/tts'
@@ -184,6 +194,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sprint'
     | '/verb-bank'
+    | '/admin/course-audio'
     | '/admin/storage-report'
     | '/api/sentence-count'
     | '/api/tts'
@@ -201,6 +212,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sprint'
     | '/verb-bank'
+    | '/admin/course-audio'
     | '/admin/storage-report'
     | '/api/sentence-count'
     | '/api/tts'
@@ -219,6 +231,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SprintRoute: typeof SprintRoute
   VerbBankRoute: typeof VerbBankRoute
+  AdminCourseAudioRoute: typeof AdminCourseAudioRoute
   AdminStorageReportRoute: typeof AdminStorageReportRoute
   ApiSentenceCountRoute: typeof ApiSentenceCountRoute
   ApiTtsRoute: typeof ApiTtsRoute
@@ -304,6 +317,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerbBankRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/course-audio': {
+      id: '/admin/course-audio'
+      path: '/admin/course-audio'
+      fullPath: '/admin/course-audio'
+      preLoaderRoute: typeof AdminCourseAudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/storage-report': {
       id: '/admin/storage-report'
       path: '/admin/storage-report'
@@ -347,6 +367,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SprintRoute: SprintRoute,
   VerbBankRoute: VerbBankRoute,
+  AdminCourseAudioRoute: AdminCourseAudioRoute,
   AdminStorageReportRoute: AdminStorageReportRoute,
   ApiSentenceCountRoute: ApiSentenceCountRoute,
   ApiTtsRoute: ApiTtsRoute,
