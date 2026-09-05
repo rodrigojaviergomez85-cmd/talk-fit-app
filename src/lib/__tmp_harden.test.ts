@@ -24,7 +24,7 @@ vi.mock("@/integrations/supabase/client.server", () => ({
     },
     rpc: async (fn: string, args: Record<string, string>) => {
       if (fn === "acquire_tts_lock") {
-        if (locks.has(args._clip_key)) return { data: false, error: null };
+        console.log("ACQ", args._clip_key, locks.has(args._clip_key)); if (locks.has(args._clip_key)) return { data: false, error: null };
         locks.set(args._clip_key, args._owner);
         return { data: true, error: null };
       }
