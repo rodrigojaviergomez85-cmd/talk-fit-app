@@ -54,6 +54,27 @@ function audioResponse(body: BodyInit, source: "store" | "generated", extra: Rec
 }
 
 /**
+ * True only when storage clearly reports the object does not exist.
+ * Anything else (5xx, timeout, permission, config, unknown) must be treated
+ * as a STORAGE ERROR so we never pay to regenerate an existing clip.
+ */
+function isObjectNotFound(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const e = error as { statusCode?: unknown; status?: unknown; message?: unknown; error?: unknown };
+  const code = String(e.statusCode ?? e.status ?? "");
+  if (code === "404" || code === "400" && /not.?found/i.test(String(e.message ?? ""))) return true;
+  const msg = `${String(e.message ?? "")} ${String(e.error ?? "")}`;
+  return /not.?found/i.test(msg) || /object not found/i.test(msg) || /the resource was not found/i.test(msg);
+}
+
+function storageErrorDescription(error: unknown): string {
+  if (!error || typeof error !== "object") return "unknown";
+  const e = error as { statusCode?: unknown; status?: unknown; message?: unknown };
+  return `status=${String(e.statusCode ?? e.status ?? "?")} message=${String(e.message ?? "?").slice(0, 120)}`;
+}
+
+
+/**
  * Guarded flow: auth → validate → total request quota → cache lookup.
  * A cache hit returns immediately with no AI dependency. On a miss only:
  * require LOVABLE_API_KEY → generation quota → AI → persist.
@@ -98,15 +119,23 @@ export const Route = createFileRoute("/api/tts")({
 
         const key = await clipKey(text, voice, tone);
 
-        // 3) Stored clip? Serve it without touching the TTS API or the generation quota.
+        // 3) Stored clip? Three-way classification:
+        //    CACHE HIT → serve it. TRUE MISS (object not found) → continue to generation.
+        //    STORAGE ERROR → 503, never pay to regenerate when cache state is uncertain.
         try {
           const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
           const { data, error } = await supabaseAdmin.storage.from(BUCKET).download(key);
           if (data && !error) {
             return audioResponse(await data.arrayBuffer(), "store");
           }
+          if (!isObjectNotFound(error)) {
+            console.warn("course-audio storage unavailable:", storageErrorDescription(error));
+            return json({ error: "Voice cache is temporarily unavailable. Try again later." }, 503);
+          }
+          console.info("course-audio cache miss");
         } catch (error) {
-          console.warn("course-audio lookup failed, treating as miss:", error);
+          console.warn("course-audio storage unavailable (thrown):", error instanceof Error ? error.message : "unknown");
+          return json({ error: "Voice cache is temporarily unavailable. Try again later." }, 503);
         }
 
         // 4) Cache miss → paid work. Only now require the AI key.
