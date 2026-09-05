@@ -9,8 +9,11 @@ import {
   Smartphone,
   Chrome,
   Download,
+  Compass,
+  Search,
 } from "lucide-react";
 import { useAppLang } from "@/lib/i18n";
+import { Button } from "@/components/ui/button";
 
 const INSTALL_URL = "https://talk-fit-app.lovable.app/install";
 
@@ -68,9 +71,14 @@ const STRINGS = {
     alreadyInstalled: "FLUENCY APP YA ESTÁ INSTALADA",
     installedOk: "FLUENCY APP INSTALADA ✅",
     iphoneTitle: "INSTALA FLUENCY APP EN TU IPHONE",
-    iosStep1: 'Toca COMPARTIR',
-    iosStep2: 'Toca "Agregar a pantalla de inicio"',
-    iosStep3: 'Toca "Agregar"',
+    iphoneIntro: "Haz estos 3 pasos en Safari. No necesitas descargar nada del App Store.",
+    iosStep1: 'Toca el botón Compartir en la barra de Safari.',
+    iosStep2: 'Desliza el menú y toca “Agregar a pantalla de inicio”.',
+    iosStep3: 'Confirma tocando “Agregar” arriba a la derecha.',
+    iosShareLabel: "Compartir",
+    iosAddHomeLabel: "Agregar a pantalla de inicio",
+    iosAddLabel: "Agregar",
+    iosDone: "Después verás el ícono de Fluency App en tu pantalla de inicio.",
     openSafariTitle: "PARA INSTALAR FLUENCY APP, ÁBRELA EN SAFARI",
     openSafariCta: "ABRIR EN SAFARI",
     openSafariSteps: ['Toca el menú del navegador', 'Elige "Abrir en Safari"'],
@@ -94,9 +102,14 @@ const STRINGS = {
     alreadyInstalled: "FLUENCY APP IS ALREADY INSTALLED",
     installedOk: "FLUENCY APP INSTALLED ✅",
     iphoneTitle: "INSTALL FLUENCY APP ON YOUR IPHONE",
-    iosStep1: "Tap SHARE",
-    iosStep2: 'Tap "Add to Home Screen"',
-    iosStep3: 'Tap "Add"',
+    iphoneIntro: "Follow these 3 steps in Safari. You do not need to download anything from the App Store.",
+    iosStep1: "Tap the Share button in the Safari toolbar.",
+    iosStep2: 'Swipe through the menu and tap “Add to Home Screen”.',
+    iosStep3: 'Confirm by tapping “Add” in the top-right corner.',
+    iosShareLabel: "Share",
+    iosAddHomeLabel: "Add to Home Screen",
+    iosAddLabel: "Add",
+    iosDone: "You will then see the Fluency App icon on your Home Screen.",
     openSafariTitle: "TO INSTALL FLUENCY APP, OPEN IT IN SAFARI",
     openSafariCta: "OPEN IN SAFARI",
     openSafariSteps: ["Tap the browser menu", 'Choose "Open in Safari"'],
@@ -141,6 +154,90 @@ function StepRow({ n, children }: { n: number; children: React.ReactNode }) {
       </span>
       <span className="text-left text-sm font-semibold text-foreground">{children}</span>
     </div>
+  );
+}
+
+function IphoneStepVisual({ step, labels }: { step: 1 | 2 | 3; labels: { share: string; addHome: string; add: string } }) {
+  return (
+    <div className="relative h-40 w-full overflow-hidden rounded-xl border border-border bg-secondary" aria-hidden="true">
+      <div className="absolute inset-x-3 top-3 h-[138px] overflow-hidden rounded-xl border border-border bg-card shadow-card">
+        {step === 1 ? (
+          <>
+            <div className="flex h-9 items-center justify-center border-b border-border bg-muted text-[10px] font-semibold text-muted-foreground">
+              talk-fit-app.lovable.app
+            </div>
+            <div className="flex h-16 items-center justify-center">
+              <img src="/icon-192.png" alt="" className="size-10 rounded-lg" width={40} height={40} />
+            </div>
+            <div className="flex h-9 items-center justify-around border-t border-border bg-muted text-muted-foreground">
+              <span className="size-5 rounded-full border border-current" />
+              <Share className="size-6 text-primary" strokeWidth={2.5} />
+              <Search className="size-5" />
+              <span className="flex size-5 items-center justify-center rounded border border-current text-[9px]">2</span>
+            </div>
+            <span className="absolute bottom-10 left-1/2 -translate-x-1/2 rounded-md bg-navy px-2 py-1 text-[10px] font-bold text-navy-foreground shadow-md">
+              {labels.share}
+            </span>
+          </>
+        ) : step === 2 ? (
+          <div className="p-3">
+            <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-border" />
+            <div className="mb-2 h-7 rounded-lg bg-muted" />
+            <div className="flex h-12 items-center gap-3 rounded-lg border-2 border-primary bg-accent px-3">
+              <PlusSquare className="size-6 shrink-0 text-primary" />
+              <span className="text-left text-xs font-bold text-foreground">{labels.addHome}</span>
+            </div>
+            <div className="mt-2 h-7 rounded-lg bg-muted" />
+          </div>
+        ) : (
+          <>
+            <div className="flex h-10 items-center justify-between border-b border-border px-3 text-[11px] font-semibold">
+              <span className="text-primary">Cancel</span>
+              <span className="font-bold text-foreground">Add to Home Screen</span>
+              <span className="rounded-md bg-primary px-2 py-1 font-bold text-primary-foreground">{labels.add}</span>
+            </div>
+            <div className="flex items-center gap-3 p-4">
+              <img src="/icon-192.png" alt="" className="size-12 rounded-xl" width={48} height={48} />
+              <div className="min-w-0 flex-1 text-left">
+                <p className="text-xs font-bold text-foreground">Fluency App</p>
+                <p className="truncate text-[10px] text-muted-foreground">talk-fit-app.lovable.app</p>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function IphoneGuide({ s }: { s: (typeof STRINGS)["es"] | (typeof STRINGS)["en"] }) {
+  const steps = [s.iosStep1, s.iosStep2, s.iosStep3] as const;
+  const labels = { share: s.iosShareLabel, addHome: s.iosAddHomeLabel, add: s.iosAddLabel };
+  return (
+    <>
+      <div className="flex size-12 items-center justify-center rounded-full bg-navy text-navy-foreground">
+        <Compass className="size-6" />
+      </div>
+      <h1 className="text-balance text-2xl font-extrabold text-foreground">{s.iphoneTitle}</h1>
+      <p className="text-sm leading-6 text-muted-foreground">{s.iphoneIntro}</p>
+      <div className="flex w-full flex-col gap-4">
+        {steps.map((instruction, index) => (
+          <section key={instruction} className="overflow-hidden rounded-2xl border border-border bg-card p-3 shadow-card">
+            <div className="mb-3 flex items-start gap-3 text-left">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-extrabold text-primary-foreground">
+                {index + 1}
+              </span>
+              <p className="pt-1 text-sm font-bold leading-5 text-foreground">{instruction}</p>
+            </div>
+            <IphoneStepVisual step={(index + 1) as 1 | 2 | 3} labels={labels} />
+          </section>
+        ))}
+      </div>
+      <div className="flex w-full items-center gap-3 rounded-2xl bg-accent px-4 py-3 text-left">
+        <img src="/icon-192.png" alt="Fluency App" className="size-11 rounded-xl" width={44} height={44} />
+        <p className="text-sm font-semibold leading-5 text-accent-foreground">{s.iosDone}</p>
+      </div>
+    </>
   );
 }
 
@@ -217,15 +314,15 @@ function InstallPage() {
             <h1 className="text-2xl font-extrabold tracking-tight text-foreground">
               {justInstalled ? s.installedOk : s.alreadyInstalled}
             </h1>
-            <button
+            <Button
               type="button"
               onClick={goHome}
-              className="flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 text-sm font-bold uppercase tracking-wide text-primary-foreground shadow-md"
+              className="min-h-12 w-full rounded-2xl px-6 text-sm font-bold uppercase tracking-wide shadow-md"
             >
               {s.openApp}
-            </button>
+            </Button>
           </>
-        ) : env === "ios-inapp" ? (
+        ) : env === "ios-inapp" || env === "ios-other" ? (
           <>
             <h1 className="text-2xl font-extrabold tracking-tight text-foreground">{s.openSafariTitle}</h1>
             <div className="flex w-full flex-col gap-2.5">
@@ -274,23 +371,8 @@ function InstallPage() {
               <StepRow n={2}>{s.chromeStep2}</StepRow>
             </div>
           </>
-        ) : env === "ios-safari" || env === "ios-other" ? (
-          <>
-            <h1 className="text-2xl font-extrabold tracking-tight text-foreground">{s.iphoneTitle}</h1>
-            <div className="flex w-full flex-col gap-2.5">
-              <StepRow n={1}>
-                <span className="inline-flex items-center gap-1.5">
-                  {s.iosStep1} <Share className="size-4 text-primary" />
-                </span>
-              </StepRow>
-              <StepRow n={2}>
-                <span className="inline-flex items-center gap-1.5">
-                  {s.iosStep2} <PlusSquare className="size-4 text-primary" />
-                </span>
-              </StepRow>
-              <StepRow n={3}>{s.iosStep3}</StepRow>
-            </div>
-          </>
+        ) : env === "ios-safari" ? (
+          <IphoneGuide s={s} />
         ) : (
           <>
             <h1 className="text-2xl font-extrabold tracking-tight text-foreground">{s.desktopTitle}</h1>
