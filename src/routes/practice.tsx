@@ -173,6 +173,8 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   const [done, setDone] = useState(false);
   const [takes, setTakes] = useState<(Recording | null)[]>(() => Array(takeSlots(day.rep5Turns)).fill(null));
   const [finalIndex, setFinalIndex] = useState<number | null>(null);
+  /** True once the learner explicitly taps USE AS FINAL; auto-defaults must not override it. */
+  const [finalManual, setFinalManual] = useState(false);
   const [finalRecording, setFinalRecording] = useState<Recording | null>(null);
   const [saveState, setSaveState] = useState<FinalRepSaveState>("idle");
   const [journeyAfterFinish, setJourneyAfterFinish] = useState<JourneyState | null>(null);
@@ -562,7 +564,10 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
                 const pending: Recording = { ...rec, countStatus: "pending", sentenceCount: null };
                 setTakes((list) => list.map((item, i) => (i === index ? pending : item)));
                 // Pressure Round (ADVANCED): the Final Rep defaults to Round 1 ("Tell me about yourself").
-                setFinalIndex((current) => (isPressureRound(day.rep5Turns) ? (current ?? index) : index));
+                // Classic: auto-default to the newest take only until the learner picks one manually.
+                setFinalIndex((current) =>
+                  isPressureRound(day.rep5Turns) ? (current ?? index) : finalManual ? current : index,
+                );
                 uploadTake(index, rec);
                 void countSentences(rec.blob ?? null).then((count) => {
                   void CloudSync.updateTakeIdeas(moduleId, day.day, index + 1, count).catch(() => undefined);
@@ -579,9 +584,17 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               }}
               onDelete={(index) => {
                 setTakes((list) => list.map((item, i) => (i === index ? null : item)));
-                setFinalIndex((current) => (current === index ? null : current));
+                setFinalIndex((current) => {
+                  if (current !== index) return current;
+                  // Deleted the selected Final Rep: clear it; auto-default resumes from remaining takes.
+                  setFinalManual(false);
+                  return null;
+                });
               }}
-              onSelectFinal={setFinalIndex}
+              onSelectFinal={(index) => {
+                setFinalIndex(index);
+                setFinalManual(true);
+              }}
               onFinish={finish}
             />
           ) : null}
