@@ -241,6 +241,7 @@ const valeria: Person = {
   food: "ceviche", foodEs: "el ceviche", foodWhy: "it is fresh", foodWhyEs: "es fresco",
   hobby1: "singing", hobby1Es: "cantar", hobby2: "swimming", hobby2Es: "nadar",
   free: "sing with my friends", freeEs: "cantar con mis amigos",
+  freeOther: "sing with her friends", freeOtherEs: "cantar con sus amigos",
   also: "watch series", alsoEs: "ver series",
   trait1: "creative", trait1Es: "creativa", trait2: "kind", trait2Es: "amable",
 };
@@ -250,6 +251,7 @@ const miguel: Person = {
   name: "Miguel", age: 41, country: "Guatemala", countryEs: "Guatemala", city: "Antigua",
   color: "black", colorEs: "negro", colorWhy: "it is elegant", colorWhyEs: "es elegante",
   food: "soup", foodEs: "la sopa", foodWhy: "my mother makes it", foodWhyEs: "mi mamá la prepara",
+  foodWhyOther: "his mother makes it", foodWhyOtherEs: "su mamá la prepara",
   hobby1: "playing guitar", hobby1Es: "tocar guitarra", hobby2: "traveling", hobby2Es: "viajar",
   free: "play the guitar", freeEs: "tocar la guitarra",
   also: "travel with my family", alsoEs: "viajar con mi familia",
@@ -272,6 +274,7 @@ const andres: Person = {
   name: "Andres", age: 26, country: "Ecuador", countryEs: "Ecuador", city: "Quito",
   color: "orange", colorEs: "naranja", colorWhy: "it is warm", colorWhyEs: "es cálido",
   food: "hamburgers", foodEs: "las hamburguesas", foodWhy: "they are my weekend food", foodWhyEs: "son mi comida del fin de semana",
+  foodWhyOther: "they are his weekend food", foodWhyOtherEs: "son su comida del fin de semana",
   hobby1: "playing video games", hobby1Es: "jugar videojuegos", hobby2: "going to the gym", hobby2Es: "ir al gimnasio",
   free: "go to the gym", freeEs: "ir al gimnasio",
   also: "play video games", alsoEs: "jugar videojuegos",
