@@ -133,8 +133,9 @@ export const Route = createFileRoute("/api/rep2-correction")({
           return json({ error: "Could not load the expected phrase." }, 400);
         }
 
-        // Primary STT.
-        let turbo = await transcribe(apiKey, file, ext, MODEL_TURBO, target);
+        // Primary STT. The target is NEVER sent to the provider — only a neutral
+        // context prompt — so real learner mistakes are not normalised away.
+        const turbo = await transcribe(apiKey, file, ext, MODEL_TURBO);
         if (!turbo.ok) {
           const detail = await turbo.res.text().catch(() => "");
           console.error(`Groq ${MODEL_TURBO} failed [${turbo.res.status}]: ${detail}`);
@@ -143,40 +144,43 @@ export const Route = createFileRoute("/api/rep2-correction")({
         }
 
         let transcript = turbo.transcript;
-        let confidence = turbo.confidence;
-        let first = compareRep2(target, transcript, confidence);
+        let result = compareRep2(target, transcript, turbo.confidence);
+        let usedFallback = false; // per-request, never derived from cumulative metrics
+        let model: string = MODEL_TURBO;
 
-        if (first.status === "uncertain") {
-          // One retry with the larger model for genuinely uncertain audio.
-          const fallback = await transcribe(apiKey, file, ext, MODEL_FALLBACK, target);
+        if (result.status === "asr_uncertain") {
+          // Only genuine ASR uncertainty (not a wrong sentence) earns one retry with the larger model.
+          usedFallback = true;
+          model = MODEL_FALLBACK;
+          metrics.fallback++;
+          const fallback = await transcribe(apiKey, file, ext, MODEL_FALLBACK);
           if (fallback.ok) {
-            metrics.fallback++;
             transcript = fallback.transcript;
-            confidence = fallback.confidence;
-            first = compareRep2(target, transcript, confidence);
+            result = compareRep2(target, transcript, fallback.confidence);
           }
         } else {
           metrics.turboOnly++;
         }
 
-        const outcome = first.status;
-        if (outcome === "good") metrics.good++;
-        else if (outcome === "correct") metrics.correct++;
+        const status = toPublicStatus(result.status);
+        if (status === "good") metrics.good++;
+        else if (status === "correct") metrics.correct++;
         else metrics.uncertain++;
 
         log({
-          outcome,
-          usedFallback: metrics.fallback > 0,
-          model: first.status === "uncertain" && metrics.fallback > 0 ? MODEL_FALLBACK : MODEL_TURBO,
+          outcome: status,
+          usedFallback,
+          model,
+          transcriptWords: transcript.split(/\s+/).filter(Boolean).length,
           duration: Date.now() - startedAt,
         });
 
         return json({
-          status: first.status,
+          status,
           transcript,
           target,
-          focus: first.focus,
-          retryRecommended: first.retryRecommended,
+          focus: result.focus,
+          retryRecommended: result.retryRecommended,
         });
       },
     },
