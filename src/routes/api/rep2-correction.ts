@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { compareRep2, type Rep2Confidence } from "@/lib/rep2-match";
+import { compareRep2, toPublicStatus, type Rep2Confidence } from "@/lib/rep2-match";
 import type { ModuleId } from "@/lib/types";
 
 /** Only the audio formats the app itself records/uploads. */
@@ -20,6 +20,8 @@ const RATE_WINDOW_SECONDS = 60 * 60;
 const GROQ_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
 const MODEL_TURBO = "whisper-large-v3-turbo";
 const MODEL_FALLBACK = "whisper-large-v3";
+/** Neutral context only — must never contain the target sentence or the words we detect. */
+const NEUTRAL_PROMPT = "English learner speaking about future plans.";
 
 const ALLOWED_MODULES = new Set<ModuleId>(["simple-future"]);
 const ALLOWED_DAYS = new Set([1, 2]);
@@ -33,7 +35,7 @@ type Metrics = {
   uncertain: number;
 };
 
-let metrics: Metrics = { total: 0, turboOnly: 0, fallback: 0, good: 0, correct: 0, uncertain: 0 };
+const metrics: Metrics = { total: 0, turboOnly: 0, fallback: 0, good: 0, correct: 0, uncertain: 0 };
 
 /**
  * Low-cost spoken correction for Rep 2.
@@ -133,8 +135,9 @@ export const Route = createFileRoute("/api/rep2-correction")({
           return json({ error: "Could not load the expected phrase." }, 400);
         }
 
-        // Primary STT.
-        let turbo = await transcribe(apiKey, file, ext, MODEL_TURBO, target);
+        // Primary STT. The target is NEVER sent to the provider — only a neutral
+        // context prompt — so real learner mistakes are not normalised away.
+        const turbo = await transcribe(apiKey, file, ext, MODEL_TURBO);
         if (!turbo.ok) {
           const detail = await turbo.res.text().catch(() => "");
           console.error(`Groq ${MODEL_TURBO} failed [${turbo.res.status}]: ${detail}`);
@@ -143,40 +146,43 @@ export const Route = createFileRoute("/api/rep2-correction")({
         }
 
         let transcript = turbo.transcript;
-        let confidence = turbo.confidence;
-        let first = compareRep2(target, transcript, confidence);
+        let result = compareRep2(target, transcript, turbo.confidence);
+        let usedFallback = false; // per-request, never derived from cumulative metrics
+        let model: string = MODEL_TURBO;
 
-        if (first.status === "uncertain") {
-          // One retry with the larger model for genuinely uncertain audio.
-          const fallback = await transcribe(apiKey, file, ext, MODEL_FALLBACK, target);
+        if (result.status === "asr_uncertain") {
+          // Only genuine ASR uncertainty (not a wrong sentence) earns one retry with the larger model.
+          usedFallback = true;
+          model = MODEL_FALLBACK;
+          metrics.fallback++;
+          const fallback = await transcribe(apiKey, file, ext, MODEL_FALLBACK);
           if (fallback.ok) {
-            metrics.fallback++;
             transcript = fallback.transcript;
-            confidence = fallback.confidence;
-            first = compareRep2(target, transcript, confidence);
+            result = compareRep2(target, transcript, fallback.confidence);
           }
         } else {
           metrics.turboOnly++;
         }
 
-        const outcome = first.status;
-        if (outcome === "good") metrics.good++;
-        else if (outcome === "correct") metrics.correct++;
+        const status = toPublicStatus(result.status);
+        if (status === "good") metrics.good++;
+        else if (status === "correct") metrics.correct++;
         else metrics.uncertain++;
 
         log({
-          outcome,
-          usedFallback: metrics.fallback > 0,
-          model: first.status === "uncertain" && metrics.fallback > 0 ? MODEL_FALLBACK : MODEL_TURBO,
+          outcome: status,
+          usedFallback,
+          model,
+          transcriptWords: transcript.split(/\s+/).filter(Boolean).length,
           duration: Date.now() - startedAt,
         });
 
         return json({
-          status: first.status,
+          status,
           transcript,
           target,
-          focus: first.focus,
-          retryRecommended: first.retryRecommended,
+          focus: result.focus,
+          retryRecommended: result.retryRecommended,
         });
       },
     },
@@ -188,13 +194,12 @@ async function transcribe(
   file: File,
   ext: string,
   model: string,
-  prompt: string,
 ): Promise<{ ok: true; transcript: string; confidence: Rep2Confidence } | { ok: false; res: Response }> {
   const form = new FormData();
   form.append("model", model);
   form.append("file", file, `take.${ext}`);
   form.append("language", "en");
-  form.append("prompt", prompt);
+  form.append("prompt", NEUTRAL_PROMPT);
   form.append("response_format", "verbose_json");
 
   const res = await fetch(GROQ_URL, {

@@ -1,10 +1,17 @@
 /**
  * Deterministic comparison for Rep 2 spoken-correction MVP.
  * No LLM. Compares the learner's transcript to the curriculum target and
- * returns one of three outcomes: good, correct, uncertain.
+ * returns one of three internal outcomes:
+ *  - good           → matches the target
+ *  - correct        → speech was clear but differs from the target
+ *  - asr_uncertain  → the TRANSCRIPTION itself is unusable (low confidence,
+ *                     no speech, empty / truncated) — the only case that
+ *                     justifies a second, more expensive STT pass.
  */
 
-export type Rep2Outcome = "good" | "correct" | "uncertain";
+export type Rep2Outcome = "good" | "correct" | "asr_uncertain";
+/** Outcome shape exposed to the browser. */
+export type Rep2PublicStatus = "good" | "correct" | "uncertain";
 
 export type Rep2MatchResult = {
   status: Rep2Outcome;
@@ -23,33 +30,24 @@ export type Rep2Confidence = {
   noSpeechProb: number;
 };
 
+export function toPublicStatus(status: Rep2Outcome): Rep2PublicStatus {
+  return status === "asr_uncertain" ? "uncertain" : status;
+}
+
 type DiffOp =
   | { type: "match"; word: string }
   | { type: "missing"; word: string; index: number }
   | { type: "extra"; word: string; index: number }
   | { type: "replace"; target: string; got: string; index: number };
 
+/** Confidence thresholds (tunable by QA). Below these the ASR is unusable. */
 const AVG_LOGPROB_THRESHOLD = -0.7;
 const NO_SPEECH_THRESHOLD = 0.5;
-const MIN_MATCH_RATIO = 0.4;
-const MAX_ERROR_RATIO = 0.6;
+/** A transcript with fewer than this share of the target's word count is treated as truncated ASR. */
+const MIN_LENGTH_RATIO = 0.4;
 
-/** Grammar words we are actively teaching in BASIC 1 · FUTURE. */
-const STRUCTURE_WORDS = new Set([
-  "am",
-  "is",
-  "are",
-  "be",
-  "going",
-  "to",
-  "not",
-  "will",
-  "do",
-  "does",
-  "did",
-  "can",
-  "could",
-]);
+/** Future-structure words, in priority order for choosing ONE correction focus. */
+const FOCUS_PRIORITY = ["am", "going", "to", "not", "will"];
 
 const NUMBER_WORDS: Record<string, string> = {
   "0": "zero",
@@ -203,16 +201,15 @@ function wordDiff(targetWords: string[], transcriptWords: string[]): DiffOp[] {
   return ops;
 }
 
-function isStructureOp(op: DiffOp): boolean {
-  if (op.type === "missing" || op.type === "replace") {
-    return STRUCTURE_WORDS.has(op.type === "missing" ? op.word : op.target);
-  }
-  return false;
+function opTargetWord(op: DiffOp): string | undefined {
+  if (op.type === "missing") return op.word;
+  if (op.type === "replace") return op.target;
+  return undefined;
 }
 
 function focusFromOp(op: DiffOp, targetWords: string[]): string | undefined {
-  if (op.type === "match" || op.type === "extra") return undefined;
-  const word = op.type === "missing" ? op.word : op.target;
+  const word = opTargetWord(op);
+  if (!word) return undefined;
   const idx = targetWords.indexOf(word);
   if (word === "to" && idx > 0 && targetWords[idx - 1] === "going") {
     return "going TO";
@@ -220,6 +217,21 @@ function focusFromOp(op: DiffOp, targetWords: string[]): string | undefined {
   if (word === "am") return idx === 0 ? "I AM" : "AM";
   if (word === "not") return "NOT";
   return word.toUpperCase();
+}
+
+/**
+ * Pick ONE useful correction focus:
+ *  1. the highest-priority Future-structure word the learner dropped/changed,
+ *  2. otherwise, if there is exactly one difference, that word,
+ *  3. otherwise no focus — the UI shows the whole target line instead.
+ */
+function pickFocus(mismatches: DiffOp[], targetWords: string[]): string | undefined {
+  for (const structureWord of FOCUS_PRIORITY) {
+    const op = mismatches.find((m) => opTargetWord(m) === structureWord);
+    if (op) return focusFromOp(op, targetWords);
+  }
+  if (mismatches.length === 1) return focusFromOp(mismatches[0]!, targetWords);
+  return undefined;
 }
 
 export function compareRep2(
@@ -230,52 +242,31 @@ export function compareRep2(
   const targetWords = tokenize(target);
   const transcriptWords = tokenize(transcript);
 
-  // Low confidence / no speech -> uncertain rather than false correction.
+  // --- A. ASR uncertainty: the transcription itself is unusable. ---
   if (confidence && (confidence.avgLogprob < AVG_LOGPROB_THRESHOLD || confidence.noSpeechProb > NO_SPEECH_THRESHOLD)) {
-    return { status: "uncertain", correction: target, retryRecommended: true };
+    return { status: "asr_uncertain", correction: target, retryRecommended: true };
   }
-
   if (transcriptWords.length === 0) {
-    return { status: "uncertain", correction: target, retryRecommended: true };
+    return { status: "asr_uncertain", correction: target, retryRecommended: true };
+  }
+  if (targetWords.length > 0 && transcriptWords.length / targetWords.length < MIN_LENGTH_RATIO) {
+    // Truncated / cut-off transcription — not a language judgement.
+    return { status: "asr_uncertain", correction: target, retryRecommended: true };
   }
 
+  // --- B. Speech is clear: compare against the target. ---
   const ops = wordDiff(targetWords, transcriptWords);
-  const matches = ops.filter((o) => o.type === "match").length;
-
-  if (matches / targetWords.length < MIN_MATCH_RATIO) {
-    return { status: "uncertain", correction: target, retryRecommended: true };
-  }
-
   const mismatches = ops.filter((o) => o.type !== "match");
 
   if (mismatches.length === 0) {
     return { status: "good", correction: target, retryRecommended: false };
   }
 
-  // Too many scattered errors to safely pick one correction.
-  if (mismatches.length / targetWords.length >= MAX_ERROR_RATIO) {
-    return { status: "uncertain", correction: target, retryRecommended: true };
-  }
-
-  // Prioritize the grammar structure being practiced.
-  const structureMismatches = mismatches.filter(isStructureOp);
-  if (structureMismatches.length > 0 && mismatches.length <= 3) {
-    return {
-      status: "correct",
-      correction: target,
-      focus: focusFromOp(structureMismatches[0]!, targetWords),
-      retryRecommended: true,
-    };
-  }
-
-  if (mismatches.length === 1) {
-    return {
-      status: "correct",
-      correction: target,
-      focus: focusFromOp(mismatches[0]!, targetWords),
-      retryRecommended: true,
-    };
-  }
-
-  return { status: "uncertain", correction: target, retryRecommended: true };
+  // Clear but different (slightly or completely): one correction, never a second STT pass.
+  return {
+    status: "correct",
+    correction: target,
+    focus: pickFocus(mismatches, targetWords),
+    retryRecommended: true,
+  };
 }
