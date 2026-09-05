@@ -32,9 +32,14 @@ const TONE_INSTRUCTIONS: Record<Tone, string> = {
 
 /** Lease long enough for one TTS generation; a crashed generator frees the clip on expiry. */
 export const LOCK_LEASE_SECONDS = 45;
-/** Waiters poll storage this often, for at most this long, before giving up with 503. */
-const WAIT_POLL_MS = 400;
-const WAIT_MAX_MS = 8_000;
+/**
+ * Waiters (requests that lost the lock) make exactly this many storage checks,
+ * with progressive delays before each one (~5.2 s total), then give up with
+ * "busy" so the browser falls back to SpeechSynthesis. Never a tight loop.
+ */
+export const WAIT_DELAYS_MS: readonly number[] = [400, 800, 1500, 2500];
+/** ±20 % jitter so many waiters don't hit storage in lock-step. */
+const WAIT_JITTER = 0.2;
 
 /* ------------------------------------------------------------------ */
 /* Spec normalisation                                                  */
@@ -201,6 +206,9 @@ export async function releaseLock(key: string, owner: string): Promise<void> {
 
 export type GenerateResult = { ok: true; audio: ArrayBuffer } | { ok: false; status: number };
 
+/** Upstream statuses preserved as-is (terminal or throttled — do not keep hammering). */
+export const PASSTHROUGH_STATUSES: ReadonlySet<number> = new Set([402, 403, 429]);
+
 /** One paid TTS call. Model / instructions / format are fixed server-side. */
 export async function generateClip(spec: ClipSpec, apiKey: string): Promise<GenerateResult> {
   try {
@@ -218,7 +226,9 @@ export async function generateClip(spec: ClipSpec, apiKey: string): Promise<Gene
     if (!upstream.ok) {
       const detail = await upstream.text().catch(() => "");
       console.error(`[course-audio] AI FAILURE [${upstream.status}]: ${detail.slice(0, 200)}`);
-      return { ok: false, status: upstream.status === 429 || upstream.status === 402 ? upstream.status : 502 };
+      // Billing (402), policy (403) and rate limit (429) pass through unchanged so
+      // callers can stop instead of retrying; anything else is an opaque 502.
+      return { ok: false, status: PASSTHROUGH_STATUSES.has(upstream.status) ? upstream.status : 502 };
     }
     const audio = await upstream.arrayBuffer();
     if (audio.byteLength === 0) {
