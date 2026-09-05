@@ -313,22 +313,25 @@ function ModuleBlock({
     weeks.set(week, [...(weeks.get(week) ?? []), item]);
   }
 
-  const status =
-    done >= total
-      ? ({ label: t("status.complete"), tone: "done" } as const)
-      : isCurrent
-        ? ({ label: t("status.current"), tone: "current" } as const)
-        : ({ label: t("status.upNext"), tone: "next" } as const);
+  // Same authoritative rule as Home / module route (Progression.isUnlocked).
+  const status = moduleAccessStatus(state, module.id, t);
+  const locked = status.locked;
+  const prerequisite = Progression.prerequisiteOf(module.id);
 
   return (
     <div
-      className={cn("rounded-3xl border bg-card", isCurrent ? "border-primary" : "border-border")}
+      className={cn(
+        "rounded-3xl border bg-card",
+        isCurrent ? "border-primary" : "border-border",
+        locked && "border-dashed bg-secondary/40 text-muted-foreground",
+      )}
     >
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        className="flex min-h-[60px] w-full items-center gap-3 px-4 py-3 text-left"
+        onClick={() => (locked ? undefined : setOpen((v) => !v))}
+        aria-expanded={locked ? undefined : open}
+        aria-disabled={locked || undefined}
+        className={cn("flex min-h-[60px] w-full items-center gap-3 px-4 py-3 text-left", locked && "cursor-default")}
       >
         <span className="min-w-0 flex-1">
           <span className="block truncate text-[14px] font-extrabold tracking-tight">
@@ -337,14 +340,22 @@ function ModuleBlock({
           <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
             {done} / {total} {t("home.days")}
           </span>
+          {locked && prerequisite ? (
+            <span className="mt-1 flex items-center gap-1 text-[11px] font-semibold text-muted-foreground">
+              <Lock className="size-3" aria-hidden />
+              {t("home.unlockAfter")} {CourseService.getModule(prerequisite).title}
+            </span>
+          ) : null}
         </span>
         <StatusBadge status={status} />
-        <ChevronDown
-          className={cn(
-            "size-5 shrink-0 text-muted-foreground transition-transform",
-            open && "rotate-180",
-          )}
-        />
+        {locked ? null : (
+          <ChevronDown
+            className={cn(
+              "size-5 shrink-0 text-muted-foreground transition-transform",
+              open && "rotate-180",
+            )}
+          />
+        )}
       </button>
 
       {open ? (
