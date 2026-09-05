@@ -13,10 +13,10 @@ export type Rep2CorrectionResult = {
 
 type Rep2FeedbackProps = {
   result: Rep2CorrectionResult;
-  voice?: "female" | "male";
+  voice?: "female" | "male" | undefined;
   onTryAgain: () => void;
   onSkip: () => void;
-  onNext?: () => void;
+  onNext?: (() => void) | undefined;
   canRetry: boolean;
 };
 
