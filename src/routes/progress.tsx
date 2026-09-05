@@ -215,6 +215,22 @@ function ProgressPage() {
   );
 }
 
+type AccessStatus = { label: string; tone: "done" | "current" | "next"; locked: boolean };
+
+/**
+ * One source of truth for module access on this page: JourneyService.moduleStatus
+ * (done / current / review) plus Progression.isUnlocked for anything ahead.
+ * Never inferred from display order or a "next" label.
+ */
+function moduleAccessStatus(state: JourneyState, moduleId: ModuleId, t: ReturnType<typeof useT>): AccessStatus {
+  const kind = JourneyService.moduleStatus(state, moduleId);
+  if (kind === "done") return { label: t("status.complete"), tone: "done", locked: false };
+  if (kind === "current") return { label: t("status.current"), tone: "current", locked: false };
+  if (kind === "review") return { label: t("status.review"), tone: "next", locked: false };
+  if (!Progression.isUnlocked(state, moduleId)) return { label: t("status.locked"), tone: "next", locked: true };
+  return { label: t("status.upNext"), tone: "next", locked: false };
+}
+
 function ModuleRow({
   module,
   state,
@@ -225,17 +241,38 @@ function ModuleRow({
   const t = useT();
   const done = JourneyService.completedCount(state, module.id);
   const total = module.days.length;
-  const kind = JourneyService.moduleStatus(state, module.id);
-  const status =
-    kind === "done"
-      ? ({ label: t("status.complete"), tone: "done" } as const)
-      : kind === "current"
-        ? ({ label: t("status.current"), tone: "current" } as const)
-        : kind === "review"
-          ? ({ label: t("status.review"), tone: "next" } as const)
-          : kind === "locked"
-            ? ({ label: t("status.locked"), tone: "next" } as const)
-            : ({ label: t("status.upNext"), tone: "next" } as const);
+  const status = moduleAccessStatus(state, module.id, t);
+  const prerequisite = Progression.prerequisiteOf(module.id);
+
+  const body = (
+    <>
+      <div className="flex items-start justify-between gap-3">
+        <ModuleHeading module={module} size="sm" />
+        <StatusBadge status={status} />
+      </div>
+      <ProgressBar value={total > 0 ? done / total : 0} />
+      <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+        {done} / {total} {t("home.days")}
+      </p>
+    </>
+  );
+
+  if (status.locked) {
+    return (
+      <div
+        aria-disabled="true"
+        className="block rounded-3xl border border-dashed border-border bg-secondary/40 p-4 text-muted-foreground"
+      >
+        {body}
+        {prerequisite ? (
+          <p className="mt-3 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em]">
+            <Lock className="size-3.5" aria-hidden /> {t("home.unlockAfter")} {CourseService.getModule(prerequisite).title}
+          </p>
+        ) : null}
+      </div>
+    );
+  }
+
   return (
     <Link
       to="/module/$moduleId"
@@ -245,14 +282,7 @@ function ModuleRow({
         status.tone === "current" ? "border-primary" : "border-border",
       )}
     >
-      <div className="flex items-start justify-between gap-3">
-        <ModuleHeading module={module} size="sm" />
-        <StatusBadge status={status} />
-      </div>
-      <ProgressBar value={total > 0 ? done / total : 0} />
-      <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-        {done} / {total} {t("home.days")}
-      </p>
+      {body}
     </Link>
   );
 }
