@@ -1181,7 +1181,7 @@ function Rep3Shadow({ day, onNext }: { day: CourseDay; onNext: () => void }) {
   return (
     <div className="space-y-4">
       <div className="rounded-3xl bg-navy p-5">
-        <RepHeader titleKey="rep3.title" instrKey="rep3.instr" cueKey="rep3.cue" dark copy={day.repCopy?.rep3} />
+        <RepHeader titleKey="rep3.title" instrKey="rep3.instr" cueKey="rep3.cue" dark />
       </div>
 
       <ShadowKaraoke lines={day.lines} text={CourseService.getModelText(day)} voice={day.speakerVoice} onNext={onNext} />
