@@ -24,7 +24,7 @@ vi.mock("@/integrations/supabase/client.server", () => ({
     },
     rpc: async (fn: string, args: Record<string, string>) => {
       if (fn === "acquire_tts_lock") {
-        console.log("ACQ", args._clip_key, locks.has(args._clip_key)); if (locks.has(args._clip_key)) return { data: false, error: null };
+        if (locks.has(args._clip_key)) return { data: false, error: null };
         locks.set(args._clip_key, args._owner);
         return { data: true, error: null };
       }
@@ -41,7 +41,7 @@ let aiCalls = 0;
 let aiStatus = 200;
 let aiDelay = 1200;
 vi.stubGlobal("fetch", async () => {
-  aiCalls += 1; console.log("FETCH", new Error().stack?.split("\n").slice(2,4).join(" / "));
+  aiCalls += 1;
   await new Promise((r) => setTimeout(r, aiDelay));
   if (aiStatus !== 200) return new Response("denied", { status: aiStatus });
   return new Response(new Uint8Array([1, 2, 3]), { status: 200 });
@@ -64,6 +64,8 @@ describe("hardening", () => {
   it("A/B: many waiters, one generator, bounded checks, clip appears while waiting", async () => {
     const audio = await import("./course-audio.server");
     const key = await audio.clipKey(spec);
+    await audio.lookupClip("warm/up.mp3"); // resolve the mocked admin module once before the burst
+    downloads = 0;
     let quota = 0;
     const beforeGenerate = async () => { quota += 1; return true; };
     const results = await Promise.all(
