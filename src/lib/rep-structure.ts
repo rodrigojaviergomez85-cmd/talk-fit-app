@@ -1,10 +1,15 @@
-import type { CourseDay, ModelLine, RepLabel } from "@/lib/types";
+import type { CourseDay, ModelLine, ModuleId, RepLabel } from "@/lib/types";
 
 /**
  * Pure helpers that decide HOW a day's authored content is split into
  * speaking units. Shared by the Practice screen (runtime) and the course-audio
  * inventory (pre-generation) so both see exactly the same chunks and prompts.
  */
+
+/** Spoken-correction MVP is limited to BASIC 1 · FUTURE Days 1–2 Rep 2. */
+export function isRep2CorrectionEnabled(moduleId: ModuleId, day: CourseDay): boolean {
+  return moduleId === "simple-future" && day.day <= 2;
+}
 
 /* -------------------------------- Rep 2 ---------------------------------- */
 
