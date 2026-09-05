@@ -98,6 +98,8 @@ export function loadPreferences(): Preferences {
       appLanguage: parsed.appLanguage === "en" ? "en" : "es",
       spanishSupport:
         typeof parsed.spanishSupport === "boolean" ? parsed.spanishSupport : legacy === "on",
+      feedbackSoundsEnabled:
+        typeof parsed.feedbackSoundsEnabled === "boolean" ? parsed.feedbackSoundsEnabled : true,
       onboardingCompleted: parsed.onboardingCompleted === true,
       accountPromptDismissedAt: str(parsed.accountPromptDismissedAt),
       accountPromptDismissedDays:
