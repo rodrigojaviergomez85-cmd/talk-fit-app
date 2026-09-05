@@ -148,10 +148,10 @@ function wordDiff(targetWords: string[], transcriptWords: string[]): DiffOp[] {
   const dp: number[][] = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
   for (let i = m - 1; i >= 0; i--) {
     for (let j = n - 1; j >= 0; j--) {
-      dp[i][j] =
-        targetWords[i] === transcriptWords[j]
-          ? dp[i + 1][j + 1] + 1
-          : Math.max(dp[i + 1][j], dp[i][j + 1]);
+      const match = targetWords[i] === transcriptWords[j];
+      dp[i]![j]! = match
+        ? (dp[i + 1]?.[j + 1] ?? 0) + 1
+        : Math.max(dp[i + 1]?.[j] ?? 0, dp[i]?.[j + 1] ?? 0);
     }
   }
 
@@ -160,22 +160,22 @@ function wordDiff(targetWords: string[], transcriptWords: string[]): DiffOp[] {
   let j = 0;
   while (i < m || j < n) {
     if (i < m && j < n && targetWords[i] === transcriptWords[j]) {
-      raw.push({ type: "match", word: targetWords[i] });
+      raw.push({ type: "match", word: targetWords[i]! });
       i++;
       j++;
-    } else if (j < n && (i >= m || dp[i][j + 1] >= dp[i + 1][j])) {
-      raw.push({ type: "insert", word: transcriptWords[j] });
+    } else if (j < n && (i >= m || (dp[i]?.[j + 1] ?? 0) >= (dp[i + 1]?.[j] ?? 0))) {
+      raw.push({ type: "insert", word: transcriptWords[j]! });
       j++;
     } else if (i < m) {
-      raw.push({ type: "delete", word: targetWords[i] });
+      raw.push({ type: "delete", word: targetWords[i]! });
       i++;
     }
   }
 
   // Compress consecutive deletes/inserts into replacements where possible.
   const ops: DiffOp[] = [];
-  const deletes: string[] = [];
-  const inserts: string[] = [];
+  let deletes: string[] = [];
+  let inserts: string[] = [];
   const flush = () => {
     while (deletes.length || inserts.length) {
       const d = deletes.shift();
@@ -217,9 +217,7 @@ function focusFromOp(op: DiffOp, targetWords: string[]): string | undefined {
   if (word === "to" && idx > 0 && targetWords[idx - 1] === "going") {
     return "going TO";
   }
-  if (word === "am" && idx >= 0) {
-    return idx === 0 ? "I AM" : "AM";
-  }
+  if (word === "am") return idx === 0 ? "I AM" : "AM";
   if (word === "not") return "NOT";
   return word.toUpperCase();
 }
@@ -265,7 +263,7 @@ export function compareRep2(
     return {
       status: "correct",
       correction: target,
-      focus: focusFromOp(structureMismatches[0], targetWords),
+      focus: focusFromOp(structureMismatches[0]!, targetWords),
       retryRecommended: true,
     };
   }
@@ -274,7 +272,7 @@ export function compareRep2(
     return {
       status: "correct",
       correction: target,
-      focus: focusFromOp(mismatches[0], targetWords),
+      focus: focusFromOp(mismatches[0]!, targetWords),
       retryRecommended: true,
     };
   }
