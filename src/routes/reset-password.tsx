@@ -12,11 +12,11 @@ import { useT } from "@/lib/i18n";
 export const Route = createFileRoute("/reset-password")({
   head: () => ({
     meta: [
-      { title: "Reset Password — Fluency Reps" },
-      { name: "description", content: "Choose a new password for your Fluency Reps account." },
+      { title: "Reset Password — Fluency App" },
+      { name: "description", content: "Choose a new password for your Fluency App account." },
       { name: "robots", content: "noindex" },
-      { property: "og:title", content: "Reset Password — Fluency Reps" },
-      { property: "og:description", content: "Choose a new password for your Fluency Reps account." },
+      { property: "og:title", content: "Reset Password — Fluency App" },
+      { property: "og:description", content: "Choose a new password for your Fluency App account." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

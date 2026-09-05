@@ -14,13 +14,13 @@ import { useAppLang } from "@/lib/i18n";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Fluency Reps — Speak English Every Day" },
+      { title: "Fluency App — Speak English Every Day" },
       {
         name: "description",
         content:
           "Your daily speaking practice: Basic Zero, Simple Present and Past Experiences. Five short speaking reps a day.",
       },
-      { property: "og:title", content: "Fluency Reps — Speak English Every Day" },
+      { property: "og:title", content: "Fluency App — Speak English Every Day" },
       { property: "og:description", content: "Five short speaking reps a day. Listen, copy, shadow, personalize, record." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

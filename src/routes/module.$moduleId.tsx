@@ -26,10 +26,10 @@ export const Route = createFileRoute("/module/$moduleId")({
   },
   head: ({ params }) => {
     const module = isModuleId(params.moduleId) ? CourseService.getModule(params.moduleId) : null;
-    const title = module ? `${module.label} · ${module.title} — Fluency Reps` : "Module — Fluency Reps";
+    const title = module ? `${module.label} · ${module.title} — Fluency App` : "Module — Fluency App";
     const description = module
       ? `${module.subtitle} ${module.meta.join(" · ")}.`
-      : "Fluency Reps learning module.";
+      : "Fluency App learning module.";
     return {
       meta: [
         { title },

@@ -16,10 +16,10 @@ import type { ExclusionReason, StorageReport } from "@/lib/storage-report";
 export const Route = createFileRoute("/admin/storage-report")({
   head: () => ({
     meta: [
-      { title: "Storage Report — Fluency Reps" },
+      { title: "Storage Report — Fluency App" },
       { name: "robots", content: "noindex" },
       { name: "description", content: "Admin-only read-only storage cleanup report." },
-      { property: "og:title", content: "Storage Report — Fluency Reps" },
+      { property: "og:title", content: "Storage Report — Fluency App" },
       { property: "og:description", content: "Admin-only read-only storage cleanup report." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

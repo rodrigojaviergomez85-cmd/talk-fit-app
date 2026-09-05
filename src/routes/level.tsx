@@ -13,9 +13,9 @@ import { useAppLang } from "@/lib/i18n";
 export const Route = createFileRoute("/level")({
   head: () => ({
     meta: [
-      { title: "Cambiar mi nivel — Fluency Reps" },
+      { title: "Cambiar mi nivel — Fluency App" },
       { name: "description", content: "Elige el nivel donde quieres seguir practicando. Tu progreso y grabaciones se conservan." },
-      { property: "og:title", content: "Cambiar mi nivel — Fluency Reps" },
+      { property: "og:title", content: "Cambiar mi nivel — Fluency App" },
       { property: "og:description", content: "Cambia tu nivel actual sin perder progreso ni grabaciones." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

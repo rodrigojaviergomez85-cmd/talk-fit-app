@@ -28,9 +28,9 @@ export const Route = createFileRoute("/sprint")({
   },
   head: () => ({
     meta: [
-      { title: "Test Ready Sprint — Fluency Reps" },
+      { title: "Test Ready Sprint — Fluency App" },
       { name: "description", content: "A 3–5 minute listening and speaking sprint inspired by workplace English assessments." },
-      { property: "og:title", content: "Test Ready Sprint — Fluency Reps" },
+      { property: "og:title", content: "Test Ready Sprint — Fluency App" },
       { property: "og:description", content: "A 3–5 minute listening and speaking sprint inspired by workplace English assessments." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

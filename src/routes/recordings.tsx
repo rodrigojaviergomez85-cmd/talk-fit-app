@@ -16,13 +16,13 @@ import { useAppLang, useT } from "@/lib/i18n";
 export const Route = createFileRoute("/recordings")({
   head: () => ({
     meta: [
-      { title: "My Recordings — Fluency Reps" },
+      { title: "My Recordings — Fluency App" },
       {
         name: "description",
         content:
           "Listen to your saved Final Rep from each practice and hear how your speaking changes.",
       },
-      { property: "og:title", content: "My Recordings — Fluency Reps" },
+      { property: "og:title", content: "My Recordings — Fluency App" },
       {
         property: "og:description",
         content: "Your saved Final Reps, organized by module and week.",
