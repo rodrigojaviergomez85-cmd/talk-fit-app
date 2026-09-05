@@ -52,6 +52,8 @@ function detectEnv(hasInstallPrompt: boolean): Env {
 
   if (isIOS) {
     if (isInApp) return "ios-inapp";
+    const isChrome = /CriOS/i.test(ua);
+    if (isChrome) return "ios-chrome";
     const isSafari = /Safari/i.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua);
     return isSafari ? "ios-safari" : "ios-other";
   }
