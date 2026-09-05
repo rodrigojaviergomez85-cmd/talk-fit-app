@@ -75,14 +75,56 @@ const NUMBER_WORDS: Record<string, string> = {
   "60": "sixty",
 };
 
+/**
+ * Speaking-first principle: writing-only differences (punctuation, casing,
+ * hyphenation of known compounds) must never count as a speaking error.
+ * Conservative alias map — we only join hyphens for known compounds, never
+ * merge arbitrary word pairs.
+ */
+const HYPHEN_ALIASES: Record<string, string> = {
+  "co-worker": "coworker",
+  "e-mail": "email",
+  "on-line": "online",
+  "week-end": "weekend",
+  "week-ends": "weekends",
+  "home-work": "homework",
+  "some-one": "someone",
+  "any-one": "anyone",
+  "every-one": "everyone",
+  "some-thing": "something",
+  "any-thing": "anything",
+  "every-thing": "everything",
+  "day-care": "daycare",
+  "check-list": "checklist",
+  "voice-mail": "voicemail",
+  "note-book": "notebook",
+  "co-workers": "coworkers",
+  "e-mails": "emails",
+};
+
+function applyHyphenAliases(text: string): string {
+  let out = text;
+  for (const [variant, canonical] of Object.entries(HYPHEN_ALIASES)) {
+    out = out.split(variant).join(canonical);
+    // also accept the spaced spelling of the same known compound
+    out = out.split(variant.replace("-", " ")).join(canonical);
+  }
+  return out;
+}
+
 function normalize(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[\u2018\u2019]/g, "'")
-    .replace(/[^\w\s']/g, " ")
+  return applyHyphenAliases(
+    text
+      .toLowerCase()
+      .replace(/[\u2018\u2019\u02bc\u2032]/g, "'")
+      .replace(/[\u201c\u201d]/g, '"'),
+  )
+    .replace(/[^\w\s'-]/g, " ")
+    .replace(/-/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
+
 
 function expandContractions(text: string): string {
   return text
