@@ -35,6 +35,7 @@ const PENDING_PLACEMENT_KEY = "fluency-reps:pending_starting_module_id";
 export const defaultPreferences: Preferences = {
   appLanguage: "es",
   spanishSupport: false,
+  feedbackSoundsEnabled: true,
   onboardingCompleted: false,
   accountPromptDismissedAt: null,
   accountPromptDismissedDays: 0,
