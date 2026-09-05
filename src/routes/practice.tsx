@@ -1209,20 +1209,23 @@ function Rep2Copy({
 
       <AudioPlayer text={chunkText} label={t("practice.listen")} rate={0.9} voice={day.speakerVoice} />
 
-      <VoiceRecorder
-        key={retries}
-        label={mine ? t("practice.repeat") : t("practice.record")}
-        maxSeconds={30}
-        showTimer
-        onComplete={(rec) => {
-          setMine(rec);
-          setRetryPending(false);
-          onRecorded(rec);
-          if (correctionEnabled && rec.blob) {
-            void checkCorrection(rec.blob);
-          }
-        }}
-      />
+      {/* Genuine tap on the recorder unlocks Web Audio for iOS/Safari — no prompt, no blocking. */}
+      <div onPointerDownCapture={correctionEnabled ? unlockFeedbackAudio : undefined}>
+        <VoiceRecorder
+          key={retries}
+          label={mine ? t("practice.repeat") : t("practice.record")}
+          maxSeconds={30}
+          showTimer
+          onComplete={(rec) => {
+            setMine(rec);
+            setRetryPending(false);
+            onRecorded(rec);
+            if (correctionEnabled && rec.blob) {
+              void checkCorrection(rec.blob);
+            }
+          }}
+        />
+      </div>
 
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
