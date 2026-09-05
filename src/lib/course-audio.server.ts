@@ -292,19 +292,21 @@ export async function resolveClip(spec: ClipSpec, key: string, options: ResolveO
   const locked = await acquireLock(key, owner);
 
   if (!locked) {
+    // WAITER: never generates, never touches the generation quota. A few
+    // progressively spaced storage checks, then "busy" (→ 503 / browser fallback).
     if (!options.waitForOther) return { status: "busy" };
-    console.info(`[course-audio] WAITING FOR EXISTING GENERATION key=${key}`);
-    const deadline = Date.now() + WAIT_MAX_MS;
-    while (Date.now() < deadline) {
-      await sleep(WAIT_POLL_MS);
+    console.info(`[course-audio] WAITING FOR EXISTING GENERATION key=${key} checks=${WAIT_DELAYS_MS.length}`);
+    for (let i = 0; i < WAIT_DELAYS_MS.length; i += 1) {
+      const base = WAIT_DELAYS_MS[i]!;
+      await sleep(Math.round(base * (1 + (Math.random() * 2 - 1) * WAIT_JITTER)));
       const again = await lookupClip(key);
       if (again.status === "hit") {
-        console.info(`[course-audio] CACHE HIT (after wait) key=${key}`);
+        console.info(`[course-audio] CACHE HIT (after wait, check ${i + 1}) key=${key}`);
         return { status: "hit", audio: again.audio, source: "store" };
       }
       if (again.status === "error") return { status: "storage-error" };
     }
-    console.info(`[course-audio] WAIT TIMEOUT key=${key}`);
+    console.info(`[course-audio] WAIT GAVE UP after ${WAIT_DELAYS_MS.length} checks key=${key}`);
     return { status: "busy" };
   }
 
