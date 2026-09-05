@@ -31,19 +31,27 @@ export function PlacementPicker({
   title,
   subtitle,
   showAllLevels = false,
+  initialPlacement = false,
 }: {
   value: ModuleId | null;
   onSelect: (moduleId: ModuleId) => void;
   title?: string;
   subtitle?: string;
-  /** Account "change level" shows every module; first-time placement hides later levels. */
+  /** Account "change level" shows every module, keeping Advanced ladder locks. */
   showAllLevels?: boolean;
+  /**
+   * First-time onboarding only: free choice among ALL implemented modules.
+   * Bypasses `hiddenFromPlacement` and all unlock rules; normal progression
+   * resumes after the initial pick is saved.
+   */
+  initialPlacement?: boolean;
 }) {
   const { t, lang } = useAppLang();
   const es = lang === "es";
-  // TIGERS (and later levels) are reached by finishing the previous module in first-time placement.
-  const modules = CourseService.modules().filter((m) => showAllLevels || !m.hiddenFromPlacement);
-  const state = showAllLevels ? JourneyService.load() : null;
+  // TIGERS (and later levels) are reached by finishing the previous module in
+  // normal progression — but initial placement is a free starting choice.
+  const modules = CourseService.modules().filter((m) => initialPlacement || showAllLevels || !m.hiddenFromPlacement);
+  const state = showAllLevels && !initialPlacement ? JourneyService.load() : null;
 
   const lockedReason = (moduleId: ModuleId): string | null => {
     const module = CourseService.getModule(moduleId);
