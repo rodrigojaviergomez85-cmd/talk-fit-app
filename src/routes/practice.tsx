@@ -828,7 +828,12 @@ function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseD
       {essentialImage ? <SceneImage day={day} /> : null}
 
       <PrimaryButton onClick={onNext}>
-        {intro.cta} <ArrowRight className="size-5" />
+        {(intro.cta === "START REP 1"
+          ? t("intro.startRep1")
+          : intro.cta === "START CHALLENGE"
+            ? t("intro.startChallenge")
+            : intro.cta)}{" "}
+        <ArrowRight className="size-5" />
       </PrimaryButton>
 
       <CollapsibleHelp label="More help" labelEs="Más ayuda">

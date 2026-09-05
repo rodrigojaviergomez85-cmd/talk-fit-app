@@ -43,6 +43,8 @@ const DICT = {
   "practice.todayYouAnswer": ["HOY RESPONDES:", "TODAY YOU ANSWER:"],
   "intro.today": ["HOY:", "TODAY:"],
   "intro.moreHelp": ["MÁS AYUDA", "MORE HELP"],
+  "intro.startRep1": ["EMPEZAR REP 1", "START REP 1"],
+  "intro.startChallenge": ["EMPEZAR RETO", "START CHALLENGE"],
   "practice.nextRep": ["SIGUIENTE REP", "NEXT REP"],
   "practice.nextSentence": ["SIGUIENTE FRASE", "NEXT SENTENCE"],
   "practice.nextQuestion": ["SIGUIENTE PREGUNTA", "NEXT QUESTION"],
