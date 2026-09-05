@@ -1084,6 +1084,7 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 /* -------------------------------- Rep 2 ---------------------------------- */
 
 function Rep2Copy({
+  moduleId,
   day,
   index,
   attempted,
@@ -1091,6 +1092,7 @@ function Rep2Copy({
   onSkip,
   onNext,
 }: {
+  moduleId: ModuleId;
   day: CourseDay;
   index: number;
   showEs: boolean;
@@ -1100,15 +1102,63 @@ function Rep2Copy({
   onNext: () => void;
 }) {
   const t = useT();
+  const correctionEnabled = isRep2CorrectionEnabled(moduleId, day);
   const chunks = rep2Chunks(day);
   const chunk = chunks[index] ?? chunks[0]!;
   const [mine, setMine] = useState<Recording | null>(null);
+  const [correction, setCorrection] = useState<Rep2CorrectionResult | null>(null);
+  const [checking, setChecking] = useState(false);
+  const [retries, setRetries] = useState(0);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  useEffect(() => setMine(null), [index]);
+  useEffect(() => {
+    setMine(null);
+    setCorrection(null);
+    setChecking(false);
+    setRetries(0);
+    setErrorMsg(null);
+  }, [index, moduleId, day.day]);
 
   const level = supportLevel(day);
   const chunkText = rep2ChunkText(chunk);
   const isLast = index >= chunks.length - 1;
+
+  const checkCorrection = async (blob: Blob) => {
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+    if (!token) return;
+    const form = new FormData();
+    form.append("file", blob, "take.webm");
+    form.append("moduleId", moduleId);
+    form.append("day", String(day.day));
+    form.append("chunkId", chunk.id);
+    try {
+      setChecking(true);
+      setErrorMsg(null);
+      const res = await fetch("/api/rep2-correction", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: form,
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({ error: "Correction unavailable." }));
+        console.warn("[rep2-correction]", res.status, body.error);
+        setErrorMsg(body.error as string);
+        return;
+      }
+      const result = (await res.json()) as Rep2CorrectionResult;
+      setCorrection(result);
+    } finally {
+      setChecking(false);
+    }
+  };
+
+  const tryAgain = () => {
+    setMine(null);
+    setCorrection(null);
+    setErrorMsg(null);
+    setRetries((r) => r + 1);
+  };
 
   return (
     <div className="space-y-5">
@@ -1132,16 +1182,42 @@ function Rep2Copy({
       <AudioPlayer text={chunkText} label={t("practice.listen")} rate={0.9} voice={day.speakerVoice} />
 
       <VoiceRecorder
+        key={retries}
         label={mine ? t("practice.repeat") : t("practice.record")}
         maxSeconds={30}
         showTimer
         onComplete={(rec) => {
           setMine(rec);
           onRecorded(rec);
+          if (correctionEnabled && rec.blob) {
+            void checkCorrection(rec.blob);
+          }
         }}
       />
 
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
+
+      {checking ? (
+        <div className="flex items-center justify-center gap-2 rounded-2xl bg-muted py-4 text-[13px] font-semibold text-muted-foreground">
+          <span className="inline-block size-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          {t("rep2.checking")}
+        </div>
+      ) : null}
+
+      {errorMsg ? (
+        <p className="text-center text-[12px] font-medium text-destructive">{errorMsg}</p>
+      ) : null}
+
+      {correction && !checking ? (
+        <Rep2Feedback
+          result={correction}
+          voice={day.speakerVoice}
+          onTryAgain={tryAgain}
+          onSkip={onSkip}
+          onNext={onNext}
+          canRetry={retries < 2}
+        />
+      ) : null}
 
       <PrimaryButton onClick={onNext} disabled={!attempted}>
         {isLast ? t("practice.nextRep") : t("practice.nextChunk")} <ArrowRight className="size-5" />
