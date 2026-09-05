@@ -71,5 +71,5 @@ export async function consumeQuota(
     return { allowed: false, requestCount: 0 };
   }
   const row = Array.isArray(data) ? data[0] : data;
-  return { allowed: Boolean(row?.allowed), requestCount: Number(row?.request_count ?? 0) };
+  return { allowed: Boolean(row?.allowed), requestCount: Number(row?.used_count ?? 0) };
 }
