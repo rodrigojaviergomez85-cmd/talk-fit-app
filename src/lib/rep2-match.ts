@@ -9,7 +9,7 @@ export type Rep2Outcome = "good" | "correct" | "uncertain";
 export type Rep2MatchResult = {
   status: Rep2Outcome;
   /** Word or short phrase to highlight as the correction focus. */
-  focus?: string;
+  focus?: string | undefined;
   /** The corrected target line (same as target, focus can be highlighted inside it). */
   correction: string;
   /** Should the learner be offered another recording attempt? */
