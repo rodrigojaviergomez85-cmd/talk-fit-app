@@ -219,7 +219,10 @@ export const JourneyService = {
     if (JourneyService.moduleComplete(state, modules[index - 1]!.id)) return true;
     if (JourneyService.completedCount(state, moduleId) > 0) return true;
     const saved = loadPreferences().currentModuleId;
-    return Boolean(saved && isModuleId(saved) && index <= CourseService.displayIndex(saved));
+    // Compare like with like: both are 1-based display positions.
+    return Boolean(
+      saved && isModuleId(saved) && CourseService.displayIndex(moduleId) <= CourseService.displayIndex(saved),
+    );
   },
 
   /** Completed day records inside one week of a module, in day order. */
