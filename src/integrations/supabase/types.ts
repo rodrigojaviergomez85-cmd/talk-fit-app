@@ -472,8 +472,8 @@ export type Database = {
         }
         Returns: {
           allowed: boolean
-          request_count: number
-          window_start: string
+          used_count: number
+          window_started: string
         }[]
       }
       has_role: {
