@@ -1,17 +1,45 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+/** Only the audio formats the app itself records/uploads. */
+const AUDIO_EXT: Record<string, string> = {
+  "audio/webm": "webm",
+  "audio/mp4": "mp4",
+  "audio/x-m4a": "m4a",
+  "audio/mpeg": "mp3",
+  "audio/wav": "wav",
+  "audio/wave": "wav",
+  "audio/ogg": "ogg",
+};
+const MAX_BYTES = 3 * 1024 * 1024;
+const MIN_BYTES = 2048;
+const RATE_LIMIT = 20; // requests per user
+const RATE_WINDOW_SECONDS = 60 * 60; // per hour
+
 /**
  * Estimates how many COMPLETE SPOKEN IDEAS (sentences) a learner produced.
  * Transcribes the audio, then asks a small model for a number only.
  * The transcript is never returned to the browser — no correction, no grading.
+ *
+ * Guarded (in order, before any paid AI call): learner auth → upload validation → per-user rate limit.
  */
 export const Route = createFileRoute("/api/sentence-count")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        // 0) Authentication — no session, no work.
+        const { verifyRequestUser, consumeQuota } = await import("@/lib/route-auth.server");
+        const userId = await verifyRequestUser(request);
+        if (!userId) return json({ error: "Sign in to count sentences." }, 401);
+
         const apiKey = process.env["LOVABLE_API_KEY"];
         if (!apiKey) {
           return json({ error: "Sentence counting is not configured." }, 500);
+        }
+
+        // Cheap header check before touching the body at all.
+        const declared = Number(request.headers.get("content-length") ?? 0);
+        if (declared > MAX_BYTES + 64 * 1024) {
+          return json({ error: "Recording is too large." }, 413);
         }
 
         let file: File | null = null;
@@ -23,24 +51,24 @@ export const Route = createFileRoute("/api/sentence-count")({
           file = null;
         }
 
-        if (!file || file.size < 2048) {
+        if (!file || file.size < MIN_BYTES) {
           return json({ error: "Recording is empty or too short." }, 400);
         }
-        if (file.size > 20 * 1024 * 1024) {
+        if (file.size > MAX_BYTES) {
           return json({ error: "Recording is too large." }, 413);
         }
 
-        const mime = (file.type || "audio/webm").split(";")[0] ?? "audio/webm";
-        const ext =
-          ({
-            "audio/webm": "webm",
-            "audio/mp4": "mp4",
-            "audio/x-m4a": "m4a",
-            "audio/mpeg": "mp3",
-            "audio/wav": "wav",
-            "audio/wave": "wav",
-            "audio/ogg": "ogg",
-          } as Record<string, string>)[mime] ?? "webm";
+        const mime = (file.type || "audio/webm").split(";")[0]?.trim().toLowerCase() ?? "audio/webm";
+        const ext = AUDIO_EXT[mime];
+        if (!ext) {
+          return json({ error: "Unsupported audio format." }, 415);
+        }
+
+        // Durable per-user limit (shared across server instances). Counted only for valid uploads.
+        const quota = await consumeQuota(userId, "sentence-count", RATE_LIMIT, RATE_WINDOW_SECONDS);
+        if (!quota.allowed) {
+          return json({ error: "Too many requests. Try again later." }, 429);
+        }
 
         // 1) Transcribe (server-side only; transcript never leaves this handler).
         const upload = new FormData();
