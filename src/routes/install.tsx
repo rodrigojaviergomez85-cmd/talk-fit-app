@@ -23,6 +23,7 @@ type Env =
   | "android-inapp"
   | "android-browser"
   | "ios-inapp"
+  | "ios-chrome"
   | "ios-safari"
   | "ios-other"
   | "desktop";
@@ -51,6 +52,8 @@ function detectEnv(hasInstallPrompt: boolean): Env {
 
   if (isIOS) {
     if (isInApp) return "ios-inapp";
+    const isChrome = /CriOS/i.test(ua);
+    if (isChrome) return "ios-chrome";
     const isSafari = /Safari/i.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua);
     return isSafari ? "ios-safari" : "ios-other";
   }
@@ -82,6 +85,12 @@ const STRINGS = {
     openSafariTitle: "PARA INSTALAR FLUENCY APP, ÁBRELA EN SAFARI",
     openSafariCta: "ABRIR EN SAFARI",
     openSafariSteps: ['Toca el menú del navegador', 'Elige "Abrir en Safari"'],
+    iosChromeTitle: "INSTALA FLUENCY APP DESDE SAFARI",
+    iosChromeIntro:
+      'Chrome en iPhone usa el mismo motor que Safari, pero solo Safari puede agregar la app a tu pantalla de inicio. Toca el menú de Chrome y elige "Abrir en Safari", luego sigue estos pasos.',
+    iosChromeOpenStep1: 'Toca el menú ⋮ en Chrome.',
+    iosChromeOpenStep2: 'Elige "Abrir en Safari".',
+    iosChromeThen: "Después, en Safari:",
     openChromeTitle: "PARA INSTALAR FLUENCY APP, ÁBRELA EN CHROME",
     openChromeCta: "ABRIR EN CHROME",
     openChromeSteps: ["Toca el menú", 'Elige "Abrir en Chrome"'],
@@ -113,6 +122,12 @@ const STRINGS = {
     openSafariTitle: "TO INSTALL FLUENCY APP, OPEN IT IN SAFARI",
     openSafariCta: "OPEN IN SAFARI",
     openSafariSteps: ["Tap the browser menu", 'Choose "Open in Safari"'],
+    iosChromeTitle: "INSTALL FLUENCY APP FROM SAFARI",
+    iosChromeIntro:
+      'Chrome on iPhone uses the same engine as Safari, but only Safari can add the app to your Home Screen. Tap Chrome\'s menu and choose "Open in Safari", then follow these steps.',
+    iosChromeOpenStep1: "Tap Chrome's ⋮ menu.",
+    iosChromeOpenStep2: 'Choose "Open in Safari".',
+    iosChromeThen: "Then, in Safari:",
     openChromeTitle: "TO INSTALL FLUENCY APP, OPEN IT IN CHROME",
     openChromeCta: "OPEN IN CHROME",
     openChromeSteps: ["Tap the menu", 'Choose "Open in Chrome"'],
@@ -210,15 +225,22 @@ function IphoneStepVisual({ step, labels }: { step: 1 | 2 | 3; labels: { share: 
   );
 }
 
-function IphoneGuide({ s }: { s: (typeof STRINGS)["es"] | (typeof STRINGS)["en"] }) {
+function IphoneGuide({
+  s,
+  titleAs: Title = "h1",
+}: {
+  s: (typeof STRINGS)["es"] | (typeof STRINGS)["en"];
+  titleAs?: "h1" | "h2";
+}) {
   const steps = [s.iosStep1, s.iosStep2, s.iosStep3] as const;
   const labels = { share: s.iosShareLabel, addHome: s.iosAddHomeLabel, add: s.iosAddLabel };
+  const titleClass = "text-balance text-2xl font-extrabold text-foreground";
   return (
     <>
       <div className="flex size-12 items-center justify-center rounded-full bg-navy text-navy-foreground">
         <Compass className="size-6" />
       </div>
-      <h1 className="text-balance text-2xl font-extrabold text-foreground">{s.iphoneTitle}</h1>
+      <Title className={titleClass}>{s.iphoneTitle}</Title>
       <p className="text-sm leading-6 text-muted-foreground">{s.iphoneIntro}</p>
       <div className="flex w-full flex-col gap-4">
         {steps.map((instruction, index) => (
@@ -330,6 +352,17 @@ function InstallPage() {
                 <StepRow key={i} n={i + 1}>{step}</StepRow>
               ))}
             </div>
+          </>
+        ) : env === "ios-chrome" ? (
+          <>
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground">{s.iosChromeTitle}</h1>
+            <p className="text-sm leading-6 text-muted-foreground">{s.iosChromeIntro}</p>
+            <div className="flex w-full flex-col gap-2.5">
+              <StepRow n={1}>{s.iosChromeOpenStep1}</StepRow>
+              <StepRow n={2}>{s.iosChromeOpenStep2}</StepRow>
+            </div>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary">{s.iosChromeThen}</p>
+            <IphoneGuide s={s} titleAs="h2" />
           </>
         ) : env === "android-inapp" ? (
           <>
