@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { compareRep2, toPublicStatus, type Rep2Confidence } from "@/lib/rep2-match";
-import { getRep2CorrectionProfile, hasRep2CorrectionRollout, isRep2CorrectionEnabledFor } from "@/lib/rep2-correction-profiles";
+import { getRep2CorrectionProfile, hasRep2CorrectionRollout } from "@/lib/rep2-correction-profiles";
 import type { ModuleId } from "@/lib/types";
 
 /** Only the audio formats the app itself records/uploads. */
@@ -36,9 +36,21 @@ type Metrics = {
 
 const metrics: Metrics = { total: 0, turboOnly: 0, fallback: 0, good: 0, correct: 0, uncertain: 0 };
 
+/** QA counters per module/day (in-memory, per server instance; no transcripts, no secrets). */
+type ModuleMetrics = Metrics & { providerErrors: number };
+const byModule = new Map<string, ModuleMetrics>();
+function bump(moduleId: string, day: number, key: keyof ModuleMetrics): ModuleMetrics {
+  const k = `${moduleId}:d${day}`;
+  const m = byModule.get(k) ?? { total: 0, turboOnly: 0, fallback: 0, good: 0, correct: 0, uncertain: 0, providerErrors: 0 };
+  m[key]++;
+  byModule.set(k, m);
+  return m;
+}
+
 /**
  * Low-cost spoken correction for Rep 2.
- * Scope: BASIC 1 · FUTURE, Days 1–2 only.
+ * Scope: the five BASIC modules (see rep2-correction-profiles ROLLOUT), every real
+ * day with a valid Rep 2 chunk. Eagles/Tigers/Sharks/Advanced are rejected before STT.
  * Flow: auth → scope → upload validation → quota → STT (turbo) → local compare.
  * Optional single fallback to whisper-large-v3 only when the first result is uncertain.
  * No LLM is used for the comparison.
@@ -86,9 +98,9 @@ export const Route = createFileRoute("/api/rep2-correction")({
           log({ outcome: "403-module", duration: Date.now() - startedAt });
           return json({ error: "Corrections are not enabled for this module yet." }, 403);
         }
-        if (day === null || !isRep2CorrectionEnabledFor(moduleId, day)) {
-          log({ outcome: "403-day", duration: Date.now() - startedAt });
-          return json({ error: "Corrections are not enabled for this day yet." }, 403);
+        if (day === null || !Number.isInteger(day) || day < 1) {
+          log({ outcome: "400-day", duration: Date.now() - startedAt });
+          return json({ error: "Invalid day." }, 400);
         }
         if (!chunkId) {
           return json({ error: "Missing chunk id." }, 400);
@@ -123,17 +135,24 @@ export const Route = createFileRoute("/api/rep2-correction")({
         // the browser never supplies target, focus words or profile.
         const profile = getRep2CorrectionProfile(moduleId);
         const { CourseService } = await import("@/services/course-service");
-        const { rep2Chunks, rep2ChunkText } = await import("@/lib/rep-structure");
+        const { rep2Chunks, rep2ChunkText, isRep2CorrectionEnabled } = await import("@/lib/rep-structure");
         let target: string;
         try {
           const loaded = await CourseService.loadModule(moduleId as ModuleId);
           const courseDay = loaded.days.find((d) => d.day === day);
           if (!courseDay) throw new Error("Day not found");
+          // Same authoritative rule as the Practice screen: real day + valid Rep 2 chunk.
+          if (!isRep2CorrectionEnabled(moduleId as ModuleId, courseDay)) {
+            log({ outcome: "403-day", moduleId, day, duration: Date.now() - startedAt });
+            return json({ error: "Corrections are not enabled for this day yet." }, 403);
+          }
           const chunk = rep2Chunks(courseDay).find((c) => c.id === chunkId);
           if (!chunk) throw new Error("Chunk not found");
           target = rep2ChunkText(chunk);
+          if (!target.trim()) throw new Error("Empty target");
         } catch (err) {
           console.error("[rep2-correction] curriculum load failed", err);
+          log({ outcome: "400-curriculum", moduleId, day, duration: Date.now() - startedAt });
           return json({ error: "Could not load the expected phrase." }, 400);
         }
 
@@ -143,7 +162,8 @@ export const Route = createFileRoute("/api/rep2-correction")({
         if (!turbo.ok) {
           const detail = await turbo.res.text().catch(() => "");
           console.error(`Groq ${MODEL_TURBO} failed [${turbo.res.status}]: ${detail}`);
-          log({ outcome: `provider-${turbo.res.status}`, duration: Date.now() - startedAt });
+          bump(moduleId, day, "providerErrors");
+          log({ outcome: `provider-${turbo.res.status}`, moduleId, day, duration: Date.now() - startedAt });
           return json({ error: "Could not understand the recording." }, gatewayStatus(turbo.res.status));
         }
 
@@ -157,24 +177,32 @@ export const Route = createFileRoute("/api/rep2-correction")({
           usedFallback = true;
           model = MODEL_FALLBACK;
           metrics.fallback++;
+          bump(moduleId, day, "fallback");
           const fallback = await transcribe(apiKey, file, ext, MODEL_FALLBACK);
+          if (!fallback.ok) bump(moduleId, day, "providerErrors");
           if (fallback.ok) {
             transcript = fallback.transcript;
             result = compareRep2(target, transcript, fallback.confidence, profile);
           }
         } else {
           metrics.turboOnly++;
+          bump(moduleId, day, "turboOnly");
         }
 
         const status = toPublicStatus(result.status);
         if (status === "good") metrics.good++;
         else if (status === "correct") metrics.correct++;
         else metrics.uncertain++;
+        bump(moduleId, day, "total");
+        const moduleStats = bump(moduleId, day, status);
 
         log({
           outcome: status,
+          moduleId,
+          day,
           usedFallback,
           model,
+          moduleStats,
           transcriptWords: transcript.split(/\s+/).filter(Boolean).length,
           duration: Date.now() - startedAt,
         });

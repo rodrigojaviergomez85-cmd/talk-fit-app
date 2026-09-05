@@ -276,6 +276,7 @@ function ruleLabel(rule: CorrectionFocusRule): string {
 /**
  * Pick at most ONE correction focus. Generic priority:
  *  1. the first configured high-value structure (from the profile) the learner dropped/changed,
+ *  1b. one obvious word-form replacement allowed by the profile (e.g. work → works),
  *  2. otherwise, if there is exactly one isolated difference, that word,
  *  3. otherwise no focus — the UI shows the whole target line instead.
  */
@@ -288,6 +289,13 @@ function pickFocus(
   const missed = new Set(mismatches.map(opTargetWord).filter((w): w is string => Boolean(w)));
   for (const rule of profile.focusRules) {
     if (ruleMatches(rule, missed, targetWords)) return ruleLabel(rule);
+  }
+  if (profile.formChecks?.length) {
+    const hits = mismatches.filter(
+      (m): m is Extract<DiffOp, { type: "replace" }> =>
+        m.type === "replace" && profile.formChecks!.some((check) => check(m.target, m.got)),
+    );
+    if (hits.length === 1) return hits[0]!.target.toUpperCase();
   }
   if (mismatches.length === 1) {
     const word = opTargetWord(mismatches[0]!);

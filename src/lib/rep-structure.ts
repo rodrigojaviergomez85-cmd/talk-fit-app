@@ -1,5 +1,5 @@
 import type { CourseDay, ModelLine, ModuleId, RepLabel } from "@/lib/types";
-import { isRep2CorrectionEnabledFor } from "@/lib/rep2-correction-profiles";
+import { hasRep2CorrectionRollout } from "@/lib/rep2-correction-profiles";
 
 /**
  * Pure helpers that decide HOW a day's authored content is split into
@@ -7,9 +7,13 @@ import { isRep2CorrectionEnabledFor } from "@/lib/rep2-correction-profiles";
  * inventory (pre-generation) so both see exactly the same chunks and prompts.
  */
 
-/** Spoken-correction rollout — single source of truth lives in rep2-correction-profiles. */
+/**
+ * THE authoritative Rep 2 spoken-correction rollout rule, shared by the
+ * Practice screen and the `/api/rep2-correction` server guard:
+ * module is a rolled-out BASIC module AND this real day produces ≥1 Rep 2 chunk.
+ */
 export function isRep2CorrectionEnabled(moduleId: ModuleId, day: CourseDay): boolean {
-  return isRep2CorrectionEnabledFor(moduleId, day.day);
+  return hasRep2CorrectionRollout(moduleId) && rep2Chunks(day).length > 0;
 }
 
 /* -------------------------------- Rep 2 ---------------------------------- */
