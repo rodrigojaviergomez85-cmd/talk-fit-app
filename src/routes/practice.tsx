@@ -3,7 +3,7 @@ import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { toneForTurn, type ModelTone } from "@/lib/model-tone";
-import { rep2Chunks, rep4Items, rep2ChunkText, REP4_MAX } from "@/lib/rep-structure";
+import { rep2Chunks, rep4Items, rep2ChunkText, REP4_MAX, isRep2CorrectionEnabled } from "@/lib/rep-structure";
 export { REP4_MAX };
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { RepProgress } from "@/components/fluency/RepProgress";
