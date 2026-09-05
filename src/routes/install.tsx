@@ -207,7 +207,12 @@ function InstallPage() {
           height={96}
         />
 
-        {justInstalled || env === "installed" ? (
+        {env === null && !justInstalled ? (
+          <>
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground">{s.title}</h1>
+            <p className="text-sm text-muted-foreground">{s.subtitle}</p>
+          </>
+        ) : justInstalled || env === "installed" ? (
           <>
             <h1 className="text-2xl font-extrabold tracking-tight text-foreground">
               {justInstalled ? s.installedOk : s.alreadyInstalled}
