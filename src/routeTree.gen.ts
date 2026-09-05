@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CoachCheckRouteImport } from './routes/coach-check'
+import { Route as InstallRouteImport } from './routes/install'
 import { Route as LevelRouteImport } from './routes/level'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as PracticeRouteImport } from './routes/practice'
@@ -35,6 +36,11 @@ const IndexRoute = IndexRouteImport.update({
 const CoachCheckRoute = CoachCheckRouteImport.update({
   id: '/coach-check',
   path: '/coach-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InstallRoute = InstallRouteImport.update({
+  id: '/install',
+  path: '/install',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LevelRoute = LevelRouteImport.update({
@@ -116,6 +122,7 @@ const ModuleModuleIdRoute = ModuleModuleIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/coach-check': typeof CoachCheckRoute
+  '/install': typeof InstallRoute
   '/level': typeof LevelRoute
   '/onboarding': typeof OnboardingRoute
   '/practice': typeof PracticeRoute
@@ -135,6 +142,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/coach-check': typeof CoachCheckRoute
+  '/install': typeof InstallRoute
   '/level': typeof LevelRoute
   '/onboarding': typeof OnboardingRoute
   '/practice': typeof PracticeRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/coach-check': typeof CoachCheckRoute
+  '/install': typeof InstallRoute
   '/level': typeof LevelRoute
   '/onboarding': typeof OnboardingRoute
   '/practice': typeof PracticeRoute
@@ -176,6 +185,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/coach-check'
+    | '/install'
     | '/level'
     | '/onboarding'
     | '/practice'
@@ -195,6 +205,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/coach-check'
+    | '/install'
     | '/level'
     | '/onboarding'
     | '/practice'
@@ -214,6 +225,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/coach-check'
+    | '/install'
     | '/level'
     | '/onboarding'
     | '/practice'
@@ -234,6 +246,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CoachCheckRoute: typeof CoachCheckRoute
+  InstallRoute: typeof InstallRoute
   LevelRoute: typeof LevelRoute
   OnboardingRoute: typeof OnboardingRoute
   PracticeRoute: typeof PracticeRoute
@@ -265,6 +278,13 @@ declare module '@tanstack/react-router' {
       path: '/coach-check'
       fullPath: '/coach-check'
       preLoaderRoute: typeof CoachCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/install': {
+      id: '/install'
+      path: '/install'
+      fullPath: '/install'
+      preLoaderRoute: typeof InstallRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/level': {
@@ -378,6 +398,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CoachCheckRoute: CoachCheckRoute,
+  InstallRoute: InstallRoute,
   LevelRoute: LevelRoute,
   OnboardingRoute: OnboardingRoute,
   PracticeRoute: PracticeRoute,
