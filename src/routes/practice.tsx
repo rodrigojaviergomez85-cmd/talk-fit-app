@@ -7,6 +7,7 @@ import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { RepProgress } from "@/components/fluency/RepProgress";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { PowerChunks } from "@/components/fluency/PowerChunks";
+import { ShadowKaraoke } from "@/components/fluency/ShadowKaraoke";
 import { TakeBoard, isPressureRound, requiredTakes, takeSlots } from "@/components/fluency/TakeBoard";
 import { PastVerbCards } from "@/components/fluency/PastVerbCards";
 import { StoryStrip } from "@/components/fluency/StoryStrip";
@@ -496,7 +497,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               onNext={goForward}
             />
           ) : null}
-          {stage === 3 ? <Rep3Shadow day={day} onRecorded={trackSeconds} onNext={goForward} /> : null}
+          {stage === 3 ? <Rep3Shadow day={day} onNext={goForward} /> : null}
           {stage === 4 ? (
             <Rep4MakeItYours
               day={day}
