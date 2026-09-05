@@ -329,7 +329,7 @@ const fuLearn = bankQuestion("fu-learn");
 
 const d10Sprint: TestReadySprint = {
   type: "mixed",
-  title: "MIXED SPRINT — PRÁCTICA EXTRA",
+  title: "MIXED SPRINT — EXTRA PRACTICE",
   titleEs: "MIXED SPRINT — PRÁCTICA EXTRA",
   instruction: "Optional extra practice. Five quick, different drills. No score.",
   instructionEs: "Práctica extra opcional. Cinco ejercicios rápidos y diferentes. Sin calificación.",
@@ -695,7 +695,7 @@ const hNot = bankQuestion("not-hire-1");
 
 const d15Sprint: TestReadySprint = {
   type: "mixed",
-  title: "MIXED SPRINT — PRÁCTICA EXTRA",
+  title: "MIXED SPRINT — EXTRA PRACTICE",
   titleEs: "MIXED SPRINT — PRÁCTICA EXTRA",
   instruction: "Optional extra practice. Five quick, different drills. No score.",
   instructionEs: "Práctica extra opcional. Cinco ejercicios rápidos y diferentes. Sin calificación.",
@@ -1122,7 +1122,7 @@ const W4_RECOGNITION: RecognitionFrameworkId[] = ["story", "evidence", "unexpect
 
 const d20Sprint: TestReadySprint = {
   type: "mixed",
-  title: "MIXED SPRINT — PRÁCTICA EXTRA",
+  title: "MIXED SPRINT — EXTRA PRACTICE",
   titleEs: "MIXED SPRINT — PRÁCTICA EXTRA",
   instruction: "Optional extra practice. Five quick, different drills. No score.",
   instructionEs: "Práctica extra opcional. Cinco ejercicios rápidos y diferentes. Sin calificación.",

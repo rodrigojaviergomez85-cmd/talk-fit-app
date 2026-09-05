@@ -500,7 +500,7 @@ const W1_RECOGNITION: RecognitionFrameworkId[] = ["story", "evidence", "opinion"
 
 const d5Sprint: TestReadySprint = {
   type: "mixed",
-  title: "MIXED SPRINT — PRÁCTICA EXTRA",
+  title: "MIXED SPRINT — EXTRA PRACTICE",
   titleEs: "MIXED SPRINT — PRÁCTICA EXTRA",
   instruction: "Optional extra practice. Five quick, different drills. No score.",
   instructionEs: "Práctica extra opcional. Cinco ejercicios rápidos y diferentes. Sin calificación.",
