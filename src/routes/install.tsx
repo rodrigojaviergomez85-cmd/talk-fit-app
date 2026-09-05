@@ -23,6 +23,7 @@ type Env =
   | "android-inapp"
   | "android-browser"
   | "ios-inapp"
+  | "ios-chrome"
   | "ios-safari"
   | "ios-other"
   | "desktop";
