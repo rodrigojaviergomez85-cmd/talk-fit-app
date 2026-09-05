@@ -114,7 +114,7 @@ export function PlacementPicker({
           );
         })}
 
-        {showAllLevels
+        {showAllLevels || initialPlacement
           ? UPCOMING_LEVELS.map((level) => (
               <li key={level.key}>
                 <LockedRow
