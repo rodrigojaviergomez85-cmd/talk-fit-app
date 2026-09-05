@@ -1172,63 +1172,18 @@ function Rep2Copy({
 
 /* -------------------------------- Rep 3 ---------------------------------- */
 
-function Rep3Shadow({ day, onRecorded, onNext }: { day: CourseDay; onRecorded: (rec: Recording) => void; onNext: () => void }) {
-  const t = useT();
-  const [speed, setSpeed] = useState(0.75);
-  const [mine, setMine] = useState<Recording | null>(null);
-  const level = supportLevel(day);
-  const [showText, setShowText] = useState(showsFullTextByDefault(level));
-
+/**
+ * Live shadowing only: continuous model audio + chunk highlight, the learner
+ * speaks WITH the model. No recording, no images — deliberately unlike Rep 2.
+ */
+function Rep3Shadow({ day, onNext }: { day: CourseDay; onNext: () => void }) {
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <div className="rounded-3xl bg-navy p-5">
         <RepHeader titleKey="rep3.title" instrKey="rep3.instr" cueKey="rep3.cue" dark copy={day.repCopy?.rep3} />
       </div>
 
-      <QuestionBanner day={day} />
-
-      <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} />
-
-      <SceneImage day={day} />
-      <StoryStrip day={day} showCaptions={false} />
-
-      <div className="flex gap-2">
-        {[0.5, 0.75, 1.0].map((rate) => (
-          <button
-            key={rate}
-            type="button"
-            onClick={() => setSpeed(rate)}
-            className={cn(
-              "flex-1 rounded-2xl border px-4 py-3 text-[13px] font-bold uppercase tracking-[0.12em] transition-colors",
-              speed === rate ? "border-primary bg-primary/10 text-primary" : "border-border bg-card text-muted-foreground",
-            )}
-          >
-            {rate}x
-          </button>
-        ))}
-      </div>
-
-      <TextToggle open={showText} onToggle={() => setShowText((v) => !v)} />
-
-      {showText ? (
-        <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-          {day.lines.map((line) => (
-            <LineCard key={line.id} line={line} chunked={prefersChunks(level)} />
-          ))}
-        </div>
-      ) : (
-        <CueRow cues={day.cues} />
-      )}
-
-
-      <AudioPlayer text={CourseService.getModelText(day)} label={t("practice.startShadowing")} rate={speed} size="lg" voice={day.speakerVoice} />
-
-      <VoiceRecorder label={t("practice.recordMe")} maxSeconds={60} onComplete={(rec) => { setMine(rec); onRecorded(rec); }} />
-      {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
-
-      <PrimaryButton onClick={onNext}>
-        {t("practice.nextRep")} <ArrowRight className="size-5" />
-      </PrimaryButton>
+      <ShadowKaraoke lines={day.lines} text={CourseService.getModelText(day)} voice={day.speakerVoice} onNext={onNext} />
     </div>
   );
 }
