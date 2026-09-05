@@ -49,7 +49,8 @@ import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording, RepLabel 
 import type { FinalRepSaveState } from "@/components/fluency/DayCompleteScreen";
 import { cn } from "@/lib/utils";
 import { useAppLang, useT, tPair, type TKey } from "@/lib/i18n";
-import { setPreferencesScope } from "@/services/preferences";
+import { setPreferencesScope, loadPreferences } from "@/services/preferences";
+import { playGoodFeedbackSound, playCorrectFeedbackSound, unlockFeedbackAudio } from "@/lib/feedback-sounds";
 import { VerbBank, setVerbBankScope } from "@/services/verb-bank";
 
 export const Route = createFileRoute("/practice")({
