@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Check, ChevronDown, Mic, Timer } from "lucide-react";
+import { Check, ChevronDown, Lock, Mic, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
 import { ModuleHeading } from "@/components/fluency/ModuleHeading";
@@ -9,6 +9,7 @@ import { BadgeGrid } from "@/components/fluency/BadgeGrid";
 import { HABIT_GOAL, habitDays, habitDisplay } from "@/lib/habit";
 import { CourseService, type DayOutline } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
+import { Progression } from "@/services/progression";
 import type { JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
@@ -215,6 +216,22 @@ function ProgressPage() {
   );
 }
 
+type AccessStatus = { label: string; tone: "done" | "current" | "next"; locked: boolean };
+
+/**
+ * One source of truth for module access on this page: JourneyService.moduleStatus
+ * (done / current / review) plus Progression.isUnlocked for anything ahead.
+ * Never inferred from display order or a "next" label.
+ */
+function moduleAccessStatus(state: JourneyState, moduleId: ModuleId, t: ReturnType<typeof useT>): AccessStatus {
+  const kind = JourneyService.moduleStatus(state, moduleId);
+  if (kind === "done") return { label: t("status.complete"), tone: "done", locked: false };
+  if (kind === "current") return { label: t("status.current"), tone: "current", locked: false };
+  if (kind === "review") return { label: t("status.review"), tone: "next", locked: false };
+  if (!Progression.isUnlocked(state, moduleId)) return { label: t("status.locked"), tone: "next", locked: true };
+  return { label: t("status.upNext"), tone: "next", locked: false };
+}
+
 function ModuleRow({
   module,
   state,
@@ -225,17 +242,38 @@ function ModuleRow({
   const t = useT();
   const done = JourneyService.completedCount(state, module.id);
   const total = module.days.length;
-  const kind = JourneyService.moduleStatus(state, module.id);
-  const status =
-    kind === "done"
-      ? ({ label: t("status.complete"), tone: "done" } as const)
-      : kind === "current"
-        ? ({ label: t("status.current"), tone: "current" } as const)
-        : kind === "review"
-          ? ({ label: t("status.review"), tone: "next" } as const)
-          : kind === "locked"
-            ? ({ label: t("status.locked"), tone: "next" } as const)
-            : ({ label: t("status.upNext"), tone: "next" } as const);
+  const status = moduleAccessStatus(state, module.id, t);
+  const prerequisite = Progression.prerequisiteOf(module.id);
+
+  const body = (
+    <>
+      <div className="flex items-start justify-between gap-3">
+        <ModuleHeading module={module} size="sm" />
+        <StatusBadge status={status} />
+      </div>
+      <ProgressBar value={total > 0 ? done / total : 0} />
+      <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+        {done} / {total} {t("home.days")}
+      </p>
+    </>
+  );
+
+  if (status.locked) {
+    return (
+      <div
+        aria-disabled="true"
+        className="block rounded-3xl border border-dashed border-border bg-secondary/40 p-4 text-muted-foreground"
+      >
+        {body}
+        {prerequisite ? (
+          <p className="mt-3 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em]">
+            <Lock className="size-3.5" aria-hidden /> {t("home.unlockAfter")} {CourseService.getModule(prerequisite).title}
+          </p>
+        ) : null}
+      </div>
+    );
+  }
+
   return (
     <Link
       to="/module/$moduleId"
@@ -245,14 +283,7 @@ function ModuleRow({
         status.tone === "current" ? "border-primary" : "border-border",
       )}
     >
-      <div className="flex items-start justify-between gap-3">
-        <ModuleHeading module={module} size="sm" />
-        <StatusBadge status={status} />
-      </div>
-      <ProgressBar value={total > 0 ? done / total : 0} />
-      <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-        {done} / {total} {t("home.days")}
-      </p>
+      {body}
     </Link>
   );
 }
@@ -313,22 +344,25 @@ function ModuleBlock({
     weeks.set(week, [...(weeks.get(week) ?? []), item]);
   }
 
-  const status =
-    done >= total
-      ? ({ label: t("status.complete"), tone: "done" } as const)
-      : isCurrent
-        ? ({ label: t("status.current"), tone: "current" } as const)
-        : ({ label: t("status.upNext"), tone: "next" } as const);
+  // Same authoritative rule as Home / module route (Progression.isUnlocked).
+  const status = moduleAccessStatus(state, module.id, t);
+  const locked = status.locked;
+  const prerequisite = Progression.prerequisiteOf(module.id);
 
   return (
     <div
-      className={cn("rounded-3xl border bg-card", isCurrent ? "border-primary" : "border-border")}
+      className={cn(
+        "rounded-3xl border bg-card",
+        isCurrent ? "border-primary" : "border-border",
+        locked && "border-dashed bg-secondary/40 text-muted-foreground",
+      )}
     >
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        className="flex min-h-[60px] w-full items-center gap-3 px-4 py-3 text-left"
+        onClick={() => (locked ? undefined : setOpen((v) => !v))}
+        aria-expanded={locked ? undefined : open}
+        aria-disabled={locked || undefined}
+        className={cn("flex min-h-[60px] w-full items-center gap-3 px-4 py-3 text-left", locked && "cursor-default")}
       >
         <span className="min-w-0 flex-1">
           <span className="block truncate text-[14px] font-extrabold tracking-tight">
@@ -337,14 +371,22 @@ function ModuleBlock({
           <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
             {done} / {total} {t("home.days")}
           </span>
+          {locked && prerequisite ? (
+            <span className="mt-1 flex items-center gap-1 text-[11px] font-semibold text-muted-foreground">
+              <Lock className="size-3" aria-hidden />
+              {t("home.unlockAfter")} {CourseService.getModule(prerequisite).title}
+            </span>
+          ) : null}
         </span>
         <StatusBadge status={status} />
-        <ChevronDown
-          className={cn(
-            "size-5 shrink-0 text-muted-foreground transition-transform",
-            open && "rotate-180",
-          )}
-        />
+        {locked ? null : (
+          <ChevronDown
+            className={cn(
+              "size-5 shrink-0 text-muted-foreground transition-transform",
+              open && "rotate-180",
+            )}
+          />
+        )}
       </button>
 
       {open ? (
