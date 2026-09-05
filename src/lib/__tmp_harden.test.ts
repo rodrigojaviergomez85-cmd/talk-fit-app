@@ -41,7 +41,7 @@ let aiCalls = 0;
 let aiStatus = 200;
 let aiDelay = 1200;
 vi.stubGlobal("fetch", async () => {
-  aiCalls += 1;
+  aiCalls += 1; console.log("FETCH", new Error().stack?.split("\n").slice(2,4).join(" / "));
   await new Promise((r) => setTimeout(r, aiDelay));
   if (aiStatus !== 200) return new Response("denied", { status: aiStatus });
   return new Response(new Uint8Array([1, 2, 3]), { status: 200 });
