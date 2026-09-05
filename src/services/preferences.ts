@@ -11,6 +11,8 @@ export type AppLang = "es" | "en";
 export type Preferences = {
   appLanguage: AppLang;
   spanishSupport: boolean;
+  /** Short UI feedback sounds (GOOD / ALMOST). Never affects model/TTS audio. */
+  feedbackSoundsEnabled: boolean;
   onboardingCompleted: boolean;
   accountPromptDismissedAt: string | null;
   /** Completed days at the moment the guest dismissed the account prompt. */
