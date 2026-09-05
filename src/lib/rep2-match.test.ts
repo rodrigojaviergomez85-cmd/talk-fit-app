@@ -108,3 +108,35 @@ describe("compareRep2", () => {
     expect(res.focus).toMatch(/am/i);
   });
 });
+
+describe("writing-only differences", () => {
+  it("treats co-worker as coworker (screenshot case)", () => {
+    const res = compareRep2(
+      "In the morning, I'm going to work. I'm going to have lunch with a coworker.",
+      "In the morning I'm going to work. I'm going to have lunch with a co-worker.",
+    );
+    expect(res.status).toBe("good");
+  });
+
+  it("treats e-mail as email", () => {
+    expect(compareRep2("Email me tomorrow.", "E-mail me tomorrow.").status).toBe("good");
+  });
+
+  it("treats on-line as online", () => {
+    expect(compareRep2("I study online.", "I study on-line.").status).toBe("good");
+  });
+
+  it("treats I am as I'm", () => {
+    expect(compareRep2("I'm going to work.", "I am going to work.").status).toBe("good");
+  });
+
+  it("still detects a real missing grammar word", () => {
+    expect(compareRep2("I'm going to work.", "I'm going work.").status).toBe("correct");
+  });
+
+  it("does not merge unrelated words", () => {
+    expect(compareRep2("I'm going to go home.", "I'm going to gohome.").status).toBe("correct");
+    expect(compareRep2("I'm going to work.", "I'm going to walk.").status).toBe("correct");
+    expect(compareRep2("I talked to a coworker.", "I talked to a worker.").status).toBe("correct");
+  });
+});
