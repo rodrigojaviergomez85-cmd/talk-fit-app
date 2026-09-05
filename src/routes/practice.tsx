@@ -173,6 +173,8 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   const [done, setDone] = useState(false);
   const [takes, setTakes] = useState<(Recording | null)[]>(() => Array(takeSlots(day.rep5Turns)).fill(null));
   const [finalIndex, setFinalIndex] = useState<number | null>(null);
+  /** True once the learner explicitly taps USE AS FINAL; auto-defaults must not override it. */
+  const [finalManual, setFinalManual] = useState(false);
   const [finalRecording, setFinalRecording] = useState<Recording | null>(null);
   const [saveState, setSaveState] = useState<FinalRepSaveState>("idle");
   const [journeyAfterFinish, setJourneyAfterFinish] = useState<JourneyState | null>(null);
