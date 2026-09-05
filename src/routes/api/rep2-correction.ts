@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { compareRep2, toPublicStatus, type Rep2Confidence } from "@/lib/rep2-match";
+import { getRep2CorrectionProfile, isRep2CorrectionEnabledFor } from "@/lib/rep2-correction-profiles";
 import type { ModuleId } from "@/lib/types";
 
 /** Only the audio formats the app itself records/uploads. */
@@ -23,8 +24,7 @@ const MODEL_FALLBACK = "whisper-large-v3";
 /** Neutral context only — must never contain the target sentence or the words we detect. */
 const NEUTRAL_PROMPT = "English learner speaking about future plans.";
 
-const ALLOWED_MODULES = new Set<ModuleId>(["simple-future"]);
-const ALLOWED_DAYS = new Set([1, 2]);
+const KNOWN_MODULES = new Set<ModuleId>(["simple-future"]);
 
 type Metrics = {
   total: number;
@@ -82,11 +82,12 @@ export const Route = createFileRoute("/api/rep2-correction")({
           file = null;
         }
 
-        if (!moduleId || !ALLOWED_MODULES.has(moduleId as ModuleId)) {
+        // Rollout is enforced server-side from the shared authoritative rule.
+        if (!moduleId || !KNOWN_MODULES.has(moduleId as ModuleId)) {
           log({ outcome: "403-module", duration: Date.now() - startedAt });
           return json({ error: "Corrections are not enabled for this module yet." }, 403);
         }
-        if (day === null || !ALLOWED_DAYS.has(day)) {
+        if (day === null || !isRep2CorrectionEnabledFor(moduleId, day)) {
           log({ outcome: "403-day", duration: Date.now() - startedAt });
           return json({ error: "Corrections are not enabled for this day yet." }, 403);
         }
@@ -119,7 +120,9 @@ export const Route = createFileRoute("/api/rep2-correction")({
           return json({ error: "Correction service is not configured." }, 500);
         }
 
-        // Load the real curriculum target server-side; never trust the browser.
+        // Load the real curriculum target + real module profile server-side;
+        // the browser never supplies target, focus words or profile.
+        const profile = getRep2CorrectionProfile(moduleId);
         const { CourseService } = await import("@/services/course-service");
         const { rep2Chunks, rep2ChunkText } = await import("@/lib/rep-structure");
         let target: string;
@@ -146,7 +149,7 @@ export const Route = createFileRoute("/api/rep2-correction")({
         }
 
         let transcript = turbo.transcript;
-        let result = compareRep2(target, transcript, turbo.confidence);
+        let result = compareRep2(target, transcript, turbo.confidence, profile);
         let usedFallback = false; // per-request, never derived from cumulative metrics
         let model: string = MODEL_TURBO;
 
@@ -158,7 +161,7 @@ export const Route = createFileRoute("/api/rep2-correction")({
           const fallback = await transcribe(apiKey, file, ext, MODEL_FALLBACK);
           if (fallback.ok) {
             transcript = fallback.transcript;
-            result = compareRep2(target, transcript, fallback.confidence);
+            result = compareRep2(target, transcript, fallback.confidence, profile);
           }
         } else {
           metrics.turboOnly++;
