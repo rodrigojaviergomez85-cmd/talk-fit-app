@@ -118,9 +118,9 @@ const DICT = {
 
   // Status
   "status.current": ["ACTUAL", "CURRENT"],
-  "status.complete": ["COMPLETADO ✓", "COMPLETE ✓"],
+  "status.complete": ["COMPLETADO ✓", "COMPLETED ✓"],
   "status.upNext": ["SIGUIENTE", "UP NEXT"],
-  "status.review": ["DISPONIBLE PARA REPASAR", "AVAILABLE TO REVIEW"],
+  "status.review": ["REPASO", "REVIEW"],
   "status.soon": ["PRÓXIMAMENTE", "COMING SOON"],
 
   // Placement
@@ -252,7 +252,7 @@ const DICT = {
     "Finish your current module to unlock this one. Your progress is saved automatically.",
   ],
   "home.backToCurrent": ["IR A MI MÓDULO ACTUAL", "GO TO MY CURRENT MODULE"],
-  "status.locked": ["BLOQUEADO 🔒", "LOCKED 🔒"],
+  "status.locked": ["🔒 BLOQUEADO", "🔒 LOCKED"],
 
 
   // Recordings
