@@ -38,10 +38,22 @@ type Person = {
   relation?: string;
   relationEs?: string;
   gender?: "m" | "f";
+  /** Third-person variants used only when talking ABOUT this person (Weeks 3–4). */
+  colorWhyOther?: string;
+  colorWhyOtherEs?: string;
+  foodWhyOther?: string;
+  foodWhyOtherEs?: string;
+  freeOther?: string;
+  freeOtherEs?: string;
 };
 
 function line(id: string, text: string, es: string, chunks: string[]): ModelLine {
   return { id, text, es, chunks };
+}
+
+/** Plural foods ("los tacos", "las baleadas") need "son", singular ones "es". */
+function foodVerb(foodEs: string): string {
+  return /^(los|las)\s/i.test(foodEs) ? "son" : "es";
 }
 
 /* ------------------------------- Week 1–2 -------------------------------- */
@@ -53,7 +65,7 @@ function selfLinesFoundation(id: string, p: Person): ModelLine[] {
     line(`${id}-3`, `I am from ${p.country}.`, `Soy de ${p.countryEs}.`, ["I am from", `${p.country}.`]),
     line(`${id}-4`, `I live in ${p.city}.`, `Vivo en ${p.city}.`, ["I live in", `${p.city}.`]),
     line(`${id}-5`, `My favorite color is ${p.color}.`, `Mi color favorito es el ${p.colorEs}.`, ["My favorite color is", `${p.color}.`]),
-    line(`${id}-6`, `My favorite food is ${p.food}.`, `Mi comida favorita es ${p.foodEs}.`, ["My favorite food is", `${p.food}.`]),
+    line(`${id}-6`, `My favorite food is ${p.food}.`, `Mi comida favorita ${foodVerb(p.foodEs)} ${p.foodEs}.`, ["My favorite food is", `${p.food}.`]),
     line(`${id}-7`, `My hobbies are ${p.hobby1} and ${p.hobby2}.`, `Mis pasatiempos son ${p.hobby1Es} y ${p.hobby2Es}.`, ["My hobbies are", `${p.hobby1}`, `and ${p.hobby2}.`]),
     line(`${id}-8`, `Overall, I am a ${p.trait1} and ${p.trait2} person.`, `En general, soy una persona ${p.trait1Es} y ${p.trait2Es}.`, ["Overall,", `I am a ${p.trait1}`, `and ${p.trait2} person.`]),
   ];
@@ -64,7 +76,7 @@ function selfLinesFluency(id: string, p: Person): ModelLine[] {
     line(`${id}-1`, `My name is ${p.name}, and I am ${p.age} years old.`, `Me llamo ${p.name} y tengo ${p.age} años.`, [`My name is ${p.name},`, `and I am ${p.age} years old.`]),
     line(`${id}-2`, `I am from ${p.country}, and I live in ${p.city}.`, `Soy de ${p.countryEs} y vivo en ${p.city}.`, [`I am from ${p.country},`, `and I live in ${p.city}.`]),
     line(`${id}-3`, `My favorite color is ${p.color} because ${p.colorWhy}.`, `Mi color favorito es el ${p.colorEs} porque ${p.colorWhyEs}.`, [`My favorite color is ${p.color}`, `because ${p.colorWhy}.`]),
-    line(`${id}-4`, `My favorite food is ${p.food} because ${p.foodWhy}.`, `Mi comida favorita es ${p.foodEs} porque ${p.foodWhyEs}.`, [`My favorite food is ${p.food}`, `because ${p.foodWhy}.`]),
+    line(`${id}-4`, `My favorite food is ${p.food} because ${p.foodWhy}.`, `Mi comida favorita ${foodVerb(p.foodEs)} ${p.foodEs} porque ${p.foodWhyEs}.`, [`My favorite food is ${p.food}`, `because ${p.foodWhy}.`]),
     line(`${id}-5`, `My hobbies are ${p.hobby1} and ${p.hobby2}.`, `Mis pasatiempos son ${p.hobby1Es} y ${p.hobby2Es}.`, ["My hobbies are", `${p.hobby1}`, `and ${p.hobby2}.`]),
     line(`${id}-6`, `In my free time, I like to ${p.free}.`, `En mi tiempo libre me gusta ${p.freeEs}.`, ["In my free time,", `I like to ${p.free}.`]),
     line(`${id}-7`, `I also like to ${p.also}.`, `También me gusta ${p.alsoEs}.`, ["I also like to", `${p.also}.`]),
@@ -92,29 +104,39 @@ function esSu() {
 function esEl(p: Person) {
   return p.gender === "f" ? "Ella" : "Él";
 }
+function esEste(p: Person) {
+  return p.gender === "f" ? "Esta" : "Este";
+}
 
 function otherLinesFoundation(id: string, p: Person): ModelLine[] {
   return [
-    line(`${id}-1`, `This is my ${p.relation}.`, `Esta es mi ${p.relationEs}.`, ["This is", `my ${p.relation}.`]),
+    line(`${id}-1`, `This is my ${p.relation}.`, `${esEste(p)} es mi ${p.relationEs}.`, ["This is", `my ${p.relation}.`]),
     line(`${id}-2`, `${his(p)} name is ${p.name}.`, `${esSu()} nombre es ${p.name}.`, [`${his(p)} name is`, `${p.name}.`]),
     line(`${id}-3`, `${he(p)} is ${p.age} years old.`, `${esEl(p)} tiene ${p.age} años.`, [`${he(p)} is`, `${p.age} years old.`]),
     line(`${id}-4`, `${he(p)} is from ${p.country}.`, `${esEl(p)} es de ${p.countryEs}.`, [`${he(p)} is from`, `${p.country}.`]),
     line(`${id}-5`, `${he(p)} lives in ${p.city}.`, `${esEl(p)} vive en ${p.city}.`, [`${he(p)} lives in`, `${p.city}.`]),
     line(`${id}-6`, `${his(p)} favorite color is ${p.color}.`, `${esSu()} color favorito es el ${p.colorEs}.`, [`${his(p)} favorite color is`, `${p.color}.`]),
-    line(`${id}-7`, `${his(p)} favorite food is ${p.food}.`, `${esSu()} comida favorita es ${p.foodEs}.`, [`${his(p)} favorite food is`, `${p.food}.`]),
+    line(`${id}-7`, `${his(p)} favorite food is ${p.food}.`, `${esSu()} comida favorita ${foodVerb(p.foodEs)} ${p.foodEs}.`, [`${his(p)} favorite food is`, `${p.food}.`]),
     line(`${id}-8`, `${his(p)} hobbies are ${p.hobby1} and ${p.hobby2}.`, `${esSu()}s pasatiempos son ${p.hobby1Es} y ${p.hobby2Es}.`, [`${his(p)} hobbies are`, `${p.hobby1}`, `and ${p.hobby2}.`]),
   ];
 }
 
 function otherLinesFluency(id: string, p: Person): ModelLine[] {
+  // Third-person rewrites of the first-person why/free clauses (Weeks 3–4).
+  const colorWhy = p.colorWhyOther ?? p.colorWhy;
+  const colorWhyEs = p.colorWhyOtherEs ?? p.colorWhyEs;
+  const foodWhy = p.foodWhyOther ?? p.foodWhy;
+  const foodWhyEs = p.foodWhyOtherEs ?? p.foodWhyEs;
+  const free = p.freeOther ?? p.free;
+  const freeEs = p.freeOtherEs ?? p.freeEs;
   return [
-    line(`${id}-1`, `This is my ${p.relation}, and ${hisLower(p)} name is ${p.name}.`, `Esta es mi ${p.relationEs} y su nombre es ${p.name}.`, [`This is my ${p.relation},`, `and ${hisLower(p)} name is ${p.name}.`]),
+    line(`${id}-1`, `This is my ${p.relation}, and ${hisLower(p)} name is ${p.name}.`, `${esEste(p)} es mi ${p.relationEs} y su nombre es ${p.name}.`, [`This is my ${p.relation},`, `and ${hisLower(p)} name is ${p.name}.`]),
     line(`${id}-2`, `${he(p)} is ${p.age} years old and is from ${p.country}.`, `${esEl(p)} tiene ${p.age} años y es de ${p.countryEs}.`, [`${he(p)} is ${p.age} years old`, `and is from ${p.country}.`]),
     line(`${id}-3`, `${he(p)} lives in ${p.city}.`, `${esEl(p)} vive en ${p.city}.`, [`${he(p)} lives in`, `${p.city}.`]),
-    line(`${id}-4`, `${his(p)} favorite color is ${p.color} because ${p.colorWhy}.`, `${esSu()} color favorito es el ${p.colorEs} porque ${p.colorWhyEs}.`, [`${his(p)} favorite color is ${p.color}`, `because ${p.colorWhy}.`]),
-    line(`${id}-5`, `${his(p)} favorite food is ${p.food} because ${p.foodWhy}.`, `${esSu()} comida favorita es ${p.foodEs} porque ${p.foodWhyEs}.`, [`${his(p)} favorite food is ${p.food}`, `because ${p.foodWhy}.`]),
+    line(`${id}-4`, `${his(p)} favorite color is ${p.color} because ${colorWhy}.`, `${esSu()} color favorito es el ${p.colorEs} porque ${colorWhyEs}.`, [`${his(p)} favorite color is ${p.color}`, `because ${colorWhy}.`]),
+    line(`${id}-5`, `${his(p)} favorite food is ${p.food} because ${foodWhy}.`, `${esSu()} comida favorita ${foodVerb(p.foodEs)} ${p.foodEs} porque ${foodWhyEs}.`, [`${his(p)} favorite food is ${p.food}`, `because ${foodWhy}.`]),
     line(`${id}-6`, `${his(p)} hobbies are ${p.hobby1} and ${p.hobby2}.`, `${esSu()}s pasatiempos son ${p.hobby1Es} y ${p.hobby2Es}.`, [`${his(p)} hobbies are`, `${p.hobby1}`, `and ${p.hobby2}.`]),
-    line(`${id}-7`, `In ${hisLower(p)} free time, ${heLower(p)} likes to ${p.free}.`, `En su tiempo libre le gusta ${p.freeEs}.`, [`In ${hisLower(p)} free time,`, `${heLower(p)} likes to ${p.free}.`]),
+    line(`${id}-7`, `In ${hisLower(p)} free time, ${heLower(p)} likes to ${free}.`, `En su tiempo libre le gusta ${freeEs}.`, [`In ${hisLower(p)} free time,`, `${heLower(p)} likes to ${free}.`]),
     line(`${id}-8`, `Overall, ${heLower(p)} is a ${p.trait1} and ${p.trait2} person.`, `En general, es una persona ${p.trait1Es} y ${p.trait2Es}.`, ["Overall,", `${heLower(p)} is a ${p.trait1}`, `and ${p.trait2} person.`]),
   ];
 }
@@ -164,7 +186,7 @@ function otherPromptsFoundation(id: string): PersonalPrompt[] {
 
 function otherPromptsFluency(id: string): PersonalPrompt[] {
   return [
-    prompt(`${id}-p1`, "WHO", "Who is this person and what is his / her name?", "¿Quién es y cómo se llama?", "This is my ______, and his/her name is ______.", "Esta es mi ______ y su nombre es ______."),
+    prompt(`${id}-p1`, "WHO", "Who is this person and what is his / her name?", "¿Quién es y cómo se llama?", "This is my ______, and his/her name is ______.", "Esta es mi… / Este es mi ______ y su nombre es ______."),
     prompt(`${id}-p2`, "HOW", "How old is he / she and where is he / she from?", "¿Cuántos años tiene y de dónde es?", "He/She is ______ years old and is from ______.", "Tiene ______ años y es de ______."),
     prompt(`${id}-p3`, "WHERE", "Where does he / she live?", "¿Dónde vive?", "He/She lives in…", "Vive en…"),
     prompt(`${id}-p5`, "WHY", "What is his / her favorite food, and why?", "¿Cuál es su comida favorita, y por qué?", "His/Her favorite food is ______ because…", "Su comida favorita es ______ porque…"),
@@ -179,8 +201,10 @@ const carlos: Person = {
   name: "Carlos", age: 22, country: "El Salvador", countryEs: "El Salvador", city: "San Salvador",
   color: "blue", colorEs: "azul", colorWhy: "it is calm", colorWhyEs: "es tranquilo",
   food: "pizza", foodEs: "la pizza", foodWhy: "I love cheese", foodWhyEs: "me encanta el queso",
+  foodWhyOther: "he loves cheese", foodWhyOtherEs: "le encanta el queso",
   hobby1: "playing soccer", hobby1Es: "jugar fútbol", hobby2: "watching movies", hobby2Es: "ver películas",
   free: "play soccer with my friends", freeEs: "jugar fútbol con mis amigos",
+  freeOther: "play soccer with his friends", freeOtherEs: "jugar fútbol con sus amigos",
   also: "listen to music", alsoEs: "escuchar música",
   trait1: "friendly", trait1Es: "amable", trait2: "positive", trait2Es: "positiva",
 };
@@ -189,7 +213,9 @@ const sofia: Person = {
   gender: "f",
   name: "Sofia", age: 28, country: "Mexico", countryEs: "México", city: "Guadalajara",
   color: "green", colorEs: "verde", colorWhy: "it makes me happy", colorWhyEs: "me hace feliz",
+  colorWhyOther: "it makes her happy", colorWhyOtherEs: "la hace feliz",
   food: "tacos", foodEs: "los tacos", foodWhy: "they remind me of my family", foodWhyEs: "me recuerdan a mi familia",
+  foodWhyOther: "they remind her of her family", foodWhyOtherEs: "le recuerdan a su familia",
   hobby1: "dancing", hobby1Es: "bailar", hobby2: "cooking", hobby2Es: "cocinar",
   free: "cook new recipes", freeEs: "cocinar recetas nuevas",
   also: "walk in the park", alsoEs: "caminar en el parque",
@@ -200,6 +226,7 @@ const daniel: Person = {
   gender: "m",
   name: "Daniel", age: 35, country: "Colombia", countryEs: "Colombia", city: "Medellín",
   color: "red", colorEs: "rojo", colorWhy: "it gives me energy", colorWhyEs: "me da energía",
+  colorWhyOther: "it gives him energy", colorWhyOtherEs: "le da energía",
   food: "chicken and rice", foodEs: "el pollo con arroz", foodWhy: "it is simple and delicious", foodWhyEs: "es simple y delicioso",
   hobby1: "running", hobby1Es: "correr", hobby2: "reading", hobby2Es: "leer",
   free: "run in the morning", freeEs: "correr en la mañana",
@@ -214,6 +241,7 @@ const valeria: Person = {
   food: "ceviche", foodEs: "el ceviche", foodWhy: "it is fresh", foodWhyEs: "es fresco",
   hobby1: "singing", hobby1Es: "cantar", hobby2: "swimming", hobby2Es: "nadar",
   free: "sing with my friends", freeEs: "cantar con mis amigos",
+  freeOther: "sing with her friends", freeOtherEs: "cantar con sus amigos",
   also: "watch series", alsoEs: "ver series",
   trait1: "creative", trait1Es: "creativa", trait2: "kind", trait2Es: "amable",
 };
@@ -223,6 +251,7 @@ const miguel: Person = {
   name: "Miguel", age: 41, country: "Guatemala", countryEs: "Guatemala", city: "Antigua",
   color: "black", colorEs: "negro", colorWhy: "it is elegant", colorWhyEs: "es elegante",
   food: "soup", foodEs: "la sopa", foodWhy: "my mother makes it", foodWhyEs: "mi mamá la prepara",
+  foodWhyOther: "his mother makes it", foodWhyOtherEs: "su mamá la prepara",
   hobby1: "playing guitar", hobby1Es: "tocar guitarra", hobby2: "traveling", hobby2Es: "viajar",
   free: "play the guitar", freeEs: "tocar la guitarra",
   also: "travel with my family", alsoEs: "viajar con mi familia",
@@ -245,6 +274,7 @@ const andres: Person = {
   name: "Andres", age: 26, country: "Ecuador", countryEs: "Ecuador", city: "Quito",
   color: "orange", colorEs: "naranja", colorWhy: "it is warm", colorWhyEs: "es cálido",
   food: "hamburgers", foodEs: "las hamburguesas", foodWhy: "they are my weekend food", foodWhyEs: "son mi comida del fin de semana",
+  foodWhyOther: "they are his weekend food", foodWhyOtherEs: "son su comida del fin de semana",
   hobby1: "playing video games", hobby1Es: "jugar videojuegos", hobby2: "going to the gym", hobby2Es: "ir al gimnasio",
   free: "go to the gym", freeEs: "ir al gimnasio",
   also: "play video games", alsoEs: "jugar videojuegos",
