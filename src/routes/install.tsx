@@ -11,7 +11,6 @@ import {
   Download,
   Compass,
   Search,
-  Ellipsis,
 } from "lucide-react";
 import { useAppLang } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
@@ -323,7 +322,7 @@ function InstallPage() {
               {s.openApp}
             </Button>
           </>
-        ) : env === "ios-inapp" ? (
+        ) : env === "ios-inapp" || env === "ios-other" ? (
           <>
             <h1 className="text-2xl font-extrabold tracking-tight text-foreground">{s.openSafariTitle}</h1>
             <div className="flex w-full flex-col gap-2.5">
@@ -372,7 +371,7 @@ function InstallPage() {
               <StepRow n={2}>{s.chromeStep2}</StepRow>
             </div>
           </>
-        ) : env === "ios-safari" || env === "ios-other" ? (
+        ) : env === "ios-safari" ? (
           <IphoneGuide s={s} />
         ) : (
           <>
