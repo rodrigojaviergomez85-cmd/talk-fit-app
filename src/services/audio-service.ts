@@ -48,17 +48,39 @@ function pickVoice(voice: ModelVoice): SpeechSynthesisVoice | undefined {
 const audioCache = new Map<string, Promise<string>>();
 let currentAudio: HTMLAudioElement | null = null;
 
+/** Current learner access token, or null when signed out. Never throws. */
+async function currentAccessToken(): Promise<string | null> {
+  try {
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data } = await supabase.auth.getSession();
+    return data.session?.access_token ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** When the learner has no session, skip /api/tts for a while instead of hammering it. */
+let noSessionUntil = 0;
+const NO_SESSION_BACKOFF_MS = 30_000;
+
 async function loadModelAudio(text: string, voice?: AudioVoice, tone: ModelTone = "coach"): Promise<string> {
   // v3: per-speaker tone — never reuse v2 (all-coach) clips.
   const key = `v3::${tone}::${voice ?? "neutral"}::${text}`;
   const cached = audioCache.get(key);
   if (cached) return cached;
   const promise = (async () => {
+    if (Date.now() < noSessionUntil) throw new Error("TTS no session");
+    const token = await currentAccessToken();
+    if (!token) {
+      noSessionUntil = Date.now() + NO_SESSION_BACKOFF_MS;
+      throw new Error("TTS no session");
+    }
     const response = await fetch("/api/tts", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text, voice, tone }),
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ text, voice: voice ?? "neutral", tone }),
     });
+    if (response.status === 401) noSessionUntil = Date.now() + NO_SESSION_BACKOFF_MS;
     if (!response.ok) throw new Error(`TTS ${response.status}`);
     const blob = await response.blob();
     return URL.createObjectURL(blob);
