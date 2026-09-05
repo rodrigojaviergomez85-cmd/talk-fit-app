@@ -122,6 +122,12 @@ const STRINGS = {
     openSafariTitle: "TO INSTALL FLUENCY APP, OPEN IT IN SAFARI",
     openSafariCta: "OPEN IN SAFARI",
     openSafariSteps: ["Tap the browser menu", 'Choose "Open in Safari"'],
+    iosChromeTitle: "INSTALL FLUENCY APP FROM SAFARI",
+    iosChromeIntro:
+      'Chrome on iPhone uses the same engine as Safari, but only Safari can add the app to your Home Screen. Tap Chrome\'s menu and choose "Open in Safari", then follow these steps.',
+    iosChromeOpenStep1: "Tap Chrome's ⋮ menu.",
+    iosChromeOpenStep2: 'Choose "Open in Safari".',
+    iosChromeThen: "Then, in Safari:",
     openChromeTitle: "TO INSTALL FLUENCY APP, OPEN IT IN CHROME",
     openChromeCta: "OPEN IN CHROME",
     openChromeSteps: ["Tap the menu", 'Choose "Open in Chrome"'],
