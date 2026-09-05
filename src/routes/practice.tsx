@@ -1226,7 +1226,10 @@ function Rep2Copy({
       ) : null}
 
       {errorMsg ? (
-        <p className="text-center text-[12px] font-medium text-destructive">{errorMsg}</p>
+        <>
+          <p className="text-center text-[12px] font-medium text-destructive">{errorMsg}</p>
+          <SkipLink label={t("practice.skipChunk")} onClick={onSkip} />
+        </>
       ) : null}
 
       {correction && !checking ? (
