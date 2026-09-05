@@ -1,10 +1,17 @@
 /**
  * Deterministic comparison for Rep 2 spoken-correction MVP.
  * No LLM. Compares the learner's transcript to the curriculum target and
- * returns one of three outcomes: good, correct, uncertain.
+ * returns one of three internal outcomes:
+ *  - good           → matches the target
+ *  - correct        → speech was clear but differs from the target
+ *  - asr_uncertain  → the TRANSCRIPTION itself is unusable (low confidence,
+ *                     no speech, empty / truncated) — the only case that
+ *                     justifies a second, more expensive STT pass.
  */
 
-export type Rep2Outcome = "good" | "correct" | "uncertain";
+export type Rep2Outcome = "good" | "correct" | "asr_uncertain";
+/** Outcome shape exposed to the browser. */
+export type Rep2PublicStatus = "good" | "correct" | "uncertain";
 
 export type Rep2MatchResult = {
   status: Rep2Outcome;
@@ -23,16 +30,24 @@ export type Rep2Confidence = {
   noSpeechProb: number;
 };
 
+export function toPublicStatus(status: Rep2Outcome): Rep2PublicStatus {
+  return status === "asr_uncertain" ? "uncertain" : status;
+}
+
 type DiffOp =
   | { type: "match"; word: string }
   | { type: "missing"; word: string; index: number }
   | { type: "extra"; word: string; index: number }
   | { type: "replace"; target: string; got: string; index: number };
 
+/** Confidence thresholds (tunable by QA). Below these the ASR is unusable. */
 const AVG_LOGPROB_THRESHOLD = -0.7;
 const NO_SPEECH_THRESHOLD = 0.5;
-const MIN_MATCH_RATIO = 0.4;
-const MAX_ERROR_RATIO = 0.6;
+/** A transcript with fewer than this share of the target's word count is treated as truncated ASR. */
+const MIN_LENGTH_RATIO = 0.4;
+
+/** Future-structure words, in priority order for choosing ONE correction focus. */
+const FOCUS_PRIORITY = ["am", "going", "to", "not", "will"];
 
 /** Grammar words we are actively teaching in BASIC 1 · FUTURE. */
 const STRUCTURE_WORDS = new Set([
