@@ -374,6 +374,11 @@ const DICT = {
   ],
   "account.on": ["Activada", "On"],
   "account.off": ["Desactivada", "Off"],
+  "account.feedbackSounds": ["Sonidos de feedback", "Feedback sounds"],
+  "account.feedbackSoundsHelp": [
+    "Reproduce sonidos cortos cuando aciertas o necesitas intentarlo otra vez.",
+    "Play short sounds when you get it right or need to try again.",
+  ],
   "account.viewIntro": ["Ver la introducción otra vez", "See the intro again"],
   "account.signedIn": ["Sesión iniciada", "Signed in"],
   "account.syncNote": [

@@ -104,6 +104,26 @@ function ProfilePage() {
             </div>
           </div>
 
+          <div className="pt-2">
+            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+              {t("account.feedbackSounds")}
+            </p>
+            <p className="mt-1 text-[13px] text-muted-foreground">{t("account.feedbackSoundsHelp")}</p>
+            <div className="mt-2 grid grid-cols-2 gap-2" role="group" aria-label={t("account.feedbackSounds")}>
+              <LangButton
+                label={t("account.on")}
+                active={prefs.feedbackSoundsEnabled}
+                onClick={() => setPrefs({ feedbackSoundsEnabled: true })}
+              />
+              <LangButton
+                label={t("account.off")}
+                active={!prefs.feedbackSoundsEnabled}
+                onClick={() => setPrefs({ feedbackSoundsEnabled: false })}
+              />
+            </div>
+          </div>
+
+
           <Link
             to="/onboarding"
             className="mt-1 inline-flex min-h-[44px] w-full items-center justify-center rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"

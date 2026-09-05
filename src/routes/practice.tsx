@@ -49,7 +49,8 @@ import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording, RepLabel 
 import type { FinalRepSaveState } from "@/components/fluency/DayCompleteScreen";
 import { cn } from "@/lib/utils";
 import { useAppLang, useT, tPair, type TKey } from "@/lib/i18n";
-import { setPreferencesScope } from "@/services/preferences";
+import { setPreferencesScope, loadPreferences } from "@/services/preferences";
+import { playGoodFeedbackSound, playCorrectFeedbackSound, unlockFeedbackAudio } from "@/lib/feedback-sounds";
 import { VerbBank, setVerbBankScope } from "@/services/verb-bank";
 
 export const Route = createFileRoute("/practice")({
@@ -1127,6 +1128,17 @@ function Rep2Copy({
   const isLast = index >= chunks.length - 1;
   const feedbackOwnsNav = correctionEnabled && (checking || correction !== null || retryPending);
 
+  const playFeedbackSoundOnce = (status: Rep2CorrectionResult["status"]) => {
+    try {
+      if (!loadPreferences().feedbackSoundsEnabled) return;
+      if (AudioService.isPlaying()) return; // learning audio always has priority
+      if (status === "good") playGoodFeedbackSound();
+      else if (status === "correct") playCorrectFeedbackSound();
+    } catch {
+      /* sound is enhancement only */
+    }
+  };
+
   const checkCorrection = async (blob: Blob) => {
     // Set checking BEFORE any async work so the feedback card owns navigation
     // immediately and the generic NEXT button cannot flash.
@@ -1157,6 +1169,9 @@ function Rep2Copy({
       }
       const result = (await res.json()) as Rep2CorrectionResult;
       setCorrection(result);
+      // Fires once per NEW result (never on rerender), only after recording
+      // has stopped, and never over learning audio. UNCERTAIN stays silent.
+      playFeedbackSoundOnce(result.status);
     } catch (err) {
       console.error("[rep2-correction]", err);
       setErrorMsg("Correction unavailable.");
@@ -1194,20 +1209,23 @@ function Rep2Copy({
 
       <AudioPlayer text={chunkText} label={t("practice.listen")} rate={0.9} voice={day.speakerVoice} />
 
-      <VoiceRecorder
-        key={retries}
-        label={mine ? t("practice.repeat") : t("practice.record")}
-        maxSeconds={30}
-        showTimer
-        onComplete={(rec) => {
-          setMine(rec);
-          setRetryPending(false);
-          onRecorded(rec);
-          if (correctionEnabled && rec.blob) {
-            void checkCorrection(rec.blob);
-          }
-        }}
-      />
+      {/* Genuine tap on the recorder unlocks Web Audio for iOS/Safari — no prompt, no blocking. */}
+      <div onPointerDownCapture={correctionEnabled ? unlockFeedbackAudio : undefined}>
+        <VoiceRecorder
+          key={retries}
+          label={mine ? t("practice.repeat") : t("practice.record")}
+          maxSeconds={30}
+          showTimer
+          onComplete={(rec) => {
+            setMine(rec);
+            setRetryPending(false);
+            onRecorded(rec);
+            if (correctionEnabled && rec.blob) {
+              void checkCorrection(rec.blob);
+            }
+          }}
+        />
+      </div>
 
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 

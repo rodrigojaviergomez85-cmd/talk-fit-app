@@ -11,6 +11,8 @@ export type AppLang = "es" | "en";
 export type Preferences = {
   appLanguage: AppLang;
   spanishSupport: boolean;
+  /** Short UI feedback sounds (GOOD / ALMOST). Never affects model/TTS audio. */
+  feedbackSoundsEnabled: boolean;
   onboardingCompleted: boolean;
   accountPromptDismissedAt: string | null;
   /** Completed days at the moment the guest dismissed the account prompt. */
@@ -33,6 +35,7 @@ const PENDING_PLACEMENT_KEY = "fluency-reps:pending_starting_module_id";
 export const defaultPreferences: Preferences = {
   appLanguage: "es",
   spanishSupport: false,
+  feedbackSoundsEnabled: true,
   onboardingCompleted: false,
   accountPromptDismissedAt: null,
   accountPromptDismissedDays: 0,
@@ -95,6 +98,8 @@ export function loadPreferences(): Preferences {
       appLanguage: parsed.appLanguage === "en" ? "en" : "es",
       spanishSupport:
         typeof parsed.spanishSupport === "boolean" ? parsed.spanishSupport : legacy === "on",
+      feedbackSoundsEnabled:
+        typeof parsed.feedbackSoundsEnabled === "boolean" ? parsed.feedbackSoundsEnabled : true,
       onboardingCompleted: parsed.onboardingCompleted === true,
       accountPromptDismissedAt: str(parsed.accountPromptDismissedAt),
       accountPromptDismissedDays:
