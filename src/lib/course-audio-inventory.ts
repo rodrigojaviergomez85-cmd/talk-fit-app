@@ -14,6 +14,13 @@ import type { PastVerb } from "@/services/verb-bank";
  *
  * Runtime mapping recap (audio-service.ts): `voice` is "female" | "male" when
  * the call site passes one, otherwise "neutral"; `tone` defaults to "coach".
+ *
+ * Audited call sites (rg "<AudioPlayer|AudioService.speak"): practice.tsx
+ * (QuestionBanner, Rep 1 model, Rep 2 chunk + PowerChunks, Rep 3 ShadowKaraoke,
+ * Rep 4 question, Rep 5 rep5Audio/modelExample), TakeBoard (turns),
+ * TestReadySprint (passage/parts/items), PastVerbCards, PastVerbCard,
+ * TodaysPastVerbs. Deliberately NOT inventoried: RecordingComparison's model
+ * button (component has no callers), VariantPicker / RecognitionStep (text only).
  */
 
 export type RequestedVoice = "neutral" | "female" | "male";
@@ -54,7 +61,9 @@ export function daySpecs(moduleId: ModuleId, day: CourseDay): AudioSpec[] {
     out.push({ text: rep2ChunkText(chunk), voice: speaker, tone: "coach", source: `${tag}/rep2` });
   }
 
-  // Power Chunks (Rep 2 row buttons): speaker voice, coach.
+  // Power Chunks: audible ONLY in Rep 2 (<PowerChunks size="full"> with audio on,
+  // voice={day.speakerVoice}). Rep 1 (audio={false}), the intro banner and every
+  // "mini" variant (Rep 4/5) are text-only — same text, so one clip covers it.
   if (day.powerChunks) {
     for (const text of [...day.powerChunks.core, day.powerChunks.stretch]) {
       out.push({ text, voice: speaker, tone: "coach", source: `${tag}/power` });

@@ -115,6 +115,20 @@ function CourseAudioPage() {
           setError(es ? "Almacenamiento no disponible. Se detuvo sin generar." : "Storage unavailable. Stopped without generating.");
           break;
         }
+        if (batch.haltedOn !== null) {
+          const why =
+            batch.haltedOn === 429
+              ? es ? "límite de velocidad de la IA (429)" : "AI rate limit (429)"
+              : batch.haltedOn === 402
+                ? es ? "créditos de IA agotados (402)" : "AI credits exhausted (402)"
+                : es ? "bloqueado por política de IA (403)" : "blocked by AI policy (403)";
+          setError(
+            es
+              ? `Se detuvo por ${why}. Lo ya generado se guardó; vuelve a ejecutar más tarde para continuar.`
+              : `Stopped: ${why}. Finished clips are saved; run again later to resume.`,
+          );
+          break;
+        }
         if (batch.missing === 0 || batch.attempted === 0) break;
         // Nothing progressed in this batch (all failed) → stop instead of looping forever.
         if (batch.generated === 0 && batch.skippedAlreadyCached === 0) {
