@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { compareRep2 } from "./rep2-match";
+import { compareRep2, toPublicStatus } from "./rep2-match";
 
 describe("compareRep2", () => {
   const target = "Tonight, I'm going to go home early.";
+  const qa = "I'm going to study tonight.";
 
   it("returns GOOD for an exact match", () => {
     const res = compareRep2(target, "Tonight I'm going to go home early");
@@ -10,42 +11,68 @@ describe("compareRep2", () => {
     expect(res.retryRecommended).toBe(false);
   });
 
-  it("returns GOOD for a contraction", () => {
-    const res = compareRep2(target, "Tonight I'm going to go home early");
+  it("returns GOOD for an expanded contraction", () => {
+    const res = compareRep2(target, "Tonight I am going to go home early");
     expect(res.status).toBe("good");
   });
 
-  it("CORRECTS missing 'am' in I'm going to", () => {
-    const res = compareRep2(target, "Tonight I going to go home early");
+  it("CASE 1: QA target said correctly → GOOD", () => {
+    expect(compareRep2(qa, "I'm going to study tonight").status).toBe("good");
+  });
+
+  it("CASE 2: missing 'to' → CORRECT focus 'to'", () => {
+    const res = compareRep2(qa, "I'm going study tonight");
+    expect(res.status).toBe("correct");
+    expect(res.focus).toMatch(/to/i);
+  });
+
+  it("CASE 3: missing 'am' → CORRECT focus 'am'", () => {
+    const res = compareRep2(qa, "I going to study tonight");
     expect(res.status).toBe("correct");
     expect(res.focus).toMatch(/am/i);
   });
 
-  it("CORRECTS missing 'to'", () => {
-    const res = compareRep2(target, "Tonight I'm going study early");
+  it("CASE 4: clear but different content → CORRECT, never asr_uncertain", () => {
+    const res = compareRep2(qa, "I'm going to watch TV tomorrow", { avgLogprob: -0.2, noSpeechProb: 0.01 });
     expect(res.status).toBe("correct");
-    expect(res.focus).toMatch(/to/i);
+  });
+
+  it("CASE 5: completely different but clear sentence → CORRECT with one focus or none", () => {
+    const res = compareRep2(target, "My name is Carlos and I live here");
+    expect(res.status).toBe("correct");
+    // Structure word dropped → single useful focus, no error list.
+    expect(res.focus).toMatch(/am/i);
+  });
+
+  it("no structure word and multiple differences → CORRECT without a misleading focus", () => {
+    const res = compareRep2("I will study at home tonight.", "I will cook at school tomorrow");
+    expect(res.status).toBe("correct");
+    expect(res.focus).toBeUndefined();
+  });
+
+  it("CASE 6/7: empty transcript → asr_uncertain (public: uncertain)", () => {
+    const res = compareRep2(target, "");
+    expect(res.status).toBe("asr_uncertain");
+    expect(toPublicStatus(res.status)).toBe("uncertain");
+  });
+
+  it("low confidence → asr_uncertain even if text matches", () => {
+    const res = compareRep2(target, "Tonight I'm going to go home early", { avgLogprob: -0.9, noSpeechProb: 0 });
+    expect(res.status).toBe("asr_uncertain");
+  });
+
+  it("high no-speech probability → asr_uncertain", () => {
+    const res = compareRep2(target, "Tonight", { avgLogprob: -0.1, noSpeechProb: 0.8 });
+    expect(res.status).toBe("asr_uncertain");
+  });
+
+  it("truncated transcript → asr_uncertain", () => {
+    expect(compareRep2(target, "Tonight I").status).toBe("asr_uncertain");
   });
 
   it("accepts a number word instead of digits", () => {
     const res = compareRep2("I will wake up at eleven tomorrow.", "I will wake up at 11 tomorrow");
     expect(res.status).toBe("good");
-  });
-
-  it("is UNCERTAIN for an unrelated sentence", () => {
-    const res = compareRep2(target, "My name is Carlos and I live here");
-    expect(res.status).toBe("uncertain");
-    expect(res.retryRecommended).toBe(true);
-  });
-
-  it("is UNCERTAIN for empty transcript", () => {
-    const res = compareRep2(target, "");
-    expect(res.status).toBe("uncertain");
-  });
-
-  it("is UNCERTAIN when confidence is too low", () => {
-    const res = compareRep2(target, "Tonight I'm going to go home early", { avgLogprob: -0.9, noSpeechProb: 0 });
-    expect(res.status).toBe("uncertain");
   });
 
   it("handles a Future two-sentence chunk", () => {
@@ -60,8 +87,9 @@ describe("compareRep2", () => {
     expect(res.focus).toMatch(/early/i);
   });
 
-  it("is UNCERTAIN when there are too many scattered errors", () => {
-    const res = compareRep2(target, "Tomorrow she will stay outside late");
-    expect(res.status).toBe("uncertain");
+  it("prefers a structure word over content words when several differ", () => {
+    const res = compareRep2(qa, "I going to watch tonight");
+    expect(res.status).toBe("correct");
+    expect(res.focus).toMatch(/am/i);
   });
 });
