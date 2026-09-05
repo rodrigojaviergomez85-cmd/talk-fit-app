@@ -314,7 +314,7 @@ const day10 = makeDay({
   prompts: [
     prompt("sp10-p2", "What does he / she usually do every day?", "¿Qué hace él / ella normalmente todos los días?", "He / She usually…", "Él / Ella normalmente…", "WHAT"),
     prompt("sp10-p3", "What doesn't he / she do?", "¿Qué no hace?", "He / She doesn't…", "Él / Ella no…", "WHAT"),
-    prompt("sp10-p4", "Ask ONE question about this person.", "Haz UNA pregunta sobre esta persona.", "What does…? / Does he / she…? / What time does…?", "What does…? / Does he / she…? / What time does…?", "ASK"),
+    prompt("sp10-p4", "Ask ONE question about this person.", "Haz UNA pregunta sobre esta persona.", "What does…? / Does he / she…? / What time does…?", "¿Qué hace…? / ¿Él / ella…? / ¿A qué hora…?", "ASK"),
   ],
   cues: ["WHO?", "MORNING", "WORK / ACTIVITY", "USUALLY", "SOMETIMES", "DOESN'T", "BECAUSE", "OVERALL"],
   rep5Prompt: {
