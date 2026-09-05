@@ -23,10 +23,10 @@ import type { JourneyState } from "@/lib/types";
 export const Route = createFileRoute("/profile")({
   head: () => ({
     meta: [
-      { title: "My Account — Fluency Reps" },
+      { title: "My Account — Fluency App" },
       { name: "description", content: "Sign in to save your speaking progress and recordings across devices." },
-      { property: "og:title", content: "My Account — Fluency Reps" },
-      { property: "og:description", content: "Save your Fluency Reps progress and recordings in the cloud." },
+      { property: "og:title", content: "My Account — Fluency App" },
+      { property: "og:description", content: "Save your Fluency App progress and recordings in the cloud." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

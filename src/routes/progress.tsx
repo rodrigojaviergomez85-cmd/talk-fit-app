@@ -16,12 +16,12 @@ import { useT } from "@/lib/i18n";
 export const Route = createFileRoute("/progress")({
   head: () => ({
     meta: [
-      { title: "My Progress — Fluency Reps" },
+      { title: "My Progress — Fluency App" },
       {
         name: "description",
         content: "Am I improving? Weekly practice, speaking minutes, personal bests, module journey and badges.",
       },
-      { property: "og:title", content: "My Progress — Fluency Reps" },
+      { property: "og:title", content: "My Progress — Fluency App" },
       {
         property: "og:description",
         content: "See your weekly practice, speaking minutes, personal bests and badges.",

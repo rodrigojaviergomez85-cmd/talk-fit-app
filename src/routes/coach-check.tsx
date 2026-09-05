@@ -15,12 +15,12 @@ import { JourneyService } from "@/services/journey-service";
 export const Route = createFileRoute("/coach-check")({
   head: () => ({
     meta: [
-      { title: "Coach Check — Fluency Reps" },
+      { title: "Coach Check — Fluency App" },
       {
         name: "description",
-        content: "Show your coach exactly which Fluency Reps practice you completed on any calendar date.",
+        content: "Show your coach exactly which Fluency App practice you completed on any calendar date.",
       },
-      { property: "og:title", content: "Coach Check — Fluency Reps" },
+      { property: "og:title", content: "Coach Check — Fluency App" },
       { property: "og:description", content: "Proof of practice by calendar date, with your saved Final Rep." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

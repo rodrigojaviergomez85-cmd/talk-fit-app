@@ -63,9 +63,9 @@ export const Route = createFileRoute("/practice")({
   },
   head: () => ({
     meta: [
-      { title: "Daily Practice — Fluency Reps" },
+      { title: "Daily Practice — Fluency App" },
       { name: "description", content: "Five speaking reps a day: listen, copy, shadow, personalize and record your final rep in English." },
-      { property: "og:title", content: "Daily Practice — Fluency Reps" },
+      { property: "og:title", content: "Daily Practice — Fluency App" },
       { property: "og:description", content: "Five speaking reps a day to make your English automatic." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

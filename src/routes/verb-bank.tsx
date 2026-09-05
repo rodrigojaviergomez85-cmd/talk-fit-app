@@ -11,12 +11,12 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/verb-bank")({
   head: () => ({
     meta: [
-      { title: "Past Verb Bank — Fluency Reps" },
+      { title: "Past Verb Bank — Fluency App" },
       {
         name: "description",
         content: "Collect and practice 30 past-tense English verbs with images, audio and your own voice.",
       },
-      { property: "og:title", content: "Past Verb Bank — Fluency Reps" },
+      { property: "og:title", content: "Past Verb Bank — Fluency App" },
       { property: "og:description", content: "Discover past-tense verbs as you speak through Module 3." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
