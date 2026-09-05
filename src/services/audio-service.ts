@@ -190,6 +190,13 @@ export const AudioService = {
     };
   },
 
+  /** True while model/TTS audio is actively playing (read-only, never interrupts). */
+  isPlaying(): boolean {
+    if (typeof window === "undefined") return false;
+    if (currentAudio && !currentAudio.paused && !currentAudio.ended) return true;
+    return "speechSynthesis" in window && window.speechSynthesis.speaking && !window.speechSynthesis.paused;
+  },
+
   /** Pauses playback in place. Returns true when something was paused. */
   pause(): boolean {
     if (typeof window === "undefined") return false;
