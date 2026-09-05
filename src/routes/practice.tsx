@@ -1128,17 +1128,22 @@ function Rep2Copy({
   const feedbackOwnsNav = correctionEnabled && (checking || correction !== null || retryPending);
 
   const checkCorrection = async (blob: Blob) => {
-    const { data } = await supabase.auth.getSession();
-    const token = data.session?.access_token;
-    if (!token) return;
-    const form = new FormData();
-    form.append("file", blob, "take.webm");
-    form.append("moduleId", moduleId);
-    form.append("day", String(day.day));
-    form.append("chunkId", chunk.id);
+    // Set checking BEFORE any async work so the feedback card owns navigation
+    // immediately and the generic NEXT button cannot flash.
+    setChecking(true);
+    setErrorMsg(null);
     try {
-      setChecking(true);
-      setErrorMsg(null);
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token;
+      if (!token) {
+        setErrorMsg("Correction unavailable.");
+        return;
+      }
+      const form = new FormData();
+      form.append("file", blob, "take.webm");
+      form.append("moduleId", moduleId);
+      form.append("day", String(day.day));
+      form.append("chunkId", chunk.id);
       const res = await fetch("/api/rep2-correction", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
@@ -1152,6 +1157,9 @@ function Rep2Copy({
       }
       const result = (await res.json()) as Rep2CorrectionResult;
       setCorrection(result);
+    } catch (err) {
+      console.error("[rep2-correction]", err);
+      setErrorMsg("Correction unavailable.");
     } finally {
       setChecking(false);
     }
@@ -1218,7 +1226,10 @@ function Rep2Copy({
       ) : null}
 
       {errorMsg ? (
-        <p className="text-center text-[12px] font-medium text-destructive">{errorMsg}</p>
+        <>
+          <p className="text-center text-[12px] font-medium text-destructive">{errorMsg}</p>
+          <SkipLink label={t("practice.skipChunk")} onClick={onSkip} />
+        </>
       ) : null}
 
       {correction && !checking ? (
