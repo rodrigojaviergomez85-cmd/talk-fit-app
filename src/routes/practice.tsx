@@ -1261,9 +1261,14 @@ function Rep4MakeItYours({
   const t = useT();
   const items = rep4Items(day);
   const item = items[index] ?? items[items.length - 1]!;
+  const isLast = index >= items.length - 1;
   const [mine, setMine] = useState<Recording | null>(null);
 
   useEffect(() => setMine(null), [index]);
+
+  const hasSupport = Boolean(item.cues?.length) || Boolean(day.powerChunks);
+  // After recording the final prompt, celebrate before sending the learner to Rep 5.
+  const showDone = isLast && Boolean(mine);
 
   return (
     <div className="space-y-5">
@@ -1280,9 +1285,6 @@ function Rep4MakeItYours({
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
         {t("practice.question")} {index + 1} {t("practice.of")} {items.length}
       </p>
-
-      {item.cues ? <CueRow cues={item.cues} /> : null}
-      <PowerChunks chunks={day.powerChunks} size="mini" />
 
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {item.cue ? (
@@ -1302,6 +1304,13 @@ function Rep4MakeItYours({
 
       <AudioPlayer text={item.question} label={t("practice.hearQuestion")} variant="ghost" size="sm" voice={day.speakerVoice} tone={promptTone} />
 
+      {hasSupport ? (
+        <CollapsibleHelp label={t("rep4.help")} labelEs={t("rep4.help")}>
+          {item.cues ? <CueRow cues={item.cues} /> : null}
+          <PowerChunks chunks={day.powerChunks} size="mini" />
+        </CollapsibleHelp>
+      ) : null}
+
       <VoiceRecorder
         label={mine ? t("practice.reRecord") : t("practice.answer")}
         maxSeconds={30}
@@ -1312,9 +1321,19 @@ function Rep4MakeItYours({
       />
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
-      <PrimaryButton onClick={onNext} disabled={!attempted}>
-        {index < items.length - 1 ? t("practice.nextQuestion") : t("practice.nextRep")} <ArrowRight className="size-5" />
-      </PrimaryButton>
+      {showDone ? (
+        <div className="space-y-4 rounded-3xl border-2 border-primary/40 bg-primary/5 p-5 text-center">
+          <p className="text-[22px] font-extrabold tracking-tight text-primary">{t("rep4.done")}</p>
+          <p className="text-[14px] font-semibold text-muted-foreground">{t("rep4.doneSub")}</p>
+          <PrimaryButton onClick={onNext}>
+            {t("rep4.continueRep5")} <ArrowRight className="size-5" />
+          </PrimaryButton>
+        </div>
+      ) : (
+        <PrimaryButton onClick={onNext} disabled={!attempted}>
+          {isLast ? t("practice.nextRep") : t("practice.nextQuestion")} <ArrowRight className="size-5" />
+        </PrimaryButton>
+      )}
 
       {attempted ? null : (
         <>
