@@ -3,10 +3,17 @@ import { compareRep2 as compareGeneric, toPublicStatus, type Rep2Confidence } fr
 import {
   GENERIC_PROFILE,
   SIMPLE_FUTURE_PROFILE,
+  BASIC_ZERO_PROFILE,
+  SIMPLE_PRESENT_PROFILE,
+  PAST_STORIES_PROFILE,
+  MIXED_TENSES_PROFILE,
   getRep2CorrectionProfile,
   hasRep2CorrectionRollout,
-  isRep2CorrectionEnabledFor,
+  type Rep2CorrectionProfile,
 } from "./rep2-correction-profiles";
+import { isRep2CorrectionEnabled, rep2Chunks, rep2ChunkText } from "./rep-structure";
+import { CourseService } from "@/services/course-service";
+import type { ModuleId } from "@/lib/types";
 
 /** Existing QA suite runs with the active Future profile (behaviour must be unchanged). */
 const compareRep2 = (target: string, transcript: string, confidence?: Rep2Confidence) =>
@@ -94,6 +101,11 @@ describe("compareRep2 (Future profile)", () => {
 
   it("CASE C: silent / punctuation-only transcript → asr_uncertain", () => {
     expect(compareRep2(target, ".").status).toBe("asr_uncertain");
+  });
+
+  it("accepts compound ages as digits or words (Basic Zero: 22, 41)", () => {
+    expect(compareRep2("I am 41 years old.", "I am forty-one years old").status).toBe("good");
+    expect(compareRep2("I am twenty-two years old.", "I am 22 years old").status).toBe("good");
   });
 
   it("accepts a number word instead of digits", () => {
@@ -221,21 +233,163 @@ describe("Future profile focus", () => {
   });
 });
 
+const withProfile = (profile: Rep2CorrectionProfile) => (target: string, transcript: string) =>
+  compareGeneric(target, transcript, { avgLogprob: -0.2, noSpeechProb: 0.01 }, profile);
+
+describe("BASIC ZERO profile", () => {
+  const c = withProfile(BASIC_ZERO_PROFILE);
+  it("correct target → GOOD", () => {
+    expect(c("My name is Carlos. I am 22 years old.", "My name is Carlos, I am twenty-two years old.").status).toBe("good");
+  });
+  it("missing 'am' → CORRECT focus AM", () => {
+    const r = c("I am from El Salvador.", "I from El Salvador");
+    expect(r.status).toBe("correct");
+    expect(r.focus).toBe("AM");
+  });
+  it("is → are slip → CORRECT focus IS", () => {
+    expect(c("My favorite color is blue.", "My favorite color are blue").focus).toBe("IS");
+  });
+  it("many differences → CORRECT, no focus", () => {
+    const r = c("My hobbies are playing soccer and watching movies.", "I like pizza and tacos a lot");
+    expect(r.status).toBe("correct");
+    expect(r.focus).toBeUndefined();
+  });
+});
+
+describe("FUTURE profile", () => {
+  const c = withProfile(SIMPLE_FUTURE_PROFILE);
+  it("missing am", () => {
+    const r = c("I am going to work tomorrow.", "I going to work tomorrow");
+    expect(r.status).toBe("correct");
+    expect(r.focus).toBe("AM");
+  });
+  it("missing to in going-to", () => {
+    expect(c("I'm going to study tonight.", "I'm going study tonight").focus).toBe("going TO");
+  });
+  it("missing will", () => {
+    const r = c("I will call her tomorrow.", "I call her tomorrow");
+    expect(r.status).toBe("correct");
+    expect(r.focus).toBe("WILL");
+  });
+});
+
+describe("PRESENT profile", () => {
+  const c = withProfile(SIMPLE_PRESENT_PROFILE);
+  it("work / works → CORRECT focus WORKS", () => {
+    const r = c("She works from home.", "She work from home");
+    expect(r.status).toBe("correct");
+    expect(r.focus).toBe("WORKS");
+  });
+  it("study / studies → focus STUDIES", () => {
+    expect(c("He studies English every day.", "He study English every day").focus).toBe("STUDIES");
+  });
+  it("third-person -s still found next to a small content slip", () => {
+    expect(c("She works from home twice a week.", "She work from home two a week").focus).toBe("WORKS");
+  });
+  it("missing does → focus DOES", () => {
+    const r = c("Does she work here?", "She work here?");
+    expect(r.status).toBe("correct");
+    expect(r.focus).toBe("DOES");
+  });
+  it("don't vs doesn't → prioritises does not", () => {
+    expect(c("He doesn't work on Sunday.", "He don't work on Sunday").focus).toBe("DOES NOT");
+  });
+  it("don't ≡ do not → GOOD", () => {
+    expect(c("We don't have the same schedule every day.", "We do not have the same schedule every day.").status).toBe("good");
+  });
+  it("many differences → no focus", () => {
+    expect(c("I usually wake up around six thirty.", "I like coffee in the office").focus).toBeUndefined();
+  });
+});
+
+describe("PAST profile", () => {
+  const c = withProfile(PAST_STORIES_PROFILE);
+  it("missing did → DID", () => {
+    const r = c("Did you work yesterday?", "You work yesterday?");
+    expect(r.status).toBe("correct");
+    expect(r.focus).toBe("DID");
+  });
+  it("was / am → WAS", () => {
+    expect(c("I was tired yesterday.", "I am tired yesterday").focus).toBe("WAS");
+  });
+  it("were / was → WERE", () => {
+    expect(c("They were at home.", "They was at home").focus).toBe("WERE");
+  });
+  it("didn't ≡ did not → GOOD", () => {
+    expect(c("I didn't go to work.", "I did not go to work").status).toBe("good");
+  });
+  it("go / went single mismatch → WENT", () => {
+    const r = c("I went home early.", "I go home early");
+    expect(r.status).toBe("correct");
+    expect(r.focus).toBe("WENT");
+  });
+  it("many differences → no focus", () => {
+    expect(c("I ate breakfast at home. I drank some coffee before work.", "I eat breakfast and drink tea").focus).toBeUndefined();
+  });
+});
+
+describe("MIXED profile (conservative)", () => {
+  const c = withProfile(MIXED_TENSES_PROFILE);
+  it("exact → GOOD", () => {
+    expect(c("Yesterday, I cleaned my whole apartment.", "yesterday I cleaned my whole apartment").status).toBe("good");
+  });
+  it("one obvious difference → CORRECT with one focus", () => {
+    const r = c("Yesterday, I cleaned my whole apartment.", "Yesterday I clean my whole apartment");
+    expect(r.status).toBe("correct");
+    expect(r.focus).toBe("CLEANED");
+  });
+  it("several differences (even grammar words) → no focus", () => {
+    const r = c("Tomorrow, I'm going to clean the kitchen.", "Tomorrow I going clean kitchen");
+    expect(r.status).toBe("correct");
+    expect(r.focus).toBeUndefined();
+  });
+});
+
+describe("cross-module regression", () => {
+  const profiles = [BASIC_ZERO_PROFILE, SIMPLE_FUTURE_PROFILE, SIMPLE_PRESENT_PROFILE, PAST_STORIES_PROFILE, MIXED_TENSES_PROFILE];
+  it.each(profiles.map((p) => [p.moduleId, p] as const))("%s: writing-only differences → GOOD, clear speech never uncertain", (_id, p) => {
+    const c = withProfile(p);
+    expect(c("In the morning, I'm going to work.", "in the morning I am going to work").status).toBe("good");
+    expect(c("I talk to a coworker.", "I talk to a co-worker").status).toBe("good");
+    expect(c("I'm going to study tonight.", "Study").status).toBe("correct");
+    expect(c("I'm going to study tonight.", "My cat likes fish").status).toBe("correct");
+    expect(compareGeneric("I'm going to study tonight.", "", undefined, p).status).toBe("asr_uncertain");
+    expect(compareGeneric("I'm going to study tonight.", "I'm going to study tonight", { avgLogprob: -0.95, noSpeechProb: 0 }, p).status).toBe("asr_uncertain");
+  });
+});
+
 describe("rollout", () => {
-  it("simple-future Day 1 and 2 enabled, Day 3 disabled", () => {
-    expect(isRep2CorrectionEnabledFor("simple-future", 1)).toBe(true);
-    expect(isRep2CorrectionEnabledFor("simple-future", 2)).toBe(true);
-    expect(isRep2CorrectionEnabledFor("simple-future", 3)).toBe(false);
-    expect(hasRep2CorrectionRollout("simple-future")).toBe(true);
+  const BASIC: ModuleId[] = ["basic-zero", "simple-future", "simple-present", "past-stories", "mixed-tenses"];
+  const OTHER: ModuleId[] = ["eagles-week-1", "tigers", "sharks", "advanced-1"];
+
+  it("only the five Basic modules are rolled out", () => {
+    for (const m of BASIC) expect(hasRep2CorrectionRollout(m)).toBe(true);
+    for (const m of OTHER) expect(hasRep2CorrectionRollout(m)).toBe(false);
+    expect(hasRep2CorrectionRollout("unknown-module")).toBe(false);
   });
-  it("other modules disabled even if a profile exists", () => {
-    for (const m of ["basic-zero", "simple-present", "simple-past", "basic-4", "eagles", "tigers", "sharks", "advanced-1"]) {
-      expect(isRep2CorrectionEnabledFor(m, 1)).toBe(false);
-      expect(hasRep2CorrectionRollout(m)).toBe(false);
+
+  it("every Basic module has its own profile; others fall back to generic", () => {
+    for (const m of BASIC) expect(getRep2CorrectionProfile(m).moduleId).toBe(m);
+    for (const m of OTHER) expect(getRep2CorrectionProfile(m)).toBe(GENERIC_PROFILE);
+  });
+
+  it("integration audit: every Basic day exists, yields non-empty Rep 2 targets and is enabled", async () => {
+    for (const m of BASIC) {
+      const loaded = await CourseService.loadModule(m);
+      expect(loaded.days.length).toBeGreaterThan(0);
+      for (const day of loaded.days) {
+        const chunks = rep2Chunks(day);
+        expect(chunks.length, `${m} day ${day.day} has no Rep 2 chunks`).toBeGreaterThan(0);
+        for (const c of chunks) expect(rep2ChunkText(c).trim(), `${m} d${day.day} ${c.id}`).not.toBe("");
+        expect(isRep2CorrectionEnabled(m, day), `${m} day ${day.day} should be enabled`).toBe(true);
+      }
     }
-  });
-  it("unknown module falls back to the generic profile (profile ≠ rollout)", () => {
-    expect(getRep2CorrectionProfile("simple-present")).toBe(GENERIC_PROFILE);
-    expect(getRep2CorrectionProfile("simple-future")).toBe(SIMPLE_FUTURE_PROFILE);
-  });
+  }, 30_000);
+
+  it("non-Basic modules stay disabled on every day", async () => {
+    for (const m of OTHER) {
+      const loaded = await CourseService.loadModule(m);
+      for (const day of loaded.days) expect(isRep2CorrectionEnabled(m, day)).toBe(false);
+    }
+  }, 30_000);
 });
