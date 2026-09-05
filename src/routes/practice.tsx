@@ -6,6 +6,7 @@ import { toneForTurn, type ModelTone } from "@/lib/model-tone";
 import { rep2Chunks, rep4Items, rep2ChunkText, REP4_MAX, isRep2CorrectionEnabled } from "@/lib/rep-structure";
 export { REP4_MAX };
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
+import { Rep2Feedback, type Rep2CorrectionResult } from "@/components/fluency/Rep2Feedback";
 import { RepProgress } from "@/components/fluency/RepProgress";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { PowerChunks } from "@/components/fluency/PowerChunks";
