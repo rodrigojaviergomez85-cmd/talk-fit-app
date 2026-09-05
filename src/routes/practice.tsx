@@ -1215,18 +1215,24 @@ function Rep2Copy({
           onTryAgain={tryAgain}
           onSkip={onSkip}
           onNext={onNext}
+          nextLabel={isLast ? t("practice.nextRep") : t("practice.nextChunk")}
           canRetry={retries < 2}
         />
       ) : null}
 
-      <PrimaryButton onClick={onNext} disabled={!attempted}>
-        {isLast ? t("practice.nextRep") : t("practice.nextChunk")} <ArrowRight className="size-5" />
-      </PrimaryButton>
-
-      {attempted ? null : (
+      {/* While a correction is in flight or on screen, the feedback card owns navigation. */}
+      {feedbackOwnsNav ? null : (
         <>
-          <HelperText text={t("practice.recordOnce")} />
-          <SkipLink label={t("practice.skipChunk")} onClick={onSkip} />
+          <PrimaryButton onClick={onNext} disabled={!attempted}>
+            {isLast ? t("practice.nextRep") : t("practice.nextChunk")} <ArrowRight className="size-5" />
+          </PrimaryButton>
+
+          {attempted ? null : (
+            <>
+              <HelperText text={t("practice.recordOnce")} />
+              <SkipLink label={t("practice.skipChunk")} onClick={onSkip} />
+            </>
+          )}
         </>
       )}
     </div>
