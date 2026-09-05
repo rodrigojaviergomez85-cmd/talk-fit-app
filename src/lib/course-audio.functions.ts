@@ -41,7 +41,12 @@ export type WarmBatchReport = AudioInventoryReport & {
   failed: { source: string; preview: string; reason: string }[];
   /** True when storage state was uncertain: nothing was generated. */
   storageUnavailable: boolean;
+  /** Set when the batch stopped early on an AI billing/policy/rate-limit status (402/403/429). */
+  haltedOn: number | null;
 };
+
+/** AI statuses that stop the batch: more attempts only repeat the same denial. */
+const HALT_STATUSES = new Set([402, 403, 429]);
 
 const BATCH_SIZE = 12;
 const CONCURRENCY = 3;
@@ -115,19 +120,20 @@ export const warmCourseAudio = createServerFn({ method: "POST" })
     const stored = await audio.listStoredKeys();
     if (!stored) {
       // Storage error / unknown state → generate NOTHING.
-      return { ...report(inv, null).base, attempted: 0, generated: 0, skippedAlreadyCached: 0, failed: [], storageUnavailable: true };
+      return { ...report(inv, null).base, attempted: 0, generated: 0, skippedAlreadyCached: 0, failed: [], storageUnavailable: true, haltedOn: null };
     }
 
     const { missing } = report(inv, stored);
     const batch = missing.slice(0, BATCH_SIZE);
     let generated = 0;
     let skipped = 0;
+    let haltedOn: number | null = null;
     const failed: WarmBatchReport["failed"] = [];
 
     // Bounded worker pool: CONCURRENCY clips in flight, never Promise.all over everything.
     let cursor = 0;
     const worker = async () => {
-      while (cursor < batch.length) {
+      while (cursor < batch.length && haltedOn === null) {
         const item = batch[cursor++]!;
         // Per-clip confirmation right before work (list may be stale). Storage error → skip, no AI.
         const result = await audio.resolveClip(item.clip, item.key, { waitForOther: false });
@@ -155,8 +161,12 @@ export const warmCourseAudio = createServerFn({ method: "POST" })
             failed.push({ source: item.spec.source, preview: preview(item.spec.text), reason: `AI error ${result.httpStatus}` });
             break;
         }
-        // Stop the whole batch on billing / policy errors — retrying only burns attempts.
-        if (result.status === "ai-error" && (result.httpStatus === 402 || result.httpStatus === 403)) cursor = batch.length;
+        // Stop the whole batch (all workers) on billing / policy / rate-limit errors —
+        // starting more clips only repeats the same gateway failure.
+        if (result.status === "ai-error" && HALT_STATUSES.has(result.httpStatus)) {
+          haltedOn ??= result.httpStatus;
+          cursor = batch.length;
+        }
       }
     };
     await Promise.all(Array.from({ length: Math.min(CONCURRENCY, batch.length) }, worker));
@@ -171,5 +181,6 @@ export const warmCourseAudio = createServerFn({ method: "POST" })
       skippedAlreadyCached: skipped,
       failed,
       storageUnavailable: after === null,
+      haltedOn,
     };
   });
