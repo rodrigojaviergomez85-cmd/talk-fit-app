@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { compareRep2, type Rep2Confidence } from "@/lib/rep2-match";
+import { compareRep2, toPublicStatus, type Rep2Confidence } from "@/lib/rep2-match";
 import type { ModuleId } from "@/lib/types";
 
 /** Only the audio formats the app itself records/uploads. */
@@ -20,6 +20,8 @@ const RATE_WINDOW_SECONDS = 60 * 60;
 const GROQ_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
 const MODEL_TURBO = "whisper-large-v3-turbo";
 const MODEL_FALLBACK = "whisper-large-v3";
+/** Neutral context only — must never contain the target sentence or the words we detect. */
+const NEUTRAL_PROMPT = "English learner speaking about future plans.";
 
 const ALLOWED_MODULES = new Set<ModuleId>(["simple-future"]);
 const ALLOWED_DAYS = new Set([1, 2]);
@@ -33,7 +35,7 @@ type Metrics = {
   uncertain: number;
 };
 
-let metrics: Metrics = { total: 0, turboOnly: 0, fallback: 0, good: 0, correct: 0, uncertain: 0 };
+const metrics: Metrics = { total: 0, turboOnly: 0, fallback: 0, good: 0, correct: 0, uncertain: 0 };
 
 /**
  * Low-cost spoken correction for Rep 2.
@@ -192,13 +194,12 @@ async function transcribe(
   file: File,
   ext: string,
   model: string,
-  prompt: string,
 ): Promise<{ ok: true; transcript: string; confidence: Rep2Confidence } | { ok: false; res: Response }> {
   const form = new FormData();
   form.append("model", model);
   form.append("file", file, `take.${ext}`);
   form.append("language", "en");
-  form.append("prompt", prompt);
+  form.append("prompt", NEUTRAL_PROMPT);
   form.append("response_format", "verbose_json");
 
   const res = await fetch(GROQ_URL, {
