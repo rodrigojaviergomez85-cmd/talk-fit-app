@@ -584,9 +584,17 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               }}
               onDelete={(index) => {
                 setTakes((list) => list.map((item, i) => (i === index ? null : item)));
-                setFinalIndex((current) => (current === index ? null : current));
+                setFinalIndex((current) => {
+                  if (current !== index) return current;
+                  // Deleted the selected Final Rep: clear it; auto-default resumes from remaining takes.
+                  setFinalManual(false);
+                  return null;
+                });
               }}
-              onSelectFinal={setFinalIndex}
+              onSelectFinal={(index) => {
+                setFinalIndex(index);
+                setFinalManual(true);
+              }}
               onFinish={finish}
             />
           ) : null}
