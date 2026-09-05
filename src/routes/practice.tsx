@@ -664,6 +664,7 @@ function QuestionBanner({ day }: { day: CourseDay }) {
       <TranslatableText es={day.rep5Prompt.questionEs}>
         <p className="text-[16px] font-extrabold leading-snug">{day.rep5Prompt.question}</p>
       </TranslatableText>
+      <AudioPlayer text={day.rep5Prompt.question} label={t("practice.hearQuestion")} variant="ghost" size="sm" voice={day.speakerVoice} />
     </div>
   );
 }
