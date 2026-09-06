@@ -21,7 +21,7 @@ import {
   type RecordingRow,
 } from "./final-audio-coach.server";
 import { MULTI_CORRECTION_MAX, type FinalCoachState } from "./final-audio-coach";
-import { FinalCoachReview } from "@/components/fluency/FinalCoachReview";
+import { FinalCoachReview, fluencyUpgradeDuplicatesCorrections } from "@/components/fluency/FinalCoachReview";
 import { CourseService } from "@/services/course-service";
 
 const USER = "aaaaaaaa-0000-0000-0000-000000000001";
@@ -304,5 +304,20 @@ describe("Multi-correction pilot — UI", () => {
     const reusable = html({ status: "ready", feedback: feedback([C2 as never]), transcript: null });
     expect(reusable).toContain("Forma base después de didn&#x27;t.");
     expect(reusable).not.toContain("¿POR QUÉ?");
+  });
+
+  it("a fluency upgrade that substantially repeats a displayed correction is omitted", () => {
+    expect(
+      fluencyUpgradeDuplicatesCorrections(
+        { original: "we went we went we went", improved: "We watched a movie and later we went to the beach" },
+        [{ category: "repetition", said: "we went we went we went", betterVersion: "We watched a movie. Later, we went to the beach.", whyEn: "Vary it.", whyEs: "Varía." }],
+      ),
+    ).toBe(true);
+    expect(
+      fluencyUpgradeDuplicatesCorrections(
+        { original: "I went home", improved: "Later, I went home with my sister" },
+        [C1 as never],
+      ),
+    ).toBe(false);
   });
 });
