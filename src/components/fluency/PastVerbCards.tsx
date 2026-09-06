@@ -15,10 +15,7 @@ function Card({ card, voice }: { card: VerbCard; voice?: "female" | "male" | und
     <div className="w-[78vw] max-w-[320px] shrink-0 snap-center overflow-hidden rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] sm:w-auto sm:max-w-none">
       <img src={card.src} alt={card.alt} width={768} height={576} loading="lazy" className="w-full" />
       <div className="space-y-2 p-4">
-        <TranslatableText
-          supportOnly
-          es={card.negative?.es ? `${card.es ?? ""} · ${card.negative.es}` : (card.es ?? "")}
-        >
+        <TranslatableText supportOnly es={card.es ?? ""}>
           <div className="flex flex-wrap items-center gap-2 text-[12px] font-bold uppercase tracking-[0.14em]">
             <span className="rounded-full bg-secondary px-3 py-1 text-muted-foreground">{card.present}</span>
             <ArrowRight className="size-4 text-primary" />
@@ -87,9 +84,9 @@ export function PastVerbCards({ day, collapsed = false }: { day: CourseDay; coll
 
   return (
     <div className="space-y-3">
-      <TranslatableText es="MIRA · ESCUCHA · DI LA ORACIÓN" align="center">
+      <TranslatableText es="MIRA · ESCUCHA · DI EL VERBO" align="center">
         <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-          Look · Listen · Say the sentence
+          Look · Listen · Say the verb
         </p>
       </TranslatableText>
       <div
