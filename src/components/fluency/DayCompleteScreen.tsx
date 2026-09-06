@@ -15,8 +15,6 @@ import { HabitMilestone } from "./HabitMilestone";
 import { moduleComparison, weekComparison } from "@/lib/progress-moments";
 import { HABIT_GOAL, final6, habitDays, milestonesCrossed, wasOnBreak, type HabitMilestoneDef } from "@/lib/habit";
 import { AchievementsService } from "@/services/achievements-service";
-import { FinalCoachCard } from "./FinalCoachCard";
-import type { FinalCoachState } from "@/lib/final-audio-coach";
 
 export type RepSummary = { total: number; attempted: number; skipped: number };
 
@@ -31,8 +29,6 @@ type Props = {
   showEs: boolean;
   summary?: { rep2: RepSummary; rep4: RepSummary };
   saveState?: FinalRepSaveState;
-  /** AI Coach state for THIS session only (independent from saveState). */
-  coachState?: FinalCoachState;
   /** Habit snapshot captured before this completion (for milestone + welcome-back detection). */
   habitBefore?: { days: number; lastCompletedDate?: string } | null;
   onRetrySave?: () => void;
@@ -53,7 +49,6 @@ export function DayCompleteScreen({
   showEs,
   summary,
   saveState = "idle",
-  coachState = { status: "idle" },
   habitBefore = null,
   onRetrySave,
 }: Props) {
@@ -243,7 +238,7 @@ export function DayCompleteScreen({
           </div>
         ) : null}
 
-        <FinalCoachCard state={coachState} showEs={showEs} />
+        {/* AI coaching happens INSIDE STEP 5 before this screen — never repeated here. */}
 
         <div className="rounded-3xl border border-primary/25 bg-accent p-5 text-center">
           <TranslatableText es="Cada rep hace tu inglés más automático." align="center">

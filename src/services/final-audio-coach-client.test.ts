@@ -5,7 +5,7 @@ import {
   type CoachHttpResult,
   type CoachPipelineDeps,
 } from "./final-audio-coach-client";
-import { coachStatusLabels } from "@/components/fluency/FinalCoachCard";
+import { coachReviewSections } from "@/components/fluency/FinalCoachReview";
 import type { FinalAudioCoachFeedback, FinalCoachState } from "@/lib/final-audio-coach";
 import type { Recording, RolePlayTurn } from "@/lib/types";
 
@@ -17,6 +17,12 @@ const FEEDBACK: FinalAudioCoachFeedback = {
   strengthEs: "Conectaste tus ideas con claridad.",
   nextStepEn: "Add one reason using because.",
   nextStepEs: "Agrega una razón usando because.",
+  correctionNeeded: false,
+  said: null,
+  betterVersion: null,
+  whyEn: null,
+  whyEs: null,
+  practicePhrase: null,
 };
 
 function rec(id: string, label?: string): Recording {
@@ -82,7 +88,9 @@ describe("Final Audio selection costs 0 AI calls (CASE 1, 2)", () => {
     expect(practice.match(/runFinalCoachPipeline\(/g)?.length).toBe(1);
     const finishBody = practice.slice(practice.indexOf("const finish = () =>"), practice.indexOf("const countFor"));
     expect(finishBody).toContain("runFinalCoachPipeline(");
-    expect(finishBody.indexOf("setDone(true)")).toBeLessThan(finishBody.indexOf("runFinalCoachPipeline("));
+    // The day is committed (completeDay) BEFORE the pipeline; Day Complete comes later via CONTINUE.
+    expect(finishBody.indexOf("JourneyService.completeDay(")).toBeLessThan(finishBody.indexOf("runFinalCoachPipeline("));
+    expect(finishBody).toContain("onDayComplete: () => setDone(true)");
   });
 });
 
@@ -125,18 +133,16 @@ describe("runFinalCoachPipeline", () => {
     expect(h.calls.coach).toHaveLength(0);
   });
 
-  it("CASE 6 + 7: READY maps to static labels in EN and ES without another request", () => {
-    const en = coachStatusLabels(FEEDBACK, false);
-    expect(en.task.text).toBe("Completed ✓");
-    expect(en.targetLanguage.text).toBe("On track ✓");
-    expect(en.organization.text).toBe("Developing");
-    const es = coachStatusLabels(FEEDBACK, true);
-    expect(es.task.text).toBe("Completada ✓");
-    expect(es.targetLanguage.text).toBe("Bien encaminado ✓");
-    expect(es.organization.text).toBe("En desarrollo");
-    const notDone = coachStatusLabels({ ...FEEDBACK, taskCompleted: false, organization: "good" }, true);
-    expect(notDone.task.text).toBe("Sigue desarrollándola");
-    expect(notDone.organization.text).toBe("Bien encaminada ✓");
+  it("CASE 6 + 7: READY renders from the same feedback object in EN and ES without another request", () => {
+    const en = coachReviewSections(FEEDBACK, false);
+    expect(en.title).toBe("AI COACH ✨");
+    expect(en.strength).toBe(FEEDBACK.strengthEn);
+    expect(en.correction).toBeNull();
+    expect(en.nextStep).toBe(FEEDBACK.nextStepEn);
+    const es = coachReviewSections(FEEDBACK, true);
+    expect(es.title).toBe("COACH DE IA ✨");
+    expect(es.strength).toBe(FEEDBACK.strengthEs);
+    expect(es.nextStep).toBe(FEEDBACK.nextStepEs);
     // Both languages live in the same feedback object: switching is a local read.
     expect(FEEDBACK.strengthEs).toBeTruthy();
     expect(FEEDBACK.nextStepEs).toBeTruthy();
@@ -436,5 +442,49 @@ describe("pending polling window", () => {
     expect(result.status).toBe("unavailable");
     expect(h.calls.coach).toHaveLength(PENDING_POLL_DELAYS_MS.length + 1);
     expect(h.calls.sleeps).toEqual([...PENDING_POLL_DELAYS_MS]);
+  });
+});
+
+describe("Coach Review sections (CASE D, J, K, 31): one strength, max one correction, language switch is local", () => {
+  const WITH_FIX: FinalAudioCoachFeedback = {
+    ...FEEDBACK,
+    correctionNeeded: true,
+    said: "I took a shower",
+    betterVersion: "I take a shower",
+    whyEn: "You're talking about your routine, so use the simple present.",
+    whyEs: "Estás hablando de tu rutina, por eso usamos presente simple.",
+    practicePhrase: "I take a shower and then I have breakfast.",
+  };
+
+  it("CASE D/K: READY with a correction shows exactly ONE said/better/why/practice block", () => {
+    const es = coachReviewSections(WITH_FIX, true);
+    expect(es.correction).toEqual({
+      said: "I took a shower",
+      better: "I take a shower",
+      why: WITH_FIX.whyEs,
+      practice: WITH_FIX.practicePhrase,
+    });
+    expect(es.nextStep).toBeNull();
+    expect(Array.isArray(es.correction)).toBe(false);
+  });
+
+  it("CASE J: no correction → strength + next step, no YOU SAID / BETTER block", () => {
+    const en = coachReviewSections(FEEDBACK, false);
+    expect(en.correction).toBeNull();
+    expect(en.nextStep).toBe(FEEDBACK.nextStepEn);
+  });
+
+  it("CASE 31: ES ↔ EN switch reads the same object — 0 additional requests", () => {
+    const en = coachReviewSections(WITH_FIX, false);
+    const es = coachReviewSections(WITH_FIX, true);
+    expect(en.correction!.why).toBe(WITH_FIX.whyEn);
+    expect(es.correction!.why).toBe(WITH_FIX.whyEs);
+    expect(en.correction!.said).toBe(es.correction!.said);
+  });
+
+  it("CASE I (client): correctionNeeded=true but incomplete fields never render a half correction", () => {
+    const s = coachReviewSections({ ...WITH_FIX, said: null }, true);
+    expect(s.correction).toBeNull();
+    expect(s.nextStep).toBe(WITH_FIX.nextStepEs);
   });
 });

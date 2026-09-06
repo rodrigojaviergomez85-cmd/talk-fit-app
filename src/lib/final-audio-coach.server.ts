@@ -17,7 +17,12 @@
 import type { CourseDay, ModuleId } from "./types";
 import { takeSlots } from "./take-slots";
 
-export const FINAL_AUDIO_COACH_VERSION = "v1";
+/**
+ * v2: the single LLM call also returns ONE transcript-grounded specific
+ * correction (said / betterVersion / why / practicePhrase). Bumped so cached v1
+ * rows (which never had correction fields) are not replayed as v2 feedback.
+ */
+export const FINAL_AUDIO_COACH_VERSION = "v2";
 
 /** Quota: NEW analyses per learner per rolling window. Cache hits never consume it. */
 export const COACH_QUOTA_ENDPOINT = "final-audio-coach";
@@ -78,7 +83,19 @@ export function maxTakeNumberFor(day: Pick<CourseDay, "rep5Turns">): number {
   return takeSlots(day.rep5Turns);
 }
 
-export const LIMITS = { strengthEn: 120, strengthEs: 140, nextStepEn: 140, nextStepEs: 160 } as const;
+export const LIMITS = {
+  strengthEn: 120,
+  strengthEs: 140,
+  nextStepEn: 140,
+  nextStepEs: 160,
+  said: 120,
+  betterVersion: 140,
+  whyEn: 160,
+  whyEs: 180,
+  practicePhrase: 160,
+} as const;
+/** `said` must be a SHORT quote — a real fragment of the transcript, never a paraphrase. */
+export const MAX_SAID_WORDS = 15;
 
 export type CoachStatus = "pending" | "ready" | "unclear" | "error";
 export type Rating = "good" | "developing";
@@ -91,6 +108,13 @@ export type CoachFeedback = {
   strengthEs: string;
   nextStepEn: string;
   nextStepEs: string;
+  /** v2: at most ONE specific correction, grounded in the transcript. All null when false. */
+  correctionNeeded: boolean;
+  said: string | null;
+  betterVersion: string | null;
+  whyEn: string | null;
+  whyEs: string | null;
+  practicePhrase: string | null;
 };
 
 export type RecordingRow = {
@@ -118,6 +142,12 @@ export type FeedbackRow = {
   strength_es: string | null;
   next_step_en: string | null;
   next_step_es: string | null;
+  correction_needed: boolean | null;
+  said: string | null;
+  better_version: string | null;
+  why_en: string | null;
+  why_es: string | null;
+  practice_phrase: string | null;
   transcript_word_count: number | null;
   estimated_idea_count: number | null;
 };
@@ -307,8 +337,38 @@ function rating(value: unknown): Rating | null {
   return value === "good" || value === "developing" ? value : null;
 }
 
-/** Strict validation + safe truncation of the model output. Null = unusable. */
-export function normalizeFeedback(raw: unknown): CoachFeedback | null {
+/** Lowercase, punctuation stripped, whitespace collapsed — used ONLY to ground `said` in the transcript. */
+export function normalizeForMatch(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[’‘`´]/g, "'")
+    .replace(/[^\p{L}\p{N}' ]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** True when the short `said` quote actually occurs (word-bounded) in the transcript. */
+export function saidOccursInTranscript(said: string, transcript: string): boolean {
+  const s = normalizeForMatch(said);
+  const t = normalizeForMatch(transcript);
+  if (!s || !t) return false;
+  if (countWords(s) > MAX_SAID_WORDS) return false;
+  return ` ${t} `.includes(` ${s} `);
+}
+
+const NO_CORRECTION = { correctionNeeded: false as const, said: null, betterVersion: null, whyEn: null, whyEs: null, practicePhrase: null };
+
+/**
+ * Strict validation + safe truncation of the model output. Null = unusable.
+ *
+ * `transcript` (fresh model output, still in memory) grounds the correction:
+ * if `correctionNeeded` is true but `said` is not a real fragment of the
+ * transcript — or any correction field is missing — the correction is
+ * SUPPRESSED (never fabricated) and the general next step stands. No second
+ * AI call. When `transcript` is omitted (cache replay) the stored correction
+ * was already grounded at generation time and is kept as-is.
+ */
+export function normalizeFeedback(raw: unknown, transcript?: string): CoachFeedback | null {
   if (!raw || typeof raw !== "object") return null;
   const r = raw as Record<string, unknown>;
   const targetLanguage = rating(r["targetLanguage"]);
@@ -323,7 +383,20 @@ export function normalizeFeedback(raw: unknown): CoachFeedback | null {
   const nextStepEn = text("nextStepEn");
   const nextStepEs = text("nextStepEs");
   if (!strengthEn || !strengthEs || !nextStepEn || !nextStepEs) return null;
-  return { taskCompleted: r["taskCompleted"], targetLanguage, organization, strengthEn, strengthEs, nextStepEn, nextStepEs };
+  const base = { taskCompleted: r["taskCompleted"], targetLanguage, organization, strengthEn, strengthEs, nextStepEn, nextStepEs };
+
+  if (r["correctionNeeded"] !== true) return { ...base, ...NO_CORRECTION };
+  const saidRaw = typeof r["said"] === "string" ? r["said"].replace(/\s+/g, " ").trim() : "";
+  const betterVersion = text("betterVersion");
+  const whyEn = text("whyEn");
+  const whyEs = text("whyEs");
+  const practicePhrase = text("practicePhrase");
+  if (!saidRaw || !betterVersion || !whyEn || !whyEs || !practicePhrase) return { ...base, ...NO_CORRECTION };
+  if (saidRaw.length > LIMITS.said || countWords(saidRaw) > MAX_SAID_WORDS) return { ...base, ...NO_CORRECTION };
+  if (transcript !== undefined && !saidOccursInTranscript(saidRaw, transcript)) return { ...base, ...NO_CORRECTION };
+  // A "correction" identical to what was said is not a correction.
+  if (normalizeForMatch(saidRaw) === normalizeForMatch(betterVersion)) return { ...base, ...NO_CORRECTION };
+  return { ...base, correctionNeeded: true, said: saidRaw, betterVersion, whyEn, whyEs, practicePhrase };
 }
 
 export function feedbackFromRow(row: FeedbackRow): CoachFeedback | null {
@@ -335,6 +408,12 @@ export function feedbackFromRow(row: FeedbackRow): CoachFeedback | null {
     strengthEs: row.strength_es,
     nextStepEn: row.next_step_en,
     nextStepEs: row.next_step_es,
+    correctionNeeded: row.correction_needed === true,
+    said: row.said,
+    betterVersion: row.better_version,
+    whyEn: row.why_en,
+    whyEs: row.why_es,
+    practicePhrase: row.practice_phrase,
   });
 }
 
@@ -375,8 +454,11 @@ export function buildCoachMessages(rubric: CoachRubric, transcript: string, esti
     "Never grade accent or pronunciation. Never compare word-for-word with a model answer.",
     "Never make employment decisions, level certifications (A2/B2/C1) or claims like 'you would fail'. This is coaching, not certification.",
     "Evaluate only: (1) task completion — did they answer the actual question/turn; (2) target language — a reasonable attempt at the day's focus; (3) organization — several understandable connected ideas for the level.",
-    "Return ONE strength and ONE highest-value next step, each as ONE short sentence, in English AND natural Latin American Spanish. No lists of mistakes.",
-    `Hard limits: strengthEn ≤ ${LIMITS.strengthEn} chars, strengthEs ≤ ${LIMITS.strengthEs}, nextStepEn ≤ ${LIMITS.nextStepEn}, nextStepEs ≤ ${LIMITS.nextStepEs}.`,
+    "Return ONE genuine strength and ONE highest-value next step, each as ONE short sentence, in English AND natural Latin American Spanish. No lists of mistakes.",
+    "Then decide on AT MOST ONE specific correction (language / grammar / vocabulary / task usage ONLY — never pronunciation, accent or phonemes, because you only see a transcript). Prioritise the day's language focus: tense, missing auxiliary, third-person -s, negative/question structure, an important word choice, a connector, the target structure, or organization when clearly useful.",
+    "If there is a clear, high-value error: set correctionNeeded=true; `said` = a SHORT phrase (max 12 words) copied EXACTLY, word for word, from the transcript (never paraphrase, never invent); `betterVersion` = the corrected phrase; `whyEn`/`whyEs` = ONE very simple reason; `practicePhrase` = one short natural English sentence to repeat that uses the correct form.",
+    "If the target skill was successful and there is no clear high-value error, do NOT invent one: set correctionNeeded=false and set said, betterVersion, whyEn, whyEs and practicePhrase to null. Never hunt for tiny mistakes.",
+    `Hard limits: strengthEn ≤ ${LIMITS.strengthEn} chars, strengthEs ≤ ${LIMITS.strengthEs}, nextStepEn ≤ ${LIMITS.nextStepEn}, nextStepEs ≤ ${LIMITS.nextStepEs}, said ≤ ${LIMITS.said}, betterVersion ≤ ${LIMITS.betterVersion}, whyEn ≤ ${LIMITS.whyEn}, whyEs ≤ ${LIMITS.whyEs}, practicePhrase ≤ ${LIMITS.practicePhrase}. No paragraphs.`,
     LEVEL_GUIDANCE[rubric.level],
   ].join(" ");
   const user = [
@@ -404,7 +486,21 @@ export const COACH_JSON_SCHEMA = {
   schema: {
     type: "object",
     additionalProperties: false,
-    required: ["taskCompleted", "targetLanguage", "organization", "strengthEn", "strengthEs", "nextStepEn", "nextStepEs"],
+    required: [
+      "taskCompleted",
+      "targetLanguage",
+      "organization",
+      "strengthEn",
+      "strengthEs",
+      "nextStepEn",
+      "nextStepEs",
+      "correctionNeeded",
+      "said",
+      "betterVersion",
+      "whyEn",
+      "whyEs",
+      "practicePhrase",
+    ],
     properties: {
       taskCompleted: { type: "boolean" },
       targetLanguage: { type: "string", enum: ["good", "developing"] },
@@ -413,6 +509,12 @@ export const COACH_JSON_SCHEMA = {
       strengthEs: { type: "string" },
       nextStepEn: { type: "string" },
       nextStepEs: { type: "string" },
+      correctionNeeded: { type: "boolean" },
+      said: { type: ["string", "null"] },
+      betterVersion: { type: ["string", "null"] },
+      whyEn: { type: ["string", "null"] },
+      whyEs: { type: ["string", "null"] },
+      practicePhrase: { type: ["string", "null"] },
     },
   },
 } as const;
@@ -581,7 +683,8 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
   llmCalled = true;
   let feedback: CoachFeedback | null = null;
   try {
-    feedback = normalizeFeedback(await deps.llm(rubric, transcript, rec.estimated_idea_count));
+    // Transcript still in memory: `said` is grounded here, then the transcript is dropped (never stored).
+    feedback = normalizeFeedback(await deps.llm(rubric, transcript, rec.estimated_idea_count), transcript);
   } catch {
     feedback = null;
   }

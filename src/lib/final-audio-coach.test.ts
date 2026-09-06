@@ -4,6 +4,7 @@ import { join } from "node:path";
 import {
   AVG_LOGPROB_THRESHOLD,
   buildRubric,
+  COACH_JSON_SCHEMA,
   COACH_QUOTA_ENDPOINT,
   FINAL_AUDIO_COACH_VERSION,
   MAX_FINAL_AUDIO_BYTES,
@@ -40,6 +41,12 @@ const GOOD_LLM: CoachFeedback = {
   strengthEs: "Respondiste la pregunta con ideas claras.",
   nextStepEn: "Add one reason with because.",
   nextStepEs: "Agrega una razón usando because.",
+  correctionNeeded: false,
+  said: null,
+  betterVersion: null,
+  whyEn: null,
+  whyEs: null,
+  practicePhrase: null,
 };
 
 const LONG_TRANSCRIPT = "My name is Carlos and I live in San Salvador because I like the city and my family is here.";
@@ -95,6 +102,12 @@ function makeStore(now: () => number) {
         strength_es: null,
         next_step_en: null,
         next_step_es: null,
+        correction_needed: null,
+        said: null,
+        better_version: null,
+        why_en: null,
+        why_es: null,
+        practice_phrase: null,
         transcript_word_count: null,
         estimated_idea_count: row.estimatedIdeaCount,
       });
@@ -120,6 +133,12 @@ function makeStore(now: () => number) {
       r.strength_es = patch.feedback?.strengthEs ?? null;
       r.next_step_en = patch.feedback?.nextStepEn ?? null;
       r.next_step_es = patch.feedback?.nextStepEs ?? null;
+      r.correction_needed = patch.feedback?.correctionNeeded ?? null;
+      r.said = patch.feedback?.said ?? null;
+      r.better_version = patch.feedback?.betterVersion ?? null;
+      r.why_en = patch.feedback?.whyEn ?? null;
+      r.why_es = patch.feedback?.whyEs ?? null;
+      r.practice_phrase = patch.feedback?.practicePhrase ?? null;
     },
   };
   return store;
@@ -480,7 +499,8 @@ describe("Final Audio Coach — rubric resolution", () => {
     const a = buildRubric(day, "simple-present", "X", null)!;
     const b = buildRubric(day, "simple-present", "X", null)!;
     expect(await rubricSha256(a)).toBe(await rubricSha256(b));
-    expect(await rubricSha256({ ...a, coachVersion: "v2" })).not.toBe(await rubricSha256(a));
+    expect(a.coachVersion).toBe(FINAL_AUDIO_COACH_VERSION);
+    expect(await rubricSha256({ ...a, coachVersion: "v1" })).not.toBe(await rubricSha256(a));
   });
 });
 
@@ -546,6 +566,132 @@ describe("Final Audio Coach — data hygiene & limits", () => {
     expect(fb.nextStepEs.length).toBeLessThanOrEqual(160);
     expect(normalizeFeedback({ ...GOOD_LLM, targetLanguage: "excellent" })).toBeNull();
     expect(normalizeFeedback({ ...GOOD_LLM, strengthEs: "" })).toBeNull();
+  });
+});
+
+describe("Final Audio Coach v2 — ONE transcript-grounded specific correction", () => {
+  const ROUTINE = "I wake up at six and I took a shower and then I have breakfast. After that I go to work by bus.";
+  const CORRECTION = {
+    correctionNeeded: true,
+    said: "I took a shower",
+    betterVersion: "I take a shower",
+    whyEn: "You're talking about your routine, so use the simple present.",
+    whyEs: "Estás hablando de tu rutina, por eso usamos presente simple.",
+    practicePhrase: "I take a shower and then I have breakfast.",
+  };
+
+  it("coach version is v2 so cached v1 rows are never replayed as v2 feedback", () => {
+    expect(FINAL_AUDIO_COACH_VERSION).toBe("v2");
+  });
+
+  it("CASE H: `said` found in the transcript → correction exposed, still 1 STT + 1 LLM, persisted without transcript", async () => {
+    const h = harness({ transcript: ROUTINE, llmReply: { ...GOOD_LLM, ...CORRECTION } });
+    const res = await runFinalAudioCoach(INPUT, h.deps);
+    expect(res.body.status).toBe("ready");
+    if (res.body.status !== "ready") return;
+    expect(res.body.feedback.correctionNeeded).toBe(true);
+    expect(res.body.feedback.said).toBe("I took a shower");
+    expect(res.body.feedback.betterVersion).toBe("I take a shower");
+    expect(res.body.feedback.practicePhrase).toBe(CORRECTION.practicePhrase);
+    expect(h.counters.stt).toBe(1);
+    expect(h.counters.llm).toBe(1);
+    const row = [...h.store.rows.values()][0]!;
+    expect(row.correction_needed).toBe(true);
+    expect(row.said).toBe("I took a shower");
+    expect(JSON.stringify(row)).not.toContain("go to work by bus");
+  });
+
+  it("CASE H (punctuation/case): matching ignores case, punctuation and whitespace", () => {
+    const fb = normalizeFeedback({ ...GOOD_LLM, ...CORRECTION, said: "  i TOOK a shower!  " }, "So, I took a shower... then I have breakfast, and later I go to work by bus today.")!;
+    expect(fb.correctionNeeded).toBe(true);
+    expect(fb.said).toBe("i TOOK a shower!");
+  });
+
+  it("CASE I: `said` NOT in the transcript → fabricated quote suppressed, general next step kept, no second LLM call", async () => {
+    const h = harness({ transcript: ROUTINE, llmReply: { ...GOOD_LLM, ...CORRECTION, said: "She work at home" } });
+    const res = await runFinalAudioCoach(INPUT, h.deps);
+    expect(res.body.status).toBe("ready");
+    if (res.body.status !== "ready") return;
+    expect(res.body.feedback.correctionNeeded).toBe(false);
+    expect(res.body.feedback.said).toBeNull();
+    expect(res.body.feedback.betterVersion).toBeNull();
+    expect(res.body.feedback.whyEn).toBeNull();
+    expect(res.body.feedback.whyEs).toBeNull();
+    expect(res.body.feedback.practicePhrase).toBeNull();
+    expect(res.body.feedback.nextStepEs).toBe(GOOD_LLM.nextStepEs);
+    expect(h.counters.llm).toBe(1);
+  });
+
+  it("CASE I (partial words): `said` must match whole words, not a substring", () => {
+    const fb = normalizeFeedback({ ...GOOD_LLM, ...CORRECTION, said: "took a show" }, ROUTINE)!;
+    expect(fb.correctionNeeded).toBe(false);
+  });
+
+  it("CASE I (too long): a `said` over 15 words is not a short quote → suppressed", () => {
+    const long = ROUTINE.split(" ").slice(0, 17).join(" ");
+    const fb = normalizeFeedback({ ...GOOD_LLM, ...CORRECTION, said: long }, ROUTINE)!;
+    expect(fb.correctionNeeded).toBe(false);
+  });
+
+  it("CASE I (incomplete): correctionNeeded=true with a missing field is suppressed, never half-rendered", () => {
+    const fb = normalizeFeedback({ ...GOOD_LLM, ...CORRECTION, practicePhrase: null }, ROUTINE)!;
+    expect(fb.correctionNeeded).toBe(false);
+    expect(fb.said).toBeNull();
+  });
+
+  it("CASE J: no meaningful error → correctionNeeded=false, all correction fields null, strength + next step present", async () => {
+    const h = harness({ transcript: ROUTINE, llmReply: GOOD_LLM });
+    const res = await runFinalAudioCoach(INPUT, h.deps);
+    if (res.body.status !== "ready") throw new Error("expected ready");
+    expect(res.body.feedback).toMatchObject({
+      correctionNeeded: false,
+      said: null,
+      betterVersion: null,
+      whyEn: null,
+      whyEs: null,
+      practicePhrase: null,
+    });
+    expect(res.body.feedback.strengthEn).toBeTruthy();
+    expect(res.body.feedback.nextStepEn).toBeTruthy();
+  });
+
+  it("CASE J (model leaks fields while false): correctionNeeded=false nulls any stray correction text", () => {
+    const fb = normalizeFeedback({ ...GOOD_LLM, ...CORRECTION, correctionNeeded: false }, ROUTINE)!;
+    expect(fb.correctionNeeded).toBe(false);
+    expect(fb.said).toBeNull();
+    expect(fb.betterVersion).toBeNull();
+  });
+
+  it("CASE K: the schema allows exactly ONE correction — scalar fields, no arrays", () => {
+    const props = COACH_JSON_SCHEMA.schema.properties as Record<string, { type: unknown }>;
+    for (const key of ["said", "betterVersion", "whyEn", "whyEs", "practicePhrase"]) {
+      expect(props[key]!.type).toEqual(["string", "null"]);
+    }
+    expect(COACH_JSON_SCHEMA.schema.required).toContain("correctionNeeded");
+    expect(Object.values(props).some((p) => p.type === "array")).toBe(false);
+    // The engine has a single llm dependency and calls it once (CASE H above); a second "correction" call does not exist.
+    const src = readFileSync(join(process.cwd(), "src/lib/final-audio-coach.server.ts"), "utf8");
+    expect(src.match(/deps\.llm\(/g)).toHaveLength(1);
+  });
+
+  it("correction fields obey their length limits and a no-op 'correction' (same as said) is dropped", () => {
+    const long = "word ".repeat(80);
+    const fb = normalizeFeedback({ ...GOOD_LLM, ...CORRECTION, whyEs: long, practicePhrase: long }, ROUTINE)!;
+    expect(fb.correctionNeeded).toBe(true);
+    expect(fb.whyEs!.length).toBeLessThanOrEqual(180);
+    expect(fb.practicePhrase!.length).toBeLessThanOrEqual(160);
+    const same = normalizeFeedback({ ...GOOD_LLM, ...CORRECTION, betterVersion: "I took a shower." }, ROUTINE)!;
+    expect(same.correctionNeeded).toBe(false);
+  });
+
+  it("cache replay (no transcript in memory) keeps the correction that was grounded at generation time", async () => {
+    const h = harness({ transcript: ROUTINE, llmReply: { ...GOOD_LLM, ...CORRECTION } });
+    await runFinalAudioCoach(INPUT, h.deps);
+    const again = await runFinalAudioCoach(INPUT, h.deps);
+    expect(h.counters.stt).toBe(1);
+    expect(h.counters.llm).toBe(1);
+    if (again.body.status !== "ready") throw new Error("expected ready");
+    expect(again.body.feedback.said).toBe("I took a shower");
   });
 });
 
