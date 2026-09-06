@@ -47,6 +47,7 @@ import { AuthGate } from "@/components/fluency/AuthGate";
 import { CloudSync } from "@/services/cloud-sync";
 import { sourceTurnNumberFor, type FinalCoachState } from "@/lib/final-audio-coach";
 import { objectiveResultInputFor } from "@/lib/final-coach-result";
+import { runCoachWithDeadline, type CoachDeadlineHandle } from "@/lib/final-coach-deadline";
 import { runFinalCoachPipeline } from "@/services/final-audio-coach-client";
 import { FinalCoachReview } from "@/components/fluency/FinalCoachReview";
 import { createStep5CompletionController, type Step5CompletionController } from "@/lib/step5-completion";
@@ -184,7 +185,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   const [saveState, setSaveState] = useState<FinalRepSaveState>("idle");
   /** Separate from saveState: the Final Step cloud save and the AI Coach are different responsibilities. */
   const [coachState, setCoachState] = useState<FinalCoachState>({ status: "idle" });
-  const coachAbort = useRef<AbortController | null>(null);
+  const coachDeadline = useRef<CoachDeadlineHandle | null>(null);
   /** Post-Step-5 state: day already committed, learner reviews the AI Coach before Day Complete. */
   const [coachReviewActive, setCoachReviewActive] = useState(false);
   /** Idempotency guard: the selected Final Audio commits the day exactly once in this flow. */
@@ -413,19 +414,18 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
           setCoachState({ status: "unavailable" });
           return;
         }
-        const abort = new AbortController();
-        coachAbort.current = abort;
-        setCoachState({ status: "preparing" });
-        void runFinalCoachPipeline(
-          { moduleId, day, finalRecording: final, finalTakeNumber: finalTake },
-          (state) => {
-            if (!abort.signal.aborted) setCoachState(state);
-          },
-          undefined,
-          abort.signal,
-        ).catch(() => {
-          if (!abort.signal.aborted) setCoachState({ status: "unavailable" });
-        });
+        // 45s fail-open: UI only. The day was committed before this started, so a
+        // hung provider/network can never trap the learner on "Analyzing…".
+        coachDeadline.current = runCoachWithDeadline(
+          (emit, signal) =>
+            runFinalCoachPipeline(
+              { moduleId, day, finalRecording: final, finalTakeNumber: finalTake },
+              emit,
+              undefined,
+              signal,
+            ),
+          setCoachState,
+        );
       },
       onDayComplete: () => setDone(true),
     });
@@ -438,8 +438,8 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
     completionCommittedRef.current?.continueToDayComplete();
   };
 
-  // Leaving the flow while the coach is still working: stop polling, no late setState.
-  useEffect(() => () => coachAbort.current?.abort(), []);
+  // Leaving the flow while the coach is still working: clear the deadline, stop polling, no late setState.
+  useEffect(() => () => coachDeadline.current?.cancel(), []);
 
   /**
    * Objective result for the Coach Review (local data, 0 AI calls). Reads the

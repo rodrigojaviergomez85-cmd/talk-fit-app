@@ -468,17 +468,29 @@ export function buildCoachMessages(rubric: CoachRubric, transcript: string, esti
     `Hard limits: strengthEn ≤ ${LIMITS.strengthEn} chars, strengthEs ≤ ${LIMITS.strengthEs}, nextStepEn ≤ ${LIMITS.nextStepEn}, nextStepEs ≤ ${LIMITS.nextStepEs}, said ≤ ${LIMITS.said}, betterVersion ≤ ${LIMITS.betterVersion}, whyEn ≤ ${LIMITS.whyEn}, whyEs ≤ ${LIMITS.whyEs}, practicePhrase ≤ ${LIMITS.practicePhrase}. No paragraphs.`,
     LEVEL_GUIDANCE[rubric.level],
   ].join(" ");
+  // A role-play / Pressure Round Final Audio is ONE turn. goalSentences is a
+  // whole-day target, so it must never be presented as the target for that turn.
+  const goal = rubric.turn
+    ? [
+        rubric.turn.targetSeconds
+          ? `Target speaking time: ${rubric.turn.targetSeconds[0]}–${rubric.turn.targetSeconds[1]} seconds.`
+          : null,
+        "This is ONE role-play response. Evaluate this response only. Do not compare it with the whole-day idea target.",
+      ]
+    : [
+        `Target: about ${rubric.goalSentences} complete ideas.`,
+        estimatedIdeaCount !== null ? `Estimated complete ideas already counted: ${estimatedIdeaCount}.` : null,
+        // The UI computes exactly how many ideas are missing; the model only suggests WHAT to add.
+        estimatedIdeaCount !== null && estimatedIdeaCount < rubric.goalSentences
+          ? "The learner is still below the idea target: the next step should preferably help them ADD ONE useful idea toward the goal (say what idea, with an example). Do not mention numbers of ideas."
+          : null,
+      ];
   const user = [
     `Module: ${rubric.moduleLabel} · Day ${rubric.day}`,
     `Topic: ${rubric.topic}`,
     `Language focus: ${rubric.focus}`,
     ...task.filter(Boolean),
-    `Target: about ${rubric.goalSentences} complete ideas${rubric.turn?.targetSeconds ? `, ${rubric.turn.targetSeconds[0]}–${rubric.turn.targetSeconds[1]} seconds` : ""}.`,
-    estimatedIdeaCount !== null ? `Estimated complete ideas already counted: ${estimatedIdeaCount}.` : null,
-    // The UI computes exactly how many ideas are missing; the model only suggests WHAT to add.
-    estimatedIdeaCount !== null && !rubric.turn && estimatedIdeaCount < rubric.goalSentences
-      ? "The learner is still below the idea target: the next step should preferably help them ADD ONE useful idea toward the goal (say what idea, with an example). Do not mention numbers of ideas."
-      : null,
+    ...goal,
     "",
     "TRANSCRIPT:",
     transcript,
