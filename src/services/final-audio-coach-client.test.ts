@@ -88,7 +88,9 @@ describe("Final Audio selection costs 0 AI calls (CASE 1, 2)", () => {
     expect(practice.match(/runFinalCoachPipeline\(/g)?.length).toBe(1);
     const finishBody = practice.slice(practice.indexOf("const finish = () =>"), practice.indexOf("const countFor"));
     expect(finishBody).toContain("runFinalCoachPipeline(");
-    expect(finishBody.indexOf("setDone(true)")).toBeLessThan(finishBody.indexOf("runFinalCoachPipeline("));
+    // The day is committed (completeDay) BEFORE the pipeline; Day Complete comes later via CONTINUE.
+    expect(finishBody.indexOf("JourneyService.completeDay(")).toBeLessThan(finishBody.indexOf("runFinalCoachPipeline("));
+    expect(finishBody).toContain("onDayComplete: () => setDone(true)");
   });
 });
 
