@@ -141,9 +141,14 @@ export function FinalCoachReview({ state, showEs, onContinue }: Props) {
   }
 
   const s = coachReviewSections(state.feedback, showEs);
+  const nextStepLabel = result
+    ? objectiveResultText(objectiveResult(result), showEs).nextStepLabel
+    : showEs ? "🚀 SIGUIENTE RETO" : "🚀 NEXT CHALLENGE";
   return (
     <Shell testId="final-coach-ready">
       <Title>{s.title}</Title>
+
+      {result ? <ObjectiveResultBlock input={result} showEs={showEs} /> : null}
 
       <Section label={`💪 ${showEs ? "PUNTO FUERTE" : "STRONG POINT"}`}>
         <p className="text-[16px] font-semibold leading-snug">{s.strength}</p>
@@ -167,11 +172,13 @@ export function FinalCoachReview({ state, showEs, onContinue }: Props) {
             <p className="text-[17px] font-extrabold leading-snug text-primary">“{s.correction.practice}”</p>
           </Section>
         </>
-      ) : (
-        <Section label={`🎯 ${showEs ? "SIGUIENTE RETO" : "NEXT CHALLENGE"}`} testId="final-coach-next-step">
-          <p className="text-[16px] font-semibold leading-snug">{s.nextStep}</p>
-        </Section>
-      )}
+      ) : null}
+
+      <Divider />
+      {/* Always shown: one development step, from the SAME v2 response (no extra call). */}
+      <Section label={nextStepLabel} testId="final-coach-next-step">
+        <p className="text-[16px] font-semibold leading-snug">{s.nextStep}</p>
+      </Section>
 
       <ContinueButton showEs={showEs} onClick={onContinue} />
     </Shell>
