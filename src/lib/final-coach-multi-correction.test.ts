@@ -265,30 +265,44 @@ const feedback = (corrections: CoachFeedback["corrections"]): CoachFeedback => (
 describe("Multi-correction pilot — UI", () => {
   it("pilot READY: transcript collapsed by default, N numbered corrections with local labels, no practice block", () => {
     const es = html({ status: "ready", feedback: feedback([C1 as never, C2 as never]), transcript: TRANSCRIPT });
-    expect(es).toContain("TODO LO QUE DIJISTE");
     expect(es).toContain("VER TODO LO QUE DIJISTE");
     expect(es).not.toContain("at six and then"); // collapsed by default
     expect(es).toContain("CORRECCIONES CLAVE · 2");
     expect(es).toContain("1 · PASADO");
     expect(es).toContain("2 · GRAMÁTICA");
+    expect(es).toContain("❌");
+    expect(es).toContain("✅");
     expect(es).toContain("Yesterday I woke up");
+    expect(es.indexOf("CORRECCIONES CLAVE")).toBeLessThan(es.indexOf("VER TODO LO QUE DIJISTE"));
     // The pilot layout has no PRACTICE block: the fluency upgrade + retake replace it.
     expect(es.split("PRACTICA").length - 1).toBe(0);
     expect(es).toContain("CONTINUAR");
     const en = html({ status: "ready", feedback: feedback([C1 as never, C2 as never]), transcript: TRANSCRIPT }, false);
-    expect(en).toContain("EVERYTHING YOU SAID");
+    expect(en).toContain("SHOW EVERYTHING YOU SAID");
     expect(en).toContain("1 · PAST TENSE");
     expect(en).toContain("2 · GRAMMAR");
   });
   it("cache replay (transcript null): corrections still shown, transcript section omitted", () => {
     const out = html({ status: "ready", feedback: feedback([C1 as never]), transcript: null });
     expect(out).toContain("CORRECCIONES CLAVE · 1");
-    expect(out).not.toContain("TODO LO QUE DIJISTE");
+    expect(out).not.toContain("SHOW EVERYTHING YOU SAID");
   });
   it("v2 READY (no corrections field) keeps the existing single CORRIGE ESTO layout", () => {
     const out = html({ status: "ready", feedback: feedback([]) });
     expect(out).toContain("CORRIGE ESTO");
     expect(out).not.toContain("CORRECCIONES CLAVE");
     expect(out).not.toContain("TODO LO QUE DIJISTE");
+  });
+
+  it("simple tense corrections omit WHY, while reusable grammar and task rules keep one compact hint", () => {
+    const simple = html({ status: "ready", feedback: feedback([C1 as never, C3 as never]), transcript: null });
+    expect(simple).not.toContain("Past form.");
+    expect(simple).not.toContain("Variedad.");
+    expect(simple).not.toContain("¿POR QUÉ?");
+    expect(simple).not.toContain("line-through");
+
+    const reusable = html({ status: "ready", feedback: feedback([C2 as never]), transcript: null });
+    expect(reusable).toContain("Forma base después de didn&#x27;t.");
+    expect(reusable).not.toContain("¿POR QUÉ?");
   });
 });

@@ -532,7 +532,7 @@ function RetakeResultScreen({ retake, showEs, onContinue }: { retake: RetakePane
 function TranscriptBlock({ transcript, showEs }: { transcript: string; showEs: boolean }) {
   const [open, setOpen] = useState(false);
   return (
-    <Section label={`🎙️ ${showEs ? "TODO LO QUE DIJISTE" : "EVERYTHING YOU SAID"}`} testId="final-coach-transcript">
+    <div data-testid="final-coach-transcript">
       <button
         type="button"
         aria-expanded={open}
@@ -541,8 +541,8 @@ function TranscriptBlock({ transcript, showEs }: { transcript: string; showEs: b
       >
         <span>
           {open
-            ? showEs ? "OCULTAR" : "HIDE"
-            : showEs ? "VER TODO LO QUE DIJISTE" : "SHOW EVERYTHING YOU SAID"}
+            ? showEs ? "🎙️ OCULTAR LO QUE DIJISTE" : "🎙️ HIDE WHAT YOU SAID"
+            : showEs ? "🎙️ VER TODO LO QUE DIJISTE" : "🎙️ SHOW EVERYTHING YOU SAID"}
         </span>
         <ChevronDown className={`size-5 transition-transform ${open ? "rotate-180" : ""}`} aria-hidden />
       </button>
@@ -556,7 +556,7 @@ function TranscriptBlock({ transcript, showEs }: { transcript: string; showEs: b
           </p>
         </div>
       ) : null}
-    </Section>
+    </div>
   );
 }
 
