@@ -289,3 +289,78 @@ describe("runFinalCoachPipeline", () => {
     expect(h.states.map((s) => s.status)).toEqual(["preparing", "analyzing"]);
   });
 });
+
+describe("idea-count protection in the take upsert row", () => {
+  const base = {
+    userId: "u1",
+    moduleId: "simple-present" as const,
+    day: 3,
+    takeNumber: 3,
+    isFinalRep: true,
+    durationSeconds: 12,
+    storagePath: "u1/simple-present/3/take-3.webm",
+    mimeType: "audio/webm",
+    sourceTurnNumber: null,
+  };
+
+  it("CASE A: sentenceCount null → estimated_idea_count omitted (saved value preserved)", async () => {
+    const { buildRecordingUpsertRow } = await import("./cloud-sync");
+    const row = buildRecordingUpsertRow({ ...base, sentenceCount: null });
+    expect(row).not.toHaveProperty("estimated_idea_count");
+  });
+
+  it("CASE B: sentenceCount undefined → estimated_idea_count omitted", async () => {
+    const { buildRecordingUpsertRow } = await import("./cloud-sync");
+    const row = buildRecordingUpsertRow({ ...base, sentenceCount: undefined });
+    expect(row).not.toHaveProperty("estimated_idea_count");
+  });
+
+  it("CASE C: valid sentenceCount 9 → estimated_idea_count = 9", async () => {
+    const { buildRecordingUpsertRow } = await import("./cloud-sync");
+    const row = buildRecordingUpsertRow({ ...base, sentenceCount: 9 });
+    expect(row.estimated_idea_count).toBe(9);
+  });
+
+  it.each([
+    ["NaN", Number.NaN],
+    ["negative", -2],
+    ["Infinity", Number.POSITIVE_INFINITY],
+  ])("CASE D: invalid count %s → estimated_idea_count omitted", async (_label, value) => {
+    const { buildRecordingUpsertRow } = await import("./cloud-sync");
+    const row = buildRecordingUpsertRow({ ...base, sentenceCount: value });
+    expect(row).not.toHaveProperty("estimated_idea_count");
+  });
+});
+
+describe("pending polling window", () => {
+  it("PENDING_POLL_DELAYS_MS totals approximately 20 seconds and stays bounded", () => {
+    const total = PENDING_POLL_DELAYS_MS.reduce((a, b) => a + b, 0);
+    expect([...PENDING_POLL_DELAYS_MS]).toEqual([2000, 3000, 5000, 5000, 5000]);
+    expect(total).toBe(20000);
+    expect(PENDING_POLL_DELAYS_MS.length).toBeLessThanOrEqual(6);
+  });
+
+  it("CASE F: PENDING → PENDING → READY → feedback eventually ready", async () => {
+    const h = harness({ responses: [pending, pending, ready] });
+    const result = await runFinalCoachPipeline(
+      { moduleId: "simple-present", day: classicDay, finalRecording: rec("a"), finalTakeNumber: 1 },
+      (s) => h.states.push(s),
+      h.deps,
+    );
+    expect(result.status).toBe("ready");
+    expect(h.calls.coach).toHaveLength(3);
+    expect(h.calls.sleeps).toEqual([2000, 3000]);
+  });
+
+  it("CASE G: PENDING for the whole bounded window → unavailable, no infinite loop", async () => {
+    const h = harness({ responses: Array(20).fill(pending) as CoachHttpResult[] });
+    const result = await runFinalCoachPipeline(
+      { moduleId: "simple-present", day: classicDay, finalRecording: rec("a"), finalTakeNumber: 1 },
+      () => undefined,
+      h.deps,
+    );
+    expect(result.status).toBe("unavailable");
+    expect(h.calls.coach).toHaveLength(PENDING_POLL_DELAYS_MS.length + 1);
+    expect(h.calls.sleeps).toEqual([...PENDING_POLL_DELAYS_MS]);
+  });
+});

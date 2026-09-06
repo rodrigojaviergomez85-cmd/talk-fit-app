@@ -10,6 +10,7 @@ import {
   writePreferencesLocal,
 } from "./preferences";
 import type { ModuleId, Recording } from "@/lib/types";
+import type { TablesInsert } from "@/integrations/supabase/types";
 import { isModuleId } from "./course-service";
 
 /**
@@ -48,6 +49,43 @@ function asModuleId(value: unknown): ModuleId {
   return isModuleId(value) ? value : "simple-present";
 }
 
+/** A count is only authoritative when it is a real, non-negative number. */
+function isValidIdeaCount(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0;
+}
+
+/**
+ * Builds the recordings upsert row for one take. `estimated_idea_count` is
+ * included ONLY when the incoming sentence count is a valid number; a pending
+ * or invalid count omits the key so PostgREST's upsert leaves any
+ * already-saved database value untouched on conflict (never replaced by null).
+ */
+export function buildRecordingUpsertRow(input: {
+  userId: string;
+  moduleId: ModuleId;
+  day: number;
+  takeNumber: number;
+  isFinalRep: boolean;
+  durationSeconds: number;
+  sentenceCount: number | null | undefined;
+  storagePath: string;
+  mimeType: string | null;
+  sourceTurnNumber: number | null;
+}): TablesInsert<"recordings"> {
+  return {
+    user_id: input.userId,
+    module_id: input.moduleId,
+    day: input.day,
+    take_number: input.takeNumber,
+    is_final_rep: input.isFinalRep,
+    duration_seconds: input.durationSeconds,
+    ...(isValidIdeaCount(input.sentenceCount) ? { estimated_idea_count: input.sentenceCount } : {}),
+    storage_path: input.storagePath,
+    mime_type: input.mimeType,
+    source_turn_number: input.sourceTurnNumber,
+  };
+}
+
 export const CloudSync = {
   userId,
 
@@ -79,21 +117,25 @@ export const CloudSync = {
       return { ok: false };
     }
 
-    const { error } = await supabase.from("recordings").upsert(
-      {
-        user_id: uid,
-        module_id: input.moduleId,
-        day: input.day,
-        take_number: input.takeNumber,
-        is_final_rep: input.isFinalRep ?? false,
-        duration_seconds: input.recording.durationSeconds,
-        estimated_idea_count: input.recording.sentenceCount ?? null,
-        storage_path: path,
-        mime_type: blob.type || null,
-        source_turn_number: input.sourceTurnNumber ?? null,
-      },
-      { onConflict: "user_id,module_id,day,take_number" },
-    );
+    // A pending/absent sentence count must never erase an already-saved
+    // estimated_idea_count (e.g. the Final Audio Coach guarantee re-upload of
+    // the same take). Only a valid numeric count is written; when omitted, the
+    // upsert leaves the existing column value untouched on conflict.
+    const row = buildRecordingUpsertRow({
+      userId: uid,
+      moduleId: input.moduleId,
+      day: input.day,
+      takeNumber: input.takeNumber,
+      isFinalRep: input.isFinalRep ?? false,
+      durationSeconds: input.recording.durationSeconds,
+      sentenceCount: input.recording.sentenceCount,
+      storagePath: path,
+      mimeType: blob.type || null,
+      sourceTurnNumber: input.sourceTurnNumber ?? null,
+    });
+    const { error } = await supabase
+      .from("recordings")
+      .upsert(row, { onConflict: "user_id,module_id,day,take_number" });
     if (error) {
       console.error("[cloud] take row failed", error.message);
       return { ok: false };
