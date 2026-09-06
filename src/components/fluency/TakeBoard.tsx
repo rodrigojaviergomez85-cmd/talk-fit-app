@@ -212,7 +212,10 @@ export function TakeBoard({
         // Pressure Round: future rounds stay fully hidden until the learner gets there.
         if (pressure && !take && !isActive) return null;
         const turnTarget = turn?.targetSeconds ?? goalSeconds;
-        const turnMax = Math.max(90, turnTarget[1] + 15);
+        // Classic Rep 5 (no authored turn timing): hard 60s cap. Turns with
+        // their own authored targetSeconds (Advanced / Pressure Round) keep
+        // their existing special timing.
+        const turnMax = turn?.targetSeconds ? Math.max(90, turn.targetSeconds[1] + 15) : Math.max(60, goalSeconds[1] + 15);
         // Retry slots always show the question being answered — before, during, and after recording.
         const showTurn = Boolean(turn) && (isActive || Boolean(take) || isRetrySlot);
 
@@ -432,6 +435,11 @@ export function TakeBoard({
                       maxSeconds={turnMax}
                       onComplete={(rec) => onRecorded(index, isRetrySlot ? { ...rec, label: `turn:${retryIndex}` } : rec)}
                     />
+                    {!turn?.targetSeconds ? (
+                      <p className="text-center text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                        {es ? `Máximo ${turnMax} segundos` : `Max ${turnMax} seconds`}
+                      </p>
+                    ) : null}
                   </>
                 )}
               </div>
