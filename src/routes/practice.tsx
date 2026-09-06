@@ -440,6 +440,18 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   // Leaving the flow while the coach is still working: stop polling, no late setState.
   useEffect(() => () => coachAbort.current?.abort(), []);
 
+  /**
+   * Objective result for the Coach Review (local data, 0 AI calls). Reads the
+   * LIVE take so the async idea count (pending → done) updates in place.
+   */
+  const coachResultInput = (() => {
+    if (!finalRecording) return null;
+    const liveIndex = takes.findIndex((take) => take?.id === finalRecording.id);
+    const live = (liveIndex >= 0 ? takes[liveIndex] : null) ?? finalRecording;
+    const sourceTurn = liveIndex >= 0 ? sourceTurnNumberFor(day, liveIndex, live.label) : null;
+    return objectiveResultInputFor(moduleId, day, live, sourceTurn);
+  })();
+
   const countFor = (rep: "2c" | 4, ids: string[]) => {
     const keys = ids.map((id) => itemKey(rep, id));
     return {
