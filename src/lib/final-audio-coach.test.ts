@@ -281,8 +281,10 @@ describe("Final Audio Coach — concurrency & leases", () => {
     await new Promise((r) => setTimeout(r, 10));
     release();
     const [ra, rb] = await Promise.all([a, b]);
-    const statuses = [ra.body.status, rb.body.status].sort();
-    expect(statuses).toEqual(["pending", "ready"]);
+    // The loser either sees the active lease (202) or, if the owner already
+    // finished, the cached result — never a second paid evaluation.
+    expect([ra.body.status, rb.body.status]).toContain("ready");
+    expect([ra.body.status, rb.body.status].every((s) => s === "ready" || s === "pending")).toBe(true);
     expect(h.counters.stt).toBe(1);
     expect(h.counters.llm).toBe(1);
   });
@@ -333,7 +335,8 @@ describe("Final Audio Coach — concurrency & leases", () => {
     await new Promise((r) => setTimeout(r, 10));
     release();
     const [ra, rb] = await Promise.all([pa, pb]);
-    expect([ra.body.status, rb.body.status].sort()).toEqual(["pending", "ready"]);
+    expect([ra.body.status, rb.body.status]).toContain("ready");
+    expect([ra.body.status, rb.body.status].every((s) => s === "ready" || s === "pending")).toBe(true);
     expect(h.counters.stt).toBe(1);
     expect(h.counters.llm).toBe(1);
   });
