@@ -499,7 +499,8 @@ describe("Final Audio Coach — rubric resolution", () => {
     const a = buildRubric(day, "simple-present", "X", null)!;
     const b = buildRubric(day, "simple-present", "X", null)!;
     expect(await rubricSha256(a)).toBe(await rubricSha256(b));
-    expect(await rubricSha256({ ...a, coachVersion: "v2" })).not.toBe(await rubricSha256(a));
+    expect(a.coachVersion).toBe(FINAL_AUDIO_COACH_VERSION);
+    expect(await rubricSha256({ ...a, coachVersion: "v1" })).not.toBe(await rubricSha256(a));
   });
 });
 
