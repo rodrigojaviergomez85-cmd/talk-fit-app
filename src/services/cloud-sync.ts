@@ -83,24 +83,21 @@ export const CloudSync = {
     // estimated_idea_count (e.g. the Final Audio Coach guarantee re-upload of
     // the same take). Only a valid numeric count is written; when omitted, the
     // upsert leaves the existing column value untouched on conflict.
-    const incomingCount = input.recording.sentenceCount;
-    const hasValidCount =
-      typeof incomingCount === "number" && Number.isFinite(incomingCount) && incomingCount >= 0;
-    const { error } = await supabase.from("recordings").upsert(
-      {
-        user_id: uid,
-        module_id: input.moduleId,
-        day: input.day,
-        take_number: input.takeNumber,
-        is_final_rep: input.isFinalRep ?? false,
-        duration_seconds: input.recording.durationSeconds,
-        ...(hasValidCount ? { estimated_idea_count: incomingCount } : {}),
-        storage_path: path,
-        mime_type: blob.type || null,
-        source_turn_number: input.sourceTurnNumber ?? null,
-      },
-      { onConflict: "user_id,module_id,day,take_number" },
-    );
+    const row = buildRecordingUpsertRow({
+      userId: uid,
+      moduleId: input.moduleId,
+      day: input.day,
+      takeNumber: input.takeNumber,
+      isFinalRep: input.isFinalRep ?? false,
+      durationSeconds: input.recording.durationSeconds,
+      sentenceCount: input.recording.sentenceCount,
+      storagePath: path,
+      mimeType: blob.type || null,
+      sourceTurnNumber: input.sourceTurnNumber ?? null,
+    });
+    const { error } = await supabase
+      .from("recordings")
+      .upsert(row, { onConflict: "user_id,module_id,day,take_number" });
     if (error) {
       console.error("[cloud] take row failed", error.message);
       return { ok: false };
