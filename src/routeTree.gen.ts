@@ -23,6 +23,7 @@ import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
 import { Route as AdminCourseAudioRouteImport } from './routes/admin.course-audio'
 import { Route as AdminStorageReportRouteImport } from './routes/admin.storage-report'
+import { Route as ApiFinalAudioCoachRouteImport } from './routes/api/final-audio-coach'
 import { Route as ApiRep2CorrectionRouteImport } from './routes/api/rep2-correction'
 import { Route as ApiSentenceCountRouteImport } from './routes/api/sentence-count'
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
@@ -98,6 +99,11 @@ const AdminStorageReportRoute = AdminStorageReportRouteImport.update({
   path: '/admin/storage-report',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiFinalAudioCoachRoute = ApiFinalAudioCoachRouteImport.update({
+  id: '/api/final-audio-coach',
+  path: '/api/final-audio-coach',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiRep2CorrectionRoute = ApiRep2CorrectionRouteImport.update({
   id: '/api/rep2-correction',
   path: '/api/rep2-correction',
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/verb-bank': typeof VerbBankRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
+  '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/rep2-correction': typeof ApiRep2CorrectionRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/verb-bank': typeof VerbBankRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
+  '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/rep2-correction': typeof ApiRep2CorrectionRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
@@ -175,6 +183,7 @@ export interface FileRoutesById {
   '/verb-bank': typeof VerbBankRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
+  '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/rep2-correction': typeof ApiRep2CorrectionRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
     | '/verb-bank'
     | '/admin/course-audio'
     | '/admin/storage-report'
+    | '/api/final-audio-coach'
     | '/api/rep2-correction'
     | '/api/sentence-count'
     | '/api/tts'
@@ -217,6 +227,7 @@ export interface FileRouteTypes {
     | '/verb-bank'
     | '/admin/course-audio'
     | '/admin/storage-report'
+    | '/api/final-audio-coach'
     | '/api/rep2-correction'
     | '/api/sentence-count'
     | '/api/tts'
@@ -237,6 +248,7 @@ export interface FileRouteTypes {
     | '/verb-bank'
     | '/admin/course-audio'
     | '/admin/storage-report'
+    | '/api/final-audio-coach'
     | '/api/rep2-correction'
     | '/api/sentence-count'
     | '/api/tts'
@@ -258,6 +270,7 @@ export interface RootRouteChildren {
   VerbBankRoute: typeof VerbBankRoute
   AdminCourseAudioRoute: typeof AdminCourseAudioRoute
   AdminStorageReportRoute: typeof AdminStorageReportRoute
+  ApiFinalAudioCoachRoute: typeof ApiFinalAudioCoachRoute
   ApiRep2CorrectionRoute: typeof ApiRep2CorrectionRoute
   ApiSentenceCountRoute: typeof ApiSentenceCountRoute
   ApiTtsRoute: typeof ApiTtsRoute
@@ -364,6 +377,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminStorageReportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/final-audio-coach': {
+      id: '/api/final-audio-coach'
+      path: '/api/final-audio-coach'
+      fullPath: '/api/final-audio-coach'
+      preLoaderRoute: typeof ApiFinalAudioCoachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/rep2-correction': {
       id: '/api/rep2-correction'
       path: '/api/rep2-correction'
@@ -410,6 +430,7 @@ const rootRouteChildren: RootRouteChildren = {
   VerbBankRoute: VerbBankRoute,
   AdminCourseAudioRoute: AdminCourseAudioRoute,
   AdminStorageReportRoute: AdminStorageReportRoute,
+  ApiFinalAudioCoachRoute: ApiFinalAudioCoachRoute,
   ApiRep2CorrectionRoute: ApiRep2CorrectionRoute,
   ApiSentenceCountRoute: ApiSentenceCountRoute,
   ApiTtsRoute: ApiTtsRoute,

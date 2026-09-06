@@ -307,6 +307,8 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
       takeNumber: index + 1,
       recording: rec,
       isFinalRep: false,
+      // Metadata only: which role-play turn this take answered (null for classic STEP 5).
+      sourceTurnNumber: sourceTurnNumberFor(day, index, rec.label),
     })
       .then((result) => {
         if (!result.ok) setTakeErrors((list) => (list.includes(index) ? list : [...list, index]));

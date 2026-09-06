@@ -63,6 +63,8 @@ export const CloudSync = {
     takeNumber: number;
     recording: Recording;
     isFinalRep?: boolean;
+    /** One-based Rep 5 turn this take answered (role play / Pressure Round); null for classic STEP 5. */
+    sourceTurnNumber?: number | null;
   }): Promise<{ ok: boolean; storagePath?: string }> {
     const uid = await userId();
     const blob = input.recording.blob;
@@ -88,6 +90,7 @@ export const CloudSync = {
         estimated_idea_count: input.recording.sentenceCount ?? null,
         storage_path: path,
         mime_type: blob.type || null,
+        source_turn_number: input.sourceTurnNumber ?? null,
       },
       { onConflict: "user_id,module_id,day,take_number" },
     );
