@@ -55,10 +55,16 @@ function isValidIdeaCount(value: unknown): value is number {
 }
 
 /**
- * Builds the recordings upsert row for one take. `estimated_idea_count` is
- * included ONLY when the incoming sentence count is a valid number; a pending
- * or invalid count omits the key so PostgREST's upsert leaves any
- * already-saved database value untouched on conflict (never replaced by null).
+ * Builds the recordings upsert row for one take.
+ *
+ * `estimated_idea_count` handling depends on WHY the row is being written:
+ * - A valid sentence count always wins (written as-is, never coerced).
+ * - Otherwise, a NORMAL recording upload (`preserveExistingIdeaCount: false`)
+ *   writes `null` so a genuinely re-recorded take never temporarily inherits
+ *   the previous audio's count.
+ * - Only the Final Audio Coach guarantee re-upload of the SAME recording
+ *   (`preserveExistingIdeaCount: true`) omits the key, so PostgREST's upsert
+ *   leaves the already-saved database value untouched on conflict.
  */
 export function buildRecordingUpsertRow(input: {
   userId: string;
@@ -71,7 +77,9 @@ export function buildRecordingUpsertRow(input: {
   storagePath: string;
   mimeType: string | null;
   sourceTurnNumber: number | null;
+  preserveExistingIdeaCount: boolean;
 }): TablesInsert<"recordings"> {
+  const validCount = isValidIdeaCount(input.sentenceCount);
   return {
     user_id: input.userId,
     module_id: input.moduleId,
@@ -79,7 +87,11 @@ export function buildRecordingUpsertRow(input: {
     take_number: input.takeNumber,
     is_final_rep: input.isFinalRep,
     duration_seconds: input.durationSeconds,
-    ...(isValidIdeaCount(input.sentenceCount) ? { estimated_idea_count: input.sentenceCount } : {}),
+    ...(validCount
+      ? { estimated_idea_count: input.sentenceCount }
+      : input.preserveExistingIdeaCount
+        ? {}
+        : { estimated_idea_count: null }),
     storage_path: input.storagePath,
     mime_type: input.mimeType,
     source_turn_number: input.sourceTurnNumber,
@@ -103,6 +115,15 @@ export const CloudSync = {
     isFinalRep?: boolean;
     /** One-based Rep 5 turn this take answered (role play / Pressure Round); null for classic STEP 5. */
     sourceTurnNumber?: number | null;
+    /**
+     * FALSE (default) — genuine recording upload / re-recording: a pending or
+     * invalid sentence count CLEARS any old `estimated_idea_count` so new
+     * audio never inherits the previous take's count.
+     * TRUE — only the Final Audio Coach guarantee re-upload of the SAME
+     * selected recording: a pending/invalid count leaves the database value
+     * untouched. Never infer this; it is an explicit call-site option.
+     */
+    preserveExistingIdeaCount?: boolean;
   }): Promise<{ ok: boolean; storagePath?: string }> {
     const uid = await userId();
     const blob = input.recording.blob;
