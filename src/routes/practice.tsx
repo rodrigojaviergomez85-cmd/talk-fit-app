@@ -82,11 +82,11 @@ export const Route = createFileRoute("/practice")({
 
 const REP_TITLES = [
   { en: "INTRO", es: "INTRO" },
-  { en: "REP 1 OF 5 · LISTEN", es: "REP 1 DE 5 · ESCUCHA" },
-  { en: "REP 2 OF 5 · COPY", es: "REP 2 DE 5 · COPIA" },
-  { en: "REP 3 OF 5 · SHADOW", es: "REP 3 DE 5 · SHADOWING" },
-  { en: "REP 4 OF 5 · MAKE IT YOURS", es: "REP 4 DE 5 · HAZLO TUYO" },
-  { en: "REP 5 OF 5 · YOUR TURN", es: "REP 5 DE 5 · TU TURNO" },
+  { en: "STEP 1 OF 5 · LISTEN", es: "PASO 1 DE 5 · ESCUCHA" },
+  { en: "STEP 2 OF 5 · COPY", es: "PASO 2 DE 5 · COPIA" },
+  { en: "STEP 3 OF 5 · SHADOW", es: "PASO 3 DE 5 · SHADOWING" },
+  { en: "STEP 4 OF 5 · MAKE IT YOURS", es: "PASO 4 DE 5 · HAZLO TUYO" },
+  { en: "STEP 5 OF 5 · YOUR TURN", es: "PASO 5 DE 5 · TU TURNO" },
 ];
 
 /** Server accepts at most 3 MB; skip the call locally for anything larger. */
@@ -900,11 +900,11 @@ function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseD
 
 const RESUME_LABELS = [
   { en: "INTRO", es: "INTRO" },
-  { en: "REP 1", es: "REP 1" },
-  { en: "REP 2", es: "REP 2" },
-  { en: "REP 3", es: "REP 3" },
-  { en: "REP 4", es: "REP 4" },
-  { en: "REP 5", es: "REP 5" },
+  { en: "STEP 1", es: "PASO 1" },
+  { en: "STEP 2", es: "PASO 2" },
+  { en: "STEP 3", es: "PASO 3" },
+  { en: "STEP 4", es: "PASO 4" },
+  { en: "STEP 5", es: "PASO 5" },
 ];
 
 function ResumeScreen({
