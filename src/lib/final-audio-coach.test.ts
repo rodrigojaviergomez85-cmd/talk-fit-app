@@ -131,6 +131,7 @@ function harness(opts: {
   store?: ReturnType<typeof makeStore>;
   delayStt?: () => Promise<void>;
   llmReply?: unknown;
+  confidence?: SttConfidence | null;
 } = {}) {
   const clock = opts.clock ?? { t: 1_700_000_000_000 };
   const now = () => clock.t;
