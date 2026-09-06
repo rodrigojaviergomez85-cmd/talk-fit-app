@@ -16,13 +16,29 @@
  */
 import type { CourseDay, ModuleId } from "./types";
 import { takeSlots } from "./take-slots";
+import {
+  CORRECTION_CATEGORIES,
+  FINAL_AUDIO_COACH_VERSION_V2,
+  MULTI_CORRECTION_MAX,
+  coachVersionFor,
+  isMultiCorrectionPilot,
+  maxCorrectionsFor,
+  type CoachCorrectionCategory,
+  type FinalAudioCoachCorrection,
+} from "./final-audio-coach";
+
+export { coachVersionFor, isMultiCorrectionPilot, maxCorrectionsFor };
 
 /**
  * v2: the single LLM call also returns ONE transcript-grounded specific
  * correction (said / betterVersion / why / practicePhrase). Bumped so cached v1
  * rows (which never had correction fields) are not replayed as v2 feedback.
+ * The multi-correction pilot (past-stories Day 1 only) resolves its own
+ * version through coachVersionFor() so no other cache is invalidated.
  */
-export const FINAL_AUDIO_COACH_VERSION = "v2";
+export const FINAL_AUDIO_COACH_VERSION = FINAL_AUDIO_COACH_VERSION_V2;
+
+export type CoachCorrection = FinalAudioCoachCorrection;
 
 /** Quota: NEW analyses per learner per rolling window. Cache hits never consume it. */
 export const COACH_QUOTA_ENDPOINT = "final-audio-coach";
@@ -115,6 +131,8 @@ export type CoachFeedback = {
   whyEn: string | null;
   whyEs: string | null;
   practicePhrase: string | null;
+  /** Multi-correction pilot: 0–maxCorrections validated corrections (priority order). Empty on v2 days. */
+  corrections: CoachCorrection[];
 };
 
 export type RecordingRow = {
@@ -150,6 +168,8 @@ export type FeedbackRow = {
   practice_phrase: string | null;
   transcript_word_count: number | null;
   estimated_idea_count: number | null;
+  /** jsonb: compact validated correction array (pilot). Never a transcript. */
+  corrections?: unknown;
 };
 
 export type CacheKey = { userId: string; audioSha256: string; rubricSha256: string; coachVersion: string };
@@ -195,7 +215,7 @@ export type CoachDeps = {
 };
 
 export type CoachResponse =
-  | { http: 200; body: { status: "ready"; feedback: CoachFeedback } }
+  | { http: 200; body: { status: "ready"; feedback: CoachFeedback; transcript?: string | null } }
   | { http: 200; body: { status: "unclear" } }
   | { http: 200; body: { status: "error"; code: string } }
   | { http: 202; body: { status: "pending" } }
@@ -232,6 +252,8 @@ export type CoachRubric = {
   goalSeconds: [number, number];
   goalSentences: number;
   coachVersion: string;
+  /** Pilot only (omitted on v2 days so their rubric hash is unchanged). */
+  maxCorrections?: number | undefined;
 };
 
 export function levelFor(moduleId: string): CoachRubric["level"] {
@@ -262,7 +284,8 @@ export function buildRubric(
     focus: day.focus,
     goalSeconds: day.goalSeconds,
     goalSentences: day.goalSentences ?? 5,
-    coachVersion: FINAL_AUDIO_COACH_VERSION,
+    coachVersion: coachVersionFor(moduleId, day.day),
+    maxCorrections: isMultiCorrectionPilot(moduleId, day.day) ? maxCorrectionsFor(moduleId, day.day) : undefined,
   };
   if (sourceTurnNumber !== null) {
     const turn = day.rep5Turns?.[sourceTurnNumber - 1];
@@ -356,7 +379,63 @@ export function saidOccursInTranscript(said: string, transcript: string): boolea
   return ` ${t} `.includes(` ${s} `);
 }
 
-const NO_CORRECTION = { correctionNeeded: false as const, said: null, betterVersion: null, whyEn: null, whyEs: null, practicePhrase: null };
+const NO_CORRECTION = {
+  correctionNeeded: false as const,
+  said: null,
+  betterVersion: null,
+  whyEn: null,
+  whyEs: null,
+  practicePhrase: null,
+  corrections: [] as CoachCorrection[],
+};
+
+function isCategory(value: unknown): value is CoachCorrectionCategory {
+  return typeof value === "string" && (CORRECTION_CATEGORIES as readonly string[]).includes(value);
+}
+
+/**
+ * Pilot: validate, ground, deduplicate and cap the candidate corrections from
+ * the SAME LLM response. Every rule is per item — a bad item is dropped, never
+ * the whole result, and no second AI call is made.
+ *  - allowed category; `said` non-empty, ≤ MAX_SAID_WORDS, really in the transcript
+ *  - betterVersion non-empty and meaningfully different; whyEn + whyEs present
+ *  - overlapping `said` quotes (one contains the other) = same mistake → keep one
+ *  - at most `max`, in the model's priority order
+ */
+export function normalizeCorrections(raw: unknown, max: number, transcript?: string): CoachCorrection[] {
+  if (max <= 0 || !Array.isArray(raw)) return [];
+  const out: CoachCorrection[] = [];
+  for (const item of raw) {
+    if (!item || typeof item !== "object") continue;
+    const c = item as Record<string, unknown>;
+    if (!isCategory(c["category"])) continue;
+    const said = typeof c["said"] === "string" ? c["said"].replace(/\s+/g, " ").trim() : "";
+    const str = (key: "betterVersion" | "whyEn" | "whyEs"): string | null => {
+      const v = c[key];
+      return typeof v === "string" && v.trim() ? clip(v, LIMITS[key]) : null;
+    };
+    const betterVersion = str("betterVersion");
+    const whyEn = str("whyEn");
+    const whyEs = str("whyEs");
+    if (!said || !betterVersion || !whyEn || !whyEs) continue;
+    if (said.length > LIMITS.said || countWords(said) > MAX_SAID_WORDS) continue;
+    if (transcript !== undefined && !saidOccursInTranscript(said, transcript)) continue;
+    const saidNorm = normalizeForMatch(said);
+    if (!saidNorm || saidNorm === normalizeForMatch(betterVersion)) continue;
+    // Dedupe: same underlying mistake quoted twice → keep the more complete quote in the earlier (higher-priority) slot.
+    const dupIndex = out.findIndex((prev) => {
+      const p = normalizeForMatch(prev.said);
+      return ` ${p} `.includes(` ${saidNorm} `) || ` ${saidNorm} `.includes(` ${p} `);
+    });
+    const next: CoachCorrection = { category: c["category"], said, betterVersion, whyEn, whyEs };
+    if (dupIndex >= 0) {
+      if (saidNorm.length > normalizeForMatch(out[dupIndex]!.said).length) out[dupIndex] = next;
+      continue;
+    }
+    out.push(next);
+  }
+  return out.slice(0, max);
+}
 
 /**
  * Strict validation + safe truncation of the model output. Null = unusable.
@@ -367,8 +446,11 @@ const NO_CORRECTION = { correctionNeeded: false as const, said: null, betterVers
  * SUPPRESSED (never fabricated) and the general next step stands. No second
  * AI call. When `transcript` is omitted (cache replay) the stored correction
  * was already grounded at generation time and is kept as-is.
+ *
+ * `maxCorrections` > 0 (pilot): `corrections` is validated the same way and the
+ * primary v2 fields are made to mirror corrections[0] (highest priority).
  */
-export function normalizeFeedback(raw: unknown, transcript?: string): CoachFeedback | null {
+export function normalizeFeedback(raw: unknown, transcript?: string, maxCorrections = 0): CoachFeedback | null {
   if (!raw || typeof raw !== "object") return null;
   const r = raw as Record<string, unknown>;
   const targetLanguage = rating(r["targetLanguage"]);
@@ -385,6 +467,22 @@ export function normalizeFeedback(raw: unknown, transcript?: string): CoachFeedb
   if (!strengthEn || !strengthEs || !nextStepEn || !nextStepEs) return null;
   const base = { taskCompleted: r["taskCompleted"], targetLanguage, organization, strengthEn, strengthEs, nextStepEn, nextStepEs };
 
+  if (maxCorrections > 0) {
+    const corrections = normalizeCorrections(r["corrections"], maxCorrections, transcript);
+    if (corrections.length === 0) return { ...base, ...NO_CORRECTION };
+    const primary = corrections[0]!;
+    return {
+      ...base,
+      correctionNeeded: true,
+      said: primary.said,
+      betterVersion: primary.betterVersion,
+      whyEn: primary.whyEn,
+      whyEs: primary.whyEs,
+      practicePhrase: text("practicePhrase"),
+      corrections,
+    };
+  }
+
   if (r["correctionNeeded"] !== true) return { ...base, ...NO_CORRECTION };
   const saidRaw = typeof r["said"] === "string" ? r["said"].replace(/\s+/g, " ").trim() : "";
   const betterVersion = text("betterVersion");
@@ -396,25 +494,30 @@ export function normalizeFeedback(raw: unknown, transcript?: string): CoachFeedb
   if (transcript !== undefined && !saidOccursInTranscript(saidRaw, transcript)) return { ...base, ...NO_CORRECTION };
   // A "correction" identical to what was said is not a correction.
   if (normalizeForMatch(saidRaw) === normalizeForMatch(betterVersion)) return { ...base, ...NO_CORRECTION };
-  return { ...base, correctionNeeded: true, said: saidRaw, betterVersion, whyEn, whyEs, practicePhrase };
+  return { ...base, correctionNeeded: true, said: saidRaw, betterVersion, whyEn, whyEs, practicePhrase, corrections: [] };
 }
 
-export function feedbackFromRow(row: FeedbackRow): CoachFeedback | null {
-  return normalizeFeedback({
-    taskCompleted: row.task_completed,
-    targetLanguage: row.target_language,
-    organization: row.organization,
-    strengthEn: row.strength_en,
-    strengthEs: row.strength_es,
-    nextStepEn: row.next_step_en,
-    nextStepEs: row.next_step_es,
-    correctionNeeded: row.correction_needed === true,
-    said: row.said,
-    betterVersion: row.better_version,
-    whyEn: row.why_en,
-    whyEs: row.why_es,
-    practicePhrase: row.practice_phrase,
-  });
+export function feedbackFromRow(row: FeedbackRow, maxCorrections = 0): CoachFeedback | null {
+  return normalizeFeedback(
+    {
+      taskCompleted: row.task_completed,
+      targetLanguage: row.target_language,
+      organization: row.organization,
+      strengthEn: row.strength_en,
+      strengthEs: row.strength_es,
+      nextStepEn: row.next_step_en,
+      nextStepEs: row.next_step_es,
+      correctionNeeded: row.correction_needed === true,
+      said: row.said,
+      betterVersion: row.better_version,
+      whyEn: row.why_en,
+      whyEs: row.why_es,
+      practicePhrase: row.practice_phrase,
+      corrections: row.corrections ?? [],
+    },
+    undefined,
+    maxCorrections,
+  );
 }
 
 /* ------------------------------------------------------------------------ */
@@ -462,9 +565,13 @@ export function buildCoachMessages(rubric: CoachRubric, transcript: string, esti
     "Never make employment decisions, level certifications (A2/B2/C1) or claims like 'you would fail'. This is coaching, not certification.",
     "Evaluate only: (1) task completion — did they answer the actual question/turn; (2) target language — a reasonable attempt at the day's focus; (3) organization — several understandable connected ideas for the level.",
     "Return ONE genuine strength and ONE highest-value next step, each as ONE short sentence, in English AND natural Latin American Spanish. No lists of mistakes.",
-    "Then decide on AT MOST ONE specific correction (language / grammar / vocabulary / task usage ONLY — never pronunciation, accent or phonemes, because you only see a transcript). Prioritise the day's language focus: tense, missing auxiliary, third-person -s, negative/question structure, an important word choice, a connector, the target structure, or organization when clearly useful.",
-    "If there is a clear, high-value error: set correctionNeeded=true; `said` = a SHORT phrase (max 12 words) copied EXACTLY, word for word, from the transcript (never paraphrase, never invent); `betterVersion` = the corrected phrase; `whyEn`/`whyEs` = ONE very simple reason; `practicePhrase` = one short natural English sentence to repeat that uses the correct form.",
-    "If the target skill was successful and there is no clear high-value error, do NOT invent one: set correctionNeeded=false and set said, betterVersion, whyEn, whyEs and practicePhrase to null. Never hunt for tiny mistakes.",
+    ...(rubric.maxCorrections && rubric.maxCorrections > 0
+      ? multiCorrectionGuidance(rubric.maxCorrections)
+      : [
+          "Then decide on AT MOST ONE specific correction (language / grammar / vocabulary / task usage ONLY — never pronunciation, accent or phonemes, because you only see a transcript). Prioritise the day's language focus: tense, missing auxiliary, third-person -s, negative/question structure, an important word choice, a connector, the target structure, or organization when clearly useful.",
+          "If there is a clear, high-value error: set correctionNeeded=true; `said` = a SHORT phrase (max 12 words) copied EXACTLY, word for word, from the transcript (never paraphrase, never invent); `betterVersion` = the corrected phrase; `whyEn`/`whyEs` = ONE very simple reason; `practicePhrase` = one short natural English sentence to repeat that uses the correct form.",
+          "If the target skill was successful and there is no clear high-value error, do NOT invent one: set correctionNeeded=false and set said, betterVersion, whyEn, whyEs and practicePhrase to null. Never hunt for tiny mistakes.",
+        ]),
     `Hard limits: strengthEn ≤ ${LIMITS.strengthEn} chars, strengthEs ≤ ${LIMITS.strengthEs}, nextStepEn ≤ ${LIMITS.nextStepEn}, nextStepEs ≤ ${LIMITS.nextStepEs}, said ≤ ${LIMITS.said}, betterVersion ≤ ${LIMITS.betterVersion}, whyEn ≤ ${LIMITS.whyEn}, whyEs ≤ ${LIMITS.whyEs}, practicePhrase ≤ ${LIMITS.practicePhrase}. No paragraphs.`,
     LEVEL_GUIDANCE[rubric.level],
   ].join(" ");
@@ -502,6 +609,34 @@ export function buildCoachMessages(rubric: CoachRubric, transcript: string, esti
     { role: "user" as const, content: user },
   ];
 }
+
+/**
+ * Multi-correction pilot guidance (same single LLM call). Priority for BASIC 3
+ * Simple Past: target-tense errors first, then important grammar, then one
+ * natural-English / connector / development improvement. Never padded.
+ */
+function multiCorrectionGuidance(max: number): string[] {
+  return [
+    `Then choose the ${max} HIGHEST-VALUE corrections at most (0 to ${max}) as the \`corrections\` array, in priority order. Fewer is fine; an empty array is fine. NEVER add a correction just to reach ${max}.`,
+    "Priority: (1) the day's target language (Simple Past: wrong past form 'I go yesterday' → 'I went yesterday', regular/irregular 'I buyed' → 'I bought', was/were 'They was' → 'They were', did + base form 'I didn't went' → 'I didn't go', past-time consistency 'Yesterday I wake up' → 'Yesterday I woke up'); (2) an important grammar or sentence-structure error; (3) only if still fewer than the maximum, ONE important natural-English word choice, connector or development improvement.",
+    "Skip entirely: punctuation, capitalization, tiny stylistic preferences, accent, phonemes, and Spanish-influenced English that is still clear. One correction per underlying mistake — never quote the same error twice.",
+    `Each correction: category ∈ ${JSON.stringify(CORRECTION_CATEGORIES)}; \`said\` = a SHORT phrase (max 12 words) copied EXACTLY, word for word, from the transcript (never paraphrase, never invent — an invented quote is discarded); \`betterVersion\` = the corrected phrase; \`whyEn\` / \`whyEs\` = ONE very simple reason (natural Latin American Spanish).`,
+    "Also fill the primary fields to mirror corrections[0]: correctionNeeded=true, said, betterVersion, whyEn, whyEs and ONE `practicePhrase` (a short natural English sentence using the correct form). If corrections is empty: correctionNeeded=false and all of those null.",
+  ];
+}
+
+const CORRECTION_ITEM_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  required: ["category", "said", "betterVersion", "whyEn", "whyEs"],
+  properties: {
+    category: { type: "string", enum: [...CORRECTION_CATEGORIES] },
+    said: { type: "string" },
+    betterVersion: { type: "string" },
+    whyEn: { type: "string" },
+    whyEs: { type: "string" },
+  },
+} as const;
 
 export const COACH_JSON_SCHEMA = {
   name: "final_audio_coach",
@@ -542,6 +677,25 @@ export const COACH_JSON_SCHEMA = {
   },
 } as const;
 
+/** Pilot schema = v2 schema + `corrections` array (same call, same model). */
+export const COACH_JSON_SCHEMA_MULTI = {
+  name: "final_audio_coach_multi",
+  strict: true,
+  schema: {
+    ...COACH_JSON_SCHEMA.schema,
+    required: [...COACH_JSON_SCHEMA.schema.required, "corrections"],
+    properties: {
+      ...COACH_JSON_SCHEMA.schema.properties,
+      corrections: { type: "array", maxItems: MULTI_CORRECTION_MAX.intermediate, items: CORRECTION_ITEM_SCHEMA },
+    },
+  },
+} as const;
+
+/** Response schema for a rubric: pilot days get the multi-correction shape. */
+export function coachJsonSchemaFor(rubric: Pick<CoachRubric, "maxCorrections">) {
+  return rubric.maxCorrections && rubric.maxCorrections > 0 ? COACH_JSON_SCHEMA_MULTI : COACH_JSON_SCHEMA;
+}
+
 /* ------------------------------------------------------------------------ */
 /*  Engine                                                                   */
 /* ------------------------------------------------------------------------ */
@@ -557,6 +711,11 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
   let cacheHit = false;
   let transcriptWordCount: number | null = null;
   let sourceTurnNumber: number | null = null;
+  // Resolved per request: "v3-pilot" on past-stories Day 1, "v2" everywhere else.
+  const coachVersion = coachVersionFor(input.moduleId, input.day);
+  const maxCorrections = maxCorrectionsFor(input.moduleId, input.day);
+  const pilot = maxCorrections > 0;
+  // Logs never include the transcript (only its word count).
   const finish = (res: CoachResponse, extra: Record<string, unknown> = {}): CoachResponse => {
     deps.log?.({
       moduleId: input.moduleId,
@@ -569,7 +728,8 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
       sttCalled,
       llmCalled,
       transcriptWordCount,
-      coachVersion: FINAL_AUDIO_COACH_VERSION,
+      coachVersion,
+      maxCorrections,
       durationMs: deps.now() - startedAt,
       ...extra,
     });
@@ -621,18 +781,19 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
   if (!audio || audio.byteLength < MIN_FINAL_AUDIO_BYTES) return finish({ http: 404, body: { status: "not_found" } });
   if (audio.byteLength > MAX_FINAL_AUDIO_BYTES) return finish({ http: 413, body: { status: "audio_too_large" } });
   const [audioSha256, rubricHash] = await Promise.all([sha256Hex(audio), rubricSha256(rubric)]);
-  const key: CacheKey = { userId: deps.userId, audioSha256, rubricSha256: rubricHash, coachVersion: FINAL_AUDIO_COACH_VERSION };
+  const key: CacheKey = { userId: deps.userId, audioSha256, rubricSha256: rubricHash, coachVersion };
 
   // 4) Cache lookup — 0 AI calls on a hit, regardless of quota.
   const cached = await deps.store.findExisting(key);
   let leaseId: string | null = null;
   if (cached) {
     if (cached.status === "ready") {
-      const feedback = feedbackFromRow(cached);
+      const feedback = feedbackFromRow(cached, maxCorrections);
       if (feedback) {
         cacheHit = true;
         transcriptWordCount = cached.transcript_word_count;
-        return finish({ http: 200, body: { status: "ready", feedback } });
+        // Pilot replay: durable corrections, but the transcript is never stored → null, no STT to rebuild it.
+        return finish({ http: 200, body: pilot ? { status: "ready", feedback, transcript: null } : { status: "ready", feedback } });
       }
     } else if (cached.status === "unclear") {
       cacheHit = true;
@@ -659,10 +820,10 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
       // Lost the race: the winner (or a finished row) now exists.
       const winner = await deps.store.findExisting(key);
       if (winner?.status === "ready") {
-        const feedback = feedbackFromRow(winner);
+        const feedback = feedbackFromRow(winner, maxCorrections);
         if (feedback) {
           cacheHit = true;
-          return finish({ http: 200, body: { status: "ready", feedback } });
+          return finish({ http: 200, body: pilot ? { status: "ready", feedback, transcript: null } : { status: "ready", feedback } });
         }
       }
       if (winner?.status === "unclear") {
@@ -707,7 +868,7 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
   let feedback: CoachFeedback | null = null;
   try {
     // Transcript still in memory: `said` is grounded here, then the transcript is dropped (never stored).
-    feedback = normalizeFeedback(await deps.llm(rubric, transcript, rec.estimated_idea_count), transcript);
+    feedback = normalizeFeedback(await deps.llm(rubric, transcript, rec.estimated_idea_count), transcript, maxCorrections);
   } catch {
     feedback = null;
   }
@@ -716,5 +877,6 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
     return finish({ http: 200, body: { status: "error", code: "coach_failed" } });
   }
   await deps.store.finalize(leaseId, { status: "ready", feedback, transcriptWordCount });
-  return finish({ http: 200, body: { status: "ready", feedback } });
+  // Pilot only: the transcript travels to THIS response (React state) and is then discarded — never persisted or logged.
+  return finish({ http: 200, body: pilot ? { status: "ready", feedback, transcript } : { status: "ready", feedback } });
 }

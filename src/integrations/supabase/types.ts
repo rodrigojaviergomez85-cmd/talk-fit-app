@@ -128,6 +128,7 @@ export type Database = {
           better_version: string | null
           coach_version: string
           correction_needed: boolean | null
+          corrections: Json | null
           created_at: string
           day: number
           estimated_idea_count: number | null
@@ -157,6 +158,7 @@ export type Database = {
           better_version?: string | null
           coach_version: string
           correction_needed?: boolean | null
+          corrections?: Json | null
           created_at?: string
           day: number
           estimated_idea_count?: number | null
@@ -186,6 +188,7 @@ export type Database = {
           better_version?: string | null
           coach_version?: string
           correction_needed?: boolean | null
+          corrections?: Json | null
           created_at?: string
           day?: number
           estimated_idea_count?: number | null

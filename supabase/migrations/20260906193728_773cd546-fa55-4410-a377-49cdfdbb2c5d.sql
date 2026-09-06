@@ -1,0 +1,1 @@
+ALTER TABLE public.final_audio_coach_feedback ADD COLUMN IF NOT EXISTS corrections jsonb NULL;

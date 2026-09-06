@@ -93,7 +93,12 @@ export const defaultCoachDeps: CoachPipelineDeps = {
 function stateFrom(result: CoachHttpResult): FinalCoachState | "pending" | "not_ready" | "network" {
   if (result.kind === "network_error") return "network";
   const { http, body } = result;
-  if (http === 200 && body?.status === "ready") return { status: "ready", feedback: body.feedback };
+  if (http === 200 && body?.status === "ready") {
+    // Pilot only: transient transcript for THIS session's React state (never stored client-side).
+    return body.transcript !== undefined
+      ? { status: "ready", feedback: body.feedback, transcript: body.transcript }
+      : { status: "ready", feedback: body.feedback };
+  }
   if (http === 200 && body?.status === "unclear") return { status: "unclear" };
   if (http === 202 || body?.status === "pending") return "pending";
   if (http === 409 || body?.status === "final_audio_not_ready") return "not_ready";
