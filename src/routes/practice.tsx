@@ -45,6 +45,7 @@ import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { CloudSync } from "@/services/cloud-sync";
+import { sourceTurnNumberFor } from "@/lib/final-audio-coach";
 import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording, RepLabel } from "@/lib/types";
 import type { FinalRepSaveState } from "@/components/fluency/DayCompleteScreen";
 import { cn } from "@/lib/utils";
@@ -307,6 +308,8 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
       takeNumber: index + 1,
       recording: rec,
       isFinalRep: false,
+      // Metadata only: which role-play turn this take answered (null for classic STEP 5).
+      sourceTurnNumber: sourceTurnNumberFor(day, index, rec.label),
     })
       .then((result) => {
         if (!result.ok) setTakeErrors((list) => (list.includes(index) ? list : [...list, index]));

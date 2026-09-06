@@ -122,6 +122,78 @@ export type Database = {
         }
         Relationships: []
       }
+      final_audio_coach_feedback: {
+        Row: {
+          audio_sha256: string
+          coach_version: string
+          created_at: string
+          day: number
+          estimated_idea_count: number | null
+          id: string
+          module_id: string
+          next_step_en: string | null
+          next_step_es: string | null
+          organization: string | null
+          rubric_sha256: string
+          source_turn_number: number | null
+          status: string
+          strength_en: string | null
+          strength_es: string | null
+          take_number: number
+          target_language: string | null
+          task_completed: boolean | null
+          transcript_word_count: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          audio_sha256: string
+          coach_version: string
+          created_at?: string
+          day: number
+          estimated_idea_count?: number | null
+          id?: string
+          module_id: string
+          next_step_en?: string | null
+          next_step_es?: string | null
+          organization?: string | null
+          rubric_sha256: string
+          source_turn_number?: number | null
+          status: string
+          strength_en?: string | null
+          strength_es?: string | null
+          take_number: number
+          target_language?: string | null
+          task_completed?: boolean | null
+          transcript_word_count?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          audio_sha256?: string
+          coach_version?: string
+          created_at?: string
+          day?: number
+          estimated_idea_count?: number | null
+          id?: string
+          module_id?: string
+          next_step_en?: string | null
+          next_step_es?: string | null
+          organization?: string | null
+          rubric_sha256?: string
+          source_turn_number?: number | null
+          status?: string
+          strength_en?: string | null
+          strength_es?: string | null
+          take_number?: number
+          target_language?: string | null
+          task_completed?: boolean | null
+          transcript_word_count?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       habit_practice_days: {
         Row: {
           created_at: string
@@ -274,6 +346,7 @@ export type Database = {
           is_final_rep: boolean
           mime_type: string | null
           module_id: string
+          source_turn_number: number | null
           storage_path: string
           take_number: number
           updated_at: string
@@ -289,6 +362,7 @@ export type Database = {
           is_final_rep?: boolean
           mime_type?: string | null
           module_id: string
+          source_turn_number?: number | null
           storage_path: string
           take_number: number
           updated_at?: string
@@ -304,6 +378,7 @@ export type Database = {
           is_final_rep?: boolean
           mime_type?: string | null
           module_id?: string
+          source_turn_number?: number | null
           storage_path?: string
           take_number?: number
           updated_at?: string
