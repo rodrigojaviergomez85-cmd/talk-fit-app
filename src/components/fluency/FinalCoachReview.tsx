@@ -89,7 +89,7 @@ function ObjectiveResultBlock({ input, showEs }: { input: ObjectiveResultInput; 
  * confirms the Final Audio and before Day Complete. The day is already saved
  * when this renders; CONTINUE only advances the screen.
  */
-export function FinalCoachReview({ state, showEs, onContinue }: Props) {
+export function FinalCoachReview({ state, showEs, result, onContinue }: Props) {
   const title = showEs ? "COACH DE IA ✨" : "AI COACH ✨";
 
   if (state.status === "idle" || state.status === "preparing" || state.status === "analyzing") {
