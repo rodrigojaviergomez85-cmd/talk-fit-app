@@ -450,10 +450,26 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
     return res;
   };
 
-  // 1) Ownership + readiness — before Storage, hashing or any paid call.
-  if (!isModule(input.moduleId) || !Number.isInteger(input.day) || !Number.isInteger(input.takeNumber)) {
+  // 1) Lightweight shape check, then the REAL CourseDay decides the maximum
+  //    Take number (classic = 5, Pressure Round = rep5Turns.length). Nothing
+  //    client-declared is trusted. Runs before Storage, quota or any paid call.
+  if (
+    !isModule(input.moduleId) ||
+    !Number.isInteger(input.day) ||
+    input.day < 1 ||
+    !Number.isInteger(input.takeNumber) ||
+    input.takeNumber < 1
+  ) {
     return finish({ http: 404, body: { status: "not_found" } });
   }
+  const day = await deps.loadDay(input.moduleId, input.day);
+  if (!day) return finish({ http: 404, body: { status: "not_found" } });
+  const maxTakeNumber = maxTakeNumberFor(day);
+  if (input.takeNumber > maxTakeNumber) {
+    return finish({ http: 404, body: { status: "not_found" } }, { reason: "invalid_take_number", maxTakeNumber });
+  }
+
+  // 2) Ownership + readiness.
   const rec = await deps.fetchRecording(deps.userId, input);
   if (
     !rec ||
@@ -470,9 +486,7 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
   if (!rec.is_final_rep) return finish({ http: 409, body: { status: "final_audio_not_ready" } });
   sourceTurnNumber = rec.source_turn_number;
 
-  // 2) Real curriculum → minimal rubric (server-derived, never from the client).
-  const day = await deps.loadDay(input.moduleId, input.day);
-  if (!day) return finish({ http: 404, body: { status: "not_found" } });
+  // 3) Minimal rubric from the same loaded day (server-derived, never from the client).
   const rubric = buildRubric(day, input.moduleId, deps.moduleLabel(input.moduleId), sourceTurnNumber);
   if (!rubric) return finish({ http: 404, body: { status: "not_found" } });
 
