@@ -40,10 +40,17 @@ export async function verifyRequestUser(request: Request): Promise<string | null
     auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
   });
 
-  const { data, error } = await supabase.auth.getClaims(token);
-  const sub = data?.claims?.sub;
-  if (error || typeof sub !== "string" || !sub) return null;
-  return sub;
+  try {
+    const { data, error } = await supabase.auth.getClaims(token);
+    const sub = data?.claims?.sub;
+    if (error || typeof sub !== "string" || !sub) return null;
+    return sub;
+  } catch (error) {
+    // Auth can throw a non-AuthError for transient fetch/JWKS failures. Raw
+    // server routes must never leak that rejection as an opaque framework 500.
+    console.error("[route-auth] Token verification failed", error instanceof Error ? error.message : "unknown error");
+    return null;
+  }
 }
 
 export type QuotaResult = { allowed: boolean; requestCount: number };
