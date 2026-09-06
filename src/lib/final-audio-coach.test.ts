@@ -40,6 +40,12 @@ const GOOD_LLM: CoachFeedback = {
   strengthEs: "Respondiste la pregunta con ideas claras.",
   nextStepEn: "Add one reason with because.",
   nextStepEs: "Agrega una razón usando because.",
+  correctionNeeded: false,
+  said: null,
+  betterVersion: null,
+  whyEn: null,
+  whyEs: null,
+  practicePhrase: null,
 };
 
 const LONG_TRANSCRIPT = "My name is Carlos and I live in San Salvador because I like the city and my family is here.";
@@ -95,6 +101,12 @@ function makeStore(now: () => number) {
         strength_es: null,
         next_step_en: null,
         next_step_es: null,
+        correction_needed: null,
+        said: null,
+        better_version: null,
+        why_en: null,
+        why_es: null,
+        practice_phrase: null,
         transcript_word_count: null,
         estimated_idea_count: row.estimatedIdeaCount,
       });

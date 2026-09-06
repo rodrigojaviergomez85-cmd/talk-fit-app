@@ -683,7 +683,8 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
   llmCalled = true;
   let feedback: CoachFeedback | null = null;
   try {
-    feedback = normalizeFeedback(await deps.llm(rubric, transcript, rec.estimated_idea_count));
+    // Transcript still in memory: `said` is grounded here, then the transcript is dropped (never stored).
+    feedback = normalizeFeedback(await deps.llm(rubric, transcript, rec.estimated_idea_count), transcript);
   } catch {
     feedback = null;
   }
