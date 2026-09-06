@@ -154,7 +154,12 @@ export const Route = createFileRoute("/api/final-audio-coach")({
   },
 });
 
-async function transcribe(audio: Uint8Array, mime: string | null): Promise<{ ok: true; text: string } | { ok: false }> {
+/**
+ * One Groq Whisper Turbo call with verbose_json so segment confidence
+ * (avg_logprob / no_speech_prob) can flag unreliable audio — same approach as
+ * STEP 2. No large-v3 fallback here by design (cost). Confidence stays server-side.
+ */
+async function transcribe(audio: Uint8Array, mime: string | null): Promise<SttResult> {
   const apiKey = process.env["GROQ_API_KEY"];
   if (!apiKey) {
     console.error("[final-audio-coach] GROQ_API_KEY missing");
@@ -166,19 +171,48 @@ async function transcribe(audio: Uint8Array, mime: string | null): Promise<{ ok:
   form.append("model", GROQ_MODEL);
   form.append("file", new Blob([audio as BlobPart], { type: base }), `final.${ext}`);
   form.append("language", "en");
-  form.append("response_format", "json");
+  form.append("response_format", "verbose_json");
   try {
     const res = await fetch(GROQ_URL, { method: "POST", headers: { Authorization: `Bearer ${apiKey}` }, body: form });
     if (!res.ok) {
       console.error(`[final-audio-coach] STT failed [${res.status}]`);
       return { ok: false };
     }
-    const data = (await res.json().catch(() => null)) as { text?: unknown } | null;
-    return { ok: true, text: typeof data?.text === "string" ? data.text : "" };
+    const data = (await res.json().catch(() => null)) as {
+      text?: unknown;
+      segments?: Array<{ avg_logprob?: unknown; no_speech_prob?: unknown }>;
+    } | null;
+    const text = typeof data?.text === "string" ? data.text : "";
+    return { ok: true, text, confidence: segmentConfidence(data?.segments) };
   } catch (err) {
     console.error("[final-audio-coach] STT error", err instanceof Error ? err.message : err);
     return { ok: false };
   }
+}
+
+/** Conservative aggregate: min avg_logprob, max no_speech_prob. Null when metadata is absent — never throws. */
+function segmentConfidence(segments: unknown): SttConfidence | null {
+  if (!Array.isArray(segments) || segments.length === 0) return null;
+  let avgLogprob = Number.POSITIVE_INFINITY;
+  let noSpeechProb = Number.NEGATIVE_INFINITY;
+  let seen = false;
+  for (const s of segments as Array<{ avg_logprob?: unknown; no_speech_prob?: unknown }>) {
+    const lp = typeof s?.avg_logprob === "number" && Number.isFinite(s.avg_logprob) ? s.avg_logprob : null;
+    const ns = typeof s?.no_speech_prob === "number" && Number.isFinite(s.no_speech_prob) ? s.no_speech_prob : null;
+    if (lp !== null) {
+      avgLogprob = Math.min(avgLogprob, lp);
+      seen = true;
+    }
+    if (ns !== null) {
+      noSpeechProb = Math.max(noSpeechProb, ns);
+      seen = true;
+    }
+  }
+  if (!seen) return null;
+  return {
+    avgLogprob: Number.isFinite(avgLogprob) ? avgLogprob : 0,
+    noSpeechProb: Number.isFinite(noSpeechProb) ? noSpeechProb : 0,
+  };
 }
 
 async function evaluate(rubric: CoachRubric, transcript: string, ideas: number | null): Promise<unknown | null> {
