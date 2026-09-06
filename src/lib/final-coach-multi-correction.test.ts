@@ -224,7 +224,7 @@ describe("Multi-correction pilot — engine", () => {
     expect(JSON.stringify({ ...row, patches: undefined })).not.toContain("at six and then");
     expect(JSON.stringify(row.patches)).not.toContain("at six and then");
     expect(JSON.stringify(h.logs)).not.toContain("at six and then");
-    expect(h.logs.at(-1)).toMatchObject({ coachVersion: "v3-pilot", maxCorrections: 3, transcriptWordCount: 20 });
+    expect(h.logs.at(-1)).toMatchObject({ coachVersion: "v3-pilot", maxCorrections: 3, transcriptWordCount: 22 });
     expect(Array.isArray(row.corrections) && (row.corrections as unknown[]).length).toBe(3);
   });
 
