@@ -125,7 +125,9 @@ export type Database = {
       final_audio_coach_feedback: {
         Row: {
           audio_sha256: string
+          better_version: string | null
           coach_version: string
+          correction_needed: boolean | null
           created_at: string
           day: number
           estimated_idea_count: number | null
@@ -134,7 +136,9 @@ export type Database = {
           next_step_en: string | null
           next_step_es: string | null
           organization: string | null
+          practice_phrase: string | null
           rubric_sha256: string
+          said: string | null
           source_turn_number: number | null
           status: string
           strength_en: string | null
@@ -145,10 +149,14 @@ export type Database = {
           transcript_word_count: number | null
           updated_at: string
           user_id: string
+          why_en: string | null
+          why_es: string | null
         }
         Insert: {
           audio_sha256: string
+          better_version?: string | null
           coach_version: string
+          correction_needed?: boolean | null
           created_at?: string
           day: number
           estimated_idea_count?: number | null
@@ -157,7 +165,9 @@ export type Database = {
           next_step_en?: string | null
           next_step_es?: string | null
           organization?: string | null
+          practice_phrase?: string | null
           rubric_sha256: string
+          said?: string | null
           source_turn_number?: number | null
           status: string
           strength_en?: string | null
@@ -168,10 +178,14 @@ export type Database = {
           transcript_word_count?: number | null
           updated_at?: string
           user_id: string
+          why_en?: string | null
+          why_es?: string | null
         }
         Update: {
           audio_sha256?: string
+          better_version?: string | null
           coach_version?: string
+          correction_needed?: boolean | null
           created_at?: string
           day?: number
           estimated_idea_count?: number | null
@@ -180,7 +194,9 @@ export type Database = {
           next_step_en?: string | null
           next_step_es?: string | null
           organization?: string | null
+          practice_phrase?: string | null
           rubric_sha256?: string
+          said?: string | null
           source_turn_number?: number | null
           status?: string
           strength_en?: string | null
@@ -191,6 +207,8 @@ export type Database = {
           transcript_word_count?: number | null
           updated_at?: string
           user_id?: string
+          why_en?: string | null
+          why_es?: string | null
         }
         Relationships: []
       }
