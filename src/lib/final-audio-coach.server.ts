@@ -3,14 +3,19 @@
  *
  * Analyses ONLY an authenticated learner's stored, confirmed Final Audio.
  * Cost protection is server-side and durable:
- *   ownership → audio SHA-256 → rubric SHA-256 → cache lookup → lease claim
- *   → quota → 1 STT (Groq whisper-large-v3-turbo) → 1 small text model.
+ *   take-number validation against the real CourseDay → ownership
+ *   → audio SHA-256 → rubric SHA-256 → cache lookup → lease claim → quota
+ *   → 1 STT (Groq whisper-large-v3-turbo, verbose_json confidence)
+ *   → 1 small text model.
  * Same audio + same rubric + same coach version is evaluated exactly once.
+ * There is intentionally NO second STT (large-v3) fallback: unreliable audio
+ * ends as UNCLEAR after a single Turbo call.
  *
  * All I/O is injected (`CoachDeps`) so the whole flow is unit-testable without
  * Storage, the database or any AI provider.
  */
 import type { CourseDay, ModuleId } from "./types";
+import { takeSlots } from "./take-slots";
 
 export const FINAL_AUDIO_COACH_VERSION = "v1";
 
@@ -19,8 +24,13 @@ export const COACH_QUOTA_ENDPOINT = "final-audio-coach";
 export const COACH_QUOTA_LIMIT = 5;
 export const COACH_QUOTA_WINDOW_SECONDS = 24 * 60 * 60;
 
-/** A pending lease older than this is considered crashed and may be reclaimed once. */
-export const PENDING_STALE_MS = 2 * 60 * 1000;
+/**
+ * A pending lease older than this is considered crashed and may be reclaimed
+ * once (atomically). 10 minutes: a legitimate request (Storage download,
+ * hashing, Groq STT, LLM, DB finalize) can occasionally exceed 2 minutes, and a
+ * premature reclaim would duplicate paid AI work.
+ */
+export const PENDING_STALE_MS = 10 * 60 * 1000;
 
 /**
  * Audio size ceiling. The recorder captures speech at 32 kbps (Opus/AAC).
@@ -34,8 +44,39 @@ export const RECORDER_BITS_PER_SECOND = 32_000;
 export const MAX_FINAL_AUDIO_BYTES = 8 * 1024 * 1024;
 export const MIN_FINAL_AUDIO_BYTES = 2048;
 
-/** Below this many transcribed words coaching would be guesswork → UNCLEAR, no LLM. */
+/**
+ * UNCLEAR detection (unreliable audio/transcription — never "bad English"):
+ *  - empty transcript or fewer than MIN_TRANSCRIPT_WORDS words
+ *  - Whisper segment confidence below the STEP 2 thresholds
+ *    (min avg_logprob < -0.7 OR max no_speech_prob > 0.5)
+ * UNCLEAR costs 1 STT and 0 LLM.
+ */
 export const MIN_TRANSCRIPT_WORDS = 6;
+export const AVG_LOGPROB_THRESHOLD = -0.7;
+export const NO_SPEECH_THRESHOLD = 0.5;
+
+export type SttConfidence = { avgLogprob: number; noSpeechProb: number };
+/** Internal only — confidence is never sent to the browser. */
+export type SttResult = { ok: true; text: string; confidence?: SttConfidence | null | undefined } | { ok: false };
+
+/** True when the STT metadata says the speech itself was not reliably recognised. Missing metadata never rejects. */
+export function isLowConfidence(confidence: SttConfidence | null | undefined): boolean {
+  if (!confidence) return false;
+  const { avgLogprob, noSpeechProb } = confidence;
+  return (
+    (Number.isFinite(avgLogprob) && avgLogprob < AVG_LOGPROB_THRESHOLD) ||
+    (Number.isFinite(noSpeechProb) && noSpeechProb > NO_SPEECH_THRESHOLD)
+  );
+}
+
+/**
+ * Maximum valid Take number for a real CourseDay — the same rule TakeBoard
+ * renders: classic STEP 5 / classic role play = 5 slots; Pressure Round =
+ * one slot per authored turn (may be > 5 or < 5).
+ */
+export function maxTakeNumberFor(day: Pick<CourseDay, "rep5Turns">): number {
+  return takeSlots(day.rep5Turns);
+}
 
 export const LIMITS = { strengthEn: 120, strengthEs: 140, nextStepEn: 140, nextStepEs: 160 } as const;
 
