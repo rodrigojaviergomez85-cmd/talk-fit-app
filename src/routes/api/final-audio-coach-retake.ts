@@ -113,6 +113,10 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
                 .eq("id", id);
               if (error) console.error("[final-audio-coach-retake] finalize failed", error.message);
             },
+            discard: async (id) => {
+              const { error } = await supabaseAdmin.from("final_audio_coach_retakes").delete().eq("id", id);
+              if (error) console.error("[final-audio-coach-retake] discard failed", error.message);
+            },
           },
           consumeQuota: async (uid) =>
             (await consumeQuota(uid, engine.COACH_QUOTA_ENDPOINT, engine.COACH_QUOTA_LIMIT, engine.COACH_QUOTA_WINDOW_SECONDS)).allowed,
