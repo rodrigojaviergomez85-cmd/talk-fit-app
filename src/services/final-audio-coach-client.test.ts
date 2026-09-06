@@ -290,7 +290,7 @@ describe("runFinalCoachPipeline", () => {
   });
 });
 
-describe("idea-count protection in the take upsert row", () => {
+describe("idea-count semantics: NEW recording vs Final Coach guarantee re-upload", () => {
   const base = {
     userId: "u1",
     moduleId: "simple-present" as const,
@@ -303,32 +303,106 @@ describe("idea-count protection in the take upsert row", () => {
     sourceTurnNumber: null,
   };
 
-  it("CASE A: sentenceCount null → estimated_idea_count omitted (saved value preserved)", async () => {
+  it("CASE A: NEW recording, count pending (undefined) → estimated_idea_count = null (old 7 cleared)", async () => {
     const { buildRecordingUpsertRow } = await import("./cloud-sync");
-    const row = buildRecordingUpsertRow({ ...base, sentenceCount: null });
+    const row = buildRecordingUpsertRow({ ...base, sentenceCount: undefined, preserveExistingIdeaCount: false });
+    expect(row.estimated_idea_count).toBeNull();
+  });
+
+  it("CASE B: NEW recording, sentenceCount null → estimated_idea_count = null", async () => {
+    const { buildRecordingUpsertRow } = await import("./cloud-sync");
+    const row = buildRecordingUpsertRow({ ...base, sentenceCount: null, preserveExistingIdeaCount: false });
+    expect(row.estimated_idea_count).toBeNull();
+  });
+
+  it("CASE C: guarantee re-upload, count pending (undefined) → key omitted (saved 7 preserved)", async () => {
+    const { buildRecordingUpsertRow } = await import("./cloud-sync");
+    const row = buildRecordingUpsertRow({ ...base, sentenceCount: undefined, preserveExistingIdeaCount: true });
     expect(row).not.toHaveProperty("estimated_idea_count");
   });
 
-  it("CASE B: sentenceCount undefined → estimated_idea_count omitted", async () => {
+  it("CASE D: guarantee re-upload, sentenceCount null → key omitted (saved value preserved)", async () => {
     const { buildRecordingUpsertRow } = await import("./cloud-sync");
-    const row = buildRecordingUpsertRow({ ...base, sentenceCount: undefined });
+    const row = buildRecordingUpsertRow({ ...base, sentenceCount: null, preserveExistingIdeaCount: true });
     expect(row).not.toHaveProperty("estimated_idea_count");
   });
 
-  it("CASE C: valid sentenceCount 9 → estimated_idea_count = 9", async () => {
+  it("CASE E: valid count 9 always wins in BOTH modes", async () => {
     const { buildRecordingUpsertRow } = await import("./cloud-sync");
-    const row = buildRecordingUpsertRow({ ...base, sentenceCount: 9 });
-    expect(row.estimated_idea_count).toBe(9);
+    for (const preserveExistingIdeaCount of [false, true]) {
+      const row = buildRecordingUpsertRow({ ...base, sentenceCount: 9, preserveExistingIdeaCount });
+      expect(row.estimated_idea_count).toBe(9);
+    }
   });
 
   it.each([
     ["NaN", Number.NaN],
     ["negative", -2],
     ["Infinity", Number.POSITIVE_INFINITY],
-  ])("CASE D: invalid count %s → estimated_idea_count omitted", async (_label, value) => {
-    const { buildRecordingUpsertRow } = await import("./cloud-sync");
-    const row = buildRecordingUpsertRow({ ...base, sentenceCount: value });
-    expect(row).not.toHaveProperty("estimated_idea_count");
+  ])(
+    "CASE F: invalid count %s → NEW recording nulls it, guarantee re-upload preserves it (never 0)",
+    async (_label, value) => {
+      const { buildRecordingUpsertRow } = await import("./cloud-sync");
+      const fresh = buildRecordingUpsertRow({ ...base, sentenceCount: value, preserveExistingIdeaCount: false });
+      expect(fresh.estimated_idea_count).toBeNull();
+      const guarantee = buildRecordingUpsertRow({ ...base, sentenceCount: value, preserveExistingIdeaCount: true });
+      expect(guarantee).not.toHaveProperty("estimated_idea_count");
+    },
+  );
+
+  it("CASE G: updateTakeIdeas remains the unchanged late writer of the final count", async () => {
+    const fs = await import("node:fs");
+    const src = fs.readFileSync(new URL("./cloud-sync.ts", import.meta.url), "utf8");
+    // New recording row starts at null; the async sentence counter later calls
+    // updateTakeIdeas which must still write estimated_idea_count directly.
+    expect(src).toMatch(/updateTakeIdeas\(/);
+    expect(src).toMatch(/\.update\(\{ estimated_idea_count: ideas \}\)/);
+  });
+
+  it("CASE H: guarantee upload receives preserveExistingIdeaCount: true, order upload → mark final → coach", async () => {
+    const h = harness({ responses: [ready] });
+    const order: string[] = [];
+    const deps: CoachPipelineDeps = {
+      ...h.deps,
+      uploadFinalTake: async (i) => {
+        order.push("upload");
+        return h.deps.uploadFinalTake(i);
+      },
+      markFinalTake: async (m, d, t) => {
+        order.push("mark");
+        return h.deps.markFinalTake(m, d, t);
+      },
+      requestCoach: async (i) => {
+        order.push("coach");
+        return h.deps.requestCoach(i);
+      },
+    };
+    await runFinalCoachPipeline(
+      { moduleId: "simple-present", day: classicDay, finalRecording: rec("a"), finalTakeNumber: 2 },
+      () => undefined,
+      deps,
+    );
+    expect(h.calls.upload[0]).toMatchObject({ preserveExistingIdeaCount: true, isFinalRep: false, takeNumber: 2 });
+    expect(order).toEqual(["upload", "mark", "coach"]);
+  });
+
+  it("CASE I: ordinary STEP 5 recording uploads never opt into preservation (default false)", async () => {
+    const fs = await import("node:fs");
+    // Every uploadTake call outside the Final Coach pipeline must omit the flag.
+    const read = (p: string) => fs.readFileSync(new URL(p, import.meta.url), "utf8");
+    const sync = read("./cloud-sync.ts");
+    // The only place the option is honored is the explicit input field with a
+    // false default; the coach pipeline is the single true call site.
+    expect(sync).toMatch(/preserveExistingIdeaCount\?: boolean/);
+    expect(sync).toMatch(/preserveExistingIdeaCount: input\.preserveExistingIdeaCount \?\? false/);
+    const coachClient = read("./final-audio-coach-client.ts");
+    // Call sites end in a comma; the `…: true;` type literal is not a call.
+    const trueSites = coachClient.match(/preserveExistingIdeaCount: true,/g) ?? [];
+    expect(trueSites).toHaveLength(1);
+    // TakeBoard / practice call sites never pass the flag.
+    for (const file of ["../routes/practice.tsx", "../components/fluency/TakeBoard.tsx"]) {
+      expect(read(file)).not.toMatch(/preserveExistingIdeaCount/);
+    }
   });
 });
 
