@@ -228,7 +228,8 @@ describe("Wiring — practice.tsx / FinalCoachReview (0 extra AI calls)", () => 
     expect(practice).toContain("result={coachResultInput}");
     expect(practice).toMatch(/takes\.findIndex\(\(take\) => take\?\.id === finalRecording\.id\)/);
     expect(practice.match(/runFinalCoachPipeline\(/g)).toHaveLength(1);
-    expect(practice.match(/countSentences\(/g)?.length ?? 0).toBeLessThanOrEqual(1);
+    // Exactly one existing call site (plus the definition): no new sentence counting.
+    expect(practice.match(/void countSentences\(/g)).toHaveLength(1);
   });
   it("the result module never imports fetch/AI/server code", () => {
     expect(resultModule).not.toMatch(/fetch\(|final-audio-coach\.server|countSentences|sentence-count/);
