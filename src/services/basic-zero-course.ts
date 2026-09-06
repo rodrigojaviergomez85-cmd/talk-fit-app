@@ -154,44 +154,107 @@ function prompt(
   return { id, cue, question, questionEs, starter, starterEs };
 }
 
-function selfPromptsFoundation(id: string): PersonalPrompt[] {
-  return [
-    prompt(`${id}-p1`, "WHAT", "What is your name?", "¿Cómo te llamas?", "My name is…", "Me llamo…"),
-    prompt(`${id}-p2`, "HOW", "How old are you?", "¿Cuántos años tienes?", "I am ______ years old.", "Tengo ______ años."),
-    prompt(`${id}-p3`, "WHERE", "Where are you from, and where do you live?", "¿De dónde eres y dónde vives?", "I am from ______, and I live in…", "Soy de ______ y vivo en…"),
-    prompt(`${id}-p7`, "WHAT", "What are your hobbies?", "¿Cuáles son tus pasatiempos?", "My hobbies are ______ and ______.", "Mis pasatiempos son ______ y ______."),
-    prompt(`${id}-p8`, "HOW", "How would you describe yourself?", "¿Cómo te describirías?", "Overall, I am a ______ and ______ person.", "En general, soy una persona ______ y ______."),
-  ];
+/** One angle = one Rep 4 prompt topic. Its position (1-8) fixes the `${id}-p<n>` id. */
+type Angle = [cue: string, question: string, questionEs: string, starter: string, starterEs: string];
+
+/** Picks 5 of the 8 angles for a given day so every day in a week shows a different set. */
+function pickPrompts(id: string, bank: Record<string, Angle>, order: string[], selection: string[]): PersonalPrompt[] {
+  return selection.map((key) => {
+    const [cue, question, questionEs, starter, starterEs] = bank[key]!;
+    return prompt(`${id}-p${order.indexOf(key) + 1}`, cue, question, questionEs, starter, starterEs);
+  });
 }
 
-function selfPromptsFluency(id: string): PersonalPrompt[] {
-  return [
-    prompt(`${id}-p1`, "WHAT", "What is your name and how old are you?", "¿Cómo te llamas y cuántos años tienes?", "My name is ______, and I am ______ years old.", "Me llamo ______ y tengo ______ años."),
-    prompt(`${id}-p2`, "WHERE", "Where are you from and where do you live?", "¿De dónde eres y dónde vives?", "I am from ______, and I live in ______.", "Soy de ______ y vivo en ______."),
-    prompt(`${id}-p4`, "WHY", "What is your favorite food, and why?", "¿Cuál es tu comida favorita, y por qué?", "My favorite food is ______ because…", "Mi comida favorita es ______ porque…"),
-    prompt(`${id}-p6`, "WHAT", "What do you like to do in your free time?", "¿Qué te gusta hacer en tu tiempo libre?", "In my free time, I like to…", "En mi tiempo libre me gusta…"),
-    prompt(`${id}-p8`, "HOW", "How would you describe yourself?", "¿Cómo te describirías?", "Overall, I am a ______ and ______ person.", "En general, soy una persona ______ y ______."),
-  ];
+const SELF_FOUNDATION_ORDER = ["name", "age", "country", "city", "color", "food", "hobbies", "personality"];
+const SELF_FOUNDATION: Record<string, Angle> = {
+  name: ["WHAT", "What is your name?", "¿Cómo te llamas?", "My name is…", "Me llamo…"],
+  age: ["HOW", "How old are you?", "¿Cuántos años tienes?", "I am ______ years old.", "Tengo ______ años."],
+  country: ["WHERE", "Where are you from?", "¿De dónde eres?", "I am from ______.", "Soy de ______."],
+  city: ["WHERE", "Where do you live?", "¿Dónde vives?", "I live in ______.", "Vivo en ______."],
+  color: ["WHAT", "What is your favorite color?", "¿Cuál es tu color favorito?", "My favorite color is ______.", "Mi color favorito es el ______."],
+  food: ["WHAT", "What is your favorite food?", "¿Cuál es tu comida favorita?", "My favorite food is ______.", "Mi comida favorita es ______."],
+  hobbies: ["WHAT", "What are your hobbies?", "¿Cuáles son tus pasatiempos?", "My hobbies are ______ and ______.", "Mis pasatiempos son ______ y ______."],
+  personality: ["HOW", "How would you describe yourself?", "¿Cómo te describirías?", "Overall, I am a ______ and ______ person.", "En general, soy una persona ______ y ______."],
+};
+const SELF_FOUNDATION_BY_DAY: Record<number, string[]> = {
+  1: ["name", "age", "country", "hobbies", "personality"],
+  2: ["age", "city", "color", "food", "personality"],
+  3: ["name", "country", "city", "food", "hobbies"],
+  4: ["name", "age", "city", "color", "personality"],
+  5: ["age", "country", "city", "color", "hobbies"],
+};
+
+function selfPromptsFoundation(id: string, day: number): PersonalPrompt[] {
+  return pickPrompts(id, SELF_FOUNDATION, SELF_FOUNDATION_ORDER, SELF_FOUNDATION_BY_DAY[day] ?? SELF_FOUNDATION_BY_DAY[1]!);
 }
 
-function otherPromptsFoundation(id: string): PersonalPrompt[] {
-  return [
-    prompt(`${id}-p1`, "WHO", "Who do you want to talk about?", "¿De quién quieres hablar?", "This is my…", "Esta es mi… / Este es mi…"),
-    prompt(`${id}-p2`, "WHAT", "What is his / her name?", "¿Cómo se llama?", "His name is… / Her name is…", "Su nombre es…"),
-    prompt(`${id}-p3`, "HOW", "How old is he / she?", "¿Cuántos años tiene?", "He is ______ years old. / She is ______ years old.", "Tiene ______ años."),
-    prompt(`${id}-p4`, "WHERE", "Where is he / she from, and where does he / she live?", "¿De dónde es y dónde vive?", "He/She is from ______, and lives in…", "Es de ______ y vive en…"),
-    prompt(`${id}-p8`, "WHAT", "What are his / her hobbies?", "¿Cuáles son sus pasatiempos?", "His hobbies are ______ and ______.", "Sus pasatiempos son ______ y ______."),
-  ];
+const SELF_FLUENCY_ORDER = ["nameAge", "countryCity", "colorWhy", "foodWhy", "hobbies", "freeTime", "also", "personality"];
+const SELF_FLUENCY: Record<string, Angle> = {
+  nameAge: ["WHAT", "What is your name and how old are you?", "¿Cómo te llamas y cuántos años tienes?", "My name is ______, and I am ______ years old.", "Me llamo ______ y tengo ______ años."],
+  countryCity: ["WHERE", "Where are you from and where do you live?", "¿De dónde eres y dónde vives?", "I am from ______, and I live in ______.", "Soy de ______ y vivo en ______."],
+  colorWhy: ["WHY", "What is your favorite color, and why?", "¿Cuál es tu color favorito, y por qué?", "My favorite color is ______ because…", "Mi color favorito es ______ porque…"],
+  foodWhy: ["WHY", "What is your favorite food, and why?", "¿Cuál es tu comida favorita, y por qué?", "My favorite food is ______ because…", "Mi comida favorita es ______ porque…"],
+  hobbies: ["WHAT", "What are your hobbies?", "¿Cuáles son tus pasatiempos?", "My hobbies are ______ and ______.", "Mis pasatiempos son ______ y ______."],
+  freeTime: ["WHAT", "What do you like to do in your free time?", "¿Qué te gusta hacer en tu tiempo libre?", "In my free time, I like to…", "En mi tiempo libre me gusta…"],
+  also: ["WHAT", "What else do you like to do?", "¿Qué más te gusta hacer?", "I also like to…", "También me gusta…"],
+  personality: ["HOW", "How would you describe yourself?", "¿Cómo te describirías?", "Overall, I am a ______ and ______ person.", "En general, soy una persona ______ y ______."],
+};
+const SELF_FLUENCY_BY_DAY: Record<number, string[]> = {
+  6: ["nameAge", "countryCity", "foodWhy", "freeTime", "personality"],
+  7: ["countryCity", "colorWhy", "hobbies", "also", "personality"],
+  8: ["nameAge", "colorWhy", "foodWhy", "freeTime", "also"],
+  9: ["nameAge", "countryCity", "foodWhy", "hobbies", "personality"],
+  10: ["nameAge", "countryCity", "colorWhy", "freeTime", "personality"],
+};
+
+function selfPromptsFluency(id: string, day: number): PersonalPrompt[] {
+  return pickPrompts(id, SELF_FLUENCY, SELF_FLUENCY_ORDER, SELF_FLUENCY_BY_DAY[day] ?? SELF_FLUENCY_BY_DAY[6]!);
 }
 
-function otherPromptsFluency(id: string): PersonalPrompt[] {
-  return [
-    prompt(`${id}-p1`, "WHO", "Who is this person and what is his / her name?", "¿Quién es y cómo se llama?", "This is my ______, and his/her name is ______.", "Esta es mi… / Este es mi ______ y su nombre es ______."),
-    prompt(`${id}-p2`, "HOW", "How old is he / she and where is he / she from?", "¿Cuántos años tiene y de dónde es?", "He/She is ______ years old and is from ______.", "Tiene ______ años y es de ______."),
-    prompt(`${id}-p3`, "WHERE", "Where does he / she live?", "¿Dónde vive?", "He/She lives in…", "Vive en…"),
-    prompt(`${id}-p5`, "WHY", "What is his / her favorite food, and why?", "¿Cuál es su comida favorita, y por qué?", "His/Her favorite food is ______ because…", "Su comida favorita es ______ porque…"),
-    prompt(`${id}-p8`, "HOW", "How would you describe him / her?", "¿Cómo lo / la describirías?", "Overall, he/she is a ______ and ______ person.", "En general, es una persona ______ y ______."),
-  ];
+const OTHER_FOUNDATION_ORDER = ["who", "name", "age", "country", "city", "color", "food", "hobbies"];
+const OTHER_FOUNDATION: Record<string, Angle> = {
+  who: ["WHO", "Who do you want to talk about?", "¿De quién quieres hablar?", "This is my…", "Esta es mi… / Este es mi…"],
+  name: ["WHAT", "What is his / her name?", "¿Cómo se llama?", "His name is… / Her name is…", "Su nombre es…"],
+  age: ["HOW", "How old is he / she?", "¿Cuántos años tiene?", "He is ______ years old. / She is ______ years old.", "Tiene ______ años."],
+  country: ["WHERE", "Where is he / she from?", "¿De dónde es?", "He/She is from ______.", "Es de ______."],
+  city: ["WHERE", "Where does he / she live?", "¿Dónde vive?", "He/She lives in ______.", "Vive en ______."],
+  color: ["WHAT", "What is his / her favorite color?", "¿Cuál es su color favorito?", "His/Her favorite color is ______.", "Su color favorito es el ______."],
+  food: ["WHAT", "What is his / her favorite food?", "¿Cuál es su comida favorita?", "His/Her favorite food is ______.", "Su comida favorita es ______."],
+  hobbies: ["WHAT", "What are his / her hobbies?", "¿Cuáles son sus pasatiempos?", "His/Her hobbies are ______ and ______.", "Sus pasatiempos son ______ y ______."],
+};
+const OTHER_FOUNDATION_BY_DAY: Record<number, string[]> = {
+  11: ["who", "name", "age", "country", "hobbies"],
+  12: ["name", "age", "city", "color", "hobbies"],
+  13: ["who", "age", "country", "city", "food"],
+  14: ["who", "name", "color", "food", "hobbies"],
+  15: ["name", "country", "city", "color", "food"],
+};
+
+function otherPromptsFoundation(id: string, day: number): PersonalPrompt[] {
+  return pickPrompts(id, OTHER_FOUNDATION, OTHER_FOUNDATION_ORDER, OTHER_FOUNDATION_BY_DAY[day] ?? OTHER_FOUNDATION_BY_DAY[11]!);
+}
+
+const OTHER_FLUENCY_ORDER = ["whoName", "ageCountry", "city", "colorWhy", "foodWhy", "hobbies", "freeTime", "personality"];
+const OTHER_FLUENCY: Record<string, Angle> = {
+  whoName: ["WHO", "Who is this person, and what is his / her name?", "¿Quién es y cómo se llama?", "This is my ______, and his/her name is ______.", "Esta es mi ______ y su nombre es ______. / Este es mi ______…"],
+  ageCountry: ["HOW", "How old is he / she, and where is he / she from?", "¿Cuántos años tiene y de dónde es?", "He/She is ______ years old and is from ______.", "Tiene ______ años y es de ______."],
+  city: ["WHERE", "Where does he / she live?", "¿Dónde vive?", "He/She lives in…", "Vive en…"],
+  colorWhy: ["WHY", "What is his / her favorite color, and why?", "¿Cuál es su color favorito, y por qué?", "His/Her favorite color is ______ because…", "Su color favorito es ______ porque…"],
+  foodWhy: ["WHY", "What is his / her favorite food, and why?", "¿Cuál es su comida favorita, y por qué?", "His/Her favorite food is ______ because…", "Su comida favorita es ______ porque…"],
+  hobbies: ["WHAT", "What are his / her hobbies?", "¿Cuáles son sus pasatiempos?", "His/Her hobbies are ______ and ______.", "Sus pasatiempos son ______ y ______."],
+  freeTime: ["WHAT", "What does he / she like to do in his / her free time?", "¿Qué le gusta hacer en su tiempo libre?", "In his/her free time, he/she likes to…", "En su tiempo libre le gusta…"],
+  personality: ["HOW", "How would you describe him / her?", "¿Cómo lo / la describirías?", "Overall, he/she is a ______ and ______ person.", "En general, es una persona ______ y ______."],
+};
+const OTHER_FLUENCY_BY_DAY: Record<number, string[]> = {
+  16: ["whoName", "ageCountry", "city", "foodWhy", "personality"],
+  17: ["ageCountry", "colorWhy", "hobbies", "freeTime", "personality"],
+  18: ["whoName", "city", "colorWhy", "hobbies", "freeTime"],
+  19: ["whoName", "ageCountry", "colorWhy", "foodWhy", "hobbies"],
+  20: ["city", "colorWhy", "foodWhy", "freeTime", "personality"],
+};
+
+function otherPromptsFluency(id: string, day: number): PersonalPrompt[] {
+  return pickPrompts(id, OTHER_FLUENCY, OTHER_FLUENCY_ORDER, OTHER_FLUENCY_BY_DAY[day] ?? OTHER_FLUENCY_BY_DAY[16]!);
 }
 
 /* --------------------------------- People -------------------------------- */
