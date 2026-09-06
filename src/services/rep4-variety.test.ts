@@ -46,7 +46,11 @@ describe("Rep 4 variety", () => {
       expect(days.length, `week ${week}`).toBe(5);
       const sets = new Set(days.map(setKey));
       expect(sets.size, `week ${week} unique Rep 4 sets`).toBe(5);
-      for (const d of days) expect(rep4Items(d).length, `day ${d.day}`).toBe(REP4_MAX);
+      for (const d of days) {
+        // Day 20's Rep 4 is its two-part final challenge (2 items by design).
+        const expected = d.challenges?.length ? d.challenges.length : REP4_MAX;
+        expect(rep4Items(d).length, `day ${d.day}`).toBe(Math.min(expected, REP4_MAX));
+      }
     }
   });
 
