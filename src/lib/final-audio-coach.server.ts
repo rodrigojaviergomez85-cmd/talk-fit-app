@@ -17,7 +17,12 @@
 import type { CourseDay, ModuleId } from "./types";
 import { takeSlots } from "./take-slots";
 
-export const FINAL_AUDIO_COACH_VERSION = "v1";
+/**
+ * v2: the single LLM call also returns ONE transcript-grounded specific
+ * correction (said / betterVersion / why / practicePhrase). Bumped so cached v1
+ * rows (which never had correction fields) are not replayed as v2 feedback.
+ */
+export const FINAL_AUDIO_COACH_VERSION = "v2";
 
 /** Quota: NEW analyses per learner per rolling window. Cache hits never consume it. */
 export const COACH_QUOTA_ENDPOINT = "final-audio-coach";
