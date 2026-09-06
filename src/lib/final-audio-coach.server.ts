@@ -158,7 +158,8 @@ export type CoachDeps = {
     finalize: (id: string, patch: FinalizePatch) => Promise<void>;
   };
   consumeQuota: (userId: string) => Promise<boolean>;
-  stt: (audio: Uint8Array, mime: string | null) => Promise<{ ok: true; text: string } | { ok: false }>;
+  /** Exactly one Groq Turbo transcription; `confidence` comes from verbose_json segments (optional, internal). */
+  stt: (audio: Uint8Array, mime: string | null) => Promise<SttResult>;
   llm: (rubric: CoachRubric, transcript: string, estimatedIdeaCount: number | null) => Promise<unknown | null>;
   log?: ((entry: Record<string, unknown>) => void) | undefined;
 };
