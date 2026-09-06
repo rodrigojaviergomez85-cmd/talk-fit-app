@@ -45,10 +45,10 @@ import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { CloudSync } from "@/services/cloud-sync";
-import { sourceTurnNumberFor, type FinalCoachState } from "@/lib/final-audio-coach";
+import { isRetakePilot, sourceTurnNumberFor, type FinalCoachRetakeState, type FinalCoachState } from "@/lib/final-audio-coach";
 import { objectiveResultInputFor } from "@/lib/final-coach-result";
 import { runCoachWithDeadline, type CoachDeadlineHandle } from "@/lib/final-coach-deadline";
-import { runFinalCoachPipeline } from "@/services/final-audio-coach-client";
+import { requestFinalCoachRetake, runFinalCoachPipeline } from "@/services/final-audio-coach-client";
 import { FinalCoachReview } from "@/components/fluency/FinalCoachReview";
 import { createStep5CompletionController, type Step5CompletionController } from "@/lib/step5-completion";
 import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording, RepLabel } from "@/lib/types";
@@ -188,6 +188,13 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   const coachDeadline = useRef<CoachDeadlineHandle | null>(null);
   /** Post-Step-5 state: day already committed, learner reviews the AI Coach before Day Complete. */
   const [coachReviewActive, setCoachReviewActive] = useState(false);
+  /**
+   * Pilot-only optional retake (BONUS round). Session state only: the retake
+   * never touches takes, Final Audio, completion, streak, habit or progression.
+   */
+  const [retakeState, setRetakeState] = useState<FinalCoachRetakeState>({ status: "idle" });
+  const [retakeRecording, setRetakeRecording] = useState<Recording | null>(null);
+  const retakeStartedRef = useRef(false);
   /** Idempotency guard: the selected Final Audio commits the day exactly once in this flow. */
   const completionCommittedRef = useRef<Step5CompletionController | null>(null);
   const [journeyAfterFinish, setJourneyAfterFinish] = useState<JourneyState | null>(null);
@@ -441,6 +448,35 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   // Leaving the flow while the coach is still working: clear the deadline, stop polling, no late setState.
   useEffect(() => () => coachDeadline.current?.cancel(), []);
 
+  /** ONE optional retake (pilot day only). Guarded by a ref: a second tap can never start another paid round. */
+  const startRetake = () => {
+    if (!isRetakePilot(moduleId, day.day) || retakeStartedRef.current || coachState.status !== "ready") return;
+    retakeStartedRef.current = true;
+    setRetakeState({ status: "recording" });
+  };
+  const onRetakeRecorded = (rec: Recording) => {
+    if (retakeState.status !== "recording") return;
+    trackSeconds(rec);
+    setRetakeRecording({ ...rec, countStatus: "pending", sentenceCount: null });
+    setRetakeState({ status: "analyzing" });
+    // Objective metrics reuse the existing idea counter (no extra LLM for counting); failure → time only.
+    void countSentences(rec.blob ?? null).then((count) => {
+      setRetakeRecording((current) =>
+        current && current.id === rec.id
+          ? count === null
+            ? { ...current, countStatus: "failed", sentenceCount: null }
+            : { ...current, countStatus: "done", sentenceCount: count }
+          : current,
+      );
+    });
+    if (!rec.blob) {
+      setRetakeState({ status: "unavailable" });
+      return;
+    }
+    // Exactly one request: the server enforces the single retake and its 1 STT + 1 LLM.
+    void requestFinalCoachRetake({ moduleId, day: day.day, blob: rec.blob }).then(setRetakeState);
+  };
+
   /**
    * Objective result for the Coach Review (local data, 0 AI calls). Reads the
    * LIVE take so the async idea count (pending → done) updates in place.
@@ -635,6 +671,27 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
                 showEs={esUi}
                 result={coachResultInput}
                 onContinue={continueToDayComplete}
+                retake={
+                  isRetakePilot(moduleId, day.day) && coachResultInput && finalRecording
+                    ? {
+                        state: retakeState,
+                        before: {
+                          seconds: Math.round(finalRecording.durationSeconds),
+                          ideas: typeof coachResultInput.sentenceCount === "number" ? coachResultInput.sentenceCount : null,
+                        },
+                        after: retakeRecording
+                          ? {
+                              seconds: Math.round(retakeRecording.durationSeconds),
+                              ideas: typeof retakeRecording.sentenceCount === "number" ? retakeRecording.sentenceCount : null,
+                            }
+                          : null,
+                        maxSeconds: Math.max(60, day.goalSeconds[1] + 15),
+                        targetSeconds: day.goalSeconds,
+                        onStart: startRetake,
+                        onRecorded: onRetakeRecorded,
+                      }
+                    : null
+                }
               />
             </div>
           ) : null}

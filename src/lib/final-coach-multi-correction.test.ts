@@ -53,7 +53,7 @@ const C5 = { category: "naturalness", said: "to the gym", betterVersion: "to the
 describe("Multi-correction pilot — gate", () => {
   it("CASE A — past-stories Day 1 is the ONLY pilot day (v3-pilot, max 3)", () => {
     expect(isMultiCorrectionPilot("past-stories", 1)).toBe(true);
-    expect(coachVersionFor("past-stories", 1)).toBe("v3-pilot");
+    expect(coachVersionFor("past-stories", 1)).toBe("v3.1-pilot");
     expect(maxCorrectionsFor("past-stories", 1)).toBe(3);
   });
   it("CASE B/C/D/E — every other day keeps v2", () => {
@@ -70,14 +70,14 @@ describe("Multi-correction pilot — gate", () => {
     const past = await CourseService.loadModule("past-stories");
     const d1 = buildRubric(past.days[0]!, "past-stories", "BASIC 3", null)!;
     const d2 = buildRubric(past.days[1]!, "past-stories", "BASIC 3", null)!;
-    expect(d1.coachVersion).toBe("v3-pilot");
+    expect(d1.coachVersion).toBe("v3.1-pilot");
     expect(d1.maxCorrections).toBe(3);
     expect(d2.coachVersion).toBe("v2");
     expect("maxCorrections" in d2 && d2.maxCorrections !== undefined).toBe(false);
     expect(coachJsonSchemaFor(d1)).toBe(COACH_JSON_SCHEMA_MULTI);
     expect(coachJsonSchemaFor(d2)).toBe(COACH_JSON_SCHEMA);
     const sys = buildCoachMessages(d1, TRANSCRIPT, 5)[0]!.content;
-    expect(sys).toContain("3 HIGHEST-VALUE corrections at most");
+    expect(sys).toContain("3 HIGHEST-LEARNING-VALUE items at most");
     expect(sys).toContain("I didn't went' → 'I didn't go'");
     expect(buildCoachMessages(d2, TRANSCRIPT, 5)[0]!.content).toContain("AT MOST ONE specific correction");
   });
@@ -220,11 +220,11 @@ describe("Multi-correction pilot — engine", () => {
     expect(res.body.feedback.corrections).toHaveLength(3);
     expect(h.counters).toEqual({ stt: 1, llm: 1 });
     const row = [...h.store.rows.values()][0]!;
-    expect(row.insert.coachVersion).toBe("v3-pilot");
+    expect(row.insert.coachVersion).toBe("v3.1-pilot");
     expect(JSON.stringify({ ...row, patches: undefined })).not.toContain("at six and then");
     expect(JSON.stringify(row.patches)).not.toContain("at six and then");
     expect(JSON.stringify(h.logs)).not.toContain("at six and then");
-    expect(h.logs.at(-1)).toMatchObject({ coachVersion: "v3-pilot", maxCorrections: 3, transcriptWordCount: 22 });
+    expect(h.logs.at(-1)).toMatchObject({ coachVersion: "v3.1-pilot", maxCorrections: 3, transcriptWordCount: 22 });
     expect(Array.isArray(row.corrections) && (row.corrections as unknown[]).length).toBe(3);
   });
 
@@ -263,7 +263,7 @@ const feedback = (corrections: CoachFeedback["corrections"]): CoachFeedback => (
 });
 
 describe("Multi-correction pilot — UI", () => {
-  it("pilot READY: transcript collapsed by default, N numbered corrections with local labels, ONE practice block", () => {
+  it("pilot READY: transcript collapsed by default, N numbered corrections with local labels, no practice block", () => {
     const es = html({ status: "ready", feedback: feedback([C1 as never, C2 as never]), transcript: TRANSCRIPT });
     expect(es).toContain("TODO LO QUE DIJISTE");
     expect(es).toContain("VER TODO LO QUE DIJISTE");
@@ -272,7 +272,8 @@ describe("Multi-correction pilot — UI", () => {
     expect(es).toContain("1 · PASADO");
     expect(es).toContain("2 · GRAMÁTICA");
     expect(es).toContain("Yesterday I woke up");
-    expect(es.split("PRACTICA").length - 1).toBe(1);
+    // The pilot layout has no PRACTICE block: the fluency upgrade + retake replace it.
+    expect(es.split("PRACTICA").length - 1).toBe(0);
     expect(es).toContain("CONTINUAR");
     const en = html({ status: "ready", feedback: feedback([C1 as never, C2 as never]), transcript: TRANSCRIPT }, false);
     expect(en).toContain("EVERYTHING YOU SAID");

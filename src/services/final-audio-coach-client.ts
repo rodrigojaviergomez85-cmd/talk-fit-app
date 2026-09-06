@@ -12,7 +12,13 @@
  */
 import { supabase } from "@/integrations/supabase/client";
 import { CloudSync } from "./cloud-sync";
-import { sourceTurnNumberFor, type FinalAudioCoachResponse, type FinalCoachState } from "@/lib/final-audio-coach";
+import {
+  sourceTurnNumberFor,
+  type FinalAudioCoachResponse,
+  type FinalCoachRetakeResponse,
+  type FinalCoachRetakeState,
+  type FinalCoachState,
+} from "@/lib/final-audio-coach";
 import type { CourseDay, ModuleId, Recording } from "@/lib/types";
 
 export type CoachRequest = { moduleId: ModuleId; day: number; takeNumber: number };
@@ -202,4 +208,39 @@ export async function runFinalCoachPipeline(
   emit({ status: "analyzing" });
   const result = await requestCoachWithRetries({ moduleId, day: day.day, takeNumber: finalTakeNumber }, deps, signal);
   return emit(result);
+}
+
+/* ------------------------------------------------------------------------ */
+/*  Optional retake (pilot) — ONE request, no retries, nothing stored client-side */
+/* ------------------------------------------------------------------------ */
+
+/**
+ * Sends the retake audio (transient) for "did you apply the feedback?".
+ * Never uploads to recordings, never touches day completion. One call only:
+ * the server enforces the single retake, so a retry could only be refused.
+ */
+export async function requestFinalCoachRetake(
+  input: { moduleId: ModuleId; day: number; blob: Blob },
+  signal?: AbortSignal,
+): Promise<FinalCoachRetakeState> {
+  const token = await currentAccessToken();
+  if (!token) return { status: "unavailable" };
+  try {
+    const form = new FormData();
+    form.append("moduleId", input.moduleId);
+    form.append("day", String(input.day));
+    form.append("file", input.blob, "retake");
+    const res = await fetch("/api/final-audio-coach-retake", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: form,
+      ...(signal ? { signal } : {}),
+    });
+    const body = (await res.json().catch(() => null)) as FinalCoachRetakeResponse | null;
+    if (res.status === 200 && body?.status === "ready") return { status: "ready", result: body.result };
+    if (res.status === 200 && body?.status === "unclear") return { status: "unclear" };
+    return { status: "unavailable" };
+  } catch {
+    return { status: "unavailable" };
+  }
 }

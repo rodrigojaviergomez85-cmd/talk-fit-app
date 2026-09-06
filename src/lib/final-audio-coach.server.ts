@@ -23,8 +23,10 @@ import {
   coachVersionFor,
   isMultiCorrectionPilot,
   maxCorrectionsFor,
+  type AnsweredTask,
   type CoachCorrectionCategory,
   type FinalAudioCoachCorrection,
+  type FinalAudioCoachFluencyUpgrade,
 } from "./final-audio-coach";
 
 export { coachVersionFor, isMultiCorrectionPilot, maxCorrectionsFor };
@@ -133,6 +135,10 @@ export type CoachFeedback = {
   practicePhrase: string | null;
   /** Multi-correction pilot: 0–maxCorrections validated corrections (priority order). Empty on v2 days. */
   corrections: CoachCorrection[];
+  /** Pilot only: relevance to TODAY'S exact question. Undefined on v2 days. */
+  answeredTask?: AnsweredTask | undefined;
+  /** Pilot only: one grounded "more fluent" upgrade. Undefined on v2 days, null when none. */
+  fluencyUpgrade?: FinalAudioCoachFluencyUpgrade | null | undefined;
 };
 
 export type RecordingRow = {
@@ -147,6 +153,8 @@ export type RecordingRow = {
   audio_purged_at: string | null;
   estimated_idea_count: number | null;
   source_turn_number: number | null;
+  /** Optional: lets the pilot prompt compare speaking time with the day's goal (never a grade). */
+  duration_seconds?: number | null | undefined;
 };
 
 export type FeedbackRow = {
@@ -170,6 +178,10 @@ export type FeedbackRow = {
   estimated_idea_count: number | null;
   /** jsonb: compact validated correction array (pilot). Never a transcript. */
   corrections?: unknown;
+  /** Pilot: 'yes' | 'partly' | 'no'. */
+  answered_task?: unknown;
+  /** Pilot jsonb: { original, improved } (grounded at generation time). */
+  fluency_upgrade?: unknown;
 };
 
 export type CacheKey = { userId: string; audioSha256: string; rubricSha256: string; coachVersion: string };
@@ -210,7 +222,7 @@ export type CoachDeps = {
   consumeQuota: (userId: string) => Promise<boolean>;
   /** Exactly one Groq Turbo transcription; `confidence` comes from verbose_json segments (optional, internal). */
   stt: (audio: Uint8Array, mime: string | null) => Promise<SttResult>;
-  llm: (rubric: CoachRubric, transcript: string, estimatedIdeaCount: number | null) => Promise<unknown | null>;
+  llm: (rubric: CoachRubric, transcript: string, estimatedIdeaCount: number | null, speakingSeconds?: number | null) => Promise<unknown | null>;
   log?: ((entry: Record<string, unknown>) => void) | undefined;
 };
 
@@ -379,6 +391,46 @@ export function saidOccursInTranscript(said: string, transcript: string): boolea
   return ` ${t} `.includes(` ${s} `);
 }
 
+/**
+ * Repetition quotes are written as fragments joined by "..." ("we went... we went...").
+ * Every fragment must be a real (short) piece of the transcript. A plain quote is one fragment.
+ */
+export function quoteFragments(said: string): string[] {
+  return said
+    .split(/\.{3}|…/)
+    .map((f) => f.trim())
+    .filter(Boolean);
+}
+
+export function quoteGroundedInTranscript(said: string, transcript: string): boolean {
+  const fragments = quoteFragments(said);
+  if (fragments.length === 0) return false;
+  return fragments.every((f) => saidOccursInTranscript(f, transcript));
+}
+
+/** Max words for a fluencyUpgrade `original` (one short section, never the whole answer). */
+export const MAX_UPGRADE_ORIGINAL_WORDS = 30;
+export const LIMITS_UPGRADE = { original: 200, improved: 240 } as const;
+
+function answeredTaskOf(value: unknown): AnsweredTask | null {
+  return value === "yes" || value === "partly" || value === "no" ? value : null;
+}
+
+/** Grounded upgrade or null — never fabricated, never the whole answer, never identical. */
+export function normalizeFluencyUpgrade(raw: unknown, transcript?: string): FinalAudioCoachFluencyUpgrade | null {
+  if (!raw || typeof raw !== "object") return null;
+  const r = raw as Record<string, unknown>;
+  const original = typeof r["original"] === "string" ? r["original"].replace(/\s+/g, " ").trim() : "";
+  const improved = typeof r["improved"] === "string" ? clip(r["improved"], LIMITS_UPGRADE.improved) : "";
+  if (!original || !improved) return null;
+  if (original.length > LIMITS_UPGRADE.original || countWords(original) > MAX_UPGRADE_ORIGINAL_WORDS) return null;
+  const o = normalizeForMatch(original);
+  const t = transcript !== undefined ? normalizeForMatch(transcript) : null;
+  if (t !== null && !` ${t} `.includes(` ${o} `)) return null;
+  if (o === normalizeForMatch(improved)) return null;
+  return { original, improved };
+}
+
 const NO_CORRECTION = {
   correctionNeeded: false as const,
   said: null,
@@ -409,6 +461,7 @@ export function normalizeCorrections(raw: unknown, max: number, transcript?: str
     if (!item || typeof item !== "object") continue;
     const c = item as Record<string, unknown>;
     if (!isCategory(c["category"])) continue;
+    const category = c["category"];
     const said = typeof c["said"] === "string" ? c["said"].replace(/\s+/g, " ").trim() : "";
     const str = (key: "betterVersion" | "whyEn" | "whyEs"): string | null => {
       const v = c[key];
@@ -418,23 +471,39 @@ export function normalizeCorrections(raw: unknown, max: number, transcript?: str
     const whyEn = str("whyEn");
     const whyEs = str("whyEs");
     if (!said || !betterVersion || !whyEn || !whyEs) continue;
-    if (said.length > LIMITS.said || countWords(said) > MAX_SAID_WORDS) continue;
-    if (transcript !== undefined && !saidOccursInTranscript(said, transcript)) continue;
+    // Repetition quotes are "fragment... fragment... fragment" — each fragment is grounded on its own.
+    const multiFragment = category === "repetition";
+    if (said.length > LIMITS.said) continue;
+    if (!multiFragment && countWords(said) > MAX_SAID_WORDS) continue;
+    if (transcript !== undefined) {
+      const grounded = multiFragment ? quoteGroundedInTranscript(said, transcript) : saidOccursInTranscript(said, transcript);
+      if (!grounded) continue;
+    }
     const saidNorm = normalizeForMatch(said);
     if (!saidNorm || saidNorm === normalizeForMatch(betterVersion)) continue;
     // Dedupe: same underlying mistake quoted twice → keep the more complete quote in the earlier (higher-priority) slot.
-    const dupIndex = out.findIndex((prev) => {
-      const p = normalizeForMatch(prev.said);
-      return ` ${p} `.includes(` ${saidNorm} `) || ` ${saidNorm} `.includes(` ${p} `);
-    });
-    const next: CoachCorrection = { category: c["category"], said, betterVersion, whyEn, whyEs };
+    // Repetition / relevance items describe a pattern, not one mistake: they never absorb (or get absorbed by) a grammar quote.
+    const patternLike = multiFragment || category === "task_relevance";
+    const dupIndex = patternLike
+      ? -1
+      : out.findIndex((prev) => {
+          if (prev.category === "repetition" || prev.category === "task_relevance") return false;
+          const p = normalizeForMatch(prev.said);
+          return ` ${p} `.includes(` ${saidNorm} `) || ` ${saidNorm} `.includes(` ${p} `);
+        });
+    const next: CoachCorrection = { category, said, betterVersion, whyEn, whyEs };
     if (dupIndex >= 0) {
       if (saidNorm.length > normalizeForMatch(out[dupIndex]!.said).length) out[dupIndex] = next;
       continue;
     }
+    // One pattern item of each kind is enough.
+    if (patternLike && out.some((prev) => prev.category === category)) continue;
     out.push(next);
   }
-  return out.slice(0, max);
+  // Task relevance is the FIRST priority: an off-topic answer is never buried under a grammar slip.
+  const relevance = out.filter((c) => c.category === "task_relevance");
+  const rest = out.filter((c) => c.category !== "task_relevance");
+  return [...relevance, ...rest].slice(0, max);
 }
 
 /**
@@ -469,7 +538,12 @@ export function normalizeFeedback(raw: unknown, transcript?: string, maxCorrecti
 
   if (maxCorrections > 0) {
     const corrections = normalizeCorrections(r["corrections"], maxCorrections, transcript);
-    if (corrections.length === 0) return { ...base, ...NO_CORRECTION };
+    // Relevance: model value, else derived from taskCompleted. An off-topic verdict without a
+    // grounded task_relevance item stays informational (never fabricated into a quote).
+    const answeredTask = answeredTaskOf(r["answeredTask"]) ?? (r["taskCompleted"] ? "yes" : "partly");
+    const fluencyUpgrade = normalizeFluencyUpgrade(r["fluencyUpgrade"], transcript);
+    const pilotExtras = { answeredTask, fluencyUpgrade };
+    if (corrections.length === 0) return { ...base, ...NO_CORRECTION, ...pilotExtras };
     const primary = corrections[0]!;
     return {
       ...base,
@@ -480,6 +554,7 @@ export function normalizeFeedback(raw: unknown, transcript?: string, maxCorrecti
       whyEs: primary.whyEs,
       practicePhrase: text("practicePhrase"),
       corrections,
+      ...pilotExtras,
     };
   }
 
@@ -514,6 +589,8 @@ export function feedbackFromRow(row: FeedbackRow, maxCorrections = 0): CoachFeed
       whyEs: row.why_es,
       practicePhrase: row.practice_phrase,
       corrections: row.corrections ?? [],
+      answeredTask: row.answered_task ?? undefined,
+      fluencyUpgrade: row.fluency_upgrade ?? null,
     },
     undefined,
     maxCorrections,
@@ -544,7 +621,12 @@ const LEVEL_GUIDANCE: Record<CoachRubric["level"], string> = {
     "Never generic ('Add more detail'). Good: \"Add the result: 'As a result, the customer stayed with the company.'\" / \"Give one concrete example instead of saying 'I work well under pressure.'\"",
 };
 
-export function buildCoachMessages(rubric: CoachRubric, transcript: string, estimatedIdeaCount: number | null) {
+export function buildCoachMessages(
+  rubric: CoachRubric,
+  transcript: string,
+  estimatedIdeaCount: number | null,
+  speakingSeconds: number | null = null,
+) {
   const task = rubric.turn
     ? [
         `Task type: role play turn ${rubric.sourceTurnNumber}.`,
@@ -591,6 +673,10 @@ export function buildCoachMessages(rubric: CoachRubric, transcript: string, esti
         estimatedIdeaCount !== null && estimatedIdeaCount < rubric.goalSentences
           ? "The learner is still below the idea target: the next step should preferably help them ADD ONE useful idea toward the goal (say what idea, with an example). Do not mention numbers of ideas."
           : null,
+        // Pilot only: speaking time lets the model see "enough ideas, but far too short" (development, not success).
+        rubric.maxCorrections && rubric.maxCorrections > 0 && speakingSeconds !== null && Number.isFinite(speakingSeconds)
+          ? `Speaking time: ${Math.round(speakingSeconds)} seconds (target ${rubric.goalSeconds[0]}–${rubric.goalSeconds[1]} seconds).`
+          : null,
       ];
   const user = [
     `Module: ${rubric.moduleLabel} · Day ${rubric.day}`,
@@ -611,17 +697,23 @@ export function buildCoachMessages(rubric: CoachRubric, transcript: string, esti
 }
 
 /**
- * Multi-correction pilot guidance (same single LLM call). Priority for BASIC 3
- * Simple Past: target-tense errors first, then important grammar, then one
- * natural-English / connector / development improvement. Never padded.
+ * Multi-correction pilot guidance (same single LLM call). BASIC 3 Simple Past
+ * priority: task relevance → target tense → repetition/variety → connection →
+ * development. Grammar correctness alone is never treated as fluency. Never padded.
  */
 function multiCorrectionGuidance(max: number): string[] {
   return [
-    `Then choose the ${max} HIGHEST-VALUE corrections at most (0 to ${max}) as the \`corrections\` array, in priority order. Fewer is fine; an empty array is fine. NEVER add a correction just to reach ${max}.`,
-    "Priority: (1) the day's target language (Simple Past: wrong past form 'I go yesterday' → 'I went yesterday', regular/irregular 'I buyed' → 'I bought', was/were 'They was' → 'They were', did + base form 'I didn't went' → 'I didn't go', past-time consistency 'Yesterday I wake up' → 'Yesterday I woke up'); (2) an important grammar or sentence-structure error; (3) only if still fewer than the maximum, ONE important natural-English word choice, connector or development improvement.",
-    "Skip entirely: punctuation, capitalization, tiny stylistic preferences, accent, phonemes, and Spanish-influenced English that is still clear. One correction per underlying mistake — never quote the same error twice.",
-    `Each correction: category ∈ ${JSON.stringify(CORRECTION_CATEGORIES)}; \`said\` = a SHORT phrase (max 12 words) copied EXACTLY, word for word, from the transcript (never paraphrase, never invent — an invented quote is discarded); \`betterVersion\` = the corrected phrase; \`whyEn\` / \`whyEs\` = ONE very simple reason (natural Latin American Spanish).`,
-    "Also fill the primary fields to mirror corrections[0]: correctionNeeded=true, said, betterVersion, whyEn, whyEs and ONE `practicePhrase` (a short natural English sentence using the correct form). If corrections is empty: correctionNeeded=false and all of those null.",
+    "FIRST decide `answeredTask`: did the learner answer THIS exact question? 'yes' = clearly on topic; 'partly' = touches it but drifts or answers something adjacent; 'no' = talks about something else.",
+    `Then choose the ${max} HIGHEST-LEARNING-VALUE items at most (0 to ${max}) as the \`corrections\` array, in priority order. TOTAL maximum ${max} across every category — never ${max} grammar + ${max} fluency. Fewer is fine; an empty array is fine. NEVER add an item just to reach ${max}.`,
+    "Priority order: (1) task_relevance — if answeredTask is 'no' or 'partly', the FIRST item MUST be category task_relevance: `said` = a short phrase they actually said that is off the question, `betterVersion` = how to START answering the real question (e.g. \"Yesterday, I woke up at seven and then...\"), why = they were asked X. Never spend the first slot on a minor grammar slip when the question was not answered. " +
+      "(2) verb_tense — Simple Past: 'I go yesterday' → 'I went yesterday', 'I buyed' → 'I bought', 'They was' → 'They were', 'I didn't went' → 'I didn't go', 'Yesterday I wake up' → 'Yesterday I woke up'. " +
+      "(3) repetition — the SAME verb, sentence opening, connector or structure repeated so much the speech sounds basic even when it is correct (e.g. 'we went… we went… we went…', 'then… then… then…', every sentence starting with 'I'). Category repetition, NEVER grammar: `said` = the repeated fragments joined by '...' (each fragment copied exactly, e.g. \"we went... we went... we went...\"), `betterVersion` = ONE short more varied version for BASIC level (e.g. \"We watched a movie first. After that, we spent some time at the beach.\"). " +
+      "(4) connector — then / after that / later / because / so. (5) development — add when, where, who, what happened next, how they felt. Also grammar / word_choice / naturalness when clearly important. Do not force every category.",
+    "Skip entirely: punctuation, capitalization, tiny stylistic preferences, accent, phonemes, and Spanish-influenced English that is still clear. One item per underlying issue — never quote the same error twice.",
+    `Each item: category ∈ ${JSON.stringify(CORRECTION_CATEGORIES)}; \`said\` = a SHORT phrase (max 12 words; repetition: fragments joined by '...') copied EXACTLY, word for word, from the transcript (never paraphrase, never invent — an invented quote is discarded); \`betterVersion\` = the better phrase; \`whyEn\` / \`whyEs\` = ONE very simple reason (natural Latin American Spanish).`,
+    "`fluencyUpgrade`: ONE optional short upgrade showing how to sound more natural and connected without becoming advanced: `original` = ONE short section (max 25 words) copied EXACTLY from the transcript (never the whole answer), `improved` = the same content said more fluently for BASIC level (connectors, variety, one detail). null when nothing useful.",
+    "Time vs ideas: if the learner produced enough separate ideas but spoke far below the target time, do NOT treat the speaking goal as achieved — the ideas were too short. Then the next step must be DEVELOPMENT: their ideas are clear but very short; add when it happened, who they were with or how they felt (with an example). Grammar correctness alone is never enough to call the answer fluent.",
+    "Also fill the primary fields to mirror corrections[0]: correctionNeeded=true, said, betterVersion, whyEn, whyEs and ONE `practicePhrase` (a short natural English sentence using the better form). If corrections is empty: correctionNeeded=false and all of those null.",
   ];
 }
 
@@ -677,16 +769,23 @@ export const COACH_JSON_SCHEMA = {
   },
 } as const;
 
-/** Pilot schema = v2 schema + `corrections` array (same call, same model). */
+/** Pilot schema = v2 schema + `corrections` array + answeredTask + fluencyUpgrade (same call, same model). */
 export const COACH_JSON_SCHEMA_MULTI = {
   name: "final_audio_coach_multi",
   strict: true,
   schema: {
     ...COACH_JSON_SCHEMA.schema,
-    required: [...COACH_JSON_SCHEMA.schema.required, "corrections"],
+    required: [...COACH_JSON_SCHEMA.schema.required, "corrections", "answeredTask", "fluencyUpgrade"],
     properties: {
       ...COACH_JSON_SCHEMA.schema.properties,
       corrections: { type: "array", maxItems: MULTI_CORRECTION_MAX.intermediate, items: CORRECTION_ITEM_SCHEMA },
+      answeredTask: { type: "string", enum: ["yes", "partly", "no"] },
+      fluencyUpgrade: {
+        type: ["object", "null"],
+        additionalProperties: false,
+        required: ["original", "improved"],
+        properties: { original: { type: "string" }, improved: { type: "string" } },
+      },
     },
   },
 } as const;
@@ -868,7 +967,11 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
   let feedback: CoachFeedback | null = null;
   try {
     // Transcript still in memory: `said` is grounded here, then the transcript is dropped (never stored).
-    feedback = normalizeFeedback(await deps.llm(rubric, transcript, rec.estimated_idea_count), transcript, maxCorrections);
+    feedback = normalizeFeedback(
+      await deps.llm(rubric, transcript, rec.estimated_idea_count, rec.duration_seconds ?? null),
+      transcript,
+      maxCorrections,
+    );
   } catch {
     feedback = null;
   }
