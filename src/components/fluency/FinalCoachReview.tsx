@@ -21,6 +21,8 @@ export type RetakePanelProps = {
   targetSeconds: [number, number];
   onStart: () => void;
   onRecorded: (recording: Recording) => void;
+  /** Re-sends the SAME in-memory retake blob after a technical failure. Never records again. */
+  onRetry?: (() => void) | undefined;
 };
 
 type Props = {
@@ -182,7 +184,7 @@ export function FinalCoachReview({ state, showEs, result, onContinue, retake }: 
   if (retake && retake.state.status === "ready") {
     return <RetakeResultScreen retake={retake} showEs={showEs} onContinue={onContinue} />;
   }
-  if (retake && (retake.state.status === "recording" || retake.state.status === "analyzing" || retake.state.status === "unclear" || retake.state.status === "unavailable")) {
+  if (retake && (retake.state.status === "recording" || retake.state.status === "analyzing" || retake.state.status === "unclear" || retake.state.status === "retryable" || retake.state.status === "unavailable")) {
     return <RetakeRoundScreen retake={retake} showEs={showEs} onContinue={onContinue} />;
   }
 
@@ -372,6 +374,27 @@ function RetakeRoundScreen({ retake, showEs, onContinue }: { retake: RetakePanel
             {showEs ? "Comparando con tu primera respuesta…" : "Comparing with your first answer…"}
           </p>
         </div>
+      ) : null}
+      {st === "retryable" ? (
+        <>
+          <p className="text-[16px] font-extrabold leading-snug">{showEs ? "NO PUDIMOS ANALIZARLO TODAVÍA" : "WE COULDN'T ANALYZE IT YET"}</p>
+          <p className="text-[14px] font-semibold text-muted-foreground">
+            {showEs
+              ? "Tu grabación está lista. Puedes intentar analizar la misma respuesta otra vez."
+              : "Your recording is ready. You can try analyzing the same answer again."}
+          </p>
+          {retake.onRetry ? (
+            <button
+              type="button"
+              data-testid="final-coach-retake-retry"
+              onClick={retake.onRetry}
+              className="flex min-h-[52px] w-full items-center justify-center rounded-2xl border-2 border-primary bg-background px-5 text-[13px] font-extrabold uppercase tracking-[0.16em] text-primary transition-transform active:scale-[0.98]"
+            >
+              {showEs ? "REINTENTAR COMPARACIÓN" : "RETRY COMPARISON"}
+            </button>
+          ) : null}
+          <ContinueButton showEs={showEs} onClick={onContinue} />
+        </>
       ) : null}
       {st === "unclear" || st === "unavailable" ? (
         <>

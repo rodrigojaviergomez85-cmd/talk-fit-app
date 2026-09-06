@@ -211,20 +211,22 @@ export async function runFinalCoachPipeline(
 }
 
 /* ------------------------------------------------------------------------ */
-/*  Optional retake (pilot) — ONE request, no retries, nothing stored client-side */
+/*  Optional retake (pilot) — same blob may be re-sent; never a new recording */
 /* ------------------------------------------------------------------------ */
 
-/**
- * Sends the retake audio (transient) for "did you apply the feedback?".
- * Never uploads to recordings, never touches day completion. One call only:
- * the server enforces the single retake, so a retry could only be refused.
- */
-export async function requestFinalCoachRetake(
-  input: { moduleId: ModuleId; day: number; blob: Blob },
-  signal?: AbortSignal,
-): Promise<FinalCoachRetakeState> {
+/** Bounded polling for the SAME retake audio while the server still owns its analysis (~15 s). No AI work happens on a poll. */
+export const RETAKE_PENDING_POLL_DELAYS_MS = [2000, 3000, 5000, 5000] as const;
+
+export type RetakeHttpResult = { kind: "response"; http: number; body: FinalCoachRetakeResponse | null } | { kind: "network_error" };
+
+export type RetakeRequestDeps = {
+  send: (input: { moduleId: ModuleId; day: number; blob: Blob }, signal?: AbortSignal) => Promise<RetakeHttpResult>;
+  sleep: (ms: number, signal?: AbortSignal) => Promise<void>;
+};
+
+async function postRetake(input: { moduleId: ModuleId; day: number; blob: Blob }, signal?: AbortSignal): Promise<RetakeHttpResult> {
   const token = await currentAccessToken();
-  if (!token) return { status: "unavailable" };
+  if (!token) return { kind: "response", http: 401, body: null };
   try {
     const form = new FormData();
     form.append("moduleId", input.moduleId);
@@ -237,10 +239,47 @@ export async function requestFinalCoachRetake(
       ...(signal ? { signal } : {}),
     });
     const body = (await res.json().catch(() => null)) as FinalCoachRetakeResponse | null;
-    if (res.status === 200 && body?.status === "ready") return { status: "ready", result: body.result };
-    if (res.status === 200 && body?.status === "unclear") return { status: "unclear" };
-    return { status: "unavailable" };
+    return { kind: "response", http: res.status, body };
   } catch {
-    return { status: "unavailable" };
+    return { kind: "network_error" };
   }
+}
+
+/**
+ * Maps one server answer to learner state.
+ *  ready / unclear → terminal · technical `error` or a network failure → retryable
+ *  (the caller still holds the same blob) · 429 / 409 / other → unavailable · 202 → null (keep waiting).
+ */
+export function mapRetakeResult(r: RetakeHttpResult): FinalCoachRetakeState | null {
+  if (r.kind === "network_error") return { status: "retryable" };
+  const { http, body } = r;
+  if (http === 200 && body?.status === "ready") return { status: "ready", result: body.result };
+  if (http === 200 && body?.status === "unclear") return { status: "unclear" };
+  if (http === 202 || body?.status === "pending") return null;
+  if (body?.status === "error") return { status: "retryable" };
+  if (http >= 500) return { status: "retryable" };
+  return { status: "unavailable" };
+}
+
+/**
+ * Sends the retake audio (transient) for "did you apply the feedback?".
+ * Never uploads to recordings, never touches day completion. The server keys
+ * everything on the audio hash: re-sending the SAME blob is a cache replay or a
+ * technical reprocess, never a second pedagogical retake. While the server
+ * reports pending, the same blob is re-sent a bounded number of times.
+ */
+export async function requestFinalCoachRetake(
+  input: { moduleId: ModuleId; day: number; blob: Blob },
+  signal?: AbortSignal,
+  deps: RetakeRequestDeps = { send: postRetake, sleep: defaultSleep },
+): Promise<FinalCoachRetakeState> {
+  let mapped = mapRetakeResult(await deps.send(input, signal));
+  for (const delay of RETAKE_PENDING_POLL_DELAYS_MS) {
+    if (mapped || signal?.aborted) break;
+    await deps.sleep(delay, signal);
+    if (signal?.aborted) break;
+    mapped = mapRetakeResult(await deps.send(input, signal));
+  }
+  // Still pending after the bounded window: the blob is intact, the learner may retry later.
+  return mapped ?? { status: "retryable" };
 }

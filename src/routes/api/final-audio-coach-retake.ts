@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { ModuleId } from "@/lib/types";
-import type { RetakeDeps } from "@/lib/final-coach-retake.server";
+import type { ExistingRetake, RetakeDeps } from "@/lib/final-coach-retake.server";
+import type { FinalCoachRetakeResult } from "@/lib/final-audio-coach";
 
 /**
  * STEP 5 · Optional RETAKE (BASIC 3 · Day 1 pilot only).
@@ -91,6 +92,28 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
             };
           },
           store: {
+            findExisting: async (feedbackId) => {
+              const { data, error } = await supabaseAdmin
+                .from("final_audio_coach_retakes")
+                .select("id, feedback_id, status, audio_sha256, result, updated_at")
+                .eq("feedback_id", feedbackId)
+                .eq("user_id", userId)
+                .maybeSingle();
+              if (error) {
+                console.error("[final-audio-coach-retake] findExisting failed", error.message);
+                throw new Error("retake lookup failed");
+              }
+              if (!data) return null;
+              const status = data.status as ExistingRetake["status"];
+              return {
+                id: data.id,
+                feedbackId: data.feedback_id,
+                status,
+                audioSha256: data.audio_sha256 ?? "",
+                result: data.result && typeof data.result === "object" && !Array.isArray(data.result) ? (data.result as unknown as FinalCoachRetakeResult) : null,
+                updatedAt: data.updated_at,
+              };
+            },
             tryInsertPending: async (row) => {
               const { data, error } = await supabaseAdmin
                 .from("final_audio_coach_retakes")
@@ -103,13 +126,28 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
               }
               return data?.id ?? null;
             },
+            // Optimistic lock: only the caller that still sees the ERROR row exactly as read may reclaim it.
+            tryReclaimError: async (id, updatedAt) => {
+              const { data, error } = await supabaseAdmin
+                .from("final_audio_coach_retakes")
+                .update({ status: "pending", result: null, transcript_word_count: null })
+                .eq("id", id)
+                .eq("status", "error")
+                .eq("updated_at", updatedAt)
+                .select("id");
+              if (error) {
+                console.error("[final-audio-coach-retake] reclaim failed", error.message);
+                return false;
+              }
+              return (data?.length ?? 0) === 1;
+            },
             finalize: async (id, patch) => {
               const { error } = await supabaseAdmin
                 .from("final_audio_coach_retakes")
                 .update({
                   status: patch.status,
                   transcript_word_count: patch.transcriptWordCount ?? null,
-                  // Compact validated result only. Never the transcript.
+                  // Compact validated result only. Never the transcript. audio_sha256 is never touched.
                   result: patch.result ? (patch.result as never) : null,
                 })
                 .eq("id", id);
@@ -121,7 +159,7 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
             },
           },
           consumeQuota: async (uid) =>
-            (await consumeQuota(uid, engine.COACH_QUOTA_ENDPOINT, engine.COACH_QUOTA_LIMIT, engine.COACH_QUOTA_WINDOW_SECONDS)).allowed,
+            (await consumeQuota(uid, engine.RETAKE_QUOTA_ENDPOINT, engine.RETAKE_QUOTA_LIMIT, engine.RETAKE_QUOTA_WINDOW_SECONDS)).allowed,
           stt: (bytes, m) => providers.transcribeFinalAudio(bytes, m, "final-audio-coach-retake"),
           llm: (ctx, transcript) => providers.coachChatJson(engine.buildRetakeMessages(ctx, transcript), engine.RETAKE_JSON_SCHEMA, "final-audio-coach-retake"),
           log: (entry) => console.info("[final-audio-coach-retake]", entry),

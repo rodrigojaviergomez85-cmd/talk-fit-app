@@ -183,6 +183,7 @@ export type FinalCoachRetakeResult = {
 export type FinalCoachRetakeResponse =
   | { status: "ready"; result: FinalCoachRetakeResult }
   | { status: "unclear" }
+  | { status: "pending" }
   | { status: "already_used" }
   | { status: "no_feedback" }
   | { status: "not_available" }
@@ -190,11 +191,16 @@ export type FinalCoachRetakeResponse =
   | { status: "audio_too_large" }
   | { status: "rate_limited" };
 
-/** Learner-facing retake state (session only). */
+/**
+ * Learner-facing retake state (session only).
+ * `retryable` = a TECHNICAL failure (provider/network) on the recording already made:
+ * the same in-memory blob may be re-sent for comparison. It is never a second recording.
+ */
 export type FinalCoachRetakeState =
   | { status: "idle" }
   | { status: "recording" }
   | { status: "analyzing" }
   | { status: "ready"; result: FinalCoachRetakeResult }
   | { status: "unclear" }
+  | { status: "retryable" }
   | { status: "unavailable" };
