@@ -7,6 +7,10 @@ import {
   SIMPLE_PRESENT_PROFILE,
   PAST_STORIES_PROFILE,
   MIXED_TENSES_PROFILE,
+  EAGLES_PROFILE,
+  TIGERS_PROFILE,
+  SHARKS_PROFILE,
+  ADVANCED_1_PROFILE,
   getRep2CorrectionProfile,
   hasRep2CorrectionRollout,
   type Rep2CorrectionProfile,
@@ -358,38 +362,244 @@ describe("cross-module regression", () => {
   });
 });
 
-describe("rollout", () => {
-  const BASIC: ModuleId[] = ["basic-zero", "simple-future", "simple-present", "past-stories", "mixed-tenses"];
-  const OTHER: ModuleId[] = ["eagles-week-1", "tigers", "sharks", "advanced-1"];
+/* ------------------------- higher-level tolerance ------------------------- */
 
-  it("only the five Basic modules are rolled out", () => {
-    for (const m of BASIC) expect(hasRep2CorrectionRollout(m)).toBe(true);
-    for (const m of OTHER) expect(hasRep2CorrectionRollout(m)).toBe(false);
+const hl = (profile: Rep2CorrectionProfile) => (target: string, transcript: string) =>
+  compareGeneric(target, transcript, { avgLogprob: -0.2, noSpeechProb: 0.01 }, profile);
+
+describe("higher-level profiles (Eagles / Tigers / Sharks / Advanced)", () => {
+  // REAL STEP 2 targets pulled from the curriculum (Day 1 chunks / longest chunks).
+  const EAGLES_D1 =
+    "Yesterday, I had a busy day because I had several things to do. I arrived early, and I started working right away."; // 22 words → 1 allowed
+  const TIGERS_D1 =
+    "The main reason I wanted to change was that I felt I wasn't growing. However, the new job was risky because I didn't know the company well."; // 29 tokens → 2 allowed
+  const SHARKS_LONG =
+    "For it to happen, I would need to set aside time every week, no matter what. If it cost twice as much as I expected, I would probably start with a cheaper instrument first."; // 34 words
+  const ADVANCED_D1 =
+    "I'm currently improving my English because I want to work in an international environment. I've had experience working with different types of people."; // 25 tokens → 2 allowed
+  const ADVANCED_LONG =
+    "If I were an animal, I'd be a dog, because I'm loyal, I learn fast, and I actually enjoy working with people. If a customer is waiting and my supervisor needs a report, I take care of the customer first and tell my supervisor exactly when the report will be ready."; // ~54 tokens → still capped at 2
+
+  it("profiles are registered and share the conservative shape", () => {
+    for (const [id, p] of [
+      ["eagles-week-1", EAGLES_PROFILE],
+      ["tigers", TIGERS_PROFILE],
+      ["sharks", SHARKS_PROFILE],
+      ["advanced-1", ADVANCED_1_PROFILE],
+    ] as const) {
+      expect(getRep2CorrectionProfile(id)).toBe(p);
+      expect(p.focusRules).toEqual([]);
+      expect(p.maxMismatchesForFocus).toBe(2);
+      expect(p.maxWordErrorRateForGood).toBe(0.08);
+    }
+  });
+
+  describe("EAGLES real target", () => {
+    const c = hl(EAGLES_PROFILE);
+    it("exact → GOOD (not nearMatch)", () => {
+      const r = c(EAGLES_D1, EAGLES_D1);
+      expect(r.status).toBe("good");
+      expect(r.nearMatch).toBeUndefined();
+    });
+    it("punctuation / casing → GOOD", () => {
+      expect(c(EAGLES_D1, "yesterday i had a busy day because i had several things to do i arrived early and i started working right away").status).toBe("good");
+    });
+    it("one harmless dropped word on a 22-word target → GOOD nearMatch", () => {
+      const r = c(EAGLES_D1, "Yesterday, I had a busy day because I had several things to do. I arrived early, and I started working away.");
+      expect(r.status).toBe("good");
+      expect(r.nearMatch).toBe(true);
+      expect(r.retryRecommended).toBe(false);
+    });
+    it("one dropped protected word (HAD) → CORRECT", () => {
+      const r = c(EAGLES_D1, "Yesterday, I a busy day because I had several things to do. I arrived early, and I started working right away.");
+      expect(r.status).toBe("correct");
+    });
+    it("clearly shortened answer → CORRECT, never asr_uncertain", () => {
+      expect(c(EAGLES_D1, "Yesterday I had a busy day").status).toBe("correct");
+    });
+    it("completely different clear sentence → CORRECT", () => {
+      expect(c(EAGLES_D1, "My name is Carlos and I live in San Salvador").status).toBe("correct");
+    });
+  });
+
+  describe("TIGERS real target", () => {
+    const c = hl(TIGERS_PROFILE);
+    it("supported contraction equivalents → GOOD", () => {
+      expect(c(TIGERS_D1, "The main reason I wanted to change was that I felt I was not growing. However, the new job was risky because I did not know the company well.").status).toBe("good");
+    });
+    it("missing 'that' → GOOD nearMatch", () => {
+      const r = c(TIGERS_D1, "The main reason I wanted to change was I felt I wasn't growing. However, the new job was risky because I didn't know the company well.");
+      expect(r.status).toBe("good");
+      expect(r.nearMatch).toBe(true);
+    });
+    it("missing WAS (protected) → CORRECT", () => {
+      expect(c(TIGERS_D1, "The main reason I wanted to change that I felt I wasn't growing. However, the new job was risky because I didn't know the company well.").status).toBe("correct");
+    });
+    it("three differences on a ~29-word target → CORRECT, no focus", () => {
+      const r = c(TIGERS_D1, "The main reason I wanted change was I felt I wasn't growing. However, the new job risky because I didn't know the company well.");
+      expect(r.status).toBe("correct");
+      expect(r.focus).toBeUndefined();
+    });
+    it("empty / low confidence → asr_uncertain", () => {
+      expect(compareGeneric(TIGERS_D1, "", undefined, TIGERS_PROFILE).status).toBe("asr_uncertain");
+      expect(compareGeneric(TIGERS_D1, TIGERS_D1, { avgLogprob: -0.9, noSpeechProb: 0 }, TIGERS_PROFILE).status).toBe("asr_uncertain");
+    });
+  });
+
+  describe("SHARKS real target", () => {
+    const c = hl(SHARKS_PROFILE);
+    it("exact → GOOD", () => {
+      expect(c(SHARKS_LONG, SHARKS_LONG).status).toBe("good");
+    });
+    it("missing WOULD (protected) → CORRECT", () => {
+      const r = c(SHARKS_LONG, "For it to happen, I would need to set aside time every week, no matter what. If it cost twice as much as I expected, I probably start with a cheaper instrument first.");
+      expect(r.status).toBe("correct");
+      expect(r.focus).toBe("WOULD");
+    });
+    it("one harmless difference → GOOD nearMatch", () => {
+      const r = c(SHARKS_LONG, "For it to happen, I would need to set aside time every week, no matter what. If it cost twice as much as I expected, I would start with a cheaper instrument first.");
+      expect(r.status).toBe("good");
+      expect(r.nearMatch).toBe(true);
+    });
+  });
+
+  describe("ADVANCED real target", () => {
+    const c = hl(ADVANCED_1_PROFILE);
+    it("exact + contraction → GOOD", () => {
+      expect(c(ADVANCED_D1, "I am currently improving my English because I want to work in an international environment. I have had experience working with different types of people.").status).toBe("good");
+    });
+    it("missing HAVE (protected) → CORRECT", () => {
+      expect(c(ADVANCED_D1, "I'm currently improving my English because I want to work in an international environment. I had experience working with different types of people.").status).toBe("correct");
+    });
+    it("one harmless replacement → GOOD nearMatch", () => {
+      const r = c(ADVANCED_D1, "I'm currently improving my English because I want to work in a international environment. I've had experience working with different types of people.");
+      expect(r.status).toBe("good");
+      expect(r.nearMatch).toBe(true);
+    });
+    it("absolute cap on a ~50-word target: 2 harmless → GOOD, 3 harmless → CORRECT", () => {
+      const two = "If I were an animal, I'd be a dog, because I'm loyal, I learn fast, and I enjoy working with people. If a customer is waiting and my supervisor needs a report, I take care of the customer first and tell my supervisor when the report will be ready.";
+      const three = "If I were an animal, I'd be a dog, because I'm loyal, I learn fast, and I enjoy working with people. If a customer is waiting and my supervisor needs a report, I take care of the customer and tell my supervisor when the report will be ready.";
+      const r2 = c(ADVANCED_LONG, two);
+      expect(r2.status).toBe("good");
+      expect(r2.nearMatch).toBe(true);
+      const r3 = c(ADVANCED_LONG, three);
+      expect(r3.status).toBe("correct");
+      expect(r3.nearMatch).toBeUndefined();
+    });
+    it("five clear differences → CORRECT, no focus, full target", () => {
+      const r = c(ADVANCED_LONG, "If I were an animal, I be a cat, because I loyal, I learn slow, and I enjoy working with people. If a customer is waiting and my boss needs a report, I take care of the customer first and tell my supervisor exactly when the report will be ready.");
+      expect(r.status).toBe("correct");
+      expect(r.focus).toBeUndefined();
+      expect(r.correction).toBe(ADVANCED_LONG);
+    });
+  });
+
+  describe("protected words are never forgiven", () => {
+    const c = hl(ADVANCED_1_PROFILE);
+    it("I would not recommend → I would recommend → CORRECT", () => {
+      const r = c("I would not recommend that option because it could be risky.", "I would recommend that option because it could be risky.");
+      expect(r.status).toBe("correct");
+      expect(r.focus).toBe("NOT");
+    });
+    it("short: I would not recommend that option → CORRECT", () => {
+      expect(c("I would not recommend that option.", "I would recommend that option.").status).toBe("correct");
+    });
+    it("I would choose → I choose → CORRECT", () => {
+      expect(c("I would choose the second option.", "I choose the second option.").status).toBe("correct");
+    });
+    it("If I had to choose, I would probably… → missing WOULD → CORRECT", () => {
+      expect(
+        c(
+          "If I had to choose, I would probably accept the second job because it gives me more flexibility.",
+          "If I had to choose, I probably accept the second job because it gives me more flexibility.",
+        ).status,
+      ).toBe("correct");
+    });
+    it("I have worked → I worked → CORRECT", () => {
+      expect(c("I have worked with different types of people.", "I worked with different types of people.").status).toBe("correct");
+    });
+    it("Example A: missing 'that' on a 15-word target → GOOD nearMatch", () => {
+      const r = c(
+        "The main reason was that I wanted more stability and a better opportunity to grow.",
+        "The main reason was I wanted more stability and a better opportunity to grow.",
+      );
+      expect(r.status).toBe("good");
+      expect(r.nearMatch).toBe(true);
+    });
+    it("short targets (<13 words) get no tolerance: floor(9 × 0.08) = 0 → CORRECT", () => {
+      const r = c("The main reason was that I wanted more stability.", "The main reason was I wanted more stability.");
+      expect(r.status).toBe("correct");
+      expect(r.focus).toBe("THAT");
+    });
+  });
+
+  it("tolerance never rescues a configured focus structure", () => {
+    const p: Rep2CorrectionProfile = { ...EAGLES_PROFILE, focusRules: [{ phrase: ["because"], label: "BECAUSE" }] };
+    const r = compareGeneric(EAGLES_D1, "Yesterday, I had a busy day I had several things to do. I arrived early, and I started working right away.", undefined, p);
+    expect(r.status).toBe("correct");
+    expect(r.focus).toBe("BECAUSE");
+  });
+});
+
+describe("BASIC regression: no tolerance without maxWordErrorRateForGood", () => {
+  const basics = [BASIC_ZERO_PROFILE, SIMPLE_FUTURE_PROFILE, SIMPLE_PRESENT_PROFILE, PAST_STORIES_PROFILE, MIXED_TENSES_PROFILE];
+  it("no BASIC profile defines maxWordErrorRateForGood", () => {
+    for (const p of basics) expect(p.maxWordErrorRateForGood).toBeUndefined();
+  });
+  it("Future: 'I'm going study tonight' → CORRECT focus going TO, never GOOD", () => {
+    const r = compareGeneric("I'm going to study tonight.", "I'm going study tonight", undefined, SIMPLE_FUTURE_PROFILE);
+    expect(r.status).toBe("correct");
+    expect(r.focus).toBe("going TO");
+    expect(r.nearMatch).toBeUndefined();
+  });
+  it.each(basics.map((p) => [p.moduleId, p] as const))("%s: one harmless dropped word on a long target is still CORRECT", (_id, p) => {
+    const long = "In the morning, I'm going to work. I'm going to have lunch with a coworker and then I'm going to go home early.";
+    const r = compareGeneric(long, "In the morning, I'm going to work. I'm going to have lunch with a coworker and then I'm going to go home.", undefined, p);
+    expect(r.status).toBe("correct");
+    expect(r.nearMatch).toBeUndefined();
+  });
+});
+
+describe("rollout", () => {
+  const ALL: ModuleId[] = [
+    "basic-zero",
+    "simple-future",
+    "simple-present",
+    "past-stories",
+    "mixed-tenses",
+    "eagles-week-1",
+    "tigers",
+    "sharks",
+    "advanced-1",
+  ];
+
+  it("all nine implemented modules are rolled out", () => {
+    for (const m of ALL) expect(hasRep2CorrectionRollout(m)).toBe(true);
     expect(hasRep2CorrectionRollout("unknown-module")).toBe(false);
   });
 
-  it("every Basic module has its own profile; others fall back to generic", () => {
-    for (const m of BASIC) expect(getRep2CorrectionProfile(m).moduleId).toBe(m);
-    for (const m of OTHER) expect(getRep2CorrectionProfile(m)).toBe(GENERIC_PROFILE);
+  it("every rolled-out module has its own profile; unknown ids fall back to generic", () => {
+    for (const m of ALL) expect(getRep2CorrectionProfile(m).moduleId).toBe(m);
+    expect(getRep2CorrectionProfile("unknown-module")).toBe(GENERIC_PROFILE);
   });
 
-  it("integration audit: every Basic day exists, yields non-empty Rep 2 targets and is enabled", async () => {
-    for (const m of BASIC) {
+  it("integration audit: every real day with Rep 2 chunks is enabled and yields non-empty targets", async () => {
+    for (const m of ALL) {
       const loaded = await CourseService.loadModule(m);
       expect(loaded.days.length).toBeGreaterThan(0);
       for (const day of loaded.days) {
         const chunks = rep2Chunks(day);
         expect(chunks.length, `${m} day ${day.day} has no Rep 2 chunks`).toBeGreaterThan(0);
-        for (const c of chunks) expect(rep2ChunkText(c).trim(), `${m} d${day.day} ${c.id}`).not.toBe("");
+        const ids = new Set<string>();
+        for (const c of chunks) {
+          expect(c.id, `${m} d${day.day} chunk without id`).toBeTruthy();
+          expect(ids.has(c.id), `${m} d${day.day} duplicate chunk id ${c.id}`).toBe(false);
+          ids.add(c.id);
+          expect(chunks.find((x) => x.id === c.id)).toBe(c);
+          expect(rep2ChunkText(c).trim(), `${m} d${day.day} ${c.id}`).not.toBe("");
+        }
         expect(isRep2CorrectionEnabled(m, day), `${m} day ${day.day} should be enabled`).toBe(true);
       }
     }
-  }, 30_000);
-
-  it("non-Basic modules stay disabled on every day", async () => {
-    for (const m of OTHER) {
-      const loaded = await CourseService.loadModule(m);
-      for (const day of loaded.days) expect(isRep2CorrectionEnabled(m, day)).toBe(false);
-    }
-  }, 30_000);
+  }, 60_000);
 });
