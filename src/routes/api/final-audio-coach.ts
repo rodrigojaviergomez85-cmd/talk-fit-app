@@ -90,7 +90,7 @@ export const Route = createFileRoute("/api/final-audio-coach")({
             findExisting: async (key) => {
               const { data } = await supabaseAdmin
                 .from("final_audio_coach_feedback")
-                .select("id, status, updated_at, task_completed, target_language, organization, strength_en, strength_es, next_step_en, next_step_es, transcript_word_count, estimated_idea_count")
+                .select("id, status, updated_at, task_completed, target_language, organization, strength_en, strength_es, next_step_en, next_step_es, correction_needed, said, better_version, why_en, why_es, practice_phrase, transcript_word_count, estimated_idea_count")
                 .eq("user_id", key.userId)
                 .eq("audio_sha256", key.audioSha256)
                 .eq("rubric_sha256", key.rubricSha256)
@@ -119,7 +119,7 @@ export const Route = createFileRoute("/api/final-audio-coach")({
               // Optimistic lock: only the request that saw this exact updated_at wins.
               const { data, error } = await supabaseAdmin
                 .from("final_audio_coach_feedback")
-                .update({ status: "pending", task_completed: null, target_language: null, organization: null, strength_en: null, strength_es: null, next_step_en: null, next_step_es: null })
+                .update({ status: "pending", task_completed: null, target_language: null, organization: null, strength_en: null, strength_es: null, next_step_en: null, next_step_es: null, correction_needed: null, said: null, better_version: null, why_en: null, why_es: null, practice_phrase: null })
                 .eq("id", id)
                 .eq("updated_at", seenUpdatedAt)
                 .select("id");
@@ -138,6 +138,12 @@ export const Route = createFileRoute("/api/final-audio-coach")({
                   strength_es: patch.feedback?.strengthEs ?? null,
                   next_step_en: patch.feedback?.nextStepEn ?? null,
                   next_step_es: patch.feedback?.nextStepEs ?? null,
+                  correction_needed: patch.feedback?.correctionNeeded ?? null,
+                  said: patch.feedback?.said ?? null,
+                  better_version: patch.feedback?.betterVersion ?? null,
+                  why_en: patch.feedback?.whyEn ?? null,
+                  why_es: patch.feedback?.whyEs ?? null,
+                  practice_phrase: patch.feedback?.practicePhrase ?? null,
                 })
                 .eq("id", id);
               if (error) console.error("[final-audio-coach] finalize failed", error.message);

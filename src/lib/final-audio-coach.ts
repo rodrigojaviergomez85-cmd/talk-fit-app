@@ -31,7 +31,7 @@ export function sourceTurnNumberFor(
 
 export type FinalAudioCoachRating = "good" | "developing";
 
-/** Compact bilingual feedback returned by the single backend LLM call. */
+/** Compact bilingual feedback returned by the single backend LLM call (v2 adds ONE grounded correction). */
 export type FinalAudioCoachFeedback = {
   taskCompleted: boolean;
   targetLanguage: FinalAudioCoachRating;
@@ -40,6 +40,14 @@ export type FinalAudioCoachFeedback = {
   strengthEs: string;
   nextStepEn: string;
   nextStepEs: string;
+  /** At most one specific correction; when false every field below is null. */
+  correctionNeeded: boolean;
+  /** Short phrase the learner ACTUALLY said (server-verified against the transcript). */
+  said: string | null;
+  betterVersion: string | null;
+  whyEn: string | null;
+  whyEs: string | null;
+  practicePhrase: string | null;
 };
 
 /** Public JSON shapes of POST /api/final-audio-coach the UI cares about. */
