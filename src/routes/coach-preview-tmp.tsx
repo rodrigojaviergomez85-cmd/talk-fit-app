@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { FinalCoachReview } from "@/components/fluency/FinalCoachReview";
-export const Route = createFileRoute("/__coach-preview")({ component: P });
+export const Route = createFileRoute("/coach-preview-tmp")({ component: P });
 const fb = { taskCompleted: true, targetLanguage: "good" as const, organization: "good" as const,
   strengthEn: "You used several past verbs correctly.", strengthEs: "Usaste varios verbos en pasado correctamente.",
   nextStepEn: "Add when it happened: 'I visited my friends at seven.'", nextStepEs: "Agrega cuándo pasó: \"I visited my friends at seven.\"",
