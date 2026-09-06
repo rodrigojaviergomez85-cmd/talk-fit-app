@@ -230,8 +230,8 @@ describe("Pilot v3.1 — enough ideas but too short is DEVELOP MORE, not success
     const html = renderToStaticMarkup(
       createElement(FinalCoachReview, { state: { status: "ready", feedback, transcript: "x" } as FinalCoachState, showEs: true, result: input(13, 7), onContinue: () => undefined }),
     );
-    expect(html).toContain("7 / 6 IDEAS COMPLETAS");
-    expect(html).toContain("TE FALTARON 32s");
+    expect(html).toContain("7 / 6 IDEAS · META SUPERADA ✓");
+    expect(html).toContain("13s · 45–60s · HABLA 32s MÁS");
     expect(html).toContain("🎯 DESARROLLA MÁS");
     expect(html).not.toContain("SIGUIENTE RETO");
   });
@@ -697,9 +697,9 @@ describe("Retake — day invariants + UI", () => {
     const idle = render({ status: "idle" });
     expect(idle).toContain("INTÉNTALO OTRA VEZ");
     expect(idle).toContain("APLICA EL FEEDBACK");
-    expect(idle).toContain("SUENA MÁS FLUIDO");
-    expect(idle).toContain("TÚ DIJISTE");
-    expect(idle).toContain("PRUEBA");
+    expect(idle).toContain("MÁS FLUIDO");
+    expect(idle).toContain("❌");
+    expect(idle).toContain("✅");
     expect(idle).toContain("CONTINUAR");
     const ready = render(
       { status: "ready", result: { applied: [{ skill: "verb_tense", applied: true, messageEn: "e", messageEs: "Esta vez usaste woke up correctamente." }, { skill: "repetition", applied: false, messageEn: "e2", messageEs: "Varía más los verbos." }], improvementEn: "i", improvementEs: "Usaste 'after that' para conectar.", nextEn: "n", nextEs: "Sigue así." } },

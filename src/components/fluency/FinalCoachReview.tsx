@@ -2,12 +2,15 @@ import { useState } from "react";
 import { Check, ChevronDown, Loader2, RotateCcw } from "lucide-react";
 import type {
   CoachCorrectionCategory,
+  FinalAudioCoachCorrection,
   FinalAudioCoachFeedback,
+  FinalAudioCoachFluencyUpgrade,
   FinalCoachRetakeState,
   FinalCoachState,
 } from "@/lib/final-audio-coach";
 import { objectiveResult, objectiveResultText, type ObjectiveResultInput } from "@/lib/final-coach-result";
 import type { Recording } from "@/lib/types";
+import { Button } from "@/components/ui/button";
 import { VoiceRecorder } from "./VoiceRecorder";
 
 /** Optional ONE retake (pilot only). Absent → no retake UI at all. */
@@ -108,6 +111,38 @@ function ObjectiveResultBlock({ input, showEs }: { input: ObjectiveResultInput; 
   );
 }
 
+/** Basic 3 Day 1 only: same local calculations, condensed into two scan-friendly rows. */
+function PilotObjectiveResultBlock({ input, showEs }: { input: ObjectiveResultInput; showEs: boolean }) {
+  const result = objectiveResult(input);
+  const { ideas, time } = result;
+  const ideasLine =
+    ideas.kind === "pending"
+      ? showEs ? "CONTANDO TUS IDEAS…" : "COUNTING YOUR IDEAS…"
+      : ideas.kind === "failed"
+        ? showEs ? "IDEAS · NO DISPONIBLE" : "IDEAS · UNAVAILABLE"
+        : [
+            ideas.goal === null ? `${ideas.count} ${showEs ? "IDEAS" : "IDEAS"}` : `${ideas.count} / ${ideas.goal} ${showEs ? "IDEAS" : "IDEAS"}`,
+            ideas.exceeded ? showEs ? "META SUPERADA ✓" : "GOAL EXCEEDED ✓" : ideas.met ? showEs ? "META LOGRADA ✓" : "GOAL REACHED ✓" : null,
+          ].filter(Boolean).join(" · ");
+  const range = time.goal ? (time.goal.max === null ? `${time.goal.min}s+` : `${time.goal.min}–${time.goal.max}s`) : null;
+  const timeAction = time.goal
+    ? time.met
+      ? showEs ? "TIEMPO LOGRADO ✓" : "TIME REACHED ✓"
+      : showEs ? `HABLA ${time.missing}s MÁS` : `SPEAK ${time.missing}s MORE`
+    : null;
+
+  return (
+    <Section label={showEs ? "TU RESULTADO" : "YOUR RESULT"} testId="final-coach-result">
+      <div className="space-y-1" aria-live="polite">
+        <p data-testid="final-coach-result-ideas" className="text-[16px] font-extrabold leading-snug">{ideasLine}</p>
+        <p data-testid="final-coach-result-time" className="text-[15px] font-bold leading-snug text-muted-foreground">
+          {[`${time.seconds}s`, range, timeAction].filter(Boolean).join(" · ")}
+        </p>
+      </div>
+    </Section>
+  );
+}
+
 /**
  * STEP 5 · AI Coach Review — shown INSIDE Step 5 right after the learner
  * confirms the Final Audio and before Day Complete. The day is already saved
@@ -189,10 +224,10 @@ export function FinalCoachReview({ state, showEs, result, onContinue, retake }: 
   }
 
   return (
-    <Shell testId="final-coach-ready">
+    <Shell testId="final-coach-ready" compact={pilot}>
       <Title>{s.title}</Title>
 
-      {result ? <ObjectiveResultBlock input={result} showEs={showEs} /> : null}
+      {result ? pilot ? <PilotObjectiveResultBlock input={result} showEs={showEs} /> : <ObjectiveResultBlock input={result} showEs={showEs} /> : null}
 
       <Section label={`💪 ${showEs ? "PUNTO FUERTE" : "STRONG POINT"}`}>
         <p className="text-[16px] font-semibold leading-snug">{s.strength}</p>
@@ -200,51 +235,25 @@ export function FinalCoachReview({ state, showEs, result, onContinue, retake }: 
 
       {pilot ? (
         <>
-          {/* Pilot: transient transcript (this session only) + up to 3 prioritized teaching points + ONE fluency upgrade. */}
-          {state.transcript ? (
-            <>
-              <Divider />
-              <TranscriptBlock transcript={state.transcript} showEs={showEs} />
-            </>
-          ) : null}
+          {/* Pilot: up to 3 prioritized teaching points before the optional transient transcript. */}
           {corrections.length > 0 ? (
-            <>
-              <Divider />
-              <Section
-                label={`🎯 ${showEs ? "CORRECCIONES CLAVE" : "KEY CORRECTIONS"} · ${corrections.length}`}
-                testId="final-coach-corrections"
-              >
-                <ol className="space-y-4">
-                  {corrections.map((c, i) => {
-                    const q = correctionQuoteLabels(c.category, showEs);
-                    return (
-                      <li key={`${i}-${c.said}`} data-testid="final-coach-correction-item" data-category={c.category} className="space-y-3">
-                        <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-primary">
-                          {i + 1} · {correctionCategoryLabel(c.category, showEs)}
-                        </p>
-                        <Quote label={q.said} text={c.said} tone={c.category === "task_relevance" || c.category === "repetition" ? "plain" : "muted"} />
-                        <Quote label={q.better} text={c.betterVersion} tone="primary" />
-                        <div>
-                          <SubLabel>{showEs ? "¿POR QUÉ?" : "WHY?"}</SubLabel>
-                          <p className="mt-1 text-[15px] font-semibold leading-snug">{showEs ? c.whyEs : c.whyEn}</p>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ol>
-              </Section>
-            </>
+            <Section
+              label={`🎯 ${showEs ? "CORRECCIONES CLAVE" : "KEY CORRECTIONS"} · ${corrections.length}`}
+              testId="final-coach-corrections"
+            >
+              <ol className="space-y-3">
+                {corrections.map((c, i) => <CompactCorrection key={`${i}-${c.said}`} correction={c} index={i} showEs={showEs} />)}
+              </ol>
+            </Section>
           ) : null}
-          {state.feedback.fluencyUpgrade ? (
-            <>
-              <Divider />
-              <Section label={`🚀 ${showEs ? "SUENA MÁS FLUIDO" : "SOUND MORE FLUENT"}`} testId="final-coach-fluency-upgrade">
-                <div className="space-y-3">
-                  <Quote label={showEs ? "TÚ DIJISTE" : "YOU SAID"} text={state.feedback.fluencyUpgrade.original} tone="plain" />
-                  <Quote label={showEs ? "PRUEBA" : "TRY"} text={state.feedback.fluencyUpgrade.improved} tone="primary" />
-                </div>
-              </Section>
-            </>
+          {state.transcript ? <TranscriptBlock transcript={state.transcript} showEs={showEs} /> : null}
+          {state.feedback.fluencyUpgrade && !fluencyUpgradeDuplicatesCorrections(state.feedback.fluencyUpgrade, corrections) ? (
+            <Section label={`🚀 ${showEs ? "MÁS FLUIDO" : "MORE FLUENT"}`} testId="final-coach-fluency-upgrade">
+              <div className="space-y-1.5">
+                <CompactPhrase icon="❌" text={state.feedback.fluencyUpgrade.original} />
+                <CompactPhrase icon="✅" text={state.feedback.fluencyUpgrade.improved} emphasized />
+              </div>
+            </Section>
           ) : null}
         </>
       ) : s.correction ? (
@@ -267,18 +276,18 @@ export function FinalCoachReview({ state, showEs, result, onContinue, retake }: 
         </>
       ) : null}
 
-      <Divider />
+      {pilot ? null : <Divider />}
       {/* Always shown: one development step, from the SAME response (no extra call). */}
       <Section label={nextStepLabel} testId="final-coach-next-step">
         <p className="text-[16px] font-semibold leading-snug">{s.nextStep}</p>
       </Section>
 
       {retake && retake.state.status === "idle" ? (
-        <button
-          type="button"
+        <Button
+          variant="outline"
           data-testid="final-coach-retake-start"
           onClick={retake.onStart}
-          className="flex min-h-[52px] w-full flex-col items-center justify-center rounded-2xl border-2 border-primary bg-card px-5 py-2 text-primary transition-transform active:scale-[0.98]"
+          className="h-auto min-h-[52px] w-full flex-col rounded-2xl border-2 border-primary bg-card px-5 py-2 text-primary active:scale-[0.98]"
         >
           <span className="flex items-center gap-2 text-[13px] font-extrabold uppercase tracking-[0.16em]">
             <RotateCcw className="size-4" aria-hidden /> {showEs ? "INTÉNTALO OTRA VEZ" : "TRY AGAIN"}
@@ -286,7 +295,7 @@ export function FinalCoachReview({ state, showEs, result, onContinue, retake }: 
           <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
             {showEs ? "APLICA EL FEEDBACK · OPCIONAL" : "APPLY THE FEEDBACK · OPTIONAL"}
           </span>
-        </button>
+        </Button>
       ) : null}
       <ContinueButton showEs={showEs} onClick={onContinue} />
     </Shell>
@@ -332,6 +341,45 @@ export function correctionQuoteLabels(category: CoachCorrectionCategory, showEs:
     return showEs ? { said: "REPETISTE", better: "MÁS FLUIDO" } : { said: "YOU REPEATED", better: "MORE FLUENT" };
   }
   return showEs ? { said: "DIJISTE", better: "MEJOR" } : { said: "YOU SAID", better: "BETTER" };
+}
+
+function CompactPhrase({ icon, text, emphasized = false }: { icon: "❌" | "✅" | "🔁"; text: string; emphasized?: boolean }) {
+  return (
+    <p className={`grid grid-cols-[24px_minmax(0,1fr)] gap-1.5 text-[15px] leading-snug ${emphasized ? "font-extrabold text-primary" : "font-semibold text-foreground"}`}>
+      <span aria-hidden>{icon}</span>
+      <span>“{text}”</span>
+    </p>
+  );
+}
+
+function CompactCorrection({ correction, index, showEs }: { correction: FinalAudioCoachCorrection; index: number; showEs: boolean }) {
+  const showWhy = correction.category === "grammar" || correction.category === "task_relevance";
+  return (
+    <li data-testid="final-coach-correction-item" data-category={correction.category} className="space-y-1.5">
+      <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-primary">
+        {index + 1} · {correctionCategoryLabel(correction.category, showEs)}
+      </p>
+      <CompactPhrase icon={correction.category === "repetition" ? "🔁" : "❌"} text={correction.said} />
+      <CompactPhrase icon="✅" text={correction.betterVersion} emphasized />
+      {showWhy ? <p className="grid grid-cols-[24px_minmax(0,1fr)] gap-1.5 text-[13px] font-semibold leading-snug text-muted-foreground"><span aria-hidden>💡</span><span>{showEs ? correction.whyEs : correction.whyEn}</span></p> : null}
+    </li>
+  );
+}
+
+const comparisonWords = (text: string) => new Set(text.toLowerCase().match(/[a-záéíóúñü']+/g) ?? []);
+
+/** Avoid rendering a fourth teaching block when the fluency upgrade repeats a displayed correction. */
+export function fluencyUpgradeDuplicatesCorrections(
+  upgrade: FinalAudioCoachFluencyUpgrade,
+  corrections: FinalAudioCoachCorrection[],
+): boolean {
+  const upgradeWords = comparisonWords(`${upgrade.original} ${upgrade.improved}`);
+  return corrections.some((correction) => {
+    const correctionWords = comparisonWords(`${correction.said} ${correction.betterVersion}`);
+    if (upgradeWords.size === 0 || correctionWords.size === 0) return false;
+    const shared = [...upgradeWords].filter((word) => correctionWords.has(word)).length;
+    return shared / Math.min(upgradeWords.size, correctionWords.size) >= 0.7;
+  });
 }
 
 /* ------------------------------------------------------------------------ */
@@ -484,7 +532,7 @@ function RetakeResultScreen({ retake, showEs, onContinue }: { retake: RetakePane
 function TranscriptBlock({ transcript, showEs }: { transcript: string; showEs: boolean }) {
   const [open, setOpen] = useState(false);
   return (
-    <Section label={`🎙️ ${showEs ? "TODO LO QUE DIJISTE" : "EVERYTHING YOU SAID"}`} testId="final-coach-transcript">
+    <div data-testid="final-coach-transcript">
       <button
         type="button"
         aria-expanded={open}
@@ -493,8 +541,8 @@ function TranscriptBlock({ transcript, showEs }: { transcript: string; showEs: b
       >
         <span>
           {open
-            ? showEs ? "OCULTAR" : "HIDE"
-            : showEs ? "VER TODO LO QUE DIJISTE" : "SHOW EVERYTHING YOU SAID"}
+            ? showEs ? "🎙️ OCULTAR LO QUE DIJISTE" : "🎙️ HIDE WHAT YOU SAID"
+            : showEs ? "🎙️ VER TODO LO QUE DIJISTE" : "🎙️ SHOW EVERYTHING YOU SAID"}
         </span>
         <ChevronDown className={`size-5 transition-transform ${open ? "rotate-180" : ""}`} aria-hidden />
       </button>
@@ -508,13 +556,13 @@ function TranscriptBlock({ transcript, showEs }: { transcript: string; showEs: b
           </p>
         </div>
       ) : null}
-    </Section>
+    </div>
   );
 }
 
-function Shell({ testId, children }: { testId: string; children: React.ReactNode }) {
+function Shell({ testId, children, compact = false }: { testId: string; children: React.ReactNode; compact?: boolean }) {
   return (
-    <div data-testid={testId} className="space-y-4 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+    <div data-testid={testId} className={`${compact ? "space-y-3 p-4" : "space-y-4 p-5"} rounded-3xl bg-card shadow-[var(--shadow-card)]`}>
       {children}
     </div>
   );
