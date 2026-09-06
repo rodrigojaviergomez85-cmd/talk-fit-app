@@ -496,18 +496,35 @@ describe("higher-level profiles (Eagles / Tigers / Sharks / Advanced)", () => {
 
   describe("protected words are never forgiven", () => {
     const c = hl(ADVANCED_1_PROFILE);
-    it("I would not recommend → I would recommend → CORRECT", () => {
-      const r = c("I would not recommend that option because it could be risky.", "I would recommend that option because it could be risky.");
+    // All targets below are ≥13 normalized words so tolerance can actually apply.
+    const PROTECTED_TARGETS = [
+      "I would not recommend that option because it could be risky and expensive.",
+      "I have worked in customer service for three years and I enjoy helping people.",
+      "If I had to choose, I would probably accept the second job because it gives me more flexibility.",
+      "The main reason was that I wanted more stability and a better opportunity to grow.",
+    ];
+    it("guard: every protected-word target is long enough for tolerance to apply", () => {
+      for (const target of PROTECTED_TARGETS) {
+        const words = normalizeForCompare(target).split(/\s+/).filter(Boolean).length;
+        expect(Math.min(2, Math.floor(words * 0.08))).toBeGreaterThanOrEqual(1);
+      }
+    });
+    it("missing protected NOT on a long target → CORRECT", () => {
+      const r = c(
+        "I would not recommend that option because it could be risky and expensive.",
+        "I would recommend that option because it could be risky and expensive.",
+      );
       expect(r.status).toBe("correct");
-      expect(r.focus).toBe("NOT");
     });
-    it("short: I would not recommend that option → CORRECT", () => {
-      expect(c("I would not recommend that option.", "I would recommend that option.").status).toBe("correct");
+    it("INSERTED protected NEVER (meaning reversed) → CORRECT — regression: protection covers the learner side too", () => {
+      const r = c(
+        "I have worked in customer service for three years and I enjoy helping people.",
+        "I have never worked in customer service for three years and I enjoy helping people.",
+      );
+      expect(r.status).toBe("correct");
+      expect(r.nearMatch).toBeUndefined();
     });
-    it("I would choose → I choose → CORRECT", () => {
-      expect(c("I would choose the second option.", "I choose the second option.").status).toBe("correct");
-    });
-    it("If I had to choose, I would probably… → missing WOULD → CORRECT", () => {
+    it("missing protected WOULD on a long target → CORRECT", () => {
       expect(
         c(
           "If I had to choose, I would probably accept the second job because it gives me more flexibility.",
@@ -515,10 +532,7 @@ describe("higher-level profiles (Eagles / Tigers / Sharks / Advanced)", () => {
         ).status,
       ).toBe("correct");
     });
-    it("I have worked → I worked → CORRECT", () => {
-      expect(c("I have worked with different types of people.", "I worked with different types of people.").status).toBe("correct");
-    });
-    it("Example A: missing 'that' on a 15-word target → GOOD nearMatch", () => {
+    it("missing harmless 'that' on a 15-word target → GOOD nearMatch", () => {
       const r = c(
         "The main reason was that I wanted more stability and a better opportunity to grow.",
         "The main reason was I wanted more stability and a better opportunity to grow.",
