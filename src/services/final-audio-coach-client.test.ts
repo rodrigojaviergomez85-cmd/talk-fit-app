@@ -59,7 +59,7 @@ function harness(opts: {
 const ready: CoachHttpResult = { kind: "response", http: 200, body: { status: "ready", feedback: FEEDBACK } };
 const pending: CoachHttpResult = { kind: "response", http: 202, body: { status: "pending" } };
 const classicDay = { day: 3, rep5Turns: undefined };
-const turns = (n: number): RolePlayTurn[] => Array.from({ length: n }, (_, i) => ({ en: `Q${i + 1}`, es: `P${i + 1}` })) as RolePlayTurn[];
+const turns = (n: number): RolePlayTurn[] => Array.from({ length: n }, (_, i) => ({ id: `t${i + 1}`, label: `Turn ${i + 1}`, labelEs: `Turno ${i + 1}`, text: `Q${i + 1}`, es: `P${i + 1}` })) as unknown as RolePlayTurn[];
 
 /**
  * Cost invariant for CASES 1, 2 and 25: the coach module is only entered via
