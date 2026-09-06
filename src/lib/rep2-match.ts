@@ -302,6 +302,13 @@ function opTargetWord(op: DiffOp): string | undefined {
   return undefined;
 }
 
+/** Every word an op touches — target side and learner side. */
+function opWords(op: DiffOp): string[] {
+  if (op.type === "missing" || op.type === "extra") return [op.word];
+  if (op.type === "replace") return [op.target, op.got];
+  return [];
+}
+
 /** Does `phrase` occur as a contiguous token sequence in `words`? */
 function containsPhrase(words: string[], phrase: string[]): boolean {
   if (phrase.length === 0) return false;
@@ -412,9 +419,8 @@ function isNearMatchGood(mismatches: DiffOp[], targetWords: string[], profile: R
   const missedCriticalRule = profile.focusRules.some((rule) => ruleMatches(rule, missed, targetWords));
   if (missedCriticalRule) return false;
 
-  const missedProtected = mismatches.some((op) => {
-    const word = opTargetWord(op);
-    return word ? PROTECTED_NEAR_MATCH_WORDS.has(word) : false;
-  });
-  return !missedProtected;
+  const touchesProtected = mismatches.some((op) =>
+    opWords(op).some((word) => PROTECTED_NEAR_MATCH_WORDS.has(word)),
+  );
+  return !touchesProtected;
 }
