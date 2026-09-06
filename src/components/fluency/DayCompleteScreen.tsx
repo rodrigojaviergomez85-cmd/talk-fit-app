@@ -238,7 +238,7 @@ export function DayCompleteScreen({
           </div>
         ) : null}
 
-        {/* AI coaching happens INSIDE STEP 5 (FinalCoachReview) before this screen — never repeated here. */}
+        {/* AI coaching happens INSIDE STEP 5 before this screen — never repeated here. */}
 
         <div className="rounded-3xl border border-primary/25 bg-accent p-5 text-center">
           <TranslatableText es="Cada rep hace tu inglés más automático." align="center">
