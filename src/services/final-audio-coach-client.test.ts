@@ -5,7 +5,7 @@ import {
   type CoachHttpResult,
   type CoachPipelineDeps,
 } from "./final-audio-coach-client";
-import { coachStatusLabels } from "@/components/fluency/FinalCoachCard";
+import { coachReviewSections } from "@/components/fluency/FinalCoachReview";
 import type { FinalAudioCoachFeedback, FinalCoachState } from "@/lib/final-audio-coach";
 import type { Recording, RolePlayTurn } from "@/lib/types";
 
@@ -17,6 +17,12 @@ const FEEDBACK: FinalAudioCoachFeedback = {
   strengthEs: "Conectaste tus ideas con claridad.",
   nextStepEn: "Add one reason using because.",
   nextStepEs: "Agrega una razón usando because.",
+  correctionNeeded: false,
+  said: null,
+  betterVersion: null,
+  whyEn: null,
+  whyEs: null,
+  practicePhrase: null,
 };
 
 function rec(id: string, label?: string): Recording {
@@ -125,18 +131,16 @@ describe("runFinalCoachPipeline", () => {
     expect(h.calls.coach).toHaveLength(0);
   });
 
-  it("CASE 6 + 7: READY maps to static labels in EN and ES without another request", () => {
-    const en = coachStatusLabels(FEEDBACK, false);
-    expect(en.task.text).toBe("Completed ✓");
-    expect(en.targetLanguage.text).toBe("On track ✓");
-    expect(en.organization.text).toBe("Developing");
-    const es = coachStatusLabels(FEEDBACK, true);
-    expect(es.task.text).toBe("Completada ✓");
-    expect(es.targetLanguage.text).toBe("Bien encaminado ✓");
-    expect(es.organization.text).toBe("En desarrollo");
-    const notDone = coachStatusLabels({ ...FEEDBACK, taskCompleted: false, organization: "good" }, true);
-    expect(notDone.task.text).toBe("Sigue desarrollándola");
-    expect(notDone.organization.text).toBe("Bien encaminada ✓");
+  it("CASE 6 + 7: READY renders from the same feedback object in EN and ES without another request", () => {
+    const en = coachReviewSections(FEEDBACK, false);
+    expect(en.title).toBe("AI COACH ✨");
+    expect(en.strength).toBe(FEEDBACK.strengthEn);
+    expect(en.correction).toBeNull();
+    expect(en.nextStep).toBe(FEEDBACK.nextStepEn);
+    const es = coachReviewSections(FEEDBACK, true);
+    expect(es.title).toBe("COACH DE IA ✨");
+    expect(es.strength).toBe(FEEDBACK.strengthEs);
+    expect(es.nextStep).toBe(FEEDBACK.nextStepEs);
     // Both languages live in the same feedback object: switching is a local read.
     expect(FEEDBACK.strengthEs).toBeTruthy();
     expect(FEEDBACK.nextStepEs).toBeTruthy();
