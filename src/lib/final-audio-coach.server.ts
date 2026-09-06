@@ -83,7 +83,19 @@ export function maxTakeNumberFor(day: Pick<CourseDay, "rep5Turns">): number {
   return takeSlots(day.rep5Turns);
 }
 
-export const LIMITS = { strengthEn: 120, strengthEs: 140, nextStepEn: 140, nextStepEs: 160 } as const;
+export const LIMITS = {
+  strengthEn: 120,
+  strengthEs: 140,
+  nextStepEn: 140,
+  nextStepEs: 160,
+  said: 120,
+  betterVersion: 140,
+  whyEn: 160,
+  whyEs: 180,
+  practicePhrase: 160,
+} as const;
+/** `said` must be a SHORT quote — a real fragment of the transcript, never a paraphrase. */
+export const MAX_SAID_WORDS = 15;
 
 export type CoachStatus = "pending" | "ready" | "unclear" | "error";
 export type Rating = "good" | "developing";
@@ -96,6 +108,13 @@ export type CoachFeedback = {
   strengthEs: string;
   nextStepEn: string;
   nextStepEs: string;
+  /** v2: at most ONE specific correction, grounded in the transcript. All null when false. */
+  correctionNeeded: boolean;
+  said: string | null;
+  betterVersion: string | null;
+  whyEn: string | null;
+  whyEs: string | null;
+  practicePhrase: string | null;
 };
 
 export type RecordingRow = {
