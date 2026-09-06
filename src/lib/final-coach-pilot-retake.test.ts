@@ -697,9 +697,9 @@ describe("Retake — day invariants + UI", () => {
     const idle = render({ status: "idle" });
     expect(idle).toContain("INTÉNTALO OTRA VEZ");
     expect(idle).toContain("APLICA EL FEEDBACK");
-    expect(idle).toContain("SUENA MÁS FLUIDO");
-    expect(idle).toContain("TÚ DIJISTE");
-    expect(idle).toContain("PRUEBA");
+    expect(idle).toContain("MÁS FLUIDO");
+    expect(idle).toContain("❌");
+    expect(idle).toContain("✅");
     expect(idle).toContain("CONTINUAR");
     const ready = render(
       { status: "ready", result: { applied: [{ skill: "verb_tense", applied: true, messageEn: "e", messageEs: "Esta vez usaste woke up correctamente." }, { skill: "repetition", applied: false, messageEn: "e2", messageEs: "Varía más los verbos." }], improvementEn: "i", improvementEs: "Usaste 'after that' para conectar.", nextEn: "n", nextEs: "Sigue así." } },
