@@ -70,9 +70,9 @@ export function daySpecs(moduleId: ModuleId, day: CourseDay): AudioSpec[] {
     }
   }
 
-  // Past verb cards (Module 3): the card sentence, speaker voice, coach.
+  // Past verb cards (Module 3): the card speaks the past form, speaker voice, coach.
   for (const card of day.verbCards ?? []) {
-    out.push({ text: card.sentence, voice: speaker, tone: "coach", source: `${tag}/verbcard` });
+    out.push({ text: card.past, voice: speaker, tone: "coach", source: `${tag}/verbcard` });
   }
 
   // Rep 4: max 3 prompts; ADVANCED asks with a neutral recruiter tone.
