@@ -24,39 +24,41 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { verifyRequestUser, consumeQuota } = await import("@/lib/route-auth.server");
-        const userId = await verifyRequestUser(request);
-        if (!userId) return json({ error: "Sign in first." }, 401);
-
-        const engine = await import("@/lib/final-coach-retake.server");
-        const declared = Number(request.headers.get("content-length") ?? 0);
-        if (declared > engine.MAX_FINAL_AUDIO_BYTES + 64 * 1024) return json({ status: "audio_too_large" }, 413);
-
-        let file: File | null = null;
-        let moduleId: string | null = null;
-        let day = NaN;
         try {
-          const form = await request.formData();
-          file = form.get("file") instanceof File ? (form.get("file") as File) : null;
-          moduleId = String(form.get("moduleId") ?? "");
-          day = Number(form.get("day"));
-        } catch {
-          file = null;
-        }
-        const { isModuleId, CourseService } = await import("@/services/course-service");
-        if (!moduleId || !isModuleId(moduleId) || !Number.isInteger(day) || day < 1) return json({ error: "Invalid input." }, 400);
-        if (!engine.isRetakePilot(moduleId, day)) return json({ status: "not_available" }, 403);
-        if (!file || file.size < engine.MIN_FINAL_AUDIO_BYTES) return json({ status: "unclear" }, 200);
-        if (file.size > engine.MAX_FINAL_AUDIO_BYTES) return json({ status: "audio_too_large" }, 413);
-        const mime = (file.type || "audio/webm").split(";")[0]?.trim().toLowerCase() ?? "audio/webm";
-        if (!AUDIO_EXT[mime]) return json({ error: "Unsupported audio format." }, 415);
-        const audio = new Uint8Array(await file.arrayBuffer());
+          const { verifyRequestUser, consumeQuota } = await import("@/lib/route-auth.server");
+          const userId = await verifyRequestUser(request);
+          if (!userId) return json({ error: "Sign in first." }, 401);
 
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-        const coach = await import("@/lib/final-audio-coach.server");
-        const providers = await import("@/lib/final-coach-providers.server");
+          const engine = await import("@/lib/final-coach-retake.server");
+          const declared = Number(request.headers.get("content-length") ?? 0);
+          if (declared > engine.MAX_FINAL_AUDIO_BYTES + 64 * 1024) return json({ status: "audio_too_large" }, 413);
 
-        const deps: RetakeDeps = {
+          let file: File | null = null;
+          let moduleId: string | null = null;
+          let day = NaN;
+          try {
+            const form = await request.formData();
+            const formFile = form.get("file");
+            file = formFile instanceof File ? formFile : null;
+            moduleId = String(form.get("moduleId") ?? "");
+            day = Number(form.get("day"));
+          } catch {
+            file = null;
+          }
+          const { isModuleId, CourseService } = await import("@/services/course-service");
+          if (!moduleId || !isModuleId(moduleId) || !Number.isInteger(day) || day < 1) return json({ error: "Invalid input." }, 400);
+          if (!engine.isRetakePilot(moduleId, day)) return json({ status: "not_available" }, 403);
+          if (!file || file.size < engine.MIN_FINAL_AUDIO_BYTES) return json({ status: "unclear" }, 200);
+          if (file.size > engine.MAX_FINAL_AUDIO_BYTES) return json({ status: "audio_too_large" }, 413);
+          const mime = (file.type || "audio/webm").split(";")[0]?.trim().toLowerCase() ?? "audio/webm";
+          if (!AUDIO_EXT[mime]) return json({ error: "Unsupported audio format." }, 415);
+          const audio = new Uint8Array(await file.arrayBuffer());
+
+          const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+          const coach = await import("@/lib/final-audio-coach.server");
+          const providers = await import("@/lib/final-coach-providers.server");
+
+          const deps: RetakeDeps = {
           userId,
           now: () => Date.now(),
           loadDay: async (mid, d) => {
@@ -123,10 +125,17 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
           stt: (bytes, m) => providers.transcribeFinalAudio(bytes, m, "final-audio-coach-retake"),
           llm: (ctx, transcript) => providers.coachChatJson(engine.buildRetakeMessages(ctx, transcript), engine.RETAKE_JSON_SCHEMA, "final-audio-coach-retake"),
           log: (entry) => console.info("[final-audio-coach-retake]", entry),
-        };
+          };
 
-        const result = await engine.runFinalCoachRetake({ moduleId, day, audio, mime }, deps);
-        return json(result.body, result.http);
+          const result = await engine.runFinalCoachRetake({ moduleId, day, audio, mime }, deps);
+          return json(result.body, result.http);
+        } catch (error) {
+          console.error(
+            "[final-audio-coach-retake] unhandled route error",
+            error instanceof Error ? error.message : "unknown error",
+          );
+          return json({ status: "error", code: "internal" }, 500);
+        }
       },
     },
   },
