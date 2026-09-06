@@ -2,13 +2,17 @@ import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import {
+  AVG_LOGPROB_THRESHOLD,
   buildRubric,
   COACH_QUOTA_ENDPOINT,
   FINAL_AUDIO_COACH_VERSION,
   MAX_FINAL_AUDIO_BYTES,
   MAX_FINAL_AUDIO_SECONDS,
+  MIN_TRANSCRIPT_WORDS,
+  NO_SPEECH_THRESHOLD,
   PENDING_STALE_MS,
   RECORDER_BITS_PER_SECOND,
+  maxTakeNumberFor,
   normalizeFeedback,
   rubricSha256,
   runFinalAudioCoach,
@@ -18,7 +22,9 @@ import {
   type FeedbackRow,
   type PendingInsert,
   type RecordingRow,
+  type SttConfidence,
 } from "./final-audio-coach.server";
+import { takeSlots } from "./take-slots";
 import { sourceTurnNumberFor } from "./final-audio-coach";
 import { CourseService } from "@/services/course-service";
 import type { CourseDay } from "./types";
