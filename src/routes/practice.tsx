@@ -1138,6 +1138,9 @@ function Rep2Copy({
 
   const level = supportLevel(day);
   const chunkText = rep2ChunkText(chunk);
+  // Long higher-level chunks need a little more room so the learner is never cut off mid-model.
+  const chunkWords = chunkText.trim().split(/\s+/).filter(Boolean).length;
+  const recordSeconds = chunkWords > 24 ? 45 : 30;
   const isLast = index >= chunks.length - 1;
   const feedbackOwnsNav = correctionEnabled && (checking || correction !== null || retryPending);
 
@@ -1227,7 +1230,7 @@ function Rep2Copy({
         <VoiceRecorder
           key={retries}
           label={mine ? t("practice.repeat") : t("practice.record")}
-          maxSeconds={30}
+          maxSeconds={recordSeconds}
           showTimer
           onComplete={(rec) => {
             setMine(rec);
