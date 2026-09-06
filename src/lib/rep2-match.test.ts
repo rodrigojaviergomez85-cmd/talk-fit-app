@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { compareRep2 as compareGeneric, toPublicStatus, type Rep2Confidence } from "./rep2-match";
+import { compareRep2 as compareGeneric, normalizeForCompare, toPublicStatus, type Rep2Confidence } from "./rep2-match";
 import {
   GENERIC_PROFILE,
   SIMPLE_FUTURE_PROFILE,
