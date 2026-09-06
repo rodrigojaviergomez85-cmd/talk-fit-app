@@ -423,15 +423,22 @@ export function feedbackFromRow(row: FeedbackRow): CoachFeedback | null {
 
 const LEVEL_GUIDANCE: Record<CoachRubric["level"], string> = {
   basic:
-    "Level: BASIC. Be highly forgiving. Prioritise communication and any attempt at the day's structure. Short simple sentences are a success.",
+    "Level: BASIC. Be highly forgiving. Prioritise communication and any attempt at the day's structure. Short simple sentences are a success. " +
+    "NEXT STEP (BASIC): ONE very concrete idea or chunk the learner can ADD, with a short example sentence in English they can say. " +
+    "Never vague ('Add more details', 'Practice the past tense'). Good: \"Add when it happened: 'I visited my friends at seven.'\" / \"Add one reason: 'I like my job because I learn new things.'\" / \"Add what happened next: 'Then I went back home.'\"",
   eagles:
-    "Level: EAGLES (functional English). Look for connected ideas, reasons (because / so), and whether the message would work with a real customer or colleague.",
+    "Level: EAGLES (functional English). Look for connected ideas, reasons (because / so), and whether the message would work with a real customer or colleague. " +
+    "NEXT STEP (INTERMEDIATE): ONE way to DEVELOP the answer — connect ideas, give a reason, explain a recommendation, use because / so / for example, or functional customer/colleague language — with a short example. Never 'add another sentence'.",
   tigers:
-    "Level: TIGERS. Look for explanation, comparison, justification and development of ideas when the task asks for it.",
+    "Level: TIGERS. Look for explanation, comparison, justification and development of ideas when the task asks for it. " +
+    "NEXT STEP (INTERMEDIATE): ONE way to DEVELOP the answer — explain, compare, justify, defend the opinion, or give a reason + example — with a short example. Never 'add another sentence'.",
   sharks:
-    "Level: SHARKS. Look for reaction, adaptation to the interlocutor and sustained communication when the task asks for it.",
+    "Level: SHARKS. Look for reaction, adaptation to the interlocutor and sustained communication when the task asks for it. " +
+    "NEXT STEP (INTERMEDIATE): ONE way to DEVELOP the answer — react, adapt, respond to the new information, develop the answer, or explain why — with a short example. Never 'add another sentence'.",
   advanced:
-    "Level: ADVANCED (interview preparation). Evaluate whether the learner followed the day's communication framework and developed the answer with a concrete example.",
+    "Level: ADVANCED (interview preparation). Evaluate whether the learner followed the day's communication framework and developed the answer with a concrete example. Idea count is NOT a grade here; quality and framework execution matter more. " +
+    "NEXT STEP (ADVANCED): ONE high-value improvement to structure, evidence, specificity, impact, adaptation or framework execution (direct answer first, concrete example, result/impact, evidence, STAR when appropriate, why it mattered, answer the actual follow-up, clearer conclusion, no vague claims), with a short example. " +
+    "Never generic ('Add more detail'). Good: \"Add the result: 'As a result, the customer stayed with the company.'\" / \"Give one concrete example instead of saying 'I work well under pressure.'\"",
 };
 
 export function buildCoachMessages(rubric: CoachRubric, transcript: string, estimatedIdeaCount: number | null) {
