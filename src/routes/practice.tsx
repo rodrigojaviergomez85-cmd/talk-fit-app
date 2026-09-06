@@ -47,6 +47,8 @@ import { AuthGate } from "@/components/fluency/AuthGate";
 import { CloudSync } from "@/services/cloud-sync";
 import { sourceTurnNumberFor, type FinalCoachState } from "@/lib/final-audio-coach";
 import { runFinalCoachPipeline } from "@/services/final-audio-coach-client";
+import { FinalCoachReview } from "@/components/fluency/FinalCoachReview";
+import { createStep5CompletionController, type Step5CompletionController } from "@/lib/step5-completion";
 import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording, RepLabel } from "@/lib/types";
 import type { FinalRepSaveState } from "@/components/fluency/DayCompleteScreen";
 import { cn } from "@/lib/utils";
@@ -182,6 +184,10 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   /** Separate from saveState: the Final Step cloud save and the AI Coach are different responsibilities. */
   const [coachState, setCoachState] = useState<FinalCoachState>({ status: "idle" });
   const coachAbort = useRef<AbortController | null>(null);
+  /** Post-Step-5 state: day already committed, learner reviews the AI Coach before Day Complete. */
+  const [coachReviewActive, setCoachReviewActive] = useState(false);
+  /** Idempotency guard: the selected Final Audio commits the day exactly once in this flow. */
+  const completionCommittedRef = useRef<Step5CompletionController | null>(null);
   const [journeyAfterFinish, setJourneyAfterFinish] = useState<JourneyState | null>(null);
   /** Habit snapshot taken right before completeDay, so milestones are crossed exactly once. */
   const [habitBefore, setHabitBefore] = useState<{ days: number; lastCompletedDate?: string } | null>(null);
@@ -343,66 +349,89 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
       });
   };
 
+  /**
+   * Confirming STEP 5 commits the day EXACTLY ONCE, then opens the AI Coach
+   * Review inside Step 5. Day Complete only appears after CONTINUE. The
+   * controller ref (not button state) is the idempotency guard.
+   */
   const finish = () => {
-    if (done || saveRef.current) return;
+    if (done || coachReviewActive || completionCommittedRef.current?.committed) return;
     const final = (finalIndex !== null ? takes[finalIndex] : null) ?? recorded[recorded.length - 1];
     if (!final) return;
     const first = recorded[0] ?? final;
-    // Close the timer for the current rep before snapshotting durations.
-    const d = [...repDurations.current];
-    d[stage] = (d[stage] ?? 0) + (Date.now() - stageEnteredAt.current) / 1000;
-    const r = (i: number) => Math.round(d[i] ?? 0);
-    const before = JourneyService.load();
-    const lastDate = lastHabitDate(before);
-    setHabitBefore({
-      days: habitDays(before),
-      ...(lastDate ? { lastCompletedDate: lastDate } : {}),
-    });
-    const next = JourneyService.completeDay({
-      moduleId,
-      day: day.day,
-      sentenceCount: final.sentenceCount ?? null,
-      finalSeconds: final.durationSeconds,
-      firstSeconds: first.durationSeconds,
-      practiceSeconds: Math.round(practiceSeconds.current),
-      recordingsCount: Math.max(1, recorded.length),
-      finalUrl: final.url,
-      firstUrl: first.url,
-      repDurations: {
-        rep1: r(1),
-        rep2: r(2),
-        rep3: r(3),
-        rep4: r(4),
-        rep5: r(5),
-        total: r(0) + r(1) + r(2) + r(3) + r(4) + r(5),
-      },
-    });
-    setFinalRecording(final);
-    setJourneyAfterFinish(next);
-    setDone(true);
-    PracticeSessionService.clear(moduleId, day.day);
-    void CloudSync.completeSession(moduleId, day.day).catch(() => undefined);
-    cloudSave(final, next);
-
-    // AI Coach: background enhancement only, never a completion gate. The
-    // pipeline itself uploads the Final Take (idempotent) and marks it Final
-    // BEFORE the single analysis request. Actual take number, never clamped.
     const finalTake = (finalIndex ?? takes.findIndex((take) => take?.id === final.id)) + 1;
-    if (finalTake > 0) {
-      const controller = new AbortController();
-      coachAbort.current = controller;
-      setCoachState({ status: "preparing" });
-      void runFinalCoachPipeline(
-        { moduleId, day, finalRecording: final, finalTakeNumber: finalTake },
-        (state) => {
-          if (!controller.signal.aborted) setCoachState(state);
-        },
-        undefined,
-        controller.signal,
-      ).catch(() => {
-        if (!controller.signal.aborted) setCoachState({ status: "unavailable" });
-      });
-    }
+
+    const controller = createStep5CompletionController<JourneyState>({
+      commitDay: () => {
+        // Close the timer for the current rep before snapshotting durations.
+        const d = [...repDurations.current];
+        d[stage] = (d[stage] ?? 0) + (Date.now() - stageEnteredAt.current) / 1000;
+        const r = (i: number) => Math.round(d[i] ?? 0);
+        const before = JourneyService.load();
+        const lastDate = lastHabitDate(before);
+        setHabitBefore({
+          days: habitDays(before),
+          ...(lastDate ? { lastCompletedDate: lastDate } : {}),
+        });
+        const next = JourneyService.completeDay({
+          moduleId,
+          day: day.day,
+          sentenceCount: final.sentenceCount ?? null,
+          finalSeconds: final.durationSeconds,
+          firstSeconds: first.durationSeconds,
+          practiceSeconds: Math.round(practiceSeconds.current),
+          recordingsCount: Math.max(1, recorded.length),
+          finalUrl: final.url,
+          firstUrl: first.url,
+          repDurations: {
+            rep1: r(1),
+            rep2: r(2),
+            rep3: r(3),
+            rep4: r(4),
+            rep5: r(5),
+            total: r(0) + r(1) + r(2) + r(3) + r(4) + r(5),
+          },
+        });
+        setFinalRecording(final);
+        setJourneyAfterFinish(next);
+        return next;
+      },
+      clearSession: () => PracticeSessionService.clear(moduleId, day.day),
+      completeSession: () => void CloudSync.completeSession(moduleId, day.day).catch(() => undefined),
+      cloudSave: (next) => cloudSave(final, next),
+      // Stay visually inside STEP 5: the selected Final Audio is now authoritative.
+      onReviewActive: () => setCoachReviewActive(true),
+      startCoach: () => {
+        // The pipeline itself uploads the Final Take (idempotent, preserving its
+        // idea count) and marks it Final BEFORE the single analysis request.
+        // Actual take number, never clamped (Pressure Round may exceed 5).
+        if (finalTake <= 0) {
+          setCoachState({ status: "unavailable" });
+          return;
+        }
+        const abort = new AbortController();
+        coachAbort.current = abort;
+        setCoachState({ status: "preparing" });
+        void runFinalCoachPipeline(
+          { moduleId, day, finalRecording: final, finalTakeNumber: finalTake },
+          (state) => {
+            if (!abort.signal.aborted) setCoachState(state);
+          },
+          undefined,
+          abort.signal,
+        ).catch(() => {
+          if (!abort.signal.aborted) setCoachState({ status: "unavailable" });
+        });
+      },
+      onDayComplete: () => setDone(true),
+    });
+    completionCommittedRef.current = controller;
+    controller.confirm();
+  };
+
+  /** CONTINUE after the Coach Review: UI only — the day was committed before the review. */
+  const continueToDayComplete = () => {
+    completionCommittedRef.current?.continueToDayComplete();
   };
 
   // Leaving the flow while the coach is still working: stop polling, no late setState.
