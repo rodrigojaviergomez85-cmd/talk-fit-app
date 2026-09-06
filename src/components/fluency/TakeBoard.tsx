@@ -435,6 +435,11 @@ export function TakeBoard({
                       maxSeconds={turnMax}
                       onComplete={(rec) => onRecorded(index, isRetrySlot ? { ...rec, label: `turn:${retryIndex}` } : rec)}
                     />
+                    {!turn?.targetSeconds ? (
+                      <p className="text-center text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                        {es ? `Máximo ${turnMax} segundos` : `Max ${turnMax} seconds`}
+                      </p>
+                    ) : null}
                   </>
                 )}
               </div>
