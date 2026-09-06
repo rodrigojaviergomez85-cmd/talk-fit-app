@@ -442,3 +442,47 @@ describe("pending polling window", () => {
     expect(h.calls.sleeps).toEqual([...PENDING_POLL_DELAYS_MS]);
   });
 });
+
+describe("Coach Review sections (CASE D, J, K, 31): one strength, max one correction, language switch is local", () => {
+  const WITH_FIX: FinalAudioCoachFeedback = {
+    ...FEEDBACK,
+    correctionNeeded: true,
+    said: "I took a shower",
+    betterVersion: "I take a shower",
+    whyEn: "You're talking about your routine, so use the simple present.",
+    whyEs: "Estás hablando de tu rutina, por eso usamos presente simple.",
+    practicePhrase: "I take a shower and then I have breakfast.",
+  };
+
+  it("CASE D/K: READY with a correction shows exactly ONE said/better/why/practice block", () => {
+    const es = coachReviewSections(WITH_FIX, true);
+    expect(es.correction).toEqual({
+      said: "I took a shower",
+      better: "I take a shower",
+      why: WITH_FIX.whyEs,
+      practice: WITH_FIX.practicePhrase,
+    });
+    expect(es.nextStep).toBeNull();
+    expect(Array.isArray(es.correction)).toBe(false);
+  });
+
+  it("CASE J: no correction → strength + next step, no YOU SAID / BETTER block", () => {
+    const en = coachReviewSections(FEEDBACK, false);
+    expect(en.correction).toBeNull();
+    expect(en.nextStep).toBe(FEEDBACK.nextStepEn);
+  });
+
+  it("CASE 31: ES ↔ EN switch reads the same object — 0 additional requests", () => {
+    const en = coachReviewSections(WITH_FIX, false);
+    const es = coachReviewSections(WITH_FIX, true);
+    expect(en.correction!.why).toBe(WITH_FIX.whyEn);
+    expect(es.correction!.why).toBe(WITH_FIX.whyEs);
+    expect(en.correction!.said).toBe(es.correction!.said);
+  });
+
+  it("CASE I (client): correctionNeeded=true but incomplete fields never render a half correction", () => {
+    const s = coachReviewSections({ ...WITH_FIX, said: null }, true);
+    expect(s.correction).toBeNull();
+    expect(s.nextStep).toBe(WITH_FIX.nextStepEs);
+  });
+});
