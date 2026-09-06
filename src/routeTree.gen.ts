@@ -20,6 +20,7 @@ import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as RecordingsRouteImport } from './routes/recordings'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SprintRouteImport } from './routes/sprint'
+import { Route as TakeboardCheckRouteImport } from './routes/takeboard-check'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
 import { Route as AdminCourseAudioRouteImport } from './routes/admin.course-audio'
 import { Route as AdminStorageReportRouteImport } from './routes/admin.storage-report'
@@ -84,6 +85,11 @@ const SprintRoute = SprintRouteImport.update({
   path: '/sprint',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TakeboardCheckRoute = TakeboardCheckRouteImport.update({
+  id: '/takeboard-check',
+  path: '/takeboard-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VerbBankRoute = VerbBankRouteImport.update({
   id: '/verb-bank',
   path: '/verb-bank',
@@ -137,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/recordings': typeof RecordingsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
+  '/takeboard-check': typeof TakeboardCheckRoute
   '/verb-bank': typeof VerbBankRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
@@ -158,6 +165,7 @@ export interface FileRoutesByTo {
   '/recordings': typeof RecordingsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
+  '/takeboard-check': typeof TakeboardCheckRoute
   '/verb-bank': typeof VerbBankRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
@@ -180,6 +188,7 @@ export interface FileRoutesById {
   '/recordings': typeof RecordingsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
+  '/takeboard-check': typeof TakeboardCheckRoute
   '/verb-bank': typeof VerbBankRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
@@ -203,6 +212,7 @@ export interface FileRouteTypes {
     | '/recordings'
     | '/reset-password'
     | '/sprint'
+    | '/takeboard-check'
     | '/verb-bank'
     | '/admin/course-audio'
     | '/admin/storage-report'
@@ -224,6 +234,7 @@ export interface FileRouteTypes {
     | '/recordings'
     | '/reset-password'
     | '/sprint'
+    | '/takeboard-check'
     | '/verb-bank'
     | '/admin/course-audio'
     | '/admin/storage-report'
@@ -245,6 +256,7 @@ export interface FileRouteTypes {
     | '/recordings'
     | '/reset-password'
     | '/sprint'
+    | '/takeboard-check'
     | '/verb-bank'
     | '/admin/course-audio'
     | '/admin/storage-report'
@@ -267,6 +279,7 @@ export interface RootRouteChildren {
   RecordingsRoute: typeof RecordingsRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SprintRoute: typeof SprintRoute
+  TakeboardCheckRoute: typeof TakeboardCheckRoute
   VerbBankRoute: typeof VerbBankRoute
   AdminCourseAudioRoute: typeof AdminCourseAudioRoute
   AdminStorageReportRoute: typeof AdminStorageReportRoute
@@ -356,6 +369,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SprintRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/takeboard-check': {
+      id: '/takeboard-check'
+      path: '/takeboard-check'
+      fullPath: '/takeboard-check'
+      preLoaderRoute: typeof TakeboardCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/verb-bank': {
       id: '/verb-bank'
       path: '/verb-bank'
@@ -427,6 +447,7 @@ const rootRouteChildren: RootRouteChildren = {
   RecordingsRoute: RecordingsRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SprintRoute: SprintRoute,
+  TakeboardCheckRoute: TakeboardCheckRoute,
   VerbBankRoute: VerbBankRoute,
   AdminCourseAudioRoute: AdminCourseAudioRoute,
   AdminStorageReportRoute: AdminStorageReportRoute,
