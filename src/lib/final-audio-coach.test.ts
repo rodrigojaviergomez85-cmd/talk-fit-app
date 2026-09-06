@@ -168,7 +168,7 @@ function harness(opts: {
       counters.stt++;
       if (opts.delayStt) await opts.delayStt();
       if (opts.transcript === null) return { ok: false };
-      return { ok: true, text: opts.transcript ?? LONG_TRANSCRIPT };
+      return { ok: true, text: opts.transcript ?? LONG_TRANSCRIPT, confidence: opts.confidence };
     },
     llm: async () => {
       counters.llm++;
