@@ -48,6 +48,43 @@ function asModuleId(value: unknown): ModuleId {
   return isModuleId(value) ? value : "simple-present";
 }
 
+/** A count is only authoritative when it is a real, non-negative number. */
+function isValidIdeaCount(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0;
+}
+
+/**
+ * Builds the recordings upsert row for one take. `estimated_idea_count` is
+ * included ONLY when the incoming sentence count is a valid number; a pending
+ * or invalid count omits the key so PostgREST's upsert leaves any
+ * already-saved database value untouched on conflict (never replaced by null).
+ */
+export function buildRecordingUpsertRow(input: {
+  userId: string;
+  moduleId: ModuleId;
+  day: number;
+  takeNumber: number;
+  isFinalRep: boolean;
+  durationSeconds: number;
+  sentenceCount: number | null | undefined;
+  storagePath: string;
+  mimeType: string | null;
+  sourceTurnNumber: number | null;
+}): Record<string, unknown> {
+  return {
+    user_id: input.userId,
+    module_id: input.moduleId,
+    day: input.day,
+    take_number: input.takeNumber,
+    is_final_rep: input.isFinalRep,
+    duration_seconds: input.durationSeconds,
+    ...(isValidIdeaCount(input.sentenceCount) ? { estimated_idea_count: input.sentenceCount } : {}),
+    storage_path: input.storagePath,
+    mime_type: input.mimeType,
+    source_turn_number: input.sourceTurnNumber,
+  };
+}
+
 export const CloudSync = {
   userId,
 
