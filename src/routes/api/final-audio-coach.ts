@@ -45,7 +45,8 @@ export const Route = createFileRoute("/api/final-audio-coach")({
         const moduleId = typeof body.moduleId === "string" && isModuleId(body.moduleId) ? body.moduleId : null;
         const day = Number(body.day);
         const takeNumber = Number(body.takeNumber);
-        if (!moduleId || !Number.isInteger(day) || day < 1 || !Number.isInteger(takeNumber) || takeNumber < 1 || takeNumber > 5) {
+        // Lightweight only: the engine derives the real maximum Take number from the CourseDay.
+        if (!moduleId || !Number.isInteger(day) || day < 1 || !Number.isInteger(takeNumber) || takeNumber < 1) {
           return json({ error: "Invalid input." }, 400);
         }
 
