@@ -46,6 +46,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { CloudSync } from "@/services/cloud-sync";
 import { sourceTurnNumberFor, type FinalCoachState } from "@/lib/final-audio-coach";
+import { objectiveResultInputFor } from "@/lib/final-coach-result";
 import { runFinalCoachPipeline } from "@/services/final-audio-coach-client";
 import { FinalCoachReview } from "@/components/fluency/FinalCoachReview";
 import { createStep5CompletionController, type Step5CompletionController } from "@/lib/step5-completion";
