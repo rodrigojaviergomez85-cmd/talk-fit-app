@@ -45,7 +45,8 @@ import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { CloudSync } from "@/services/cloud-sync";
-import { sourceTurnNumberFor } from "@/lib/final-audio-coach";
+import { sourceTurnNumberFor, type FinalCoachState } from "@/lib/final-audio-coach";
+import { runFinalCoachPipeline } from "@/services/final-audio-coach-client";
 import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording, RepLabel } from "@/lib/types";
 import type { FinalRepSaveState } from "@/components/fluency/DayCompleteScreen";
 import { cn } from "@/lib/utils";
@@ -178,6 +179,9 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   const [finalManual, setFinalManual] = useState(false);
   const [finalRecording, setFinalRecording] = useState<Recording | null>(null);
   const [saveState, setSaveState] = useState<FinalRepSaveState>("idle");
+  /** Separate from saveState: the Final Step cloud save and the AI Coach are different responsibilities. */
+  const [coachState, setCoachState] = useState<FinalCoachState>({ status: "idle" });
+  const coachAbort = useRef<AbortController | null>(null);
   const [journeyAfterFinish, setJourneyAfterFinish] = useState<JourneyState | null>(null);
   /** Habit snapshot taken right before completeDay, so milestones are crossed exactly once. */
   const [habitBefore, setHabitBefore] = useState<{ days: number; lastCompletedDate?: string } | null>(null);
@@ -377,11 +381,32 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
     setJourneyAfterFinish(next);
     setDone(true);
     PracticeSessionService.clear(moduleId, day.day);
-    const finalTake = (finalIndex ?? takes.findIndex((take) => take?.id === final.id)) + 1;
-    if (finalTake > 0) void CloudSync.markFinalTake(moduleId, day.day, finalTake).catch(() => undefined);
     void CloudSync.completeSession(moduleId, day.day).catch(() => undefined);
     cloudSave(final, next);
+
+    // AI Coach: background enhancement only, never a completion gate. The
+    // pipeline itself uploads the Final Take (idempotent) and marks it Final
+    // BEFORE the single analysis request. Actual take number, never clamped.
+    const finalTake = (finalIndex ?? takes.findIndex((take) => take?.id === final.id)) + 1;
+    if (finalTake > 0) {
+      const controller = new AbortController();
+      coachAbort.current = controller;
+      setCoachState({ status: "preparing" });
+      void runFinalCoachPipeline(
+        { moduleId, day, finalRecording: final, finalTakeNumber: finalTake },
+        (state) => {
+          if (!controller.signal.aborted) setCoachState(state);
+        },
+        undefined,
+        controller.signal,
+      ).catch(() => {
+        if (!controller.signal.aborted) setCoachState({ status: "unavailable" });
+      });
+    }
   };
+
+  // Leaving the flow while the coach is still working: stop polling, no late setState.
+  useEffect(() => () => coachAbort.current?.abort(), []);
 
   const countFor = (rep: "2c" | 4, ids: string[]) => {
     const keys = ids.map((id) => itemKey(rep, id));
@@ -432,6 +457,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
             rep4: countFor(4, items4.map((item) => item.id)),
           }}
           saveState={saveState}
+          coachState={coachState}
           habitBefore={habitBefore}
           onRetrySave={() => {
             if (finalRecording && journeyAfterFinish) cloudSave(finalRecording, journeyAfterFinish);
