@@ -45,6 +45,7 @@ import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { CloudSync } from "@/services/cloud-sync";
+import { sourceTurnNumberFor } from "@/lib/final-audio-coach";
 import type { CourseDay, JourneyState, ModelLine, ModuleId, Recording, RepLabel } from "@/lib/types";
 import type { FinalRepSaveState } from "@/components/fluency/DayCompleteScreen";
 import { cn } from "@/lib/utils";
