@@ -617,7 +617,12 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
             /* Day already committed. Step 5 is locked: no TakeBoard, no re-selection of Final. */
             <div className="space-y-5">
               <RepHeader titleKey="rep5.title" instrKey="rep5.instr" label={day.rep5Label} copy={day.repCopy?.rep5} />
-              <FinalCoachReview state={coachState} showEs={esUi} onContinue={continueToDayComplete} />
+              <FinalCoachReview
+                state={coachState}
+                showEs={esUi}
+                result={coachResultInput}
+                onContinue={continueToDayComplete}
+              />
             </div>
           ) : null}
           {stage === 5 && !coachReviewActive ? (
