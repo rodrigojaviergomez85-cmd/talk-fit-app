@@ -224,7 +224,8 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
 
   // Persist the position on every meaningful change.
   useEffect(() => {
-    if (!ready || resume || done) return;
+    // Once the day is committed (review or Day Complete) the cleared session must never be re-saved.
+    if (!ready || resume || done || coachReviewActive) return;
     PracticeSessionService.save({
       moduleId,
       day: dayNumber,
@@ -235,7 +236,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
       skipped,
       startedAt: startedAt.current,
     });
-  }, [ready, resume, done, moduleId, dayNumber, day.week, stage, subIndex, attempted, skipped]);
+  }, [ready, resume, done, coachReviewActive, moduleId, dayNumber, day.week, stage, subIndex, attempted, skipped]);
 
   useEffect(() => setMicChecked(isMicChecked()), []);
 
@@ -278,6 +279,8 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
     setAttempted((list) => (list.includes(key) ? list : [...list, key]));
 
   const goBack = () => {
+    // Coach Review: the day is committed and Step 5 is locked — no way back to the TakeBoard.
+    if (coachReviewActive) return;
     if (subIndex > 0) return setSubIndex(subIndex - 1);
     if (stage > 0) {
       setStage(stage - 1);
