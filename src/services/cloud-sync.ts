@@ -10,6 +10,7 @@ import {
   writePreferencesLocal,
 } from "./preferences";
 import type { ModuleId, Recording } from "@/lib/types";
+import type { TablesInsert } from "@/integrations/supabase/types";
 import { isModuleId } from "./course-service";
 
 /**
@@ -70,7 +71,7 @@ export function buildRecordingUpsertRow(input: {
   storagePath: string;
   mimeType: string | null;
   sourceTurnNumber: number | null;
-}): Record<string, unknown> {
+}): TablesInsert<"recordings"> {
   return {
     user_id: input.userId,
     module_id: input.moduleId,
