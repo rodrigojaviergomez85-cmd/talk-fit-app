@@ -79,7 +79,7 @@ export function buildRecordingUpsertRow(input: {
   sourceTurnNumber: number | null;
   preserveExistingIdeaCount: boolean;
 }): TablesInsert<"recordings"> {
-  const validCount = isValidIdeaCount(input.sentenceCount);
+  const count = input.sentenceCount;
   return {
     user_id: input.userId,
     module_id: input.moduleId,
@@ -87,8 +87,8 @@ export function buildRecordingUpsertRow(input: {
     take_number: input.takeNumber,
     is_final_rep: input.isFinalRep,
     duration_seconds: input.durationSeconds,
-    ...(validCount
-      ? { estimated_idea_count: input.sentenceCount }
+    ...(isValidIdeaCount(count)
+      ? { estimated_idea_count: count }
       : input.preserveExistingIdeaCount
         ? {}
         : { estimated_idea_count: null }),
