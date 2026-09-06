@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Check, ChevronDown, Loader2, RotateCcw } from "lucide-react";
 import type {
   CoachCorrectionCategory,
+  FinalAudioCoachCorrection,
   FinalAudioCoachFeedback,
+  FinalAudioCoachFluencyUpgrade,
   FinalCoachRetakeState,
   FinalCoachState,
 } from "@/lib/final-audio-coach";
@@ -222,7 +224,7 @@ export function FinalCoachReview({ state, showEs, result, onContinue, retake }: 
   }
 
   return (
-    <Shell testId="final-coach-ready">
+    <Shell testId="final-coach-ready" compact={pilot}>
       <Title>{s.title}</Title>
 
       {result ? pilot ? <PilotObjectiveResultBlock input={result} showEs={showEs} /> : <ObjectiveResultBlock input={result} showEs={showEs} /> : null}
@@ -339,6 +341,45 @@ export function correctionQuoteLabels(category: CoachCorrectionCategory, showEs:
     return showEs ? { said: "REPETISTE", better: "MÁS FLUIDO" } : { said: "YOU REPEATED", better: "MORE FLUENT" };
   }
   return showEs ? { said: "DIJISTE", better: "MEJOR" } : { said: "YOU SAID", better: "BETTER" };
+}
+
+function CompactPhrase({ icon, text, emphasized = false }: { icon: "❌" | "✅" | "🔁"; text: string; emphasized?: boolean }) {
+  return (
+    <p className={`grid grid-cols-[24px_minmax(0,1fr)] gap-1.5 text-[15px] leading-snug ${emphasized ? "font-extrabold text-primary" : "font-semibold text-foreground"}`}>
+      <span aria-hidden>{icon}</span>
+      <span>“{text}”</span>
+    </p>
+  );
+}
+
+function CompactCorrection({ correction, index, showEs }: { correction: FinalAudioCoachCorrection; index: number; showEs: boolean }) {
+  const showWhy = correction.category === "grammar" || correction.category === "task_relevance";
+  return (
+    <li data-testid="final-coach-correction-item" data-category={correction.category} className="space-y-1.5">
+      <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-primary">
+        {index + 1} · {correctionCategoryLabel(correction.category, showEs)}
+      </p>
+      <CompactPhrase icon={correction.category === "repetition" ? "🔁" : "❌"} text={correction.said} />
+      <CompactPhrase icon="✅" text={correction.betterVersion} emphasized />
+      {showWhy ? <p className="grid grid-cols-[24px_minmax(0,1fr)] gap-1.5 text-[13px] font-semibold leading-snug text-muted-foreground"><span aria-hidden>💡</span><span>{showEs ? correction.whyEs : correction.whyEn}</span></p> : null}
+    </li>
+  );
+}
+
+const comparisonWords = (text: string) => new Set(text.toLowerCase().match(/[a-záéíóúñü']+/g) ?? []);
+
+/** Avoid rendering a fourth teaching block when the fluency upgrade repeats a displayed correction. */
+export function fluencyUpgradeDuplicatesCorrections(
+  upgrade: FinalAudioCoachFluencyUpgrade,
+  corrections: FinalAudioCoachCorrection[],
+): boolean {
+  const upgradeWords = comparisonWords(`${upgrade.original} ${upgrade.improved}`);
+  return corrections.some((correction) => {
+    const correctionWords = comparisonWords(`${correction.said} ${correction.betterVersion}`);
+    if (upgradeWords.size === 0 || correctionWords.size === 0) return false;
+    const shared = [...upgradeWords].filter((word) => correctionWords.has(word)).length;
+    return shared / Math.min(upgradeWords.size, correctionWords.size) >= 0.7;
+  });
 }
 
 /* ------------------------------------------------------------------------ */
@@ -519,9 +560,9 @@ function TranscriptBlock({ transcript, showEs }: { transcript: string; showEs: b
   );
 }
 
-function Shell({ testId, children }: { testId: string; children: React.ReactNode }) {
+function Shell({ testId, children, compact = false }: { testId: string; children: React.ReactNode; compact?: boolean }) {
   return (
-    <div data-testid={testId} className="space-y-4 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+    <div data-testid={testId} className={`${compact ? "space-y-3 p-4" : "space-y-4 p-5"} rounded-3xl bg-card shadow-[var(--shadow-card)]`}>
       {children}
     </div>
   );
