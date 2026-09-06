@@ -318,10 +318,7 @@ describe("Final Audio Coach — concurrency & leases", () => {
     expect(h.counters.stt + h.counters.llm + h.counters.quota).toBe(0);
   });
 
-  it("CASE 7: a stale pending row (> 2 min) can be reclaimed by exactly one request", async () => {
-    let release!: () => void;
-    const gate = new Promise<void>((r) => (release = r));
-    const h = harness({ delayStt: () => gate });
+  async function seedPending(h: Harness) {
     const audioHash = await sha256Hex(audioOf("take-2-v1"));
     const day = (await CourseService.loadModule("simple-present")).days[0]!;
     const rubric = buildRubric(day, "simple-present", CourseService.getModule("simple-present").title, null)!;
@@ -336,6 +333,27 @@ describe("Final Audio Coach — concurrency & leases", () => {
       sourceTurnNumber: null,
       estimatedIdeaCount: null,
     });
+  }
+
+  it("CASE D: the lease is 10 minutes — pending at 2 min and 9 min → 202, 0 paid calls, no reclaim", async () => {
+    expect(PENDING_STALE_MS).toBe(10 * 60 * 1000);
+    for (const ageMs of [2 * 60_000, 9 * 60_000]) {
+      const h = harness();
+      await seedPending(h);
+      h.clock.t += ageMs;
+      const res = await runFinalAudioCoach(INPUT, h.deps);
+      expect(res.http).toBe(202);
+      expect(res.body.status).toBe("pending");
+      expect(h.counters.stt + h.counters.llm + h.counters.quota).toBe(0);
+      expect([...h.store.rows.values()][0]!.status).toBe("pending");
+    }
+  });
+
+  it("CASE 7 / E: a stale pending row (> 10 min) can be reclaimed by exactly one request", async () => {
+    let release!: () => void;
+    const gate = new Promise<void>((r) => (release = r));
+    const h = harness({ delayStt: () => gate });
+    await seedPending(h);
     h.clock.t += PENDING_STALE_MS + 1000;
     const pa = runFinalAudioCoach(INPUT, h.deps);
     const pb = runFinalAudioCoach(INPUT, h.deps);
@@ -528,5 +546,134 @@ describe("Final Audio Coach — data hygiene & limits", () => {
     expect(fb.nextStepEs.length).toBeLessThanOrEqual(160);
     expect(normalizeFeedback({ ...GOOD_LLM, targetLanguage: "excellent" })).toBeNull();
     expect(normalizeFeedback({ ...GOOD_LLM, strengthEs: "" })).toBeNull();
+  });
+});
+
+describe("Final Audio Coach — Take number derived from the real CourseDay", () => {
+  const advancedTurns = async () => (await CourseService.loadModule("advanced-1")).days;
+
+  it("maxTakeNumberFor matches TakeBoard's takeSlots for every real day", async () => {
+    for (const id of ["basic-zero", "simple-present", "past-stories", "simple-future", "mixed-tenses", "eagles-week-1", "tigers", "sharks", "advanced-1"] as const) {
+      for (const d of (await CourseService.loadModule(id)).days) {
+        expect(maxTakeNumberFor(d)).toBe(takeSlots(d.rep5Turns));
+      }
+    }
+  });
+
+  it("CASE A: classic STEP 5 day → Take 5 valid, Take 6 rejected before Storage/AI", async () => {
+    const day = (await CourseService.loadModule("simple-present")).days[0]!;
+    expect(maxTakeNumberFor(day)).toBe(5);
+    const rec5 = recording({ take_number: 5, storage_path: `${USER_A}/simple-present/1/take-5.webm` });
+    const ok = harness({ recordings: [rec5], audio: { [rec5.storage_path]: audioOf("t5") } });
+    const res5 = await runFinalAudioCoach({ ...INPUT, takeNumber: 5 }, ok.deps);
+    expect(res5.body.status).toBe("ready");
+    expect(ok.counters.download).toBe(1);
+
+    const rec6 = recording({ take_number: 6, storage_path: `${USER_A}/simple-present/1/take-6.webm` });
+    const bad = harness({ recordings: [rec6], audio: { [rec6.storage_path]: audioOf("t6") } });
+    const res6 = await runFinalAudioCoach({ ...INPUT, takeNumber: 6 }, bad.deps);
+    expect(res6.http).toBe(404);
+    expect(bad.counters.fetch + bad.counters.download + bad.counters.quota + bad.counters.stt + bad.counters.llm).toBe(0);
+  });
+
+  it("CASE B: real Advanced Pressure Round with > 5 turns → Take N valid, Take N+1 rejected", async () => {
+    const days = await advancedTurns();
+    const pressure = days.filter((d) => (d.rep5Turns?.length ?? 0) > 5);
+    expect(pressure.length).toBeGreaterThan(0);
+    for (const day of pressure) {
+      const n = day.rep5Turns!.length;
+      expect(maxTakeNumberFor(day)).toBe(n);
+      const recN = recording({
+        module_id: "advanced-1",
+        day: day.day,
+        take_number: n,
+        source_turn_number: n,
+        storage_path: `${USER_A}/advanced-1/${day.day}/take-${n}.webm`,
+      });
+      const ok = harness({ recordings: [recN], audio: { [recN.storage_path]: audioOf(`adv-${day.day}-${n}`) } });
+      const res = await runFinalAudioCoach({ moduleId: "advanced-1", day: day.day, takeNumber: n }, ok.deps);
+      expect(res.body.status).toBe("ready");
+      expect([...ok.store.rows.values()][0]!.insert.sourceTurnNumber).toBe(n);
+
+      const recOver = recording({
+        module_id: "advanced-1",
+        day: day.day,
+        take_number: n + 1,
+        source_turn_number: null,
+        storage_path: `${USER_A}/advanced-1/${day.day}/take-${n + 1}.webm`,
+      });
+      const bad = harness({ recordings: [recOver], audio: { [recOver.storage_path]: audioOf("over") } });
+      const over = await runFinalAudioCoach({ moduleId: "advanced-1", day: day.day, takeNumber: n + 1 }, bad.deps);
+      expect(over.http).toBe(404);
+      expect(bad.counters.fetch + bad.counters.download + bad.counters.quota + bad.counters.stt + bad.counters.llm).toBe(0);
+    }
+  });
+
+  it("CASE B2: a classic role play (2–3 turns + retries) still allows exactly 5 Takes", async () => {
+    const day = (await advancedTurns()).find((d) => d.rep5Turns?.length === 3)!;
+    expect(maxTakeNumberFor(day)).toBe(5);
+  });
+
+  it("CASE C: takeNumber 0 / negative / non-integer → nothing paid, no Storage, no quota", async () => {
+    for (const takeNumber of [0, -1, 2.5, Number.NaN]) {
+      const h = harness();
+      const res = await runFinalAudioCoach({ ...INPUT, takeNumber }, h.deps);
+      expect(res.http).toBe(404);
+      expect(h.counters.download + h.counters.quota + h.counters.stt + h.counters.llm).toBe(0);
+    }
+  });
+});
+
+describe("Final Audio Coach — Whisper confidence → UNCLEAR", () => {
+  const IMPERFECT = "I work yesterday and my manager help me because customer angry and I talk with him.";
+
+  it("CASE F: enough words but avgLogprob below threshold → unclear, 1 STT, 0 LLM", async () => {
+    const h = harness({ transcript: IMPERFECT, confidence: { avgLogprob: AVG_LOGPROB_THRESHOLD - 0.2, noSpeechProb: 0.05 } });
+    const res = await runFinalAudioCoach(INPUT, h.deps);
+    expect(res.body.status).toBe("unclear");
+    expect(h.counters.stt).toBe(1);
+    expect(h.counters.llm).toBe(0);
+    expect([...h.store.rows.values()][0]!.status).toBe("unclear");
+  });
+
+  it("CASE G: hallucinated words with high noSpeechProb → unclear, 1 STT, 0 LLM", async () => {
+    const h = harness({ transcript: IMPERFECT, confidence: { avgLogprob: -0.2, noSpeechProb: NO_SPEECH_THRESHOLD + 0.2 } });
+    const res = await runFinalAudioCoach(INPUT, h.deps);
+    expect(res.body.status).toBe("unclear");
+    expect(h.counters.stt).toBe(1);
+    expect(h.counters.llm).toBe(0);
+  });
+
+  it("CASE H: good confidence but fewer than MIN_TRANSCRIPT_WORDS → unclear, 1 STT, 0 LLM", async () => {
+    const short = Array.from({ length: MIN_TRANSCRIPT_WORDS - 1 }, () => "word").join(" ");
+    const h = harness({ transcript: short, confidence: { avgLogprob: -0.1, noSpeechProb: 0.01 } });
+    const res = await runFinalAudioCoach(INPUT, h.deps);
+    expect(res.body.status).toBe("unclear");
+    expect(h.counters.stt).toBe(1);
+    expect(h.counters.llm).toBe(0);
+  });
+
+  it("CASE I: clear but grammatically imperfect learner English reaches the LLM exactly once", async () => {
+    const h = harness({ transcript: IMPERFECT, confidence: { avgLogprob: -0.35, noSpeechProb: 0.1 } });
+    const res = await runFinalAudioCoach(INPUT, h.deps);
+    expect(res.body.status).toBe("ready");
+    expect(h.counters.stt).toBe(1);
+    expect(h.counters.llm).toBe(1);
+  });
+
+  it("missing segment metadata never rejects a clearly present transcript", async () => {
+    const h = harness({ transcript: IMPERFECT, confidence: null });
+    const res = await runFinalAudioCoach(INPUT, h.deps);
+    expect(res.body.status).toBe("ready");
+    expect(h.counters.llm).toBe(1);
+  });
+
+  it("CASE J: Groq provider failure → status error (never unclear), 0 LLM, exactly 1 STT attempt", async () => {
+    const h = harness({ transcript: null });
+    const res = await runFinalAudioCoach(INPUT, h.deps);
+    expect(res.body.status).toBe("error");
+    expect(res.body.status).not.toBe("unclear");
+    expect(h.counters.stt).toBe(1);
+    expect(h.counters.llm).toBe(0);
   });
 });
