@@ -486,7 +486,6 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
             rep4: countFor(4, items4.map((item) => item.id)),
           }}
           saveState={saveState}
-          coachState={coachState}
           habitBefore={habitBefore}
           onRetrySave={() => {
             if (finalRecording && journeyAfterFinish) cloudSave(finalRecording, journeyAfterFinish);
@@ -594,7 +593,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
             />
 
           ) : null}
-          {stage === 5 && takeErrors.length > 0 ? (
+          {stage === 5 && !coachReviewActive && takeErrors.length > 0 ? (
             <div className="space-y-2 rounded-2xl border border-destructive/30 bg-card p-4 text-center">
               <p className="text-[13px] font-semibold">{tt("sync.takeFailed")}</p>
               <button
@@ -611,7 +610,14 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               </button>
             </div>
           ) : null}
-          {stage === 5 ? (
+          {stage === 5 && coachReviewActive ? (
+            /* Day already committed. Step 5 is locked: no TakeBoard, no re-selection of Final. */
+            <div className="space-y-5">
+              <RepHeader titleKey="rep5.title" instrKey="rep5.instr" label={day.rep5Label} copy={day.repCopy?.rep5} />
+              <FinalCoachReview state={coachState} showEs={esUi} onContinue={continueToDayComplete} />
+            </div>
+          ) : null}
+          {stage === 5 && !coachReviewActive ? (
             <Rep5FinalRep
               moduleId={moduleId}
               day={day}
