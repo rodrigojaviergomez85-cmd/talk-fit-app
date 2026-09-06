@@ -35,21 +35,9 @@ function DevVerbCards() {
       </section>
       <section>
         <h2 className="mb-2 text-sm font-bold uppercase">ES support ON</h2>
-        <button
-          type="button"
-          onClick={() => {
-            setEsOn(true);
-            const key = "fluency-reps:prefs";
-            const prefs = JSON.parse(localStorage.getItem(key) || "{}") as Record<string, unknown>;
-            prefs["spanishSupport"] = true;
-            localStorage.setItem(key, JSON.stringify(prefs));
-            window.location.reload();
-          }}
-          className="mb-2 rounded-full bg-primary px-3 py-1 text-sm text-primary-foreground"
-        >
-          Enable ES support and reload
-        </button>
-        {esOn ? <PastVerbCards day={day} collapsed={false} /> : null}
+        <SpanishProvider value={true}>
+          <PastVerbCards day={day} collapsed={false} />
+        </SpanishProvider>
       </section>
       <section>
         <h2 className="mb-2 text-sm font-bold uppercase">Collapsed</h2>
