@@ -132,6 +132,12 @@ function makeStore(now: () => number) {
       r.strength_es = patch.feedback?.strengthEs ?? null;
       r.next_step_en = patch.feedback?.nextStepEn ?? null;
       r.next_step_es = patch.feedback?.nextStepEs ?? null;
+      r.correction_needed = patch.feedback?.correctionNeeded ?? null;
+      r.said = patch.feedback?.said ?? null;
+      r.better_version = patch.feedback?.betterVersion ?? null;
+      r.why_en = patch.feedback?.whyEn ?? null;
+      r.why_es = patch.feedback?.whyEs ?? null;
+      r.practice_phrase = patch.feedback?.practicePhrase ?? null;
     },
   };
   return store;
