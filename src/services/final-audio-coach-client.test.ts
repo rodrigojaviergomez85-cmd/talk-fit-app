@@ -396,7 +396,8 @@ describe("idea-count semantics: NEW recording vs Final Coach guarantee re-upload
     expect(sync).toMatch(/preserveExistingIdeaCount\?: boolean/);
     expect(sync).toMatch(/preserveExistingIdeaCount: input\.preserveExistingIdeaCount \?\? false/);
     const coachClient = read("./final-audio-coach-client.ts");
-    const trueSites = coachClient.match(/preserveExistingIdeaCount: true/g) ?? [];
+    // Call sites end in a comma; the `…: true;` type literal is not a call.
+    const trueSites = coachClient.match(/preserveExistingIdeaCount: true,/g) ?? [];
     expect(trueSites).toHaveLength(1);
     // TakeBoard / practice call sites never pass the flag.
     for (const file of ["../routes/practice.tsx", "../components/fluency/TakeBoard.tsx"]) {
