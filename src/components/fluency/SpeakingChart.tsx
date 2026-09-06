@@ -9,7 +9,7 @@ export function SpeakingChart({ data }: { data: { label: string; seconds: number
       <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
         Speaking output over time
       </h2>
-      <p className="mt-1 text-[12px] font-semibold text-muted-foreground">Final rep seconds per practice</p>
+      <p className="mt-1 text-[12px] font-semibold text-muted-foreground">Final step seconds per practice</p>
       <div className="mt-3 h-44 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: -24 }}>
@@ -18,7 +18,7 @@ export function SpeakingChart({ data }: { data: { label: string; seconds: number
             <YAxis tick={{ fontSize: 10 }} tickLine={false} axisLine={false} width={40} />
             <Tooltip
               cursor={{ fill: "var(--secondary)" }}
-              formatter={(value: number) => [`${value} sec`, "Final rep"]}
+              formatter={(value: number) => [`${value} sec`, "Final step"]}
             />
             <Bar dataKey="seconds" radius={[6, 6, 0, 0]} fill="var(--primary)" />
           </BarChart>

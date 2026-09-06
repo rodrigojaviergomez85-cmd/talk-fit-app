@@ -73,7 +73,7 @@ export function ModuleMoment({ comparison, state, celebrate = false }: Props) {
 
       <div className="grid grid-cols-2 gap-2 text-center">
         <Metric value={`${metrics.days}`} label={es ? "DÍAS COMPLETADOS" : "DAYS COMPLETED"} />
-        <Metric value={`${metrics.reps}`} label="FLUENCY REPS" />
+        <Metric value={`${metrics.reps}`} label={es ? "PASOS DE FLUIDEZ" : "FLUENCY STEPS"} />
         {metrics.minutes > 0 ? (
           <Metric
             value={`${metrics.minutes}`}
@@ -83,7 +83,7 @@ export function ModuleMoment({ comparison, state, celebrate = false }: Props) {
         {metrics.finalReps > 0 ? (
           <Metric
             value={`${metrics.finalReps}`}
-            label={es ? "FINAL REPS GUARDADOS" : "FINAL REPS SAVED"}
+            label={es ? "PASOS FINALES GUARDADOS" : "FINAL STEPS SAVED"}
           />
         ) : null}
       </div>

@@ -157,11 +157,11 @@ export function DayCompleteScreen({
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
               {showEs ? "PRÁCTICA DE HOY" : "TODAY'S PRACTICE"}
             </p>
-            <SummaryRow label="REP 2" summary={summary.rep2} showEs={showEs} />
-            <SummaryRow label="REP 4" summary={summary.rep4} showEs={showEs} />
+            <SummaryRow label={showEs ? "PASO 2" : "STEP 2"} summary={summary.rep2} showEs={showEs} />
+            <SummaryRow label={showEs ? "PASO 4" : "STEP 4"} summary={summary.rep4} showEs={showEs} />
             <div className="flex items-center justify-between text-[13px] font-semibold">
               <span className="font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                {showEs ? "REP FINAL" : "FINAL REP"}
+                {showEs ? "PASO FINAL" : "FINAL STEP"}
               </span>
               <span>{showEs ? "Completada ✓" : "Completed ✓"}</span>
             </div>
@@ -169,8 +169,8 @@ export function DayCompleteScreen({
         ) : null}
 
         <div className="grid grid-cols-2 gap-3">
-          <Stat label={showEs ? "Reps hoy" : "Reps today"} value="5 / 5" />
-          <Stat label={showEs ? "Rep final" : "Final rep"} value={`${seconds}s`} />
+          <Stat label={showEs ? "Pasos hoy" : "Steps today"} value="5 / 5" />
+          <Stat label={showEs ? "Paso final" : "Final step"} value={`${seconds}s`} />
           <Stat
             label={showEs ? "Racha" : "Streak"}
             value={`${state.streakDays}`}
@@ -193,15 +193,15 @@ export function DayCompleteScreen({
             aria-live="polite"
           >
             {saveState === "saving" ? (
-              <p>{showEs ? "GUARDANDO TU REP FINAL…" : "SAVING YOUR FINAL REP…"}</p>
+              <p>{showEs ? "GUARDANDO TU PASO FINAL…" : "SAVING YOUR FINAL STEP…"}</p>
             ) : saveState === "saved" ? (
               <p>{showEs ? "GUARDADA ✓" : "SAVED ✓"}</p>
             ) : (
               <div className="space-y-3">
                 <p>
                   {showEs
-                    ? "No pudimos guardar tu Rep Final todavía. Tu grabación no se ha borrado."
-                    : "We couldn't save your Final Rep yet. Your recording has not been removed."}
+                    ? "No pudimos guardar tu Paso Final todavía. Tu grabación no se ha borrado."
+                    : "We couldn't save your Final Step yet. Your recording has not been removed."}
                 </p>
                 <button
                   type="button"

@@ -163,7 +163,7 @@ function RecordingsPage() {
             {/* Grouped library */}
             <section className="space-y-3">
               <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                {es ? "TUS FINAL REPS" : "YOUR FINAL REPS"}
+                {es ? "TUS PASOS FINALES" : "YOUR FINAL STEPS"}
               </h2>
               <RecordingsGrouped state={safe} onCompare={setSheet} />
             </section>
