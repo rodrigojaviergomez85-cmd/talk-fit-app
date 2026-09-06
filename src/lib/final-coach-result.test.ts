@@ -124,7 +124,10 @@ describe("TESTS 27 — INTERMEDIATE", () => {
       moduleLabel: "X",
       topic: "t",
       focus: "f",
+      sourceTurnNumber: null,
+      goalSeconds: [45, 60],
       goalSentences: 7,
+      coachVersion: "v2",
       prompt: { question: "Q?" },
     });
     const sys = (level: CoachRubric["level"], m: string) => buildCoachMessages(rubric(level, m), "hello", 5)[0]!.content;
@@ -185,7 +188,10 @@ describe("Level-aware LLM next step (single existing prompt, no extra call)", ()
     moduleLabel: "BASIC 3",
     topic: "t",
     focus: "past",
+    sourceTurnNumber: null,
+    goalSeconds: [30, 45],
     goalSentences: 5,
+    coachVersion: "v2",
     prompt: { question: "Q?" },
   };
   it("BASIC asks for one concrete idea/chunk with an example and forbids vague steps", () => {
