@@ -388,8 +388,6 @@ describe("idea-count semantics: NEW recording vs Final Coach guarantee re-upload
 
   it("CASE I: ordinary STEP 5 recording uploads never opt into preservation (default false)", async () => {
     const fs = await import("node:fs");
-    const glob = await import("node:child_process");
-    void glob;
     // Every uploadTake call outside the Final Coach pipeline must omit the flag.
     const read = (p: string) => fs.readFileSync(new URL(p, import.meta.url), "utf8");
     const sync = read("./cloud-sync.ts");
