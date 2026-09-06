@@ -475,6 +475,10 @@ export function buildCoachMessages(rubric: CoachRubric, transcript: string, esti
     ...task.filter(Boolean),
     `Target: about ${rubric.goalSentences} complete ideas${rubric.turn?.targetSeconds ? `, ${rubric.turn.targetSeconds[0]}–${rubric.turn.targetSeconds[1]} seconds` : ""}.`,
     estimatedIdeaCount !== null ? `Estimated complete ideas already counted: ${estimatedIdeaCount}.` : null,
+    // The UI computes exactly how many ideas are missing; the model only suggests WHAT to add.
+    estimatedIdeaCount !== null && !rubric.turn && estimatedIdeaCount < rubric.goalSentences
+      ? "The learner is still below the idea target: the next step should preferably help them ADD ONE useful idea toward the goal (say what idea, with an example). Do not mention numbers of ideas."
+      : null,
     "",
     "TRANSCRIPT:",
     transcript,
