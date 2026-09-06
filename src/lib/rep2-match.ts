@@ -304,7 +304,7 @@ function opTargetWord(op: DiffOp): string | undefined {
 
 /** Every word an op touches — target side and learner side. */
 function opWords(op: DiffOp): string[] {
-  if (op.type === "missing") return [op.word]; if (op.type === "extra") return [];
+  if (op.type === "missing" || op.type === "extra") return [op.word];
   if (op.type === "replace") return [op.target, op.got];
   return [];
 }
