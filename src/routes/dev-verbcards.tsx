@@ -39,7 +39,7 @@ function DevVerbCards() {
 function ForceEsSupport() {
   useEffect(() => {
     const prefs = JSON.parse(localStorage.getItem("fluency-reps:prefs") || "{}") as Record<string, unknown>;
-    prefs.spanishSupport = true;
+    prefs["spanishSupport"] = true;
     localStorage.setItem("fluency-reps:prefs", JSON.stringify(prefs));
   }, []);
   return null;
