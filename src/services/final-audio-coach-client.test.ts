@@ -456,7 +456,7 @@ describe("Coach Review sections (CASE D, J, K, 31): one strength, max one correc
     practicePhrase: "I take a shower and then I have breakfast.",
   };
 
-  it("CASE D/K: READY with a correction shows exactly ONE said/better/why/practice block", () => {
+  it("CASE D/K: READY with a correction shows exactly ONE said/better/why/practice block AND the next step", () => {
     const es = coachReviewSections(WITH_FIX, true);
     expect(es.correction).toEqual({
       said: "I took a shower",
@@ -464,7 +464,8 @@ describe("Coach Review sections (CASE D, J, K, 31): one strength, max one correc
       why: WITH_FIX.whyEs,
       practice: WITH_FIX.practicePhrase,
     });
-    expect(es.nextStep).toBeNull();
+    // Correction + development step come from the SAME v2 response (no extra call).
+    expect(es.nextStep).toBe(WITH_FIX.nextStepEs);
     expect(Array.isArray(es.correction)).toBe(false);
   });
 

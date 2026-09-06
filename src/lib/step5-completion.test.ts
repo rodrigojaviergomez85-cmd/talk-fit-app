@@ -124,7 +124,7 @@ describe("STEP 5 completion — wiring in practice.tsx and Day Complete", () => 
     expect(practice).toContain("createStep5CompletionController");
     expect(practice).toMatch(/stage === 5 && coachReviewActive \?/);
     expect(practice).toMatch(/stage === 5 && !coachReviewActive \?/);
-    expect(practice).toContain("<FinalCoachReview state={coachState}");
+    expect(practice).toMatch(/<FinalCoachReview\s+state=\{coachState\}/);
     // CONTINUE advances the UI only.
     expect(practice).toContain("onDayComplete: () => setDone(true)");
     expect(practice).toContain("onContinue={continueToDayComplete}");

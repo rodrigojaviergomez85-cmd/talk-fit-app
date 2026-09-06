@@ -46,6 +46,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { CloudSync } from "@/services/cloud-sync";
 import { sourceTurnNumberFor, type FinalCoachState } from "@/lib/final-audio-coach";
+import { objectiveResultInputFor } from "@/lib/final-coach-result";
 import { runFinalCoachPipeline } from "@/services/final-audio-coach-client";
 import { FinalCoachReview } from "@/components/fluency/FinalCoachReview";
 import { createStep5CompletionController, type Step5CompletionController } from "@/lib/step5-completion";
@@ -440,6 +441,18 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   // Leaving the flow while the coach is still working: stop polling, no late setState.
   useEffect(() => () => coachAbort.current?.abort(), []);
 
+  /**
+   * Objective result for the Coach Review (local data, 0 AI calls). Reads the
+   * LIVE take so the async idea count (pending → done) updates in place.
+   */
+  const coachResultInput = (() => {
+    if (!finalRecording) return null;
+    const liveIndex = takes.findIndex((take) => take?.id === finalRecording.id);
+    const live = (liveIndex >= 0 ? takes[liveIndex] : null) ?? finalRecording;
+    const sourceTurn = liveIndex >= 0 ? sourceTurnNumberFor(day, liveIndex, live.label) : null;
+    return objectiveResultInputFor(moduleId, day, live, sourceTurn);
+  })();
+
   const countFor = (rep: "2c" | 4, ids: string[]) => {
     const keys = ids.map((id) => itemKey(rep, id));
     return {
@@ -617,7 +630,12 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
             /* Day already committed. Step 5 is locked: no TakeBoard, no re-selection of Final. */
             <div className="space-y-5">
               <RepHeader titleKey="rep5.title" instrKey="rep5.instr" label={day.rep5Label} copy={day.repCopy?.rep5} />
-              <FinalCoachReview state={coachState} showEs={esUi} onContinue={continueToDayComplete} />
+              <FinalCoachReview
+                state={coachState}
+                showEs={esUi}
+                result={coachResultInput}
+                onContinue={continueToDayComplete}
+              />
             </div>
           ) : null}
           {stage === 5 && !coachReviewActive ? (
