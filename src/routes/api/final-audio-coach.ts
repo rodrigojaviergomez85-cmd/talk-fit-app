@@ -1,15 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { ModuleId } from "@/lib/types";
-import type { CoachDeps, CoachRubric, FeedbackRow, RecordingRow } from "@/lib/final-audio-coach.server";
+import type { CoachDeps, CoachRubric, FeedbackRow, RecordingRow, SttConfidence, SttResult } from "@/lib/final-audio-coach.server";
 
 /**
  * STEP 5 · YOUR TURN — Final Audio Coach (backend only, no UI trigger yet).
  *
  * POST { moduleId, day, takeNumber } — nothing else is accepted. The server
- * derives the learner, the trusted storage object, the audio hash, the
- * curriculum rubric and the evaluation context itself.
- * Flow: auth → ownership/final check → rubric → download → SHA-256 → cache →
- * lease → quota → 1 STT (Groq turbo) → 1 small text model → durable row.
+ * derives the learner, the maximum Take number (from the real CourseDay:
+ * classic = 5, Pressure Round = rep5Turns.length), the trusted storage object,
+ * the audio hash, the curriculum rubric and the evaluation context itself.
+ * Flow: auth → shape check → real-day take validation → ownership/final check
+ * → rubric → download → SHA-256 → cache → lease (10-min stale) → quota
+ * → 1 STT (Groq turbo, verbose_json) → 1 small text model → durable row.
  */
 const GROQ_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
 const GROQ_MODEL = "whisper-large-v3-turbo";
@@ -43,7 +45,8 @@ export const Route = createFileRoute("/api/final-audio-coach")({
         const moduleId = typeof body.moduleId === "string" && isModuleId(body.moduleId) ? body.moduleId : null;
         const day = Number(body.day);
         const takeNumber = Number(body.takeNumber);
-        if (!moduleId || !Number.isInteger(day) || day < 1 || !Number.isInteger(takeNumber) || takeNumber < 1 || takeNumber > 5) {
+        // Lightweight only: the engine derives the real maximum Take number from the CourseDay.
+        if (!moduleId || !Number.isInteger(day) || day < 1 || !Number.isInteger(takeNumber) || takeNumber < 1) {
           return json({ error: "Invalid input." }, 400);
         }
 
@@ -154,7 +157,12 @@ export const Route = createFileRoute("/api/final-audio-coach")({
   },
 });
 
-async function transcribe(audio: Uint8Array, mime: string | null): Promise<{ ok: true; text: string } | { ok: false }> {
+/**
+ * One Groq Whisper Turbo call with verbose_json so segment confidence
+ * (avg_logprob / no_speech_prob) can flag unreliable audio — same approach as
+ * STEP 2. No large-v3 fallback here by design (cost). Confidence stays server-side.
+ */
+async function transcribe(audio: Uint8Array, mime: string | null): Promise<SttResult> {
   const apiKey = process.env["GROQ_API_KEY"];
   if (!apiKey) {
     console.error("[final-audio-coach] GROQ_API_KEY missing");
@@ -166,19 +174,48 @@ async function transcribe(audio: Uint8Array, mime: string | null): Promise<{ ok:
   form.append("model", GROQ_MODEL);
   form.append("file", new Blob([audio as BlobPart], { type: base }), `final.${ext}`);
   form.append("language", "en");
-  form.append("response_format", "json");
+  form.append("response_format", "verbose_json");
   try {
     const res = await fetch(GROQ_URL, { method: "POST", headers: { Authorization: `Bearer ${apiKey}` }, body: form });
     if (!res.ok) {
       console.error(`[final-audio-coach] STT failed [${res.status}]`);
       return { ok: false };
     }
-    const data = (await res.json().catch(() => null)) as { text?: unknown } | null;
-    return { ok: true, text: typeof data?.text === "string" ? data.text : "" };
+    const data = (await res.json().catch(() => null)) as {
+      text?: unknown;
+      segments?: Array<{ avg_logprob?: unknown; no_speech_prob?: unknown }>;
+    } | null;
+    const text = typeof data?.text === "string" ? data.text : "";
+    return { ok: true, text, confidence: segmentConfidence(data?.segments) };
   } catch (err) {
     console.error("[final-audio-coach] STT error", err instanceof Error ? err.message : err);
     return { ok: false };
   }
+}
+
+/** Conservative aggregate: min avg_logprob, max no_speech_prob. Null when metadata is absent — never throws. */
+function segmentConfidence(segments: unknown): SttConfidence | null {
+  if (!Array.isArray(segments) || segments.length === 0) return null;
+  let avgLogprob = Number.POSITIVE_INFINITY;
+  let noSpeechProb = Number.NEGATIVE_INFINITY;
+  let seen = false;
+  for (const s of segments as Array<{ avg_logprob?: unknown; no_speech_prob?: unknown }>) {
+    const lp = typeof s?.avg_logprob === "number" && Number.isFinite(s.avg_logprob) ? s.avg_logprob : null;
+    const ns = typeof s?.no_speech_prob === "number" && Number.isFinite(s.no_speech_prob) ? s.no_speech_prob : null;
+    if (lp !== null) {
+      avgLogprob = Math.min(avgLogprob, lp);
+      seen = true;
+    }
+    if (ns !== null) {
+      noSpeechProb = Math.max(noSpeechProb, ns);
+      seen = true;
+    }
+  }
+  if (!seen) return null;
+  return {
+    avgLogprob: Number.isFinite(avgLogprob) ? avgLogprob : 0,
+    noSpeechProb: Number.isFinite(noSpeechProb) ? noSpeechProb : 0,
+  };
 }
 
 async function evaluate(rubric: CoachRubric, transcript: string, ideas: number | null): Promise<unknown | null> {

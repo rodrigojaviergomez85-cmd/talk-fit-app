@@ -10,26 +10,15 @@ import type { Recording, RolePlayTurn } from "@/lib/types";
 import { useAppLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-export const TAKE_COUNT = 5;
-export const REQUIRED_TAKES = 3;
+import { TAKE_COUNT, REQUIRED_TAKES, isPressureRound, takeSlots, requiredTakes } from "@/lib/take-slots";
+
+// Take slot rules live in @/lib/take-slots (pure) so the server-side Final Audio
+// Coach validates Take numbers with exactly the same logic. Re-exported here so
+// existing imports keep working.
+export { TAKE_COUNT, REQUIRED_TAKES, isPressureRound, takeSlots, requiredTakes };
 /** Daily objective for every take. */
 export const GOAL_SECONDS = 30;
 export const GOAL_SENTENCES = 5;
-
-/**
- * PRESSURE ROUND (ADVANCED): when a role play has more turns than the classic
- * required takes, every turn is one required response and there are no retry
- * slots. Classic role plays (2–3 turns + retries) are unchanged.
- */
-export function isPressureRound(turns: RolePlayTurn[] | undefined): boolean {
-  return Boolean(turns && turns.length > REQUIRED_TAKES);
-}
-export function takeSlots(turns: RolePlayTurn[] | undefined): number {
-  return isPressureRound(turns) ? turns!.length : TAKE_COUNT;
-}
-export function requiredTakes(turns: RolePlayTurn[] | undefined): number {
-  return isPressureRound(turns) ? turns!.length : REQUIRED_TAKES;
-}
 
 type TakeBoardProps = {
   takes: (Recording | null)[];

@@ -3,14 +3,19 @@
  *
  * Analyses ONLY an authenticated learner's stored, confirmed Final Audio.
  * Cost protection is server-side and durable:
- *   ownership → audio SHA-256 → rubric SHA-256 → cache lookup → lease claim
- *   → quota → 1 STT (Groq whisper-large-v3-turbo) → 1 small text model.
+ *   take-number validation against the real CourseDay → ownership
+ *   → audio SHA-256 → rubric SHA-256 → cache lookup → lease claim → quota
+ *   → 1 STT (Groq whisper-large-v3-turbo, verbose_json confidence)
+ *   → 1 small text model.
  * Same audio + same rubric + same coach version is evaluated exactly once.
+ * There is intentionally NO second STT (large-v3) fallback: unreliable audio
+ * ends as UNCLEAR after a single Turbo call.
  *
  * All I/O is injected (`CoachDeps`) so the whole flow is unit-testable without
  * Storage, the database or any AI provider.
  */
 import type { CourseDay, ModuleId } from "./types";
+import { takeSlots } from "./take-slots";
 
 export const FINAL_AUDIO_COACH_VERSION = "v1";
 
@@ -19,8 +24,13 @@ export const COACH_QUOTA_ENDPOINT = "final-audio-coach";
 export const COACH_QUOTA_LIMIT = 5;
 export const COACH_QUOTA_WINDOW_SECONDS = 24 * 60 * 60;
 
-/** A pending lease older than this is considered crashed and may be reclaimed once. */
-export const PENDING_STALE_MS = 2 * 60 * 1000;
+/**
+ * A pending lease older than this is considered crashed and may be reclaimed
+ * once (atomically). 10 minutes: a legitimate request (Storage download,
+ * hashing, Groq STT, LLM, DB finalize) can occasionally exceed 2 minutes, and a
+ * premature reclaim would duplicate paid AI work.
+ */
+export const PENDING_STALE_MS = 10 * 60 * 1000;
 
 /**
  * Audio size ceiling. The recorder captures speech at 32 kbps (Opus/AAC).
@@ -34,8 +44,39 @@ export const RECORDER_BITS_PER_SECOND = 32_000;
 export const MAX_FINAL_AUDIO_BYTES = 8 * 1024 * 1024;
 export const MIN_FINAL_AUDIO_BYTES = 2048;
 
-/** Below this many transcribed words coaching would be guesswork → UNCLEAR, no LLM. */
+/**
+ * UNCLEAR detection (unreliable audio/transcription — never "bad English"):
+ *  - empty transcript or fewer than MIN_TRANSCRIPT_WORDS words
+ *  - Whisper segment confidence below the STEP 2 thresholds
+ *    (min avg_logprob < -0.7 OR max no_speech_prob > 0.5)
+ * UNCLEAR costs 1 STT and 0 LLM.
+ */
 export const MIN_TRANSCRIPT_WORDS = 6;
+export const AVG_LOGPROB_THRESHOLD = -0.7;
+export const NO_SPEECH_THRESHOLD = 0.5;
+
+export type SttConfidence = { avgLogprob: number; noSpeechProb: number };
+/** Internal only — confidence is never sent to the browser. */
+export type SttResult = { ok: true; text: string; confidence?: SttConfidence | null | undefined } | { ok: false };
+
+/** True when the STT metadata says the speech itself was not reliably recognised. Missing metadata never rejects. */
+export function isLowConfidence(confidence: SttConfidence | null | undefined): boolean {
+  if (!confidence) return false;
+  const { avgLogprob, noSpeechProb } = confidence;
+  return (
+    (Number.isFinite(avgLogprob) && avgLogprob < AVG_LOGPROB_THRESHOLD) ||
+    (Number.isFinite(noSpeechProb) && noSpeechProb > NO_SPEECH_THRESHOLD)
+  );
+}
+
+/**
+ * Maximum valid Take number for a real CourseDay — the same rule TakeBoard
+ * renders: classic STEP 5 / classic role play = 5 slots; Pressure Round =
+ * one slot per authored turn (may be > 5 or < 5).
+ */
+export function maxTakeNumberFor(day: Pick<CourseDay, "rep5Turns">): number {
+  return takeSlots(day.rep5Turns);
+}
 
 export const LIMITS = { strengthEn: 120, strengthEs: 140, nextStepEn: 140, nextStepEs: 160 } as const;
 
@@ -117,7 +158,8 @@ export type CoachDeps = {
     finalize: (id: string, patch: FinalizePatch) => Promise<void>;
   };
   consumeQuota: (userId: string) => Promise<boolean>;
-  stt: (audio: Uint8Array, mime: string | null) => Promise<{ ok: true; text: string } | { ok: false }>;
+  /** Exactly one Groq Turbo transcription; `confidence` comes from verbose_json segments (optional, internal). */
+  stt: (audio: Uint8Array, mime: string | null) => Promise<SttResult>;
   llm: (rubric: CoachRubric, transcript: string, estimatedIdeaCount: number | null) => Promise<unknown | null>;
   log?: ((entry: Record<string, unknown>) => void) | undefined;
 };
@@ -409,10 +451,26 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
     return res;
   };
 
-  // 1) Ownership + readiness — before Storage, hashing or any paid call.
-  if (!isModule(input.moduleId) || !Number.isInteger(input.day) || !Number.isInteger(input.takeNumber)) {
+  // 1) Lightweight shape check, then the REAL CourseDay decides the maximum
+  //    Take number (classic = 5, Pressure Round = rep5Turns.length). Nothing
+  //    client-declared is trusted. Runs before Storage, quota or any paid call.
+  if (
+    !isModule(input.moduleId) ||
+    !Number.isInteger(input.day) ||
+    input.day < 1 ||
+    !Number.isInteger(input.takeNumber) ||
+    input.takeNumber < 1
+  ) {
     return finish({ http: 404, body: { status: "not_found" } });
   }
+  const day = await deps.loadDay(input.moduleId, input.day);
+  if (!day) return finish({ http: 404, body: { status: "not_found" } });
+  const maxTakeNumber = maxTakeNumberFor(day);
+  if (input.takeNumber > maxTakeNumber) {
+    return finish({ http: 404, body: { status: "not_found" } }, { reason: "invalid_take_number", maxTakeNumber });
+  }
+
+  // 2) Ownership + readiness.
   const rec = await deps.fetchRecording(deps.userId, input);
   if (
     !rec ||
@@ -429,9 +487,7 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
   if (!rec.is_final_rep) return finish({ http: 409, body: { status: "final_audio_not_ready" } });
   sourceTurnNumber = rec.source_turn_number;
 
-  // 2) Real curriculum → minimal rubric (server-derived, never from the client).
-  const day = await deps.loadDay(input.moduleId, input.day);
-  if (!day) return finish({ http: 404, body: { status: "not_found" } });
+  // 3) Minimal rubric from the same loaded day (server-derived, never from the client).
   const rubric = buildRubric(day, input.moduleId, deps.moduleLabel(input.moduleId), sourceTurnNumber);
   if (!rubric) return finish({ http: 404, body: { status: "not_found" } });
 
@@ -502,7 +558,8 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
     return finish({ http: 429, body: { status: "rate_limited" } });
   }
 
-  // 7) One STT call.
+  // 7) One STT call (Turbo only — no large-v3 fallback). Provider failure → error;
+  //    successful STT with too few words or unreliable confidence → unclear.
   sttCalled = true;
   const stt = await deps.stt(audio, rec.mime_type);
   if (!stt.ok) {
@@ -511,9 +568,13 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
   }
   const transcript = stt.text.trim();
   transcriptWordCount = countWords(transcript);
-  if (transcriptWordCount < MIN_TRANSCRIPT_WORDS) {
+  const lowConfidence = isLowConfidence(stt.confidence);
+  if (transcriptWordCount < MIN_TRANSCRIPT_WORDS || lowConfidence) {
     await deps.store.finalize(leaseId, { status: "unclear", transcriptWordCount });
-    return finish({ http: 200, body: { status: "unclear" } });
+    return finish(
+      { http: 200, body: { status: "unclear" } },
+      { unclearReason: lowConfidence ? "low_confidence" : "too_few_words" },
+    );
   }
 
   // 8) One small text-model call, both languages at once.
