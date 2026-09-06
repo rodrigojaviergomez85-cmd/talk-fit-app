@@ -1,15 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { ModuleId } from "@/lib/types";
-import type { CoachDeps, CoachRubric, FeedbackRow, RecordingRow } from "@/lib/final-audio-coach.server";
+import type { CoachDeps, CoachRubric, FeedbackRow, RecordingRow, SttConfidence, SttResult } from "@/lib/final-audio-coach.server";
 
 /**
  * STEP 5 · YOUR TURN — Final Audio Coach (backend only, no UI trigger yet).
  *
  * POST { moduleId, day, takeNumber } — nothing else is accepted. The server
- * derives the learner, the trusted storage object, the audio hash, the
- * curriculum rubric and the evaluation context itself.
- * Flow: auth → ownership/final check → rubric → download → SHA-256 → cache →
- * lease → quota → 1 STT (Groq turbo) → 1 small text model → durable row.
+ * derives the learner, the maximum Take number (from the real CourseDay:
+ * classic = 5, Pressure Round = rep5Turns.length), the trusted storage object,
+ * the audio hash, the curriculum rubric and the evaluation context itself.
+ * Flow: auth → shape check → real-day take validation → ownership/final check
+ * → rubric → download → SHA-256 → cache → lease (10-min stale) → quota
+ * → 1 STT (Groq turbo, verbose_json) → 1 small text model → durable row.
  */
 const GROQ_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
 const GROQ_MODEL = "whisper-large-v3-turbo";
