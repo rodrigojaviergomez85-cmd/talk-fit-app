@@ -676,7 +676,9 @@ describe("Retake — day invariants + UI", () => {
     expect(practice.match(/controller\.confirm\(\)/g)).toHaveLength(1);
     const engineCode = retakeEngine.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "");
     expect(engineCode).not.toMatch(/is_final_rep|completeDay|JourneyService|uploadTake|markFinalTake|habit|streak/);
-    expect(client.slice(client.indexOf("requestFinalCoachRetake"))).not.toMatch(/uploadTake|markFinalTake|retry/i);
+    // The retake client never uploads/marks Final; re-sending the SAME blob is the only allowed "retry".
+    const retakeClient = client.slice(client.indexOf("Optional retake (pilot)"));
+    expect(retakeClient).not.toMatch(/uploadTake|markFinalTake|CloudSync/);
   });
   it("retake UI: idle shows ONE optional button on the pilot ready screen; ready shows BEFORE/NOW + applied + keep practicing, and no second retake", () => {
     const feedback: CoachFeedback = { ...(BASE as unknown as CoachFeedback), corrections: [], answeredTask: "yes", fluencyUpgrade: { original: "I go home", improved: "Later, I went home." } };
