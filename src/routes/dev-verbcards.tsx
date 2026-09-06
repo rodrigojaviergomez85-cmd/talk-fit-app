@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PastVerbCards } from "@/components/fluency/PastVerbCards";
+import { SpanishProvider } from "@/components/fluency/TranslatableText";
 import { CourseService } from "@/services/course-service";
 import { useEffect, useState } from "react";
 import type { CourseDay } from "@/lib/types";
