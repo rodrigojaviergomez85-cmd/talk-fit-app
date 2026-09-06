@@ -309,6 +309,9 @@ function retakeHarness(opts: { previous?: PreviousFeedback | null; llm?: unknown
       finalize: async (id, patch) => {
         rows.set(id, { ...rows.get(id)!, status: patch.status, result: patch.result ?? null });
       },
+      discard: async (id) => {
+        rows.delete(id);
+      },
     },
     consumeQuota: async () => {
       calls.quota++;
@@ -364,12 +367,16 @@ describe("Retake — engine", () => {
     expect(h.rows.size).toBe(0);
     expect(h.calls.stt).toBe(0);
   });
-  it("quota exhausted → 429, lease closed as error, 0 STT", async () => {
+  it("quota exhausted → 429, lease released (retake NOT consumed), 0 STT", async () => {
     const h = retakeHarness({ quota: false });
     const res = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm" }, h.deps);
     expect(res.http).toBe(429);
     expect(h.calls.stt).toBe(0);
-    expect([...h.rows.values()][0]!.status).toBe("error");
+    expect(h.rows.size).toBe(0);
+    // The learner can still use their one retake afterwards.
+    h.deps.consumeQuota = async () => true;
+    const retry = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm" }, h.deps);
+    expect(retry.http).toBe(200);
   });
   it("too few words → unclear (1 STT, 0 LLM); STT failure → error; oversized → 413", async () => {
     const few = retakeHarness({ transcript: "uh yes" });
