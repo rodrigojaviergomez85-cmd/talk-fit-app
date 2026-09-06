@@ -35,15 +35,31 @@ export type FinalAudioCoachRating = "good" | "developing";
 /*  Multi-correction rollout (pilot)                                         */
 /* ------------------------------------------------------------------------ */
 
-export type CoachCorrectionCategory = "verb_tense" | "grammar" | "word_choice" | "naturalness" | "connector" | "development";
+export type CoachCorrectionCategory =
+  | "task_relevance"
+  | "verb_tense"
+  | "grammar"
+  | "word_choice"
+  | "naturalness"
+  | "connector"
+  | "repetition"
+  | "development";
+/** Listed in the pilot's teaching priority order (relevance → target tense → … → development). */
 export const CORRECTION_CATEGORIES: readonly CoachCorrectionCategory[] = [
+  "task_relevance",
   "verb_tense",
   "grammar",
   "word_choice",
   "naturalness",
   "connector",
+  "repetition",
   "development",
 ];
+
+export type AnsweredTask = "yes" | "partly" | "no";
+
+/** ONE short "sound more fluent" upgrade: `original` is a real fragment of the transcript. */
+export type FinalAudioCoachFluencyUpgrade = { original: string; improved: string };
 
 /** One prioritized, transcript-grounded correction (server-validated). */
 export type FinalAudioCoachCorrection = {
@@ -73,11 +89,17 @@ export function maxCorrectionsFor(moduleId: string, day: number): number {
 }
 
 export const FINAL_AUDIO_COACH_VERSION_V2 = "v2";
-export const FINAL_AUDIO_COACH_VERSION_PILOT = "v3-pilot";
+/** v3.1: adds answeredTask, repetition/task_relevance categories and fluencyUpgrade (pilot day cache only). */
+export const FINAL_AUDIO_COACH_VERSION_PILOT = "v3.1-pilot";
 
 /** Durable cache/rubric version per request: pilot day only gets its own version, nothing else is invalidated. */
 export function coachVersionFor(moduleId: string, day: number): string {
   return isMultiCorrectionPilot(moduleId, day) ? FINAL_AUDIO_COACH_VERSION_PILOT : FINAL_AUDIO_COACH_VERSION_V2;
+}
+
+/** Optional ONE retake (bonus improvement round) — same gate as the pilot. */
+export function isRetakePilot(moduleId: string, day: number): boolean {
+  return isMultiCorrectionPilot(moduleId, day);
 }
 
 /** Compact bilingual feedback returned by the single backend LLM call (v2 adds ONE grounded correction). */
@@ -102,6 +124,10 @@ export type FinalAudioCoachFeedback = {
    * SAME LLM response. Absent/empty on v2 days. corrections[0] mirrors the primary fields.
    */
   corrections?: FinalAudioCoachCorrection[];
+  /** Pilot only: did the learner answer TODAY'S exact question? Absent on v2 days. */
+  answeredTask?: AnsweredTask | undefined;
+  /** Pilot only: one short grounded "more fluent" upgrade (same LLM response). Null when none. */
+  fluencyUpgrade?: FinalAudioCoachFluencyUpgrade | null | undefined;
 };
 
 /** Public JSON shapes of POST /api/final-audio-coach the UI cares about. */
@@ -126,5 +152,49 @@ export type FinalCoachState =
   | { status: "preparing" }
   | { status: "analyzing" }
   | { status: "ready"; feedback: FinalAudioCoachFeedback; transcript?: string | null }
+  | { status: "unclear" }
+  | { status: "unavailable" };
+
+/* ------------------------------------------------------------------------ */
+/*  Optional retake (pilot) — public shapes                                  */
+/* ------------------------------------------------------------------------ */
+
+/** What a retake claim refers to: a previous correction (by its category) or the previous development advice. */
+export type RetakeSkill = CoachCorrectionCategory | "next_step" | "fluency_upgrade";
+export const RETAKE_SKILLS: readonly RetakeSkill[] = [...CORRECTION_CATEGORIES, "next_step", "fluency_upgrade"];
+
+export type RetakeApplied = {
+  skill: RetakeSkill;
+  /** Server-verified: true only when the retake transcript actually supports it. */
+  applied: boolean;
+  messageEn: string;
+  messageEs: string;
+};
+
+/** Compact retake evaluation ("did they apply the previous feedback?"). Never contains the transcript. */
+export type FinalCoachRetakeResult = {
+  applied: RetakeApplied[];
+  improvementEn: string;
+  improvementEs: string;
+  nextEn: string;
+  nextEs: string;
+};
+
+export type FinalCoachRetakeResponse =
+  | { status: "ready"; result: FinalCoachRetakeResult }
+  | { status: "unclear" }
+  | { status: "already_used" }
+  | { status: "no_feedback" }
+  | { status: "not_available" }
+  | { status: "error"; code?: string }
+  | { status: "audio_too_large" }
+  | { status: "rate_limited" };
+
+/** Learner-facing retake state (session only). */
+export type FinalCoachRetakeState =
+  | { status: "idle" }
+  | { status: "recording" }
+  | { status: "analyzing" }
+  | { status: "ready"; result: FinalCoachRetakeResult }
   | { status: "unclear" }
   | { status: "unavailable" };

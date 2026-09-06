@@ -124,6 +124,7 @@ export type Database = {
       }
       final_audio_coach_feedback: {
         Row: {
+          answered_task: string | null
           audio_sha256: string
           better_version: string | null
           coach_version: string
@@ -132,6 +133,7 @@ export type Database = {
           created_at: string
           day: number
           estimated_idea_count: number | null
+          fluency_upgrade: Json | null
           id: string
           module_id: string
           next_step_en: string | null
@@ -154,6 +156,7 @@ export type Database = {
           why_es: string | null
         }
         Insert: {
+          answered_task?: string | null
           audio_sha256: string
           better_version?: string | null
           coach_version: string
@@ -162,6 +165,7 @@ export type Database = {
           created_at?: string
           day: number
           estimated_idea_count?: number | null
+          fluency_upgrade?: Json | null
           id?: string
           module_id: string
           next_step_en?: string | null
@@ -184,6 +188,7 @@ export type Database = {
           why_es?: string | null
         }
         Update: {
+          answered_task?: string | null
           audio_sha256?: string
           better_version?: string | null
           coach_version?: string
@@ -192,6 +197,7 @@ export type Database = {
           created_at?: string
           day?: number
           estimated_idea_count?: number | null
+          fluency_upgrade?: Json | null
           id?: string
           module_id?: string
           next_step_en?: string | null
@@ -214,6 +220,56 @@ export type Database = {
           why_es?: string | null
         }
         Relationships: []
+      }
+      final_audio_coach_retakes: {
+        Row: {
+          audio_sha256: string | null
+          created_at: string
+          day: number
+          feedback_id: string
+          id: string
+          module_id: string
+          result: Json | null
+          status: string
+          transcript_word_count: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          audio_sha256?: string | null
+          created_at?: string
+          day: number
+          feedback_id: string
+          id?: string
+          module_id: string
+          result?: Json | null
+          status: string
+          transcript_word_count?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          audio_sha256?: string | null
+          created_at?: string
+          day?: number
+          feedback_id?: string
+          id?: string
+          module_id?: string
+          result?: Json | null
+          status?: string
+          transcript_word_count?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "final_audio_coach_retakes_feedback_id_fkey"
+            columns: ["feedback_id"]
+            isOneToOne: true
+            referencedRelation: "final_audio_coach_feedback"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       habit_practice_days: {
         Row: {
