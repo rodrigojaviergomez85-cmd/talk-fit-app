@@ -37,7 +37,7 @@ export type CoachPipelineDeps = {
 };
 
 /** Bounded polling while another request owns the analysis lease (~10 s of waits + request time). */
-export const PENDING_POLL_DELAYS_MS = [2000, 3000, 5000] as const;
+export const PENDING_POLL_DELAYS_MS = [2000, 3000, 5000, 5000, 5000] as const;
 /** One short retry when the Final flag is not yet visible to the API (occurs before any paid AI). */
 export const NOT_READY_RETRY_DELAY_MS = 1000;
 

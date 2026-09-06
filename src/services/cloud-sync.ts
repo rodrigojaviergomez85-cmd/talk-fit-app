@@ -79,6 +79,13 @@ export const CloudSync = {
       return { ok: false };
     }
 
+    // A pending/absent sentence count must never erase an already-saved
+    // estimated_idea_count (e.g. the Final Audio Coach guarantee re-upload of
+    // the same take). Only a valid numeric count is written; when omitted, the
+    // upsert leaves the existing column value untouched on conflict.
+    const incomingCount = input.recording.sentenceCount;
+    const hasValidCount =
+      typeof incomingCount === "number" && Number.isFinite(incomingCount) && incomingCount >= 0;
     const { error } = await supabase.from("recordings").upsert(
       {
         user_id: uid,
@@ -87,7 +94,7 @@ export const CloudSync = {
         take_number: input.takeNumber,
         is_final_rep: input.isFinalRep ?? false,
         duration_seconds: input.recording.durationSeconds,
-        estimated_idea_count: input.recording.sentenceCount ?? null,
+        ...(hasValidCount ? { estimated_idea_count: incomingCount } : {}),
         storage_path: path,
         mime_type: blob.type || null,
         source_turn_number: input.sourceTurnNumber ?? null,
