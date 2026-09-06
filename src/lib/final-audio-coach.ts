@@ -1,6 +1,8 @@
 /**
- * Client-safe helpers for the STEP 5 Final Audio Coach metadata.
- * The coach itself runs server-side (see final-audio-coach.server.ts).
+ * Client-safe helpers and PUBLIC types for the STEP 5 Final Audio Coach.
+ * The coach itself runs server-side (see final-audio-coach.server.ts) — never
+ * import that module from React code. Only the learner-facing result shape
+ * lives here: no transcript, hashes, storage paths or provider details.
  */
 import type { CourseDay } from "./types";
 
@@ -26,3 +28,36 @@ export function sourceTurnNumberFor(
   if (takeIndex >= 0 && takeIndex < turns.length) return takeIndex + 1;
   return null;
 }
+
+export type FinalAudioCoachRating = "good" | "developing";
+
+/** Compact bilingual feedback returned by the single backend LLM call. */
+export type FinalAudioCoachFeedback = {
+  taskCompleted: boolean;
+  targetLanguage: FinalAudioCoachRating;
+  organization: FinalAudioCoachRating;
+  strengthEn: string;
+  strengthEs: string;
+  nextStepEn: string;
+  nextStepEs: string;
+};
+
+/** Public JSON shapes of POST /api/final-audio-coach the UI cares about. */
+export type FinalAudioCoachResponse =
+  | { status: "ready"; feedback: FinalAudioCoachFeedback }
+  | { status: "unclear" }
+  | { status: "pending" }
+  | { status: "final_audio_not_ready" }
+  | { status: "error"; code?: string }
+  | { status: "not_found" }
+  | { status: "audio_too_large" }
+  | { status: "rate_limited" };
+
+/** Learner-facing coach state owned by the practice flow (never persisted). */
+export type FinalCoachState =
+  | { status: "idle" }
+  | { status: "preparing" }
+  | { status: "analyzing" }
+  | { status: "ready"; feedback: FinalAudioCoachFeedback }
+  | { status: "unclear" }
+  | { status: "unavailable" };
