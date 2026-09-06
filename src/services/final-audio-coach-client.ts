@@ -30,13 +30,15 @@ export type CoachPipelineDeps = {
     recording: Recording;
     isFinalRep: false;
     sourceTurnNumber: number | null;
+    /** Same-audio guarantee re-upload: must preserve any already-saved idea count. */
+    preserveExistingIdeaCount: true;
   }) => Promise<{ ok: boolean }>;
   markFinalTake: (moduleId: ModuleId, day: number, takeNumber: number) => Promise<boolean>;
   requestCoach: (input: CoachRequest, signal?: AbortSignal) => Promise<CoachHttpResult>;
   sleep: (ms: number, signal?: AbortSignal) => Promise<void>;
 };
 
-/** Bounded polling while another request owns the analysis lease (~10 s of waits + request time). */
+/** Bounded polling while another request owns the analysis lease (~20 s of waits + request time). */
 export const PENDING_POLL_DELAYS_MS = [2000, 3000, 5000, 5000, 5000] as const;
 /** One short retry when the Final flag is not yet visible to the API (occurs before any paid AI). */
 export const NOT_READY_RETRY_DELAY_MS = 1000;
@@ -173,6 +175,8 @@ export async function runFinalCoachPipeline(
         recording: finalRecording,
         isFinalRep: false,
         sourceTurnNumber: sourceTurnNumberFor(day, finalTakeNumber - 1, finalRecording.label),
+        // Same selected recording, not a new take: never erase its saved count.
+        preserveExistingIdeaCount: true,
       })
     ).ok;
   } catch {
