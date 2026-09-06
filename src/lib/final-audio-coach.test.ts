@@ -42,6 +42,7 @@ const GOOD_LLM: CoachFeedback = {
   nextStepEn: "Add one reason with because.",
   nextStepEs: "Agrega una razón usando because.",
   correctionNeeded: false,
+  corrections: [],
   said: null,
   betterVersion: null,
   whyEn: null,

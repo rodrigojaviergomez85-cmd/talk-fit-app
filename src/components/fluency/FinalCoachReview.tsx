@@ -1,5 +1,6 @@
-import { Check, Loader2 } from "lucide-react";
-import type { FinalAudioCoachFeedback, FinalCoachState } from "@/lib/final-audio-coach";
+import { useState } from "react";
+import { Check, ChevronDown, Loader2 } from "lucide-react";
+import type { CoachCorrectionCategory, FinalAudioCoachFeedback, FinalCoachState } from "@/lib/final-audio-coach";
 import { objectiveResult, objectiveResultText, type ObjectiveResultInput } from "@/lib/final-coach-result";
 
 type Props = {
@@ -148,6 +149,8 @@ export function FinalCoachReview({ state, showEs, result, onContinue }: Props) {
   const nextStepLabel = result
     ? objectiveResultText(objectiveResult(result), showEs).nextStepLabel
     : showEs ? "🚀 SIGUIENTE RETO" : "🚀 NEXT CHALLENGE";
+  const corrections = state.feedback.corrections ?? [];
+  const pilot = corrections.length > 0 || state.transcript !== undefined;
   return (
     <Shell testId="final-coach-ready">
       <Title>{s.title}</Title>
@@ -158,7 +161,51 @@ export function FinalCoachReview({ state, showEs, result, onContinue }: Props) {
         <p className="text-[16px] font-semibold leading-snug">{s.strength}</p>
       </Section>
 
-      {s.correction ? (
+      {pilot ? (
+        <>
+          {/* Multi-correction pilot: transient transcript (this session only) + up to 3 prioritized corrections. */}
+          {state.transcript ? (
+            <>
+              <Divider />
+              <TranscriptBlock transcript={state.transcript} showEs={showEs} />
+            </>
+          ) : null}
+          {corrections.length > 0 ? (
+            <>
+              <Divider />
+              <Section
+                label={`🎯 ${showEs ? "CORRECCIONES CLAVE" : "KEY CORRECTIONS"} · ${corrections.length}`}
+                testId="final-coach-corrections"
+              >
+                <ol className="space-y-4">
+                  {corrections.map((c, i) => (
+                    <li key={`${i}-${c.said}`} data-testid="final-coach-correction-item" className="space-y-3">
+                      <p className="text-[12px] font-extrabold uppercase tracking-[0.16em] text-primary">
+                        {i + 1} · {correctionCategoryLabel(c.category, showEs)}
+                      </p>
+                      <Quote label={showEs ? "DIJISTE" : "YOU SAID"} text={c.said} tone="muted" />
+                      <Quote label={showEs ? "MEJOR" : "BETTER"} text={c.betterVersion} tone="primary" />
+                      <div>
+                        <SubLabel>{showEs ? "¿POR QUÉ?" : "WHY?"}</SubLabel>
+                        <p className="mt-1 text-[15px] font-semibold leading-snug">{showEs ? c.whyEs : c.whyEn}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </Section>
+              {state.feedback.practicePhrase ? (
+                <>
+                  <Divider />
+                  {/* ONE practice phrase only (primary / highest-value correction), never one per correction. */}
+                  <Section label={`🔁 ${showEs ? "PRACTICA" : "PRACTICE"}`}>
+                    <p className="text-[17px] font-extrabold leading-snug text-primary">“{state.feedback.practicePhrase}”</p>
+                  </Section>
+                </>
+              ) : null}
+            </>
+          ) : null}
+        </>
+      ) : s.correction ? (
         <>
           <Divider />
           <Section label={`🎯 ${showEs ? "CORRIGE ESTO" : "FIX THIS"}`} testId="final-coach-correction">
@@ -186,6 +233,59 @@ export function FinalCoachReview({ state, showEs, result, onContinue }: Props) {
 
       <ContinueButton showEs={showEs} onClick={onContinue} />
     </Shell>
+  );
+}
+
+/** Local label map — the LLM never translates categories. */
+export function correctionCategoryLabel(category: CoachCorrectionCategory, showEs: boolean): string {
+  const es: Record<CoachCorrectionCategory, string> = {
+    verb_tense: "PASADO",
+    grammar: "GRAMÁTICA",
+    word_choice: "VOCABULARIO",
+    naturalness: "MÁS NATURAL",
+    connector: "CONEXIÓN",
+    development: "DESARROLLO",
+  };
+  const en: Record<CoachCorrectionCategory, string> = {
+    verb_tense: "PAST TENSE",
+    grammar: "GRAMMAR",
+    word_choice: "WORD CHOICE",
+    naturalness: "NATURAL ENGLISH",
+    connector: "CONNECTION",
+    development: "DEVELOPMENT",
+  };
+  return (showEs ? es : en)[category];
+}
+
+/** Collapsed by default; opening it is a local toggle (0 AI calls). Plain readable text, nothing struck through. */
+function TranscriptBlock({ transcript, showEs }: { transcript: string; showEs: boolean }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Section label={`🎙️ ${showEs ? "TODO LO QUE DIJISTE" : "EVERYTHING YOU SAID"}`} testId="final-coach-transcript">
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+        className="flex min-h-[44px] w-full items-center justify-between rounded-2xl bg-muted px-4 text-left text-[12px] font-extrabold uppercase tracking-[0.14em] text-foreground"
+      >
+        <span>
+          {open
+            ? showEs ? "OCULTAR" : "HIDE"
+            : showEs ? "VER TODO LO QUE DIJISTE" : "SHOW EVERYTHING YOU SAID"}
+        </span>
+        <ChevronDown className={`size-5 transition-transform ${open ? "rotate-180" : ""}`} aria-hidden />
+      </button>
+      {open ? (
+        <div className="mt-2 space-y-2">
+          <p data-testid="final-coach-transcript-text" className="whitespace-pre-wrap text-[15px] font-medium leading-relaxed text-foreground">
+            {transcript}
+          </p>
+          <p className="text-[12px] font-semibold text-muted-foreground">
+            {showEs ? "Transcripción automática de tu audio." : "Automatic transcript of your audio."}
+          </p>
+        </div>
+      ) : null}
+    </Section>
   );
 }
 

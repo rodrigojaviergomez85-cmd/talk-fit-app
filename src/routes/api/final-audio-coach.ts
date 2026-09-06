@@ -90,7 +90,7 @@ export const Route = createFileRoute("/api/final-audio-coach")({
             findExisting: async (key) => {
               const { data } = await supabaseAdmin
                 .from("final_audio_coach_feedback")
-                .select("id, status, updated_at, task_completed, target_language, organization, strength_en, strength_es, next_step_en, next_step_es, correction_needed, said, better_version, why_en, why_es, practice_phrase, transcript_word_count, estimated_idea_count")
+                .select("id, status, updated_at, task_completed, target_language, organization, strength_en, strength_es, next_step_en, next_step_es, correction_needed, said, better_version, why_en, why_es, practice_phrase, transcript_word_count, estimated_idea_count, corrections")
                 .eq("user_id", key.userId)
                 .eq("audio_sha256", key.audioSha256)
                 .eq("rubric_sha256", key.rubricSha256)
@@ -119,7 +119,7 @@ export const Route = createFileRoute("/api/final-audio-coach")({
               // Optimistic lock: only the request that saw this exact updated_at wins.
               const { data, error } = await supabaseAdmin
                 .from("final_audio_coach_feedback")
-                .update({ status: "pending", task_completed: null, target_language: null, organization: null, strength_en: null, strength_es: null, next_step_en: null, next_step_es: null, correction_needed: null, said: null, better_version: null, why_en: null, why_es: null, practice_phrase: null })
+                .update({ status: "pending", task_completed: null, target_language: null, organization: null, strength_en: null, strength_es: null, next_step_en: null, next_step_es: null, correction_needed: null, said: null, better_version: null, why_en: null, why_es: null, practice_phrase: null, corrections: null })
                 .eq("id", id)
                 .eq("updated_at", seenUpdatedAt)
                 .select("id");
@@ -144,6 +144,8 @@ export const Route = createFileRoute("/api/final-audio-coach")({
                   why_en: patch.feedback?.whyEn ?? null,
                   why_es: patch.feedback?.whyEs ?? null,
                   practice_phrase: patch.feedback?.practicePhrase ?? null,
+                  // Pilot only: compact validated array. Never the transcript. v2 days store null.
+                  corrections: patch.feedback?.corrections?.length ? (patch.feedback.corrections as never) : null,
                 })
                 .eq("id", id);
               if (error) console.error("[final-audio-coach] finalize failed", error.message);
@@ -230,14 +232,15 @@ async function evaluate(rubric: CoachRubric, transcript: string, ideas: number |
     console.error("[final-audio-coach] LOVABLE_API_KEY missing");
     return null;
   }
-  const { buildCoachMessages, COACH_JSON_SCHEMA } = await import("@/lib/final-audio-coach.server");
+  const { buildCoachMessages, coachJsonSchemaFor } = await import("@/lib/final-audio-coach.server");
   const res = await fetch(GATEWAY_CHAT, {
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({
       model: TEXT_MODEL,
       messages: buildCoachMessages(rubric, transcript, ideas),
-      response_format: { type: "json_schema", json_schema: COACH_JSON_SCHEMA },
+      // Same single call; pilot days (multi-correction) just get the wider schema.
+      response_format: { type: "json_schema", json_schema: coachJsonSchemaFor(rubric) },
     }),
   });
   if (!res.ok) {
