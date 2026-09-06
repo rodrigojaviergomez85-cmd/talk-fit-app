@@ -110,10 +110,12 @@ export function FinalCoachReview({ state, showEs, result, onContinue }: Props) {
     );
   }
 
+  // The objective result is LOCAL data (ideas + seconds): it must survive an AI failure.
   if (state.status === "unclear") {
     return (
       <Shell testId="final-coach-unclear">
         <Title>{showEs ? "COACH DE IA" : "AI COACH"}</Title>
+        {result ? <ObjectiveResultBlock input={result} showEs={showEs} /> : null}
         <p className="text-[16px] font-semibold leading-snug text-foreground">
           {showEs
             ? "No pude escuchar con suficiente claridad para darte una corrección útil hoy."
@@ -131,6 +133,7 @@ export function FinalCoachReview({ state, showEs, result, onContinue }: Props) {
     return (
       <Shell testId="final-coach-unavailable">
         <Title>{showEs ? "COACH DE IA" : "AI COACH"}</Title>
+        {result ? <ObjectiveResultBlock input={result} showEs={showEs} /> : null}
         <p className="text-[16px] font-semibold leading-snug text-foreground">
           {showEs
             ? "Tu práctica quedó guardada, pero el feedback no está disponible en este momento."
