@@ -64,6 +64,8 @@ export type RetakeDeps = {
     /** INSERT (unique feedback_id) → the id, or null when a retake already exists for that feedback. */
     tryInsertPending: (row: { userId: string; feedbackId: string; moduleId: string; day: number; audioSha256: string }) => Promise<string | null>;
     finalize: (id: string, patch: RetakeFinalizePatch) => Promise<void>;
+    /** Remove a lease that never consumed AI work (e.g. rate-limited) so the learner keeps their ONE retake. */
+    discard?: ((id: string) => Promise<void>) | undefined;
   };
   consumeQuota: (userId: string) => Promise<boolean>;
   stt: (audio: Uint8Array, mime: string | null) => Promise<SttResult>;
@@ -272,7 +274,8 @@ export async function runFinalCoachRetake(input: RetakeInput, deps: RetakeDeps):
 
   // 4) Quota shared with the main coach (new analyses only).
   if (!(await deps.consumeQuota(deps.userId))) {
-    await deps.store.finalize(leaseId, { status: "error" });
+    // No AI work happened — release the lease so the learner keeps their one retake.
+    await deps.store.discard?.(leaseId);
     return finish({ http: 429, body: { status: "rate_limited" } });
   }
 
