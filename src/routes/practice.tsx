@@ -1085,7 +1085,7 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
       <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} audio={false} />
 
       <SceneImage day={day} />
-      <PastVerbCards day={day} />
+      <PastVerbCards day={day} collapsed={heard} />
       <StoryStrip day={day} showCaptions={false} />
 
       <AudioPlayer
