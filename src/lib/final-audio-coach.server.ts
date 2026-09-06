@@ -142,6 +142,12 @@ export type FeedbackRow = {
   strength_es: string | null;
   next_step_en: string | null;
   next_step_es: string | null;
+  correction_needed: boolean | null;
+  said: string | null;
+  better_version: string | null;
+  why_en: string | null;
+  why_es: string | null;
+  practice_phrase: string | null;
   transcript_word_count: number | null;
   estimated_idea_count: number | null;
 };
@@ -331,8 +337,38 @@ function rating(value: unknown): Rating | null {
   return value === "good" || value === "developing" ? value : null;
 }
 
-/** Strict validation + safe truncation of the model output. Null = unusable. */
-export function normalizeFeedback(raw: unknown): CoachFeedback | null {
+/** Lowercase, punctuation stripped, whitespace collapsed — used ONLY to ground `said` in the transcript. */
+export function normalizeForMatch(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[’‘`´]/g, "'")
+    .replace(/[^\p{L}\p{N}' ]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** True when the short `said` quote actually occurs (word-bounded) in the transcript. */
+export function saidOccursInTranscript(said: string, transcript: string): boolean {
+  const s = normalizeForMatch(said);
+  const t = normalizeForMatch(transcript);
+  if (!s || !t) return false;
+  if (countWords(s) > MAX_SAID_WORDS) return false;
+  return ` ${t} `.includes(` ${s} `);
+}
+
+const NO_CORRECTION = { correctionNeeded: false as const, said: null, betterVersion: null, whyEn: null, whyEs: null, practicePhrase: null };
+
+/**
+ * Strict validation + safe truncation of the model output. Null = unusable.
+ *
+ * `transcript` (fresh model output, still in memory) grounds the correction:
+ * if `correctionNeeded` is true but `said` is not a real fragment of the
+ * transcript — or any correction field is missing — the correction is
+ * SUPPRESSED (never fabricated) and the general next step stands. No second
+ * AI call. When `transcript` is omitted (cache replay) the stored correction
+ * was already grounded at generation time and is kept as-is.
+ */
+export function normalizeFeedback(raw: unknown, transcript?: string): CoachFeedback | null {
   if (!raw || typeof raw !== "object") return null;
   const r = raw as Record<string, unknown>;
   const targetLanguage = rating(r["targetLanguage"]);
@@ -347,7 +383,20 @@ export function normalizeFeedback(raw: unknown): CoachFeedback | null {
   const nextStepEn = text("nextStepEn");
   const nextStepEs = text("nextStepEs");
   if (!strengthEn || !strengthEs || !nextStepEn || !nextStepEs) return null;
-  return { taskCompleted: r["taskCompleted"], targetLanguage, organization, strengthEn, strengthEs, nextStepEn, nextStepEs };
+  const base = { taskCompleted: r["taskCompleted"], targetLanguage, organization, strengthEn, strengthEs, nextStepEn, nextStepEs };
+
+  if (r["correctionNeeded"] !== true) return { ...base, ...NO_CORRECTION };
+  const saidRaw = typeof r["said"] === "string" ? r["said"].replace(/\s+/g, " ").trim() : "";
+  const betterVersion = text("betterVersion");
+  const whyEn = text("whyEn");
+  const whyEs = text("whyEs");
+  const practicePhrase = text("practicePhrase");
+  if (!saidRaw || !betterVersion || !whyEn || !whyEs || !practicePhrase) return { ...base, ...NO_CORRECTION };
+  if (saidRaw.length > LIMITS.said || countWords(saidRaw) > MAX_SAID_WORDS) return { ...base, ...NO_CORRECTION };
+  if (transcript !== undefined && !saidOccursInTranscript(saidRaw, transcript)) return { ...base, ...NO_CORRECTION };
+  // A "correction" identical to what was said is not a correction.
+  if (normalizeForMatch(saidRaw) === normalizeForMatch(betterVersion)) return { ...base, ...NO_CORRECTION };
+  return { ...base, correctionNeeded: true, said: saidRaw, betterVersion, whyEn, whyEs, practicePhrase };
 }
 
 export function feedbackFromRow(row: FeedbackRow): CoachFeedback | null {
@@ -359,6 +408,12 @@ export function feedbackFromRow(row: FeedbackRow): CoachFeedback | null {
     strengthEs: row.strength_es,
     nextStepEn: row.next_step_en,
     nextStepEs: row.next_step_es,
+    correctionNeeded: row.correction_needed === true,
+    said: row.said,
+    betterVersion: row.better_version,
+    whyEn: row.why_en,
+    whyEs: row.why_es,
+    practicePhrase: row.practice_phrase,
   });
 }
 
