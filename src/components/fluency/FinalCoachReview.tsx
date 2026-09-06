@@ -1,9 +1,16 @@
 import { Check, Loader2 } from "lucide-react";
 import type { FinalAudioCoachFeedback, FinalCoachState } from "@/lib/final-audio-coach";
+import { objectiveResult, objectiveResultText, type ObjectiveResultInput } from "@/lib/final-coach-result";
 
 type Props = {
   state: FinalCoachState;
   showEs: boolean;
+  /**
+   * Objective speaking result (NOT AI-generated): computed locally from the
+   * live Final Recording + authored goals. May update when the async idea count
+   * resolves — that is a plain re-render, never another Coach call.
+   */
+  result?: ObjectiveResultInput | null;
   /** Advances the UI only (the day was committed BEFORE this review rendered). */
   onContinue: () => void;
 };
@@ -13,14 +20,15 @@ export type CoachReviewSections = {
   strength: string;
   /** Present only when the backend returned a transcript-grounded correction. */
   correction: { said: string; better: string; why: string; practice: string } | null;
-  /** Shown instead of the correction block when nothing needs fixing. */
-  nextStep: string | null;
+  /** ALWAYS present: the learner gets one development step even when a correction exists. */
+  nextStep: string;
 };
 
 /** Pure mapping feedback → learner-facing sections. Language switch is a local read: 0 AI calls. */
 export function coachReviewSections(feedback: FinalAudioCoachFeedback, showEs: boolean): CoachReviewSections {
   const title = showEs ? "COACH DE IA ✨" : "AI COACH ✨";
   const strength = showEs ? feedback.strengthEs : feedback.strengthEn;
+  const nextStep = showEs ? feedback.nextStepEs : feedback.nextStepEn;
   const hasCorrection =
     feedback.correctionNeeded &&
     Boolean(feedback.said && feedback.betterVersion && feedback.practicePhrase && (showEs ? feedback.whyEs : feedback.whyEn));
@@ -34,10 +42,46 @@ export function coachReviewSections(feedback: FinalAudioCoachFeedback, showEs: b
         why: (showEs ? feedback.whyEs : feedback.whyEn)!,
         practice: feedback.practicePhrase!,
       },
-      nextStep: null,
+      nextStep,
     };
   }
-  return { title, strength, correction: null, nextStep: showEs ? feedback.nextStepEs : feedback.nextStepEn };
+  return { title, strength, correction: null, nextStep };
+}
+
+/** Objective result block: how much the learner produced and whether the authored goal was met. */
+function ObjectiveResultBlock({ input, showEs }: { input: ObjectiveResultInput; showEs: boolean }) {
+  const t = objectiveResultText(objectiveResult(input), showEs);
+  const ideas = (
+    <div data-testid="final-coach-result-ideas">
+      <p className="text-[17px] font-extrabold leading-snug">{t.ideasPrimary}</p>
+      {t.ideasSecondary ? <p className="mt-0.5 text-[13px] font-bold text-muted-foreground">{t.ideasSecondary}</p> : null}
+    </div>
+  );
+  const time = (
+    <div data-testid="final-coach-result-time">
+      <p className="text-[17px] font-extrabold leading-snug">{t.timePrimary}</p>
+      {t.timeGoal || t.timeStatus ? (
+        <p className="mt-0.5 text-[13px] font-bold text-muted-foreground">{[t.timeGoal, t.timeStatus].filter(Boolean).join(" · ")}</p>
+      ) : null}
+    </div>
+  );
+  return (
+    <Section label={t.heading} testId="final-coach-result">
+      <div className="space-y-3 rounded-2xl bg-muted/60 px-4 py-3" aria-live="polite">
+        {t.timeFirst ? (
+          <>
+            {time}
+            {ideas}
+          </>
+        ) : (
+          <>
+            {ideas}
+            {time}
+          </>
+        )}
+      </div>
+    </Section>
+  );
 }
 
 /**
