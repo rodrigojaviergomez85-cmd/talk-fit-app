@@ -28,6 +28,12 @@ export type Rep2MatchResult = {
   correction: string;
   /** Should the learner be offered another recording attempt? */
   retryRecommended: boolean;
+  /**
+   * QA / monitoring only: GOOD granted through the long-sentence tolerance
+   * (1–2 harmless differences) rather than an exact match. Never exposed to
+   * the learner and never returned in the public browser response.
+   */
+  nearMatch?: boolean;
 };
 
 export type Rep2Confidence = {
@@ -50,6 +56,38 @@ type DiffOp =
 /** Confidence thresholds (tunable by QA). Below these the ASR is unusable. */
 const AVG_LOGPROB_THRESHOLD = -0.7;
 const NO_SPEECH_THRESHOLD = 0.5;
+
+/** Absolute cap: near-match GOOD never forgives more than this many differences. */
+const NEAR_MATCH_MAX_MISMATCHES = 2;
+
+/**
+ * Safety rule for the near-match tolerance — NOT a grammar engine. Dropping or
+ * replacing one of these target words can reverse meaning or break the
+ * structure ("would not" → "would"), so such attempts stay CORRECT.
+ * Intentionally tiny.
+ */
+const PROTECTED_NEAR_MATCH_WORDS = new Set([
+  "not",
+  "never",
+  "no",
+  "am",
+  "is",
+  "are",
+  "was",
+  "were",
+  "do",
+  "does",
+  "did",
+  "have",
+  "has",
+  "had",
+  "will",
+  "would",
+  "could",
+  "should",
+  "must",
+  "can",
+]);
 
 const NUMBER_WORDS: Record<string, string> = {
   "0": "zero",
@@ -347,6 +385,14 @@ export function compareRep2(
     return { status: "good", correction: target, retryRecommended: false };
   }
 
+  // --- C. Long-sentence tolerance (higher-level profiles only). ---
+  // Forgives at most 1–2 harmless differences on long targets; never a
+  // protected word or a configured focus structure. BASIC profiles leave
+  // `maxWordErrorRateForGood` unset and skip this tier entirely.
+  if (isNearMatchGood(mismatches, targetWords, profile)) {
+    return { status: "good", correction: target, retryRecommended: false, nearMatch: true };
+  }
+
   // Clear but different (slightly or completely): one correction, never a second STT pass.
   return {
     status: "correct",
@@ -354,4 +400,21 @@ export function compareRep2(
     focus: pickFocus(mismatches, targetWords, profile),
     retryRecommended: true,
   };
+}
+
+function isNearMatchGood(mismatches: DiffOp[], targetWords: string[], profile: Rep2CorrectionProfile): boolean {
+  const tolerance = profile.maxWordErrorRateForGood ?? 0;
+  if (tolerance <= 0) return false;
+  const allowed = Math.min(NEAR_MATCH_MAX_MISMATCHES, Math.floor(targetWords.length * tolerance));
+  if (allowed <= 0 || mismatches.length > allowed) return false;
+
+  const missed = new Set(mismatches.map(opTargetWord).filter((w): w is string => Boolean(w)));
+  const missedCriticalRule = profile.focusRules.some((rule) => ruleMatches(rule, missed, targetWords));
+  if (missedCriticalRule) return false;
+
+  const missedProtected = mismatches.some((op) => {
+    const word = opTargetWord(op);
+    return word ? PROTECTED_NEAR_MATCH_WORDS.has(word) : false;
+  });
+  return !missedProtected;
 }

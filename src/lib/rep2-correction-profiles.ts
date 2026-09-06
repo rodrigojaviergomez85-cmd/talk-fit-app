@@ -57,6 +57,16 @@ export type Rep2CorrectionProfile = {
    */
   maxMismatchesForFocus?: number;
   /**
+   * Fraction of target words that may differ while still qualifying as GOOD.
+   * The engine additionally hard-caps this at 2 differences and never forgives
+   * protected words (not / would / was …) or configured focus structures.
+   *
+   * undefined / 0 = exact match only.
+   *
+   * BASIC profiles do not use this and therefore retain current behavior.
+   */
+  maxWordErrorRateForGood?: number;
+  /**
    * When false the engine never names a specific word — it always falls back
    * to showing the whole target. Useful for staged QA of a new module.
    */
@@ -171,6 +181,27 @@ export const MIXED_TENSES_PROFILE: Rep2CorrectionProfile = {
 };
 
 /**
+ * EAGLES / TIGERS / SHARKS / ADVANCED. STEP 2 is still COPY: reproduce a known
+ * model. No grammar pedagogy — only deterministic comparison with a small,
+ * hard-capped tolerance for one or two harmless differences on long chunks.
+ * Protected words (not / would / will …) are never forgiven; see rep2-match.ts.
+ */
+function higherLevelProfile(moduleId: ModuleId): Rep2CorrectionProfile {
+  return {
+    moduleId,
+    allowSpecificFocus: true,
+    focusRules: [],
+    maxMismatchesForFocus: 2,
+    maxWordErrorRateForGood: 0.08,
+  };
+}
+
+export const EAGLES_PROFILE: Rep2CorrectionProfile = higherLevelProfile("eagles-week-1");
+export const TIGERS_PROFILE: Rep2CorrectionProfile = higherLevelProfile("tigers");
+export const SHARKS_PROFILE: Rep2CorrectionProfile = higherLevelProfile("sharks");
+export const ADVANCED_1_PROFILE: Rep2CorrectionProfile = higherLevelProfile("advanced-1");
+
+/**
  * Profiles that exist. Adding an entry here does NOT enable the feature for
  * that module — rollout is decided separately below.
  */
@@ -180,6 +211,10 @@ const PROFILES: Partial<Record<ModuleId, Rep2CorrectionProfile>> = {
   "simple-present": SIMPLE_PRESENT_PROFILE,
   "past-stories": PAST_STORIES_PROFILE,
   "mixed-tenses": MIXED_TENSES_PROFILE,
+  "eagles-week-1": EAGLES_PROFILE,
+  tigers: TIGERS_PROFILE,
+  sharks: SHARKS_PROFILE,
+  "advanced-1": ADVANCED_1_PROFILE,
 };
 
 export function getRep2CorrectionProfile(moduleId: ModuleId | string): Rep2CorrectionProfile {
@@ -189,8 +224,8 @@ export function getRep2CorrectionProfile(moduleId: ModuleId | string): Rep2Corre
 /* ------------------------------ ROLLOUT ---------------------------------- */
 
 /**
- * Modules where Rep 2 spoken correction is rolled out: the five implemented
- * BASIC modules. Eagles / Tigers / Sharks / Advanced are NOT included.
+ * Modules where Rep 2 spoken correction is rolled out: all nine implemented
+ * modules — the five BASIC modules plus Eagles, Tigers, Sharks and Advanced.
  *
  * The complete rule (module + real day + valid Rep 2 chunk) lives in
  * `isRep2CorrectionEnabled` (rep-structure.ts), shared by the Practice screen
@@ -202,6 +237,10 @@ const ROLLOUT_MODULES: ReadonlySet<ModuleId> = new Set<ModuleId>([
   "simple-present",
   "past-stories",
   "mixed-tenses",
+  "eagles-week-1",
+  "tigers",
+  "sharks",
+  "advanced-1",
 ]);
 
 export function hasRep2CorrectionRollout(moduleId: ModuleId | string): boolean {

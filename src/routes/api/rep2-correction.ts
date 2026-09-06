@@ -21,8 +21,8 @@ const RATE_WINDOW_SECONDS = 60 * 60;
 const GROQ_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
 const MODEL_TURBO = "whisper-large-v3-turbo";
 const MODEL_FALLBACK = "whisper-large-v3";
-/** Neutral context only — must never contain the target sentence or the words we detect. */
-const NEUTRAL_PROMPT = "English learner speaking about future plans.";
+/** Neutral context only — must never contain the target sentence, expected words or grammar focus. */
+const NEUTRAL_PROMPT = "English learner speaking in English.";
 
 
 type Metrics = {
@@ -48,9 +48,10 @@ function bump(moduleId: string, day: number, key: keyof ModuleMetrics): ModuleMe
 }
 
 /**
- * Low-cost spoken correction for Rep 2.
- * Scope: the five BASIC modules (see rep2-correction-profiles ROLLOUT), every real
- * day with a valid Rep 2 chunk. Eagles/Tigers/Sharks/Advanced are rejected before STT.
+ * Low-cost spoken correction for Rep 2 (learner-facing "STEP 2 · COPY").
+ * Scope: the nine implemented modules (five BASIC + Eagles, Tigers, Sharks, Advanced —
+ * see rep2-correction-profiles ROLLOUT), every real day with a valid Rep 2 chunk.
+ * Modules outside the rollout are rejected before STT.
  * Flow: auth → scope → upload validation → quota → STT (turbo) → local compare.
  * Optional single fallback to whisper-large-v3 only when the first result is uncertain.
  * No LLM is used for the comparison.
@@ -204,6 +205,8 @@ export const Route = createFileRoute("/api/rep2-correction")({
           model,
           moduleStats,
           transcriptWords: transcript.split(/\s+/).filter(Boolean).length,
+          // QA only: GOOD via long-sentence tolerance vs exact GOOD. Never sent to the browser.
+          nearMatch: result.nearMatch === true,
           duration: Date.now() - startedAt,
         });
 
