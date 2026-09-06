@@ -95,7 +95,8 @@ export function FinalCoachReview({ state, showEs, result, onContinue }: Props) {
   if (state.status === "idle" || state.status === "preparing" || state.status === "analyzing") {
     return (
       <Shell testId="final-coach-loading">
-        <div className="flex min-h-[260px] flex-col items-center justify-center gap-4 text-center" aria-live="polite" aria-busy="true">
+        {result ? <ObjectiveResultBlock input={result} showEs={showEs} /> : null}
+        <div className="flex min-h-[200px] flex-col items-center justify-center gap-4 text-center" aria-live="polite" aria-busy="true">
           <Loader2 className="size-9 animate-spin text-primary" aria-hidden />
           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{title}</p>
           <p className="text-[17px] font-extrabold leading-snug">
