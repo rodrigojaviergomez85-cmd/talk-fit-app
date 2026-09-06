@@ -166,7 +166,7 @@ function WeekGroup({
             {weekInfo ? ` · ${es ? weekInfo.subtitleEs : weekInfo.subtitle}` : ""}
           </span>
           <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-            {records.length} {es ? "final reps" : "final reps"}
+            {records.length} {es ? "pasos finales guardados" : "final steps saved"}
           </span>
         </span>
         <ChevronDown

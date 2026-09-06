@@ -29,7 +29,7 @@ export function JourneyMoment({ state }: { state: JourneyState }) {
 
       <div className="grid grid-cols-2 gap-2 text-center">
         <Metric value={`${metrics.days}`} label={t("journey.days")} />
-        {metrics.reps ? <Metric value={`${metrics.reps}`} label="FLUENCY REPS" /> : null}
+        {metrics.reps ? <Metric value={`${metrics.reps}`} label={es ? "PASOS DE FLUIDEZ" : "FLUENCY STEPS"} /> : null}
         {metrics.minutes > 0 ? <Metric value={`${metrics.minutes}`} label={t("journey.minutes")} /> : null}
         {metrics.finalReps > 0 ? <Metric value={`${metrics.finalReps}`} label={t("journey.finals")} /> : null}
         {sprints > 0 ? <Metric value={`${sprints}`} label={t("journey.sprints")} /> : null}

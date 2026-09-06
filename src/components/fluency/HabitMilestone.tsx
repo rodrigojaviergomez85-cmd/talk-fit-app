@@ -66,12 +66,12 @@ export function HabitMilestone({ milestone, state, compact = false }: Props) {
       {metrics ? (
         <div className="grid grid-cols-2 gap-2 text-center">
           <Metric value={`${metrics.days}`} label={es ? "DÍAS DE PRÁCTICA" : "PRACTICE DAYS"} />
-          <Metric value={`${metrics.reps}`} label="FLUENCY REPS" />
+          <Metric value={`${metrics.reps}`} label={es ? "PASOS DE FLUIDEZ" : "FLUENCY STEPS"} />
           {metrics.minutes > 0 ? (
             <Metric value={`${metrics.minutes}`} label={es ? "MINUTOS HABLANDO" : "MINUTES SPEAKING"} />
           ) : null}
           {metrics.finalReps > 0 ? (
-            <Metric value={`${metrics.finalReps}`} label="FINAL REPS" />
+            <Metric value={`${metrics.finalReps}`} label={es ? "PASOS FINALES" : "FINAL STEPS"} />
           ) : null}
           {metrics.modules > 0 ? (
             <Metric value={`${metrics.modules}`} label={es ? "MÓDULOS COMPLETADOS" : "MODULES COMPLETED"} />
