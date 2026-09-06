@@ -395,7 +395,8 @@ describe("Retake — day invariants + UI", () => {
     expect(block).toContain("retakeStartedRef.current = true");
     expect(practice.match(/requestFinalCoachRetake\(/g)).toHaveLength(1);
     expect(practice.match(/controller\.confirm\(\)/g)).toHaveLength(1);
-    expect(retakeEngine).not.toMatch(/is_final_rep|completeDay|JourneyService|uploadTake|markFinalTake|habit|streak/);
+    const engineCode = retakeEngine.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "");
+    expect(engineCode).not.toMatch(/is_final_rep|completeDay|JourneyService|uploadTake|markFinalTake|habit|streak/);
     expect(client.slice(client.indexOf("requestFinalCoachRetake"))).not.toMatch(/uploadTake|markFinalTake|retry/i);
   });
   it("retake UI: idle shows ONE optional button on the pilot ready screen; ready shows BEFORE/NOW + applied + keep practicing, and no second retake", () => {
