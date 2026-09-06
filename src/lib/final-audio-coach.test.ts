@@ -310,7 +310,9 @@ describe("Final Audio Coach — concurrency & leases", () => {
   });
 
   it("CASE 7: a stale pending row (> 2 min) can be reclaimed by exactly one request", async () => {
-    const h = harness();
+    let release!: () => void;
+    const gate = new Promise<void>((r) => (release = r));
+    const h = harness({ delayStt: () => gate });
     const audioHash = await sha256Hex(audioOf("take-2-v1"));
     const day = (await CourseService.loadModule("simple-present")).days[0]!;
     const rubric = buildRubric(day, "simple-present", CourseService.getModule("simple-present").title, null)!;
@@ -326,7 +328,11 @@ describe("Final Audio Coach — concurrency & leases", () => {
       estimatedIdeaCount: null,
     });
     h.clock.t += PENDING_STALE_MS + 1000;
-    const [ra, rb] = await Promise.all([runFinalAudioCoach(INPUT, h.deps), runFinalAudioCoach(INPUT, h.deps)]);
+    const pa = runFinalAudioCoach(INPUT, h.deps);
+    const pb = runFinalAudioCoach(INPUT, h.deps);
+    await new Promise((r) => setTimeout(r, 10));
+    release();
+    const [ra, rb] = await Promise.all([pa, pb]);
     expect([ra.body.status, rb.body.status].sort()).toEqual(["pending", "ready"]);
     expect(h.counters.stt).toBe(1);
     expect(h.counters.llm).toBe(1);
