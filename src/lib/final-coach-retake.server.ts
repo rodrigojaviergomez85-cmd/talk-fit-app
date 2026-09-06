@@ -19,9 +19,6 @@ import {
   type RetakeSkill,
 } from "./final-audio-coach";
 import {
-  COACH_QUOTA_ENDPOINT,
-  COACH_QUOTA_LIMIT,
-  COACH_QUOTA_WINDOW_SECONDS,
   MAX_FINAL_AUDIO_BYTES,
   MIN_FINAL_AUDIO_BYTES,
   MIN_TRANSCRIPT_WORDS,
@@ -35,7 +32,12 @@ import {
   type SttResult,
 } from "./final-audio-coach.server";
 
-export { COACH_QUOTA_ENDPOINT, COACH_QUOTA_LIMIT, COACH_QUOTA_WINDOW_SECONDS, MAX_FINAL_AUDIO_BYTES, MIN_FINAL_AUDIO_BYTES, isRetakePilot };
+export { MAX_FINAL_AUDIO_BYTES, MIN_FINAL_AUDIO_BYTES, isRetakePilot };
+
+/** Dedicated durable quota: normal Final Coach usage never blocks the optional retake (and vice versa). */
+export const RETAKE_QUOTA_ENDPOINT = "final-audio-coach-retake";
+export const RETAKE_QUOTA_LIMIT = 5;
+export const RETAKE_QUOTA_WINDOW_SECONDS = 24 * 60 * 60;
 
 export const RETAKE_LIMITS = { message: 160, improvement: 180, next: 180 } as const;
 export const MAX_RETAKE_EVIDENCE_WORDS = 15;
@@ -54,6 +56,17 @@ export type RetakeInput = { moduleId: string; day: number; audio: Uint8Array; mi
 export type RetakeStatus = "pending" | "ready" | "unclear" | "error";
 export type RetakeFinalizePatch = { status: Exclude<RetakeStatus, "pending">; result?: FinalCoachRetakeResult | undefined; transcriptWordCount?: number | null | undefined };
 
+/** The one durable retake row for a feedback (server-computed audio identity). */
+export type ExistingRetake = {
+  id: string;
+  feedbackId: string;
+  status: RetakeStatus;
+  audioSha256: string;
+  result: FinalCoachRetakeResult | null;
+  /** Opaque optimistic-lock token (updated_at as read). */
+  updatedAt: string;
+};
+
 export type RetakeDeps = {
   userId: string;
   now: () => number;
@@ -61,10 +74,17 @@ export type RetakeDeps = {
   /** Latest READY pilot feedback for this learner/module/day (validated corrections). Null = no coach review yet. */
   findPreviousFeedback: (userId: string, moduleId: string, day: number) => Promise<PreviousFeedback | null>;
   store: {
+    /** The existing retake row for this feedback (UNIQUE feedback_id), or null on first retake. */
+    findExisting: (feedbackId: string) => Promise<ExistingRetake | null>;
     /** INSERT (unique feedback_id) → the id, or null when a retake already exists for that feedback. */
     tryInsertPending: (row: { userId: string; feedbackId: string; moduleId: string; day: number; audioSha256: string }) => Promise<string | null>;
+    /**
+     * Atomic technical reclaim of an ERROR row for the SAME audio:
+     * UPDATE … SET status='pending' WHERE id=? AND status='error' AND updated_at=? → true when this caller won.
+     */
+    tryReclaimError: (id: string, updatedAt: string) => Promise<boolean>;
     finalize: (id: string, patch: RetakeFinalizePatch) => Promise<void>;
-    /** Remove a lease that never consumed AI work (e.g. rate-limited) so the learner keeps their ONE retake. */
+    /** Remove a brand-new lease that never consumed AI work (e.g. rate-limited) so the learner keeps their ONE retake. */
     discard?: ((id: string) => Promise<void>) | undefined;
   };
   consumeQuota: (userId: string) => Promise<boolean>;
@@ -77,6 +97,7 @@ export type RetakeResponse =
   | { http: 200; body: { status: "ready"; result: FinalCoachRetakeResult } }
   | { http: 200; body: { status: "unclear" } }
   | { http: 200; body: { status: "error"; code: string } }
+  | { http: 202; body: { status: "pending" } }
   | { http: 403; body: { status: "not_available" } }
   | { http: 404; body: { status: "no_feedback" } }
   | { http: 409; body: { status: "already_used" } }
@@ -267,15 +288,35 @@ export async function runFinalCoachRetake(input: RetakeInput, deps: RetakeDeps):
   const previous = await deps.findPreviousFeedback(deps.userId, input.moduleId, input.day);
   if (!previous) return finish({ http: 404, body: { status: "no_feedback" } });
 
-  // 3) ONE retake per feedback — the unique constraint is the durable lease.
+  // 3) ONE pedagogical retake per feedback (UNIQUE feedback_id). The server-computed
+  //    audio hash decides between "same recording" (cache / technical retry) and
+  //    "another recording" (forbidden).
   const audioSha256 = await sha256Hex(input.audio);
-  const leaseId = await deps.store.tryInsertPending({ userId: deps.userId, feedbackId: previous.id, moduleId: input.moduleId, day: input.day, audioSha256 });
-  if (!leaseId) return finish({ http: 409, body: { status: "already_used" } });
+  const existing = await deps.store.findExisting(previous.id);
+  let leaseId: string | null = null;
+  let reclaimed = false;
+  if (existing) {
+    if (existing.audioSha256 !== audioSha256) return finish({ http: 409, body: { status: "already_used" } }, { cache: "different_audio" });
+    // Same audio: replay whatever already happened — 0 STT, 0 LLM, 0 quota.
+    if (existing.status === "ready" && existing.result) return finish({ http: 200, body: { status: "ready", result: existing.result } }, { cache: "hit" });
+    if (existing.status === "ready") return finish({ http: 200, body: { status: "error", code: "cache_invalid" } }, { cache: "invalid" });
+    if (existing.status === "pending") return finish({ http: 202, body: { status: "pending" } }, { cache: "pending" });
+    if (existing.status === "unclear") return finish({ http: 200, body: { status: "unclear" } }, { cache: "unclear" });
+    // ERROR + same audio → technical reprocessing of that exact recording; only one caller wins.
+    if (!(await deps.store.tryReclaimError(existing.id, existing.updatedAt))) return finish({ http: 202, body: { status: "pending" } }, { cache: "reclaim_lost" });
+    leaseId = existing.id;
+    reclaimed = true;
+  } else {
+    leaseId = await deps.store.tryInsertPending({ userId: deps.userId, feedbackId: previous.id, moduleId: input.moduleId, day: input.day, audioSha256 });
+    // Lost an insert race: the other request owns the same feedback → treat as pending (no AI here).
+    if (!leaseId) return finish({ http: 202, body: { status: "pending" } }, { cache: "insert_race" });
+  }
 
-  // 4) Quota shared with the main coach (new analyses only).
+  // 4) DEDICATED retake quota (new analyses only; never the main Final Coach quota).
   if (!(await deps.consumeQuota(deps.userId))) {
-    // No AI work happened — release the lease so the learner keeps their one retake.
-    await deps.store.discard?.(leaseId);
+    // No AI work happened — the learner keeps their one retake.
+    if (reclaimed) await deps.store.finalize(leaseId, { status: "error" });
+    else await deps.store.discard?.(leaseId);
     return finish({ http: 429, body: { status: "rate_limited" } });
   }
 

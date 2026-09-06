@@ -473,8 +473,19 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
       setRetakeState({ status: "unavailable" });
       return;
     }
-    // Exactly one request: the server enforces the single retake and its 1 STT + 1 LLM.
+    // One recording: the server keys on the audio hash, so re-sending this blob can never be a second retake.
     void requestFinalCoachRetake({ moduleId, day: day.day, blob: rec.blob }).then(setRetakeState);
+  };
+  /**
+   * RETRY COMPARISON after a TECHNICAL failure: re-sends the exact same
+   * `retakeRecording.blob`. No VoiceRecorder, no new Recording, no day-level
+   * side effects of any kind (the day was committed long before this point).
+   */
+  const retryRetakeComparison = () => {
+    const blob = retakeRecording?.blob;
+    if (retakeState.status !== "retryable" || !blob) return;
+    setRetakeState({ status: "analyzing" });
+    void requestFinalCoachRetake({ moduleId, day: day.day, blob }).then(setRetakeState);
   };
 
   /**
@@ -689,6 +700,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
                         targetSeconds: day.goalSeconds,
                         onStart: startRetake,
                         onRecorded: onRetakeRecorded,
+                        onRetry: retryRetakeComparison,
                       }
                     : null
                 }
