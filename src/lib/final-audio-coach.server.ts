@@ -543,7 +543,8 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
     return finish({ http: 429, body: { status: "rate_limited" } });
   }
 
-  // 7) One STT call.
+  // 7) One STT call (Turbo only — no large-v3 fallback). Provider failure → error;
+  //    successful STT with too few words or unreliable confidence → unclear.
   sttCalled = true;
   const stt = await deps.stt(audio, rec.mime_type);
   if (!stt.ok) {
@@ -552,9 +553,13 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
   }
   const transcript = stt.text.trim();
   transcriptWordCount = countWords(transcript);
-  if (transcriptWordCount < MIN_TRANSCRIPT_WORDS) {
+  const lowConfidence = isLowConfidence(stt.confidence);
+  if (transcriptWordCount < MIN_TRANSCRIPT_WORDS || lowConfidence) {
     await deps.store.finalize(leaseId, { status: "unclear", transcriptWordCount });
-    return finish({ http: 200, body: { status: "unclear" } });
+    return finish(
+      { http: 200, body: { status: "unclear" } },
+      { unclearReason: lowConfidence ? "low_confidence" : "too_few_words" },
+    );
   }
 
   // 8) One small text-model call, both languages at once.
