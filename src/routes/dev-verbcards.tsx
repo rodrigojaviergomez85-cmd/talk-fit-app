@@ -11,7 +11,6 @@ export const Route = createFileRoute("/dev-verbcards")({
 
 function DevVerbCards() {
   const [day, setDay] = useState<CourseDay | null>(null);
-  const [esOn, setEsOn] = useState(false);
 
   useEffect(() => {
     // Force Spanish support on for the second section, off for the first.
