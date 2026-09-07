@@ -229,6 +229,10 @@ export const TRANSFORMATION: Record<ModuleId, { es: string; en: string }> = {
     es: "Ahora puedes contar tu historia, probar lo que dices y responder preguntas inesperadas de un reclutador.",
     en: "You can now tell your story, prove what you say and answer a recruiter's unexpected questions.",
   },
+  "advanced-2": {
+    es: "Ahora puedes atender clientes, resolver problemas y comunicarte profesionalmente en el trabajo.",
+    en: "You can now handle customers, solve problems and communicate professionally at work.",
+  },
 };
 
 export const MODULE_EMOJI: Record<ModuleId, string> = {
