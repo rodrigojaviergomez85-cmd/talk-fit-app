@@ -77,6 +77,10 @@ const DICT = {
   "rep2.checking": ["Verificando…", "Checking…"],
   "rep2.listenAgain": ["ESCUCHAR OTRA VEZ", "LISTEN AGAIN"],
   "rep2.tryAgain": ["INTENTAR OTRA VEZ", "TRY AGAIN"],
+  "rep2.aiDisclaimer": [
+    "La IA comparará tu respuesta y puede cometer errores. Úsala como guía para mejorar.",
+    "AI will compare your response and may make mistakes. Use the feedback as a guide to improve.",
+  ],
   "rep3.title": ["SHADOWING 🎧", "SHADOWING 🎧"],
   "rep3.instr": [
     "Hablá al mismo tiempo que el audio. Dale PLAY, seguí el texto y tratá de copiar el ritmo, la pronunciación y la entonación.",
