@@ -63,7 +63,12 @@ function write(state: JourneyState) {
     // Object URLs are session-scoped: never persist them.
     const days: Record<string, DayRecord> = {};
     for (const [key, record] of Object.entries(state.days)) {
-      days[key] = { ...record, finalUrl: null, firstUrl: null };
+      days[key] = {
+        ...record,
+        finalUrl: null,
+        firstUrl: null,
+        ...(record.latestPractice ? { latestPractice: { ...record.latestPractice, finalUrl: null } } : {}),
+      };
     }
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...state, days }));
   } catch {
@@ -341,8 +346,15 @@ export const JourneyService = {
 
 
   /**
-   * Saves a finished day. Idempotent per module day: re-completing the same day
-   * updates its recording without inflating the streak or the totals.
+   * Saves a finished practice session.
+   *
+   * COURSE PROGRESS and PRACTICE ACTIVITY are different things:
+   * - FIRST COMPLETION of a day writes the DayRecord and advances Day X / 20,
+   *   module completion and the first-completion history.
+   * - A REPEAT of an already completed day never overwrites that record. It is
+   *   stored beside it as `latestPractice` (first + latest recording are both
+   *   kept), bumps `practiceCount`, and still counts real speaking time and
+   *   today's habit date — but never another curriculum day.
    */
   completeDay(input: {
     moduleId: ModuleId;
@@ -360,6 +372,7 @@ export const JourneyService = {
     const today = dayKey();
     const key = recordKey(input.moduleId, input.day);
     const existing = state.days[key];
+    const isRepeat = Boolean(existing);
 
     // Habit: today's local date counts once, even when this curriculum day was
     // completed before (a genuine repeat on a new date is still practice).
@@ -369,27 +382,45 @@ export const JourneyService = {
     const pendingHabitDates = [...new Set([...(state.pendingHabitDates ?? []), today])];
     const streakDays = streakFrom(habitDates);
 
-    const record: DayRecord = {
-      day: input.day,
-      moduleId: input.moduleId,
-      dayKey: existing?.dayKey ?? today,
-      completedAt: new Date().toISOString(),
-      finalSeconds: input.finalSeconds,
-      firstSeconds: input.firstSeconds,
-      practiceSeconds: input.practiceSeconds,
-      recordingsCount: input.recordingsCount,
-      sentenceCount: input.sentenceCount ?? null,
-      finalUrl: input.finalUrl ?? null,
-      firstUrl: input.firstUrl ?? null,
-      repDurations: input.repDurations ?? existing?.repDurations ?? null,
-      ...(existing?.recordingPath ? { recordingPath: existing.recordingPath } : {}),
-      ...(existing?.selfAssessment ? { selfAssessment: existing.selfAssessment } : {}),
-    };
+    const record: DayRecord = existing
+      ? {
+          // First completion preserved exactly as it was.
+          ...existing,
+          practiceCount: (existing.practiceCount ?? 1) + 1,
+          latestPractice: {
+            practicedAt: new Date().toISOString(),
+            dayKey: today,
+            finalSeconds: input.finalSeconds,
+            practiceSeconds: input.practiceSeconds,
+            sentenceCount: input.sentenceCount ?? null,
+            recordingPath: existing.latestPractice?.recordingPath ?? null,
+            finalUrl: input.finalUrl ?? null,
+          },
+        }
+      : {
+          day: input.day,
+          moduleId: input.moduleId,
+          dayKey: today,
+          completedAt: new Date().toISOString(),
+          finalSeconds: input.finalSeconds,
+          firstSeconds: input.firstSeconds,
+          practiceSeconds: input.practiceSeconds,
+          recordingsCount: input.recordingsCount,
+          sentenceCount: input.sentenceCount ?? null,
+          finalUrl: input.finalUrl ?? null,
+          firstUrl: input.firstUrl ?? null,
+          repDurations: input.repDurations ?? null,
+          practiceCount: 1,
+          latestPractice: null,
+        };
 
-    sessionUrls.set(key, { finalUrl: input.finalUrl ?? null, firstUrl: input.firstUrl ?? null });
+    if (!isRepeat) {
+      sessionUrls.set(key, { finalUrl: input.finalUrl ?? null, firstUrl: input.firstUrl ?? null });
+    }
 
+    // Speaking time is PRACTICE ACTIVITY: repeats count here, always.
     const weekSeconds = { ...state.weekSeconds };
-    if (!existing) weekSeconds[today] = (weekSeconds[today] ?? 0) + input.practiceSeconds;
+    weekSeconds[today] = (weekSeconds[today] ?? 0) + input.practiceSeconds;
 
     const next: JourneyState = {
       ...state,
@@ -398,10 +429,9 @@ export const JourneyService = {
       habitDates,
       pendingHabitDates,
       lastCompletedDate: today,
-      totalRepsCompleted: existing ? state.totalRepsCompleted : state.totalRepsCompleted + 5,
-      totalSpeakingSeconds: existing
-        ? state.totalSpeakingSeconds
-        : state.totalSpeakingSeconds + input.practiceSeconds,
+      // Curriculum counters only move on a first completion.
+      totalRepsCompleted: isRepeat ? state.totalRepsCompleted : state.totalRepsCompleted + 5,
+      totalSpeakingSeconds: state.totalSpeakingSeconds + input.practiceSeconds,
       weekSeconds,
     };
     write(next);
@@ -464,10 +494,17 @@ export const JourneyService = {
     const record = state.days[key];
     if (!user || !record) return "skipped";
 
+    // A repeat NEVER overwrites the day's original recording: it goes to its
+    // own "-latest" object, so first-vs-latest stays comparable forever and
+    // only the most recent repeat is kept (older repeats are not stored).
+    const isRepeat = (record.practiceCount ?? 1) > 1;
     let recordingPath = record.recordingPath ?? null;
+    let latestPath = record.latestPractice?.recordingPath ?? null;
     if (blob) {
       const extension = blob.type.includes("mp4") ? "m4a" : blob.type.includes("webm") ? "webm" : "audio";
-      const path = `${user.id}/${moduleId}-day-${day}.${extension}`;
+      const path = isRepeat
+        ? `${user.id}/${moduleId}-day-${day}-latest.${extension}`
+        : `${user.id}/${moduleId}-day-${day}.${extension}`;
       const upload = await supabase.storage
         .from("recordings")
         .upload(path, blob, { upsert: true, contentType: blob.type || "audio/webm" });
@@ -475,7 +512,8 @@ export const JourneyService = {
         console.error("[journey] final rep upload failed", upload.error.message);
         return "failed";
       }
-      recordingPath = path;
+      if (isRepeat) latestPath = path;
+      else recordingPath = path;
     }
 
     const { error } = await supabase.from("day_progress").upsert(
@@ -496,11 +534,19 @@ export const JourneyService = {
       { onConflict: "user_id,module_id,day" },
     );
 
-    if (recordingPath && recordingPath !== record.recordingPath) {
+    if (
+      (recordingPath && recordingPath !== record.recordingPath) ||
+      (latestPath && latestPath !== record.latestPractice?.recordingPath)
+    ) {
       const current = read();
       const stored = current.days[key];
       if (stored) {
-        write({ ...current, days: { ...current.days, [key]: { ...stored, recordingPath } } });
+        const updated: DayRecord = {
+          ...stored,
+          recordingPath,
+          ...(stored.latestPractice ? { latestPractice: { ...stored.latestPractice, recordingPath: latestPath } } : {}),
+        };
+        write({ ...current, days: { ...current.days, [key]: updated } });
       }
     }
 

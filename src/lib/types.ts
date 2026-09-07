@@ -316,6 +316,27 @@ export type DayRecord = {
   selfAssessment?: SelfAssessment | undefined;
   /** Seconds spent per rep (pilot analytics). */
   repDurations?: RepDurations | null | undefined;
+  /**
+   * Latest REPEAT practice of this day. Everything above is the FIRST
+   * COMPLETION and is never overwritten by a repeat, so first-vs-latest can
+   * always be compared and course progress can never move twice.
+   */
+  latestPractice?: RepeatPractice | null | undefined;
+  /** Real practice sessions of this day, first completion included (default 1). */
+  practiceCount?: number | undefined;
+};
+
+/** One repeat practice of an already completed curriculum day. */
+export type RepeatPractice = {
+  practicedAt: string;
+  /** Local YYYY-MM-DD key of the repeat. */
+  dayKey: string;
+  finalSeconds: number;
+  practiceSeconds: number;
+  sentenceCount?: number | null | undefined;
+  recordingPath?: string | null | undefined;
+  /** Session-scoped object URL of the repeat's final recording. */
+  finalUrl?: string | null | undefined;
 };
 
 export type JourneyState = {

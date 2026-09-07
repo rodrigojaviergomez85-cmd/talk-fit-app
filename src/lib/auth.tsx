@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { JourneyService } from "@/services/journey-service";
 import { CloudSync } from "@/services/cloud-sync";
 import { PracticeSessionService, setSessionScope } from "@/services/practice-session";
+import { PracticeAttempts, setPracticeAttemptScope } from "@/services/practice-attempts";
 import { setPreferencesScope } from "@/services/preferences";
 import { setVerbBankScope, VerbBank } from "@/services/verb-bank";
 
@@ -33,6 +34,7 @@ const AuthContext = createContext<AuthValue>({
 
 function scopeTo(userId: string | null) {
   setSessionScope(userId);
+  setPracticeAttemptScope(userId);
   setPreferencesScope(userId);
   setVerbBankScope(userId);
   JourneyService.invalidatePull();
@@ -53,6 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (event === "SIGNED_OUT") {
         JourneyService.clearLocalCache();
         PracticeSessionService.clearAll();
+        PracticeAttempts.clearLocalCache();
         VerbBank.hydrate({});
         setSync("idle");
       }
@@ -96,6 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await supabase.auth.signOut();
         JourneyService.clearLocalCache();
         PracticeSessionService.clearAll();
+        PracticeAttempts.clearLocalCache();
         VerbBank.hydrate({});
         scopeTo(null);
       },

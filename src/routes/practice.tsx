@@ -41,7 +41,7 @@ import {
   migrateLegacyRep2,
   type PracticeSession,
 } from "@/services/practice-session";
-import { canStartNewDay } from "@/lib/daily-completion-cap";
+import { PracticeAttempts } from "@/services/practice-attempts";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthGate } from "@/components/fluency/AuthGate";
@@ -141,14 +141,30 @@ function PracticePage() {
     if (locked) void navigate({ to: "/module/$moduleId", params: { moduleId }, replace: true });
   }, [locked, moduleId, navigate]);
 
-  // Daily pacing cap (UX mirror of the day_progress trigger). Repeats are never capped.
-  const dailyCap = useMemo(
-    () => canStartNewDay(JourneyService.load(), moduleId, dayNumber),
-    [moduleId, dayNumber],
-  );
   const { user } = useAuth();
   // TEST ACCOUNT EXEMPTION — remove this line and its usage to drop the exemption.
   const isUnlimitedTestUser = user?.email?.toLowerCase() === "english4callcenters@gmail.com";
+
+  // DAILY PRACTICE CAP — 5 real speaking sessions per LOCAL calendar day, any
+  // mix of new days and repeats. The session already in progress here has
+  // already paid for its slot, so refresh/resume is never blocked.
+  const attemptId = useMemo(
+    () => (typeof window === "undefined" ? null : PracticeAttempts.ensure(moduleId, dayNumber, user?.id ?? null).id),
+    [moduleId, dayNumber, user?.id],
+  );
+  const [cap, setCap] = useState(() => PracticeAttempts.status(attemptId));
+  useEffect(() => {
+    setCap(PracticeAttempts.status(attemptId));
+    // The account is authoritative: pull so 5 on the phone is not 10 across devices.
+    if (!user) return;
+    let cancelled = false;
+    void PracticeAttempts.pull().then(() => {
+      if (!cancelled) setCap(PracticeAttempts.status(attemptId));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [attemptId, user]);
 
   if (locked || content.status === "loading") {
     return (
@@ -160,12 +176,17 @@ function PracticePage() {
     );
   }
 
-  if (!dailyCap.allowed && !isUnlimitedTestUser) {
+  if (!cap.allowed && !isUnlimitedTestUser) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background px-5 py-10">
         <div className="w-full max-w-sm rounded-3xl border border-border bg-card p-6 text-center shadow-sm">
-          <h1 className="text-lg font-black tracking-tight text-foreground">{t("dailyCap.title")}</h1>
-          <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">{t("dailyCap.body")}</p>
+          <p className="text-[12px] font-black uppercase tracking-[0.16em] text-success">
+            {t("dailyCap.badge").replace("{cap}", String(cap.cap))}
+          </p>
+          <h1 className="mt-3 text-lg font-black tracking-tight text-foreground">{t("dailyCap.title")}</h1>
+          <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">
+            {t("dailyCap.body").replace("{cap}", String(cap.cap))}
+          </p>
           <button
             type="button"
             onClick={() => void navigate({ to: "/", replace: true })}
@@ -177,6 +198,7 @@ function PracticePage() {
       </div>
     );
   }
+
 
 
   if (content.status === "error") {
@@ -347,6 +369,10 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
 
   const trackSeconds = (recording: Recording) => {
     practiceSeconds.current += recording.durationSeconds;
+    // DAILY PRACTICE CAP: the learner's FIRST real recording of this session
+    // spends one of today's 5 slots. Idempotent — later recordings, retakes and
+    // a page refresh all belong to the same session and never spend another.
+    PracticeAttempts.consumeSlot(PracticeAttempts.ensure(moduleId, dayNumber, user?.id ?? null).id);
   };
 
   const recorded = takes.filter((take): take is Recording => Boolean(take));
@@ -413,6 +439,8 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
         d[stage] = (d[stage] ?? 0) + (Date.now() - stageEnteredAt.current) / 1000;
         const r = (i: number) => Math.round(d[i] ?? 0);
         const before = JourneyService.load();
+        // First completion advances the course; a repeat only logs practice.
+        const isFirstCompletion = !before.days[`${moduleId}:${day.day}`];
         const lastDate = lastHabitDate(before);
         setHabitBefore({
           days: habitDays(before),
@@ -439,6 +467,12 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
         });
         setFinalRecording(final);
         setJourneyAfterFinish(next);
+        // Practice activity log (drives the 5-a-day counter, not progress).
+        PracticeAttempts.complete(PracticeAttempts.ensure(moduleId, day.day, user?.id ?? null).id, {
+          isFirstCompletion,
+          speakingSeconds: Math.round(practiceSeconds.current),
+          sentenceCount: final.sentenceCount ?? null,
+        });
         return next;
       },
       clearSession: () => PracticeSessionService.clear(moduleId, day.day),
