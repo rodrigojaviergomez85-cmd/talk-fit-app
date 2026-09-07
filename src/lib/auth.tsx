@@ -55,6 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (event === "SIGNED_OUT") {
         JourneyService.clearLocalCache();
         PracticeSessionService.clearAll();
+        PracticeAttempts.clearLocalCache();
         VerbBank.hydrate({});
         setSync("idle");
       }
@@ -98,6 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await supabase.auth.signOut();
         JourneyService.clearLocalCache();
         PracticeSessionService.clearAll();
+        PracticeAttempts.clearLocalCache();
         VerbBank.hydrate({});
         scopeTo(null);
       },
