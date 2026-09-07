@@ -1398,6 +1398,7 @@ function Rep2Copy({
             }
           }}
         />
+        <Rep2AiDisclaimer />
       </div>
 
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
