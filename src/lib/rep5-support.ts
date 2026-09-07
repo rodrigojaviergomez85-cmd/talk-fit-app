@@ -12,6 +12,7 @@ export function rep5Tier(moduleId: ModuleId): Rep5Tier {
       return "spontaneous";
     case "advanced-1":
     case "advanced-2":
+    case "advanced-3":
       return "advanced";
     default:
       return "basic";
@@ -49,6 +50,7 @@ export function introTier(moduleId: ModuleId): IntroTier {
       return "spontaneous";
     case "advanced-1":
     case "advanced-2":
+    case "advanced-3":
       return "advanced";
   }
 }
