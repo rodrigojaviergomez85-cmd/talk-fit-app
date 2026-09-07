@@ -101,6 +101,19 @@ const d6 = advanced2Day({
   testReady: d6Sprint,
 });
 
+const d7Sprint: TestReadySprint = {
+  type: "listen-respond",
+  title: "LISTEN & RESPOND",
+  titleEs: "ESCUCHA Y RESPONDE",
+  instruction: "Listen to the guest, then answer professionally in one or two sentences.",
+  instructionEs: "Escucha al huésped y responde profesionalmente en una o dos oraciones.",
+  items: [
+    { id: "a2d7-lr1", audio: "That sounds nice, but it's more than I wanted to spend.", maxSeconds: 20 },
+    { id: "a2d7-lr2", audio: "Does the standard room include breakfast?", maxSeconds: 15 },
+    { id: "a2d7-lr3", audio: "Can I decide when I arrive?", maxSeconds: 15 },
+  ],
+};
+
 const d7 = advanced2Day({
   day: 7,
   topic: "Offer the Upgrade",
