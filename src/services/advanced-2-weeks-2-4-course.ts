@@ -1088,7 +1088,6 @@ const d20 = advanced2Day({
     turn("a2d20-turn3", CUSTOMER, "Hi, my internet stopped working this morning.", "Hola, mi internet dejó de funcionar esta mañana.", "female", {
       round: { n: 2, ...SITUATION_ROUND },
       targetSeconds: DEVELOP,
-      cues: ["CHECK", "STEP", "VERIFY", "NEXT"],
     }),
     turn("a2d20-turn4", CUSTOMER, "I already restarted the router. It still doesn't work.", "Ya reinicié el router. Sigue sin funcionar.", "female", { targetSeconds: DEVELOP }),
     /* ROUND 3 — SALES. */
