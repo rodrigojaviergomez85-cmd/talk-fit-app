@@ -553,7 +553,19 @@ export function normalizeCorrections(raw: unknown, max: number, transcript?: str
     const related = normalizeRelatedOccurrences(c["relatedOccurrences"], transcript, said);
     const next: CoachCorrection = { category, said, betterVersion, whyEn, whyEs, ...(related.length ? { relatedOccurrences: related } : {}) };
     if (dupIndex >= 0) {
-      // Never lose the repeated evidence: merge it under the primary correction.
+      const prev = out[dupIndex]!;
+      const prevNorm = normalizeForMatch(prev.said);
+      // The same quote, only more complete → it becomes the primary and the shorter one is dropped.
+      if (` ${saidNorm} `.includes(` ${prevNorm} `) && saidNorm.length > prevNorm.length) {
+        out[dupIndex] = { ...next, ...(prev.relatedOccurrences ? { relatedOccurrences: prev.relatedOccurrences } : {}) };
+        for (const o of related) mergeOccurrence(out[dupIndex]!, o.said, o.betterVersion);
+        continue;
+      }
+      if (` ${prevNorm} `.includes(` ${saidNorm} `)) {
+        for (const o of related) mergeOccurrence(prev, o.said, o.betterVersion);
+        continue;
+      }
+      // A DIFFERENT sentence breaking the same rule: keep it as evidence, not a new slot.
       mergeOccurrence(out[dupIndex]!, said, betterVersion);
       for (const o of related) mergeOccurrence(out[dupIndex]!, o.said, o.betterVersion);
       continue;
