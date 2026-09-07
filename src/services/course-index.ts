@@ -237,6 +237,37 @@ export const MODULE_INDEX: LearningModule[] = [
     family: "advanced",
     builtWeeks: 4,
   },
+  {
+    // Internal id is frozen from day one: progress and recordings are keyed to it.
+    // ADVANCED is CYCLICAL, not a ladder: ADVANCED 2 never requires ADVANCED 1.
+    id: "advanced-2",
+    ...outline("advanced-2"),
+    order: 10,
+    label: "AVANZADO · ADVANCED 2",
+    title: "DO THE JOB",
+    subtitle: "Handle customers. Solve problems. Perform in English.",
+    subtitleEs: "Atiende clientes, resuelve problemas y comunícate profesionalmente en el trabajo.",
+    statusLine: { en: "4 Weeks · 20 Days · 100 Fluency Reps", es: "4 semanas · 20 días · 100 Fluency Reps" },
+    description: "Take the call, recommend and sell, fix the problem and perform on the job — with reusable frameworks instead of memorized scripts.",
+    descriptionEs: "Atiende la llamada, recomienda y vende, resuelve el problema y rinde en el trabajo — con estructuras reutilizables en lugar de guiones memorizados.",
+    meta: ["4 Weeks", "20 Days", "100 Fluency Reps", "Test Ready Sprints"],
+    highlights: [
+      { en: "Understand a customer who doesn't explain well", es: "Entender a un cliente que no explica bien" },
+      { en: "Take reservations, explain bills and transfers", es: "Tomar reservaciones, explicar cobros y transferencias" },
+      { en: "Recommend, upgrade and handle objections", es: "Recomendar, mejorar la venta y manejar objeciones" },
+      { en: "Fix problems and calm upset customers", es: "Resolver problemas y calmar clientes molestos" },
+      { en: "Report incidents and take feedback at work", es: "Reportar incidentes y recibir retroalimentación en el trabajo" },
+      { en: "Final challenge: The Real Shift", es: "Reto final: El turno real" },
+    ],
+    extra: {
+      en: "⚡ TEST READY SPRINTS — optional, never scored.",
+      es: "⚡ TEST READY SPRINTS — opcionales, nunca calificados.",
+    },
+    cta: { en: "START DO THE JOB", es: "EMPEZAR DO THE JOB" },
+    hiddenFromPlacement: true,
+    family: "advanced",
+    builtWeeks: 4,
+  },
 ];
 
 /**
@@ -256,16 +287,6 @@ export type UpcomingLevel = {
 };
 export const UPCOMING_LEVELS: UpcomingLevel[] = [
   {
-    key: "advanced-2",
-    label: "AVANZADO · ADVANCED 2",
-    title: "HANDLE & SELL",
-    subtitle: "Handle difficult customers and close the sale.",
-    subtitleEs: "Maneja clientes difíciles y cierra la venta.",
-    emoji: "🤝",
-    unlockAfter: "advanced-1",
-    note: { en: "Unlocks after completing GET HIRED.", es: "Se desbloquea al completar GET HIRED." },
-  },
-  {
     key: "advanced-3",
     label: "AVANZADO · ADVANCED 3",
     title: "THINK FAST",
@@ -273,7 +294,7 @@ export const UPCOMING_LEVELS: UpcomingLevel[] = [
     subtitleEs: "Responde al instante bajo presión real.",
     emoji: "⚡",
     unlockAfter: "advanced-2",
-    note: { en: "Unlocks after completing HANDLE & SELL.", es: "Se desbloquea al completar HANDLE & SELL." },
+    note: { en: "Unlocks after completing DO THE JOB.", es: "Se desbloquea al completar DO THE JOB." },
   },
 ];
 
@@ -289,6 +310,7 @@ export function isModuleId(value: unknown): value is ModuleId {
     value === "eagles-week-1" ||
     value === "tigers" ||
     value === "sharks" ||
-    value === "advanced-1"
+    value === "advanced-1" ||
+    value === "advanced-2"
   );
 }
