@@ -206,7 +206,7 @@ function harness(opts: {
   return { deps, counters, store, clock, logs };
 }
 
-const INPUT = { moduleId: "simple-present", day: 1, takeNumber: 2 };
+const INPUT = { moduleId: "advanced-1", day: 1, takeNumber: 2 };
 
 describe("Final Audio Coach — ownership & readiness", () => {
   it("CASE 1: User B cannot analyse User A's take — blocked before Storage/AI", async () => {
@@ -326,7 +326,7 @@ describe("Final Audio Coach — concurrency & leases", () => {
       audioSha256: audioHash,
       rubricSha256: await rubricSha256(rubric),
       coachVersion: FINAL_AUDIO_COACH_VERSION,
-      moduleId: "simple-present",
+      moduleId: "advanced-1",
       day: 1,
       takeNumber: 2,
       sourceTurnNumber: null,
@@ -347,7 +347,7 @@ describe("Final Audio Coach — concurrency & leases", () => {
       audioSha256: audioHash,
       rubricSha256: await rubricSha256(rubric),
       coachVersion: FINAL_AUDIO_COACH_VERSION,
-      moduleId: "simple-present",
+      moduleId: "advanced-1",
       day: 1,
       takeNumber: 2,
       sourceTurnNumber: null,
