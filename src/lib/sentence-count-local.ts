@@ -133,6 +133,14 @@ function uncertain(reason: string): LocalIdeaCount {
 /** Normalizes and strips fillers. Returns null-ish signals via counters. */
 function normalize(raw: string) {
   let text = raw.toLowerCase().replace(/[""]/g, '"').replace(/[’]/g, "'");
+  // Expand subject contractions so the subject stays an explicit token.
+  text = text
+    .replace(/\b(i|you|he|she|it|we|they)'m\b/g, "$1 am")
+    .replace(/\b(i|you|he|she|it|we|they)'s\b/g, "$1 is")
+    .replace(/\b(i|you|he|she|it|we|they)'re\b/g, "$1 are")
+    .replace(/\b(i|you|he|she|it|we|they)'ve\b/g, "$1 have")
+    .replace(/\b(i|you|he|she|it|we|they)'ll\b/g, "$1 will")
+    .replace(/\b(i|you|he|she|it|we|they)'d\b/g, "$1 would");
   const ellipses = (text.match(/\.\.\.|…/g) ?? []).length;
   text = text.replace(/\.\.\.|…/g, " ");
   let fillerCount = 0;
@@ -245,7 +253,8 @@ export function countCompleteIdeasLocal(transcript: string): LocalIdeaCount {
   const fillerTokens = allTokens.filter((t) => FILLERS.has(t)).length;
   const fillers = fillerTokens + fillerCount;
   if (ellipses >= 3) return uncertain("false_starts");
-  if (fillers >= 3 || fillers / totalWords > 0.15) return uncertain("many_fillers");
+  if (fillers >= 3) return uncertain("many_fillers");
+  if (totalWords >= 12 && fillers / totalWords > 0.15) return uncertain("many_fillers");
 
   const sentences = text
     .split(/[.!?;]+/)
