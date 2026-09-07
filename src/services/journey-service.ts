@@ -217,14 +217,10 @@ export const JourneyService = {
     const index = modules.findIndex((m) => m.id === moduleId);
     if (index <= 0) return true;
     // ADVANCED is CYCLICAL, not a ladder: ADVANCED 1 / 2 / 3 are parallel entry
-    // points. Once a learner is eligible for the advanced family (the module
-    // right before the FIRST advanced module is complete), every advanced
-    // module opens — ADVANCED 2 never requires ADVANCED 1.
-    if (modules[index]!.family === "advanced") {
-      const firstAdvanced = modules.findIndex((m) => m.family === "advanced");
-      const gate = modules[firstAdvanced - 1];
-      if (gate && JourneyService.moduleComplete(state, gate.id)) return true;
-    }
+    // points and are always open — they never require ADVANCED 1 or any earlier
+    // module to be finished first.
+    if (modules[index]!.family === "advanced") return true;
+
     if (JourneyService.moduleComplete(state, modules[index - 1]!.id)) return true;
     if (JourneyService.completedCount(state, moduleId) > 0) return true;
     const saved = loadPreferences().currentModuleId;
