@@ -131,6 +131,7 @@ async function countSentences(blob: Blob | null): Promise<number | null> {
 function PracticePage() {
   const { module: moduleId, day: dayNumber } = Route.useSearch();
   const { lang } = useAppLang();
+  const t = useT();
   const content = useModuleContent(moduleId);
   const navigate = useNavigate();
   // Ladder guard: a locked module never opens in Practice — send the learner to its locked screen.
@@ -138,6 +139,15 @@ function PracticePage() {
   useEffect(() => {
     if (locked) void navigate({ to: "/module/$moduleId", params: { moduleId }, replace: true });
   }, [locked, moduleId, navigate]);
+
+  // Daily pacing cap (UX mirror of the day_progress trigger). Repeats are never capped.
+  const dailyCap = useMemo(
+    () => canStartNewDay(JourneyService.load(), moduleId, dayNumber),
+    [moduleId, dayNumber],
+  );
+  const { user } = useAuth();
+  // TEST ACCOUNT EXEMPTION — remove this line and its usage to drop the exemption.
+  const isUnlimitedTestUser = user?.email?.toLowerCase() === "english4callcenters@gmail.com";
 
   if (locked || content.status === "loading") {
     return (
@@ -148,6 +158,25 @@ function PracticePage() {
       </div>
     );
   }
+
+  if (!dailyCap.allowed && !isUnlimitedTestUser) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background px-5 py-10">
+        <div className="w-full max-w-sm rounded-3xl border border-border bg-card p-6 text-center shadow-sm">
+          <h1 className="text-lg font-black tracking-tight text-foreground">{t("dailyCap.title")}</h1>
+          <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">{t("dailyCap.body")}</p>
+          <button
+            type="button"
+            onClick={() => void navigate({ to: "/", replace: true })}
+            className="mt-6 min-h-[44px] w-full rounded-2xl bg-primary px-5 text-[13px] font-bold uppercase tracking-[0.14em] text-primary-foreground"
+          >
+            {t("dailyCap.backHome")}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
 
   if (content.status === "error") {
     return (
