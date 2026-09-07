@@ -73,33 +73,46 @@ export type FinalAudioCoachCorrection = {
 export type CoachLevelGroup = "basic" | "intermediate" | "advanced";
 
 /**
- * Future rollout ceilings (NOT enabled yet). Changing the gate below plus the
- * prompt guidance is all a later rollout should need — the data shape is ready.
+ * Rollout ceilings. BASIC is live (all modules, all days); intermediate and
+ * advanced keep the v2 single-correction coach until their own rollout.
  */
 export const MULTI_CORRECTION_MAX: Record<CoachLevelGroup, number> = { basic: 3, intermediate: 5, advanced: 5 };
 
-/** Pilot gate — TRUE only for BASIC 3 · SIMPLE PAST · Day 1. Every other day keeps Final Coach v2. */
-export function isMultiCorrectionPilot(moduleId: string, day: number): boolean {
-  return moduleId === "past-stories" && day === 1;
+/** Canonical BASIC module set for the coach (single source of truth). */
+export const BASIC_MODULE_IDS: ReadonlySet<string> = new Set([
+  "basic-zero",
+  "simple-future",
+  "simple-present",
+  "past-stories",
+  "mixed-tenses",
+]);
+
+export function isBasicCoachModule(moduleId: string): boolean {
+  return BASIC_MODULE_IDS.has(moduleId);
 }
 
-/** Max corrections the coach may return for a day: 3 on the pilot day, 0 (= v2 single correction) elsewhere. */
+/** Multi-correction gate — TRUE for every day of every BASIC module. Intermediate/Advanced keep v2. */
+export function isMultiCorrectionPilot(moduleId: string, day: number): boolean {
+  return isBasicCoachModule(moduleId) && Number.isInteger(day) && day > 0;
+}
+
+/** Max corrections the coach may return: 3 on BASIC days, 0 (= v2 single correction) elsewhere. */
 export function maxCorrectionsFor(moduleId: string, day: number): number {
   return isMultiCorrectionPilot(moduleId, day) ? MULTI_CORRECTION_MAX.basic : 0;
 }
 
 export const FINAL_AUDIO_COACH_VERSION_V2 = "v2";
-/** v3.1: adds answeredTask, repetition/task_relevance categories and fluencyUpgrade (pilot day cache only). */
-export const FINAL_AUDIO_COACH_VERSION_PILOT = "v3.1-pilot";
+/** v3.2: multi-correction coach for every BASIC day (answeredTask, repetition/task_relevance, fluencyUpgrade). */
+export const FINAL_AUDIO_COACH_VERSION_PILOT = "v3.2-basic";
 
-/** Durable cache/rubric version per request: pilot day only gets its own version, nothing else is invalidated. */
+/** Durable cache/rubric version per request: BASIC gets its own version, nothing else is invalidated. */
 export function coachVersionFor(moduleId: string, day: number): string {
   return isMultiCorrectionPilot(moduleId, day) ? FINAL_AUDIO_COACH_VERSION_PILOT : FINAL_AUDIO_COACH_VERSION_V2;
 }
 
-/** Optional ONE retake (bonus improvement round) — same gate as the pilot. */
+/** Optional ONE retake (bonus improvement round) — still the original pilot only: BASIC 3 · Day 1. */
 export function isRetakePilot(moduleId: string, day: number): boolean {
-  return isMultiCorrectionPilot(moduleId, day);
+  return moduleId === "past-stories" && day === 1;
 }
 
 /** Compact bilingual feedback returned by the single backend LLM call (v2 adds ONE grounded correction). */

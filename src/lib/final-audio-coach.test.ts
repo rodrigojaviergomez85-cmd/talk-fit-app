@@ -7,6 +7,7 @@ import {
   COACH_JSON_SCHEMA,
   COACH_QUOTA_ENDPOINT,
   FINAL_AUDIO_COACH_VERSION,
+  coachVersionFor,
   MAX_FINAL_AUDIO_BYTES,
   MAX_FINAL_AUDIO_SECONDS,
   MIN_TRANSCRIPT_WORDS,
@@ -110,6 +111,9 @@ function makeStore(now: () => number) {
         why_es: null,
         practice_phrase: null,
         transcript_word_count: null,
+        corrections: null,
+        answered_task: null,
+        fluency_upgrade: null,
         estimated_idea_count: row.estimatedIdeaCount,
       });
       return true;
@@ -140,6 +144,9 @@ function makeStore(now: () => number) {
       r.why_en = patch.feedback?.whyEn ?? null;
       r.why_es = patch.feedback?.whyEs ?? null;
       r.practice_phrase = patch.feedback?.practicePhrase ?? null;
+      r.corrections = patch.feedback?.corrections?.length ? patch.feedback.corrections : null;
+      r.answered_task = patch.feedback?.answeredTask ?? null;
+      r.fluency_upgrade = patch.feedback?.fluencyUpgrade ?? null;
     },
   };
   return store;
@@ -252,7 +259,7 @@ describe("Final Audio Coach — happy path & cache", () => {
     const row = [...h.store.rows.values()][0]!;
     expect(row.status).toBe("ready");
     expect(row.strength_es).toBe(GOOD_LLM.strengthEs);
-    expect(row.insert.coachVersion).toBe(FINAL_AUDIO_COACH_VERSION);
+    expect(row.insert.coachVersion).toBe(coachVersionFor("simple-present", 1));
     expect(row.insert.sourceTurnNumber).toBeNull();
   });
 
@@ -325,7 +332,7 @@ describe("Final Audio Coach — concurrency & leases", () => {
       userId: USER_A,
       audioSha256: audioHash,
       rubricSha256: await rubricSha256(rubric),
-      coachVersion: FINAL_AUDIO_COACH_VERSION,
+      coachVersion: coachVersionFor("simple-present", 1),
       moduleId: "simple-present",
       day: 1,
       takeNumber: 2,
@@ -346,7 +353,7 @@ describe("Final Audio Coach — concurrency & leases", () => {
       userId: USER_A,
       audioSha256: audioHash,
       rubricSha256: await rubricSha256(rubric),
-      coachVersion: FINAL_AUDIO_COACH_VERSION,
+      coachVersion: coachVersionFor("simple-present", 1),
       moduleId: "simple-present",
       day: 1,
       takeNumber: 2,
@@ -500,7 +507,7 @@ describe("Final Audio Coach — rubric resolution", () => {
     const a = buildRubric(day, "simple-present", "X", null)!;
     const b = buildRubric(day, "simple-present", "X", null)!;
     expect(await rubricSha256(a)).toBe(await rubricSha256(b));
-    expect(a.coachVersion).toBe(FINAL_AUDIO_COACH_VERSION);
+    expect(a.coachVersion).toBe(coachVersionFor("simple-present", 1));
     expect(await rubricSha256({ ...a, coachVersion: "v1" })).not.toBe(await rubricSha256(a));
   });
 });
@@ -579,6 +586,9 @@ describe("Final Audio Coach v2 — ONE transcript-grounded specific correction",
     whyEn: "You're talking about your routine, so use the simple present.",
     whyEs: "Estás hablando de tu rutina, por eso usamos presente simple.",
     practicePhrase: "I take a shower and then I have breakfast.",
+    corrections: [
+      { category: "verb_tense", said: "I took a shower", betterVersion: "I take a shower", whyEn: "Use the simple present.", whyEs: "Usa el presente simple." },
+    ],
   };
 
   it("coach version is v2 so cached v1 rows are never replayed as v2 feedback", () => {
@@ -609,7 +619,7 @@ describe("Final Audio Coach v2 — ONE transcript-grounded specific correction",
   });
 
   it("CASE I: `said` NOT in the transcript → fabricated quote suppressed, general next step kept, no second LLM call", async () => {
-    const h = harness({ transcript: ROUTINE, llmReply: { ...GOOD_LLM, ...CORRECTION, said: "She work at home" } });
+    const h = harness({ transcript: ROUTINE, llmReply: { ...GOOD_LLM, ...CORRECTION, said: "She work at home", corrections: [{ category: "grammar", said: "She work at home", betterVersion: "She works at home", whyEn: "Third person -s.", whyEs: "Tercera persona -s." }] } });
     const res = await runFinalAudioCoach(INPUT, h.deps);
     expect(res.body.status).toBe("ready");
     if (res.body.status !== "ready") return;

@@ -104,7 +104,7 @@ describe("Pilot v3.1 — task relevance is the first priority", () => {
     expect(sys).toContain("fluencyUpgrade");
     expect(usr).toContain('Question: "What did you do yesterday?"');
     expect(usr).toContain("Speaking time: 13 seconds (target 30–45 seconds)");
-    const v2 = buildRubric({ ...(day as object), day: 2 } as never, "past-stories", "BASIC 3", null)!;
+    const v2 = buildRubric({ ...(day as object), day: 2 } as never, "advanced-1", "ADVANCED 1", null)!;
     const v2sys = buildCoachMessages(v2, "x", 7, 13)[0]!.content;
     expect(v2sys).not.toContain("repetition");
     expect(buildCoachMessages(v2, "x", 7, 13)[1]!.content).not.toContain("Speaking time");
@@ -203,8 +203,9 @@ describe("Pilot v3.1 — max 3 total + one grounded fluency upgrade", () => {
     expect(CORRECTION_CATEGORIES).toContain("repetition");
     expect(CORRECTION_CATEGORIES).toContain("task_relevance");
     expect((COACH_JSON_SCHEMA.schema.required as readonly string[])).not.toContain("answeredTask");
-    expect(coachVersionFor("past-stories", 1)).toBe("v3.1-pilot");
-    expect(coachVersionFor("past-stories", 2)).toBe("v2");
+    expect(coachVersionFor("past-stories", 1)).toBe("v3.2-basic");
+    expect(coachVersionFor("past-stories", 2)).toBe("v3.2-basic");
+    expect(coachVersionFor("advanced-1", 2)).toBe("v2");
   });
 });
 

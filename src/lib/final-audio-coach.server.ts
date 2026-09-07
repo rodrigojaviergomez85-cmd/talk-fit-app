@@ -648,7 +648,7 @@ export function buildCoachMessages(
     "Evaluate only: (1) task completion — did they answer the actual question/turn; (2) target language — a reasonable attempt at the day's focus; (3) organization — several understandable connected ideas for the level.",
     "Return ONE genuine strength and ONE highest-value next step, each as ONE short sentence, in English AND natural Latin American Spanish. No lists of mistakes.",
     ...(rubric.maxCorrections && rubric.maxCorrections > 0
-      ? multiCorrectionGuidance(rubric.maxCorrections)
+      ? multiCorrectionGuidance(rubric.maxCorrections, rubric.moduleId)
       : [
           "Then decide on AT MOST ONE specific correction (language / grammar / vocabulary / task usage ONLY — never pronunciation, accent or phonemes, because you only see a transcript). Prioritise the day's language focus: tense, missing auxiliary, third-person -s, negative/question structure, an important word choice, a connector, the target structure, or organization when clearly useful.",
           "If there is a clear, high-value error: set correctionNeeded=true; `said` = a SHORT phrase (max 12 words) copied EXACTLY, word for word, from the transcript (never paraphrase, never invent); `betterVersion` = the corrected phrase; `whyEn`/`whyEs` = ONE very simple reason; `practicePhrase` = one short natural English sentence to repeat that uses the correct form.",
@@ -697,22 +697,37 @@ export function buildCoachMessages(
 }
 
 /**
- * Multi-correction pilot guidance (same single LLM call). BASIC 3 Simple Past
- * priority: task relevance → target tense → repetition/variety → connection →
- * development. Grammar correctness alone is never treated as fluency. Never padded.
+ * BASIC multi-correction guidance (same single LLM call). Priority: task
+ * relevance → the day's target grammar/tense → repetition/variety → connection
+ * → development. The module hint only ILLUSTRATES the target language; the
+ * CourseDay "Language focus" in the user message stays the source of truth.
+ * Grammar correctness alone is never treated as fluency. Never padded.
  */
-function multiCorrectionGuidance(max: number): string[] {
+const MODULE_TENSE_HINT: Record<string, string> = {
+  "basic-zero": "foundational sentence construction and basic personal information: 'I am from...', 'She is my sister', 'I have two brothers', missing verb 'to be' ('I 25 years old' → 'I am 25 years old')",
+  "simple-present": "Simple Present routines and habits, especially third-person -s: 'My sister work' → 'My sister works', 'She don't work' → \"She doesn't work\", 'He like it' → 'He likes it'",
+  "simple-future": "future forms (will / going to): 'Tomorrow I go to work' → \"Tomorrow I'm going to work\", 'I will to travel' → 'I will travel', 'She going to study' → \"She's going to study\"",
+  "past-stories": "Simple Past: 'I go yesterday' → 'I went yesterday', 'I buyed' → 'I bought', 'They was' → 'They were', \"I didn't went\" → \"I didn't go\", 'Yesterday I wake up' → 'Yesterday I woke up'",
+  "mixed-tenses": "choosing the RIGHT tense for the meaning (past / present / future) instead of one tense everywhere: 'Yesterday I go' → 'Yesterday I went', 'Every day she work' → 'Every day she works', 'Tomorrow I went' → \"Tomorrow I'm going to...\". Never convert every verb to one tense",
+};
+
+function multiCorrectionGuidance(max: number, moduleId: string): string[] {
+  const tenseHint =
+    MODULE_TENSE_HINT[moduleId] ??
+    "the grammar/tense the day's Language focus targets (missing auxiliary, third-person -s, wrong tense, negative/question structure)";
   return [
     "FIRST decide `answeredTask`: did the learner answer THIS exact question? 'yes' = clearly on topic; 'partly' = touches it but drifts or answers something adjacent; 'no' = talks about something else.",
     `Then choose the ${max} HIGHEST-LEARNING-VALUE items at most (0 to ${max}) as the \`corrections\` array, in priority order. TOTAL maximum ${max} across every category — never ${max} grammar + ${max} fluency. Fewer is fine; an empty array is fine. NEVER add an item just to reach ${max}.`,
     "Priority order: (1) task_relevance — if answeredTask is 'no' or 'partly', the FIRST item MUST be category task_relevance: `said` = a short phrase they actually said that is off the question, `betterVersion` = how to START answering the real question (e.g. \"Yesterday, I woke up at seven and then...\"), why = they were asked X. Never spend the first slot on a minor grammar slip when the question was not answered. " +
-      "(2) verb_tense — Simple Past: 'I go yesterday' → 'I went yesterday', 'I buyed' → 'I bought', 'They was' → 'They were', 'I didn't went' → 'I didn't go', 'Yesterday I wake up' → 'Yesterday I woke up'. " +
+      `(2) verb_tense / target grammar — this module's target language is ${tenseHint}. Follow the day's Language focus above all; never impose a tense the day does not target. ` +
+      "Never ignore an important grammar error that blocks correct communication. " +
       "(3) repetition — the SAME verb, sentence opening, connector or structure repeated so much the speech sounds basic even when it is correct (e.g. 'we went… we went… we went…', 'then… then… then…', every sentence starting with 'I'). Category repetition, NEVER grammar: `said` = the repeated fragments joined by '...' (each fragment copied exactly, e.g. \"we went... we went... we went...\"), `betterVersion` = ONE short more varied version for BASIC level (e.g. \"We watched a movie first. After that, we spent some time at the beach.\"). " +
       "(4) connector — then / after that / later / because / so. (5) development — add when, where, who, what happened next, how they felt. Also grammar / word_choice / naturalness when clearly important. Do not force every category.",
     "Skip entirely: punctuation, capitalization, tiny stylistic preferences, accent, phonemes, and Spanish-influenced English that is still clear. One item per underlying issue — never quote the same error twice.",
     `Each item: category ∈ ${JSON.stringify(CORRECTION_CATEGORIES)}; \`said\` = a SHORT phrase (max 12 words; repetition: fragments joined by '...') copied EXACTLY, word for word, from the transcript (never paraphrase, never invent — an invented quote is discarded); \`betterVersion\` = the better phrase; \`whyEn\` / \`whyEs\` = ONE very simple reason (natural Latin American Spanish).`,
     "`fluencyUpgrade`: ONE optional short upgrade showing how to sound more natural and connected without becoming advanced: `original` = ONE short section (max 25 words) copied EXACTLY from the transcript (never the whole answer), `improved` = the same content said more fluently for BASIC level (connectors, variety, one detail). null when nothing useful.",
     "Time vs ideas: if the learner produced enough separate ideas but spoke far below the target time, do NOT treat the speaking goal as achieved — the ideas were too short. Then the next step must be DEVELOPMENT: their ideas are clear but very short; add when it happened, who they were with or how they felt (with an example). Grammar correctness alone is never enough to call the answer fluent.",
+    "Do NOT repeat the same teaching point twice: if a correction (or the fluencyUpgrade) already teaches it, the next step must teach the NEXT most useful improvement. For BASIC, the next step should give one concrete phrase or chunk to reuse, never a generic motivational sentence.",
     "Also fill the primary fields to mirror corrections[0]: correctionNeeded=true, said, betterVersion, whyEn, whyEs and ONE `practicePhrase` (a short natural English sentence using the better form). If corrections is empty: correctionNeeded=false and all of those null.",
   ];
 }
@@ -810,7 +825,7 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
   let cacheHit = false;
   let transcriptWordCount: number | null = null;
   let sourceTurnNumber: number | null = null;
-  // Resolved per request: "v3-pilot" on past-stories Day 1, "v2" everywhere else.
+  // Resolved per request: "v3.2-basic" on BASIC modules, "v2" everywhere else.
   const coachVersion = coachVersionFor(input.moduleId, input.day);
   const maxCorrections = maxCorrectionsFor(input.moduleId, input.day);
   const pilot = maxCorrections > 0;
