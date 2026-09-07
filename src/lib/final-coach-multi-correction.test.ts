@@ -243,8 +243,8 @@ describe("Multi-correction pilot — engine", () => {
     expect(again.body.feedback.corrections.map((c) => c.said)).toEqual([C1.said, C2.said]);
   });
 
-  it("v2 day (past-stories Day 2): no transcript field, no corrections, version v2 — unchanged behavior", async () => {
-    const h = harness("past-stories", 2, { ...BASE_LLM, corrections: [C1, C2] });
+  it("v2 day (advanced-1 Day 1): no transcript field, no corrections, version v2 — unchanged behavior", async () => {
+    const h = harness("advanced-1", 1, { ...BASE_LLM, corrections: [C1, C2] });
     const res = await runFinalAudioCoach(h.input, h.deps);
     if (res.body.status !== "ready") throw new Error(res.body.status);
     expect("transcript" in res.body).toBe(false);

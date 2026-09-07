@@ -104,7 +104,7 @@ describe("Pilot v3.1 — task relevance is the first priority", () => {
     expect(sys).toContain("fluencyUpgrade");
     expect(usr).toContain('Question: "What did you do yesterday?"');
     expect(usr).toContain("Speaking time: 13 seconds (target 30–45 seconds)");
-    const v2 = buildRubric({ ...(day as object), day: 2 } as never, "past-stories", "BASIC 3", null)!;
+    const v2 = buildRubric({ ...(day as object), day: 2 } as never, "advanced-1", "ADVANCED 1", null)!;
     const v2sys = buildCoachMessages(v2, "x", 7, 13)[0]!.content;
     expect(v2sys).not.toContain("repetition");
     expect(buildCoachMessages(v2, "x", 7, 13)[1]!.content).not.toContain("Speaking time");
