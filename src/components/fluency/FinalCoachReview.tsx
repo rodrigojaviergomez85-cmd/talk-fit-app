@@ -9,6 +9,7 @@ import type {
   FinalCoachState,
 } from "@/lib/final-audio-coach";
 import { objectiveResult, objectiveResultText, type ObjectiveResultInput } from "@/lib/final-coach-result";
+import { correctionDisplayLabel } from "@/lib/correction-labels";
 import type { Recording } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { VoiceRecorder } from "./VoiceRecorder";
@@ -37,6 +38,8 @@ type Props = {
    * resolves — that is a plain re-render, never another Coach call.
    */
   result?: ObjectiveResultInput | null;
+  /** Module context: correction labels are module-aware (never a fixed tense per category). */
+  moduleId?: string | undefined;
   /** Advances the UI only (the day was committed BEFORE this review rendered). */
   onContinue: () => void;
   retake?: RetakePanelProps | null;
@@ -242,7 +245,7 @@ export function FinalCoachReview({ state, showEs, result, onContinue, retake }: 
               testId="final-coach-corrections"
             >
               <ol className="space-y-3">
-                {corrections.map((c, i) => <CompactCorrection key={`${i}-${c.said}`} correction={c} index={i} showEs={showEs} />)}
+                {corrections.map((c, i) => <CompactCorrection key={`${i}-${c.said}`} correction={c} index={i} showEs={showEs} moduleId={moduleId} />)}
               </ol>
             </Section>
           ) : null}
@@ -307,29 +310,9 @@ export function underdevelopedResult(r: ReturnType<typeof objectiveResult>): boo
   return r.mode === "goal" && r.ideas.kind === "count" && r.ideas.met && r.time.goal !== null && !r.time.met;
 }
 
-/** Local label map — the LLM never translates categories. */
-export function correctionCategoryLabel(category: CoachCorrectionCategory, showEs: boolean): string {
-  const es: Record<CoachCorrectionCategory, string> = {
-    task_relevance: "⚠️ RESPONDE LA PREGUNTA",
-    verb_tense: "PASADO",
-    grammar: "GRAMÁTICA",
-    word_choice: "VOCABULARIO",
-    naturalness: "MÁS NATURAL",
-    connector: "CONEXIÓN",
-    repetition: "VARÍA TU INGLÉS",
-    development: "DESARROLLO",
-  };
-  const en: Record<CoachCorrectionCategory, string> = {
-    task_relevance: "⚠️ ANSWER THE QUESTION",
-    verb_tense: "PAST TENSE",
-    grammar: "GRAMMAR",
-    word_choice: "WORD CHOICE",
-    naturalness: "NATURAL ENGLISH",
-    connector: "CONNECTION",
-    repetition: "ADD VARIETY",
-    development: "DEVELOPMENT",
-  };
-  return (showEs ? es : en)[category];
+/** Back-compat wrapper — module-aware resolution lives in correctionDisplayLabel(). */
+export function correctionCategoryLabel(category: CoachCorrectionCategory, showEs: boolean, moduleId?: string): string {
+  return correctionDisplayLabel({ category, moduleId, showEs });
 }
 
 /** Quote labels per category: relevance → "START LIKE THIS", repetition → "YOU REPEATED / MORE FLUENT". */
@@ -352,12 +335,29 @@ function CompactPhrase({ icon, text, emphasized = false }: { icon: "❌" | "✅"
   );
 }
 
-function CompactCorrection({ correction, index, showEs }: { correction: FinalAudioCoachCorrection; index: number; showEs: boolean }) {
+function CompactCorrection({
+  correction,
+  index,
+  showEs,
+  moduleId,
+}: {
+  correction: FinalAudioCoachCorrection;
+  index: number;
+  showEs: boolean;
+  moduleId?: string | undefined;
+}) {
   const showWhy = correction.category === "grammar" || correction.category === "task_relevance";
   return (
     <li data-testid="final-coach-correction-item" data-category={correction.category} className="space-y-1.5">
       <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-primary">
-        {index + 1} · {correctionCategoryLabel(correction.category, showEs)}
+        {index + 1} ·{" "}
+        {correctionDisplayLabel({
+          category: correction.category,
+          moduleId,
+          said: correction.said,
+          betterVersion: correction.betterVersion,
+          showEs,
+        })}
       </p>
       <CompactPhrase icon={correction.category === "repetition" ? "🔁" : "❌"} text={correction.said} />
       <CompactPhrase icon="✅" text={correction.betterVersion} emphasized />
