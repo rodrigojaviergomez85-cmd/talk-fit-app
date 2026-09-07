@@ -56,7 +56,7 @@ export type Challenge = {
 };
 
 /** Learning module identifier. Frozen once shipped — progress and recordings are keyed to it. */
-export type ModuleId = "basic-zero" | "simple-present" | "past-stories" | "simple-future" | "mixed-tenses" | "eagles-week-1" | "tigers" | "sharks" | "advanced-1";
+export type ModuleId = "basic-zero" | "simple-present" | "past-stories" | "simple-future" | "mixed-tenses" | "eagles-week-1" | "tigers" | "sharks" | "advanced-1" | "advanced-2";
 
 /** Test Ready Sprint types (EAGLES pilot). Practice only — never scored. */
 export type TestReadyType = "repeat" | "quick-answers" | "build-sentence" | "listen-respond" | "speak-now" | "story-retell" | "describe-scene" | "mixed";

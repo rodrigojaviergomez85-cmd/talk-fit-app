@@ -11,6 +11,8 @@ import { SHARKS_WEEK_1_DAYS, SHARKS_WEEKS } from "@/services/sharks-week-1-cours
 import { SHARKS_WEEKS_2_4_DAYS } from "@/services/sharks-weeks-2-4-course";
 import { ADVANCED_1_WEEK_1_DAYS, ADVANCED_1_WEEKS } from "@/services/advanced-1-course";
 import { ADVANCED_1_WEEKS_2_4_DAYS } from "@/services/advanced-1-weeks-2-4-course";
+import { ADVANCED_2_WEEK_1_DAYS, ADVANCED_2_WEEKS } from "@/services/advanced-2-course";
+import { ADVANCED_2_WEEKS_2_4_DAYS } from "@/services/advanced-2-weeks-2-4-course";
 import { outlineOf } from "@/services/course-outline-shape";
 
 const mods = {
@@ -23,6 +25,7 @@ const mods = {
   tigers: { days: [...TIGERS_WEEK_1_DAYS, ...TIGERS_WEEKS_2_4_DAYS], weeks: TIGERS_WEEKS },
   sharks: { days: [...SHARKS_WEEK_1_DAYS, ...SHARKS_WEEKS_2_4_DAYS], weeks: SHARKS_WEEKS },
   "advanced-1": { days: [...ADVANCED_1_WEEK_1_DAYS, ...ADVANCED_1_WEEKS_2_4_DAYS], weeks: ADVANCED_1_WEEKS },
+  "advanced-2": { days: [...ADVANCED_2_WEEK_1_DAYS, ...ADVANCED_2_WEEKS_2_4_DAYS], weeks: ADVANCED_2_WEEKS },
 };
 const out: Record<string, unknown> = {};
 for (const [id, m] of Object.entries(mods)) {

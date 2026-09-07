@@ -11,6 +11,7 @@ export function rep5Tier(moduleId: ModuleId): Rep5Tier {
     case "sharks":
       return "spontaneous";
     case "advanced-1":
+    case "advanced-2":
       return "advanced";
     default:
       return "basic";
@@ -47,6 +48,7 @@ export function introTier(moduleId: ModuleId): IntroTier {
     case "sharks":
       return "spontaneous";
     case "advanced-1":
+    case "advanced-2":
       return "advanced";
   }
 }
