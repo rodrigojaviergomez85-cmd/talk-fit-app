@@ -61,6 +61,12 @@ export type AnsweredTask = "yes" | "partly" | "no";
 /** ONE short "sound more fluent" upgrade: `original` is a real fragment of the transcript. */
 export type FinalAudioCoachFluencyUpgrade = { original: string; improved: string };
 
+/** Another grounded occurrence of the SAME reusable rule as its parent correction. */
+export type FinalAudioCoachRelatedOccurrence = { said: string; betterVersion: string };
+
+/** Max extra occurrences shown under one correction ("also applies to"). Never a new slot. */
+export const MAX_RELATED_OCCURRENCES = 2;
+
 /** One prioritized, transcript-grounded correction (server-validated). */
 export type FinalAudioCoachCorrection = {
   category: CoachCorrectionCategory;
@@ -68,6 +74,11 @@ export type FinalAudioCoachCorrection = {
   betterVersion: string;
   whyEn: string;
   whyEs: string;
+  /**
+   * Repeats of the SAME rule, grouped under this correction so they never
+   * consume another correction slot. Absent/empty when the error happened once.
+   */
+  relatedOccurrences?: FinalAudioCoachRelatedOccurrence[] | undefined;
 };
 
 export type CoachLevelGroup = "basic" | "intermediate" | "advanced";

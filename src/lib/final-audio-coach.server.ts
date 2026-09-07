@@ -26,6 +26,8 @@ import {
   type AnsweredTask,
   type CoachCorrectionCategory,
   type FinalAudioCoachCorrection,
+  type FinalAudioCoachRelatedOccurrence,
+  MAX_RELATED_OCCURRENCES,
   type FinalAudioCoachFluencyUpgrade,
 } from "./final-audio-coach";
 
@@ -454,9 +456,64 @@ function isCategory(value: unknown): value is CoachCorrectionCategory {
  *  - overlapping `said` quotes (one contains the other) = same mistake → keep one
  *  - at most `max`, in the model's priority order
  */
+/** Server-only grouping key: the LLM's reusable rule id, normalized. Never shown to the learner. */
+function ruleKeyOf(c: Record<string, unknown>): string {
+  const v = c["ruleKey"];
+  return typeof v === "string" ? v.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "") : "";
+}
+
+/** Validate + ground the "also applies to" examples of one correction (max MAX_RELATED_OCCURRENCES). */
+export function normalizeRelatedOccurrences(
+  raw: unknown,
+  transcript: string | undefined,
+  primarySaid: string,
+): FinalAudioCoachRelatedOccurrence[] {
+  if (!Array.isArray(raw)) return [];
+  const out: FinalAudioCoachRelatedOccurrence[] = [];
+  const seen = new Set<string>([normalizeForMatch(primarySaid)]);
+  for (const item of raw) {
+    if (out.length >= MAX_RELATED_OCCURRENCES) break;
+    if (!item || typeof item !== "object") continue;
+    const r = item as Record<string, unknown>;
+    const said = typeof r["said"] === "string" ? r["said"].replace(/\s+/g, " ").trim() : "";
+    const betterRaw = typeof r["betterVersion"] === "string" ? r["betterVersion"].trim() : "";
+    if (!said || !betterRaw) continue;
+    if (said.length > LIMITS.said || countWords(said) > MAX_SAID_WORDS) continue;
+    // Same grounding standard as the primary quote: an invented quote is discarded, never the correction.
+    if (transcript !== undefined && !saidOccursInTranscript(said, transcript)) continue;
+    const betterVersion = clip(betterRaw, LIMITS.betterVersion);
+    const saidNorm = normalizeForMatch(said);
+    if (!saidNorm || saidNorm === normalizeForMatch(betterVersion)) continue;
+    if (seen.has(saidNorm)) continue;
+    seen.add(saidNorm);
+    out.push({ said, betterVersion });
+  }
+  return out;
+}
+
+function mergeOccurrence(target: CoachCorrection, said: string, betterVersion: string): void {
+  const existing = target.relatedOccurrences ?? [];
+  if (existing.length >= MAX_RELATED_OCCURRENCES) return;
+  const seen = new Set([normalizeForMatch(target.said), ...existing.map((o) => normalizeForMatch(o.said))]);
+  const norm = normalizeForMatch(said);
+  if (!norm || seen.has(norm)) return;
+  target.relatedOccurrences = [...existing, { said, betterVersion }];
+}
+
+/**
+ * Pilot: validate, ground, GROUP and cap the candidate corrections from the
+ * SAME LLM response. Every rule is per item — a bad item is dropped, never the
+ * whole result, and no second AI call is made.
+ *  - allowed category; `said` non-empty, ≤ MAX_SAID_WORDS, really in the transcript
+ *  - betterVersion non-empty and meaningfully different; whyEn + whyEs present
+ *  - overlapping quotes OR the same `ruleKey` = the SAME reusable rule → merged into
+ *    the earlier correction as an "also applies to" occurrence (max 2), NOT a new slot
+ *  - at most `max` corrections, in the model's priority order
+ */
 export function normalizeCorrections(raw: unknown, max: number, transcript?: string): CoachCorrection[] {
   if (max <= 0 || !Array.isArray(raw)) return [];
   const out: CoachCorrection[] = [];
+  const ruleKeys: string[] = [];
   for (const item of raw) {
     if (!item || typeof item !== "object") continue;
     const c = item as Record<string, unknown>;
@@ -481,24 +538,42 @@ export function normalizeCorrections(raw: unknown, max: number, transcript?: str
     }
     const saidNorm = normalizeForMatch(said);
     if (!saidNorm || saidNorm === normalizeForMatch(betterVersion)) continue;
-    // Dedupe: same underlying mistake quoted twice → keep the more complete quote in the earlier (higher-priority) slot.
+    // Same underlying rule quoted twice → keep ONE correction and show the repeat as evidence.
     // Repetition / relevance items describe a pattern, not one mistake: they never absorb (or get absorbed by) a grammar quote.
     const patternLike = multiFragment || category === "task_relevance";
+    const ruleKey = ruleKeyOf(c);
     const dupIndex = patternLike
       ? -1
-      : out.findIndex((prev) => {
+      : out.findIndex((prev, i) => {
           if (prev.category === "repetition" || prev.category === "task_relevance") return false;
+          if (ruleKey && ruleKeys[i] === ruleKey) return true;
           const p = normalizeForMatch(prev.said);
           return ` ${p} `.includes(` ${saidNorm} `) || ` ${saidNorm} `.includes(` ${p} `);
         });
-    const next: CoachCorrection = { category, said, betterVersion, whyEn, whyEs };
+    const related = normalizeRelatedOccurrences(c["relatedOccurrences"], transcript, said);
+    const next: CoachCorrection = { category, said, betterVersion, whyEn, whyEs, ...(related.length ? { relatedOccurrences: related } : {}) };
     if (dupIndex >= 0) {
-      if (saidNorm.length > normalizeForMatch(out[dupIndex]!.said).length) out[dupIndex] = next;
+      const prev = out[dupIndex]!;
+      const prevNorm = normalizeForMatch(prev.said);
+      // The same quote, only more complete → it becomes the primary and the shorter one is dropped.
+      if (` ${saidNorm} `.includes(` ${prevNorm} `) && saidNorm.length > prevNorm.length) {
+        out[dupIndex] = { ...next, ...(prev.relatedOccurrences ? { relatedOccurrences: prev.relatedOccurrences } : {}) };
+        for (const o of related) mergeOccurrence(out[dupIndex]!, o.said, o.betterVersion);
+        continue;
+      }
+      if (` ${prevNorm} `.includes(` ${saidNorm} `)) {
+        for (const o of related) mergeOccurrence(prev, o.said, o.betterVersion);
+        continue;
+      }
+      // A DIFFERENT sentence breaking the same rule: keep it as evidence, not a new slot.
+      mergeOccurrence(out[dupIndex]!, said, betterVersion);
+      for (const o of related) mergeOccurrence(out[dupIndex]!, o.said, o.betterVersion);
       continue;
     }
     // One pattern item of each kind is enough.
     if (patternLike && out.some((prev) => prev.category === category)) continue;
     out.push(next);
+    ruleKeys.push(ruleKey);
   }
   // Task relevance is the FIRST priority: an off-topic answer is never buried under a grammar slip.
   const relevance = out.filter((c) => c.category === "task_relevance");
@@ -723,6 +798,9 @@ function multiCorrectionGuidance(max: number, moduleId: string): string[] {
       "Never ignore an important grammar error that blocks correct communication. " +
       "(3) repetition — the SAME verb, sentence opening, connector or structure repeated so much the speech sounds basic even when it is correct (e.g. 'we went… we went… we went…', 'then… then… then…', every sentence starting with 'I'). Category repetition, NEVER grammar: `said` = the repeated fragments joined by '...' (each fragment copied exactly, e.g. \"we went... we went... we went...\"), `betterVersion` = ONE short more varied version for BASIC level (e.g. \"We watched a movie first. After that, we spent some time at the beach.\"). " +
       "(4) connector — then / after that / later / because / so. (5) development — add when, where, who, what happened next, how they felt. Also grammar / word_choice / naturalness when clearly important. Do not force every category.",
+    `Repeated SAME rule: when the learner breaks the SAME reusable rule more than once, do NOT spend two items on it. Keep ONE item and put the other occurrences in \`relatedOccurrences\` (max ${MAX_RELATED_OCCURRENCES}); each one: \`said\` copied EXACTLY from the transcript, \`betterVersion\` correcting THAT exact phrase (e.g. "I'm going visit my family" → "I'm going to visit my family"). Empty array when the error happened once. Group ONLY the same rule (going to + verb; third-person -s; didn't + base verb) — never group two different rules just because both are grammar. Use the freed slots for OTHER important errors.`,
+    '`ruleKey`: a short stable snake_case id of the rule taught by the item (e.g. "going_to_missing_to", "third_person_s", "did_base_verb"). Same rule = same ruleKey. Internal only, never shown to the learner.',
+    `If the same pattern appears many times, still show only the primary + max ${MAX_RELATED_OCCURRENCES} occurrences; the why may mention it happened several times in ONE short line.`,
     "Skip entirely: punctuation, capitalization, tiny stylistic preferences, accent, phonemes, and Spanish-influenced English that is still clear. One item per underlying issue — never quote the same error twice.",
     `Each item: category ∈ ${JSON.stringify(CORRECTION_CATEGORIES)}; \`said\` = a SHORT phrase (max 12 words; repetition: fragments joined by '...') copied EXACTLY, word for word, from the transcript (never paraphrase, never invent — an invented quote is discarded); \`betterVersion\` = the better phrase; \`whyEn\` / \`whyEs\` = ONE very simple reason (natural Latin American Spanish).`,
     "`fluencyUpgrade`: ONE optional short upgrade showing how to sound more natural and connected without becoming advanced: `original` = ONE short section (max 25 words) copied EXACTLY from the transcript (never the whole answer), `improved` = the same content said more fluently for BASIC level (connectors, variety, one detail). null when nothing useful.",
@@ -735,13 +813,25 @@ function multiCorrectionGuidance(max: number, moduleId: string): string[] {
 const CORRECTION_ITEM_SCHEMA = {
   type: "object",
   additionalProperties: false,
-  required: ["category", "said", "betterVersion", "whyEn", "whyEs"],
+  required: ["category", "said", "betterVersion", "whyEn", "whyEs", "ruleKey", "relatedOccurrences"],
   properties: {
     category: { type: "string", enum: [...CORRECTION_CATEGORIES] },
     said: { type: "string" },
     betterVersion: { type: "string" },
     whyEn: { type: "string" },
     whyEs: { type: "string" },
+    /** Internal grouping id only (e.g. "going_to_missing_to"); never shown to the learner. */
+    ruleKey: { type: "string" },
+    relatedOccurrences: {
+      type: "array",
+      maxItems: MAX_RELATED_OCCURRENCES,
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["said", "betterVersion"],
+        properties: { said: { type: "string" }, betterVersion: { type: "string" } },
+      },
+    },
   },
 } as const;
 
