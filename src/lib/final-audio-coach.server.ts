@@ -786,6 +786,9 @@ function multiCorrectionGuidance(max: number, moduleId: string): string[] {
       "Never ignore an important grammar error that blocks correct communication. " +
       "(3) repetition — the SAME verb, sentence opening, connector or structure repeated so much the speech sounds basic even when it is correct (e.g. 'we went… we went… we went…', 'then… then… then…', every sentence starting with 'I'). Category repetition, NEVER grammar: `said` = the repeated fragments joined by '...' (each fragment copied exactly, e.g. \"we went... we went... we went...\"), `betterVersion` = ONE short more varied version for BASIC level (e.g. \"We watched a movie first. After that, we spent some time at the beach.\"). " +
       "(4) connector — then / after that / later / because / so. (5) development — add when, where, who, what happened next, how they felt. Also grammar / word_choice / naturalness when clearly important. Do not force every category.",
+    `Repeated SAME rule: when the learner breaks the SAME reusable rule more than once, do NOT spend two items on it. Keep ONE item and put the other occurrences in \`relatedOccurrences\` (max ${MAX_RELATED_OCCURRENCES}); each one: \`said\` copied EXACTLY from the transcript, \`betterVersion\` correcting THAT exact phrase (e.g. "I'm going visit my family" → "I'm going to visit my family"). Empty array when the error happened once. Group ONLY the same rule (going to + verb; third-person -s; didn't + base verb) — never group two different rules just because both are grammar. Use the freed slots for OTHER important errors.`,
+    '`ruleKey`: a short stable snake_case id of the rule taught by the item (e.g. "going_to_missing_to", "third_person_s", "did_base_verb"). Same rule = same ruleKey. Internal only, never shown to the learner.',
+    `If the same pattern appears many times, still show only the primary + max ${MAX_RELATED_OCCURRENCES} occurrences; the why may mention it happened several times in ONE short line.`,
     "Skip entirely: punctuation, capitalization, tiny stylistic preferences, accent, phonemes, and Spanish-influenced English that is still clear. One item per underlying issue — never quote the same error twice.",
     `Each item: category ∈ ${JSON.stringify(CORRECTION_CATEGORIES)}; \`said\` = a SHORT phrase (max 12 words; repetition: fragments joined by '...') copied EXACTLY, word for word, from the transcript (never paraphrase, never invent — an invented quote is discarded); \`betterVersion\` = the better phrase; \`whyEn\` / \`whyEs\` = ONE very simple reason (natural Latin American Spanish).`,
     "`fluencyUpgrade`: ONE optional short upgrade showing how to sound more natural and connected without becoming advanced: `original` = ONE short section (max 25 words) copied EXACTLY from the transcript (never the whole answer), `improved` = the same content said more fluently for BASIC level (connectors, variety, one detail). null when nothing useful.",
@@ -798,13 +801,25 @@ function multiCorrectionGuidance(max: number, moduleId: string): string[] {
 const CORRECTION_ITEM_SCHEMA = {
   type: "object",
   additionalProperties: false,
-  required: ["category", "said", "betterVersion", "whyEn", "whyEs"],
+  required: ["category", "said", "betterVersion", "whyEn", "whyEs", "ruleKey", "relatedOccurrences"],
   properties: {
     category: { type: "string", enum: [...CORRECTION_CATEGORIES] },
     said: { type: "string" },
     betterVersion: { type: "string" },
     whyEn: { type: "string" },
     whyEs: { type: "string" },
+    /** Internal grouping id only (e.g. "going_to_missing_to"); never shown to the learner. */
+    ruleKey: { type: "string" },
+    relatedOccurrences: {
+      type: "array",
+      maxItems: MAX_RELATED_OCCURRENCES,
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["said", "betterVersion"],
+        properties: { said: { type: "string" }, betterVersion: { type: "string" } },
+      },
+    },
   },
 } as const;
 

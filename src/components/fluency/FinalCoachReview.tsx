@@ -361,6 +361,25 @@ function CompactCorrection({
       </p>
       <CompactPhrase icon={correction.category === "repetition" ? "🔁" : "❌"} text={correction.said} />
       <CompactPhrase icon="✅" text={correction.betterVersion} emphasized />
+      {(correction.relatedOccurrences ?? []).length > 0 ? (
+        <div data-testid="final-coach-related-occurrences" className="space-y-1 pl-[24px]">
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+            {showEs ? "TAMBIÉN APLICA A" : "ALSO APPLIES TO"}
+          </p>
+          {(correction.relatedOccurrences ?? []).map((o, i) => (
+            <div key={`${i}-${o.said}`} className="space-y-0.5">
+              <p className="grid grid-cols-[20px_minmax(0,1fr)] gap-1.5 text-[13px] font-semibold leading-snug text-foreground">
+                <span aria-hidden>❌</span>
+                <span>“{o.said}”</span>
+              </p>
+              <p className="grid grid-cols-[20px_minmax(0,1fr)] gap-1.5 text-[13px] font-bold leading-snug text-primary">
+                <span aria-hidden>✅</span>
+                <span>“{o.betterVersion}”</span>
+              </p>
+            </div>
+          ))}
+        </div>
+      ) : null}
       {showWhy ? <p className="grid grid-cols-[24px_minmax(0,1fr)] gap-1.5 text-[13px] font-semibold leading-snug text-muted-foreground"><span aria-hidden>💡</span><span>{showEs ? correction.whyEs : correction.whyEn}</span></p> : null}
     </li>
   );
