@@ -58,14 +58,21 @@ describe("Multi-correction pilot — gate", () => {
       expect(maxCorrectionsFor(m, d)).toBe(3);
     }
   });
-  it("CASE B/C/D/E — intermediate and advanced keep v2", () => {
-    for (const [m, d] of [["tigers", 1], ["advanced-1", 1], ["eagles-week-1", 3], ["sharks", 2]] as const) {
+  it("INTERMEDIATE — every eagles/tigers/sharks day is multi-correction (v3.3-intermediate, max 5)", () => {
+    for (const [m, d] of [["tigers", 1], ["eagles-week-1", 3], ["sharks", 2], ["sharks", 20]] as const) {
+      expect(isMultiCorrectionPilot(m, d)).toBe(true);
+      expect(coachVersionFor(m, d)).toBe("v3.3-intermediate");
+      expect(maxCorrectionsFor(m, d)).toBe(5);
+    }
+  });
+  it("ADVANCED keeps v2", () => {
+    for (const [m, d] of [["advanced-1", 1], ["advanced-1", 10]] as const) {
       expect(isMultiCorrectionPilot(m, d)).toBe(false);
       expect(coachVersionFor(m, d)).toBe("v2");
       expect(maxCorrectionsFor(m, d)).toBe(0);
     }
   });
-  it("3 / 5 / 5 ceilings exist but only basic=3 is live", () => {
+  it("3 / 5 / 5 ceilings; basic=3 and intermediate=5 are live", () => {
     expect(MULTI_CORRECTION_MAX).toEqual({ basic: 3, intermediate: 5, advanced: 5 });
   });
   it("rubric: BASIC days carry maxCorrections + v3.2-basic; non-basic days omit the field (hash unchanged)", async () => {

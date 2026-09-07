@@ -21,6 +21,7 @@ import {
   FINAL_AUDIO_COACH_VERSION_V2,
   MULTI_CORRECTION_MAX,
   coachVersionFor,
+  isIntermediateCoachModule,
   isMultiCorrectionPilot,
   maxCorrectionsFor,
   type AnsweredTask,
@@ -787,25 +788,44 @@ const MODULE_TENSE_HINT: Record<string, string> = {
 };
 
 function multiCorrectionGuidance(max: number, moduleId: string): string[] {
+  const intermediate = isIntermediateCoachModule(moduleId);
+  const levelWord = intermediate ? "INTERMEDIATE" : "BASIC";
   const tenseHint =
     MODULE_TENSE_HINT[moduleId] ??
     "the grammar/tense the day's Language focus targets (missing auxiliary, third-person -s, wrong tense, negative/question structure)";
+  const basicPriority =
+    "Priority order: (1) task_relevance — if answeredTask is 'no' or 'partly', the FIRST item MUST be category task_relevance: `said` = a short phrase they actually said that is off the question, `betterVersion` = how to START answering the real question (e.g. \"Yesterday, I woke up at seven and then...\"), why = they were asked X. Never spend the first slot on a minor grammar slip when the question was not answered. " +
+    `(2) verb_tense / target grammar — this module's target language is ${tenseHint}. Follow the day's Language focus above all; never impose a tense the day does not target. ` +
+    "Never ignore an important grammar error that blocks correct communication. " +
+    "(3) repetition — the SAME verb, sentence opening, connector or structure repeated so much the speech sounds basic even when it is correct (e.g. 'we went… we went… we went…', 'then… then… then…', every sentence starting with 'I'). Category repetition, NEVER grammar: `said` = the repeated fragments joined by '...' (each fragment copied exactly, e.g. \"we went... we went... we went...\"), `betterVersion` = ONE short more varied version for BASIC level (e.g. \"We watched a movie first. After that, we spent some time at the beach.\"). " +
+    "(4) connector — then / after that / later / because / so. (5) development — add when, where, who, what happened next, how they felt. Also grammar / word_choice / naturalness when clearly important. Do not force every category.";
+  const intermediatePriority =
+    "Priority order (ADAPTIVE — pick only what this answer really needs, in this order of value): (1) task_relevance — if answeredTask is 'no' or 'partly', the FIRST item MUST be category task_relevance: `said` = a short phrase they actually said that is off the question, `betterVersion` = how to START answering the real question, why = they were asked X. Fluent English on the wrong answer is still the top problem. " +
+    "(2) the day's target language / CourseDay objective (the Language focus above is the source of truth — Eagles, Tigers and Sharks days differ; never apply one generic intermediate rubric). " +
+    "(3) important grammar — INTERMEDIATE learners still need grammar corrected: \"She don't really enjoy it\" → \"She doesn't really enjoy it\", \"I've been working here since three years\" → \"...for three years\", missing auxiliaries, wrong question/negative structure. Never skip a real grammar error because the learner is intermediate. " +
+    "(4) verb_tense — meaningful tense errors (\"Yesterday we go to the beach\" → \"Yesterday we went to the beach\"). Classify by the ACTUAL error, not by the module. " +
+    "(5) word_choice. (6) naturalness — a genuinely more natural way to say it (\"I have five years working here\" → \"I've worked here for five years\"); NEVER replace correct, natural English just because another phrasing exists. " +
+    "(7) connector — disconnected sentences (\"I went home. I ate. I watched TV.\" → \"I went home, ate dinner, and then watched TV.\") using because / so / but / then / after that / however / although / for example as the level and day allow. " +
+    "(8) repetition — the SAME verb, opening or structure repeated so much it limits range; category repetition, NEVER grammar: `said` = the repeated fragments joined by '...' copied exactly, `betterVersion` = ONE short more varied version. " +
+    "(9) development — an answer that is correct but underdeveloped: add a reason, example, comparison, consequence, feeling or detail that the task calls for. (10) clarity. " +
+    "Adaptive means: if the learner made 4 different important grammar mistakes, use 4 slots on grammar; never reserve slots for connectors or development.";
+  const noFakeErrors = intermediate
+    ? "NEVER use a correction (❌/✅) for language that is already correct and only COULD be stronger. `corrections` items are only for: wrong grammar, wrong tense, problematic word choice, clearly unnatural English, task mismatch, or genuinely limiting repetition. Correct-but-simple language belongs in the next step (development / connect your ideas), never in a correction."
+    : "";
   return [
     "FIRST decide `answeredTask`: did the learner answer THIS exact question? 'yes' = clearly on topic; 'partly' = touches it but drifts or answers something adjacent; 'no' = talks about something else.",
-    `Then choose the ${max} HIGHEST-LEARNING-VALUE items at most (0 to ${max}) as the \`corrections\` array, in priority order. TOTAL maximum ${max} across every category — never ${max} grammar + ${max} fluency. Fewer is fine; an empty array is fine. NEVER add an item just to reach ${max}.`,
-    "Priority order: (1) task_relevance — if answeredTask is 'no' or 'partly', the FIRST item MUST be category task_relevance: `said` = a short phrase they actually said that is off the question, `betterVersion` = how to START answering the real question (e.g. \"Yesterday, I woke up at seven and then...\"), why = they were asked X. Never spend the first slot on a minor grammar slip when the question was not answered. " +
-      `(2) verb_tense / target grammar — this module's target language is ${tenseHint}. Follow the day's Language focus above all; never impose a tense the day does not target. ` +
-      "Never ignore an important grammar error that blocks correct communication. " +
-      "(3) repetition — the SAME verb, sentence opening, connector or structure repeated so much the speech sounds basic even when it is correct (e.g. 'we went… we went… we went…', 'then… then… then…', every sentence starting with 'I'). Category repetition, NEVER grammar: `said` = the repeated fragments joined by '...' (each fragment copied exactly, e.g. \"we went... we went... we went...\"), `betterVersion` = ONE short more varied version for BASIC level (e.g. \"We watched a movie first. After that, we spent some time at the beach.\"). " +
-      "(4) connector — then / after that / later / because / so. (5) development — add when, where, who, what happened next, how they felt. Also grammar / word_choice / naturalness when clearly important. Do not force every category.",
-    `Repeated SAME rule: when the learner breaks the SAME reusable rule more than once, do NOT spend two items on it. Keep ONE item and put the other occurrences in \`relatedOccurrences\` (max ${MAX_RELATED_OCCURRENCES}); each one: \`said\` copied EXACTLY from the transcript, \`betterVersion\` correcting THAT exact phrase (e.g. "I'm going visit my family" → "I'm going to visit my family"). Empty array when the error happened once. Group ONLY the same rule (going to + verb; third-person -s; didn't + base verb) — never group two different rules just because both are grammar. Use the freed slots for OTHER important errors.`,
+    `Then choose the ${max} HIGHEST-LEARNING-VALUE items at most (0 to ${max}) as the \`corrections\` array, in priority order. TOTAL maximum ${max} across every category — never ${max} grammar + ${max} fluency. Fewer is fine; an empty array is fine. NEVER add an item just to reach ${max}: a strong answer with 2 real issues gets exactly 2 items, and an excellent answer may get 0.`,
+    intermediate ? intermediatePriority : basicPriority,
+    ...(noFakeErrors ? [noFakeErrors] : []),
+    `Repeated SAME rule: when the learner breaks the SAME reusable rule more than once, do NOT spend two items on it. Keep ONE item and put the other occurrences in \`relatedOccurrences\` (max ${MAX_RELATED_OCCURRENCES}); each one: \`said\` copied EXACTLY from the transcript, \`betterVersion\` correcting THAT exact phrase (e.g. "I'm going visit my family" → "I'm going to visit my family"). Empty array when the error happened once. Group ONLY the same rule (going to + verb; third-person -s; didn't + base verb; doesn't with he/she/it) — never group two different rules just because both are grammar. Use the freed slots for OTHER important errors.`,
     '`ruleKey`: a short stable snake_case id of the rule taught by the item (e.g. "going_to_missing_to", "third_person_s", "did_base_verb"). Same rule = same ruleKey. Internal only, never shown to the learner.',
     `If the same pattern appears many times, still show only the primary + max ${MAX_RELATED_OCCURRENCES} occurrences; the why may mention it happened several times in ONE short line.`,
     "Skip entirely: punctuation, capitalization, tiny stylistic preferences, accent, phonemes, and Spanish-influenced English that is still clear. One item per underlying issue — never quote the same error twice.",
-    `Each item: category ∈ ${JSON.stringify(CORRECTION_CATEGORIES)}; \`said\` = a SHORT phrase (max 12 words; repetition: fragments joined by '...') copied EXACTLY, word for word, from the transcript (never paraphrase, never invent — an invented quote is discarded); \`betterVersion\` = the better phrase; \`whyEn\` / \`whyEs\` = ONE very simple reason (natural Latin American Spanish).`,
-    "`fluencyUpgrade`: ONE optional short upgrade showing how to sound more natural and connected without becoming advanced: `original` = ONE short section (max 25 words) copied EXACTLY from the transcript (never the whole answer), `improved` = the same content said more fluently for BASIC level (connectors, variety, one detail). null when nothing useful.",
+    `Each item: category ∈ ${JSON.stringify(CORRECTION_CATEGORIES)}; \`said\` = a SHORT phrase (max 12 words; repetition: fragments joined by '...') copied EXACTLY, word for word, from the transcript (never paraphrase, never invent — an invented quote is discarded); \`betterVersion\` = the better phrase; \`whyEn\` / \`whyEs\` = ONE very simple reason (natural Latin American Spanish). Give a why ONLY when it teaches a reusable rule; keep it to one short line, never a paragraph.`,
+    `\`fluencyUpgrade\`: ONE optional short upgrade showing how to sound more natural and connected: \`original\` = ONE short section (max 25 words) copied EXACTLY from the transcript (never the whole answer), \`improved\` = the same content said more fluently for ${levelWord} level (connectors, variety, one detail). null when nothing useful.`,
     "Time vs ideas: if the learner produced enough separate ideas but spoke far below the target time, do NOT treat the speaking goal as achieved — the ideas were too short. Then the next step must be DEVELOPMENT: their ideas are clear but very short; add when it happened, who they were with or how they felt (with an example). Grammar correctness alone is never enough to call the answer fluent.",
-    "Do NOT repeat the same teaching point twice: if a correction (or the fluencyUpgrade) already teaches it, the next step must teach the NEXT most useful improvement. For BASIC, the next step should give one concrete phrase or chunk to reuse, never a generic motivational sentence.",
+    `Do NOT repeat the same teaching point twice: if a correction (or the fluencyUpgrade) already teaches it, the next step must teach the NEXT most useful improvement. For ${levelWord}, the next step should give one concrete phrase or chunk to reuse, never a generic motivational sentence.`,
+    "ONE strength only: one short grounded sentence about what they really did well — never a praise paragraph.",
     "Also fill the primary fields to mirror corrections[0]: correctionNeeded=true, said, betterVersion, whyEn, whyEs and ONE `practicePhrase` (a short natural English sentence using the better form). If corrections is empty: correctionNeeded=false and all of those null.",
   ];
 }

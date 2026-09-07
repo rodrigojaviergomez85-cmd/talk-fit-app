@@ -84,8 +84,8 @@ export type FinalAudioCoachCorrection = {
 export type CoachLevelGroup = "basic" | "intermediate" | "advanced";
 
 /**
- * Rollout ceilings. BASIC is live (all modules, all days); intermediate and
- * advanced keep the v2 single-correction coach until their own rollout.
+ * Rollout ceilings. BASIC (max 3) and INTERMEDIATE (max 5) are live; advanced
+ * keeps the v2 single-correction coach until its own rollout.
  */
 export const MULTI_CORRECTION_MAX: Record<CoachLevelGroup, number> = { basic: 3, intermediate: 5, advanced: 5 };
 
@@ -98,27 +98,47 @@ export const BASIC_MODULE_IDS: ReadonlySet<string> = new Set([
   "mixed-tenses",
 ]);
 
+/** Canonical INTERMEDIATE module set for the coach (single source of truth). */
+export const INTERMEDIATE_MODULE_IDS: ReadonlySet<string> = new Set(["eagles-week-1", "tigers", "sharks"]);
+
 export function isBasicCoachModule(moduleId: string): boolean {
   return BASIC_MODULE_IDS.has(moduleId);
 }
 
-/** Multi-correction gate — TRUE for every day of every BASIC module. Intermediate/Advanced keep v2. */
-export function isMultiCorrectionPilot(moduleId: string, day: number): boolean {
-  return isBasicCoachModule(moduleId) && Number.isInteger(day) && day > 0;
+export function isIntermediateCoachModule(moduleId: string): boolean {
+  return INTERMEDIATE_MODULE_IDS.has(moduleId);
 }
 
-/** Max corrections the coach may return: 3 on BASIC days, 0 (= v2 single correction) elsewhere. */
+/** Level group of a coach module, or null when it is not rolled out (Advanced). */
+export function coachLevelGroupFor(moduleId: string): CoachLevelGroup | null {
+  if (isBasicCoachModule(moduleId)) return "basic";
+  if (isIntermediateCoachModule(moduleId)) return "intermediate";
+  return null;
+}
+
+/** Multi-correction gate — every day of every BASIC and INTERMEDIATE module. Advanced keeps v2. */
+export function isMultiCorrectionPilot(moduleId: string, day: number): boolean {
+  return coachLevelGroupFor(moduleId) !== null && Number.isInteger(day) && day > 0;
+}
+
+/** Max corrections the coach may return: 3 on BASIC, 5 on INTERMEDIATE, 0 (= v2) elsewhere. */
 export function maxCorrectionsFor(moduleId: string, day: number): number {
-  return isMultiCorrectionPilot(moduleId, day) ? MULTI_CORRECTION_MAX.basic : 0;
+  if (!isMultiCorrectionPilot(moduleId, day)) return 0;
+  return MULTI_CORRECTION_MAX[coachLevelGroupFor(moduleId) as CoachLevelGroup];
 }
 
 export const FINAL_AUDIO_COACH_VERSION_V2 = "v2";
 /** v3.2: multi-correction coach for every BASIC day (answeredTask, repetition/task_relevance, fluencyUpgrade). */
 export const FINAL_AUDIO_COACH_VERSION_PILOT = "v3.2-basic";
+/** v3.3: same compact coach for every INTERMEDIATE day, up to 5 adaptive corrections. */
+export const FINAL_AUDIO_COACH_VERSION_INTERMEDIATE = "v3.3-intermediate";
 
-/** Durable cache/rubric version per request: BASIC gets its own version, nothing else is invalidated. */
+/** Durable cache/rubric version per request; scoped per level so other levels are never invalidated. */
 export function coachVersionFor(moduleId: string, day: number): string {
-  return isMultiCorrectionPilot(moduleId, day) ? FINAL_AUDIO_COACH_VERSION_PILOT : FINAL_AUDIO_COACH_VERSION_V2;
+  if (!isMultiCorrectionPilot(moduleId, day)) return FINAL_AUDIO_COACH_VERSION_V2;
+  return coachLevelGroupFor(moduleId) === "intermediate"
+    ? FINAL_AUDIO_COACH_VERSION_INTERMEDIATE
+    : FINAL_AUDIO_COACH_VERSION_PILOT;
 }
 
 /** Optional ONE retake (bonus improvement round) — still the original pilot only: BASIC 3 · Day 1. */

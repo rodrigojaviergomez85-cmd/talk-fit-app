@@ -6,7 +6,7 @@
  * error. A `verb_tense` correction is never labelled "PASADO" just because the
  * pilot started in Basic 3 — the module and the corrected sentence decide.
  */
-import type { CoachCorrectionCategory } from "./final-audio-coach";
+import { isIntermediateCoachModule, type CoachCorrectionCategory } from "./final-audio-coach";
 
 export type CorrectionLabelInput = {
   category: CoachCorrectionCategory;
@@ -36,6 +36,23 @@ const FIXED_EN: Record<Exclude<CoachCorrectionCategory, "verb_tense">, string> =
   connector: "CONNECTION",
   repetition: "ADD VARIETY",
   development: "DEVELOPMENT",
+};
+
+/**
+ * INTERMEDIATE wording (Eagles / Tigers / Sharks). Same internal categories;
+ * only the display copy is more action-oriented at this level. BASIC keeps its
+ * approved labels unchanged.
+ */
+const INTERMEDIATE_ES: Partial<Record<CoachCorrectionCategory, string>> = {
+  naturalness: "INGLÉS NATURAL",
+  connector: "CONECTA TUS IDEAS",
+  development: "DESARROLLA MÁS",
+};
+
+const INTERMEDIATE_EN: Partial<Record<CoachCorrectionCategory, string>> = {
+  naturalness: "NATURAL ENGLISH",
+  connector: "CONNECT YOUR IDEAS",
+  development: "DEVELOP MORE",
 };
 
 const TENSE_ES: Record<TenseLabel, string> = {
@@ -97,7 +114,13 @@ export function isStructuralTenseError(said?: string, betterVersion?: string): b
 
 export function correctionDisplayLabel(input: CorrectionLabelInput): string {
   const { category, moduleId, said, betterVersion, showEs } = input;
-  if (category !== "verb_tense") return (showEs ? FIXED_ES : FIXED_EN)[category];
+  if (category !== "verb_tense") {
+    if (moduleId && isIntermediateCoachModule(moduleId)) {
+      const intermediate = (showEs ? INTERMEDIATE_ES : INTERMEDIATE_EN)[category];
+      if (intermediate) return intermediate;
+    }
+    return (showEs ? FIXED_ES : FIXED_EN)[category];
+  }
 
   if (isStructuralTenseError(said, betterVersion)) return showEs ? FIXED_ES.grammar : FIXED_EN.grammar;
 
