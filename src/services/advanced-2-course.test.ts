@@ -54,11 +54,45 @@ describe("ADVANCED 2 — DO THE JOB", () => {
     expect(withRecognition.map((d) => d.day)).toEqual([5, 10, 15, 20]);
   });
 
-  it("keeps every Test Ready Sprint optional", () => {
-    for (const day of days.filter((d) => d.testReady)) {
+  it("gives all 20 days a Test Ready Sprint, always optional", () => {
+    expect(days.filter((d) => d.testReady)).toHaveLength(20);
+    for (const day of days) {
+      expect(day.testReady).toBeDefined();
       expect(day.testReadyOptional).toBe(true);
+      expect(day.testReady?.items.length).toBeGreaterThanOrEqual(2);
     }
-    expect(days.filter((d) => d.testReady).length).toBeGreaterThanOrEqual(8);
+  });
+
+  it("Day 15 is Virtual Assistant schedule-conflict training", () => {
+    const d15 = days.find((d) => d.day === 15)!;
+    expect(d15.intro.title).toBe("MANAGE A SCHEDULE CONFLICT");
+    expect(d15.intro.titleEs).toBe("MANEJA UN CONFLICTO DE AGENDA");
+    expect(d15.cues).toEqual(["NEED", "CONFLICT", "OPTIONS", "CONFIRM"]);
+    expect(d15.lines).toHaveLength(8);
+    const script = (d15.rep5Turns ?? []).map((t) => t.text).join(" ");
+    expect(script).toContain("Move my meeting with David to tomorrow afternoon.");
+    expect(script).toContain("David isn't available tomorrow.");
+    expect(script).toContain("Friday morning");
+    expect((d15.rep5Turns ?? []).filter((t) => t.recognition).length).toBeGreaterThanOrEqual(1);
+    expect(d15.testReady?.type).toBe("mixed");
+  });
+
+  it("Day 20 mixes customer service, tech support, sales and virtual assistant", () => {
+    const d20 = days.find((d) => d.day === 20)!;
+    const turns = d20.rep5Turns ?? [];
+    const script = turns.map((t) => t.text).join(" ");
+    expect(script).toContain("charged twice");
+    expect(script).toContain("internet stopped working");
+    expect(script).toContain("competitor is cheaper");
+    expect(script).toContain("meeting with David");
+    // Recognition before selected scenario switches only — never before every turn.
+    const recognitions = turns.filter((t) => t.recognition).length;
+    expect(recognitions).toBeGreaterThanOrEqual(3);
+    expect(recognitions).toBeLessThan(turns.length);
+    // Week 4 stays low support: no full toolboxes on the final day.
+    expect(turns.every((t) => !t.toolbox?.length)).toBe(true);
+    expect(turns.filter((t) => t.repairTip)).toHaveLength(1);
+    expect(d20.testReady?.items).toHaveLength(5);
   });
 
   it("reduces visible support from week 1 to week 4", () => {
