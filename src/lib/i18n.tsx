@@ -210,6 +210,10 @@ const DICT = {
     "Quiero atender clientes, resolver problemas y comunicarme en el trabajo.",
     "I want to handle customers, solve problems and perform at work.",
   ],
+  "place.advanced-3": [
+    "Quiero explicar mis ideas, responder situaciones inesperadas y hablar sin guion.",
+    "I want to explain my ideas, handle unexpected situations and speak without a script.",
+  ],
   "place.locked": ["BLOQUEADO", "LOCKED"],
   "take.round": ["ROUND", "ROUND"],
   "take.target": ["META", "TARGET"],

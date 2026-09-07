@@ -215,6 +215,7 @@ const SKILL_DAYS: Partial<Record<ModuleId, { rolePlay: number[]; customerService
   // ADVANCED 1: every day is a recruiter role play; Days 5, 19 and 20 switch to customer service; Day 19 has a sales challenge.
   // ADVANCED 2: every day is a workplace role play; customer service is the core; Days 6–10 are sales.
   "advanced-2": { rolePlay: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], customerService: [1, 2, 3, 4, 5, 11, 12, 13, 14, 15, 20], sales: [6, 7, 8, 9, 10] },
+  "advanced-3": { rolePlay: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], customerService: [], sales: [] },
   "advanced-1": { rolePlay: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], customerService: [5, 19, 20], sales: [19] },
 };
 export const TEST_READY_THRESHOLD = 5;

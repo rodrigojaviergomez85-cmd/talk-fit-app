@@ -201,6 +201,7 @@ export const TIGERS_PROFILE: Rep2CorrectionProfile = higherLevelProfile("tigers"
 export const SHARKS_PROFILE: Rep2CorrectionProfile = higherLevelProfile("sharks");
 export const ADVANCED_1_PROFILE: Rep2CorrectionProfile = higherLevelProfile("advanced-1");
 export const ADVANCED_2_PROFILE: Rep2CorrectionProfile = higherLevelProfile("advanced-2");
+export const ADVANCED_3_PROFILE: Rep2CorrectionProfile = higherLevelProfile("advanced-3");
 
 /**
  * Profiles that exist. Adding an entry here does NOT enable the feature for
@@ -217,6 +218,7 @@ const PROFILES: Partial<Record<ModuleId, Rep2CorrectionProfile>> = {
   sharks: SHARKS_PROFILE,
   "advanced-1": ADVANCED_1_PROFILE,
   "advanced-2": ADVANCED_2_PROFILE,
+  "advanced-3": ADVANCED_3_PROFILE,
 };
 
 export function getRep2CorrectionProfile(moduleId: ModuleId | string): Rep2CorrectionProfile {
@@ -244,6 +246,7 @@ const ROLLOUT_MODULES: ReadonlySet<ModuleId> = new Set<ModuleId>([
   "sharks",
   "advanced-1",
   "advanced-2",
+  "advanced-3",
 ]);
 
 export function hasRep2CorrectionRollout(moduleId: ModuleId | string): boolean {

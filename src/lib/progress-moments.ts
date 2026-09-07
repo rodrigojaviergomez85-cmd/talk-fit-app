@@ -233,6 +233,10 @@ export const TRANSFORMATION: Record<ModuleId, { es: string; en: string }> = {
     es: "Ahora puedes atender clientes, resolver problemas y comunicarte profesionalmente en el trabajo.",
     en: "You can now handle customers, solve problems and communicate professionally at work.",
   },
+  "advanced-3": {
+    es: "Ahora puedes organizar tus ideas, responder preguntas inesperadas y hablar aunque no tengas un guion.",
+    en: "You can now organize your ideas, answer unexpected questions and speak without a script.",
+  },
 };
 
 export const MODULE_EMOJI: Record<ModuleId, string> = {
@@ -246,6 +250,7 @@ export const MODULE_EMOJI: Record<ModuleId, string> = {
   sharks: "🦈",
   "advanced-1": "🎯",
   "advanced-2": "💼",
+  "advanced-3": "🎤",
 };
 
 /** Extra completion detail for a module: level line + "AHORA PUEDES PRACTICAR CÓMO:" list. */

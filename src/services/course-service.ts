@@ -69,6 +69,10 @@ async function importDays(moduleId: ModuleId): Promise<CourseDay[]> {
       const [w1, w24] = await Promise.all([import("./advanced-2-course"), import("./advanced-2-weeks-2-4-course")]);
       return [...w1.ADVANCED_2_WEEK_1_DAYS, ...w24.ADVANCED_2_WEEKS_2_4_DAYS];
     }
+    case "advanced-3": {
+      const [w1, w24] = await Promise.all([import("./advanced-3-course"), import("./advanced-3-weeks-2-4-course")]);
+      return [...w1.ADVANCED_3_WEEK_1_DAYS, ...w24.ADVANCED_3_WEEKS_2_4_DAYS];
+    }
     default: {
       const never: never = moduleId;
       throw new ModuleNotFoundError(String(never));

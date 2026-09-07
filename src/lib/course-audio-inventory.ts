@@ -76,7 +76,7 @@ export function daySpecs(moduleId: ModuleId, day: CourseDay): AudioSpec[] {
   }
 
   // Rep 4: max 3 prompts; ADVANCED asks with a neutral recruiter tone.
-  const promptTone: ModelTone = moduleId === "advanced-1" || moduleId === "advanced-2" ? "neutral" : "coach";
+  const promptTone: ModelTone = moduleId === "advanced-1" || moduleId === "advanced-2" || moduleId === "advanced-3" ? "neutral" : "coach";
   for (const item of rep4Items(day)) {
     out.push({ text: item.question, voice: speaker, tone: promptTone, source: `${tag}/rep4` });
   }

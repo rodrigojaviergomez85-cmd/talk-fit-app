@@ -15,7 +15,8 @@ type PlacementKey =
   | "place.tigers"
   | "place.sharks"
   | "place.advanced-1"
-  | "place.advanced-2";
+  | "place.advanced-2"
+  | "place.advanced-3";
 
 /**
  * Self-placement: large cards in visual journey order. Never a formal test;
