@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { JourneyService } from "@/services/journey-service";
 import { CloudSync } from "@/services/cloud-sync";
 import { PracticeSessionService, setSessionScope } from "@/services/practice-session";
+import { PracticeAttempts, setPracticeAttemptScope } from "@/services/practice-attempts";
 import { setPreferencesScope } from "@/services/preferences";
 import { setVerbBankScope, VerbBank } from "@/services/verb-bank";
 
