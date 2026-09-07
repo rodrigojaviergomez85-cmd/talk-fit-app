@@ -70,18 +70,20 @@ describe("Multi-correction pilot — gate", () => {
   });
   it("rubric: BASIC days carry maxCorrections + v3.2-basic; non-basic days omit the field (hash unchanged)", async () => {
     const past = await CourseService.loadModule("past-stories");
+    const adv = await CourseService.loadModule("advanced-1");
     const d1 = buildRubric(past.days[0]!, "past-stories", "BASIC 3", null)!;
-    const d2 = buildRubric(past.days[1]!, "past-stories", "BASIC 3", null)!;
+    const d20 = buildRubric(past.days[19]!, "past-stories", "BASIC 3", null)!;
+    const d2 = buildRubric(adv.days[0]!, "advanced-1", "ADVANCED 1", null)!;
     expect(d1.coachVersion).toBe("v3.2-basic");
     expect(d1.maxCorrections).toBe(3);
-    expect(d2.coachVersion).toBe("v3.2-basic");
-    expect(d2.maxCorrections).toBe(3);
+    expect(d20.maxCorrections).toBe(3);
+    expect(d2.coachVersion).toBe("v2");
     expect("maxCorrections" in d2 && d2.maxCorrections !== undefined).toBe(false);
     expect(coachJsonSchemaFor(d1)).toBe(COACH_JSON_SCHEMA_MULTI);
     expect(coachJsonSchemaFor(d2)).toBe(COACH_JSON_SCHEMA);
     const sys = buildCoachMessages(d1, TRANSCRIPT, 5)[0]!.content;
     expect(sys).toContain("3 HIGHEST-LEARNING-VALUE items at most");
-    expect(sys).toContain("I didn't went' → 'I didn't go'");
+    expect(sys).toContain("Simple Past");
     expect(buildCoachMessages(d2, TRANSCRIPT, 5)[0]!.content).toContain("AT MOST ONE specific correction");
   });
 });
