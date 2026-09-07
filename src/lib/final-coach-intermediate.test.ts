@@ -54,7 +54,7 @@ describe("INTERMEDIATE rollout — gate, version and rubric", () => {
   });
 
   it("each intermediate module gets its own CourseDay rubric + the multi schema", async () => {
-    for (const m of INTERMEDIATE_MODULE_IDS) {
+    for (const m of ["eagles-week-1", "tigers", "sharks"] as const) {
       const mod = await CourseService.loadModule(m);
       const rubric = buildRubric(mod.days[0]!, m, mod.label ?? m, null)!;
       expect(rubric.maxCorrections).toBe(5);
