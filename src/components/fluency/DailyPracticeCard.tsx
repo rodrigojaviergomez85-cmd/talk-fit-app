@@ -1,9 +1,11 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Check, Clock, Mic } from "lucide-react";
 import { TranslatableText } from "./TranslatableText";
 import type { CourseDay, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
+import { DAILY_PRACTICE_CAP, PracticeAttempts } from "@/services/practice-attempts";
 
 
 type Props = {
@@ -14,25 +16,54 @@ type Props = {
   totalDays: number;
 };
 
+/** Today's practice counter. Client-only: the local calendar date is the learner's. */
+export function usePracticesToday(): number | null {
+  const [used, setUsed] = useState<number | null>(null);
+  useEffect(() => {
+    setUsed(PracticeAttempts.usedToday());
+    void PracticeAttempts.pull().then(() => setUsed(PracticeAttempts.usedToday()));
+  }, []);
+  return used;
+}
+
+/** "PRACTICES TODAY 2 / 5" — always visible, never scolding. */
+export function PracticesTodayChip({ used, className }: { used: number; className?: string }) {
+  const t = useT();
+  const full = used >= DAILY_PRACTICE_CAP;
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em]",
+        full ? "bg-success/12 text-success" : "bg-secondary text-muted-foreground",
+        className,
+      )}
+    >
+      {t("dailyCap.indicator")}{" "}
+      <span className="tabular-nums">
+        {used} / {DAILY_PRACTICE_CAP}
+      </span>
+    </span>
+  );
+}
+
 /** The one clear action on the module page: start or continue today's day. */
 export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalDays }: Props) {
   const t = useT();
+  const used = usePracticesToday();
+  const capReached = used !== null && used >= DAILY_PRACTICE_CAP;
+  const remaining = used === null ? null : Math.max(0, DAILY_PRACTICE_CAP - used);
   const ctaText = completed
-    ? t("home.practiceDayAgain").replace("{day}", String(day.day))
+    ? t("repeatDay.cta")
     : inProgress
       ? `${t("home.continueDay")} ${day.day}`
       : `${t("home.startDay")} ${day.day}`;
   return (
     <section className="rounded-3xl bg-card p-6 shadow-[var(--shadow-card)]">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
           {t("home.dayOfTotal").replace("{day}", String(day.day)).replace("{total}", String(totalDays))}
         </p>
-        {completed ? (
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-success/12 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-success">
-            <Check className="size-3.5" /> 5 / 5 reps
-          </span>
-        ) : null}
+        {used !== null ? <PracticesTodayChip used={used} /> : null}
       </div>
 
       <TranslatableText es={day.topicEs} className="mt-2">
@@ -49,18 +80,42 @@ export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalD
         <Meta icon={<Clock className="size-3.5" />} text={day.estimatedMinutes} />
       </div>
 
-      <Link
-        to="/practice"
-        search={{ day: day.day, module: moduleId }}
-        className={cn(
-          "mt-5 flex w-full items-center justify-center rounded-2xl px-6 py-4 text-[15px] font-bold tracking-wide transition-transform active:scale-[0.98]",
-          completed
-            ? "border border-border bg-card text-foreground"
-            : "bg-primary text-primary-foreground shadow-[var(--shadow-lift)]",
-        )}
-      >
-        {ctaText}
-      </Link>
+      {completed ? (
+        <div className="mt-4 rounded-2xl border border-border bg-secondary/40 p-4">
+          <p className="text-[11px] font-black uppercase tracking-[0.14em] text-success">{t("repeatDay.done")}</p>
+          <p className="mt-1 text-[13px] font-bold uppercase tracking-[0.12em]">{t("repeatDay.question")}</p>
+          <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
+            {t("repeatDay.body").replace("{cap}", String(DAILY_PRACTICE_CAP))}
+          </p>
+        </div>
+      ) : null}
+
+      {capReached ? (
+        <p className="mt-4 rounded-2xl bg-success/10 p-4 text-[13px] leading-relaxed text-success">
+          {t("dailyCap.body").replace("{cap}", String(DAILY_PRACTICE_CAP))}
+        </p>
+      ) : (
+        <Link
+          to="/practice"
+          search={{ day: day.day, module: moduleId }}
+          className={cn(
+            "mt-5 flex w-full items-center justify-center rounded-2xl px-6 py-4 text-[15px] font-bold tracking-wide transition-transform active:scale-[0.98]",
+            completed
+              ? "border border-border bg-card text-foreground"
+              : "bg-primary text-primary-foreground shadow-[var(--shadow-lift)]",
+          )}
+        >
+          {ctaText}
+        </Link>
+      )}
+
+      {remaining !== null && remaining > 0 ? (
+        <p className="mt-3 text-center text-[12px] font-semibold text-muted-foreground">
+          {remaining === 1
+            ? t("dailyCap.remainingOne")
+            : t("dailyCap.remaining").replace("{n}", String(remaining))}
+        </p>
+      ) : null}
     </section>
   );
 }
