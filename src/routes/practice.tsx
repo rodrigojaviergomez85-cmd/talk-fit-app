@@ -157,7 +157,10 @@ function PracticePage() {
     );
   }
 
-  return <PracticeFlow module={content.module} />;
+  // Remount on module/day change: navigating from Day Complete (e.g. "SEE NEXT WEEK")
+  // must start the new day fresh, never keep the previous day's completed state.
+  return <PracticeFlow key={`${moduleId}:${dayNumber}`} module={content.module} />;
+
 }
 
 function PracticeFlow({ module }: { module: LoadedModule }) {
