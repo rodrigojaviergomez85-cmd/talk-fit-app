@@ -85,8 +85,8 @@ export function WeekMoment({ comparison, celebrate = false }: Props) {
                 {es ? nextWeek.subtitleEs : nextWeek.subtitle}
               </p>
               <Link
-                to="/practice"
-                search={{ day: nextWeekFirstDay, module: comparison.moduleId }}
+                to="/module/$moduleId"
+                params={{ moduleId: comparison.moduleId }}
                 className="mt-3 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl border-2 border-primary px-4 text-[13px] font-bold uppercase tracking-[0.12em] text-primary"
               >
                 {es ? "VER LA PRÓXIMA SEMANA" : "SEE NEXT WEEK"} <ArrowRight className="size-4" />
