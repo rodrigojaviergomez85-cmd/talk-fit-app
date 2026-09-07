@@ -467,6 +467,12 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
         });
         setFinalRecording(final);
         setJourneyAfterFinish(next);
+        // Practice activity log (drives the 5-a-day counter, not progress).
+        PracticeAttempts.complete(PracticeAttempts.ensure(moduleId, day.day, user?.id ?? null).id, {
+          isFirstCompletion,
+          speakingSeconds: Math.round(practiceSeconds.current),
+          sentenceCount: final.sentenceCount ?? null,
+        });
         return next;
       },
       clearSession: () => PracticeSessionService.clear(moduleId, day.day),
