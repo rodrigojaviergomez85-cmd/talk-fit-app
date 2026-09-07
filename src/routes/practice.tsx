@@ -129,7 +129,7 @@ async function countSentences(blob: Blob | null): Promise<number | null> {
  * before mounting the practice flow, so every state initializer sees real data.
  */
 function PracticePage() {
-  const { module: moduleId } = Route.useSearch();
+  const { module: moduleId, day: dayNumber } = Route.useSearch();
   const { lang } = useAppLang();
   const content = useModuleContent(moduleId);
   const navigate = useNavigate();
@@ -157,7 +157,10 @@ function PracticePage() {
     );
   }
 
-  return <PracticeFlow module={content.module} />;
+  // Remount on module/day change: navigating from Day Complete (e.g. "SEE NEXT WEEK")
+  // must start the new day fresh, never keep the previous day's completed state.
+  return <PracticeFlow key={`${moduleId}:${dayNumber}`} module={content.module} />;
+
 }
 
 function PracticeFlow({ module }: { module: LoadedModule }) {
