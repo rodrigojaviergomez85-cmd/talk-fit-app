@@ -225,11 +225,11 @@ describe("Multi-correction pilot — engine", () => {
     expect(res.body.feedback.corrections).toHaveLength(3);
     expect(h.counters).toEqual({ stt: 1, llm: 1 });
     const row = [...h.store.rows.values()][0]!;
-    expect(row.insert.coachVersion).toBe("v3.1-pilot");
+    expect(row.insert.coachVersion).toBe("v3.2-basic");
     expect(JSON.stringify({ ...row, patches: undefined })).not.toContain("at six and then");
     expect(JSON.stringify(row.patches)).not.toContain("at six and then");
     expect(JSON.stringify(h.logs)).not.toContain("at six and then");
-    expect(h.logs.at(-1)).toMatchObject({ coachVersion: "v3.1-pilot", maxCorrections: 3, transcriptWordCount: 22 });
+    expect(h.logs.at(-1)).toMatchObject({ coachVersion: "v3.2-basic", maxCorrections: 3, transcriptWordCount: 22 });
     expect(Array.isArray(row.corrections) && (row.corrections as unknown[]).length).toBe(3);
   });
 
