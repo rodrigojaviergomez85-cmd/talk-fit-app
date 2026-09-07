@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
-import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { ArrowRight, Check, Info, Sparkles } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { toneForTurn, type ModelTone } from "@/lib/model-tone";
 import { rep2Chunks, rep4Items, rep2ChunkText, REP4_MAX, isRep2CorrectionEnabled } from "@/lib/rep-structure";
@@ -1398,6 +1398,7 @@ function Rep2Copy({
             }
           }}
         />
+        <Rep2AiDisclaimer />
       </div>
 
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
@@ -1451,6 +1452,20 @@ function Rep2Copy({
         </>
       )}
     </div>
+  );
+}
+
+/**
+ * Subtle STEP 2-only AI correction disclaimer. Appears directly below the
+ * recorder/timer so the learner knows the upcoming comparison is automated.
+ */
+function Rep2AiDisclaimer() {
+  const tt = useT();
+  return (
+    <p className="mx-auto flex max-w-xs items-start justify-center gap-1.5 text-center text-[11px] leading-snug text-muted-foreground">
+      <Info className="mt-0.5 size-3.5 shrink-0 opacity-80" aria-hidden="true" />
+      <span>{tt("rep2.aiDisclaimer")}</span>
+    </p>
   );
 }
 
