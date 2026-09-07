@@ -33,6 +33,7 @@ const AuthContext = createContext<AuthValue>({
 
 function scopeTo(userId: string | null) {
   setSessionScope(userId);
+  setPracticeAttemptScope(userId);
   setPreferencesScope(userId);
   setVerbBankScope(userId);
   JourneyService.invalidatePull();
