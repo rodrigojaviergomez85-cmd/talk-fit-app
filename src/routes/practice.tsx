@@ -684,6 +684,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
                 state={coachState}
                 showEs={esUi}
                 result={coachResultInput}
+                moduleId={moduleId}
                 onContinue={continueToDayComplete}
                 retake={
                   isRetakePilot(moduleId, day.day) && coachResultInput && finalRecording
