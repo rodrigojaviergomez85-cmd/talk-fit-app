@@ -1,5 +1,19 @@
-// @vitest-environment jsdom
 import { beforeEach, describe, expect, it } from "vitest";
+
+// Minimal browser storage stub: JourneyService is local-first by design.
+const store = new Map<string, string>();
+(globalThis as unknown as { window: unknown }).window = {
+  localStorage: {
+    getItem: (k: string) => store.get(k) ?? null,
+    setItem: (k: string, v: string) => void store.set(k, v),
+    removeItem: (k: string) => void store.delete(k),
+    clear: () => store.clear(),
+    key: (i: number) => [...store.keys()][i] ?? null,
+    get length() {
+      return store.size;
+    },
+  },
+};
 import { JourneyService } from "@/services/journey-service";
 
 /**
