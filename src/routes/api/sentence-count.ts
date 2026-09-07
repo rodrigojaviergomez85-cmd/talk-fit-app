@@ -59,8 +59,7 @@ export const Route = createFileRoute("/api/sentence-count")({
         }
 
         const mime = (file.type || "audio/webm").split(";")[0]?.trim().toLowerCase() ?? "audio/webm";
-        const ext = AUDIO_EXT[mime];
-        if (!ext) {
+        if (!(mime in AUDIO_EXT)) {
           return json({ error: "Unsupported audio format." }, 415);
         }
 
@@ -71,25 +70,13 @@ export const Route = createFileRoute("/api/sentence-count")({
         }
 
         // 1) Transcribe (server-side only; transcript never leaves this handler).
-        const upload = new FormData();
-        upload.append("model", "openai/gpt-4o-mini-transcribe");
-        upload.append("file", file, `take.${ext}`);
-        upload.append("language", "en");
-
-        const stt = await fetch("https://ai.gateway.lovable.dev/v1/audio/transcriptions", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${apiKey}` },
-          body: upload,
-        });
-
+        const { transcribeFinalAudio } = await import("@/lib/final-coach-providers.server");
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        const stt = await transcribeFinalAudio(bytes, mime, "sentence-count");
         if (!stt.ok) {
-          const detail = await stt.text().catch(() => "");
-          console.error(`Transcription failed [${stt.status}]: ${detail}`);
-          return json({ error: "Could not analyze the recording." }, gatewayStatus(stt.status));
+          return json({ error: "Could not analyze the recording." }, 502);
         }
-
-        const sttBody = (await stt.json().catch(() => null)) as { text?: unknown } | null;
-        const transcript = typeof sttBody?.text === "string" ? sttBody.text.trim() : "";
+        const transcript = stt.text.trim();
         if (!transcript) return json({ sentences: 0 });
 
         // 2) Count complete spoken ideas — punctuation-independent.

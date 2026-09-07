@@ -17,6 +17,7 @@ export const AUDIO_EXT: Record<string, string> = {
   "audio/x-m4a": "m4a",
   "audio/mpeg": "mp3",
   "audio/wav": "wav",
+  "audio/wave": "wav",
   "audio/ogg": "ogg",
 };
 
