@@ -324,7 +324,17 @@ const d2 = advanced3Day({
     es: "PANORAMA → DETALLES → ACCIÓN → INTERPRETACIÓN. No necesitas certeza.",
   },
   rep5Turns: [
-    turn("a3d3-placeholder-unused", QUESTIONER, "", "", "female"),
+    turn("a3d2-turn1", QUESTIONER, "Describe a busy street market on a Saturday morning. What do you see?", "Describe un mercado callejero lleno un sábado por la mañana. ¿Qué ves?", "female", {
+      targetSeconds: DEVELOP,
+      cues: ["BIG PICTURE", "DETAILS", "ACTION", "INTERPRETATION"],
+      toolbox: ["The first thing I notice is…", "It looks like…", "They might be…"],
+    }),
+    turn("a3d2-turn2", QUESTIONER, "Now tell me what you think is happening between two of those people.", "Ahora dime qué crees que está pasando entre dos de esas personas.", "female", {
+      targetSeconds: DEVELOP,
+      cues: ["GUESS", "WHY"],
+      toolbox: ["It seems that…", "If I had to guess…"],
+    }),
+    repairTurn("a3d2-repair", "catch", QUESTIONER, "And which part of that scene would be most difficult to describe in English?", "¿Y qué parte de esa escena sería más difícil de describir en inglés?", "female"),
   ],
   speakerVoice: "female",
   testReady: d2Sprint,
