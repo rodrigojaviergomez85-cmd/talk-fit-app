@@ -41,6 +41,7 @@ import {
   migrateLegacyRep2,
   type PracticeSession,
 } from "@/services/practice-session";
+import { canStartNewDay } from "@/lib/daily-completion-cap";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthGate } from "@/components/fluency/AuthGate";
