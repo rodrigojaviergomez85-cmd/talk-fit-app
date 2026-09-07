@@ -206,6 +206,10 @@ const DICT = {
     "Terminé SHARKS y quiero prepararme para entrevistas reales de reclutamiento.",
     "I finished SHARKS and want to prepare for real recruitment interviews.",
   ],
+  "place.advanced-2": [
+    "Quiero atender clientes, resolver problemas y comunicarme en el trabajo.",
+    "I want to handle customers, solve problems and perform at work.",
+  ],
   "place.locked": ["BLOQUEADO", "LOCKED"],
   "take.round": ["ROUND", "ROUND"],
   "take.target": ["META", "TARGET"],
