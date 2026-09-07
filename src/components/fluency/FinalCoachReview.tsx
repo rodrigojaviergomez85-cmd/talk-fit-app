@@ -191,6 +191,21 @@ export function FinalCoachReview({ state, showEs, result, moduleId, onContinue, 
     );
   }
 
+  if (state.status === "rate_limited") {
+    return (
+      <Shell testId="final-coach-rate-limited">
+        <Title>{showEs ? "COACH DE IA" : "AI COACH"}</Title>
+        {result ? <ObjectiveResultBlock input={result} showEs={showEs} /> : null}
+        <p className="text-[16px] font-semibold leading-snug text-foreground">
+          {showEs
+            ? "Tu práctica quedó guardada. Llegaste al límite de análisis del día; vuelve mañana para más feedback."
+            : "Your practice is saved. You've reached today's feedback limit — come back tomorrow for more."}
+        </p>
+        <ContinueButton showEs={showEs} onClick={onContinue} />
+      </Shell>
+    );
+  }
+
   if (state.status === "unavailable") {
     return (
       <Shell testId="final-coach-unavailable">
