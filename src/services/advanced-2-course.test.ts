@@ -78,7 +78,16 @@ describe("ADVANCED 2 — DO THE JOB", () => {
       days: Object.fromEntries(
         CourseService.getDays("sharks").map((d) => [
           `sharks-${d.day}`,
-          { moduleId: "sharks" as const, day: d.day, completedAt: new Date().toISOString(), practiceSeconds: 60 },
+          {
+            moduleId: "sharks" as const,
+            day: d.day,
+            completedAt: new Date().toISOString(),
+            dayKey: "2026-01-01",
+            practiceSeconds: 60,
+            finalSeconds: 60,
+            firstSeconds: 60,
+            recordingsCount: 1,
+          },
         ]),
       ),
     };
