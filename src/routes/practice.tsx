@@ -369,6 +369,10 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
 
   const trackSeconds = (recording: Recording) => {
     practiceSeconds.current += recording.durationSeconds;
+    // DAILY PRACTICE CAP: the learner's FIRST real recording of this session
+    // spends one of today's 5 slots. Idempotent — later recordings, retakes and
+    // a page refresh all belong to the same session and never spend another.
+    PracticeAttempts.consumeSlot(PracticeAttempts.ensure(moduleId, dayNumber, user?.id ?? null).id);
   };
 
   const recorded = takes.filter((take): take is Recording => Boolean(take));
