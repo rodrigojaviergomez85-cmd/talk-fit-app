@@ -663,6 +663,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_unlimited_test_user: { Args: { _user_id: string }; Returns: boolean }
       release_tts_lock: {
         Args: { _clip_key: string; _owner: string }
         Returns: boolean
