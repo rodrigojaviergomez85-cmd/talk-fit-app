@@ -26,6 +26,8 @@ import {
   type AnsweredTask,
   type CoachCorrectionCategory,
   type FinalAudioCoachCorrection,
+  type FinalAudioCoachRelatedOccurrence,
+  MAX_RELATED_OCCURRENCES,
   type FinalAudioCoachFluencyUpgrade,
 } from "./final-audio-coach";
 
@@ -454,9 +456,64 @@ function isCategory(value: unknown): value is CoachCorrectionCategory {
  *  - overlapping `said` quotes (one contains the other) = same mistake → keep one
  *  - at most `max`, in the model's priority order
  */
+/** Server-only grouping key: the LLM's reusable rule id, normalized. Never shown to the learner. */
+function ruleKeyOf(c: Record<string, unknown>): string {
+  const v = c["ruleKey"];
+  return typeof v === "string" ? v.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "") : "";
+}
+
+/** Validate + ground the "also applies to" examples of one correction (max MAX_RELATED_OCCURRENCES). */
+export function normalizeRelatedOccurrences(
+  raw: unknown,
+  transcript: string | undefined,
+  primarySaid: string,
+): FinalAudioCoachRelatedOccurrence[] {
+  if (!Array.isArray(raw)) return [];
+  const out: FinalAudioCoachRelatedOccurrence[] = [];
+  const seen = new Set<string>([normalizeForMatch(primarySaid)]);
+  for (const item of raw) {
+    if (out.length >= MAX_RELATED_OCCURRENCES) break;
+    if (!item || typeof item !== "object") continue;
+    const r = item as Record<string, unknown>;
+    const said = typeof r["said"] === "string" ? r["said"].replace(/\s+/g, " ").trim() : "";
+    const betterRaw = typeof r["betterVersion"] === "string" ? r["betterVersion"].trim() : "";
+    if (!said || !betterRaw) continue;
+    if (said.length > LIMITS.said || countWords(said) > MAX_SAID_WORDS) continue;
+    // Same grounding standard as the primary quote: an invented quote is discarded, never the correction.
+    if (transcript !== undefined && !saidOccursInTranscript(said, transcript)) continue;
+    const betterVersion = clip(betterRaw, LIMITS.betterVersion);
+    const saidNorm = normalizeForMatch(said);
+    if (!saidNorm || saidNorm === normalizeForMatch(betterVersion)) continue;
+    if (seen.has(saidNorm)) continue;
+    seen.add(saidNorm);
+    out.push({ said, betterVersion });
+  }
+  return out;
+}
+
+function mergeOccurrence(target: CoachCorrection, said: string, betterVersion: string): void {
+  const existing = target.relatedOccurrences ?? [];
+  if (existing.length >= MAX_RELATED_OCCURRENCES) return;
+  const seen = new Set([normalizeForMatch(target.said), ...existing.map((o) => normalizeForMatch(o.said))]);
+  const norm = normalizeForMatch(said);
+  if (!norm || seen.has(norm)) return;
+  target.relatedOccurrences = [...existing, { said, betterVersion }];
+}
+
+/**
+ * Pilot: validate, ground, GROUP and cap the candidate corrections from the
+ * SAME LLM response. Every rule is per item — a bad item is dropped, never the
+ * whole result, and no second AI call is made.
+ *  - allowed category; `said` non-empty, ≤ MAX_SAID_WORDS, really in the transcript
+ *  - betterVersion non-empty and meaningfully different; whyEn + whyEs present
+ *  - overlapping quotes OR the same `ruleKey` = the SAME reusable rule → merged into
+ *    the earlier correction as an "also applies to" occurrence (max 2), NOT a new slot
+ *  - at most `max` corrections, in the model's priority order
+ */
 export function normalizeCorrections(raw: unknown, max: number, transcript?: string): CoachCorrection[] {
   if (max <= 0 || !Array.isArray(raw)) return [];
   const out: CoachCorrection[] = [];
+  const ruleKeys: string[] = [];
   for (const item of raw) {
     if (!item || typeof item !== "object") continue;
     const c = item as Record<string, unknown>;
@@ -481,24 +538,30 @@ export function normalizeCorrections(raw: unknown, max: number, transcript?: str
     }
     const saidNorm = normalizeForMatch(said);
     if (!saidNorm || saidNorm === normalizeForMatch(betterVersion)) continue;
-    // Dedupe: same underlying mistake quoted twice → keep the more complete quote in the earlier (higher-priority) slot.
+    // Same underlying rule quoted twice → keep ONE correction and show the repeat as evidence.
     // Repetition / relevance items describe a pattern, not one mistake: they never absorb (or get absorbed by) a grammar quote.
     const patternLike = multiFragment || category === "task_relevance";
+    const ruleKey = ruleKeyOf(c);
     const dupIndex = patternLike
       ? -1
-      : out.findIndex((prev) => {
+      : out.findIndex((prev, i) => {
           if (prev.category === "repetition" || prev.category === "task_relevance") return false;
+          if (ruleKey && ruleKeys[i] === ruleKey) return true;
           const p = normalizeForMatch(prev.said);
-          return ` ${p} `.includes(` ${saidNorm} `) || ` ${saidNorm} `.includes(` ${p} `);
+          return ` ${p} `.includes(` ${saidNorm} `) || ` ${saidNorm} `.includes(` ${saidNorm}` === ` ${p}` ? p : p) && ` ${saidNorm} `.includes(` ${p} `);
         });
-    const next: CoachCorrection = { category, said, betterVersion, whyEn, whyEs };
+    const related = normalizeRelatedOccurrences(c["relatedOccurrences"], transcript, said);
+    const next: CoachCorrection = { category, said, betterVersion, whyEn, whyEs, ...(related.length ? { relatedOccurrences: related } : {}) };
     if (dupIndex >= 0) {
-      if (saidNorm.length > normalizeForMatch(out[dupIndex]!.said).length) out[dupIndex] = next;
+      // Never lose the repeated evidence: merge it under the primary correction.
+      mergeOccurrence(out[dupIndex]!, said, betterVersion);
+      for (const o of related) mergeOccurrence(out[dupIndex]!, o.said, o.betterVersion);
       continue;
     }
     // One pattern item of each kind is enough.
     if (patternLike && out.some((prev) => prev.category === category)) continue;
     out.push(next);
+    ruleKeys.push(ruleKey);
   }
   // Task relevance is the FIRST priority: an off-topic answer is never buried under a grammar slip.
   const relevance = out.filter((c) => c.category === "task_relevance");
