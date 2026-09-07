@@ -31,8 +31,10 @@ describe("correction labels are module-aware and error-aware", () => {
     expect(label("mixed-tenses", "Tomorrow I went to the party", "Tomorrow I'm going to the party")).toBe("FUTURO");
   });
 
-  it("Basic Zero — no tense signal falls back to a simple GRAMÁTICA label", () => {
-    expect(label("basic-zero", "I no like coffee", "I don't like coffee")).toBe("GRAMÁTICA");
+  it("Basic Zero — simple contextual labels, never PASADO by default", () => {
+    expect(label("basic-zero", "I no like coffee", "I don't like coffee")).toBe("PRESENTE");
+    // No tense signal anywhere: fall back to a plain grammar label.
+    expect(label("basic-zero", "My name Ana", "My name Ana Lopez")).toBe("GRAMÁTICA");
   });
 
   it("non-tense categories keep their stable labels", () => {
