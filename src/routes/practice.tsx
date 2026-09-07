@@ -129,7 +129,7 @@ async function countSentences(blob: Blob | null): Promise<number | null> {
  * before mounting the practice flow, so every state initializer sees real data.
  */
 function PracticePage() {
-  const { module: moduleId } = Route.useSearch();
+  const { module: moduleId, day: dayNumber } = Route.useSearch();
   const { lang } = useAppLang();
   const content = useModuleContent(moduleId);
   const navigate = useNavigate();
