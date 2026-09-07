@@ -58,6 +58,7 @@ const MODULE_IDS = new Set<string>([
   "sharks",
   "advanced-1",
   "advanced-2",
+  "advanced-3",
 ]);
 
 function asModuleId(value: unknown): ModuleId | null {

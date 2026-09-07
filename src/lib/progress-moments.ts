@@ -233,6 +233,10 @@ export const TRANSFORMATION: Record<ModuleId, { es: string; en: string }> = {
     es: "Ahora puedes atender clientes, resolver problemas y comunicarte profesionalmente en el trabajo.",
     en: "You can now handle customers, solve problems and communicate professionally at work.",
   },
+  "advanced-3": {
+    es: "Ahora puedes organizar tus ideas, responder preguntas inesperadas y hablar aunque no tengas un guion.",
+    en: "You can now organize your ideas, answer unexpected questions and speak without a script.",
+  },
 };
 
 export const MODULE_EMOJI: Record<ModuleId, string> = {
@@ -246,6 +250,7 @@ export const MODULE_EMOJI: Record<ModuleId, string> = {
   sharks: "🦈",
   "advanced-1": "🎯",
   "advanced-2": "💼",
+  "advanced-3": "🎤",
 };
 
 /** Extra completion detail for a module: level line + "AHORA PUEDES PRACTICAR CÓMO:" list. */
@@ -421,6 +426,20 @@ export const NEXT_UP: Record<ModuleId, NextUpCopy> = {
       { es: "recomendar y manejar objeciones", en: "recommend and handle objections" },
       { es: "calmar a un cliente molesto", en: "calm an upset customer" },
       { es: "reportar y recibir feedback en el trabajo", en: "report and take feedback at work" },
+    ],
+  },
+  "advanced-3": {
+    emoji: "🎤",
+    promise: {
+      es: "BEYOND THE SCRIPT — EXPLICA TUS IDEAS. RESPONDE LO INESPERADO. HABLA SIN GUION.",
+      en: "BEYOND THE SCRIPT — EXPLAIN IDEAS. HANDLE WHAT-IFS. SPEAK WITH NO SCRIPT.",
+    },
+    items: [
+      { es: "reconocer qué tipo de respuesta necesita la pregunta", en: "recognize what kind of answer the question needs" },
+      { es: "organizar tus ideas antes de hablar", en: "organize your ideas before speaking" },
+      { es: "dar una opinión y defenderla", en: "give an opinion and defend it" },
+      { es: "responder situaciones hipotéticas", en: "answer hypothetical situations" },
+      { es: "seguir hablando cuando no sabes qué decir", en: "keep talking when you don't know what to say" },
     ],
   },
 };

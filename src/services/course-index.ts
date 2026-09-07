@@ -268,6 +268,37 @@ export const MODULE_INDEX: LearningModule[] = [
     family: "advanced",
     builtWeeks: 4,
   },
+  {
+    // Internal id is frozen from day one: progress and recordings are keyed to it.
+    // ADVANCED is CYCLICAL, not a ladder: ADVANCED 3 never requires ADVANCED 1 or 2.
+    id: "advanced-3",
+    ...outline("advanced-3"),
+    order: 11,
+    label: "AVANZADO · ADVANCED 3",
+    title: "BEYOND THE SCRIPT",
+    subtitle: "Explain ideas. Handle what-ifs. Speak when there is no script.",
+    subtitleEs: "Explica tus ideas, responde situaciones inesperadas y habla aunque no tengas un guion.",
+    statusLine: { en: "4 Weeks · 20 Days · 100 Fluency Reps", es: "4 semanas · 20 días · 100 Fluency Reps" },
+    description: "Stop depending on memorized answers: recognize what kind of answer a question needs, organize your thoughts and speak — even when the question is new.",
+    descriptionEs: "Deja de depender de respuestas memorizadas: reconoce qué tipo de respuesta necesita la pregunta, organiza tus ideas y habla — aunque la pregunta sea nueva.",
+    meta: ["4 Weeks", "20 Days", "100 Fluency Reps", "20 Test Ready Sprints"],
+    highlights: [
+      { en: "Organize your thoughts before you speak", es: "Organizar tus ideas antes de hablar" },
+      { en: "Give a clear opinion and defend it", es: "Dar una opinión clara y defenderla" },
+      { en: "Explain difficult ideas in simple words", es: "Explicar ideas difíciles con palabras simples" },
+      { en: "Answer what-if questions without freezing", es: "Responder preguntas hipotéticas sin trabarte" },
+      { en: "Reflect on experiences and connect them to now", es: "Reflexionar sobre experiencias y conectarlas con hoy" },
+      { en: "Keep talking when you don't know what to say", es: "Seguir hablando cuando no sabes qué decir" },
+    ],
+    extra: {
+      en: "⚡ 20 TEST READY SPRINTS — optional, never scored.",
+      es: "⚡ 20 TEST READY SPRINTS — opcionales, nunca calificados.",
+    },
+    cta: { en: "START BEYOND THE SCRIPT", es: "EMPEZAR BEYOND THE SCRIPT" },
+    hiddenFromPlacement: true,
+    family: "advanced",
+    builtWeeks: 4,
+  },
 ];
 
 /**
@@ -285,18 +316,7 @@ export type UpcomingLevel = {
   unlockAfter: ModuleId | string;
   note: { en: string; es: string };
 };
-export const UPCOMING_LEVELS: UpcomingLevel[] = [
-  {
-    key: "advanced-3",
-    label: "AVANZADO · ADVANCED 3",
-    title: "THINK FAST",
-    subtitle: "Respond instantly under real pressure.",
-    subtitleEs: "Responde al instante bajo presión real.",
-    emoji: "⚡",
-    unlockAfter: "advanced-2",
-    note: { en: "Unlocks after completing DO THE JOB.", es: "Se desbloquea al completar DO THE JOB." },
-  },
-];
+export const UPCOMING_LEVELS: UpcomingLevel[] = [];
 
 export const DEFAULT_MODULE: ModuleId = "basic-zero";
 
@@ -311,6 +331,7 @@ export function isModuleId(value: unknown): value is ModuleId {
     value === "tigers" ||
     value === "sharks" ||
     value === "advanced-1" ||
-    value === "advanced-2"
+    value === "advanced-2" ||
+    value === "advanced-3"
   );
 }
