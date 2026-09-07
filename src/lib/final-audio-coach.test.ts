@@ -111,6 +111,9 @@ function makeStore(now: () => number) {
         why_es: null,
         practice_phrase: null,
         transcript_word_count: null,
+        corrections: null,
+        answered_task: null,
+        fluency_upgrade: null,
         estimated_idea_count: row.estimatedIdeaCount,
       });
       return true;
@@ -141,6 +144,9 @@ function makeStore(now: () => number) {
       r.why_en = patch.feedback?.whyEn ?? null;
       r.why_es = patch.feedback?.whyEs ?? null;
       r.practice_phrase = patch.feedback?.practicePhrase ?? null;
+      r.corrections = patch.feedback?.corrections?.length ? patch.feedback.corrections : null;
+      r.answered_task = patch.feedback?.answeredTask ?? null;
+      r.fluency_upgrade = patch.feedback?.fluencyUpgrade ?? null;
     },
   };
   return store;
@@ -613,7 +619,7 @@ describe("Final Audio Coach v2 — ONE transcript-grounded specific correction",
   });
 
   it("CASE I: `said` NOT in the transcript → fabricated quote suppressed, general next step kept, no second LLM call", async () => {
-    const h = harness({ transcript: ROUTINE, llmReply: { ...GOOD_LLM, ...CORRECTION, said: "She work at home" } });
+    const h = harness({ transcript: ROUTINE, llmReply: { ...GOOD_LLM, ...CORRECTION, said: "She work at home", corrections: [{ category: "grammar", said: "She work at home", betterVersion: "She works at home", whyEn: "Third person -s.", whyEs: "Tercera persona -s." }] } });
     const res = await runFinalAudioCoach(INPUT, h.deps);
     expect(res.body.status).toBe("ready");
     if (res.body.status !== "ready") return;
