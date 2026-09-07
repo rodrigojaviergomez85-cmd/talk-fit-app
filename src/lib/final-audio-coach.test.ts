@@ -7,6 +7,7 @@ import {
   COACH_JSON_SCHEMA,
   COACH_QUOTA_ENDPOINT,
   FINAL_AUDIO_COACH_VERSION,
+  coachVersionFor,
   MAX_FINAL_AUDIO_BYTES,
   MAX_FINAL_AUDIO_SECONDS,
   MIN_TRANSCRIPT_WORDS,
@@ -252,7 +253,7 @@ describe("Final Audio Coach — happy path & cache", () => {
     const row = [...h.store.rows.values()][0]!;
     expect(row.status).toBe("ready");
     expect(row.strength_es).toBe(GOOD_LLM.strengthEs);
-    expect(row.insert.coachVersion).toBe(FINAL_AUDIO_COACH_VERSION);
+    expect(row.insert.coachVersion).toBe(coachVersionFor("simple-present", 1));
     expect(row.insert.sourceTurnNumber).toBeNull();
   });
 
@@ -325,7 +326,7 @@ describe("Final Audio Coach — concurrency & leases", () => {
       userId: USER_A,
       audioSha256: audioHash,
       rubricSha256: await rubricSha256(rubric),
-      coachVersion: FINAL_AUDIO_COACH_VERSION,
+      coachVersion: coachVersionFor("simple-present", 1),
       moduleId: "simple-present",
       day: 1,
       takeNumber: 2,
@@ -346,7 +347,7 @@ describe("Final Audio Coach — concurrency & leases", () => {
       userId: USER_A,
       audioSha256: audioHash,
       rubricSha256: await rubricSha256(rubric),
-      coachVersion: FINAL_AUDIO_COACH_VERSION,
+      coachVersion: coachVersionFor("simple-present", 1),
       moduleId: "simple-present",
       day: 1,
       takeNumber: 2,
@@ -500,7 +501,7 @@ describe("Final Audio Coach — rubric resolution", () => {
     const a = buildRubric(day, "simple-present", "X", null)!;
     const b = buildRubric(day, "simple-present", "X", null)!;
     expect(await rubricSha256(a)).toBe(await rubricSha256(b));
-    expect(a.coachVersion).toBe(FINAL_AUDIO_COACH_VERSION);
+    expect(a.coachVersion).toBe(coachVersionFor("simple-present", 1));
     expect(await rubricSha256({ ...a, coachVersion: "v1" })).not.toBe(await rubricSha256(a));
   });
 });
