@@ -47,7 +47,7 @@ export type CoachCorrection = FinalAudioCoachCorrection;
 
 /** Quota: NEW analyses per learner per rolling window. Cache hits never consume it. */
 export const COACH_QUOTA_ENDPOINT = "final-audio-coach";
-export const COACH_QUOTA_LIMIT = 10;
+export const COACH_QUOTA_LIMIT = 30;
 export const COACH_QUOTA_WINDOW_SECONDS = 24 * 60 * 60;
 
 /**

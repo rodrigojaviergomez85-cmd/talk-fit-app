@@ -108,6 +108,7 @@ function stateFrom(result: CoachHttpResult): FinalCoachState | "pending" | "not_
   if (http === 200 && body?.status === "unclear") return { status: "unclear" };
   if (http === 202 || body?.status === "pending") return "pending";
   if (http === 409 || body?.status === "final_audio_not_ready") return "not_ready";
+  if (http === 429 || body?.status === "rate_limited") return { status: "rate_limited" };
   // error / rate_limited / 401 / 404 / 413 / anything else: terminal, no technical detail to the learner.
   return { status: "unavailable" };
 }

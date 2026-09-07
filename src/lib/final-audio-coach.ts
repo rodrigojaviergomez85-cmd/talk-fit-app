@@ -197,6 +197,7 @@ export type FinalCoachState =
   | { status: "analyzing" }
   | { status: "ready"; feedback: FinalAudioCoachFeedback; transcript?: string | null }
   | { status: "unclear" }
+  | { status: "rate_limited" }
   | { status: "unavailable" };
 
 /* ------------------------------------------------------------------------ */
