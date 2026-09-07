@@ -23,12 +23,26 @@ const DICT = {
 
   // Generic actions
   "action.start": ["EMPEZAR", "START"],
-  "dailyCap.title": ["¡Ya practicaste hoy!", "You've practiced today!"],
+  "dailyCap.badge": ["{cap} / {cap} PRÁCTICAS DE HOY ✅", "{cap} / {cap} PRACTICES TODAY ✅"],
+  "dailyCap.title": ["¡Excelente trabajo por hoy!", "Great work today!"],
   "dailyCap.body": [
-    "Completaste tus 2 días de hoy. Descansar entre sesiones ayuda a que el inglés se te quede — volvé mañana para seguir.",
-    "You've completed today's 2 days. Resting between sessions helps English stick — come back tomorrow to continue.",
+    "Ya completaste tus {cap} prácticas de hoy. Mañana puedes continuar con un día nuevo o repetir cualquier práctica.",
+    "You've completed your {cap} practices for today. Tomorrow you can continue with a new day or repeat any previous practice.",
   ],
   "dailyCap.backHome": ["VOLVER AL INICIO", "BACK HOME"],
+  "dailyCap.indicator": ["PRÁCTICAS DE HOY", "PRACTICES TODAY"],
+  "dailyCap.remaining": [
+    "Te quedan {n} prácticas hoy.",
+    "You have {n} practices left today.",
+  ],
+  "dailyCap.remainingOne": ["Te queda 1 práctica hoy.", "You have 1 practice left today."],
+  "repeatDay.done": ["✓ YA COMPLETASTE ESTE DÍA", "✓ YOU ALREADY COMPLETED THIS DAY"],
+  "repeatDay.question": ["¿QUIERES PRACTICARLO OTRA VEZ?", "PRACTICE IT AGAIN?"],
+  "repeatDay.body": [
+    "Repetir cuenta como una de tus {cap} prácticas de hoy, pero no cambia tu avance del curso.",
+    "A repeat counts as one of your {cap} practices today, but it does not change your course progress.",
+  ],
+  "repeatDay.cta": ["PRACTICAR OTRA VEZ", "PRACTICE AGAIN"],
   "action.back": ["ATRÁS", "BACK"],
   "action.exit": ["SALIR", "EXIT"],
   "action.next": ["SIGUIENTE", "NEXT"],
