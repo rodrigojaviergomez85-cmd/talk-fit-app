@@ -824,7 +824,7 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
   let cacheHit = false;
   let transcriptWordCount: number | null = null;
   let sourceTurnNumber: number | null = null;
-  // Resolved per request: "v3-pilot" on past-stories Day 1, "v2" everywhere else.
+  // Resolved per request: "v3.2-basic" on BASIC modules, "v2" everywhere else.
   const coachVersion = coachVersionFor(input.moduleId, input.day);
   const maxCorrections = maxCorrectionsFor(input.moduleId, input.day);
   const pilot = maxCorrections > 0;
