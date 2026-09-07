@@ -580,6 +580,9 @@ describe("Final Audio Coach v2 — ONE transcript-grounded specific correction",
     whyEn: "You're talking about your routine, so use the simple present.",
     whyEs: "Estás hablando de tu rutina, por eso usamos presente simple.",
     practicePhrase: "I take a shower and then I have breakfast.",
+    corrections: [
+      { category: "verb_tense", said: "I took a shower", betterVersion: "I take a shower", whyEn: "Use the simple present.", whyEs: "Usa el presente simple." },
+    ],
   };
 
   it("coach version is v2 so cached v1 rows are never replayed as v2 feedback", () => {
