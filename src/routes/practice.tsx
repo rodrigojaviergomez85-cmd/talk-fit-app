@@ -1484,6 +1484,15 @@ function Rep5AiDisclaimer() {
   );
 }
 
+/**
+ * Subtle STEP 3 + STEP 4 status line. No AI evaluation happens in these steps,
+ * so we reassure the learner that the practice is for rhythm/fluency only.
+ */
+function NoAiDisclaimer({ tKey }: { tKey: "rep3.noAi" | "rep4.noAi" }) {
+  const tt = useT();
+  return <p className="text-center text-[11px] leading-snug text-muted-foreground">{tt(tKey)}</p>;
+}
+
 /* -------------------------------- Rep 3 ---------------------------------- */
 
 /**
@@ -1493,8 +1502,9 @@ function Rep5AiDisclaimer() {
 function Rep3Shadow({ day, onNext, onSkip }: { day: CourseDay; onNext: () => void; onSkip: () => void }) {
   return (
     <div className="space-y-4">
-      <div className="rounded-3xl bg-navy p-5">
+      <div className="rounded-3xl bg-navy p-5 space-y-2">
         <RepHeader titleKey="rep3.title" instrKey="rep3.instr" cueKey="rep3.cue" dark />
+        <NoAiDisclaimer tKey="rep3.noAi" />
       </div>
 
       <ShadowKaraoke
@@ -1546,6 +1556,7 @@ function Rep4MakeItYours({
   return (
     <div className="space-y-5">
       <RepHeader titleKey="rep4.title" instrKey="rep4.instr" label={item.label} copy={day.repCopy?.rep4} />
+      <NoAiDisclaimer tKey="rep4.noAi" />
 
       {!hideVisuals ? (
         <>
