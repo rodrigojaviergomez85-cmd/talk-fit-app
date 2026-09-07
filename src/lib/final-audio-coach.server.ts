@@ -648,7 +648,7 @@ export function buildCoachMessages(
     "Evaluate only: (1) task completion — did they answer the actual question/turn; (2) target language — a reasonable attempt at the day's focus; (3) organization — several understandable connected ideas for the level.",
     "Return ONE genuine strength and ONE highest-value next step, each as ONE short sentence, in English AND natural Latin American Spanish. No lists of mistakes.",
     ...(rubric.maxCorrections && rubric.maxCorrections > 0
-      ? multiCorrectionGuidance(rubric.maxCorrections)
+      ? multiCorrectionGuidance(rubric.maxCorrections, rubric.moduleId)
       : [
           "Then decide on AT MOST ONE specific correction (language / grammar / vocabulary / task usage ONLY — never pronunciation, accent or phonemes, because you only see a transcript). Prioritise the day's language focus: tense, missing auxiliary, third-person -s, negative/question structure, an important word choice, a connector, the target structure, or organization when clearly useful.",
           "If there is a clear, high-value error: set correctionNeeded=true; `said` = a SHORT phrase (max 12 words) copied EXACTLY, word for word, from the transcript (never paraphrase, never invent); `betterVersion` = the corrected phrase; `whyEn`/`whyEs` = ONE very simple reason; `practicePhrase` = one short natural English sentence to repeat that uses the correct form.",
