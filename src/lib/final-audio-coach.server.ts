@@ -548,7 +548,7 @@ export function normalizeCorrections(raw: unknown, max: number, transcript?: str
           if (prev.category === "repetition" || prev.category === "task_relevance") return false;
           if (ruleKey && ruleKeys[i] === ruleKey) return true;
           const p = normalizeForMatch(prev.said);
-          return ` ${p} `.includes(` ${saidNorm} `) || ` ${saidNorm} `.includes(` ${saidNorm}` === ` ${p}` ? p : p) && ` ${saidNorm} `.includes(` ${p} `);
+          return ` ${p} `.includes(` ${saidNorm} `) || ` ${saidNorm} `.includes(` ${p} `);
         });
     const related = normalizeRelatedOccurrences(c["relatedOccurrences"], transcript, said);
     const next: CoachCorrection = { category, said, betterVersion, whyEn, whyEs, ...(related.length ? { relatedOccurrences: related } : {}) };
