@@ -63,7 +63,12 @@ function write(state: JourneyState) {
     // Object URLs are session-scoped: never persist them.
     const days: Record<string, DayRecord> = {};
     for (const [key, record] of Object.entries(state.days)) {
-      days[key] = { ...record, finalUrl: null, firstUrl: null };
+      days[key] = {
+        ...record,
+        finalUrl: null,
+        firstUrl: null,
+        ...(record.latestPractice ? { latestPractice: { ...record.latestPractice, finalUrl: null } } : {}),
+      };
     }
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...state, days }));
   } catch {
