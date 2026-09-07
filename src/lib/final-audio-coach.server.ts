@@ -21,6 +21,7 @@ import {
   FINAL_AUDIO_COACH_VERSION_V2,
   MULTI_CORRECTION_MAX,
   coachVersionFor,
+  isIntermediateCoachModule,
   isMultiCorrectionPilot,
   maxCorrectionsFor,
   type AnsweredTask,
