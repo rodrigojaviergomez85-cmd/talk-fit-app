@@ -203,8 +203,9 @@ describe("Pilot v3.1 — max 3 total + one grounded fluency upgrade", () => {
     expect(CORRECTION_CATEGORIES).toContain("repetition");
     expect(CORRECTION_CATEGORIES).toContain("task_relevance");
     expect((COACH_JSON_SCHEMA.schema.required as readonly string[])).not.toContain("answeredTask");
-    expect(coachVersionFor("past-stories", 1)).toBe("v3.1-pilot");
-    expect(coachVersionFor("past-stories", 2)).toBe("v2");
+    expect(coachVersionFor("past-stories", 1)).toBe("v3.2-basic");
+    expect(coachVersionFor("past-stories", 2)).toBe("v3.2-basic");
+    expect(coachVersionFor("advanced-1", 2)).toBe("v2");
   });
 });
 

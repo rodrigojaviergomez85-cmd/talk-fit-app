@@ -51,28 +51,31 @@ const C5 = { category: "naturalness", said: "to the gym", betterVersion: "to the
 /* ---------------- 25. FEATURE GATE ---------------- */
 
 describe("Multi-correction pilot — gate", () => {
-  it("CASE A — past-stories Day 1 is the ONLY pilot day (v3-pilot, max 3)", () => {
-    expect(isMultiCorrectionPilot("past-stories", 1)).toBe(true);
-    expect(coachVersionFor("past-stories", 1)).toBe("v3.1-pilot");
-    expect(maxCorrectionsFor("past-stories", 1)).toBe(3);
+  it("CASE A — every BASIC module/day is multi-correction (v3.2-basic, max 3)", () => {
+    for (const [m, d] of [["past-stories", 1], ["past-stories", 20], ["basic-zero", 5], ["simple-present", 12], ["simple-future", 3], ["mixed-tenses", 18]] as const) {
+      expect(isMultiCorrectionPilot(m, d)).toBe(true);
+      expect(coachVersionFor(m, d)).toBe("v3.2-basic");
+      expect(maxCorrectionsFor(m, d)).toBe(3);
+    }
   });
-  it("CASE B/C/D/E — every other day keeps v2", () => {
-    for (const [m, d] of [["past-stories", 2], ["past-stories", 20], ["simple-present", 1], ["tigers", 1], ["advanced-1", 1], ["eagles-week-1", 3]] as const) {
+  it("CASE B/C/D/E — intermediate and advanced keep v2", () => {
+    for (const [m, d] of [["tigers", 1], ["advanced-1", 1], ["eagles-week-1", 3], ["sharks", 2]] as const) {
       expect(isMultiCorrectionPilot(m, d)).toBe(false);
       expect(coachVersionFor(m, d)).toBe("v2");
       expect(maxCorrectionsFor(m, d)).toBe(0);
     }
   });
-  it("future 3 / 5 / 5 ceilings exist but only basic=3 is used by the pilot", () => {
+  it("3 / 5 / 5 ceilings exist but only basic=3 is live", () => {
     expect(MULTI_CORRECTION_MAX).toEqual({ basic: 3, intermediate: 5, advanced: 5 });
   });
-  it("rubric: pilot day carries maxCorrections + v3-pilot; v2 days omit the field (hash unchanged)", async () => {
+  it("rubric: BASIC days carry maxCorrections + v3.2-basic; non-basic days omit the field (hash unchanged)", async () => {
     const past = await CourseService.loadModule("past-stories");
     const d1 = buildRubric(past.days[0]!, "past-stories", "BASIC 3", null)!;
     const d2 = buildRubric(past.days[1]!, "past-stories", "BASIC 3", null)!;
-    expect(d1.coachVersion).toBe("v3.1-pilot");
+    expect(d1.coachVersion).toBe("v3.2-basic");
     expect(d1.maxCorrections).toBe(3);
-    expect(d2.coachVersion).toBe("v2");
+    expect(d2.coachVersion).toBe("v3.2-basic");
+    expect(d2.maxCorrections).toBe(3);
     expect("maxCorrections" in d2 && d2.maxCorrections !== undefined).toBe(false);
     expect(coachJsonSchemaFor(d1)).toBe(COACH_JSON_SCHEMA_MULTI);
     expect(coachJsonSchemaFor(d2)).toBe(COACH_JSON_SCHEMA);
