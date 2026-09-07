@@ -307,6 +307,57 @@ export type Database = {
         }
         Relationships: []
       }
+      practice_attempts: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          day: number
+          first_recording_at: string | null
+          id: string
+          is_first_completion: boolean
+          local_day_key: string
+          module_id: string
+          recording_path: string | null
+          sentence_count: number | null
+          speaking_seconds: number
+          started_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          day: number
+          first_recording_at?: string | null
+          id?: string
+          is_first_completion?: boolean
+          local_day_key: string
+          module_id: string
+          recording_path?: string | null
+          sentence_count?: number | null
+          speaking_seconds?: number
+          started_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          day?: number
+          first_recording_at?: string | null
+          id?: string
+          is_first_completion?: boolean
+          local_day_key?: string
+          module_id?: string
+          recording_path?: string | null
+          sentence_count?: number | null
+          speaking_seconds?: number
+          started_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       practice_sessions: {
         Row: {
           attempted: string[]
