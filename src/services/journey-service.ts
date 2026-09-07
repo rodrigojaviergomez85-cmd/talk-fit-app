@@ -494,10 +494,17 @@ export const JourneyService = {
     const record = state.days[key];
     if (!user || !record) return "skipped";
 
+    // A repeat NEVER overwrites the day's original recording: it goes to its
+    // own "-latest" object, so first-vs-latest stays comparable forever and
+    // only the most recent repeat is kept (older repeats are not stored).
+    const isRepeat = (record.practiceCount ?? 1) > 1;
     let recordingPath = record.recordingPath ?? null;
+    let latestPath = record.latestPractice?.recordingPath ?? null;
     if (blob) {
       const extension = blob.type.includes("mp4") ? "m4a" : blob.type.includes("webm") ? "webm" : "audio";
-      const path = `${user.id}/${moduleId}-day-${day}.${extension}`;
+      const path = isRepeat
+        ? `${user.id}/${moduleId}-day-${day}-latest.${extension}`
+        : `${user.id}/${moduleId}-day-${day}.${extension}`;
       const upload = await supabase.storage
         .from("recordings")
         .upload(path, blob, { upsert: true, contentType: blob.type || "audio/webm" });
@@ -505,7 +512,8 @@ export const JourneyService = {
         console.error("[journey] final rep upload failed", upload.error.message);
         return "failed";
       }
-      recordingPath = path;
+      if (isRepeat) latestPath = path;
+      else recordingPath = path;
     }
 
     const { error } = await supabase.from("day_progress").upsert(
@@ -526,11 +534,19 @@ export const JourneyService = {
       { onConflict: "user_id,module_id,day" },
     );
 
-    if (recordingPath && recordingPath !== record.recordingPath) {
+    if (
+      (recordingPath && recordingPath !== record.recordingPath) ||
+      (latestPath && latestPath !== record.latestPractice?.recordingPath)
+    ) {
       const current = read();
       const stored = current.days[key];
       if (stored) {
-        write({ ...current, days: { ...current.days, [key]: { ...stored, recordingPath } } });
+        const updated: DayRecord = {
+          ...stored,
+          recordingPath,
+          ...(stored.latestPractice ? { latestPractice: { ...stored.latestPractice, recordingPath: latestPath } } : {}),
+        };
+        write({ ...current, days: { ...current.days, [key]: updated } });
       }
     }
 
