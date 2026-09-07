@@ -1469,6 +1469,21 @@ function Rep2AiDisclaimer() {
   );
 }
 
+/**
+ * Subtle STEP 5-only AI Coach disclaimer. Appears directly below the speaking
+ * goal and before the Audio Take cards so the learner knows the final audio
+ * analysis is automated.
+ */
+function Rep5AiDisclaimer() {
+  const tt = useT();
+  return (
+    <p className="mx-auto flex max-w-xs items-start justify-center gap-1.5 text-center text-[11px] leading-snug text-muted-foreground">
+      <Info className="mt-0.5 size-3.5 shrink-0 opacity-80" aria-hidden="true" />
+      <span>{tt("rep5.aiDisclaimer")}</span>
+    </p>
+  );
+}
+
 /* -------------------------------- Rep 3 ---------------------------------- */
 
 /**
@@ -1798,6 +1813,8 @@ function Rep5FinalRep({
 
       {/* GOAL — stated exactly once before the first speaking action. */}
       <p className="text-center text-[12px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">{goalLine}</p>
+
+      <Rep5AiDisclaimer />
 
       {/* MINIMAL SUPPORT — tiered. */}
       {cuesAbove.length ? <CueRow cues={cuesAbove} /> : null}
