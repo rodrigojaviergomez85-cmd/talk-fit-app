@@ -1502,8 +1502,9 @@ function NoAiDisclaimer({ tKey }: { tKey: "rep3.noAi" | "rep4.noAi" }) {
 function Rep3Shadow({ day, onNext, onSkip }: { day: CourseDay; onNext: () => void; onSkip: () => void }) {
   return (
     <div className="space-y-4">
-      <div className="rounded-3xl bg-navy p-5">
+      <div className="rounded-3xl bg-navy p-5 space-y-2">
         <RepHeader titleKey="rep3.title" instrKey="rep3.instr" cueKey="rep3.cue" dark />
+        <NoAiDisclaimer tKey="rep3.noAi" />
       </div>
 
       <ShadowKaraoke
