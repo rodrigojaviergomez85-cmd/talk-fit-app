@@ -48,6 +48,7 @@ export function introTier(moduleId: ModuleId): IntroTier {
     case "sharks":
       return "spontaneous";
     case "advanced-1":
+    case "advanced-2":
       return "advanced";
   }
 }
