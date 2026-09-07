@@ -1814,6 +1814,8 @@ function Rep5FinalRep({
       {/* GOAL — stated exactly once before the first speaking action. */}
       <p className="text-center text-[12px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">{goalLine}</p>
 
+      <Rep5AiDisclaimer />
+
       {/* MINIMAL SUPPORT — tiered. */}
       {cuesAbove.length ? <CueRow cues={cuesAbove} /> : null}
       {chunksAbove ? <PowerChunks chunks={day.powerChunks} size="mini" coreOnly /> : null}
