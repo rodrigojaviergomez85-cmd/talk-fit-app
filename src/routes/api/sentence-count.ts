@@ -31,11 +31,6 @@ export const Route = createFileRoute("/api/sentence-count")({
         const userId = await verifyRequestUser(request);
         if (!userId) return json({ error: "Sign in to count sentences." }, 401);
 
-        const apiKey = process.env["LOVABLE_API_KEY"];
-        if (!apiKey) {
-          return json({ error: "Sentence counting is not configured." }, 500);
-        }
-
         // Cheap header check before touching the body at all.
         const declared = Number(request.headers.get("content-length") ?? 0);
         if (declared > MAX_BYTES + 64 * 1024) {
@@ -78,8 +73,25 @@ export const Route = createFileRoute("/api/sentence-count")({
         }
         const transcript = stt.text.trim();
         if (!transcript) return json({ sentences: 0 });
+        const transcriptWords = transcript.split(/\s+/).filter(Boolean).length;
 
-        // 2) Count complete spoken ideas — punctuation-independent.
+        // 2) Deterministic local count first — most clear takes never reach an LLM.
+        const { countCompleteIdeasLocal } = await import("@/lib/sentence-count-local");
+        const local = countCompleteIdeasLocal(transcript);
+        if (local.status === "confident") {
+          console.info(
+            `[sentence-count] path=local reason=${local.reason} words=${transcriptWords} sentences=${local.count}`,
+          );
+          return json({ sentences: local.count });
+        }
+
+        // 3) Ambiguous transcript only — fall back to the gateway counter.
+        const apiKey = process.env["LOVABLE_API_KEY"];
+        if (!apiKey) {
+          return json({ error: "Sentence counting is not configured." }, 500);
+        }
+
+        // Count complete spoken ideas — punctuation-independent.
         const chat = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
           method: "POST",
           headers: {
@@ -142,6 +154,9 @@ export const Route = createFileRoute("/api/sentence-count")({
         }
 
         if (sentences === null) return json({ error: "Could not analyze the recording." }, 502);
+        console.info(
+          `[sentence-count] path=gemini reason=${local.reason} words=${transcriptWords} sentences=${sentences}`,
+        );
         return json({ sentences });
       },
     },
