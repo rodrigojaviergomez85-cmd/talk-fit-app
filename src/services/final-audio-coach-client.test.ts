@@ -193,7 +193,16 @@ describe("runFinalCoachPipeline", () => {
     expect(r1.status).toBe("unavailable");
     expect(net.calls.coach).toHaveLength(2);
 
-    for (const http of [429, 404, 413, 500, 401]) {
+    const rl = harness({ responses: [{ kind: "response", http: 429, body: { status: "rate_limited" } }, ready] });
+    const rlResult = await runFinalCoachPipeline(
+      { moduleId: "simple-present", day: classicDay, finalRecording: rec("a"), finalTakeNumber: 1 },
+      () => undefined,
+      rl.deps,
+    );
+    expect(rlResult.status).toBe("rate_limited");
+    expect(rl.calls.coach).toHaveLength(1);
+
+    for (const http of [404, 413, 500, 401]) {
       const h = harness({ responses: [{ kind: "response", http, body: null }, ready] });
       const r = await runFinalCoachPipeline(
         { moduleId: "simple-present", day: classicDay, finalRecording: rec("a"), finalTakeNumber: 1 },
