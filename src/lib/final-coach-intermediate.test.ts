@@ -77,25 +77,25 @@ describe("INTERMEDIATE — corrections are adaptive, grounded and grouped", () =
   it("2 real issues stay 2 — the coach never pads to 5", () => {
     const out = norm([
       { category: "grammar", said: "She don't like her job", betterVersion: "She doesn't like her job", whyEn: "he/she/it → doesn't.", whyEs: "Con she usa doesn't.", ruleKey: "third_person_doesnt", relatedOccurrences: [] },
-      { category: "naturalness", said: "I have five years working here", betterVersion: "I've worked here for five years", whyEn: "", whyEs: "", ruleKey: "for_duration", relatedOccurrences: [] },
+      { category: "naturalness", said: "I have five years working here", betterVersion: "I've worked here for five years", whyEn: "w", whyEs: "w", ruleKey: "for_duration", relatedOccurrences: [] },
     ]);
     expect(out).toHaveLength(2);
   });
 
   it("4 different grammar/tense errors may use 4 slots", () => {
     const out = norm([
-      { category: "grammar", said: "She don't like her job", betterVersion: "She doesn't like her job", whyEn: "", whyEs: "", ruleKey: "third_person_doesnt", relatedOccurrences: [] },
-      { category: "verb_tense", said: "Yesterday we go to the beach", betterVersion: "Yesterday we went to the beach", whyEn: "", whyEs: "", ruleKey: "past_simple", relatedOccurrences: [] },
-      { category: "grammar", said: "she work too much", betterVersion: "she works too much", whyEn: "", whyEs: "", ruleKey: "third_person_s", relatedOccurrences: [] },
-      { category: "naturalness", said: "I have five years working here", betterVersion: "I've worked here for five years", whyEn: "", whyEs: "", ruleKey: "for_duration", relatedOccurrences: [] },
+      { category: "grammar", said: "She don't like her job", betterVersion: "She doesn't like her job", whyEn: "w", whyEs: "w", ruleKey: "third_person_doesnt", relatedOccurrences: [] },
+      { category: "verb_tense", said: "Yesterday we go to the beach", betterVersion: "Yesterday we went to the beach", whyEn: "w", whyEs: "w", ruleKey: "past_simple", relatedOccurrences: [] },
+      { category: "grammar", said: "she work too much", betterVersion: "she works too much", whyEn: "w", whyEs: "w", ruleKey: "third_person_s", relatedOccurrences: [] },
+      { category: "naturalness", said: "I have five years working here", betterVersion: "I've worked here for five years", whyEn: "w", whyEs: "w", ruleKey: "for_duration", relatedOccurrences: [] },
     ]);
     expect(out).toHaveLength(4);
   });
 
   it("same rule repeated = ONE slot + grounded relatedOccurrences", () => {
     const out = norm([
-      { category: "grammar", said: "She don't like her job", betterVersion: "She doesn't like her job", whyEn: "", whyEs: "", ruleKey: "third_person_doesnt", relatedOccurrences: [] },
-      { category: "grammar", said: "She don't really enjoy it", betterVersion: "She doesn't really enjoy it", whyEn: "", whyEs: "", ruleKey: "third_person_doesnt", relatedOccurrences: [] },
+      { category: "grammar", said: "She don't like her job", betterVersion: "She doesn't like her job", whyEn: "w", whyEs: "w", ruleKey: "third_person_doesnt", relatedOccurrences: [] },
+      { category: "grammar", said: "She don't really enjoy it", betterVersion: "She doesn't really enjoy it", whyEn: "w", whyEs: "w", ruleKey: "third_person_doesnt", relatedOccurrences: [] },
     ]);
     expect(out).toHaveLength(1);
     expect(out[0]!.relatedOccurrences).toEqual([
@@ -145,7 +145,7 @@ describe("INTERMEDIATE — labels and compact UI", () => {
         answeredTask: "yes",
         corrections: [
           { category: "grammar", said: "She don't like her job", betterVersion: "She doesn't like her job", whyEn: "he/she/it → doesn't.", whyEs: "Con she/he/it usa doesn't.", relatedOccurrences: [{ said: "She don't really enjoy it", betterVersion: "She doesn't really enjoy it" }] },
-          { category: "naturalness", said: "I have five years working here", betterVersion: "I've worked here for five years", whyEn: "", whyEs: "" },
+          { category: "naturalness", said: "I have five years working here", betterVersion: "I've worked here for five years", whyEn: "w", whyEs: "w" },
         ],
       },
     } as unknown as FinalCoachState;
