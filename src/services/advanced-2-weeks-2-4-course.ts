@@ -174,6 +174,7 @@ const d7 = advanced2Day({
     repairTurn("a2d7-repair", "catch", GUEST, "And does the standard rate include the resort fee and the city tax?", "¿Y la tarifa estándar incluye la cuota del hotel y el impuesto de la ciudad?", "female"),
   ],
   speakerVoice: "female",
+  testReady: d7Sprint,
 });
 
 const d8Sprint: TestReadySprint = {
@@ -247,6 +248,20 @@ const d8 = advanced2Day({
   testReady: d8Sprint,
 });
 
+const d9Sprint: TestReadySprint = {
+  type: "quick-answers",
+  title: "QUICK ANSWERS",
+  titleEs: "RESPUESTAS RÁPIDAS",
+  instruction: "One short objection at a time. Answer in 10–15 seconds.",
+  instructionEs: "Una objeción corta a la vez. Responde en 10–15 segundos.",
+  items: [
+    { id: "a2d9-qa1", audio: "It's too expensive.", maxSeconds: 15 },
+    { id: "a2d9-qa2", audio: "Your competitor is cheaper.", maxSeconds: 15 },
+    { id: "a2d9-qa3", audio: "I don't really need it.", maxSeconds: 15 },
+    { id: "a2d9-qa4", audio: "I need to think about it.", maxSeconds: 15 },
+  ],
+};
+
 const d9 = advanced2Day({
   day: 9,
   topic: "Handle an Objection",
@@ -302,6 +317,7 @@ const d9 = advanced2Day({
     repairTurn("a2d9-repair", "restart", CUSTOMER, "Wait — I didn't follow that. What exactly would I pay this month?", "Espere — no le seguí. ¿Qué pagaría exactamente este mes?", "male"),
   ],
   speakerVoice: "female",
+  testReady: d9Sprint,
 });
 
 const d10Sprint: TestReadySprint = {
@@ -385,6 +401,19 @@ const d10 = advanced2Day({
 /* ================================ WEEK 3 — FIX THE PROBLEM ================================ */
 /* Support drops: cues only on the FIRST turn of the round; smaller toolboxes. */
 
+const d11Sprint: TestReadySprint = {
+  type: "listen-respond",
+  title: "LISTEN & RESPOND",
+  titleEs: "ESCUCHA Y RESPONDE",
+  instruction: "ACKNOWLEDGE → FACTS → ACTION. Answer each customer in one or two sentences.",
+  instructionEs: "RECONOCE → HECHOS → ACCIÓN. Responde a cada cliente en una o dos oraciones.",
+  items: [
+    { id: "a2d11-lr1", audio: "My order was supposed to arrive Monday.", maxSeconds: 20 },
+    { id: "a2d11-lr2", audio: "I've already called twice.", maxSeconds: 20 },
+    { id: "a2d11-lr3", audio: "I want my money back.", maxSeconds: 20 },
+  ],
+};
+
 const d11 = advanced2Day({
   day: 11,
   topic: "A Late Delivery",
@@ -437,6 +466,7 @@ const d11 = advanced2Day({
     repairTurn("a2d11-repair", "confirm", CUSTOMER, "So you're saying I get a replacement if it doesn't show up tomorrow?", "¿Entonces dice que recibo un reemplazo si no aparece mañana?", "female"),
   ],
   speakerVoice: "female",
+  testReady: d11Sprint,
 });
 
 const d12Sprint: TestReadySprint = {
@@ -508,6 +538,19 @@ const d12 = advanced2Day({
   testReady: d12Sprint,
 });
 
+const d13Sprint: TestReadySprint = {
+  type: "speak-now",
+  title: "SPEAK NOW",
+  titleEs: "HABLA AHORA",
+  instruction: "Ten seconds to think, then answer: RULE → REASON → ALTERNATIVE.",
+  instructionEs: "Diez segundos para pensar y responde: REGLA → RAZÓN → ALTERNATIVA.",
+  items: [
+    { id: "a2d13-sn1", text: "The customer wants a refund after the refund period.", textEs: "El cliente quiere un reembolso después del plazo permitido.", thinkSeconds: 10, maxSeconds: 45 },
+    { id: "a2d13-sn2", text: "The guest wants something the hotel policy does not allow.", textEs: "El huésped quiere algo que la política del hotel no permite.", thinkSeconds: 10, maxSeconds: 45 },
+    { id: "a2d13-sn3", text: "The customer asks for a discount you cannot approve.", textEs: "El cliente pide un descuento que no puedes aprobar.", thinkSeconds: 10, maxSeconds: 45 },
+  ],
+};
+
 const d13 = advanced2Day({
   day: 13,
   topic: "Explain a Policy",
@@ -560,7 +603,21 @@ const d13 = advanced2Day({
     repairTurn("a2d13-repair", "time", CUSTOMER, "Why does the company have that rule in the first place?", "¿Por qué la empresa tiene esa regla, para empezar?", "female"),
   ],
   speakerVoice: "female",
+  testReady: d13Sprint,
 });
+
+const d14Sprint: TestReadySprint = {
+  type: "listen-respond",
+  title: "LISTEN & RESPOND",
+  titleEs: "ESCUCHA Y RESPONDE",
+  instruction: "LISTEN → VALIDATE → FIX. Acknowledge the guest, then offer a solution.",
+  instructionEs: "ESCUCHA → VALIDA → RESUELVE. Reconoce al huésped y ofrece una solución.",
+  items: [
+    { id: "a2d14-lr1", audio: "There was noise all night and I couldn't sleep.", maxSeconds: 20 },
+    { id: "a2d14-lr2", audio: "Nobody answered the phone when I called reception.", maxSeconds: 20 },
+    { id: "a2d14-lr3", audio: "The room is not what I paid for.", maxSeconds: 20 },
+  ],
+};
 
 const d14 = advanced2Day({
   day: 14,
@@ -614,6 +671,7 @@ const d14 = advanced2Day({
     repairTurn("a2d14-repair", "restart", GUEST, "Sorry, say that again — which floor are you moving us to?", "Perdón, repítalo — ¿a qué piso nos va a cambiar?", "male"),
   ],
   speakerVoice: "female",
+  testReady: d14Sprint,
 });
 
 const d15Sprint: TestReadySprint = {
@@ -687,6 +745,18 @@ const d15 = advanced2Day({
 /* ================================ WEEK 4 — PERFORM ON THE JOB ================================ */
 /* Support is minimal: cues only on switch / unexpected turns, tiny toolboxes. */
 
+const d16Sprint: TestReadySprint = {
+  type: "story-retell",
+  title: "RETELL THE INCIDENT",
+  titleEs: "VUELVE A CONTAR EL INCIDENTE",
+  instruction: "Retell the incident in order: WHAT HAPPENED → ACTION → RESULT.",
+  instructionEs: "Vuelve a contarlo en orden: QUÉ PASÓ → ACCIÓN → RESULTADO.",
+  items: [
+    { id: "a2d16-sr1", text: "A customer was charged twice. You checked the system, cancelled the second charge and refunded it the same day.", textEs: "A un cliente le cobraron dos veces. Revisaste el sistema, cancelaste el segundo cargo y lo reembolsaste el mismo día.", maxSeconds: 60 },
+    { id: "a2d16-sr2", text: "The system was down for two hours. You took notes by hand, called the customers back and closed every case.", textEs: "El sistema se cayó dos horas. Tomaste notas a mano, devolviste las llamadas y cerraste todos los casos.", maxSeconds: 60 },
+  ],
+};
+
 const d16 = advanced2Day({
   day: 16,
   topic: "Report a Past Incident",
@@ -738,7 +808,21 @@ const d16 = advanced2Day({
     repairTurn("a2d16-repair", "confirm", MANAGER, "So the refund went out the same day, correct?", "¿Entonces el reembolso salió el mismo día, correcto?", "male"),
   ],
   speakerVoice: "female",
+  testReady: d16Sprint,
 });
+
+const d17Sprint: TestReadySprint = {
+  type: "speak-now",
+  title: "SPEAK NOW",
+  titleEs: "HABLA AHORA",
+  instruction: "Ten seconds to think, then speak: BEFORE → PROGRESS → NOW → NEXT.",
+  instructionEs: "Diez segundos para pensar y habla: ANTES → PROGRESO → AHORA → SIGUIENTE.",
+  items: [
+    { id: "a2d17-sn1", text: "Tell your supervisor how you have improved since you started.", textEs: "Cuéntale a tu supervisor/a cómo has mejorado desde que empezaste.", chunks: ["BEFORE", "PROGRESS", "NOW", "NEXT"], thinkSeconds: 10, maxSeconds: 60 },
+    { id: "a2d17-sn2", text: "Say one thing that is still difficult and what you are doing about it.", textEs: "Di algo que todavía es difícil y qué estás haciendo al respecto.", thinkSeconds: 10, maxSeconds: 45 },
+    { id: "a2d17-sn3", text: "Say your goal for next month.", textEs: "Di tu meta para el próximo mes.", thinkSeconds: 10, maxSeconds: 45 },
+  ],
+};
 
 const d17 = advanced2Day({
   day: 17,
@@ -791,6 +875,7 @@ const d17 = advanced2Day({
     repairTurn("a2d17-repair", "time", MANAGER, "And what support do you need from me to get there?", "¿Y qué apoyo necesitas de mí para lograrlo?", "female"),
   ],
   speakerVoice: "female",
+  testReady: d17Sprint,
 });
 
 const d18Sprint: TestReadySprint = {
@@ -859,6 +944,19 @@ const d18 = advanced2Day({
   testReady: d18Sprint,
 });
 
+const d19Sprint: TestReadySprint = {
+  type: "speak-now",
+  title: "SPEAK NOW",
+  titleEs: "HABLA AHORA",
+  instruction: "Ten seconds to think: WHAT WENT WRONG → WHY → WHAT I WOULD DO NEXT.",
+  instructionEs: "Diez segundos para pensar: QUÉ SALIÓ MAL → POR QUÉ → QUÉ HARÍA DESPUÉS.",
+  items: [
+    { id: "a2d19-sn1", text: "You interrupted an angry customer and the call ended badly. Explain it to your supervisor.", textEs: "Interrumpiste a un cliente molesto y la llamada terminó mal. Explícaselo a tu supervisor/a.", thinkSeconds: 10, maxSeconds: 60 },
+    { id: "a2d19-sn2", text: "You gave a customer information you were not sure about. Explain what you would do next time.", textEs: "Le diste a un cliente información de la que no estabas seguro/a. Explica qué harías la próxima vez.", thinkSeconds: 10, maxSeconds: 60 },
+    { id: "a2d19-sn3", text: "You promised a call back and forgot. Explain and commit to a change.", textEs: "Prometiste devolver una llamada y lo olvidaste. Explica y comprométete a un cambio.", thinkSeconds: 10, maxSeconds: 45 },
+  ],
+};
+
 const d19 = advanced2Day({
   day: 19,
   topic: "After a Bad Call",
@@ -910,6 +1008,7 @@ const d19 = advanced2Day({
     repairTurn("a2d19-repair", "restart", MANAGER, "Say your plan again — clearly, in two steps.", "Dime tu plan otra vez — claro, en dos pasos.", "female"),
   ],
   speakerVoice: "female",
+  testReady: d19Sprint,
 });
 
 const d20Sprint: TestReadySprint = {
