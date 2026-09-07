@@ -1,0 +1,1 @@
+REVOKE ALL ON FUNCTION public.enforce_daily_practice_cap() FROM PUBLIC, anon, authenticated;
