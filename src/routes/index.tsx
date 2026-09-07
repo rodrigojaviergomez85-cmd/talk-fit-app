@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AppShell } from "@/components/fluency/AppShell";
 import { CurrentModuleCard } from "@/components/fluency/CurrentModuleCard";
-import { HomeHero } from "@/components/fluency/HomeHero";
 import { NextModuleLocked } from "@/components/fluency/NextModuleLocked";
 import { HabitCard } from "@/components/fluency/HabitCard";
 import { Progression } from "@/services/progression";
@@ -80,7 +79,6 @@ function HomePage() {
   return (
     <AppShell title={t("home.today")}>
       <div className="space-y-6">
-        <HomeHero state={state} />
         <CurrentModuleCard state={state} />
         <Link
           to="/coach-check"
