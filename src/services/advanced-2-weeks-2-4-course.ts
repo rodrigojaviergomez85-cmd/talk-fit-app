@@ -101,6 +101,19 @@ const d6 = advanced2Day({
   testReady: d6Sprint,
 });
 
+const d7Sprint: TestReadySprint = {
+  type: "listen-respond",
+  title: "LISTEN & RESPOND",
+  titleEs: "ESCUCHA Y RESPONDE",
+  instruction: "Listen to the guest, then answer professionally in one or two sentences.",
+  instructionEs: "Escucha al huésped y responde profesionalmente en una o dos oraciones.",
+  items: [
+    { id: "a2d7-lr1", audio: "That sounds nice, but it's more than I wanted to spend.", maxSeconds: 20 },
+    { id: "a2d7-lr2", audio: "Does the standard room include breakfast?", maxSeconds: 15 },
+    { id: "a2d7-lr3", audio: "Can I decide when I arrive?", maxSeconds: 15 },
+  ],
+};
+
 const d7 = advanced2Day({
   day: 7,
   topic: "Offer the Upgrade",
@@ -161,6 +174,7 @@ const d7 = advanced2Day({
     repairTurn("a2d7-repair", "catch", GUEST, "And does the standard rate include the resort fee and the city tax?", "¿Y la tarifa estándar incluye la cuota del hotel y el impuesto de la ciudad?", "female"),
   ],
   speakerVoice: "female",
+  testReady: d7Sprint,
 });
 
 const d8Sprint: TestReadySprint = {
@@ -234,6 +248,20 @@ const d8 = advanced2Day({
   testReady: d8Sprint,
 });
 
+const d9Sprint: TestReadySprint = {
+  type: "quick-answers",
+  title: "QUICK ANSWERS",
+  titleEs: "RESPUESTAS RÁPIDAS",
+  instruction: "One short objection at a time. Answer in 10–15 seconds.",
+  instructionEs: "Una objeción corta a la vez. Responde en 10–15 segundos.",
+  items: [
+    { id: "a2d9-qa1", audio: "It's too expensive.", maxSeconds: 15 },
+    { id: "a2d9-qa2", audio: "Your competitor is cheaper.", maxSeconds: 15 },
+    { id: "a2d9-qa3", audio: "I don't really need it.", maxSeconds: 15 },
+    { id: "a2d9-qa4", audio: "I need to think about it.", maxSeconds: 15 },
+  ],
+};
+
 const d9 = advanced2Day({
   day: 9,
   topic: "Handle an Objection",
@@ -289,6 +317,7 @@ const d9 = advanced2Day({
     repairTurn("a2d9-repair", "restart", CUSTOMER, "Wait — I didn't follow that. What exactly would I pay this month?", "Espere — no le seguí. ¿Qué pagaría exactamente este mes?", "male"),
   ],
   speakerVoice: "female",
+  testReady: d9Sprint,
 });
 
 const d10Sprint: TestReadySprint = {
@@ -372,6 +401,19 @@ const d10 = advanced2Day({
 /* ================================ WEEK 3 — FIX THE PROBLEM ================================ */
 /* Support drops: cues only on the FIRST turn of the round; smaller toolboxes. */
 
+const d11Sprint: TestReadySprint = {
+  type: "listen-respond",
+  title: "LISTEN & RESPOND",
+  titleEs: "ESCUCHA Y RESPONDE",
+  instruction: "ACKNOWLEDGE → FACTS → ACTION. Answer each customer in one or two sentences.",
+  instructionEs: "RECONOCE → HECHOS → ACCIÓN. Responde a cada cliente en una o dos oraciones.",
+  items: [
+    { id: "a2d11-lr1", audio: "My order was supposed to arrive Monday.", maxSeconds: 20 },
+    { id: "a2d11-lr2", audio: "I've already called twice.", maxSeconds: 20 },
+    { id: "a2d11-lr3", audio: "I want my money back.", maxSeconds: 20 },
+  ],
+};
+
 const d11 = advanced2Day({
   day: 11,
   topic: "A Late Delivery",
@@ -424,6 +466,7 @@ const d11 = advanced2Day({
     repairTurn("a2d11-repair", "confirm", CUSTOMER, "So you're saying I get a replacement if it doesn't show up tomorrow?", "¿Entonces dice que recibo un reemplazo si no aparece mañana?", "female"),
   ],
   speakerVoice: "female",
+  testReady: d11Sprint,
 });
 
 const d12Sprint: TestReadySprint = {
@@ -495,6 +538,19 @@ const d12 = advanced2Day({
   testReady: d12Sprint,
 });
 
+const d13Sprint: TestReadySprint = {
+  type: "speak-now",
+  title: "SPEAK NOW",
+  titleEs: "HABLA AHORA",
+  instruction: "Ten seconds to think, then answer: RULE → REASON → ALTERNATIVE.",
+  instructionEs: "Diez segundos para pensar y responde: REGLA → RAZÓN → ALTERNATIVA.",
+  items: [
+    { id: "a2d13-sn1", text: "The customer wants a refund after the refund period.", textEs: "El cliente quiere un reembolso después del plazo permitido.", thinkSeconds: 10, maxSeconds: 45 },
+    { id: "a2d13-sn2", text: "The guest wants something the hotel policy does not allow.", textEs: "El huésped quiere algo que la política del hotel no permite.", thinkSeconds: 10, maxSeconds: 45 },
+    { id: "a2d13-sn3", text: "The customer asks for a discount you cannot approve.", textEs: "El cliente pide un descuento que no puedes aprobar.", thinkSeconds: 10, maxSeconds: 45 },
+  ],
+};
+
 const d13 = advanced2Day({
   day: 13,
   topic: "Explain a Policy",
@@ -547,7 +603,21 @@ const d13 = advanced2Day({
     repairTurn("a2d13-repair", "time", CUSTOMER, "Why does the company have that rule in the first place?", "¿Por qué la empresa tiene esa regla, para empezar?", "female"),
   ],
   speakerVoice: "female",
+  testReady: d13Sprint,
 });
+
+const d14Sprint: TestReadySprint = {
+  type: "listen-respond",
+  title: "LISTEN & RESPOND",
+  titleEs: "ESCUCHA Y RESPONDE",
+  instruction: "LISTEN → VALIDATE → FIX. Acknowledge the guest, then offer a solution.",
+  instructionEs: "ESCUCHA → VALIDA → RESUELVE. Reconoce al huésped y ofrece una solución.",
+  items: [
+    { id: "a2d14-lr1", audio: "There was noise all night and I couldn't sleep.", maxSeconds: 20 },
+    { id: "a2d14-lr2", audio: "Nobody answered the phone when I called reception.", maxSeconds: 20 },
+    { id: "a2d14-lr3", audio: "The room is not what I paid for.", maxSeconds: 20 },
+  ],
+};
 
 const d14 = advanced2Day({
   day: 14,
@@ -601,71 +671,81 @@ const d14 = advanced2Day({
     repairTurn("a2d14-repair", "restart", GUEST, "Sorry, say that again — which floor are you moving us to?", "Perdón, repítalo — ¿a qué piso nos va a cambiar?", "male"),
   ],
   speakerVoice: "female",
+  testReady: d14Sprint,
 });
 
 const d15Sprint: TestReadySprint = {
-  type: "speak-now",
-  title: "SPEAK NOW",
-  titleEs: "HABLA AHORA",
-  instruction: "Ten seconds to think, then speak. Optional practice.",
-  instructionEs: "Diez segundos para pensar y luego habla. Práctica opcional.",
+  type: "mixed",
+  title: "MIXED SPRINT",
+  titleEs: "SPRINT MIXTO",
+  instruction: "Virtual Assistant scheduling, mixed. Optional practice — never scored.",
+  instructionEs: "Agenda de asistente virtual, mezclado. Práctica opcional — nunca se califica.",
   items: [
-    { id: "a2d15-sn1", text: "Reschedule a service visit for an impatient customer.", textEs: "Reagenda una visita de servicio para un cliente impaciente.", thinkSeconds: 10, maxSeconds: 45 },
-    { id: "a2d15-sn2", text: "Explain a two-hour arrival window.", textEs: "Explica una ventana de llegada de dos horas.", thinkSeconds: 10, maxSeconds: 45 },
-    { id: "a2d15-sn3", text: "Confirm an appointment and what the customer must prepare.", textEs: "Confirma una cita y qué debe preparar el cliente.", thinkSeconds: 10, maxSeconds: 45 },
+    { id: "a2d15-m1", kind: "quick-answers", audio: "Can you move my 3 PM meeting?", maxSeconds: 15 },
+    { id: "a2d15-m2", kind: "listen-respond", audio: "David isn't available tomorrow.", maxSeconds: 20 },
+    { id: "a2d15-m3", kind: "quick-answers", audio: "What other times are open?", maxSeconds: 15 },
+    { id: "a2d15-m4", kind: "speak-now", text: "Explain a schedule conflict and propose two options.", textEs: "Explica un conflicto de agenda y propón dos opciones.", thinkSeconds: 10, maxSeconds: 45 },
+    { id: "a2d15-m5", kind: "listen-respond", audio: "Okay, book Friday morning.", maxSeconds: 20 },
   ],
 };
 
 const d15 = advanced2Day({
   day: 15,
-  topic: "Reschedule the Service",
-  topicEs: "Reagenda el servicio",
-  focus: "Week checkpoint — OPTIONS → AGREE → CONFIRM",
-  focusEs: "Punto de control — OPCIONES → ACUERDA → CONFIRMA",
+  topic: "Manage a Schedule Conflict",
+  topicEs: "Maneja un conflicto de agenda",
+  focus: "Virtual Assistant — NEED → CONFLICT → OPTIONS → CONFIRM",
+  focusEs: "Asistente virtual — NECESIDAD → CONFLICTO → OPCIONES → CONFIRMA",
   intro: {
-    title: "RESCHEDULE THE SERVICE",
-    titleEs: "REAGENDA EL SERVICIO",
-    lead: "The technician can't come today. Offer real options and lock a new time.",
-    leadEs: "El técnico no puede ir hoy. Ofrece opciones reales y cierra una nueva hora.",
-    examples: ["I have two times available.", "Which one works better?", "You're confirmed for…"],
-    goal: "Reschedule without losing the customer's trust.",
-    goalEs: "Reagenda sin perder la confianza del cliente.",
+    title: "MANAGE A SCHEDULE CONFLICT",
+    titleEs: "MANEJA UN CONFLICTO DE AGENDA",
+    lead: "You work as a Virtual Assistant. Your manager wants a meeting moved — but there's a conflict. Say it early, bring options, confirm the final plan.",
+    leadEs: "Trabajas como asistente virtual. Tu jefe/a quiere mover una reunión — pero hay un conflicto. Dilo desde el principio, trae opciones y confirma el plan final.",
+    examples: ["Let me check both calendars first.", "There is one conflict I need to mention.", "Just to confirm, I'll move the meeting…"],
+    goal: "Explain the conflict, propose options and confirm the final arrangement.",
+    goalEs: "Explica el conflicto, propón opciones y confirma el arreglo final.",
     cta: START,
   },
   lines: [
-    l("a2d15-1", "I have to be honest with you: | the technician can't make it today.", "Debo ser honesto/a con usted: el técnico no puede ir hoy."),
-    l("a2d15-2", "I'm sorry — | I know you took time off work.", "Lo lamento — sé que pidió permiso en el trabajo."),
-    l("a2d15-3", "I have two times available | this week.", "Tengo dos horarios disponibles esta semana."),
-    l("a2d15-4", "Thursday morning | between nine and eleven.", "El jueves por la mañana entre nueve y once."),
-    l("a2d15-5", "Or Friday afternoon, | between two and four.", "O el viernes por la tarde, entre dos y cuatro."),
-    l("a2d15-6", "Which one | works better for you?", "¿Cuál le funciona mejor?"),
-    l("a2d15-7", "You're confirmed for Thursday, | and I'm marking it as priority.", "Queda confirmado para el jueves, y lo marco como prioridad."),
-    l("a2d15-8", "You'll get a call | thirty minutes before he arrives.", "Recibirá una llamada treinta minutos antes de que llegue."),
+    l("a2d15-1", "I can take care of that. | Let me check both calendars first.", "Yo me encargo de eso. Déjame revisar las dos agendas primero."),
+    l("a2d15-2", "There is one conflict | I need to mention.", "Hay un conflicto que necesito mencionar."),
+    l("a2d15-3", "David already has | another meeting at that time.", "David ya tiene otra reunión a esa hora."),
+    l("a2d15-4", "I have two other options | available this week.", "Tengo otras dos opciones disponibles esta semana."),
+    l("a2d15-5", "We could move it | to Thursday at two.", "Podríamos moverla al jueves a las dos."),
+    l("a2d15-6", "Another possibility | is Friday morning.", "Otra posibilidad es el viernes por la mañana."),
+    l("a2d15-7", "Whichever you prefer, | I'll update the calendar today.", "La que prefieras, actualizo el calendario hoy."),
+    l("a2d15-8", "Just to confirm, | I'll move the meeting and send the updated invitation.", "Solo para confirmar, muevo la reunión y envío la invitación actualizada."),
   ],
   rep2Chunks: chunks4("a2d15"),
   prompts: [
-    q("a2d15-p1", "Give the bad news honestly.", "Da la mala noticia con honestidad.", "I have to be honest with you:…", "Debo ser honesto/a con usted:…", "NEWS"),
-    q("a2d15-p2", "Offer two real options.", "Ofrece dos opciones reales.", "I have two times available…", "Tengo dos horarios disponibles…", "OPTIONS"),
-    q("a2d15-p3", "The customer says both are bad. React.", "El cliente dice que las dos son malas. Reacciona.", "In that case, what I can do is…", "En ese caso, lo que puedo hacer es…", "ADAPT", "react"),
-    q("a2d15-p4", "Justify the arrival window.", "Justifica la ventana de llegada.", "The reason for the window is…", "La razón de la ventana es…", "EXPLAIN", "justify"),
-    q("a2d15-p5", "Confirm the new appointment.", "Confirma la nueva cita.", "You're confirmed for…", "Queda confirmado para…", "CONFIRM"),
+    q("a2d15-p1", "Your manager asks you to move a meeting. Answer.", "Tu jefe/a te pide mover una reunión. Responde.", "I can take care of that…", "Yo me encargo de eso…", "NEED"),
+    q("a2d15-p2", "Say the conflict clearly.", "Di el conflicto con claridad.", "There is one conflict I need to mention…", "Hay un conflicto que necesito mencionar…", "CONFLICT", "explain"),
+    q("a2d15-p3", "Propose two options.", "Propón dos opciones.", "We could move it to… Another possibility is…", "Podríamos moverla a… Otra posibilidad es…", "OPTIONS"),
+    q("a2d15-p4", "One option stops working. Adapt.", "Una opción deja de servir. Adáptate.", "In that case, what I can do is…", "En ese caso, lo que puedo hacer es…", "ADAPT", "react"),
+    q("a2d15-p5", "Confirm the final arrangement.", "Confirma el arreglo final.", "Just to confirm, I'll…", "Solo para confirmar, voy a…", "CONFIRM"),
   ],
-  cues: ["NEWS", "OPTIONS", "AGREE", "CONFIRM"],
-  powerChunks: { core: ["I have two times available.", "Which one works better for you?"], stretch: "I'm marking it as priority." },
+  cues: ["NEED", "CONFLICT", "OPTIONS", "CONFIRM"],
+  powerChunks: { core: ["Let me check both calendars first.", "There is one conflict I need to mention."], stretch: "Just to confirm, I'll…" },
   goalSeconds: [60, 85],
   goalSentences: 9,
   hideModelText: true,
-  rep5Prompt: { question: "Tell a customer their service visit must be rescheduled.", questionEs: "Dile a un cliente que su visita de servicio debe reagendarse." },
-  rep5Tips: { en: "Bad news, then options, then a firm confirmation.", es: "Mala noticia, luego opciones, luego una confirmación firme." },
+  rep5Prompt: {
+    question: "You are a Virtual Assistant. Your manager wants a meeting moved, but there is a conflict.",
+    questionEs: "Eres asistente virtual. Tu jefe/a quiere mover una reunión, pero hay un conflicto.",
+  },
+  rep5Tips: {
+    en: "NEED → CONFLICT → OPTIONS → CONFIRM. Say the conflict early, then bring options.",
+    es: "NECESIDAD → CONFLICTO → OPCIONES → CONFIRMA. Di el conflicto pronto y trae opciones.",
+  },
   rep5Turns: [
-    situationTurn("a2d15-rec1", CUSTOMER, "I've been home all morning waiting. Where is the technician?", "Llevo toda la mañana en casa esperando. ¿Dónde está el técnico?", "female", ALL_NEEDS, "recover", {
+    situationTurn("a2d15-rec1", MANAGER, "Move my meeting with David to tomorrow afternoon.", "Mueve mi reunión con David para mañana por la tarde.", "male", ALL_NEEDS, "solve", {
       round: { n: 1, ...SITUATION_ROUND },
-      cues: ["NEWS", "OPTIONS", "CONFIRM"],
-      toolbox: ["I have to be honest with you:…", "I have two times available."],
+      cues: ["NEED", "CONFLICT"],
+      toolbox: ["I can take care of that.", "Let me check both calendars first."],
     }),
-    turn("a2d15-turn2", CUSTOMER, "Both of those times are terrible for me. I work.", "Los dos horarios son terribles para mí. Yo trabajo.", "female", { targetSeconds: DEVELOP }),
-    turn("a2d15-turn3", CUSTOMER, "And why can't you give me an exact hour?", "¿Y por qué no me pueden dar una hora exacta?", "female", { targetSeconds: DEVELOP }),
-    repairTurn("a2d15-repair", "mixed", CUSTOMER, "Fine — repeat the day and the window one more time, please.", "Bien — repítame el día y la ventana una vez más, por favor.", "female"),
+    turn("a2d15-turn2", MANAGER, "Actually, David isn't available tomorrow.", "De hecho, David no está disponible mañana.", "male", { targetSeconds: DEVELOP }),
+    turn("a2d15-turn3", MANAGER, "Thursday doesn't work for me either. What else do we have?", "El jueves tampoco me sirve. ¿Qué más tenemos?", "male", { targetSeconds: DEVELOP }),
+    turn("a2d15-turn4", MANAGER, "Okay, book Friday morning and send everyone the new invitation.", "Bien, agenda el viernes por la mañana y envía a todos la nueva invitación.", "male", { targetSeconds: QUICK }),
+    repairTurn("a2d15-repair", "confirm", MANAGER, "Sorry, did you say Friday at nine fifteen or nine fifty?", "Perdón, ¿dijiste el viernes a las nueve y cuarto o a las diez menos diez?", "male"),
   ],
   speakerVoice: "female",
   testReady: d15Sprint,
@@ -673,6 +753,18 @@ const d15 = advanced2Day({
 
 /* ================================ WEEK 4 — PERFORM ON THE JOB ================================ */
 /* Support is minimal: cues only on switch / unexpected turns, tiny toolboxes. */
+
+const d16Sprint: TestReadySprint = {
+  type: "story-retell",
+  title: "RETELL THE INCIDENT",
+  titleEs: "VUELVE A CONTAR EL INCIDENTE",
+  instruction: "Retell the incident in order: WHAT HAPPENED → ACTION → RESULT.",
+  instructionEs: "Vuelve a contarlo en orden: QUÉ PASÓ → ACCIÓN → RESULTADO.",
+  items: [
+    { id: "a2d16-sr1", text: "A customer was charged twice. You checked the system, cancelled the second charge and refunded it the same day.", textEs: "A un cliente le cobraron dos veces. Revisaste el sistema, cancelaste el segundo cargo y lo reembolsaste el mismo día.", maxSeconds: 60 },
+    { id: "a2d16-sr2", text: "The system was down for two hours. You took notes by hand, called the customers back and closed every case.", textEs: "El sistema se cayó dos horas. Tomaste notas a mano, devolviste las llamadas y cerraste todos los casos.", maxSeconds: 60 },
+  ],
+};
 
 const d16 = advanced2Day({
   day: 16,
@@ -725,7 +817,21 @@ const d16 = advanced2Day({
     repairTurn("a2d16-repair", "confirm", MANAGER, "So the refund went out the same day, correct?", "¿Entonces el reembolso salió el mismo día, correcto?", "male"),
   ],
   speakerVoice: "female",
+  testReady: d16Sprint,
 });
+
+const d17Sprint: TestReadySprint = {
+  type: "speak-now",
+  title: "SPEAK NOW",
+  titleEs: "HABLA AHORA",
+  instruction: "Ten seconds to think, then speak: BEFORE → PROGRESS → NOW → NEXT.",
+  instructionEs: "Diez segundos para pensar y habla: ANTES → PROGRESO → AHORA → SIGUIENTE.",
+  items: [
+    { id: "a2d17-sn1", text: "Tell your supervisor how you have improved since you started.", textEs: "Cuéntale a tu supervisor/a cómo has mejorado desde que empezaste.", chunks: ["BEFORE", "PROGRESS", "NOW", "NEXT"], thinkSeconds: 10, maxSeconds: 60 },
+    { id: "a2d17-sn2", text: "Say one thing that is still difficult and what you are doing about it.", textEs: "Di algo que todavía es difícil y qué estás haciendo al respecto.", thinkSeconds: 10, maxSeconds: 45 },
+    { id: "a2d17-sn3", text: "Say your goal for next month.", textEs: "Di tu meta para el próximo mes.", thinkSeconds: 10, maxSeconds: 45 },
+  ],
+};
 
 const d17 = advanced2Day({
   day: 17,
@@ -778,6 +884,7 @@ const d17 = advanced2Day({
     repairTurn("a2d17-repair", "time", MANAGER, "And what support do you need from me to get there?", "¿Y qué apoyo necesitas de mí para lograrlo?", "female"),
   ],
   speakerVoice: "female",
+  testReady: d17Sprint,
 });
 
 const d18Sprint: TestReadySprint = {
@@ -846,6 +953,19 @@ const d18 = advanced2Day({
   testReady: d18Sprint,
 });
 
+const d19Sprint: TestReadySprint = {
+  type: "speak-now",
+  title: "SPEAK NOW",
+  titleEs: "HABLA AHORA",
+  instruction: "Ten seconds to think: WHAT WENT WRONG → WHY → WHAT I WOULD DO NEXT.",
+  instructionEs: "Diez segundos para pensar: QUÉ SALIÓ MAL → POR QUÉ → QUÉ HARÍA DESPUÉS.",
+  items: [
+    { id: "a2d19-sn1", text: "You interrupted an angry customer and the call ended badly. Explain it to your supervisor.", textEs: "Interrumpiste a un cliente molesto y la llamada terminó mal. Explícaselo a tu supervisor/a.", thinkSeconds: 10, maxSeconds: 60 },
+    { id: "a2d19-sn2", text: "You gave a customer information you were not sure about. Explain what you would do next time.", textEs: "Le diste a un cliente información de la que no estabas seguro/a. Explica qué harías la próxima vez.", thinkSeconds: 10, maxSeconds: 60 },
+    { id: "a2d19-sn3", text: "You promised a call back and forgot. Explain and commit to a change.", textEs: "Prometiste devolver una llamada y lo olvidaste. Explica y comprométete a un cambio.", thinkSeconds: 10, maxSeconds: 45 },
+  ],
+};
+
 const d19 = advanced2Day({
   day: 19,
   topic: "After a Bad Call",
@@ -897,20 +1017,21 @@ const d19 = advanced2Day({
     repairTurn("a2d19-repair", "restart", MANAGER, "Say your plan again — clearly, in two steps.", "Dime tu plan otra vez — claro, en dos pasos.", "female"),
   ],
   speakerVoice: "female",
+  testReady: d19Sprint,
 });
 
 const d20Sprint: TestReadySprint = {
   type: "mixed",
   title: "REAL SHIFT SPRINT",
   titleEs: "SPRINT DE TURNO REAL",
-  instruction: "Everything from the module, mixed. Optional practice — never scored.",
-  instructionEs: "Todo el módulo, mezclado. Práctica opcional — nunca se califica.",
+  instruction: "All four work situations, mixed. Optional practice — never scored.",
+  instructionEs: "Las cuatro situaciones de trabajo, mezcladas. Práctica opcional — nunca se califica.",
   items: [
-    { id: "a2d20-m1", kind: "quick-answers", audio: "Can you help me? Nobody has solved this.", maxSeconds: 15 },
-    { id: "a2d20-m2", kind: "listen-respond", audio: "I want to cancel everything today.", maxSeconds: 20 },
-    { id: "a2d20-m3", kind: "repeat", audio: "Here's what I'm going to do, and here's when you'll hear from me.", maxSeconds: 12 },
-    { id: "a2d20-m4", kind: "speak-now", text: "Handle a customer who is angry, confused and in a hurry.", textEs: "Atiende a un cliente molesto, confundido y con prisa.", thinkSeconds: 10, maxSeconds: 60 },
-    { id: "a2d20-m5", kind: "quick-answers", audio: "Why should I trust you?", maxSeconds: 15 },
+    { id: "a2d20-m1", kind: "repeat", audio: "Let me check what happened and explain the next step.", maxSeconds: 12 },
+    { id: "a2d20-m2", kind: "listen-respond", audio: "I already restarted the router and it still doesn't work.", maxSeconds: 20 },
+    { id: "a2d20-m3", kind: "quick-answers", audio: "Your competitor is cheaper.", maxSeconds: 15 },
+    { id: "a2d20-m4", kind: "speak-now", text: "Your manager has two meetings at the same time. Explain the conflict and propose another time.", textEs: "Tu jefe/a tiene dos reuniones a la misma hora. Explica el conflicto y propón otro horario.", thinkSeconds: 10, maxSeconds: 60 },
+    { id: "a2d20-m5", kind: "listen-respond", audio: "I've already called twice and nobody solved this.", maxSeconds: 20 },
   ],
 };
 
@@ -956,19 +1077,34 @@ const d20 = advanced2Day({
   rep5Prompt: { question: "One shift. Four situations. Handle them all.", questionEs: "Un turno. Cuatro situaciones. Maneja todas." },
   rep5Tips: { en: "No framework is given. Choose the one the situation needs.", es: "No se te da estructura. Elige la que la situación necesita." },
   rep5Turns: [
-    situationTurn("a2d20-rec1", CUSTOMER, "Hi, I've called three times about the same problem and nobody solved it.", "Hola, he llamado tres veces por el mismo problema y nadie lo resolvió.", "male", ALL_NEEDS, "understand", {
+    /* ROUND 1 — CUSTOMER SERVICE. Recognition before the scenario, then speak. */
+    situationTurn("a2d20-rec1", CUSTOMER, "I've been charged twice for the same service.", "Me cobraron dos veces por el mismo servicio.", "male", ALL_NEEDS, "solve", {
       round: { n: 1, ...SITUATION_ROUND },
-      targetSeconds: SUSTAIN,
-    }),
-    turn("a2d20-turn2", CUSTOMER, "Honestly, I just want to cancel everything today.", "Honestamente, solo quiero cancelar todo hoy.", "male", {
       targetSeconds: DEVELOP,
-      cues: ["RECOVER"],
+      cues: ["ACKNOWLEDGE", "CHECK", "SOLUTION", "CONFIRM"],
     }),
-    situationTurn("a2d20-rec2", CUSTOMER, "And I want compensation for the two weeks I couldn't work.", "Y quiero una compensación por las dos semanas que no pude trabajar.", "male", ALL_NEEDS, "recover", {
+    turn("a2d20-turn2", CUSTOMER, "I already called yesterday and nobody helped me.", "Ya llamé ayer y nadie me ayudó.", "male", { targetSeconds: DEVELOP }),
+    /* ROUND 2 — TECH SUPPORT. No recognition: the switch itself is the challenge. */
+    turn("a2d20-turn3", CUSTOMER, "Hi, my internet stopped working this morning.", "Hola, mi internet dejó de funcionar esta mañana.", "female", {
+      round: { n: 2, ...SITUATION_ROUND },
       targetSeconds: DEVELOP,
     }),
-    turn("a2d20-turn4", CUSTOMER, "Okay. Tell me exactly what happens now, step by step.", "Bien. Dígame exactamente qué pasa ahora, paso a paso.", "male", { targetSeconds: DEVELOP }),
-    repairTurn("a2d20-repair", "mixed", CUSTOMER, "And confirm the reference number and the time you'll call me back.", "Y confírmeme el número de referencia y la hora en que me llamará.", "male"),
+    turn("a2d20-turn4", CUSTOMER, "I already restarted the router. It still doesn't work.", "Ya reinicié el router. Sigue sin funcionar.", "female", { targetSeconds: DEVELOP }),
+    /* ROUND 3 — SALES. */
+    situationTurn("a2d20-rec2", CUSTOMER, "Your package sounds good, but your competitor is cheaper.", "Su paquete suena bien, pero su competencia es más barata.", "female", ALL_NEEDS, "recommend", {
+      round: { n: 3, ...SITUATION_ROUND },
+      targetSeconds: DEVELOP,
+    }),
+    turn("a2d20-turn6", CUSTOMER, "So why should I pay more for yours?", "¿Entonces por qué debería pagar más por el suyo?", "female", { targetSeconds: DEVELOP }),
+    /* ROUND 4 — VIRTUAL ASSISTANT. */
+    situationTurn("a2d20-rec3", MANAGER, "Move my meeting with David to tomorrow afternoon.", "Mueve mi reunión con David para mañana por la tarde.", "male", ALL_NEEDS, "solve", {
+      round: { n: 4, ...SITUATION_ROUND },
+      targetSeconds: DEVELOP,
+    }),
+    turn("a2d20-turn8", MANAGER, "Actually, David isn't available tomorrow.", "De hecho, David no está disponible mañana.", "male", { targetSeconds: QUICK }),
+    turn("a2d20-turn9", MANAGER, "Thursday doesn't work for me either.", "El jueves tampoco me sirve.", "male", { targetSeconds: DEVELOP }),
+    /* Exactly ONE deliberate repair moment for the whole day. */
+    repairTurn("a2d20-repair", "confirm", MANAGER, "Sorry, did you say the meeting is at nine fifteen or nine fifty?", "Perdón, ¿dijiste que la reunión es a las nueve y cuarto o a las diez menos diez?", "male"),
   ],
   speakerVoice: "female",
   testReady: d20Sprint,
