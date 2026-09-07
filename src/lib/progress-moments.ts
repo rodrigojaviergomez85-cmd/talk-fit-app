@@ -245,6 +245,7 @@ export const MODULE_EMOJI: Record<ModuleId, string> = {
   tigers: "🐯",
   sharks: "🦈",
   "advanced-1": "🎯",
+  "advanced-2": "💼",
 };
 
 /** Extra completion detail for a module: level line + "AHORA PUEDES PRACTICAR CÓMO:" list. */
@@ -406,6 +407,20 @@ export const NEXT_UP: Record<ModuleId, NextUpCopy> = {
       { es: "probar lo que dices con ejemplos", en: "prove what you say with examples" },
       { es: "responder preguntas inesperadas", en: "answer unexpected questions" },
       { es: "cambiar de entrevista a servicio al cliente", en: "switch from interview to customer service" },
+    ],
+  },
+  "advanced-2": {
+    emoji: "💼",
+    promise: {
+      es: "DO THE JOB — ATIENDE CLIENTES. RESUELVE PROBLEMAS. RINDE EN INGLÉS.",
+      en: "DO THE JOB — HANDLE CUSTOMERS. SOLVE PROBLEMS. PERFORM IN ENGLISH.",
+    },
+    items: [
+      { es: "entender a un cliente que no explica bien", en: "understand a customer who doesn't explain well" },
+      { es: "explicar un cobro o una entrega tarde", en: "explain a charge or a late delivery" },
+      { es: "recomendar y manejar objeciones", en: "recommend and handle objections" },
+      { es: "calmar a un cliente molesto", en: "calm an upset customer" },
+      { es: "reportar y recibir feedback en el trabajo", en: "report and take feedback at work" },
     ],
   },
 };
