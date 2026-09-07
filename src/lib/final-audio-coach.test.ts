@@ -206,7 +206,7 @@ function harness(opts: {
   return { deps, counters, store, clock, logs };
 }
 
-const INPUT = { moduleId: "advanced-1", day: 1, takeNumber: 2 };
+const INPUT = { moduleId: "simple-present", day: 1, takeNumber: 2 };
 
 describe("Final Audio Coach — ownership & readiness", () => {
   it("CASE 1: User B cannot analyse User A's take — blocked before Storage/AI", async () => {
