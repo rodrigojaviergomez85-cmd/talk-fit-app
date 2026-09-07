@@ -23,6 +23,12 @@ const DICT = {
 
   // Generic actions
   "action.start": ["EMPEZAR", "START"],
+  "dailyCap.title": ["¡Ya practicaste hoy!", "You've practiced today!"],
+  "dailyCap.body": [
+    "Completaste tus 2 días de hoy. Descansar entre sesiones ayuda a que el inglés se te quede — volvé mañana para seguir.",
+    "You've completed today's 2 days. Resting between sessions helps English stick — come back tomorrow to continue.",
+  ],
+  "dailyCap.backHome": ["VOLVER AL INICIO", "BACK HOME"],
   "action.back": ["ATRÁS", "BACK"],
   "action.exit": ["SALIR", "EXIT"],
   "action.next": ["SIGUIENTE", "NEXT"],
