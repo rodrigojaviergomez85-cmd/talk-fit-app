@@ -46,7 +46,7 @@ import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { CloudSync } from "@/services/cloud-sync";
-import { isRetakePilot, sourceTurnNumberFor, type FinalCoachRetakeState, type FinalCoachState } from "@/lib/final-audio-coach";
+import { isFeedbackId, isRetakePilot, sourceTurnNumberFor, type FinalCoachRetakeState, type FinalCoachState } from "@/lib/final-audio-coach";
 import { objectiveResultInputFor } from "@/lib/final-coach-result";
 import { runCoachWithDeadline, type CoachDeadlineHandle } from "@/lib/final-coach-deadline";
 import { requestFinalCoachRetake, runFinalCoachPipeline } from "@/services/final-audio-coach-client";
@@ -517,11 +517,19 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   // Leaving the flow while the coach is still working: clear the deadline, stop polling, no late setState.
   useEffect(() => () => coachDeadline.current?.cancel(), []);
 
+  /**
+   * The retake exists only against a review that carries a valid feedback id.
+   * Once started, the frozen id keeps the panel alive through recording,
+   * polling and technical retries.
+   */
+  const retakeIdentityReady =
+    (coachState.status === "ready" && isFeedbackId(coachState.feedbackId)) || isFeedbackId(retakeFeedbackIdRef.current);
+
   /** ONE optional retake per coach review. Guarded by a ref: a second tap can never start another paid round. */
   const startRetake = () => {
     // No feedback identity → no retake: it could otherwise be bound to another review.
-    if (!isRetakePilot(moduleId, day.day) || retakeStartedRef.current || coachState.status !== "ready" || !coachState.feedbackId) return;
-    retakeFeedbackIdRef.current = coachState.feedbackId;
+    if (!isRetakePilot(moduleId, day.day) || retakeStartedRef.current || coachState.status !== "ready" || !isFeedbackId(coachState.feedbackId)) return;
+    retakeFeedbackIdRef.current = coachState.feedbackId ?? null;
     retakeStartedRef.current = true;
     setRetakeState({ status: "recording" });
   };
@@ -816,7 +824,9 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
                 moduleId={moduleId}
                 onContinue={continueToDayComplete}
                 retake={
-                  isRetakePilot(moduleId, day.day) && coachResultInput && finalRecording
+                  // No valid feedback identity → no retake panel at all: a legacy
+                  // response must never show a button that cannot work.
+                  isRetakePilot(moduleId, day.day) && coachResultInput && finalRecording && retakeIdentityReady
                     ? {
                         state: retakeState,
                         before: {

@@ -25,6 +25,7 @@ import {
   normalizeRetakeResult,
   NOT_APPLIED_FALLBACK,
   NO_IMPROVEMENT_FALLBACK,
+  PARTIAL_IMPROVEMENT_SUMMARY,
   previousErrorStillPresent,
   runFinalCoachRetake,
   type PreviousFeedback,
@@ -858,9 +859,34 @@ describe("Retake — no praise survives a failed evidence check", () => {
     const raw = { applied: [CLAIM("verb_tense", "something I never said")], ...TAIL };
     const out = normalizeRetakeResult(raw, PREV, "I woke up early and later I went to work.")!;
     expect(out.applied[0]!.applied).toBe(false);
+    expect(out.applied[0]!.messageEn).not.toContain("correctly");
+    // Honest wording + the concrete guidance from the already validated feedback.
+    expect(out.applied[0]!.messageEn).toContain("We couldn't confirm this improvement");
+    expect(out.applied[0]!.messageEn).toContain("Yesterday I woke up");
+    expect(out.applied[0]!.messageEs).toContain("No pudimos confirmar esta mejora");
+  });
+  it("a downgraded claim with no reusable guidance falls back to the generic honest copy", () => {
+    const bare: PreviousFeedback = { ...PREV, corrections: [], fluencyUpgrade: null, nextStepEn: "", nextStepEs: "" };
+    const out = normalizeRetakeResult({ applied: [CLAIM("next_step", "never said")], ...TAIL }, bare, "I woke up early.")!;
     expect(out.applied[0]!.messageEn).toBe(NOT_APPLIED_FALLBACK.en);
     expect(out.applied[0]!.messageEs).toBe(NOT_APPLIED_FALLBACK.es);
-    expect(out.applied[0]!.messageEn).not.toContain("correctly");
+  });
+  it("an item honestly reported as applied=false keeps its specific, actionable instruction", () => {
+    const raw = {
+      applied: [
+        {
+          skill: "verb_tense",
+          applied: false,
+          messageEn: "To talk about yesterday, change wake up to woke up.",
+          messageEs: "Para hablar de ayer, cambia wake up por woke up.",
+        },
+      ],
+      ...TAIL,
+    };
+    const out = normalizeRetakeResult(raw, PREV, "Yesterday I wake up at seven.")!;
+    expect(out.applied[0]!.applied).toBe(false);
+    expect(out.applied[0]!.messageEs).toBe("Para hablar de ayer, cambia wake up por woke up.");
+    expect(out.applied[0]!.messageEn).toBe("To talk about yesterday, change wake up to woke up.");
   });
   it("nothing validated → neutral summary, never a celebration", () => {
     const raw = { applied: [CLAIM("verb_tense", "never said this")], ...TAIL };
@@ -869,12 +895,30 @@ describe("Retake — no praise survives a failed evidence check", () => {
     expect(out.improvementEs).toBe(NO_IMPROVEMENT_FALLBACK.es);
     expect(out.nextEn).toBe(TAIL.nextEn);
   });
-  it("validated praise is preserved untouched", () => {
+  it("validated praise is preserved, but the summary is derived — never the model's", () => {
     const transcript = "Yesterday I woke up at seven and after that I had breakfast.";
     const out = normalizeRetakeResult({ applied: [CLAIM("verb_tense", "Yesterday I woke up")], ...TAIL }, PREV, transcript)!;
     expect(out.applied[0]!.applied).toBe(true);
     expect(out.applied[0]!.messageEn).toContain("correctly");
-    expect(out.improvementEn).toBe(TAIL.improvementEn);
+    expect(out.improvementEn).toBe(PARTIAL_IMPROVEMENT_SUMMARY.en);
+    expect(out.improvementEs).toBe(PARTIAL_IMPROVEMENT_SUMMARY.es);
+  });
+  it("mixed accepted/rejected: the summary never keeps praise for the rejected correction", () => {
+    // Claims both "woke up" (rejected: the old error is still there) and the added reason (accepted).
+    const transcript = "Yesterday I wake up at seven because I need to go to work.";
+    const raw = {
+      applied: [CLAIM("verb_tense", "at seven"), CLAIM("next_step", "because I need to go to work")],
+      improvementEn: "You used woke up correctly and added a reason.",
+      improvementEs: "Usaste woke up correctamente y agregaste una razón.",
+      nextEn: TAIL.nextEn,
+      nextEs: TAIL.nextEs,
+    };
+    const out = normalizeRetakeResult(raw, PREV, transcript)!;
+    expect(out.applied.find((a) => a.skill === "verb_tense")!.applied).toBe(false);
+    expect(out.applied.find((a) => a.skill === "next_step")!.applied).toBe(true);
+    expect(out.improvementEn).toBe(PARTIAL_IMPROVEMENT_SUMMARY.en);
+    expect(out.improvementEn).not.toContain("woke up");
+    expect(out.improvementEs).not.toContain("woke up");
   });
 });
 
@@ -897,5 +941,49 @@ describe("Retake — the idea count survives cache replay", () => {
     h.rows.set(id, { ...row, ideaCount: null });
     const again = await runFinalCoachRetake(REQ(), h.deps);
     expect(again.body.status === "ready" ? again.body.ideaCount : "x").toBeNull();
+  });
+});
+
+describe("Retake — the button only exists when the review carries a valid feedback id", () => {
+  const feedback = { ...(BASE as unknown as CoachFeedback), corrections: [], answeredTask: "yes" };
+  const panel = {
+    state: { status: "idle" } as FinalCoachRetakeState,
+    before: { seconds: 20, ideas: 5 },
+    after: null,
+    maxSeconds: 60,
+    targetSeconds: [30, 45] as [number, number],
+    onStart: () => undefined,
+    onRecorded: () => undefined,
+  };
+  const render = (retake: typeof panel | null) =>
+    renderToStaticMarkup(
+      createElement(FinalCoachReview, {
+        state: { status: "ready", feedback } as FinalCoachState,
+        showEs: true,
+        result: null,
+        onContinue: () => undefined,
+        retake,
+      }),
+    );
+
+  it("no retake panel (legacy response without feedbackId) → no button, feedback and CONTINUE still there", () => {
+    const html = render(null);
+    expect(html).not.toContain("final-coach-retake-start");
+    expect(html).not.toContain("INTÉNTALO OTRA VEZ");
+    expect(html).toContain("CONTINUAR");
+  });
+
+  it("a valid feedback id keeps the retake available", () => {
+    expect(render(panel)).toContain("final-coach-retake-start");
+  });
+
+  it("practice.tsx gates the panel on a valid, frozen feedback identity", () => {
+    const src = readFileSync("src/routes/practice.tsx", "utf8");
+    // Eligibility: ready + valid id, or the id already frozen for this retake round.
+    expect(src).toMatch(/const retakeIdentityReady =[\s\S]*isFeedbackId\(coachState\.feedbackId\)[\s\S]*isFeedbackId\(retakeFeedbackIdRef\.current\)/);
+    expect(src).toContain("finalRecording && retakeIdentityReady");
+    // Defensive check kept inside startRetake, and the frozen id is what the request uses.
+    expect(src).toMatch(/startRetake = \(\) => \{[\s\S]*!isFeedbackId\(coachState\.feedbackId\)\) return;/);
+    expect(src).toContain("const feedbackId = retakeFeedbackIdRef.current;");
   });
 });

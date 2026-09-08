@@ -260,17 +260,53 @@ function clip(text: string, max: number): string {
   return t.length <= max ? t : `${t.slice(0, max - 1).replace(/[\s,;:]+$/, "")}…`;
 }
 
-/** Honest copy that replaces any praise the evidence check rejected. */
+/**
+ * Honest copy that replaces praise the evidence check rejected, when no specific
+ * guidance can be rebuilt from the (already validated) previous feedback.
+ */
 export const NOT_APPLIED_FALLBACK = {
-  en: "Not yet — keep working on this one.",
-  es: "Todavía no — sigue trabajando en esto.",
+  en: "We couldn't confirm this improvement. Keep practicing the suggested correction.",
+  es: "No pudimos confirmar esta mejora. Sigue practicando la corrección indicada.",
 } as const;
 
 /** Neutral summary used when NO improvement claim survived validation. */
 export const NO_IMPROVEMENT_FALLBACK = {
-  en: "This retake does not show a clear improvement yet.",
-  es: "Este intento todavía no muestra una mejora clara.",
+  en: "We couldn't confirm an improvement in this attempt. Review the feedback and keep practicing.",
+  es: "No pudimos confirmar una mejora en este intento. Revisa el feedback y sigue practicando.",
 } as const;
+
+/** Deterministic summary used when at least one improvement survived validation. */
+export const PARTIAL_IMPROVEMENT_SUMMARY = {
+  en: "You applied part of the feedback in this attempt.",
+  es: "En este intento aplicaste parte del feedback recibido.",
+} as const;
+
+/**
+ * Honest not-applied copy for a claim that FAILED validation. Whenever the
+ * previous (already validated) feedback carries concrete guidance for that
+ * skill, it is reused so the learner keeps something actionable instead of a
+ * generic sentence. No new model call, no evidence quoted from the retake.
+ */
+function downgradedMessage(skill: RetakeSkill, previous: PreviousFeedback): { en: string; es: string } {
+  const quote = (a: string, b: string) => ({
+    en: `We couldn't confirm this improvement. Keep practicing: "${a}" instead of "${b}".`,
+    es: `No pudimos confirmar esta mejora. Sigue practicando: "${a}" en lugar de "${b}".`,
+  });
+  if (skill === "fluency_upgrade" && previous.fluencyUpgrade) {
+    return quote(previous.fluencyUpgrade.improved, previous.fluencyUpgrade.original);
+  }
+  if (skill === "next_step" && previous.nextStepEn.trim() && previous.nextStepEs.trim()) {
+    return {
+      en: `We couldn't confirm this improvement. Keep practicing: ${previous.nextStepEn.trim()}`,
+      es: `No pudimos confirmar esta mejora. Sigue practicando: ${previous.nextStepEs.trim()}`,
+    };
+  }
+  const correction = previous.corrections.find((c) => c.category === skill);
+  if (correction?.betterVersion.trim() && correction.said.trim()) {
+    return quote(correction.betterVersion.trim(), correction.said.trim());
+  }
+  return { en: NOT_APPLIED_FALLBACK.en, es: NOT_APPLIED_FALLBACK.es };
+}
 
 function isSkill(value: unknown): value is RetakeSkill {
   return typeof value === "string" && (RETAKE_SKILLS as readonly string[]).includes(value);
@@ -317,7 +353,8 @@ export function normalizeRetakeResult(raw: unknown, previous: PreviousFeedback, 
     const messageEn = typeof a["messageEn"] === "string" && a["messageEn"].trim() ? clip(a["messageEn"], RETAKE_LIMITS.message) : null;
     const messageEs = typeof a["messageEs"] === "string" && a["messageEs"].trim() ? clip(a["messageEs"], RETAKE_LIMITS.message) : null;
     if (!messageEn || !messageEs) continue;
-    let ok = a["applied"] === true;
+    const claimed = a["applied"] === true;
+    let ok = claimed;
     if (ok) {
       const evidence = typeof a["evidence"] === "string" ? a["evidence"].replace(/\s+/g, " ").trim() : "";
       if (!evidence || countWords(evidence) > MAX_RETAKE_EVIDENCE_WORDS || !saidOccursInTranscript(evidence, transcript)) ok = false;
@@ -328,19 +365,25 @@ export function normalizeRetakeResult(raw: unknown, previous: PreviousFeedback, 
       if (ok && related.some((c) => normalizeForMatch(c.said) === normalizeForMatch(evidence))) ok = false;
     }
     seen.add(skill);
-    // A claim that failed grounding keeps NO praise: the model's celebratory
-    // wording is replaced by honest, neutral copy. Only validated praise survives.
-    applied.push(
-      ok
-        ? { skill, applied: true, messageEn, messageEs }
-        : { skill, applied: false, messageEn: NOT_APPLIED_FALLBACK.en, messageEs: NOT_APPLIED_FALLBACK.es },
-    );
+    if (ok) {
+      // Validated praise survives untouched.
+      applied.push({ skill, applied: true, messageEn, messageEs });
+    } else if (claimed) {
+      // Claimed but NOT grounded: the celebratory wording is dropped and replaced
+      // by honest copy that reuses the previous (already validated) guidance.
+      const honest = downgradedMessage(skill, previous);
+      applied.push({ skill, applied: false, messageEn: honest.en, messageEs: honest.es });
+    } else {
+      // Honestly reported as still pending: its specific instruction is actionable
+      // and is kept as-is (it already passed shape + length validation).
+      applied.push({ skill, applied: false, messageEn, messageEs });
+    }
   }
-  // When nothing at all could be validated, the overall summary must not celebrate either.
+  // The overall summary is DERIVED from the validated items, never reused from the
+  // model: a partly-rejected response must not keep praising the rejected claim.
   const anyValidated = applied.some((a) => a.applied);
-  return anyValidated
-    ? { applied, improvementEn, improvementEs, nextEn, nextEs }
-    : { applied, improvementEn: NO_IMPROVEMENT_FALLBACK.en, improvementEs: NO_IMPROVEMENT_FALLBACK.es, nextEn, nextEs };
+  const summary = anyValidated ? PARTIAL_IMPROVEMENT_SUMMARY : NO_IMPROVEMENT_FALLBACK;
+  return { applied, improvementEn: summary.en, improvementEs: summary.es, nextEn, nextEs };
 }
 
 /* ------------------------------------------------------------------------ */
