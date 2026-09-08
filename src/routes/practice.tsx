@@ -816,7 +816,9 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
                 moduleId={moduleId}
                 onContinue={continueToDayComplete}
                 retake={
-                  isRetakePilot(moduleId, day.day) && coachResultInput && finalRecording
+                  // No valid feedback identity → no retake panel at all: a legacy
+                  // response must never show a button that cannot work.
+                  isRetakePilot(moduleId, day.day) && coachResultInput && finalRecording && retakeIdentityReady
                     ? {
                         state: retakeState,
                         before: {
