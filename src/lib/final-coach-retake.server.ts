@@ -90,7 +90,9 @@ export type RetakeDeps = {
   userId: string;
   now: () => number;
   loadDay: (moduleId: ModuleId, day: number) => Promise<CourseDay | null>;
-  /** Latest READY pilot feedback for this learner/module/day (validated corrections). Null = no coach review yet. */
+  /** Learner-facing module label for the rubric (e.g. "BASIC 3"). Defaults to the module id. */
+  moduleLabel?: ((moduleId: string) => string) | undefined;
+  /** Latest READY coach feedback for this learner/module/day (validated corrections). Null = no coach review yet. */
   findPreviousFeedback: (userId: string, moduleId: string, day: number) => Promise<PreviousFeedback | null>;
   store: {
     /** The existing retake row for this feedback (UNIQUE feedback_id), or null on first retake. */
@@ -113,7 +115,7 @@ export type RetakeDeps = {
 };
 
 export type RetakeResponse =
-  | { http: 200; body: { status: "ready"; result: FinalCoachRetakeResult } }
+  | { http: 200; body: { status: "ready"; result: FinalCoachRetakeResult; ideaCount?: number | null } }
   | { http: 200; body: { status: "unclear" } }
   | { http: 200; body: { status: "error"; code: string } }
   | { http: 202; body: { status: "pending" } }
@@ -127,18 +129,43 @@ export type RetakeResponse =
 /*  Prompt                                                                   */
 /* ------------------------------------------------------------------------ */
 
-export type RetakeLlmContext = {
-  question: string;
-  topic: string;
-  focus: string;
-  previous: PreviousFeedback;
+/** Same trusted evaluation context as the Final Audio Coach (module, day, exact turn). */
+export type RetakeLlmContext = { rubric: CoachRubric; previous: PreviousFeedback };
+
+type RetakeLevelGroup = "basic" | "intermediate" | "advanced";
+
+export function retakeLevelGroup(level: CoachRubric["level"]): RetakeLevelGroup {
+  if (level === "basic") return "basic";
+  if (level === "advanced") return "advanced";
+  return "intermediate";
+}
+
+const LEVEL_EXPECTATION: Record<RetakeLevelGroup, string> = {
+  basic:
+    "This learner is at BASIC level: success = using the corrected structure and communicating understandable ideas. Do not expect sophisticated vocabulary.",
+  intermediate:
+    "This learner is at INTERMEDIATE level: success = applying the relevant corrections AND developing/connecting the answer a little better. Real grammar errors still matter.",
+  advanced:
+    "This learner is at ADVANCED level (workplace English): success = applying the feedback on accuracy, organization, register or development of a professional answer.",
 };
+
+/** The exact question the evaluated answer belongs to (role-play turn when there is one). */
+export function retakeQuestionFor(rubric: CoachRubric): string {
+  if (rubric.turn) {
+    const situation = rubric.turn.situation ? `${rubric.turn.situation} — ` : "";
+    return `${situation}${rubric.turn.label}: ${rubric.turn.text}`;
+  }
+  return rubric.prompt?.question ?? "";
+}
 
 export function buildRetakeMessages(ctx: RetakeLlmContext, transcript: string) {
   const prev = ctx.previous;
+  const rubric = ctx.rubric;
+  const group = retakeLevelGroup(rubric.level);
   const system = [
-    "You are a warm, concise English speaking coach for Spanish-speaking adult BASIC learners.",
-    "The learner already received feedback on a first answer and has now recorded the WHOLE answer again to APPLY that feedback.",
+    "You are a warm, concise English speaking coach for Spanish-speaking adult learners.",
+    LEVEL_EXPECTATION[group],
+    "The learner already received feedback on a first answer and has now recorded that SAME answer again to APPLY that feedback.",
     "Your ONLY job: compare the NEW transcript with the PREVIOUS feedback and say what was applied. Do NOT re-evaluate the answer from scratch. Do NOT list new mistakes except ONE remaining thing to keep practicing.",
     "Speech-to-text punctuation is unreliable; ignore it. Never grade accent or pronunciation. Never mention CEFR levels, scores or percentages.",
     "For EVERY previous item return one `applied` entry: `skill` = the item's category (or 'next_step' / 'fluency_upgrade'); `applied` = true ONLY if the new transcript clearly shows it (the corrected form appears / the old error is gone / the connector or detail was added); `evidence` = a SHORT phrase (max 12 words) copied EXACTLY from the NEW transcript that proves it (required when applied=true, empty string otherwise). Never invent improvement.",
@@ -150,9 +177,11 @@ export function buildRetakeMessages(ctx: RetakeLlmContext, transcript: string) {
     (c, i) => `${i + 1}. [${c.category}] said: "${c.said}" → better: "${c.betterVersion}" (${c.whyEn})`,
   );
   const user = [
-    `Topic: ${ctx.topic}`,
-    `Language focus: ${ctx.focus}`,
-    `Question: "${ctx.question}"`,
+    `Course: ${rubric.moduleLabel} · Day ${rubric.day}`,
+    `Topic: ${rubric.topic}`,
+    `Language focus: ${rubric.focus}`,
+    rubric.turn ? `Task type: role play turn ${rubric.sourceTurnNumber}. Only THIS turn is being retaken.` : null,
+    `Question: "${retakeQuestionFor(rubric)}"`,
     "",
     "PREVIOUS FEEDBACK:",
     ...(prevLines.length ? prevLines : ["(no specific corrections)"]),
@@ -169,6 +198,7 @@ export function buildRetakeMessages(ctx: RetakeLlmContext, transcript: string) {
     { role: "user" as const, content: user },
   ];
 }
+
 
 export const RETAKE_JSON_SCHEMA = {
   name: "final_audio_coach_retake",
