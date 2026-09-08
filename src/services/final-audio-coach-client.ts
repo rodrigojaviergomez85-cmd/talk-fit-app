@@ -228,8 +228,13 @@ export const RETAKE_PENDING_POLL_DELAYS_MS = [2000, 3000, 5000, 5000] as const;
 
 export type RetakeHttpResult = { kind: "response"; http: number; body: FinalCoachRetakeResponse | null } | { kind: "network_error" };
 
-/** The retake always names the exact answer it repeats (role-play turn, or null on classic STEP 5). */
-export type RetakeInput = { moduleId: ModuleId; day: number; blob: Blob; sourceTurnNumber?: number | null };
+/**
+ * The retake always names the EXACT review it repeats: `feedbackId` is the
+ * persisted feedback row the learner is looking at, and `sourceTurnNumber` the
+ * role-play turn (null on classic STEP 5). Both stay fixed across the recording,
+ * the bounded polling and any technical retry of the same audio.
+ */
+export type RetakeInput = { moduleId: ModuleId; day: number; blob: Blob; feedbackId: string; sourceTurnNumber?: number | null };
 
 export type RetakeRequestDeps = {
   send: (input: RetakeInput, signal?: AbortSignal) => Promise<RetakeHttpResult>;
@@ -243,6 +248,7 @@ async function postRetake(input: RetakeInput, signal?: AbortSignal): Promise<Ret
     const form = new FormData();
     form.append("moduleId", input.moduleId);
     form.append("day", String(input.day));
+    form.append("feedbackId", input.feedbackId);
     if (input.sourceTurnNumber !== undefined) form.append("sourceTurnNumber", input.sourceTurnNumber === null ? "" : String(input.sourceTurnNumber));
     form.append("file", input.blob, "retake");
     const res = await fetch("/api/final-audio-coach-retake", {
