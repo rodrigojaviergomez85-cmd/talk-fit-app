@@ -44,7 +44,7 @@ type Props = {
 /** ShadowKaraoke — continuous model audio + chunk-level highlight; the learner speaks WITH it. */
 export function ShadowKaraoke({ lines, text, voice, onNext, onSkip }: Props) {
   const t = useT();
-  const [speed, setSpeed] = useState<number>(0.75);
+  const [speed, setSpeed] = useState<number>(1);
   const [status, setStatus] = useState<Status>("idle");
   const [active, setActive] = useState(0);
   const [current, setCurrent] = useState(0);
