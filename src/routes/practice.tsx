@@ -515,7 +515,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   // Leaving the flow while the coach is still working: clear the deadline, stop polling, no late setState.
   useEffect(() => () => coachDeadline.current?.cancel(), []);
 
-  /** ONE optional retake (pilot day only). Guarded by a ref: a second tap can never start another paid round. */
+  /** ONE optional retake per coach review. Guarded by a ref: a second tap can never start another paid round. */
   const startRetake = () => {
     if (!isRetakePilot(moduleId, day.day) || retakeStartedRef.current || coachState.status !== "ready") return;
     retakeStartedRef.current = true;
@@ -526,22 +526,13 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
     trackSeconds(rec);
     setRetakeRecording({ ...rec, countStatus: "pending", sentenceCount: null });
     setRetakeState({ status: "analyzing" });
-    // Objective metrics reuse the existing idea counter (no extra LLM for counting); failure → time only.
-    void countSentences(rec.blob ?? null).then((count) => {
-      setRetakeRecording((current) =>
-        current && current.id === rec.id
-          ? count === null
-            ? { ...current, countStatus: "failed", sentenceCount: null }
-            : { ...current, countStatus: "done", sentenceCount: count }
-          : current,
-      );
-    });
     if (!rec.blob) {
       setRetakeState({ status: "unavailable" });
       return;
     }
-    // One recording: the server keys on the audio hash, so re-sending this blob can never be a second retake.
-    void requestFinalCoachRetake({ moduleId, day: day.day, blob: rec.blob }).then(setRetakeState);
+    // ONE transcription for the whole retake: the comparison endpoint returns the
+    // deterministic idea count from that same transcript (no second STT is ever paid for).
+    void sendRetake(rec.blob, rec.id);
   };
   /**
    * RETRY COMPARISON after a TECHNICAL failure: re-sends the exact same
@@ -550,22 +541,46 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
    */
   const retryRetakeComparison = () => {
     const blob = retakeRecording?.blob;
-    if (retakeState.status !== "retryable" || !blob) return;
+    const id = retakeRecording?.id;
+    if (retakeState.status !== "retryable" || !blob || !id) return;
     setRetakeState({ status: "analyzing" });
-    void requestFinalCoachRetake({ moduleId, day: day.day, blob }).then(setRetakeState);
+    void sendRetake(blob, id);
   };
 
   /**
    * Objective result for the Coach Review (local data, 0 AI calls). Reads the
    * LIVE take so the async idea count (pending → done) updates in place.
    */
+  const finalSourceTurn = (() => {
+    if (!finalRecording) return null;
+    const liveIndex = takes.findIndex((take) => take?.id === finalRecording.id);
+    if (liveIndex < 0) return null;
+    const live = takes[liveIndex] ?? finalRecording;
+    return sourceTurnNumberFor(day, liveIndex, live.label);
+  })();
+
+  /** Sends the retake audio for the EXACT answer that was reviewed (role-play turn included). */
+  function sendRetake(blob: Blob, recordingId: string) {
+    void requestFinalCoachRetake({ moduleId, day: day.day, blob, sourceTurnNumber: finalSourceTurn }).then((state) => {
+      setRetakeState(state);
+      const count = state.status === "ready" ? (state.ideaCount ?? null) : null;
+      setRetakeRecording((current) =>
+        current && current.id === recordingId
+          ? count === null
+            ? { ...current, countStatus: "failed", sentenceCount: null }
+            : { ...current, countStatus: "done", sentenceCount: count }
+          : current,
+      );
+    });
+  }
+
   const coachResultInput = (() => {
     if (!finalRecording) return null;
     const liveIndex = takes.findIndex((take) => take?.id === finalRecording.id);
     const live = (liveIndex >= 0 ? takes[liveIndex] : null) ?? finalRecording;
-    const sourceTurn = liveIndex >= 0 ? sourceTurnNumberFor(day, liveIndex, live.label) : null;
-    return objectiveResultInputFor(moduleId, day, live, sourceTurn);
+    return objectiveResultInputFor(moduleId, day, live, finalSourceTurn);
   })();
+
 
   const countFor = (rep: "2c" | 4, ids: string[]) => {
     const keys = ids.map((id) => itemKey(rep, id));
@@ -764,8 +779,10 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
                               ideas: typeof retakeRecording.sentenceCount === "number" ? retakeRecording.sentenceCount : null,
                             }
                           : null,
-                        maxSeconds: Math.max(60, day.goalSeconds[1] + 15),
-                        targetSeconds: day.goalSeconds,
+                        // A role-play turn is retaken alone: never impose the whole activity's length on it.
+                        maxSeconds: Math.max(60, (coachResultInput.turnTargetSeconds ?? day.goalSeconds)[1] + 15),
+                        targetSeconds: coachResultInput.turnTargetSeconds ?? day.goalSeconds,
+
                         onStart: startRetake,
                         onRecorded: onRetakeRecorded,
                         onRetry: retryRetakeComparison,

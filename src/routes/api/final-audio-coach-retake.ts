@@ -37,12 +37,18 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
           let file: File | null = null;
           let moduleId: string | null = null;
           let day = NaN;
+          let sourceTurnNumber: number | null | undefined;
           try {
             const form = await request.formData();
             const formFile = form.get("file");
             file = formFile instanceof File ? formFile : null;
             moduleId = String(form.get("moduleId") ?? "");
             day = Number(form.get("day"));
+            const rawTurn = form.get("sourceTurnNumber");
+            if (rawTurn !== null) {
+              const parsed = String(rawTurn) === "" ? null : Number(rawTurn);
+              sourceTurnNumber = parsed === null || (Number.isInteger(parsed) && parsed > 0) ? parsed : undefined;
+            }
           } catch {
             file = null;
           }
@@ -54,6 +60,7 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
           const mime = (file.type || "audio/webm").split(";")[0]?.trim().toLowerCase() ?? "audio/webm";
           if (!AUDIO_EXT[mime]) return json({ error: "Unsupported audio format." }, 415);
           const audio = new Uint8Array(await file.arrayBuffer());
+
 
           const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
           const coach = await import("@/lib/final-audio-coach.server");
@@ -70,10 +77,20 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
               return null;
             }
           },
+          moduleLabel: (mid) => {
+            try {
+              const m = CourseService.getModule(mid as ModuleId);
+              return `${m.label} ${m.title}`.trim();
+            } catch {
+              return mid;
+            }
+          },
           findPreviousFeedback: async (uid, mid, d) => {
             const { data } = await supabaseAdmin
               .from("final_audio_coach_feedback")
-              .select("id, next_step_en, next_step_es, corrections, fluency_upgrade, coach_version")
+              .select(
+                "id, next_step_en, next_step_es, corrections, fluency_upgrade, coach_version, source_turn_number, correction_needed, said, better_version, why_en, why_es",
+              )
               .eq("user_id", uid)
               .eq("module_id", mid)
               .eq("day", d)
@@ -82,15 +99,31 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
               .limit(1)
               .maybeSingle();
             if (!data || typeof data.next_step_en !== "string" || typeof data.next_step_es !== "string") return null;
+            // Stored corrections were grounded at generation time; re-validate shape only.
+            // v2 rows (ADVANCED) keep their single correction in the flat columns.
+            const multi = coach.normalizeCorrections(data.corrections, Math.max(1, coach.maxCorrectionsFor(mid, d)));
+            const flat =
+              data.correction_needed && typeof data.said === "string" && typeof data.better_version === "string"
+                ? [
+                    {
+                      category: "grammar" as const,
+                      said: data.said,
+                      betterVersion: data.better_version,
+                      whyEn: data.why_en ?? "",
+                      whyEs: data.why_es ?? "",
+                    },
+                  ]
+                : [];
             return {
               id: data.id,
-              // Stored corrections were grounded at generation time; re-validate shape only.
-              corrections: coach.normalizeCorrections(data.corrections, coach.maxCorrectionsFor(mid, d)),
+              corrections: multi.length > 0 ? multi : flat,
               nextStepEn: data.next_step_en,
               nextStepEs: data.next_step_es,
               fluencyUpgrade: coach.normalizeFluencyUpgrade(data.fluency_upgrade),
+              sourceTurnNumber: data.source_turn_number ?? null,
             };
           },
+
           store: {
             findExisting: async (feedbackId) => {
               const { data, error } = await supabaseAdmin
@@ -165,7 +198,11 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
           log: (entry) => console.info("[final-audio-coach-retake]", entry),
           };
 
-          const result = await engine.runFinalCoachRetake({ moduleId, day, audio, mime }, deps);
+          const result = await engine.runFinalCoachRetake(
+            { moduleId, day, audio, mime, ...(sourceTurnNumber === undefined ? {} : { sourceTurnNumber }) },
+            deps,
+          );
+
           return json(result.body, result.http);
         } catch (error) {
           console.error(

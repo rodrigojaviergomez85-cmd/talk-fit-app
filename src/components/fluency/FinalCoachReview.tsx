@@ -505,15 +505,16 @@ function RetakeResultScreen({ retake, showEs, onContinue }: { retake: RetakePane
   const applied = r.applied.filter((a) => a.applied);
   const remaining = r.applied.filter((a) => !a.applied);
   const after = retake.after;
-  const improved =
-    after !== null &&
-    (after.seconds > retake.before.seconds || (after.ideas !== null && retake.before.ideas !== null && after.ideas > retake.before.ideas) || applied.length > 0);
+  // Honest title: only server-validated evidence that a recommendation was applied
+  // counts as improvement. More seconds or more ideas alone prove nothing.
+  const improved = applied.length > 0;
   return (
     <Shell testId="final-coach-retake-ready">
       <Title>{showEs ? "COACH DE IA ✨" : "AI COACH ✨"}</Title>
       <p className="text-center text-[22px] font-extrabold leading-tight">
-        {improved ? (showEs ? "MEJORASTE 🎉" : "YOU IMPROVED 🎉") : showEs ? "SEGUNDA RONDA LISTA" : "SECOND ROUND DONE"}
+        {improved ? (showEs ? "MEJORASTE 🎉" : "YOU IMPROVED 🎉") : showEs ? "RETAKE COMPLETADO" : "RETAKE COMPLETED"}
       </p>
+
       <div className="grid grid-cols-2 gap-3 rounded-2xl bg-muted/60 px-4 py-3" data-testid="final-coach-retake-metrics">
         <div>
           <SubLabel>{showEs ? "ANTES" : "BEFORE"}</SubLabel>
@@ -541,7 +542,7 @@ function RetakeResultScreen({ retake, showEs, onContinue }: { retake: RetakePane
       ) : null}
 
       <Divider />
-      <Section label={`✅ ${showEs ? "MEJORASTE TU FLUIDEZ" : "YOUR FLUENCY"}`} testId="final-coach-retake-improvement">
+      <Section label={`💬 ${showEs ? "SOBRE TU RESPUESTA" : "ABOUT YOUR ANSWER"}`} testId="final-coach-retake-improvement">
         <p className="text-[15px] font-semibold leading-snug">{showEs ? r.improvementEs : r.improvementEn}</p>
       </Section>
 

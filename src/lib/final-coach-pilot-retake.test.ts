@@ -296,7 +296,9 @@ describe("Retake — every applied claim is grounded in the new transcript", () 
     expect(normalizeRetakeResult({ applied: [] }, PREV, "x")).toBeNull();
     expect(RETAKE_JSON_SCHEMA.strict).toBe(true);
     expect(RETAKE_JSON_SCHEMA.schema.properties.applied.items.properties.skill.enum).toContain("fluency_upgrade");
-    const msgs = buildRetakeMessages({ question: "What did you do yesterday?", topic: "t", focus: "f", previous: PREV }, "new text");
+    const rubricForPrompt = buildRubric({ day: 1, topic: "t", focus: "f", goalSeconds: [30, 45], goalSentences: 6, rep5Prompt: { question: "What did you do yesterday?" } } as never, "past-stories", "BASIC 3", null)!;
+    const msgs = buildRetakeMessages({ rubric: rubricForPrompt, previous: PREV }, "new text");
+
     expect(msgs[0]!.content).toContain("Never invent improvement");
     expect(msgs[1]!.content).toContain('said: "Yesterday I wake up"');
     expect(msgs[1]!.content).toContain("NEW TRANSCRIPT");
@@ -316,7 +318,14 @@ function retakeHarness(opts: { previous?: PreviousFeedback | null; llm?: unknown
   const deps: RetakeDeps = {
     userId: USER,
     now: () => 1_000,
-    loadDay: async (mid, d) => (await CourseService.loadModule(mid)).days.find((x) => x.day === d) ?? null,
+    loadDay: async (mid, d) => {
+      try {
+        return (await CourseService.loadModule(mid)).days.find((x) => x.day === d) ?? null;
+      } catch {
+        return null;
+      }
+    },
+
     findPreviousFeedback: async () => (opts.previous === undefined ? PREV : opts.previous),
     store: {
       findExisting: async (feedbackId) => {
@@ -384,15 +393,38 @@ describe("Retake — engine", () => {
     expect(again.http).toBe(409);
     expect(h.calls).toMatchObject({ stt: 1, llm: 1, quota: 1 });
   });
-  it("non-pilot days → 403 before any provider or quota work", async () => {
-    for (const [m, d] of [["past-stories", 2], ["simple-present", 1], ["advanced-1", 1]] as const) {
+  it("valid days of every level are eligible; invalid module/day → 403 before any provider or quota work", async () => {
+    for (const [m, d] of [["past-stories", 2], ["simple-present", 1], ["advanced-1", 1], ["eagles-week-1", 3]] as const) {
+      expect(isRetakePilot(m, d)).toBe(true);
+      const h = retakeHarness();
+      const res = await runFinalCoachRetake({ moduleId: m, day: d, audio: AUDIO, mime: "audio/webm" }, h.deps);
+      expect(res.http).toBe(200);
+      expect(h.calls).toMatchObject({ stt: 1, llm: 1, quota: 1 });
+    }
+    for (const [m, d] of [["past-stories", 0], ["past-stories", 99], ["not-a-module", 1]] as const) {
       const h = retakeHarness();
       const res = await runFinalCoachRetake({ moduleId: m, day: d, audio: AUDIO, mime: "audio/webm" }, h.deps);
       expect(res.http).toBe(403);
       expect(h.calls).toMatchObject({ stt: 0, llm: 0, quota: 0 });
-      expect(isRetakePilot(m, d)).toBe(false);
     }
   });
+  it("a retake naming a different turn than the reviewed answer is rejected before any AI work", async () => {
+    const h = retakeHarness();
+    const res = await runFinalCoachRetake(
+      { moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm", sourceTurnNumber: 2 },
+      h.deps,
+    );
+    expect(res.http).toBe(404);
+    expect(h.calls).toMatchObject({ stt: 0, llm: 0, quota: 0 });
+  });
+  it("a new retake transcribes the audio exactly once and reuses it for the idea count", async () => {
+    const h = retakeHarness();
+    const res = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm" }, h.deps);
+    expect(res.http).toBe(200);
+    expect(h.calls.stt).toBe(1);
+    if (res.body.status === "ready") expect(typeof res.body.ideaCount === "number" || res.body.ideaCount === null).toBe(true);
+  });
+
   it("no READY coach review yet → 404 no_feedback, no lease, no AI", async () => {
     const h = retakeHarness({ previous: null });
     const res = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm" }, h.deps);
@@ -447,7 +479,9 @@ describe("Retake — reliability", () => {
     expect(first.body.status).toBe("ready");
     const again = await runFinalCoachRetake(REQ(), h.deps);
     expect(again.http).toBe(200);
-    expect(again.body).toEqual(first.body);
+    // Cache replay returns the stored comparison; the idea count is transient (no stored transcript).
+    if (again.body.status === "ready" && first.body.status === "ready") expect(again.body.result).toEqual(first.body.result);
+
     expect(h.calls).toMatchObject({ stt: 1, llm: 1, quota: 1 });
     expect(h.rows.size).toBe(1);
   });
@@ -574,7 +608,7 @@ describe("Retake — client reliability", () => {
   const R = (http: number, body: FinalCoachRetakeResponse | null): RetakeHttpResult => ({ kind: "response", http, body });
   const RESULT: FinalCoachRetakeResult = { applied: [], improvementEn: "i", improvementEs: "i", nextEn: "n", nextEs: "n" };
   it("maps server answers: ready/unclear terminal, error+network+5xx retryable, 429/409 unavailable, 202 keeps waiting", () => {
-    expect(mapRetakeResult(R(200, { status: "ready", result: RESULT }))).toEqual({ status: "ready", result: RESULT });
+    expect(mapRetakeResult(R(200, { status: "ready", result: RESULT }))).toEqual({ status: "ready", result: RESULT, ideaCount: null });
     expect(mapRetakeResult(R(200, { status: "unclear" }))).toEqual({ status: "unclear" });
     expect(mapRetakeResult(R(200, { status: "error", code: "stt_failed" }))).toEqual({ status: "retryable" });
     expect(mapRetakeResult(R(500, { status: "error", code: "internal" }))).toEqual({ status: "retryable" });
@@ -597,7 +631,7 @@ describe("Retake — client reliability", () => {
         slept.push(ms);
       },
     });
-    expect(state).toEqual({ status: "ready", result: RESULT });
+    expect(state).toEqual({ status: "ready", result: RESULT, ideaCount: null });
     expect(sent.every((b) => b === blob)).toBe(true);
     expect(slept).toEqual([2000, 3000]);
 
@@ -652,13 +686,13 @@ describe("Retake — client reliability", () => {
     const retry = practice.slice(practice.indexOf("const retryRetakeComparison"), practice.indexOf("};", practice.indexOf("const retryRetakeComparison")));
     expect(retry).toContain("retakeRecording?.blob");
     expect(retry).toContain('retakeState.status !== "retryable"');
-    expect(retry).toContain("requestFinalCoachRetake({ moduleId, day: day.day, blob })");
+    expect(retry).toContain("sendRetake(blob, id)");
     for (const forbidden of ["completeDay", "completeSession", "uploadTake", "markFinalTake", "setFinalIndex", "setRetakeRecording", "VoiceRecorder", "habit", "streak"]) {
       expect(retry).not.toContain(forbidden);
     }
     expect(practice).toContain("onRetry: retryRetakeComparison");
     const review = readFileSync("src/components/fluency/FinalCoachReview.tsx", "utf8");
-    for (const label of ["APLICASTE ESTO", "MEJORASTE TU FLUIDEZ", "SIGUE PRACTICANDO", "ANTES", "AHORA"]) expect(review).toContain(label);
+    for (const label of ["APLICASTE ESTO", "SOBRE TU RESPUESTA", "SIGUE PRACTICANDO", "ANTES", "AHORA"]) expect(review).toContain(label);
   });
 });
 
@@ -673,7 +707,7 @@ describe("Retake — day invariants + UI", () => {
     expect(block).not.toMatch(/completeDay|JourneyService|uploadTake|markFinalTake|setTakes|setFinalIndex|setDone|habit|streak|controller\.confirm/);
     expect(block).toContain("retakeStartedRef.current = true");
     // Exactly two call sites: the one recording, and RETRY COMPARISON re-sending that same blob.
-    expect(practice.match(/requestFinalCoachRetake\(/g)).toHaveLength(2);
+    expect(practice.match(/requestFinalCoachRetake\(/g)).toHaveLength(1);
     expect(practice.match(/controller\.confirm\(\)/g)).toHaveLength(1);
     const engineCode = retakeEngine.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "");
     expect(engineCode).not.toMatch(/is_final_rep|completeDay|JourneyService|uploadTake|markFinalTake|habit|streak/);

@@ -1,11 +1,13 @@
 /**
  * STEP 5 · Optional RETAKE — "did the learner apply the previous feedback?"
- * (BASIC 3 · Simple Past · Day 1 pilot only).
+ * (available on every module and day of the catalogue).
  *
  * BONUS IMPROVEMENT ROUND: the day is already committed. This engine never
  * touches recordings, day completion, streak, habit or progression. It costs
  * exactly 1 STT + 1 small LLM, ONLY when the learner explicitly taps RETAKE,
- * at most ONCE per feedback row (unique constraint = durable lease).
+ * at most ONCE per feedback row (unique constraint = durable lease). The idea
+ * count shown next to the retake reuses the SAME transcription (deterministic
+ * local counter), so no second transcription is ever paid for.
  *
  * All I/O is injected so the flow is unit-testable without providers.
  */
@@ -18,10 +20,12 @@ import {
   type RetakeApplied,
   type RetakeSkill,
 } from "./final-audio-coach";
+import { countCompleteIdeasLocal } from "./sentence-count-local";
 import {
   MAX_FINAL_AUDIO_BYTES,
   MIN_FINAL_AUDIO_BYTES,
   MIN_TRANSCRIPT_WORDS,
+  buildRubric,
   countWords,
   isLowConfidence,
   normalizeForMatch,
@@ -29,6 +33,7 @@ import {
   saidOccursInTranscript,
   sha256Hex,
   type CoachCorrection,
+  type CoachRubric,
   type SttResult,
 } from "./final-audio-coach.server";
 
@@ -49,9 +54,23 @@ export type PreviousFeedback = {
   nextStepEn: string;
   nextStepEs: string;
   fluencyUpgrade: FinalAudioCoachFluencyUpgrade | null;
+  /** Role play / Pressure Round turn the evaluated answer belongs to (null on classic STEP 5). */
+  sourceTurnNumber?: number | null;
 };
 
-export type RetakeInput = { moduleId: string; day: number; audio: Uint8Array; mime: string | null };
+export type RetakeInput = {
+  moduleId: string;
+  day: number;
+  audio: Uint8Array;
+  mime: string | null;
+  /**
+   * The turn the learner is retaking, as shown in the UI. When present it must
+   * match the stored feedback row, so a retake can never be attached to another
+   * answer of the same day (another take, device or practice).
+   */
+  sourceTurnNumber?: number | null;
+};
+
 
 export type RetakeStatus = "pending" | "ready" | "unclear" | "error";
 export type RetakeFinalizePatch = { status: Exclude<RetakeStatus, "pending">; result?: FinalCoachRetakeResult | undefined; transcriptWordCount?: number | null | undefined };
@@ -71,7 +90,9 @@ export type RetakeDeps = {
   userId: string;
   now: () => number;
   loadDay: (moduleId: ModuleId, day: number) => Promise<CourseDay | null>;
-  /** Latest READY pilot feedback for this learner/module/day (validated corrections). Null = no coach review yet. */
+  /** Learner-facing module label for the rubric (e.g. "BASIC 3"). Defaults to the module id. */
+  moduleLabel?: ((moduleId: string) => string) | undefined;
+  /** Latest READY coach feedback for this learner/module/day (validated corrections). Null = no coach review yet. */
   findPreviousFeedback: (userId: string, moduleId: string, day: number) => Promise<PreviousFeedback | null>;
   store: {
     /** The existing retake row for this feedback (UNIQUE feedback_id), or null on first retake. */
@@ -94,7 +115,7 @@ export type RetakeDeps = {
 };
 
 export type RetakeResponse =
-  | { http: 200; body: { status: "ready"; result: FinalCoachRetakeResult } }
+  | { http: 200; body: { status: "ready"; result: FinalCoachRetakeResult; ideaCount?: number | null } }
   | { http: 200; body: { status: "unclear" } }
   | { http: 200; body: { status: "error"; code: string } }
   | { http: 202; body: { status: "pending" } }
@@ -108,18 +129,43 @@ export type RetakeResponse =
 /*  Prompt                                                                   */
 /* ------------------------------------------------------------------------ */
 
-export type RetakeLlmContext = {
-  question: string;
-  topic: string;
-  focus: string;
-  previous: PreviousFeedback;
+/** Same trusted evaluation context as the Final Audio Coach (module, day, exact turn). */
+export type RetakeLlmContext = { rubric: CoachRubric; previous: PreviousFeedback };
+
+type RetakeLevelGroup = "basic" | "intermediate" | "advanced";
+
+export function retakeLevelGroup(level: CoachRubric["level"]): RetakeLevelGroup {
+  if (level === "basic") return "basic";
+  if (level === "advanced") return "advanced";
+  return "intermediate";
+}
+
+const LEVEL_EXPECTATION: Record<RetakeLevelGroup, string> = {
+  basic:
+    "This learner is at BASIC level: success = using the corrected structure and communicating understandable ideas. Do not expect sophisticated vocabulary.",
+  intermediate:
+    "This learner is at INTERMEDIATE level: success = applying the relevant corrections AND developing/connecting the answer a little better. Real grammar errors still matter.",
+  advanced:
+    "This learner is at ADVANCED level (workplace English): success = applying the feedback on accuracy, organization, register or development of a professional answer.",
 };
+
+/** The exact question the evaluated answer belongs to (role-play turn when there is one). */
+export function retakeQuestionFor(rubric: CoachRubric): string {
+  if (rubric.turn) {
+    const situation = rubric.turn.situation ? `${rubric.turn.situation} — ` : "";
+    return `${situation}${rubric.turn.label}: ${rubric.turn.text}`;
+  }
+  return rubric.prompt?.question ?? "";
+}
 
 export function buildRetakeMessages(ctx: RetakeLlmContext, transcript: string) {
   const prev = ctx.previous;
+  const rubric = ctx.rubric;
+  const group = retakeLevelGroup(rubric.level);
   const system = [
-    "You are a warm, concise English speaking coach for Spanish-speaking adult BASIC learners.",
-    "The learner already received feedback on a first answer and has now recorded the WHOLE answer again to APPLY that feedback.",
+    "You are a warm, concise English speaking coach for Spanish-speaking adult learners.",
+    LEVEL_EXPECTATION[group],
+    "The learner already received feedback on a first answer and has now recorded that SAME answer again to APPLY that feedback.",
     "Your ONLY job: compare the NEW transcript with the PREVIOUS feedback and say what was applied. Do NOT re-evaluate the answer from scratch. Do NOT list new mistakes except ONE remaining thing to keep practicing.",
     "Speech-to-text punctuation is unreliable; ignore it. Never grade accent or pronunciation. Never mention CEFR levels, scores or percentages.",
     "For EVERY previous item return one `applied` entry: `skill` = the item's category (or 'next_step' / 'fluency_upgrade'); `applied` = true ONLY if the new transcript clearly shows it (the corrected form appears / the old error is gone / the connector or detail was added); `evidence` = a SHORT phrase (max 12 words) copied EXACTLY from the NEW transcript that proves it (required when applied=true, empty string otherwise). Never invent improvement.",
@@ -131,9 +177,11 @@ export function buildRetakeMessages(ctx: RetakeLlmContext, transcript: string) {
     (c, i) => `${i + 1}. [${c.category}] said: "${c.said}" → better: "${c.betterVersion}" (${c.whyEn})`,
   );
   const user = [
-    `Topic: ${ctx.topic}`,
-    `Language focus: ${ctx.focus}`,
-    `Question: "${ctx.question}"`,
+    `Course: ${rubric.moduleLabel} · Day ${rubric.day}`,
+    `Topic: ${rubric.topic}`,
+    `Language focus: ${rubric.focus}`,
+    rubric.turn ? `Task type: role play turn ${rubric.sourceTurnNumber}. Only THIS turn is being retaken.` : null,
+    `Question: "${retakeQuestionFor(rubric)}"`,
     "",
     "PREVIOUS FEEDBACK:",
     ...(prevLines.length ? prevLines : ["(no specific corrections)"]),
@@ -150,6 +198,7 @@ export function buildRetakeMessages(ctx: RetakeLlmContext, transcript: string) {
     { role: "user" as const, content: user },
   ];
 }
+
 
 export const RETAKE_JSON_SCHEMA = {
   name: "final_audio_coach_retake",
@@ -277,16 +326,26 @@ export async function runFinalCoachRetake(input: RetakeInput, deps: RetakeDeps):
     return res;
   };
 
-  // 1) Pilot gate + real day, before any storage/quota/AI work.
+  // 1) Eligibility + real module/day, before any storage/quota/AI work.
   if (!isRetakePilot(input.moduleId, input.day)) return finish({ http: 403, body: { status: "not_available" } });
   const day = await deps.loadDay(input.moduleId as ModuleId, input.day);
   if (!day) return finish({ http: 403, body: { status: "not_available" } });
   if (input.audio.byteLength < MIN_FINAL_AUDIO_BYTES) return finish({ http: 200, body: { status: "unclear" } });
   if (input.audio.byteLength > MAX_FINAL_AUDIO_BYTES) return finish({ http: 413, body: { status: "audio_too_large" } });
 
-  // 2) The retake only exists relative to a READY coach review of the same day.
+  // 2) The retake only exists relative to a READY coach review of the same day,
+  //    and it must be the EXACT answer the learner is looking at: when the client
+  //    names a turn, it has to match the stored feedback row.
   const previous = await deps.findPreviousFeedback(deps.userId, input.moduleId, input.day);
   if (!previous) return finish({ http: 404, body: { status: "no_feedback" } });
+  const sourceTurnNumber = previous.sourceTurnNumber ?? null;
+  if (input.sourceTurnNumber !== undefined && (input.sourceTurnNumber ?? null) !== sourceTurnNumber) {
+    return finish({ http: 404, body: { status: "no_feedback" } }, { mismatch: "source_turn" });
+  }
+  // Same trusted context as the coach review (exact role-play turn when there is one).
+  const rubric = buildRubric(day, input.moduleId, deps.moduleLabel?.(input.moduleId) ?? input.moduleId, sourceTurnNumber);
+  if (!rubric) return finish({ http: 403, body: { status: "not_available" } }, { mismatch: "turn_not_found" });
+
 
   // 3) ONE pedagogical retake per feedback (UNIQUE feedback_id). The server-computed
   //    audio hash decides between "same recording" (cache / technical retry) and
@@ -338,7 +397,7 @@ export async function runFinalCoachRetake(input: RetakeInput, deps: RetakeDeps):
   llmCalled = true;
   let result: FinalCoachRetakeResult | null = null;
   try {
-    const ctx: RetakeLlmContext = { question: day.rep5Prompt.question, topic: day.topic, focus: day.focus, previous };
+    const ctx: RetakeLlmContext = { rubric, previous };
     result = normalizeRetakeResult(await deps.llm(ctx, transcript), previous, transcript);
   } catch {
     result = null;
@@ -348,5 +407,9 @@ export async function runFinalCoachRetake(input: RetakeInput, deps: RetakeDeps):
     return finish({ http: 200, body: { status: "error", code: "coach_failed" } });
   }
   await deps.store.finalize(leaseId, { status: "ready", result, transcriptWordCount });
-  return finish({ http: 200, body: { status: "ready", result } });
+  // Objective idea count from the SAME transcription (deterministic, 0 extra AI calls).
+  const local = countCompleteIdeasLocal(transcript);
+  const ideaCount = local.status === "confident" ? local.count : null;
+  return finish({ http: 200, body: { status: "ready", result, ideaCount } }, { ideaCount });
+
 }
