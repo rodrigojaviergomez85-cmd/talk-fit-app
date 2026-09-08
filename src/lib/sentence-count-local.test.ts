@@ -66,3 +66,24 @@ describe("countCompleteIdeasLocal", () => {
     expect(a).toEqual(b);
   });
 });
+
+describe("implicit sentence boundaries (no punctuation)", () => {
+  it("counts consecutive ideas without punctuation or connectors", () => {
+    expect(countCompleteIdeasLocal("I work at a call center I like my job")).toEqual({
+      status: "confident",
+      count: 2,
+      reason: "clauses_classified",
+    });
+    expect(
+      countCompleteIdeasLocal("My name is Carlos I live in Managua I study English every day"),
+    ).toMatchObject({ status: "confident", count: 3 });
+  });
+
+  it("stays uncertain when the pronoun may be an object or complement", () => {
+    expect(countCompleteIdeasLocal("I told you I will go to the store").status).toBe("uncertain");
+  });
+
+  it("keeps single ideas as one", () => {
+    expect(countCompleteIdeasLocal("I see you")).toMatchObject({ status: "confident", count: 1 });
+  });
+});
