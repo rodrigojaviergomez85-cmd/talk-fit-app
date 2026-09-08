@@ -316,9 +316,19 @@ export function normalizeRetakeResult(raw: unknown, previous: PreviousFeedback, 
       if (ok && related.some((c) => normalizeForMatch(c.said) === normalizeForMatch(evidence))) ok = false;
     }
     seen.add(skill);
-    applied.push({ skill, applied: ok, messageEn, messageEs });
+    // A claim that failed grounding keeps NO praise: the model's celebratory
+    // wording is replaced by honest, neutral copy. Only validated praise survives.
+    applied.push(
+      ok
+        ? { skill, applied: true, messageEn, messageEs }
+        : { skill, applied: false, messageEn: NOT_APPLIED_FALLBACK.en, messageEs: NOT_APPLIED_FALLBACK.es },
+    );
   }
-  return { applied, improvementEn, improvementEs, nextEn, nextEs };
+  // When nothing at all could be validated, the overall summary must not celebrate either.
+  const anyValidated = applied.some((a) => a.applied);
+  return anyValidated
+    ? { applied, improvementEn, improvementEs, nextEn, nextEs }
+    : { applied, improvementEn: NO_IMPROVEMENT_FALLBACK.en, improvementEs: NO_IMPROVEMENT_FALLBACK.es, nextEn, nextEs };
 }
 
 /* ------------------------------------------------------------------------ */
