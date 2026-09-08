@@ -467,7 +467,7 @@ describe("Retake — engine", () => {
 
 /* ---------------- 23. RETAKE RELIABILITY — cache, technical retry, dedicated quota ---------------- */
 
-const REQ = (audio: Uint8Array = AUDIO) => ({ moduleId: "past-stories" as const, day: 1, audio, mime: "audio/webm" });
+const REQ = (audio: Uint8Array = AUDIO, feedbackId: string = FID) => ({ moduleId: "past-stories" as const, day: 1, audio, mime: "audio/webm", feedbackId });
 const OTHER_AUDIO = new Uint8Array(4096).fill(7);
 
 describe("Retake — reliability", () => {
