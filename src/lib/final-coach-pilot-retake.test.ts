@@ -943,3 +943,47 @@ describe("Retake — the idea count survives cache replay", () => {
     expect(again.body.status === "ready" ? again.body.ideaCount : "x").toBeNull();
   });
 });
+
+describe("Retake — the button only exists when the review carries a valid feedback id", () => {
+  const feedback = { ...(BASE as unknown as CoachFeedback), corrections: [], answeredTask: "yes" };
+  const panel = {
+    state: { status: "idle" } as FinalCoachRetakeState,
+    before: { seconds: 20, ideas: 5 },
+    after: null,
+    maxSeconds: 60,
+    targetSeconds: [30, 45] as [number, number],
+    onStart: () => undefined,
+    onRecorded: () => undefined,
+  };
+  const render = (retake: typeof panel | null) =>
+    renderToStaticMarkup(
+      createElement(FinalCoachReview, {
+        state: { status: "ready", feedback } as FinalCoachState,
+        showEs: true,
+        result: null,
+        onContinue: () => undefined,
+        retake,
+      }),
+    );
+
+  it("no retake panel (legacy response without feedbackId) → no button, feedback and CONTINUE still there", () => {
+    const html = render(null);
+    expect(html).not.toContain("final-coach-retake-start");
+    expect(html).not.toContain("INTÉNTALO OTRA VEZ");
+    expect(html).toContain("CONTINUAR");
+  });
+
+  it("a valid feedback id keeps the retake available", () => {
+    expect(render(panel)).toContain("final-coach-retake-start");
+  });
+
+  it("practice.tsx gates the panel on a valid, frozen feedback identity", () => {
+    const src = readFileSync("src/routes/practice.tsx", "utf8");
+    // Eligibility: ready + valid id, or the id already frozen for this retake round.
+    expect(src).toMatch(/const retakeIdentityReady =[\s\S]*isFeedbackId\(coachState\.feedbackId\)[\s\S]*isFeedbackId\(retakeFeedbackIdRef\.current\)/);
+    expect(src).toContain("finalRecording && retakeIdentityReady");
+    // Defensive check kept inside startRetake, and the frozen id is what the request uses.
+    expect(src).toMatch(/startRetake = \(\) => \{[\s\S]*!isFeedbackId\(coachState\.feedbackId\)\) return;/);
+    expect(src).toContain("const feedbackId = retakeFeedbackIdRef.current;");
+  });
+});
