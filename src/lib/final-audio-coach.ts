@@ -141,10 +141,16 @@ export function coachVersionFor(moduleId: string, day: number): string {
     : FINAL_AUDIO_COACH_VERSION_PILOT;
 }
 
-/** Optional ONE retake (bonus improvement round) — still the original pilot only: BASIC 3 · Day 1. */
+/**
+ * Optional ONE retake (bonus improvement round) — now available on EVERY module
+ * and day of the real catalogue (BASIC, INTERMEDIATE and ADVANCED alike). The
+ * name is kept so no internal identifier changes. Module/day validity itself is
+ * enforced server-side (isModuleId + loadDay) before any storage, quota or AI work.
+ */
 export function isRetakePilot(moduleId: string, day: number): boolean {
-  return moduleId === "past-stories" && day === 1;
+  return typeof moduleId === "string" && moduleId.length > 0 && Number.isInteger(day) && day > 0;
 }
+
 
 /** Compact bilingual feedback returned by the single backend LLM call (v2 adds ONE grounded correction). */
 export type FinalAudioCoachFeedback = {
