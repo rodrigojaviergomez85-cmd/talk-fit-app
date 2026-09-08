@@ -563,6 +563,45 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
     return sourceTurnNumberFor(day, liveIndex, live.label);
   })();
 
+  /**
+   * The EXACT answer the retake repeats, taken from the trusted CourseDay:
+   * classic STEP 5 → the day's question; role play / Pressure Round → that turn
+   * (its label and situation). Never a generic or invented prompt.
+   */
+  const retakeContext = (() => {
+    const turns = day.rep5Turns;
+    if (finalSourceTurn && turns?.length) {
+      const turn = turns[finalSourceTurn - 1];
+      if (turn) {
+        // The situation belongs to the round header, which sits on the round's first turn.
+        let situation: string | undefined;
+        for (let i = finalSourceTurn - 1; i >= 0; i -= 1) {
+          const round = turns[i]?.round;
+          if (round) {
+            situation = (esUi ? (round.situationEs ?? round.titleEs) : (round.situation ?? round.title)) || undefined;
+            break;
+          }
+        }
+        return {
+          question: esUi ? turn.es : turn.text,
+          turnLabel: esUi ? turn.labelEs : turn.label,
+          ...(situation ? { situation } : {}),
+        };
+      }
+    }
+    return { question: esUi ? day.rep5Prompt.questionEs : day.rep5Prompt.question };
+  })();
+
+  /** Compact reminder of the feedback just read — same data on screen, 0 extra AI calls. */
+  const retakeReminders = (() => {
+    if (coachState.status !== "ready") return [];
+    const f = coachState.feedback;
+    const list = (f.corrections ?? []).slice(0, 3).map((c) => `${c.said} → ${c.betterVersion}`);
+    const next = esUi ? f.nextStepEs : f.nextStepEn;
+    if (next) list.push(next);
+    return list;
+  })();
+
   /** Sends the retake audio for the EXACT answer that was reviewed (role-play turn included). */
   function sendRetake(blob: Blob, recordingId: string) {
     // Identity frozen when the retake started: recording, polling and technical
@@ -793,6 +832,8 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
                         // A role-play turn is retaken alone: never impose the whole activity's length on it.
                         maxSeconds: Math.max(60, (coachResultInput.turnTargetSeconds ?? day.goalSeconds)[1] + 15),
                         targetSeconds: coachResultInput.turnTargetSeconds ?? day.goalSeconds,
+                        ...retakeContext,
+                        reminders: retakeReminders,
 
                         onStart: startRetake,
                         onRecorded: onRetakeRecorded,
