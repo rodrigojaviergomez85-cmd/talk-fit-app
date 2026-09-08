@@ -250,6 +250,8 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   const [retakeState, setRetakeState] = useState<FinalCoachRetakeState>({ status: "idle" });
   const [retakeRecording, setRetakeRecording] = useState<Recording | null>(null);
   const retakeStartedRef = useRef(false);
+  /** The exact coach review the retake belongs to, frozen when the retake starts. */
+  const retakeFeedbackIdRef = useRef<string | null>(null);
   /** Idempotency guard: the selected Final Audio commits the day exactly once in this flow. */
   const completionCommittedRef = useRef<Step5CompletionController | null>(null);
   const [journeyAfterFinish, setJourneyAfterFinish] = useState<JourneyState | null>(null);
