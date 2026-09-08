@@ -329,9 +329,13 @@ export function countCompleteIdeasLocal(transcript: string): LocalIdeaCount {
     const { parts, ambiguous } = splitOnConnectors(tokens);
     if (ambiguous) return uncertain("implicit_subject_connector");
     for (const part of parts) {
-      const check = classifyClause(part);
-      if (!check.ok) return uncertain(check.reason ?? "unclassified_clause");
-      clauses.push(part.join(" "));
+      const split = splitOnImplicitBoundaries(part);
+      if (split.ambiguous) return uncertain("implicit_boundary");
+      for (const segment of split.parts) {
+        const check = classifyClause(segment);
+        if (!check.ok) return uncertain(check.reason ?? "unclassified_clause");
+        clauses.push(segment.join(" "));
+      }
     }
   }
 
