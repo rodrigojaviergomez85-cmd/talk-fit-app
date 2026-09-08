@@ -352,11 +352,13 @@ export async function runFinalCoachRetake(input: RetakeInput, deps: RetakeDeps):
   if (input.audio.byteLength < MIN_FINAL_AUDIO_BYTES) return finish({ http: 200, body: { status: "unclear" } });
   if (input.audio.byteLength > MAX_FINAL_AUDIO_BYTES) return finish({ http: 413, body: { status: "audio_too_large" } });
 
-  // 2) The retake only exists relative to a READY coach review of the same day,
-  //    and it must be the EXACT answer the learner is looking at: when the client
-  //    names a turn, it has to match the stored feedback row.
-  const previous = await deps.findPreviousFeedback(deps.userId, input.moduleId, input.day);
-  if (!previous) return finish({ http: 404, body: { status: "no_feedback" } });
+  // 2) The retake only exists relative to the EXACT READY coach review the
+  //    learner is looking at (feedbackId), never "the latest review of this day".
+  //    A missing/malformed id fails here — before quota, lease or any AI work.
+  if (!isFeedbackId(input.feedbackId)) return finish({ http: 404, body: { status: "no_feedback" } }, { mismatch: "feedback_id_shape" });
+  const previous = await deps.findPreviousFeedback(deps.userId, input.moduleId, input.day, input.feedbackId.trim());
+  // Nonexistent, foreign, wrong module/day or not-ready → the same generic answer.
+  if (!previous) return finish({ http: 404, body: { status: "no_feedback" } }, { mismatch: "feedback_not_found" });
   const sourceTurnNumber = previous.sourceTurnNumber ?? null;
   if (input.sourceTurnNumber !== undefined && (input.sourceTurnNumber ?? null) !== sourceTurnNumber) {
     return finish({ http: 404, body: { status: "no_feedback" } }, { mismatch: "source_turn" });
@@ -376,7 +378,10 @@ export async function runFinalCoachRetake(input: RetakeInput, deps: RetakeDeps):
   if (existing) {
     if (existing.audioSha256 !== audioSha256) return finish({ http: 409, body: { status: "already_used" } }, { cache: "different_audio" });
     // Same audio: replay whatever already happened — 0 STT, 0 LLM, 0 quota.
-    if (existing.status === "ready" && existing.result) return finish({ http: 200, body: { status: "ready", result: existing.result } }, { cache: "hit" });
+    // 0 STT, 0 LLM, 0 quota — and the SAME objective idea count as the first response
+    // (0 stays 0; a legacy row without a stored count honestly returns null).
+    if (existing.status === "ready" && existing.result)
+      return finish({ http: 200, body: { status: "ready", result: existing.result, ideaCount: existing.ideaCount ?? null } }, { cache: "hit" });
     if (existing.status === "ready") return finish({ http: 200, body: { status: "error", code: "cache_invalid" } }, { cache: "invalid" });
     if (existing.status === "pending") return finish({ http: 202, body: { status: "pending" } }, { cache: "pending" });
     if (existing.status === "unclear") return finish({ http: 200, body: { status: "unclear" } }, { cache: "unclear" });
@@ -425,10 +430,12 @@ export async function runFinalCoachRetake(input: RetakeInput, deps: RetakeDeps):
     await deps.store.finalize(leaseId, { status: "error", transcriptWordCount });
     return finish({ http: 200, body: { status: "error", code: "coach_failed" } });
   }
-  await deps.store.finalize(leaseId, { status: "ready", result, transcriptWordCount });
-  // Objective idea count from the SAME transcription (deterministic, 0 extra AI calls).
+  // Objective idea count from the SAME transcription (deterministic, 0 extra AI
+  // calls). Computed BEFORE finalizing so it is stored with the compact result
+  // and every later cache replay returns exactly the same number.
   const local = countCompleteIdeasLocal(transcript);
   const ideaCount = local.status === "confident" ? local.count : null;
+  await deps.store.finalize(leaseId, { status: "ready", result, transcriptWordCount, ideaCount });
   return finish({ http: 200, body: { status: "ready", result, ideaCount } }, { ideaCount });
 
 }
