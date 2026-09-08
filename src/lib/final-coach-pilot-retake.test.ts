@@ -23,6 +23,8 @@ import {
   RETAKE_QUOTA_WINDOW_SECONDS,
   buildRetakeMessages,
   normalizeRetakeResult,
+  NOT_APPLIED_FALLBACK,
+  NO_IMPROVEMENT_FALLBACK,
   previousErrorStillPresent,
   runFinalCoachRetake,
   type PreviousFeedback,
@@ -250,6 +252,9 @@ const PREV: PreviousFeedback = {
   nextStepEs: "Agrega cuándo pasó.",
   fluencyUpgrade: { original: "I go home", improved: "Later, I went home." },
 };
+/** Valid UUID feedback identity used by the retake tests. */
+const FID = "11111111-1111-4111-8111-111111111111";
+const OTHER_FID = "22222222-2222-4222-8222-222222222222";
 const CLAIM = (skill: string, evidence: string) => ({ skill, applied: true, evidence, messageEn: `You used '${evidence}' correctly.`, messageEs: `Usaste '${evidence}' bien.` });
 const TAIL = { improvementEn: "More connected.", improvementEs: "Más conectado.", nextEn: "Vary verbs.", nextEs: "Varía los verbos." };
 
@@ -308,12 +313,13 @@ describe("Retake — every applied claim is grounded in the new transcript", () 
 
 /* ---------------- 21/22. RETAKE — engine, cost, one only, pilot only ---------------- */
 
-type Row = { status: RetakeStatus; result: FinalCoachRetakeResult | null; feedbackId: string; audioSha256: string; updatedAt: number };
+type Row = { status: RetakeStatus; result: FinalCoachRetakeResult | null; feedbackId: string; audioSha256: string; ideaCount?: number | null; updatedAt: number };
 
 function retakeHarness(opts: { previous?: PreviousFeedback | null; llm?: unknown; transcript?: string | null; quota?: boolean } = {}) {
   const calls = { stt: 0, llm: 0, quota: 0, reclaim: 0 };
   const rows = new Map<string, Row>();
   const logs: Record<string, unknown>[] = [];
+  const lookedUp: string[] = [];
   let clock = 0;
   const deps: RetakeDeps = {
     userId: USER,
@@ -326,13 +332,18 @@ function retakeHarness(opts: { previous?: PreviousFeedback | null; llm?: unknown
       }
     },
 
-    findPreviousFeedback: async () => (opts.previous === undefined ? PREV : opts.previous),
+    findPreviousFeedback: async (_uid, _mid, _d, fid) => {
+      lookedUp.push(fid);
+      if (opts.previous !== undefined) return opts.previous;
+      // Exact binding: only the id the learner's review carries resolves.
+      return fid === FID ? PREV : null;
+    },
     store: {
       findExisting: async (feedbackId) => {
         const hit = [...rows.entries()].find(([, r]) => r.feedbackId === feedbackId);
         if (!hit) return null;
         const [id, r] = hit;
-        return { id, feedbackId, status: r.status, audioSha256: r.audioSha256, result: r.result, updatedAt: String(r.updatedAt) };
+        return { id, feedbackId, status: r.status, audioSha256: r.audioSha256, result: r.result, ideaCount: r.ideaCount ?? null, updatedAt: String(r.updatedAt) };
       },
       tryInsertPending: async (row) => {
         if ([...rows.values()].some((r) => r.feedbackId === row.feedbackId)) return null;
@@ -349,7 +360,7 @@ function retakeHarness(opts: { previous?: PreviousFeedback | null; llm?: unknown
       },
       finalize: async (id, patch) => {
         // audio_sha256 is never part of a finalize patch.
-        rows.set(id, { ...rows.get(id)!, status: patch.status, result: patch.result ?? null, updatedAt: ++clock });
+        rows.set(id, { ...rows.get(id)!, status: patch.status, result: patch.result ?? null, ideaCount: patch.ideaCount ?? null, updatedAt: ++clock });
       },
       discard: async (id) => {
         rows.delete(id);
@@ -370,14 +381,14 @@ function retakeHarness(opts: { previous?: PreviousFeedback | null; llm?: unknown
     },
     log: (e) => logs.push(e),
   };
-  return { deps, calls, rows, logs };
+  return { deps, calls, rows, logs, lookedUp };
 }
 const AUDIO = new Uint8Array(4096);
 
 describe("Retake — engine", () => {
   it("pilot day, READY feedback: exactly 1 STT + 1 LLM, compact result persisted, transcript never stored or logged", async () => {
     const h = retakeHarness();
-    const res = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm" }, h.deps);
+    const res = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm", feedbackId: FID }, h.deps);
     expect(res.http).toBe(200);
     expect(res.body.status).toBe("ready");
     expect(h.calls).toMatchObject({ stt: 1, llm: 1, quota: 1 });
@@ -388,8 +399,8 @@ describe("Retake — engine", () => {
   });
   it("second retake (DIFFERENT audio) for the same feedback → 409 already_used, 0 extra AI calls", async () => {
     const h = retakeHarness();
-    await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm" }, h.deps);
-    const again = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: new Uint8Array(5000), mime: "audio/webm" }, h.deps);
+    await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm", feedbackId: FID }, h.deps);
+    const again = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: new Uint8Array(5000), mime: "audio/webm", feedbackId: FID }, h.deps);
     expect(again.http).toBe(409);
     expect(h.calls).toMatchObject({ stt: 1, llm: 1, quota: 1 });
   });
@@ -397,13 +408,13 @@ describe("Retake — engine", () => {
     for (const [m, d] of [["past-stories", 2], ["simple-present", 1], ["advanced-1", 1], ["eagles-week-1", 3]] as const) {
       expect(isRetakePilot(m, d)).toBe(true);
       const h = retakeHarness();
-      const res = await runFinalCoachRetake({ moduleId: m, day: d, audio: AUDIO, mime: "audio/webm" }, h.deps);
+      const res = await runFinalCoachRetake({ moduleId: m, day: d, audio: AUDIO, mime: "audio/webm", feedbackId: FID }, h.deps);
       expect(res.http).toBe(200);
       expect(h.calls).toMatchObject({ stt: 1, llm: 1, quota: 1 });
     }
     for (const [m, d] of [["past-stories", 0], ["past-stories", 99], ["not-a-module", 1]] as const) {
       const h = retakeHarness();
-      const res = await runFinalCoachRetake({ moduleId: m, day: d, audio: AUDIO, mime: "audio/webm" }, h.deps);
+      const res = await runFinalCoachRetake({ moduleId: m, day: d, audio: AUDIO, mime: "audio/webm", feedbackId: FID }, h.deps);
       expect(res.http).toBe(403);
       expect(h.calls).toMatchObject({ stt: 0, llm: 0, quota: 0 });
     }
@@ -411,7 +422,7 @@ describe("Retake — engine", () => {
   it("a retake naming a different turn than the reviewed answer is rejected before any AI work", async () => {
     const h = retakeHarness();
     const res = await runFinalCoachRetake(
-      { moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm", sourceTurnNumber: 2 },
+      { moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm", sourceTurnNumber: 2, feedbackId: FID },
       h.deps,
     );
     expect(res.http).toBe(404);
@@ -419,7 +430,7 @@ describe("Retake — engine", () => {
   });
   it("a new retake transcribes the audio exactly once and reuses it for the idea count", async () => {
     const h = retakeHarness();
-    const res = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm" }, h.deps);
+    const res = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm", feedbackId: FID }, h.deps);
     expect(res.http).toBe(200);
     expect(h.calls.stt).toBe(1);
     if (res.body.status === "ready") expect(typeof res.body.ideaCount === "number" || res.body.ideaCount === null).toBe(true);
@@ -427,38 +438,38 @@ describe("Retake — engine", () => {
 
   it("no READY coach review yet → 404 no_feedback, no lease, no AI", async () => {
     const h = retakeHarness({ previous: null });
-    const res = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm" }, h.deps);
+    const res = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm", feedbackId: FID }, h.deps);
     expect(res.http).toBe(404);
     expect(h.rows.size).toBe(0);
     expect(h.calls.stt).toBe(0);
   });
   it("quota exhausted → 429, lease released (retake NOT consumed), 0 STT", async () => {
     const h = retakeHarness({ quota: false });
-    const res = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm" }, h.deps);
+    const res = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm", feedbackId: FID }, h.deps);
     expect(res.http).toBe(429);
     expect(h.calls.stt).toBe(0);
     expect(h.rows.size).toBe(0);
     expect(res.body.status).toBe("rate_limited");
     // The learner can still use their one retake afterwards.
     h.deps.consumeQuota = async () => true;
-    const retry = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm" }, h.deps);
+    const retry = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm", feedbackId: FID }, h.deps);
     expect(retry.http).toBe(200);
   });
   it("too few words → unclear (1 STT, 0 LLM); STT failure → error; oversized → 413", async () => {
     const few = retakeHarness({ transcript: "uh yes" });
-    expect((await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: null }, few.deps)).body.status).toBe("unclear");
+    expect((await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: null, feedbackId: FID }, few.deps)).body.status).toBe("unclear");
     expect(few.calls.llm).toBe(0);
     const bad = retakeHarness({ transcript: null });
-    expect((await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: null }, bad.deps)).body.status).toBe("error");
+    expect((await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: null, feedbackId: FID }, bad.deps)).body.status).toBe("error");
     const big = retakeHarness();
-    expect((await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: new Uint8Array(9 * 1024 * 1024), mime: null }, big.deps)).http).toBe(413);
+    expect((await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: new Uint8Array(9 * 1024 * 1024), mime: null, feedbackId: FID }, big.deps)).http).toBe(413);
     expect(big.calls.quota).toBe(0);
   });
 });
 
 /* ---------------- 23. RETAKE RELIABILITY — cache, technical retry, dedicated quota ---------------- */
 
-const REQ = (audio: Uint8Array = AUDIO) => ({ moduleId: "past-stories" as const, day: 1, audio, mime: "audio/webm" });
+const REQ = (audio: Uint8Array = AUDIO, feedbackId: string = FID) => ({ moduleId: "past-stories" as const, day: 1, audio, mime: "audio/webm", feedbackId });
 const OTHER_AUDIO = new Uint8Array(4096).fill(7);
 
 describe("Retake — reliability", () => {
@@ -622,7 +633,7 @@ describe("Retake — client reliability", () => {
     const sent: Blob[] = [];
     const slept: number[] = [];
     const answers = [R(202, { status: "pending" }), R(202, { status: "pending" }), R(200, { status: "ready", result: RESULT })];
-    const state = await requestFinalCoachRetake({ moduleId: "past-stories", day: 1, blob }, undefined, {
+    const state = await requestFinalCoachRetake({ moduleId: "past-stories", day: 1, blob, feedbackId: FID }, undefined, {
       send: async (i) => {
         sent.push(i.blob);
         return answers.shift() ?? R(202, { status: "pending" });
@@ -636,7 +647,7 @@ describe("Retake — client reliability", () => {
     expect(slept).toEqual([2000, 3000]);
 
     const slept2: number[] = [];
-    const forever = await requestFinalCoachRetake({ moduleId: "past-stories", day: 1, blob }, undefined, {
+    const forever = await requestFinalCoachRetake({ moduleId: "past-stories", day: 1, blob, feedbackId: FID }, undefined, {
       send: async () => R(202, { status: "pending" }),
       sleep: async (ms) => {
         slept2.push(ms);
@@ -646,7 +657,7 @@ describe("Retake — client reliability", () => {
     expect(forever).toEqual({ status: "retryable" });
   });
   it("network failure after the request → retryable (blob still owned by the caller)", async () => {
-    const state = await requestFinalCoachRetake({ moduleId: "past-stories", day: 1, blob: new Blob(["x"]) }, undefined, {
+    const state = await requestFinalCoachRetake({ moduleId: "past-stories", day: 1, blob: new Blob(["x"]), feedbackId: FID }, undefined, {
       send: async () => ({ kind: "network_error" }),
       sleep: async () => undefined,
     });
@@ -769,5 +780,122 @@ describe("Retake — day invariants + UI", () => {
   it("the correction shape is unchanged for consumers", () => {
     const c: CoachCorrection = { category: "repetition", said: "a... a...", betterVersion: "b", whyEn: "w", whyEs: "w" };
     expect(Object.keys(c)).toEqual(["category", "said", "betterVersion", "whyEn", "whyEs"]);
+  });
+});
+
+/* ---------------- RETAKE 1.1 — identity, instructions, honest validation, cached metrics ---------------- */
+
+describe("Retake — bound to the EXACT feedback the learner saw", () => {
+  it("malformed / missing feedbackId → 404 no_feedback, no lookup, no quota, no AI", async () => {
+    for (const bad of ["", "fb-1", "not-a-uuid", "1111"]) {
+      const h = retakeHarness();
+      const res = await runFinalCoachRetake(REQ(AUDIO, bad), h.deps);
+      expect(res.http).toBe(404);
+      expect(res.body.status).toBe("no_feedback");
+      expect(h.lookedUp).toEqual([]);
+      expect(h.calls).toMatchObject({ stt: 0, llm: 0, quota: 0 });
+    }
+  });
+  it("a valid id that is not THIS review (foreign / other day / not ready) → 404, 0 AI", async () => {
+    const h = retakeHarness();
+    const res = await runFinalCoachRetake(REQ(AUDIO, OTHER_FID), h.deps);
+    expect(res.http).toBe(404);
+    expect(h.lookedUp).toEqual([OTHER_FID]);
+    expect(h.calls).toMatchObject({ stt: 0, llm: 0, quota: 0 });
+  });
+  it("the id is passed through to the exact lookup (never 'latest feedback of the day')", async () => {
+    const h = retakeHarness();
+    await runFinalCoachRetake(REQ(), h.deps);
+    expect(h.lookedUp).toEqual([FID]);
+    const route = readFileSync("src/routes/api/final-audio-coach-retake.ts", "utf8");
+    expect(route).toContain('.eq("id", fid)');
+    expect(route).not.toContain('.order("updated_at", { ascending: false })');
+  });
+  it("classic STEP 5 keeps its explicit null turn; a mismatched turn is still rejected", async () => {
+    const ok = retakeHarness();
+    expect((await runFinalCoachRetake({ ...REQ(), sourceTurnNumber: null }, ok.deps)).body.status).toBe("ready");
+    const bad = retakeHarness();
+    const res = await runFinalCoachRetake({ ...REQ(), sourceTurnNumber: 3 }, bad.deps);
+    expect(res.http).toBe(404);
+    expect(bad.calls).toMatchObject({ stt: 0, llm: 0, quota: 0 });
+  });
+});
+
+describe("Retake — neutral instructions for every level", () => {
+  it("the recording screen never names a tense and shows the exact question", () => {
+    const src = readFileSync("src/components/fluency/FinalCoachReview.tsx", "utf8");
+    expect(src).toContain("Answer the same question again and apply the feedback you just received.");
+    expect(src).toContain("Responde de nuevo la misma pregunta y aplica el feedback que acabas de recibir.");
+    expect(src).not.toContain("past tense, variety and more detail");
+    expect(src).not.toContain("pasado, variedad y más detalle");
+  });
+  it("renders the exact question, turn label, situation and the feedback reminder", () => {
+    const retake = {
+      state: { status: "recording" } as FinalCoachRetakeState,
+      before: { seconds: 40, ideas: 5 },
+      after: null,
+      maxSeconds: 90,
+      targetSeconds: [30, 60] as [number, number],
+      question: "What will you do next week?",
+      turnLabel: "CUSTOMER",
+      situation: "A client calls about a delay",
+      reminders: ["I go home → Later, I went home."],
+      onStart: () => undefined,
+      onRecorded: () => undefined,
+    };
+    const html = renderToStaticMarkup(
+      createElement(FinalCoachReview, { state: { status: "ready", feedback: BASE as unknown as CoachFeedback }, showEs: false, onContinue: () => undefined, retake }),
+    );
+    expect(html).toContain("What will you do next week?");
+    expect(html).toContain("CUSTOMER");
+    expect(html).toContain("A client calls about a delay");
+    expect(html).toContain("Later, I went home.");
+  });
+});
+
+describe("Retake — no praise survives a failed evidence check", () => {
+  it("an ungrounded claim keeps applied=false AND loses its celebratory message", () => {
+    const raw = { applied: [CLAIM("verb_tense", "something I never said")], ...TAIL };
+    const out = normalizeRetakeResult(raw, PREV, "I woke up early and later I went to work.")!;
+    expect(out.applied[0]!.applied).toBe(false);
+    expect(out.applied[0]!.messageEn).toBe(NOT_APPLIED_FALLBACK.en);
+    expect(out.applied[0]!.messageEs).toBe(NOT_APPLIED_FALLBACK.es);
+    expect(out.applied[0]!.messageEn).not.toContain("correctly");
+  });
+  it("nothing validated → neutral summary, never a celebration", () => {
+    const raw = { applied: [CLAIM("verb_tense", "never said this")], ...TAIL };
+    const out = normalizeRetakeResult(raw, PREV, "I woke up early and later I went to work.")!;
+    expect(out.improvementEn).toBe(NO_IMPROVEMENT_FALLBACK.en);
+    expect(out.improvementEs).toBe(NO_IMPROVEMENT_FALLBACK.es);
+    expect(out.nextEn).toBe(TAIL.nextEn);
+  });
+  it("validated praise is preserved untouched", () => {
+    const transcript = "Yesterday I woke up at seven and after that I had breakfast.";
+    const out = normalizeRetakeResult({ applied: [CLAIM("verb_tense", "Yesterday I woke up")], ...TAIL }, PREV, transcript)!;
+    expect(out.applied[0]!.applied).toBe(true);
+    expect(out.applied[0]!.messageEn).toContain("correctly");
+    expect(out.improvementEn).toBe(TAIL.improvementEn);
+  });
+});
+
+describe("Retake — the idea count survives cache replay", () => {
+  it("fresh response and same-audio replay return the SAME idea count (0 extra AI calls)", async () => {
+    const h = retakeHarness();
+    const first = await runFinalCoachRetake(REQ(), h.deps);
+    const count = first.body.status === "ready" ? first.body.ideaCount : undefined;
+    expect(typeof count).toBe("number");
+    const stored = [...h.rows.values()][0]!;
+    expect(stored.ideaCount).toBe(count);
+    const again = await runFinalCoachRetake(REQ(), h.deps);
+    expect(again.body.status === "ready" ? again.body.ideaCount : null).toBe(count);
+    expect(h.calls).toMatchObject({ stt: 1, llm: 1, quota: 1 });
+  });
+  it("a legacy row with no stored count replays honestly as null (never 0)", async () => {
+    const h = retakeHarness();
+    await runFinalCoachRetake(REQ(), h.deps);
+    const [id, row] = [...h.rows.entries()][0]!;
+    h.rows.set(id, { ...row, ideaCount: null });
+    const again = await runFinalCoachRetake(REQ(), h.deps);
+    expect(again.body.status === "ready" ? again.body.ideaCount : "x").toBeNull();
   });
 });

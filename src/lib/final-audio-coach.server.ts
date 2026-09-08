@@ -230,7 +230,7 @@ export type CoachDeps = {
 };
 
 export type CoachResponse =
-  | { http: 200; body: { status: "ready"; feedback: CoachFeedback; transcript?: string | null } }
+  | { http: 200; body: { status: "ready"; feedback: CoachFeedback; feedbackId: string; transcript?: string | null } }
   | { http: 200; body: { status: "unclear" } }
   | { http: 200; body: { status: "error"; code: string } }
   | { http: 202; body: { status: "pending" } }
@@ -1017,7 +1017,7 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
         cacheHit = true;
         transcriptWordCount = cached.transcript_word_count;
         // Pilot replay: durable corrections, but the transcript is never stored → null, no STT to rebuild it.
-        return finish({ http: 200, body: pilot ? { status: "ready", feedback, transcript: null } : { status: "ready", feedback } });
+        return finish({ http: 200, body: pilot ? { status: "ready", feedback, feedbackId: cached.id, transcript: null } : { status: "ready", feedback, feedbackId: cached.id } });
       }
     } else if (cached.status === "unclear") {
       cacheHit = true;
@@ -1047,7 +1047,7 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
         const feedback = feedbackFromRow(winner, maxCorrections);
         if (feedback) {
           cacheHit = true;
-          return finish({ http: 200, body: pilot ? { status: "ready", feedback, transcript: null } : { status: "ready", feedback } });
+          return finish({ http: 200, body: pilot ? { status: "ready", feedback, feedbackId: winner.id, transcript: null } : { status: "ready", feedback, feedbackId: winner.id } });
         }
       }
       if (winner?.status === "unclear") {
@@ -1106,5 +1106,5 @@ export async function runFinalAudioCoach(input: CoachInput, deps: CoachDeps): Pr
   }
   await deps.store.finalize(leaseId, { status: "ready", feedback, transcriptWordCount });
   // Pilot only: the transcript travels to THIS response (React state) and is then discarded — never persisted or logged.
-  return finish({ http: 200, body: pilot ? { status: "ready", feedback, transcript } : { status: "ready", feedback } });
+  return finish({ http: 200, body: pilot ? { status: "ready", feedback, feedbackId: leaseId, transcript } : { status: "ready", feedback, feedbackId: leaseId } });
 }

@@ -38,22 +38,33 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
           let moduleId: string | null = null;
           let day = NaN;
           let sourceTurnNumber: number | null | undefined;
+          let feedbackId = "";
+          // A malformed turn value is NEVER silently dropped: it must fail, not fall
+          // back to "whatever the feedback row says".
+          let turnMalformed = false;
           try {
             const form = await request.formData();
             const formFile = form.get("file");
             file = formFile instanceof File ? formFile : null;
             moduleId = String(form.get("moduleId") ?? "");
             day = Number(form.get("day"));
+            feedbackId = String(form.get("feedbackId") ?? "").trim();
             const rawTurn = form.get("sourceTurnNumber");
             if (rawTurn !== null) {
+              // "" = classic STEP 5 (explicit null); a positive integer = role-play / Pressure Round turn.
               const parsed = String(rawTurn) === "" ? null : Number(rawTurn);
-              sourceTurnNumber = parsed === null || (Number.isInteger(parsed) && parsed > 0) ? parsed : undefined;
+              if (parsed === null || (Number.isInteger(parsed) && parsed > 0)) sourceTurnNumber = parsed;
+              else turnMalformed = true;
             }
           } catch {
             file = null;
           }
           const { isModuleId, CourseService } = await import("@/services/course-service");
           if (!moduleId || !isModuleId(moduleId) || !Number.isInteger(day) || day < 1) return json({ error: "Invalid input." }, 400);
+          if (turnMalformed) return json({ error: "Invalid input." }, 400);
+          // Missing/malformed feedback identity fails before storage, quota, lease or AI work.
+          const { isFeedbackId } = await import("@/lib/final-audio-coach");
+          if (!isFeedbackId(feedbackId)) return json({ status: "no_feedback" }, 404);
           if (!engine.isRetakePilot(moduleId, day)) return json({ status: "not_available" }, 403);
           if (!file || file.size < engine.MIN_FINAL_AUDIO_BYTES) return json({ status: "unclear" }, 200);
           if (file.size > engine.MAX_FINAL_AUDIO_BYTES) return json({ status: "audio_too_large" }, 413);
@@ -85,18 +96,18 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
               return mid;
             }
           },
-          findPreviousFeedback: async (uid, mid, d) => {
+          // EXACT review the learner is looking at: id + owner + module + day + ready.
+          findPreviousFeedback: async (uid, mid, d, fid) => {
             const { data } = await supabaseAdmin
               .from("final_audio_coach_feedback")
               .select(
                 "id, next_step_en, next_step_es, corrections, fluency_upgrade, coach_version, source_turn_number, correction_needed, said, better_version, why_en, why_es",
               )
+              .eq("id", fid)
               .eq("user_id", uid)
               .eq("module_id", mid)
               .eq("day", d)
               .eq("status", "ready")
-              .order("updated_at", { ascending: false })
-              .limit(1)
               .maybeSingle();
             if (!data || typeof data.next_step_en !== "string" || typeof data.next_step_es !== "string") return null;
             // Stored corrections were grounded at generation time; re-validate shape only.
@@ -128,7 +139,7 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
             findExisting: async (feedbackId) => {
               const { data, error } = await supabaseAdmin
                 .from("final_audio_coach_retakes")
-                .select("id, feedback_id, status, audio_sha256, result, updated_at")
+                .select("id, feedback_id, status, audio_sha256, result, idea_count, updated_at")
                 .eq("feedback_id", feedbackId)
                 .eq("user_id", userId)
                 .maybeSingle();
@@ -144,6 +155,8 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
                 status,
                 audioSha256: data.audio_sha256 ?? "",
                 result: data.result && typeof data.result === "object" && !Array.isArray(data.result) ? (data.result as unknown as FinalCoachRetakeResult) : null,
+                // 0 stays 0; legacy rows without a stored count stay null.
+                ideaCount: typeof data.idea_count === "number" && Number.isFinite(data.idea_count) && data.idea_count >= 0 ? data.idea_count : null,
                 updatedAt: data.updated_at,
               };
             },
@@ -163,7 +176,7 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
             tryReclaimError: async (id, updatedAt) => {
               const { data, error } = await supabaseAdmin
                 .from("final_audio_coach_retakes")
-                .update({ status: "pending", result: null, transcript_word_count: null })
+                .update({ status: "pending", result: null, transcript_word_count: null, idea_count: null })
                 .eq("id", id)
                 .eq("status", "error")
                 .eq("updated_at", updatedAt)
@@ -182,6 +195,7 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
                   transcript_word_count: patch.transcriptWordCount ?? null,
                   // Compact validated result only. Never the transcript. audio_sha256 is never touched.
                   result: patch.result ? (patch.result as never) : null,
+                  idea_count: typeof patch.ideaCount === "number" && Number.isFinite(patch.ideaCount) && patch.ideaCount >= 0 ? patch.ideaCount : null,
                 })
                 .eq("id", id);
               if (error) console.error("[final-audio-coach-retake] finalize failed", error.message);
@@ -199,7 +213,7 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
           };
 
           const result = await engine.runFinalCoachRetake(
-            { moduleId, day, audio, mime, ...(sourceTurnNumber === undefined ? {} : { sourceTurnNumber }) },
+            { moduleId, day, audio, mime, feedbackId, ...(sourceTurnNumber === undefined ? {} : { sourceTurnNumber }) },
             deps,
           );
 

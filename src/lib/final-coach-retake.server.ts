@@ -14,6 +14,7 @@
 import type { CourseDay, ModuleId } from "./types";
 import {
   RETAKE_SKILLS,
+  isFeedbackId,
   isRetakePilot,
   type FinalAudioCoachFluencyUpgrade,
   type FinalCoachRetakeResult,
@@ -64,6 +65,12 @@ export type RetakeInput = {
   audio: Uint8Array;
   mime: string | null;
   /**
+   * The EXACT persisted feedback row the learner is looking at. The retake is
+   * bound to it: never "the latest review of this day". A missing/malformed id
+   * fails before any storage, quota or provider work.
+   */
+  feedbackId: string;
+  /**
    * The turn the learner is retaking, as shown in the UI. When present it must
    * match the stored feedback row, so a retake can never be attached to another
    * answer of the same day (another take, device or practice).
@@ -73,7 +80,13 @@ export type RetakeInput = {
 
 
 export type RetakeStatus = "pending" | "ready" | "unclear" | "error";
-export type RetakeFinalizePatch = { status: Exclude<RetakeStatus, "pending">; result?: FinalCoachRetakeResult | undefined; transcriptWordCount?: number | null | undefined };
+export type RetakeFinalizePatch = {
+  status: Exclude<RetakeStatus, "pending">;
+  result?: FinalCoachRetakeResult | undefined;
+  transcriptWordCount?: number | null | undefined;
+  /** Deterministic local idea count for the retake. 0 = a real zero, null = unavailable/uncertain. */
+  ideaCount?: number | null | undefined;
+};
 
 /** The one durable retake row for a feedback (server-computed audio identity). */
 export type ExistingRetake = {
@@ -82,6 +95,8 @@ export type ExistingRetake = {
   status: RetakeStatus;
   audioSha256: string;
   result: FinalCoachRetakeResult | null;
+  /** Stored objective idea count. null = never stored (legacy row) or not confident. */
+  ideaCount?: number | null | undefined;
   /** Opaque optimistic-lock token (updated_at as read). */
   updatedAt: string;
 };
@@ -92,8 +107,12 @@ export type RetakeDeps = {
   loadDay: (moduleId: ModuleId, day: number) => Promise<CourseDay | null>;
   /** Learner-facing module label for the rubric (e.g. "BASIC 3"). Defaults to the module id. */
   moduleLabel?: ((moduleId: string) => string) | undefined;
-  /** Latest READY coach feedback for this learner/module/day (validated corrections). Null = no coach review yet. */
-  findPreviousFeedback: (userId: string, moduleId: string, day: number) => Promise<PreviousFeedback | null>;
+  /**
+   * EXACT ready coach feedback lookup: id + user + module + day + status='ready'.
+   * Null when it does not exist, belongs to another learner, targets another
+   * module/day or is not ready. Never "the latest feedback for this day".
+   */
+  findPreviousFeedback: (userId: string, moduleId: string, day: number, feedbackId: string) => Promise<PreviousFeedback | null>;
   store: {
     /** The existing retake row for this feedback (UNIQUE feedback_id), or null on first retake. */
     findExisting: (feedbackId: string) => Promise<ExistingRetake | null>;
@@ -241,6 +260,18 @@ function clip(text: string, max: number): string {
   return t.length <= max ? t : `${t.slice(0, max - 1).replace(/[\s,;:]+$/, "")}…`;
 }
 
+/** Honest copy that replaces any praise the evidence check rejected. */
+export const NOT_APPLIED_FALLBACK = {
+  en: "Not yet — keep working on this one.",
+  es: "Todavía no — sigue trabajando en esto.",
+} as const;
+
+/** Neutral summary used when NO improvement claim survived validation. */
+export const NO_IMPROVEMENT_FALLBACK = {
+  en: "This retake does not show a clear improvement yet.",
+  es: "Este intento todavía no muestra una mejora clara.",
+} as const;
+
 function isSkill(value: unknown): value is RetakeSkill {
   return typeof value === "string" && (RETAKE_SKILLS as readonly string[]).includes(value);
 }
@@ -297,9 +328,19 @@ export function normalizeRetakeResult(raw: unknown, previous: PreviousFeedback, 
       if (ok && related.some((c) => normalizeForMatch(c.said) === normalizeForMatch(evidence))) ok = false;
     }
     seen.add(skill);
-    applied.push({ skill, applied: ok, messageEn, messageEs });
+    // A claim that failed grounding keeps NO praise: the model's celebratory
+    // wording is replaced by honest, neutral copy. Only validated praise survives.
+    applied.push(
+      ok
+        ? { skill, applied: true, messageEn, messageEs }
+        : { skill, applied: false, messageEn: NOT_APPLIED_FALLBACK.en, messageEs: NOT_APPLIED_FALLBACK.es },
+    );
   }
-  return { applied, improvementEn, improvementEs, nextEn, nextEs };
+  // When nothing at all could be validated, the overall summary must not celebrate either.
+  const anyValidated = applied.some((a) => a.applied);
+  return anyValidated
+    ? { applied, improvementEn, improvementEs, nextEn, nextEs }
+    : { applied, improvementEn: NO_IMPROVEMENT_FALLBACK.en, improvementEs: NO_IMPROVEMENT_FALLBACK.es, nextEn, nextEs };
 }
 
 /* ------------------------------------------------------------------------ */
@@ -333,11 +374,13 @@ export async function runFinalCoachRetake(input: RetakeInput, deps: RetakeDeps):
   if (input.audio.byteLength < MIN_FINAL_AUDIO_BYTES) return finish({ http: 200, body: { status: "unclear" } });
   if (input.audio.byteLength > MAX_FINAL_AUDIO_BYTES) return finish({ http: 413, body: { status: "audio_too_large" } });
 
-  // 2) The retake only exists relative to a READY coach review of the same day,
-  //    and it must be the EXACT answer the learner is looking at: when the client
-  //    names a turn, it has to match the stored feedback row.
-  const previous = await deps.findPreviousFeedback(deps.userId, input.moduleId, input.day);
-  if (!previous) return finish({ http: 404, body: { status: "no_feedback" } });
+  // 2) The retake only exists relative to the EXACT READY coach review the
+  //    learner is looking at (feedbackId), never "the latest review of this day".
+  //    A missing/malformed id fails here — before quota, lease or any AI work.
+  if (!isFeedbackId(input.feedbackId)) return finish({ http: 404, body: { status: "no_feedback" } }, { mismatch: "feedback_id_shape" });
+  const previous = await deps.findPreviousFeedback(deps.userId, input.moduleId, input.day, input.feedbackId.trim());
+  // Nonexistent, foreign, wrong module/day or not-ready → the same generic answer.
+  if (!previous) return finish({ http: 404, body: { status: "no_feedback" } }, { mismatch: "feedback_not_found" });
   const sourceTurnNumber = previous.sourceTurnNumber ?? null;
   if (input.sourceTurnNumber !== undefined && (input.sourceTurnNumber ?? null) !== sourceTurnNumber) {
     return finish({ http: 404, body: { status: "no_feedback" } }, { mismatch: "source_turn" });
@@ -357,7 +400,10 @@ export async function runFinalCoachRetake(input: RetakeInput, deps: RetakeDeps):
   if (existing) {
     if (existing.audioSha256 !== audioSha256) return finish({ http: 409, body: { status: "already_used" } }, { cache: "different_audio" });
     // Same audio: replay whatever already happened — 0 STT, 0 LLM, 0 quota.
-    if (existing.status === "ready" && existing.result) return finish({ http: 200, body: { status: "ready", result: existing.result } }, { cache: "hit" });
+    // 0 STT, 0 LLM, 0 quota — and the SAME objective idea count as the first response
+    // (0 stays 0; a legacy row without a stored count honestly returns null).
+    if (existing.status === "ready" && existing.result)
+      return finish({ http: 200, body: { status: "ready", result: existing.result, ideaCount: existing.ideaCount ?? null } }, { cache: "hit" });
     if (existing.status === "ready") return finish({ http: 200, body: { status: "error", code: "cache_invalid" } }, { cache: "invalid" });
     if (existing.status === "pending") return finish({ http: 202, body: { status: "pending" } }, { cache: "pending" });
     if (existing.status === "unclear") return finish({ http: 200, body: { status: "unclear" } }, { cache: "unclear" });
@@ -406,10 +452,12 @@ export async function runFinalCoachRetake(input: RetakeInput, deps: RetakeDeps):
     await deps.store.finalize(leaseId, { status: "error", transcriptWordCount });
     return finish({ http: 200, body: { status: "error", code: "coach_failed" } });
   }
-  await deps.store.finalize(leaseId, { status: "ready", result, transcriptWordCount });
-  // Objective idea count from the SAME transcription (deterministic, 0 extra AI calls).
+  // Objective idea count from the SAME transcription (deterministic, 0 extra AI
+  // calls). Computed BEFORE finalizing so it is stored with the compact result
+  // and every later cache replay returns exactly the same number.
   const local = countCompleteIdeasLocal(transcript);
   const ideaCount = local.status === "confident" ? local.count : null;
+  await deps.store.finalize(leaseId, { status: "ready", result, transcriptWordCount, ideaCount });
   return finish({ http: 200, body: { status: "ready", result, ideaCount } }, { ideaCount });
 
 }
