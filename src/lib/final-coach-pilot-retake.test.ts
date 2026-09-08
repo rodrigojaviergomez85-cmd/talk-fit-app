@@ -23,6 +23,8 @@ import {
   RETAKE_QUOTA_WINDOW_SECONDS,
   buildRetakeMessages,
   normalizeRetakeResult,
+  NOT_APPLIED_FALLBACK,
+  NO_IMPROVEMENT_FALLBACK,
   previousErrorStillPresent,
   runFinalCoachRetake,
   type PreviousFeedback,
@@ -778,5 +780,122 @@ describe("Retake — day invariants + UI", () => {
   it("the correction shape is unchanged for consumers", () => {
     const c: CoachCorrection = { category: "repetition", said: "a... a...", betterVersion: "b", whyEn: "w", whyEs: "w" };
     expect(Object.keys(c)).toEqual(["category", "said", "betterVersion", "whyEn", "whyEs"]);
+  });
+});
+
+/* ---------------- RETAKE 1.1 — identity, instructions, honest validation, cached metrics ---------------- */
+
+describe("Retake — bound to the EXACT feedback the learner saw", () => {
+  it("malformed / missing feedbackId → 404 no_feedback, no lookup, no quota, no AI", async () => {
+    for (const bad of ["", "fb-1", "not-a-uuid", "1111"]) {
+      const h = retakeHarness();
+      const res = await runFinalCoachRetake(REQ(AUDIO, bad), h.deps);
+      expect(res.http).toBe(404);
+      expect(res.body.status).toBe("no_feedback");
+      expect(h.lookedUp).toEqual([]);
+      expect(h.calls).toMatchObject({ stt: 0, llm: 0, quota: 0 });
+    }
+  });
+  it("a valid id that is not THIS review (foreign / other day / not ready) → 404, 0 AI", async () => {
+    const h = retakeHarness();
+    const res = await runFinalCoachRetake(REQ(AUDIO, OTHER_FID), h.deps);
+    expect(res.http).toBe(404);
+    expect(h.lookedUp).toEqual([OTHER_FID]);
+    expect(h.calls).toMatchObject({ stt: 0, llm: 0, quota: 0 });
+  });
+  it("the id is passed through to the exact lookup (never 'latest feedback of the day')", async () => {
+    const h = retakeHarness();
+    await runFinalCoachRetake(REQ(), h.deps);
+    expect(h.lookedUp).toEqual([FID]);
+    const route = readFileSync("src/routes/api/final-audio-coach-retake.ts", "utf8");
+    expect(route).toContain('.eq("id", fid)');
+    expect(route).not.toContain('.order("updated_at", { ascending: false })');
+  });
+  it("classic STEP 5 keeps its explicit null turn; a mismatched turn is still rejected", async () => {
+    const ok = retakeHarness();
+    expect((await runFinalCoachRetake({ ...REQ(), sourceTurnNumber: null }, ok.deps)).body.status).toBe("ready");
+    const bad = retakeHarness();
+    const res = await runFinalCoachRetake({ ...REQ(), sourceTurnNumber: 3 }, bad.deps);
+    expect(res.http).toBe(404);
+    expect(bad.calls).toMatchObject({ stt: 0, llm: 0, quota: 0 });
+  });
+});
+
+describe("Retake — neutral instructions for every level", () => {
+  it("the recording screen never names a tense and shows the exact question", () => {
+    const src = readFileSync("src/components/fluency/FinalCoachReview.tsx", "utf8");
+    expect(src).toContain("Answer the same question again and apply the feedback you just received.");
+    expect(src).toContain("Responde de nuevo la misma pregunta y aplica el feedback que acabas de recibir.");
+    expect(src).not.toContain("past tense, variety and more detail");
+    expect(src).not.toContain("pasado, variedad y más detalle");
+  });
+  it("renders the exact question, turn label, situation and the feedback reminder", () => {
+    const retake = {
+      state: { status: "recording" } as FinalCoachRetakeState,
+      before: { seconds: 40, ideas: 5 },
+      after: null,
+      maxSeconds: 90,
+      targetSeconds: [30, 60] as [number, number],
+      question: "What will you do next week?",
+      turnLabel: "CUSTOMER",
+      situation: "A client calls about a delay",
+      reminders: ["I go home → Later, I went home."],
+      onStart: () => undefined,
+      onRecorded: () => undefined,
+    };
+    const html = renderToStaticMarkup(
+      createElement(FinalCoachReview, { state: { status: "ready", feedback: BASE as unknown as CoachFeedback }, showEs: false, onContinue: () => undefined, retake }),
+    );
+    expect(html).toContain("What will you do next week?");
+    expect(html).toContain("CUSTOMER");
+    expect(html).toContain("A client calls about a delay");
+    expect(html).toContain("Later, I went home.");
+  });
+});
+
+describe("Retake — no praise survives a failed evidence check", () => {
+  it("an ungrounded claim keeps applied=false AND loses its celebratory message", () => {
+    const raw = { applied: [CLAIM("verb_tense", "something I never said")], ...TAIL };
+    const out = normalizeRetakeResult(raw, PREV, "I woke up early and later I went to work.")!;
+    expect(out.applied[0]!.applied).toBe(false);
+    expect(out.applied[0]!.messageEn).toBe(NOT_APPLIED_FALLBACK.en);
+    expect(out.applied[0]!.messageEs).toBe(NOT_APPLIED_FALLBACK.es);
+    expect(out.applied[0]!.messageEn).not.toContain("correctly");
+  });
+  it("nothing validated → neutral summary, never a celebration", () => {
+    const raw = { applied: [CLAIM("verb_tense", "never said this")], ...TAIL };
+    const out = normalizeRetakeResult(raw, PREV, "I woke up early and later I went to work.")!;
+    expect(out.improvementEn).toBe(NO_IMPROVEMENT_FALLBACK.en);
+    expect(out.improvementEs).toBe(NO_IMPROVEMENT_FALLBACK.es);
+    expect(out.nextEn).toBe(TAIL.nextEn);
+  });
+  it("validated praise is preserved untouched", () => {
+    const transcript = "Yesterday I woke up at seven and after that I had breakfast.";
+    const out = normalizeRetakeResult({ applied: [CLAIM("verb_tense", "Yesterday I woke up")], ...TAIL }, PREV, transcript)!;
+    expect(out.applied[0]!.applied).toBe(true);
+    expect(out.applied[0]!.messageEn).toContain("correctly");
+    expect(out.improvementEn).toBe(TAIL.improvementEn);
+  });
+});
+
+describe("Retake — the idea count survives cache replay", () => {
+  it("fresh response and same-audio replay return the SAME idea count (0 extra AI calls)", async () => {
+    const h = retakeHarness();
+    const first = await runFinalCoachRetake(REQ(), h.deps);
+    const count = first.body.status === "ready" ? first.body.ideaCount : undefined;
+    expect(typeof count).toBe("number");
+    const stored = [...h.rows.values()][0]!;
+    expect(stored.ideaCount).toBe(count);
+    const again = await runFinalCoachRetake(REQ(), h.deps);
+    expect(again.body.status === "ready" ? again.body.ideaCount : null).toBe(count);
+    expect(h.calls).toMatchObject({ stt: 1, llm: 1, quota: 1 });
+  });
+  it("a legacy row with no stored count replays honestly as null (never 0)", async () => {
+    const h = retakeHarness();
+    await runFinalCoachRetake(REQ(), h.deps);
+    const [id, row] = [...h.rows.entries()][0]!;
+    h.rows.set(id, { ...row, ideaCount: null });
+    const again = await runFinalCoachRetake(REQ(), h.deps);
+    expect(again.body.status === "ready" ? again.body.ideaCount : "x").toBeNull();
   });
 });
