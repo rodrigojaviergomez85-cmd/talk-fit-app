@@ -542,7 +542,7 @@ function RetakeResultScreen({ retake, showEs, onContinue }: { retake: RetakePane
       ) : null}
 
       <Divider />
-      <Section label={`✅ ${showEs ? "MEJORASTE TU FLUIDEZ" : "YOUR FLUENCY"}`} testId="final-coach-retake-improvement">
+      <Section label={`💬 ${showEs ? "SOBRE TU RESPUESTA" : "ABOUT YOUR ANSWER"}`} testId="final-coach-retake-improvement">
         <p className="text-[15px] font-semibold leading-snug">{showEs ? r.improvementEs : r.improvementEn}</p>
       </Section>
 
