@@ -52,7 +52,7 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
           } catch {
             file = null;
           }
-          const { isModuleId, CourseService, MODULE_INDEX } = await import("@/services/course-service");
+          const { isModuleId, CourseService } = await import("@/services/course-service");
           if (!moduleId || !isModuleId(moduleId) || !Number.isInteger(day) || day < 1) return json({ error: "Invalid input." }, 400);
           if (!engine.isRetakePilot(moduleId, day)) return json({ status: "not_available" }, 403);
           if (!file || file.size < engine.MIN_FINAL_AUDIO_BYTES) return json({ status: "unclear" }, 200);
