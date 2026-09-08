@@ -13,6 +13,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { CloudSync } from "./cloud-sync";
 import {
+  isFeedbackId,
   sourceTurnNumberFor,
   type FinalAudioCoachResponse,
   type FinalCoachRetakeResponse,
