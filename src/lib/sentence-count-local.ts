@@ -241,6 +241,66 @@ function splitOnConnectors(tokens: string[]): { parts: string[][]; ambiguous: bo
   return { parts, ambiguous };
 }
 
+/**
+ * Speech-to-text often returns several spoken ideas with NO punctuation and NO
+ * connector ("I work at a call center I like my job"). Without this split the
+ * counter reported 1 idea instead of 2 — a systematic UNDERCOUNT.
+ *
+ * Rule (conservative): once the current segment already has an explicit subject
+ * and a verb, a following subject pronoun starts a new idea — but only when the
+ * remainder also has a verb, and only when the preceding token cannot make that
+ * pronoun an object or a complement clause ("I told you I will go"). Those
+ * genuinely ambiguous cases return uncertain so the LLM fallback decides.
+ */
+const NO_SPLIT_BEFORE_PRONOUN = new Set([
+  "to","that","what","how","why","where","who","which","because","if","when","while","and","but","so","or","then",
+  "with","for","about","from","of","at","on","in","by","like","than","as","before","after","until","since",
+]);
+
+function splitOnImplicitBoundaries(tokens: string[]): { parts: string[][]; ambiguous: boolean } {
+  const parts: string[][] = [];
+  let current: string[] = [];
+  let hasSubject = false;
+  let hasVerb = false;
+  let ambiguous = false;
+
+  for (let i = 0; i < tokens.length; i++) {
+    const t = tokens[i]!;
+    const prev = i > 0 ? tokens[i - 1]! : null;
+
+    if (
+      prev &&
+      hasSubject &&
+      hasVerb &&
+      SUBJECT_PRONOUNS.has(t) &&
+      tokens.slice(i + 1).some((w) => isVerbLike(w))
+    ) {
+      if (isVerbLike(prev) || SUBJECT_PRONOUNS.has(prev)) {
+        // "I told you I will go" / "I see you" — object or complement clause.
+        ambiguous = true;
+        current.push(t);
+        continue;
+      }
+      if (NO_SPLIT_BEFORE_PRONOUN.has(prev)) {
+        current.push(t);
+        continue;
+      }
+      parts.push(current);
+      current = [t];
+      hasSubject = true;
+      hasVerb = false;
+      continue;
+    }
+
+    current.push(t);
+    if (!hasSubject && (SUBJECT_PRONOUNS.has(t) || SUBJECT_DETERMINERS.has(t))) hasSubject = true;
+    else if (hasSubject && isVerbLike(t)) hasVerb = true;
+  }
+
+  if (current.length > 0) parts.push(current);
+  return { parts, ambiguous };
+}
+
 export function countCompleteIdeasLocal(transcript: string): LocalIdeaCount {
   const raw = (transcript ?? "").trim();
   if (!raw) return { status: "confident", count: 0, reason: "empty" };
