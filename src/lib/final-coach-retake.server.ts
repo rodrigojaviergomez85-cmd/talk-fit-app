@@ -260,6 +260,18 @@ function clip(text: string, max: number): string {
   return t.length <= max ? t : `${t.slice(0, max - 1).replace(/[\s,;:]+$/, "")}…`;
 }
 
+/** Honest copy that replaces any praise the evidence check rejected. */
+export const NOT_APPLIED_FALLBACK = {
+  en: "Not yet — keep working on this one.",
+  es: "Todavía no — sigue trabajando en esto.",
+} as const;
+
+/** Neutral summary used when NO improvement claim survived validation. */
+export const NO_IMPROVEMENT_FALLBACK = {
+  en: "This retake does not show a clear improvement yet.",
+  es: "Este intento todavía no muestra una mejora clara.",
+} as const;
+
 function isSkill(value: unknown): value is RetakeSkill {
   return typeof value === "string" && (RETAKE_SKILLS as readonly string[]).includes(value);
 }
