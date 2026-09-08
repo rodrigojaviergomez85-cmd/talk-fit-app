@@ -104,11 +104,13 @@ function stateFrom(result: CoachHttpResult): FinalCoachState | "pending" | "not_
     // Pilot only: transient transcript for THIS session's React state (never stored client-side).
     // `feedbackId` identifies the exact persisted review and must survive fresh
     // responses, cache replays and polling alike — the retake is bound to it.
+    const raw: unknown = body.feedbackId;
+    const feedbackId = isFeedbackId(raw) ? raw.trim() : null;
     return {
       status: "ready",
       feedback: body.feedback,
       ...(body.transcript !== undefined ? { transcript: body.transcript } : {}),
-      ...(isFeedbackId(body.feedbackId) ? { feedbackId: body.feedbackId.trim() } : {}),
+      ...(feedbackId ? { feedbackId } : {}),
     };
   }
   if (http === 200 && body?.status === "unclear") return { status: "unclear" };
