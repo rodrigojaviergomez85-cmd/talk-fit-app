@@ -185,6 +185,13 @@ export type FinalAudioCoachResponse =
   | {
       status: "ready";
       feedback: FinalAudioCoachFeedback;
+      /**
+       * Identity of the persisted feedback row behind THIS response (fresh
+       * analysis and cache replay alike). The optional retake is bound to it, so
+       * a retake can never be attached to another review of the same day.
+       * Absent on legacy responses → the retake is simply not offered.
+       */
+      feedbackId?: string;
       /** Pilot only, transient: fresh analysis → full text; cache replay → null; v2 days → absent. Never persisted. */
       transcript?: string | null;
     }
@@ -201,10 +208,22 @@ export type FinalCoachState =
   | { status: "idle" }
   | { status: "preparing" }
   | { status: "analyzing" }
-  | { status: "ready"; feedback: FinalAudioCoachFeedback; transcript?: string | null }
+  | {
+      status: "ready";
+      feedback: FinalAudioCoachFeedback;
+      transcript?: string | null;
+      /** Exact feedback row the learner is looking at; required to offer the retake. */
+      feedbackId?: string | undefined;
+    }
   | { status: "unclear" }
   | { status: "rate_limited" }
   | { status: "unavailable" };
+
+/** A feedback id is a UUID (server-generated). Shape is validated before any DB/provider work. */
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+export function isFeedbackId(value: unknown): value is string {
+  return typeof value === "string" && UUID_RE.test(value.trim());
+}
 
 /* ------------------------------------------------------------------------ */
 /*  Optional retake (pilot) — public shapes                                  */
