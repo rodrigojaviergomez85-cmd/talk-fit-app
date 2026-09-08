@@ -229,7 +229,8 @@ describe("Wiring — practice.tsx / FinalCoachReview (0 extra AI calls)", () => 
     expect(practice).toMatch(/takes\.findIndex\(\(take\) => take\?\.id === finalRecording\.id\)/);
     expect(practice.match(/runFinalCoachPipeline\(/g)).toHaveLength(1);
     // Two call sites: the normal take + the pilot retake (explicit learner action only). No counting on review render.
-    expect(practice.match(/void countSentences\(/g)).toHaveLength(2);
+    // The retake reuses its comparison transcript, so only the final take is counted separately.
+    expect(practice.match(/void countSentences\(/g)).toHaveLength(1);
   });
   it("the result module never imports fetch/AI/server code", () => {
     expect(resultModule).not.toMatch(/fetch\(|final-audio-coach\.server|countSentences|sentence-count/);

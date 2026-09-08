@@ -48,9 +48,10 @@ describe("INTERMEDIATE rollout — gate, version and rubric", () => {
     expect(coachVersionFor("advanced-1", 1)).toBe("v2");
   });
 
-  it("retake eligibility is NOT rolled out to intermediate", () => {
-    for (const m of INTERMEDIATE_MODULE_IDS) expect(isRetakePilot(m, 1)).toBe(false);
+  it("retake eligibility now covers intermediate days too", () => {
+    for (const m of INTERMEDIATE_MODULE_IDS) expect(isRetakePilot(m, 1)).toBe(true);
     expect(isRetakePilot("past-stories", 1)).toBe(true);
+    expect(isRetakePilot("tigers", 0)).toBe(false);
   });
 
   it("each intermediate module gets its own CourseDay rubric + the multi schema", async () => {
