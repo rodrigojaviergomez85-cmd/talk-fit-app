@@ -23,6 +23,13 @@ export type RetakePanelProps = {
   /** Hard recording cap for the full answer (same as the day's Step 5 cap). */
   maxSeconds: number;
   targetSeconds: [number, number];
+  /** EXACT answer being repeated: classic STEP 5 question, or the evaluated role-play / Pressure Round turn. */
+  question?: string | undefined;
+  /** Role play / Pressure Round only: the situation and the turn label of that exact turn. */
+  situation?: string | undefined;
+  turnLabel?: string | undefined;
+  /** Compact reminder of the feedback the learner just read (already-available text, no new AI call). */
+  reminders?: readonly string[] | undefined;
   onStart: () => void;
   onRecorded: (recording: Recording) => void;
   /** Re-sends the SAME in-memory retake blob after a technical failure. Never records again. */
