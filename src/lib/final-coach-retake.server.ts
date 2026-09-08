@@ -326,16 +326,26 @@ export async function runFinalCoachRetake(input: RetakeInput, deps: RetakeDeps):
     return res;
   };
 
-  // 1) Pilot gate + real day, before any storage/quota/AI work.
+  // 1) Eligibility + real module/day, before any storage/quota/AI work.
   if (!isRetakePilot(input.moduleId, input.day)) return finish({ http: 403, body: { status: "not_available" } });
   const day = await deps.loadDay(input.moduleId as ModuleId, input.day);
   if (!day) return finish({ http: 403, body: { status: "not_available" } });
   if (input.audio.byteLength < MIN_FINAL_AUDIO_BYTES) return finish({ http: 200, body: { status: "unclear" } });
   if (input.audio.byteLength > MAX_FINAL_AUDIO_BYTES) return finish({ http: 413, body: { status: "audio_too_large" } });
 
-  // 2) The retake only exists relative to a READY coach review of the same day.
+  // 2) The retake only exists relative to a READY coach review of the same day,
+  //    and it must be the EXACT answer the learner is looking at: when the client
+  //    names a turn, it has to match the stored feedback row.
   const previous = await deps.findPreviousFeedback(deps.userId, input.moduleId, input.day);
   if (!previous) return finish({ http: 404, body: { status: "no_feedback" } });
+  const sourceTurnNumber = previous.sourceTurnNumber ?? null;
+  if (input.sourceTurnNumber !== undefined && (input.sourceTurnNumber ?? null) !== sourceTurnNumber) {
+    return finish({ http: 404, body: { status: "no_feedback" } }, { mismatch: "source_turn" });
+  }
+  // Same trusted context as the coach review (exact role-play turn when there is one).
+  const rubric = buildRubric(day, input.moduleId, deps.moduleLabel?.(input.moduleId) ?? input.moduleId, sourceTurnNumber);
+  if (!rubric) return finish({ http: 403, body: { status: "not_available" } }, { mismatch: "turn_not_found" });
+
 
   // 3) ONE pedagogical retake per feedback (UNIQUE feedback_id). The server-computed
   //    audio hash decides between "same recording" (cache / technical retry) and
