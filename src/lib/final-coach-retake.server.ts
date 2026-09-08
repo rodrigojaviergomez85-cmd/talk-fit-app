@@ -353,7 +353,8 @@ export function normalizeRetakeResult(raw: unknown, previous: PreviousFeedback, 
     const messageEn = typeof a["messageEn"] === "string" && a["messageEn"].trim() ? clip(a["messageEn"], RETAKE_LIMITS.message) : null;
     const messageEs = typeof a["messageEs"] === "string" && a["messageEs"].trim() ? clip(a["messageEs"], RETAKE_LIMITS.message) : null;
     if (!messageEn || !messageEs) continue;
-    let ok = a["applied"] === true;
+    const claimed = a["applied"] === true;
+    let ok = claimed;
     if (ok) {
       const evidence = typeof a["evidence"] === "string" ? a["evidence"].replace(/\s+/g, " ").trim() : "";
       if (!evidence || countWords(evidence) > MAX_RETAKE_EVIDENCE_WORDS || !saidOccursInTranscript(evidence, transcript)) ok = false;
@@ -364,19 +365,25 @@ export function normalizeRetakeResult(raw: unknown, previous: PreviousFeedback, 
       if (ok && related.some((c) => normalizeForMatch(c.said) === normalizeForMatch(evidence))) ok = false;
     }
     seen.add(skill);
-    // A claim that failed grounding keeps NO praise: the model's celebratory
-    // wording is replaced by honest, neutral copy. Only validated praise survives.
-    applied.push(
-      ok
-        ? { skill, applied: true, messageEn, messageEs }
-        : { skill, applied: false, messageEn: NOT_APPLIED_FALLBACK.en, messageEs: NOT_APPLIED_FALLBACK.es },
-    );
+    if (ok) {
+      // Validated praise survives untouched.
+      applied.push({ skill, applied: true, messageEn, messageEs });
+    } else if (claimed) {
+      // Claimed but NOT grounded: the celebratory wording is dropped and replaced
+      // by honest copy that reuses the previous (already validated) guidance.
+      const honest = downgradedMessage(skill, previous);
+      applied.push({ skill, applied: false, messageEn: honest.en, messageEs: honest.es });
+    } else {
+      // Honestly reported as still pending: its specific instruction is actionable
+      // and is kept as-is (it already passed shape + length validation).
+      applied.push({ skill, applied: false, messageEn, messageEs });
+    }
   }
-  // When nothing at all could be validated, the overall summary must not celebrate either.
+  // The overall summary is DERIVED from the validated items, never reused from the
+  // model: a partly-rejected response must not keep praising the rejected claim.
   const anyValidated = applied.some((a) => a.applied);
-  return anyValidated
-    ? { applied, improvementEn, improvementEs, nextEn, nextEs }
-    : { applied, improvementEn: NO_IMPROVEMENT_FALLBACK.en, improvementEs: NO_IMPROVEMENT_FALLBACK.es, nextEn, nextEs };
+  const summary = anyValidated ? PARTIAL_IMPROVEMENT_SUMMARY : NO_IMPROVEMENT_FALLBACK;
+  return { applied, improvementEn: summary.en, improvementEs: summary.es, nextEn, nextEs };
 }
 
 /* ------------------------------------------------------------------------ */
