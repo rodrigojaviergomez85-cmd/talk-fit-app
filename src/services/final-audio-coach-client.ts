@@ -220,18 +220,22 @@ export const RETAKE_PENDING_POLL_DELAYS_MS = [2000, 3000, 5000, 5000] as const;
 
 export type RetakeHttpResult = { kind: "response"; http: number; body: FinalCoachRetakeResponse | null } | { kind: "network_error" };
 
+/** The retake always names the exact answer it repeats (role-play turn, or null on classic STEP 5). */
+export type RetakeInput = { moduleId: ModuleId; day: number; blob: Blob; sourceTurnNumber?: number | null };
+
 export type RetakeRequestDeps = {
-  send: (input: { moduleId: ModuleId; day: number; blob: Blob }, signal?: AbortSignal) => Promise<RetakeHttpResult>;
+  send: (input: RetakeInput, signal?: AbortSignal) => Promise<RetakeHttpResult>;
   sleep: (ms: number, signal?: AbortSignal) => Promise<void>;
 };
 
-async function postRetake(input: { moduleId: ModuleId; day: number; blob: Blob }, signal?: AbortSignal): Promise<RetakeHttpResult> {
+async function postRetake(input: RetakeInput, signal?: AbortSignal): Promise<RetakeHttpResult> {
   const token = await currentAccessToken();
   if (!token) return { kind: "response", http: 401, body: null };
   try {
     const form = new FormData();
     form.append("moduleId", input.moduleId);
     form.append("day", String(input.day));
+    if (input.sourceTurnNumber !== undefined) form.append("sourceTurnNumber", input.sourceTurnNumber === null ? "" : String(input.sourceTurnNumber));
     form.append("file", input.blob, "retake");
     const res = await fetch("/api/final-audio-coach-retake", {
       method: "POST",
@@ -254,13 +258,15 @@ async function postRetake(input: { moduleId: ModuleId; day: number; blob: Blob }
 export function mapRetakeResult(r: RetakeHttpResult): FinalCoachRetakeState | null {
   if (r.kind === "network_error") return { status: "retryable" };
   const { http, body } = r;
-  if (http === 200 && body?.status === "ready") return { status: "ready", result: body.result };
+  // The idea count rides along with the comparison: it costs no extra transcription.
+  if (http === 200 && body?.status === "ready") return { status: "ready", result: body.result, ideaCount: body.ideaCount ?? null };
   if (http === 200 && body?.status === "unclear") return { status: "unclear" };
   if (http === 202 || body?.status === "pending") return null;
   if (body?.status === "error") return { status: "retryable" };
   if (http >= 500) return { status: "retryable" };
   return { status: "unavailable" };
 }
+
 
 /**
  * Sends the retake audio (transient) for "did you apply the feedback?".
