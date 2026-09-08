@@ -397,7 +397,7 @@ export async function runFinalCoachRetake(input: RetakeInput, deps: RetakeDeps):
   llmCalled = true;
   let result: FinalCoachRetakeResult | null = null;
   try {
-    const ctx: RetakeLlmContext = { question: day.rep5Prompt.question, topic: day.topic, focus: day.focus, previous };
+    const ctx: RetakeLlmContext = { rubric, previous };
     result = normalizeRetakeResult(await deps.llm(ctx, transcript), previous, transcript);
   } catch {
     result = null;
@@ -407,5 +407,9 @@ export async function runFinalCoachRetake(input: RetakeInput, deps: RetakeDeps):
     return finish({ http: 200, body: { status: "error", code: "coach_failed" } });
   }
   await deps.store.finalize(leaseId, { status: "ready", result, transcriptWordCount });
-  return finish({ http: 200, body: { status: "ready", result } });
+  // Objective idea count from the SAME transcription (deterministic, 0 extra AI calls).
+  const local = countCompleteIdeasLocal(transcript);
+  const ideaCount = local.status === "confident" ? local.count : null;
+  return finish({ http: 200, body: { status: "ready", result, ideaCount } }, { ideaCount });
+
 }
