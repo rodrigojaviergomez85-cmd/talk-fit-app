@@ -138,11 +138,11 @@ describe("STEP 5 completion — wiring in practice.tsx and Day Complete", () => 
     expect(dayComplete).not.toContain("FinalCoachCard");
     expect(dayComplete).not.toContain("FinalCoachReview");
     expect(dayComplete).not.toContain("coachState");
-    // Celebration + audio comparison + progress remain.
-    expect(dayComplete).toContain("GREAT JOB!");
-    expect(dayComplete).toContain("Compare today's practice");
-    expect(dayComplete).toContain("Listen to my final audio");
-    expect(dayComplete).toContain("Listen to my first audio");
+    // Celebration + audio comparison + progress remain (compact wording).
+    expect(dayComplete).toContain("Nice work, Champion!");
+    expect(dayComplete).toContain("Compare my recordings");
+    expect(dayComplete).toContain("Final recording");
+    expect(dayComplete).toContain("First recording");
   });
 
   it("CASE 20/21: the review has no abstract status chips, no scores, and hides CONTINUE while analyzing", () => {
