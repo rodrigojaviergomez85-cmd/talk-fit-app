@@ -37,16 +37,22 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
           let file: File | null = null;
           let moduleId: string | null = null;
           let day = NaN;
+          let sourceTurnNumber: number | null | undefined;
           try {
             const form = await request.formData();
             const formFile = form.get("file");
             file = formFile instanceof File ? formFile : null;
             moduleId = String(form.get("moduleId") ?? "");
             day = Number(form.get("day"));
+            const rawTurn = form.get("sourceTurnNumber");
+            if (rawTurn !== null) {
+              const parsed = String(rawTurn) === "" ? null : Number(rawTurn);
+              sourceTurnNumber = parsed === null || (Number.isInteger(parsed) && parsed > 0) ? parsed : undefined;
+            }
           } catch {
             file = null;
           }
-          const { isModuleId, CourseService } = await import("@/services/course-service");
+          const { isModuleId, CourseService, MODULE_INDEX } = await import("@/services/course-service");
           if (!moduleId || !isModuleId(moduleId) || !Number.isInteger(day) || day < 1) return json({ error: "Invalid input." }, 400);
           if (!engine.isRetakePilot(moduleId, day)) return json({ status: "not_available" }, 403);
           if (!file || file.size < engine.MIN_FINAL_AUDIO_BYTES) return json({ status: "unclear" }, 200);
@@ -54,6 +60,7 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
           const mime = (file.type || "audio/webm").split(";")[0]?.trim().toLowerCase() ?? "audio/webm";
           if (!AUDIO_EXT[mime]) return json({ error: "Unsupported audio format." }, 415);
           const audio = new Uint8Array(await file.arrayBuffer());
+
 
           const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
           const coach = await import("@/lib/final-audio-coach.server");
