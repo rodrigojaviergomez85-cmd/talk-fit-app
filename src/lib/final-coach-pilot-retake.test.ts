@@ -318,7 +318,14 @@ function retakeHarness(opts: { previous?: PreviousFeedback | null; llm?: unknown
   const deps: RetakeDeps = {
     userId: USER,
     now: () => 1_000,
-    loadDay: async (mid, d) => (await CourseService.loadModule(mid)).days.find((x) => x.day === d) ?? null,
+    loadDay: async (mid, d) => {
+      try {
+        return (await CourseService.loadModule(mid)).days.find((x) => x.day === d) ?? null;
+      } catch {
+        return null;
+      }
+    },
+
     findPreviousFeedback: async () => (opts.previous === undefined ? PREV : opts.previous),
     store: {
       findExisting: async (feedbackId) => {
