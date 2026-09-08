@@ -1,11 +1,13 @@
 /**
  * STEP 5 · Optional RETAKE — "did the learner apply the previous feedback?"
- * (BASIC 3 · Simple Past · Day 1 pilot only).
+ * (available on every module and day of the catalogue).
  *
  * BONUS IMPROVEMENT ROUND: the day is already committed. This engine never
  * touches recordings, day completion, streak, habit or progression. It costs
  * exactly 1 STT + 1 small LLM, ONLY when the learner explicitly taps RETAKE,
- * at most ONCE per feedback row (unique constraint = durable lease).
+ * at most ONCE per feedback row (unique constraint = durable lease). The idea
+ * count shown next to the retake reuses the SAME transcription (deterministic
+ * local counter), so no second transcription is ever paid for.
  *
  * All I/O is injected so the flow is unit-testable without providers.
  */
@@ -18,10 +20,12 @@ import {
   type RetakeApplied,
   type RetakeSkill,
 } from "./final-audio-coach";
+import { countCompleteIdeasLocal } from "./sentence-count-local";
 import {
   MAX_FINAL_AUDIO_BYTES,
   MIN_FINAL_AUDIO_BYTES,
   MIN_TRANSCRIPT_WORDS,
+  buildRubric,
   countWords,
   isLowConfidence,
   normalizeForMatch,
@@ -29,6 +33,7 @@ import {
   saidOccursInTranscript,
   sha256Hex,
   type CoachCorrection,
+  type CoachRubric,
   type SttResult,
 } from "./final-audio-coach.server";
 
@@ -49,9 +54,23 @@ export type PreviousFeedback = {
   nextStepEn: string;
   nextStepEs: string;
   fluencyUpgrade: FinalAudioCoachFluencyUpgrade | null;
+  /** Role play / Pressure Round turn the evaluated answer belongs to (null on classic STEP 5). */
+  sourceTurnNumber?: number | null;
 };
 
-export type RetakeInput = { moduleId: string; day: number; audio: Uint8Array; mime: string | null };
+export type RetakeInput = {
+  moduleId: string;
+  day: number;
+  audio: Uint8Array;
+  mime: string | null;
+  /**
+   * The turn the learner is retaking, as shown in the UI. When present it must
+   * match the stored feedback row, so a retake can never be attached to another
+   * answer of the same day (another take, device or practice).
+   */
+  sourceTurnNumber?: number | null;
+};
+
 
 export type RetakeStatus = "pending" | "ready" | "unclear" | "error";
 export type RetakeFinalizePatch = { status: Exclude<RetakeStatus, "pending">; result?: FinalCoachRetakeResult | undefined; transcriptWordCount?: number | null | undefined };
