@@ -25,6 +25,7 @@ import {
   normalizeRetakeResult,
   NOT_APPLIED_FALLBACK,
   NO_IMPROVEMENT_FALLBACK,
+  PARTIAL_IMPROVEMENT_SUMMARY,
   previousErrorStillPresent,
   runFinalCoachRetake,
   type PreviousFeedback,
