@@ -517,7 +517,9 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
 
   /** ONE optional retake per coach review. Guarded by a ref: a second tap can never start another paid round. */
   const startRetake = () => {
-    if (!isRetakePilot(moduleId, day.day) || retakeStartedRef.current || coachState.status !== "ready") return;
+    // No feedback identity → no retake: it could otherwise be bound to another review.
+    if (!isRetakePilot(moduleId, day.day) || retakeStartedRef.current || coachState.status !== "ready" || !coachState.feedbackId) return;
+    retakeFeedbackIdRef.current = coachState.feedbackId;
     retakeStartedRef.current = true;
     setRetakeState({ status: "recording" });
   };
@@ -561,7 +563,14 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
 
   /** Sends the retake audio for the EXACT answer that was reviewed (role-play turn included). */
   function sendRetake(blob: Blob, recordingId: string) {
-    void requestFinalCoachRetake({ moduleId, day: day.day, blob, sourceTurnNumber: finalSourceTurn }).then((state) => {
+    // Identity frozen when the retake started: recording, polling and technical
+    // retries all target the SAME review the learner read.
+    const feedbackId = retakeFeedbackIdRef.current;
+    if (!feedbackId) {
+      setRetakeState({ status: "unavailable" });
+      return;
+    }
+    void requestFinalCoachRetake({ moduleId, day: day.day, blob, feedbackId, sourceTurnNumber: finalSourceTurn }).then((state) => {
       setRetakeState(state);
       const count = state.status === "ready" ? (state.ideaCount ?? null) : null;
       setRetakeRecording((current) =>
