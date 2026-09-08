@@ -432,14 +432,35 @@ function RetakeRoundScreen({ retake, showEs, onContinue }: { retake: RetakePanel
       <Title>{showEs ? "RONDA EXTRA · APLICA EL FEEDBACK" : "BONUS ROUND · APPLY THE FEEDBACK"}</Title>
       {st === "recording" ? (
         <>
+          {/* Level-neutral instruction: no tense is ever named here — the module may be present, future or mixed. */}
           <p className="text-center text-[17px] font-extrabold leading-snug">
-            {showEs ? "Responde la pregunta completa otra vez." : "Answer the whole question again."}
-          </p>
-          <p className="text-center text-[14px] font-semibold text-muted-foreground">
             {showEs
-              ? "Usa lo que acabas de aprender: pasado, variedad y más detalle. Solo una vez."
-              : "Use what you just learned: past tense, variety and more detail. One time only."}
+              ? "Responde de nuevo la misma pregunta y aplica el feedback que acabas de recibir."
+              : "Answer the same question again and apply the feedback you just received."}
           </p>
+          {/* The EXACT answer being repeated: classic question, or the evaluated role-play / Pressure Round turn. */}
+          {retake.situation ? (
+            <p className="text-center text-[13px] font-bold uppercase tracking-[0.12em] text-muted-foreground">{retake.situation}</p>
+          ) : null}
+          {retake.question ? (
+            <div className="rounded-2xl border-2 border-border bg-muted/40 px-4 py-3">
+              {retake.turnLabel ? (
+                <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">{retake.turnLabel}</p>
+              ) : null}
+              <p className="text-center text-[16px] font-extrabold leading-snug">{retake.question}</p>
+            </div>
+          ) : null}
+          {/* Compact reminder of what the coach just said (no new AI call — same data). */}
+          {retake.reminders && retake.reminders.length > 0 ? (
+            <ul className="space-y-1 rounded-2xl bg-primary/5 px-4 py-3">
+              {retake.reminders.map((r) => (
+                <li key={r} className="text-[13px] font-semibold leading-snug text-muted-foreground">
+                  · {r}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          <p className="text-center text-[13px] font-semibold text-muted-foreground">{showEs ? "Solo una vez." : "One time only."}</p>
           <VoiceRecorder
             label={showEs ? "GRABAR" : "RECORD"}
             size="lg"
