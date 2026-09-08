@@ -684,13 +684,13 @@ describe("Retake — client reliability", () => {
     const retry = practice.slice(practice.indexOf("const retryRetakeComparison"), practice.indexOf("};", practice.indexOf("const retryRetakeComparison")));
     expect(retry).toContain("retakeRecording?.blob");
     expect(retry).toContain('retakeState.status !== "retryable"');
-    expect(retry).toContain("requestFinalCoachRetake({ moduleId, day: day.day, blob })");
+    expect(retry).toContain("sendRetake(blob, id)");
     for (const forbidden of ["completeDay", "completeSession", "uploadTake", "markFinalTake", "setFinalIndex", "setRetakeRecording", "VoiceRecorder", "habit", "streak"]) {
       expect(retry).not.toContain(forbidden);
     }
     expect(practice).toContain("onRetry: retryRetakeComparison");
     const review = readFileSync("src/components/fluency/FinalCoachReview.tsx", "utf8");
-    for (const label of ["APLICASTE ESTO", "MEJORASTE TU FLUIDEZ", "SIGUE PRACTICANDO", "ANTES", "AHORA"]) expect(review).toContain(label);
+    for (const label of ["APLICASTE ESTO", "SOBRE TU RESPUESTA", "SIGUE PRACTICANDO", "ANTES", "AHORA"]) expect(review).toContain(label);
   });
 });
 
@@ -705,7 +705,7 @@ describe("Retake — day invariants + UI", () => {
     expect(block).not.toMatch(/completeDay|JourneyService|uploadTake|markFinalTake|setTakes|setFinalIndex|setDone|habit|streak|controller\.confirm/);
     expect(block).toContain("retakeStartedRef.current = true");
     // Exactly two call sites: the one recording, and RETRY COMPARISON re-sending that same blob.
-    expect(practice.match(/requestFinalCoachRetake\(/g)).toHaveLength(2);
+    expect(practice.match(/requestFinalCoachRetake\(/g)).toHaveLength(1);
     expect(practice.match(/controller\.confirm\(\)/g)).toHaveLength(1);
     const engineCode = retakeEngine.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "");
     expect(engineCode).not.toMatch(/is_final_rep|completeDay|JourneyService|uploadTake|markFinalTake|habit|streak/);
