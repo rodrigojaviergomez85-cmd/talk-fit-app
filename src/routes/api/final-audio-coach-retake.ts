@@ -198,7 +198,11 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
           log: (entry) => console.info("[final-audio-coach-retake]", entry),
           };
 
-          const result = await engine.runFinalCoachRetake({ moduleId, day, audio, mime }, deps);
+          const result = await engine.runFinalCoachRetake(
+            { moduleId, day, audio, mime, ...(sourceTurnNumber === undefined ? {} : { sourceTurnNumber }) },
+            deps,
+          );
+
           return json(result.body, result.http);
         } catch (error) {
           console.error(
