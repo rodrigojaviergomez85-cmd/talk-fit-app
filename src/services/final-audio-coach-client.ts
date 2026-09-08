@@ -276,7 +276,7 @@ export function mapRetakeResult(r: RetakeHttpResult): FinalCoachRetakeState | nu
  * reports pending, the same blob is re-sent a bounded number of times.
  */
 export async function requestFinalCoachRetake(
-  input: { moduleId: ModuleId; day: number; blob: Blob },
+  input: RetakeInput,
   signal?: AbortSignal,
   deps: RetakeRequestDeps = { send: postRetake, sleep: defaultSleep },
 ): Promise<FinalCoachRetakeState> {
