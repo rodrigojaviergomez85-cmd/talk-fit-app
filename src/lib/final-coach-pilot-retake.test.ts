@@ -606,7 +606,7 @@ describe("Retake — client reliability", () => {
   const R = (http: number, body: FinalCoachRetakeResponse | null): RetakeHttpResult => ({ kind: "response", http, body });
   const RESULT: FinalCoachRetakeResult = { applied: [], improvementEn: "i", improvementEs: "i", nextEn: "n", nextEs: "n" };
   it("maps server answers: ready/unclear terminal, error+network+5xx retryable, 429/409 unavailable, 202 keeps waiting", () => {
-    expect(mapRetakeResult(R(200, { status: "ready", result: RESULT }))).toEqual({ status: "ready", result: RESULT });
+    expect(mapRetakeResult(R(200, { status: "ready", result: RESULT }))).toEqual({ status: "ready", result: RESULT, ideaCount: null });
     expect(mapRetakeResult(R(200, { status: "unclear" }))).toEqual({ status: "unclear" });
     expect(mapRetakeResult(R(200, { status: "error", code: "stt_failed" }))).toEqual({ status: "retryable" });
     expect(mapRetakeResult(R(500, { status: "error", code: "internal" }))).toEqual({ status: "retryable" });
@@ -629,7 +629,7 @@ describe("Retake — client reliability", () => {
         slept.push(ms);
       },
     });
-    expect(state).toEqual({ status: "ready", result: RESULT });
+    expect(state).toEqual({ status: "ready", result: RESULT, ideaCount: null });
     expect(sent.every((b) => b === blob)).toBe(true);
     expect(slept).toEqual([2000, 3000]);
 
