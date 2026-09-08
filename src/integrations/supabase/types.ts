@@ -228,6 +228,7 @@ export type Database = {
           day: number
           feedback_id: string
           id: string
+          idea_count: number | null
           module_id: string
           result: Json | null
           status: string
@@ -241,6 +242,7 @@ export type Database = {
           day: number
           feedback_id: string
           id?: string
+          idea_count?: number | null
           module_id: string
           result?: Json | null
           status: string
@@ -254,6 +256,7 @@ export type Database = {
           day?: number
           feedback_id?: string
           id?: string
+          idea_count?: number | null
           module_id?: string
           result?: Json | null
           status?: string
