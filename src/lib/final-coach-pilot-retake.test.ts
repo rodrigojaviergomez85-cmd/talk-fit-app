@@ -386,15 +386,38 @@ describe("Retake — engine", () => {
     expect(again.http).toBe(409);
     expect(h.calls).toMatchObject({ stt: 1, llm: 1, quota: 1 });
   });
-  it("non-pilot days → 403 before any provider or quota work", async () => {
-    for (const [m, d] of [["past-stories", 2], ["simple-present", 1], ["advanced-1", 1]] as const) {
+  it("valid days of every level are eligible; invalid module/day → 403 before any provider or quota work", async () => {
+    for (const [m, d] of [["past-stories", 2], ["simple-present", 1], ["advanced-1", 1], ["eagles-week-1", 3]] as const) {
+      expect(isRetakePilot(m, d)).toBe(true);
+      const h = retakeHarness();
+      const res = await runFinalCoachRetake({ moduleId: m, day: d, audio: AUDIO, mime: "audio/webm" }, h.deps);
+      expect(res.http).toBe(200);
+      expect(h.calls).toMatchObject({ stt: 1, llm: 1, quota: 1 });
+    }
+    for (const [m, d] of [["past-stories", 0], ["past-stories", 99], ["not-a-module", 1]] as const) {
       const h = retakeHarness();
       const res = await runFinalCoachRetake({ moduleId: m, day: d, audio: AUDIO, mime: "audio/webm" }, h.deps);
       expect(res.http).toBe(403);
       expect(h.calls).toMatchObject({ stt: 0, llm: 0, quota: 0 });
-      expect(isRetakePilot(m, d)).toBe(false);
     }
   });
+  it("a retake naming a different turn than the reviewed answer is rejected before any AI work", async () => {
+    const h = retakeHarness();
+    const res = await runFinalCoachRetake(
+      { moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm", sourceTurnNumber: 2 },
+      h.deps,
+    );
+    expect(res.http).toBe(404);
+    expect(h.calls).toMatchObject({ stt: 0, llm: 0, quota: 0 });
+  });
+  it("a new retake transcribes the audio exactly once and reuses it for the idea count", async () => {
+    const h = retakeHarness();
+    const res = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm" }, h.deps);
+    expect(res.http).toBe(200);
+    expect(h.calls.stt).toBe(1);
+    if (res.body.status === "ready") expect(typeof res.body.ideaCount === "number" || res.body.ideaCount === null).toBe(true);
+  });
+
   it("no READY coach review yet → 404 no_feedback, no lease, no AI", async () => {
     const h = retakeHarness({ previous: null });
     const res = await runFinalCoachRetake({ moduleId: "past-stories", day: 1, audio: AUDIO, mime: "audio/webm" }, h.deps);
