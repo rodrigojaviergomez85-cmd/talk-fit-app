@@ -529,7 +529,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   const startRetake = () => {
     // No feedback identity → no retake: it could otherwise be bound to another review.
     if (!isRetakePilot(moduleId, day.day) || retakeStartedRef.current || coachState.status !== "ready" || !isFeedbackId(coachState.feedbackId)) return;
-    retakeFeedbackIdRef.current = coachState.feedbackId;
+    retakeFeedbackIdRef.current = coachState.feedbackId ?? null;
     retakeStartedRef.current = true;
     setRetakeState({ status: "recording" });
   };
