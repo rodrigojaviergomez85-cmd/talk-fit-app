@@ -858,9 +858,34 @@ describe("Retake — no praise survives a failed evidence check", () => {
     const raw = { applied: [CLAIM("verb_tense", "something I never said")], ...TAIL };
     const out = normalizeRetakeResult(raw, PREV, "I woke up early and later I went to work.")!;
     expect(out.applied[0]!.applied).toBe(false);
+    expect(out.applied[0]!.messageEn).not.toContain("correctly");
+    // Honest wording + the concrete guidance from the already validated feedback.
+    expect(out.applied[0]!.messageEn).toContain("We couldn't confirm this improvement");
+    expect(out.applied[0]!.messageEn).toContain("Yesterday I woke up");
+    expect(out.applied[0]!.messageEs).toContain("No pudimos confirmar esta mejora");
+  });
+  it("a downgraded claim with no reusable guidance falls back to the generic honest copy", () => {
+    const bare: PreviousFeedback = { ...PREV, corrections: [], fluencyUpgrade: null, nextStepEn: "", nextStepEs: "" };
+    const out = normalizeRetakeResult({ applied: [CLAIM("next_step", "never said")], ...TAIL }, bare, "I woke up early.")!;
     expect(out.applied[0]!.messageEn).toBe(NOT_APPLIED_FALLBACK.en);
     expect(out.applied[0]!.messageEs).toBe(NOT_APPLIED_FALLBACK.es);
-    expect(out.applied[0]!.messageEn).not.toContain("correctly");
+  });
+  it("an item honestly reported as applied=false keeps its specific, actionable instruction", () => {
+    const raw = {
+      applied: [
+        {
+          skill: "verb_tense",
+          applied: false,
+          messageEn: "To talk about yesterday, change wake up to woke up.",
+          messageEs: "Para hablar de ayer, cambia wake up por woke up.",
+        },
+      ],
+      ...TAIL,
+    };
+    const out = normalizeRetakeResult(raw, PREV, "Yesterday I wake up at seven.")!;
+    expect(out.applied[0]!.applied).toBe(false);
+    expect(out.applied[0]!.messageEs).toBe("Para hablar de ayer, cambia wake up por woke up.");
+    expect(out.applied[0]!.messageEn).toBe("To talk about yesterday, change wake up to woke up.");
   });
   it("nothing validated → neutral summary, never a celebration", () => {
     const raw = { applied: [CLAIM("verb_tense", "never said this")], ...TAIL };
@@ -869,12 +894,30 @@ describe("Retake — no praise survives a failed evidence check", () => {
     expect(out.improvementEs).toBe(NO_IMPROVEMENT_FALLBACK.es);
     expect(out.nextEn).toBe(TAIL.nextEn);
   });
-  it("validated praise is preserved untouched", () => {
+  it("validated praise is preserved, but the summary is derived — never the model's", () => {
     const transcript = "Yesterday I woke up at seven and after that I had breakfast.";
     const out = normalizeRetakeResult({ applied: [CLAIM("verb_tense", "Yesterday I woke up")], ...TAIL }, PREV, transcript)!;
     expect(out.applied[0]!.applied).toBe(true);
     expect(out.applied[0]!.messageEn).toContain("correctly");
-    expect(out.improvementEn).toBe(TAIL.improvementEn);
+    expect(out.improvementEn).toBe(PARTIAL_IMPROVEMENT_SUMMARY.en);
+    expect(out.improvementEs).toBe(PARTIAL_IMPROVEMENT_SUMMARY.es);
+  });
+  it("mixed accepted/rejected: the summary never keeps praise for the rejected correction", () => {
+    // Claims both "woke up" (rejected: the old error is still there) and the added reason (accepted).
+    const transcript = "Yesterday I wake up at seven because I need to go to work.";
+    const raw = {
+      applied: [CLAIM("verb_tense", "at seven"), CLAIM("next_step", "because I need to go to work")],
+      improvementEn: "You used woke up correctly and added a reason.",
+      improvementEs: "Usaste woke up correctamente y agregaste una razón.",
+      nextEn: TAIL.nextEn,
+      nextEs: TAIL.nextEs,
+    };
+    const out = normalizeRetakeResult(raw, PREV, transcript)!;
+    expect(out.applied.find((a) => a.skill === "verb_tense")!.applied).toBe(false);
+    expect(out.applied.find((a) => a.skill === "next_step")!.applied).toBe(true);
+    expect(out.improvementEn).toBe(PARTIAL_IMPROVEMENT_SUMMARY.en);
+    expect(out.improvementEn).not.toContain("woke up");
+    expect(out.improvementEs).not.toContain("woke up");
   });
 });
 
