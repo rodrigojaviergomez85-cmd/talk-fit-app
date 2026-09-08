@@ -517,10 +517,18 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   // Leaving the flow while the coach is still working: clear the deadline, stop polling, no late setState.
   useEffect(() => () => coachDeadline.current?.cancel(), []);
 
+  /**
+   * The retake exists only against a review that carries a valid feedback id.
+   * Once started, the frozen id keeps the panel alive through recording,
+   * polling and technical retries.
+   */
+  const retakeIdentityReady =
+    (coachState.status === "ready" && isFeedbackId(coachState.feedbackId)) || isFeedbackId(retakeFeedbackIdRef.current);
+
   /** ONE optional retake per coach review. Guarded by a ref: a second tap can never start another paid round. */
   const startRetake = () => {
     // No feedback identity → no retake: it could otherwise be bound to another review.
-    if (!isRetakePilot(moduleId, day.day) || retakeStartedRef.current || coachState.status !== "ready" || !coachState.feedbackId) return;
+    if (!isRetakePilot(moduleId, day.day) || retakeStartedRef.current || coachState.status !== "ready" || !isFeedbackId(coachState.feedbackId)) return;
     retakeFeedbackIdRef.current = coachState.feedbackId;
     retakeStartedRef.current = true;
     setRetakeState({ status: "recording" });
