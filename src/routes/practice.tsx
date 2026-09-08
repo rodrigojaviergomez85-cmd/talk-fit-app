@@ -46,7 +46,7 @@ import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { CloudSync } from "@/services/cloud-sync";
-import { isRetakePilot, sourceTurnNumberFor, type FinalCoachRetakeState, type FinalCoachState } from "@/lib/final-audio-coach";
+import { isFeedbackId, isRetakePilot, sourceTurnNumberFor, type FinalCoachRetakeState, type FinalCoachState } from "@/lib/final-audio-coach";
 import { objectiveResultInputFor } from "@/lib/final-coach-result";
 import { runCoachWithDeadline, type CoachDeadlineHandle } from "@/lib/final-coach-deadline";
 import { requestFinalCoachRetake, runFinalCoachPipeline } from "@/services/final-audio-coach-client";
