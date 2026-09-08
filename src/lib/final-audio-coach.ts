@@ -232,7 +232,16 @@ export type FinalCoachRetakeResult = {
 };
 
 export type FinalCoachRetakeResponse =
-  | { status: "ready"; result: FinalCoachRetakeResult }
+  | {
+      status: "ready";
+      result: FinalCoachRetakeResult;
+      /**
+       * Objective idea count for the retake, computed by the DETERMINISTIC local
+       * counter on the transcription the comparison already paid for. Null when
+       * the local counter is not confident — never a second AI call.
+       */
+      ideaCount?: number | null;
+    }
   | { status: "unclear" }
   | { status: "pending" }
   | { status: "already_used" }
@@ -251,7 +260,8 @@ export type FinalCoachRetakeState =
   | { status: "idle" }
   | { status: "recording" }
   | { status: "analyzing" }
-  | { status: "ready"; result: FinalCoachRetakeResult }
+  | { status: "ready"; result: FinalCoachRetakeResult; ideaCount?: number | null }
   | { status: "unclear" }
   | { status: "retryable" }
   | { status: "unavailable" };
+
