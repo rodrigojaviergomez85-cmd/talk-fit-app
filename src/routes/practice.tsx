@@ -779,8 +779,10 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
                               ideas: typeof retakeRecording.sentenceCount === "number" ? retakeRecording.sentenceCount : null,
                             }
                           : null,
-                        maxSeconds: Math.max(60, day.goalSeconds[1] + 15),
-                        targetSeconds: day.goalSeconds,
+                        // A role-play turn is retaken alone: never impose the whole activity's length on it.
+                        maxSeconds: Math.max(60, (coachResultInput.turnTargetSeconds ?? day.goalSeconds)[1] + 15),
+                        targetSeconds: coachResultInput.turnTargetSeconds ?? day.goalSeconds,
+
                         onStart: startRetake,
                         onRecorded: onRetakeRecorded,
                         onRetry: retryRetakeComparison,
