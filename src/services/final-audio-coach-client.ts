@@ -101,9 +101,14 @@ function stateFrom(result: CoachHttpResult): FinalCoachState | "pending" | "not_
   const { http, body } = result;
   if (http === 200 && body?.status === "ready") {
     // Pilot only: transient transcript for THIS session's React state (never stored client-side).
-    return body.transcript !== undefined
-      ? { status: "ready", feedback: body.feedback, transcript: body.transcript }
-      : { status: "ready", feedback: body.feedback };
+    // `feedbackId` identifies the exact persisted review and must survive fresh
+    // responses, cache replays and polling alike — the retake is bound to it.
+    return {
+      status: "ready",
+      feedback: body.feedback,
+      ...(body.transcript !== undefined ? { transcript: body.transcript } : {}),
+      ...(isFeedbackId(body.feedbackId) ? { feedbackId: body.feedbackId.trim() } : {}),
+    };
   }
   if (http === 200 && body?.status === "unclear") return { status: "unclear" };
   if (http === 202 || body?.status === "pending") return "pending";
