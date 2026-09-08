@@ -296,7 +296,9 @@ describe("Retake — every applied claim is grounded in the new transcript", () 
     expect(normalizeRetakeResult({ applied: [] }, PREV, "x")).toBeNull();
     expect(RETAKE_JSON_SCHEMA.strict).toBe(true);
     expect(RETAKE_JSON_SCHEMA.schema.properties.applied.items.properties.skill.enum).toContain("fluency_upgrade");
-    const msgs = buildRetakeMessages({ question: "What did you do yesterday?", topic: "t", focus: "f", previous: PREV }, "new text");
+    const rubricForPrompt = buildRubric({ day: 1, topic: "t", focus: "f", goalSeconds: [30, 45], goalSentences: 6, rep5Prompt: { question: "What did you do yesterday?" } } as never, "past-stories", "BASIC 3", null)!;
+    const msgs = buildRetakeMessages({ rubric: rubricForPrompt, previous: PREV }, "new text");
+
     expect(msgs[0]!.content).toContain("Never invent improvement");
     expect(msgs[1]!.content).toContain('said: "Yesterday I wake up"');
     expect(msgs[1]!.content).toContain("NEW TRANSCRIPT");
