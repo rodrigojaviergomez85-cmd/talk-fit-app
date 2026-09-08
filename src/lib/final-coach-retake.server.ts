@@ -14,6 +14,7 @@
 import type { CourseDay, ModuleId } from "./types";
 import {
   RETAKE_SKILLS,
+  isFeedbackId,
   isRetakePilot,
   type FinalAudioCoachFluencyUpgrade,
   type FinalCoachRetakeResult,
@@ -64,6 +65,12 @@ export type RetakeInput = {
   audio: Uint8Array;
   mime: string | null;
   /**
+   * The EXACT persisted feedback row the learner is looking at. The retake is
+   * bound to it: never "the latest review of this day". A missing/malformed id
+   * fails before any storage, quota or provider work.
+   */
+  feedbackId: string;
+  /**
    * The turn the learner is retaking, as shown in the UI. When present it must
    * match the stored feedback row, so a retake can never be attached to another
    * answer of the same day (another take, device or practice).
@@ -73,7 +80,13 @@ export type RetakeInput = {
 
 
 export type RetakeStatus = "pending" | "ready" | "unclear" | "error";
-export type RetakeFinalizePatch = { status: Exclude<RetakeStatus, "pending">; result?: FinalCoachRetakeResult | undefined; transcriptWordCount?: number | null | undefined };
+export type RetakeFinalizePatch = {
+  status: Exclude<RetakeStatus, "pending">;
+  result?: FinalCoachRetakeResult | undefined;
+  transcriptWordCount?: number | null | undefined;
+  /** Deterministic local idea count for the retake. 0 = a real zero, null = unavailable/uncertain. */
+  ideaCount?: number | null | undefined;
+};
 
 /** The one durable retake row for a feedback (server-computed audio identity). */
 export type ExistingRetake = {
@@ -82,6 +95,8 @@ export type ExistingRetake = {
   status: RetakeStatus;
   audioSha256: string;
   result: FinalCoachRetakeResult | null;
+  /** Stored objective idea count. null = never stored (legacy row) or not confident. */
+  ideaCount?: number | null | undefined;
   /** Opaque optimistic-lock token (updated_at as read). */
   updatedAt: string;
 };
@@ -92,8 +107,12 @@ export type RetakeDeps = {
   loadDay: (moduleId: ModuleId, day: number) => Promise<CourseDay | null>;
   /** Learner-facing module label for the rubric (e.g. "BASIC 3"). Defaults to the module id. */
   moduleLabel?: ((moduleId: string) => string) | undefined;
-  /** Latest READY coach feedback for this learner/module/day (validated corrections). Null = no coach review yet. */
-  findPreviousFeedback: (userId: string, moduleId: string, day: number) => Promise<PreviousFeedback | null>;
+  /**
+   * EXACT ready coach feedback lookup: id + user + module + day + status='ready'.
+   * Null when it does not exist, belongs to another learner, targets another
+   * module/day or is not ready. Never "the latest feedback for this day".
+   */
+  findPreviousFeedback: (userId: string, moduleId: string, day: number, feedbackId: string) => Promise<PreviousFeedback | null>;
   store: {
     /** The existing retake row for this feedback (UNIQUE feedback_id), or null on first retake. */
     findExisting: (feedbackId: string) => Promise<ExistingRetake | null>;
