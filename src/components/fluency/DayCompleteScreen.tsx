@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Check, Flame } from "lucide-react";
+import { Check, ChevronDown, Flame } from "lucide-react";
 import { RecordingPlayback } from "./RecordingPlayback";
-import { TranslatableText } from "./TranslatableText";
 import { JourneyService } from "@/services/journey-service";
 import { CourseService } from "@/services/course-service";
 import type { CourseDay, ModuleId, Recording, SelfAssessment } from "@/lib/types";
@@ -13,7 +12,7 @@ import { ModuleMoment } from "./ModuleMoment";
 import { NextUp } from "./NextUp";
 import { HabitMilestone } from "./HabitMilestone";
 import { moduleComparison, weekComparison } from "@/lib/progress-moments";
-import { HABIT_GOAL, final6, habitDays, milestonesCrossed, wasOnBreak, type HabitMilestoneDef } from "@/lib/habit";
+import { habitDays, milestonesCrossed, wasOnBreak, type HabitMilestoneDef } from "@/lib/habit";
 import { AchievementsService } from "@/services/achievements-service";
 
 export type RepSummary = { total: number; attempted: number; skipped: number };
@@ -40,7 +39,7 @@ const ASSESSMENTS: { value: SelfAssessment; en: string; es: string }[] = [
   { value: "definitely", en: "Definitely", es: "Definitivamente" },
 ];
 
-/** Celebration + objective numbers after the 5th rep of the day. */
+/** Compact celebration + objective numbers after the final step of the day. */
 export function DayCompleteScreen({
   moduleId,
   day,
@@ -65,7 +64,8 @@ export function DayCompleteScreen({
   // is a week finish, never a module completion.
   const partialModule = (module.builtWeeks ?? 4) < 4;
   const isLastDay = day.day === totalDays && !partialModule;
-  const seconds = finalRecording?.durationSeconds ?? 0;
+  const seconds = Math.round(finalRecording?.durationSeconds ?? 0);
+  const firstSeconds = Math.round(firstRecording?.durationSeconds ?? 0);
 
   const week = day.week;
   const weekJustDone = Boolean(week && JourneyService.weekComplete(state, moduleId, week));
@@ -78,7 +78,10 @@ export function DayCompleteScreen({
   const habitWasBefore = habitBefore?.days ?? habitNow;
   const habitGrew = habitNow > habitWasBefore;
   const welcomeBack = habitGrew && wasOnBreak(habitBefore?.lastCompletedDate, habitWasBefore);
-  const countdown = final6(habitNow);
+
+  // Progress of the module that was just summarized, even if it unlocked another one.
+  const doneDays = JourneyService.completedCount(state, moduleId);
+  const streak = state.streakDays;
 
   // Milestones crossed by THIS completion, claimed once in the backend so a
   // repeated day or a reload never re-celebrates them.
@@ -105,148 +108,89 @@ export function DayCompleteScreen({
   }, [state]);
 
   const bigCelebration = (weekJustDone && weekCmp) || (moduleDone && moduleCmp);
+  const hasComparison = Boolean(finalRecording);
 
   return (
-    <div className="min-h-screen bg-background px-4 pb-16 pt-[max(2rem,env(safe-area-inset-top))]">
-      <div className="mx-auto w-full max-w-lg space-y-5">
-        <div className="rounded-3xl bg-navy p-7 text-center text-navy-foreground">
-          <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground animate-pop-check">
-            <Check className="size-9" />
+    <div className="min-h-screen bg-background px-4 pb-[calc(6.5rem+env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))]">
+      <div className="mx-auto w-full max-w-lg space-y-3.5">
+        {/* A. Compact celebration */}
+        <div className="text-center">
+          <div className="mx-auto flex size-9 items-center justify-center rounded-full bg-primary text-primary-foreground animate-pop-check motion-reduce:animate-none">
+            <Check className="size-5" />
           </div>
-          <h1 className="mt-4 text-3xl font-extrabold tracking-tight">
-            {showEs ? "¡MUY BIEN!" : "GREAT JOB!"}
+          <h1 className="mt-2.5 text-[26px] font-extrabold tracking-tight">
+            {showEs ? "¡Buen trabajo, Champion!" : "Nice work, Champion!"}
           </h1>
-          <p className="mt-2 text-[17px] font-semibold text-navy-foreground/85">
-            {showEs
-              ? `Terminaste el Día ${day.day}: 5 de 5 reps.`
-              : `You finished Day ${day.day}: 5 of 5 reps.`}
+          <p className="mt-1 text-[13px] font-semibold text-muted-foreground">
+            {showEs ? `Día ${day.day} completado` : `Day ${day.day} completed`}
           </p>
+          <SaveLine showEs={showEs} saveState={saveState} onRetrySave={onRetrySave} />
           {welcomeBack ? (
-            <p className="mt-2 text-[14px] font-bold text-primary">
+            <p className="mt-1.5 text-[13px] font-bold text-primary">
               {showEs ? "Bienvenido de vuelta. Tu progreso sigue aquí." : "Welcome back. Your progress is still here."}
             </p>
           ) : null}
-          <p className="mt-3 inline-block rounded-full bg-navy-foreground/10 px-4 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.16em]">
-            {habitGrew
-              ? showEs
-                ? "HOY CUENTA ✓"
-                : "TODAY COUNTS ✓"
-              : showEs
-                ? "HOY YA CONTABA ✓"
-                : "TODAY ALREADY COUNTED ✓"}
-            {" · "}
-            {habitNow >= HABIT_GOAL
-              ? `66-DAY HABIT ✓ · ${habitNow} ${showEs ? "DÍAS" : "DAYS"}`
-              : `${habitNow} / ${HABIT_GOAL} ${showEs ? "DÍAS" : "DAYS"}`}
-          </p>
-          {countdown !== null && habitGrew ? (
-            <p className="mt-2 text-[13px] font-extrabold text-primary">
-              {showEs
-                ? `FINAL 6 · ${countdown} ${countdown === 1 ? "DÍA MÁS" : "DÍAS MÁS"}`
-                : `FINAL 6 · ${countdown} ${countdown === 1 ? "MORE DAY" : "MORE DAYS"}`}
-            </p>
-          ) : null}
+        </div>
+
+        {/* B. One compact progress row */}
+        <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-2xl bg-card px-4 py-3 text-[14px] font-semibold shadow-[var(--shadow-card)]">
+          <span className="inline-flex items-center gap-1.5">
+            <Flame className="size-4 text-primary" aria-hidden />
+            <span className="tabular-nums">
+              {streak} {showEs ? (streak === 1 ? "día de racha" : "días de racha") : streak === 1 ? "day streak" : "day streak"}
+            </span>
+          </span>
+          <span aria-hidden className="text-muted-foreground">
+            ·
+          </span>
+          <span className="tabular-nums text-muted-foreground">
+            {doneDays}/{totalDays} {showEs ? "días del módulo" : "days of the module"}
+          </span>
         </div>
 
         {milestones.map((m) => (
           <HabitMilestone key={m.id} milestone={m} state={state} compact={Boolean(bigCelebration) && !m.major} />
         ))}
 
-        {summary ? (
-          <div className="space-y-2 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-              {showEs ? "PRÁCTICA DE HOY" : "TODAY'S PRACTICE"}
-            </p>
-            <SummaryRow label={showEs ? "PASO 2" : "STEP 2"} summary={summary.rep2} showEs={showEs} />
-            <SummaryRow label={showEs ? "PASO 4" : "STEP 4"} summary={summary.rep4} showEs={showEs} />
-            <div className="flex items-center justify-between text-[13px] font-semibold">
-              <span className="font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                {showEs ? "PASO FINAL" : "FINAL STEP"}
-              </span>
-              <span>{showEs ? "Completada ✓" : "Completed ✓"}</span>
-            </div>
-          </div>
-        ) : null}
-
-        <div className="grid grid-cols-2 gap-3">
-          <Stat label={showEs ? "Pasos hoy" : "Steps today"} value="5 / 5" />
-          <Stat label={showEs ? "Paso final" : "Final step"} value={`${seconds}s`} />
-          <Stat
-            label={showEs ? "Racha" : "Streak"}
-            value={`${state.streakDays}`}
-            icon={<Flame className="size-4 text-primary" />}
-          />
-          <Stat
-            label={showEs ? "Días completados" : "Days completed"}
-            value={`${JourneyService.completedCount(state, moduleId)} / ${totalDays}`}
-          />
-        </div>
-
-        {saveState === "saving" || saveState === "saved" || saveState === "failed" ? (
-          <div
-            className={cn(
-              "rounded-3xl p-5 text-[15px] font-semibold",
-              saveState === "failed"
-                ? "border border-destructive/40 bg-destructive/10 text-foreground"
-                : "bg-card text-muted-foreground shadow-[var(--shadow-card)]",
-            )}
-            aria-live="polite"
-          >
-            {saveState === "saving" ? (
-              <p>{showEs ? "GUARDANDO TU PASO FINAL…" : "SAVING YOUR FINAL STEP…"}</p>
-            ) : saveState === "saved" ? (
-              <p>{showEs ? "GUARDADA ✓" : "SAVED ✓"}</p>
-            ) : (
-              <div className="space-y-3">
-                <p>
-                  {showEs
-                    ? "No pudimos guardar tu Paso Final todavía. Tu grabación no se ha borrado."
-                    : "We couldn't save your Final Step yet. Your recording has not been removed."}
-                </p>
-                <button
-                  type="button"
-                  onClick={onRetrySave}
-                  className="min-h-[48px] w-full rounded-2xl bg-primary px-5 text-[13px] font-bold uppercase tracking-[0.12em] text-primary-foreground"
-                >
-                  {showEs ? "INTENTAR DE NUEVO" : "TRY AGAIN"}
-                </button>
-              </div>
-            )}
-          </div>
-        ) : null}
-
-        {finalRecording ? (
-          <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-              {showEs ? "Compara tu práctica de hoy" : "Compare today's practice"}
-            </p>
-            <p className="text-[13px] text-muted-foreground">
-              {showEs
-                ? "Escucha cómo empezaste y cómo terminaste hoy."
-                : "Hear how you started and how you finished today."}
-            </p>
-            <RecordingPlayback
-              url={finalRecording.url}
-              label={showEs ? "▶ Escuchar mi audio final" : "▶ Listen to my final audio"}
-            />
-            {firstRecording && firstRecording.id !== finalRecording.id ? (
-              <RecordingPlayback
-                url={firstRecording.url}
-                label={showEs ? "▶ Escuchar mi primer audio" : "▶ Listen to my first audio"}
+        {/* C. Optional audio comparison */}
+        {hasComparison ? (
+          <Expandable title={showEs ? "Comparar mis audios" : "Compare my recordings"}>
+            <div className="space-y-2.5">
+              {firstRecording && finalRecording && firstRecording.id !== finalRecording.id ? (
+                <PlayRow
+                  url={firstRecording.url}
+                  label={showEs ? "Primer audio" : "First recording"}
+                  seconds={firstSeconds}
+                  showEs={showEs}
+                />
+              ) : null}
+              <PlayRow
+                url={finalRecording?.url ?? null}
+                label={showEs ? "Audio final" : "Final recording"}
+                seconds={seconds}
+                showEs={showEs}
               />
-            ) : null}
-          </div>
+            </div>
+          </Expandable>
+        ) : null}
+
+        {/* D. Optional practice details */}
+        {summary ? (
+          <Expandable title={showEs ? "Ver detalle de mi práctica" : "View practice details"}>
+            <div className="space-y-2">
+              <SummaryRow label={showEs ? "PASO 2" : "STEP 2"} summary={summary.rep2} showEs={showEs} />
+              <SummaryRow label={showEs ? "PASO 4" : "STEP 4"} summary={summary.rep4} showEs={showEs} />
+              <div className="flex items-center justify-between text-[13px] font-semibold">
+                <span className="font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                  {showEs ? "PASO FINAL" : "FINAL STEP"}
+                </span>
+                <span>{showEs ? "Completada ✓" : "Completed ✓"}</span>
+              </div>
+            </div>
+          </Expandable>
         ) : null}
 
         {/* AI coaching happens INSIDE STEP 5 before this screen — never repeated here. */}
-
-        <div className="rounded-3xl border border-primary/25 bg-accent p-5 text-center">
-          <TranslatableText es="Cada rep hace tu inglés más automático." align="center">
-            <p className="text-[18px] font-extrabold leading-snug text-foreground">
-              Every rep makes your English more automatic.
-            </p>
-          </TranslatableText>
-        </div>
 
         {weekJustDone && weekCmp ? <WeekMoment comparison={weekCmp} celebrate /> : null}
 
@@ -275,7 +219,6 @@ export function DayCompleteScreen({
           </div>
         ) : null}
 
-
         {isLastDay ? (
           <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
             <p className="text-[17px] font-extrabold tracking-tight">
@@ -293,7 +236,7 @@ export function DayCompleteScreen({
                     setState(JourneyService.saveSelfAssessment(moduleId, option.value));
                   }}
                   className={cn(
-                    "rounded-2xl border px-4 py-3 text-[15px] font-bold transition-colors",
+                    "min-h-[44px] rounded-2xl border px-4 py-3 text-[15px] font-bold transition-colors",
                     answer === option.value
                       ? "border-primary bg-primary/10 text-primary"
                       : "border-border bg-card text-foreground",
@@ -307,32 +250,105 @@ export function DayCompleteScreen({
         ) : null}
 
         <SaveProgressPrompt moduleId={moduleId} />
+      </div>
 
-        <button
-          type="button"
-          onClick={() => void navigate({ to: "/" })}
-          className="w-full rounded-2xl bg-primary px-6 py-4 text-[15px] font-bold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] active:scale-[0.98]"
-        >
-          {moduleDone
-            ? showEs
-              ? "CONTINUAR MI CAMINO"
-              : "CONTINUE MY PATH"
-            : showEs
-              ? "CONTINUAR ✓"
-              : "CONTINUE ✓"}
-        </button>
+      {/* E. Primary action — sticky, above the safe area, never covering content. */}
+      <div className="fixed inset-x-0 bottom-0 border-t border-border/60 bg-background/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur">
+        <div className="mx-auto w-full max-w-lg">
+          <button
+            type="button"
+            onClick={() => void navigate({ to: "/" })}
+            className="min-h-[48px] w-full rounded-2xl bg-primary px-6 py-4 text-[15px] font-bold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98] motion-reduce:transition-none"
+          >
+            {showEs ? "Continuar" : "Continue"}
+          </button>
+        </div>
       </div>
     </div>
   );
 }
 
-function Stat({ label, value, icon }: { label: string; value: string; icon?: React.ReactNode }) {
+/** Small save/sync line under the celebration — accurate for every save state. */
+function SaveLine({
+  showEs,
+  saveState,
+  onRetrySave,
+}: {
+  showEs: boolean;
+  saveState: FinalRepSaveState;
+  onRetrySave?: (() => void) | undefined;
+}) {
+  if (saveState === "idle") return null;
+  if (saveState === "failed") {
+    return (
+      <div className="mt-2 space-y-2 rounded-2xl border border-destructive/40 bg-destructive/10 p-3 text-left" aria-live="polite">
+        <p className="text-[13px] font-semibold">
+          {showEs
+            ? "No pudimos guardar tu Paso Final todavía. Tu grabación no se ha borrado."
+            : "We couldn't save your Final Step yet. Your recording has not been removed."}
+        </p>
+        <button
+          type="button"
+          onClick={onRetrySave}
+          className="min-h-[44px] w-full rounded-2xl bg-primary px-5 text-[13px] font-bold uppercase tracking-[0.12em] text-primary-foreground"
+        >
+          {showEs ? "INTENTAR DE NUEVO" : "TRY AGAIN"}
+        </button>
+      </div>
+    );
+  }
   return (
-    <div className="rounded-3xl bg-card p-4 text-center shadow-[var(--shadow-card)]">
-      <p className="flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-        {icon} {label}
-      </p>
-      <p className="mt-1.5 text-2xl font-extrabold tabular-nums tracking-tight">{value}</p>
+    <p className="mt-1.5 text-[13px] font-semibold text-muted-foreground" aria-live="polite">
+      {saveState === "saving"
+        ? showEs
+          ? "Guardando tu práctica…"
+          : "Saving your practice…"
+        : showEs
+          ? "Tu práctica quedó guardada ✓"
+          : "Your practice is saved ✓"}
+    </p>
+  );
+}
+
+/** Collapsed-by-default secondary section. */
+function Expandable({ title, children }: { title: string; children: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="rounded-2xl bg-card shadow-[var(--shadow-card)]">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex min-h-[48px] w-full items-center justify-between gap-3 rounded-2xl px-4 py-3 text-left text-[15px] font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      >
+        {title}
+        <ChevronDown className={cn("size-4 shrink-0 text-muted-foreground transition-transform motion-reduce:transition-none", open && "rotate-180")} aria-hidden />
+      </button>
+      {open ? <div className="px-4 pb-4">{children}</div> : null}
+    </div>
+  );
+}
+
+/** One recording control: a single play icon plus its duration. */
+function PlayRow({
+  url,
+  label,
+  seconds,
+  showEs,
+}: {
+  url: string | null;
+  label: string;
+  seconds: number;
+  showEs: boolean;
+}) {
+  return (
+    <div className="space-y-1">
+      <RecordingPlayback url={url} label={`${label} · ${seconds}s`} />
+      {!url ? (
+        <p className="text-[12px] font-semibold text-muted-foreground">
+          {showEs ? "Este audio no está disponible." : "This recording is not available."}
+        </p>
+      ) : null}
     </div>
   );
 }
