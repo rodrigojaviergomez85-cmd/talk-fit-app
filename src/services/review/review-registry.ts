@@ -34,6 +34,8 @@ import { USED_TO_GUIDE, USED_TO_COMMON_ERRORS } from "./used-to-guide";
 import { USED_TO_PRACTICES } from "./used-to-practices";
 import { PAST_PERFECT_GUIDE, PAST_PERFECT_COMMON_ERRORS } from "./past-perfect-guide";
 import { PAST_PERFECT_PRACTICES } from "./past-perfect-practices";
+import { MODAL_PERFECTS_GUIDE, MODAL_PERFECTS_COMMON_ERRORS } from "./modal-perfects-guide";
+import { MODAL_PERFECTS_PRACTICES } from "./modal-perfects-practices";
 
 /**
  * Trusted, server-usable registry of Review content.
@@ -184,6 +186,19 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     commonErrors: PAST_PERFECT_COMMON_ERRORS,
     practices: PAST_PERFECT_PRACTICES,
   },
+  "review-modal-perfects": {
+    id: "review-modal-perfects",
+    category: "intermediate-advanced",
+    minimumModuleId: "eagles-week-1",
+    label: "REVIEW",
+    title: "Should have, Must have, Could have & Would have",
+    titleEs: "Should have, Must have, Could have y Would have",
+    subtitle: "Regrets, deductions and imagined past results — five complete speaking practices.",
+    subtitleEs: "Arrepentimientos, deducciones y resultados imaginarios del pasado: cinco prácticas completas de speaking.",
+    guide: MODAL_PERFECTS_GUIDE,
+    commonErrors: MODAL_PERFECTS_COMMON_ERRORS,
+    practices: MODAL_PERFECTS_PRACTICES,
+  },
 };
 
 export function getReviewModule(moduleId: string): ReviewModule | null {
@@ -208,6 +223,7 @@ export function listReviewModulesByCategory(category: ReviewModule["category"]):
     "review-modals",
     "review-used-to",
     "review-past-perfect",
+    "review-modal-perfects",
   ];
   return listReviewModules()
     .filter((module) => module.category === category)
