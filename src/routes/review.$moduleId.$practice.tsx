@@ -6,6 +6,7 @@ import { useAppLang } from "@/lib/i18n";
 import { getReviewModule, getReviewPractice } from "@/services/review/review-registry";
 import { ReviewProgress } from "@/services/review/review-progress";
 import type { ReviewModuleId, ReviewPracticeNumber } from "@/lib/review-types";
+import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 
 export const Route = createFileRoute("/review/$moduleId/$practice")({
   head: () => ({
