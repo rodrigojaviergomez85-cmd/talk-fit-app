@@ -17,7 +17,7 @@ import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { Progression } from "@/services/progression";
 import type { JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { useT, useAppLang } from "@/lib/i18n";
+import { useT } from "@/lib/i18n";
 
 type ProgressTab = "progress" | "audio";
 
