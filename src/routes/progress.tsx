@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { RecordingsPanel } from "@/components/fluency/RecordingsPanel";
 import { Check, ChevronDown, Lock, Mic, Timer } from "lucide-react";
@@ -6,7 +6,7 @@ import { AppShell } from "@/components/fluency/AppShell";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
 import { ModuleHeading } from "@/components/fluency/ModuleHeading";
 import { ModuleBadge } from "@/components/fluency/ModuleBadge";
-import { SpeakingChart } from "@/components/fluency/SpeakingChart";
+
 import { BadgeGrid } from "@/components/fluency/BadgeGrid";
 import { ModuleBadgeGrid } from "@/components/fluency/ModuleBadgeGrid";
 import { HABIT_GOAL, habitDays, habitDisplay } from "@/lib/habit";
@@ -76,7 +76,7 @@ function ProgressPage() {
   const forward = modules.filter((m) => CourseService.displayIndex(m.id) >= currentIndex);
   const review = modules.filter((m) => CourseService.displayIndex(m.id) < currentIndex);
   const bests = JourneyService.personalBests(safe);
-  const series = useMemo(() => JourneyService.speakingSeries(safe), [safe]);
+  
   const habitCount = habitDays(safe);
   const habit = habitDisplay(habitCount);
   const habitPercent = Math.round((habit.shown / HABIT_GOAL) * 100);
@@ -198,8 +198,6 @@ function ProgressPage() {
           </div>
         </section>
 
-        {/* Speaking output over time (numbers only — playback lives in Recordings) */}
-        <SpeakingChart data={series} />
 
         {/* Personal bests */}
         {bests.longestSeconds || bests.mostIdeas ? (
