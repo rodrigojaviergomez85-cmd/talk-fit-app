@@ -1,4 +1,7 @@
 import type { ReviewPractice } from "@/lib/review-types";
+import scenePperf1 from "@/assets/review/scene-pperf1-andrea.jpg";
+import scenePperf3 from "@/assets/review/scene-pperf3-ricardo.jpg";
+import scenePperf5 from "@/assets/review/scene-pperf5-lucia.jpg";
 
 /**
  * REVIEW · PRESENT PERFECT (have / has + past participle) — five static practices.
@@ -22,6 +25,7 @@ export const PRESENT_PERFECT_PRACTICES: ReviewPractice[] = [
       es: "Con she siempre es has + participio: she has worked, she has gone. Nunca “she have”.",
     },
     showFullGuide: true,
+    sceneImage: { src: scenePperf1, alt: "Andrea at work with memories of her past experiences", altEs: "Andrea en el trabajo con recuerdos de sus experiencias" },
     instructions: {
       en: "Andrea is telling her life experiences. Tell them with has + past participle.",
       es: "Andrea cuenta sus experiencias de vida. Cuéntalas con has + participio.",
@@ -124,6 +128,7 @@ export const PRESENT_PERFECT_PRACTICES: ReviewPractice[] = [
       es: "Already va antes del participio. Yet va al final en negativas y preguntas.",
     },
     showFullGuide: false,
+    sceneImage: { src: scenePperf3, alt: "Ricardo in the middle of his shift at the call center", altEs: "Ricardo a media jornada en el call center" },
     instructions: {
       en: "Ricardo is in the middle of his shift. Say what he has done and what he hasn't done yet.",
       es: "Ricardo está a la mitad de su turno. Di qué ha hecho y qué no ha hecho todavía.",
@@ -226,6 +231,7 @@ export const PRESENT_PERFECT_PRACTICES: ReviewPractice[] = [
       es: "Arma la historia con los datos. Usa has + participio y no digas la fecha exacta.",
     },
     showFullGuide: false,
+    sceneImage: { src: scenePperf5, alt: "Lucía and the path of her story so far", altEs: "Lucía y el camino de su historia hasta hoy" },
     instructions: {
       en: "You have the key facts about Lucía. Build her story out loud in the present perfect.",
       es: "Tienes los datos clave de Lucía. Arma su historia en voz alta en present perfect.",

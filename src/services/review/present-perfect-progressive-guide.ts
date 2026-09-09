@@ -1,4 +1,11 @@
 import type { ReviewGuideCard } from "@/lib/review-types";
+import p1 from "@/assets/review/pperfp1-use.jpg";
+import p2 from "@/assets/review/pperfp2-formula.jpg";
+import p3 from "@/assets/review/pperfp3-how-long.jpg";
+import p4 from "@/assets/review/pperfp4-for-since.jpg";
+import p5 from "@/assets/review/pperfp5-vs-perfect.jpg";
+import p6 from "@/assets/review/pperfp6-non-progressive.jpg";
+import p7 from "@/assets/review/pperfp7-questions.jpg";
 
 /**
  * "ENTIÉNDELO FÁCIL" — the seven Present Perfect Progressive basics
@@ -13,6 +20,7 @@ export const PRESENT_PERFECT_PROGRESSIVE_GUIDE: ReviewGuideCard[] = [
       "It talks about an action that started in the past and is still happening now. The focus is the duration.",
     explanationEs:
       "Habla de una acción que empezó antes y TODAVÍA sigue. Lo importante aquí es cuánto tiempo lleva pasando, no el resultado.",
+    image: { src: p1, alt: "A man working with a progress bar from sunrise until now", altEs: "Un hombre trabajando con una barra de progreso desde el amanecer hasta ahora" },
     examples: [
       { en: "I have been working since seven o'clock.", es: "Llevo trabajando desde las siete." },
       { en: "She has been studying for two hours.", es: "Ella lleva dos horas estudiando." },
@@ -31,6 +39,7 @@ export const PRESENT_PERFECT_PROGRESSIVE_GUIDE: ReviewGuideCard[] = [
     explanation: "The three parts are always there: have or has, then been, then the verb with -ing.",
     explanationEs:
       "Son tres partes fijas: have/has + been + verbo-ing. I have been working. He has been working. Si quitas been, la oración está mal: “I have working” no existe.",
+    image: { src: p2, alt: "Three connected pieces held together", altEs: "Tres piezas conectadas sostenidas juntas" },
     examples: [
       { en: "I have been talking to clients all day.", es: "He estado hablando con clientes todo el día." },
       { en: "He has been looking for a new job.", es: "Él ha estado buscando un trabajo nuevo." },
@@ -49,6 +58,7 @@ export const PRESENT_PERFECT_PROGRESSIVE_GUIDE: ReviewGuideCard[] = [
     explanation: "This is the natural question for this tense.",
     explanationEs:
       "How long have you been…? = ¿Cuánto tiempo llevas…? Se contesta con for o since: for six months, since January.",
+    image: { src: p3, alt: "Someone pointing at a stopwatch to ask how long", altEs: "Alguien señalando un cronómetro para preguntar cuánto tiempo" },
     examples: [
       { en: "How long have you been working here?", es: "¿Cuánto tiempo llevas trabajando aquí?" },
       { en: "How long has she been living in this city?", es: "¿Cuánto tiempo lleva viviendo en esta ciudad?" },
@@ -67,6 +77,7 @@ export const PRESENT_PERFECT_PROGRESSIVE_GUIDE: ReviewGuideCard[] = [
     explanation: "For + how long it lasts. Since + when it started.",
     explanationEs:
       "For + duración: for two hours, for three years. Since + inicio: since Monday, since 2021, since this morning. No digas “since two hours”.",
+    image: { src: p4, alt: "An hourglass for duration and a calendar pin for the start", altEs: "Un reloj de arena para la duración y un pin de calendario para el inicio" },
     examples: [
       { en: "I have been studying for three hours.", es: "Llevo tres horas estudiando." },
       { en: "He has been calling clients since eight.", es: "Lleva llamando clientes desde las ocho." },
@@ -85,6 +96,7 @@ export const PRESENT_PERFECT_PROGRESSIVE_GUIDE: ReviewGuideCard[] = [
     explanation: "Present perfect = the result. Present perfect progressive = the time it has been going on.",
     explanationEs:
       "I have written three emails = el RESULTADO (tres correos listos). I have been writing emails all morning = el TIEMPO que llevo haciéndolo. Las dos son correctas; cambia lo que quieres decir.",
+    image: { src: p5, alt: "Still painting a wall versus the finished wall", altEs: "Todavía pintando una pared frente a la pared terminada" },
     examples: [
       { en: "I have finished two reports. (result)", es: "He terminado dos reportes. (resultado)" },
       { en: "I have been working on reports all day. (duration)", es: "He estado trabajando en reportes todo el día. (duración)" },
@@ -103,6 +115,7 @@ export const PRESENT_PERFECT_PROGRESSIVE_GUIDE: ReviewGuideCard[] = [
     explanation: "With know, like, want, need, have (possession) and be, use the simple present perfect.",
     explanationEs:
       "Con verbos de estado (know, like, love, want, need, believe, have de posesión, be) NO se usa la forma progresiva: di “I have known her for years”, no “I have been knowing her”.",
+    image: { src: p6, alt: "A calm person thinking of ideas, love and possession", altEs: "Una persona tranquila pensando en ideas, cariño y posesión" },
     examples: [
       { en: "I have known him for ten years.", es: "Lo conozco desde hace diez años." },
       { en: "She has had that phone since last year.", es: "Ella tiene ese teléfono desde el año pasado." },
@@ -121,6 +134,7 @@ export const PRESENT_PERFECT_PROGRESSIVE_GUIDE: ReviewGuideCard[] = [
     explanation: "Have / Has goes first. Negatives use haven't been / hasn't been.",
     explanationEs:
       "Pregunta: Have you been working? What have you been doing? Negativa: I haven't been sleeping well. He hasn't been feeling good. Been nunca desaparece.",
+    image: { src: p7, alt: "Two colleagues asking and answering in the negative", altEs: "Dos colegas preguntando y respondiendo en negativo" },
     examples: [
       { en: "What have you been doing lately?", es: "¿Qué has estado haciendo últimamente?" },
       { en: "Has he been studying every day?", es: "¿Ha estado estudiando todos los días?" },
