@@ -6,7 +6,7 @@ Sustituir los 11 badges actuales (`src/assets/badges/*.png`) por los nuevos embl
 ## Mapeo de archivos
 | Módulo | Animal | Archivo origen (propuesta) | Destino |
 |---|---|---|---|
-| Basic Zero | Pollito | badge-proposal/basic-zero-chick.png | src/assets/badges/basic-zero.png |
+| Basic Zero | Pollito | badge-proposal/basic-zero-chick-v2.png | src/assets/badges/basic-zero.png |
 | Basic 1 | Conejo | badge-proposal/simple-future-rabbit.png | src/assets/badges/simple-future.png |
 | Basic 2 | Abeja | badge-proposal/simple-present-bee.png | src/assets/badges/simple-present.png |
 | Basic 3 | Elefante | badge-proposal/past-stories-elephant.png | src/assets/badges/past-stories.png |
