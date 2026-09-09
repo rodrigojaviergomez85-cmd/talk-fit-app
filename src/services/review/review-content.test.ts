@@ -97,3 +97,15 @@ describe("Review · Modal Verbs content", () => {
     expect(mod?.practices.every((practice) => Boolean(practice.sceneImage))).toBe(true);
   });
 });
+
+describe("Review · Used to content", () => {
+  it("covers past habits, familiarity and adaptation with a scene for every practice", () => {
+    const mod = getReviewModule("review-used-to");
+    expect(mod).not.toBeNull();
+    const spoken = mod?.practices.flatMap((practice) => practice.lines.map((line) => line.text)).join(" ").toLowerCase() ?? "";
+    for (const form of ["used to", "didn't use to", "is used to", "getting used to", "got used to"]) {
+      expect(spoken).toContain(form);
+    }
+    expect(mod?.practices.every((practice) => Boolean(practice.sceneImage))).toBe(true);
+  });
+});
