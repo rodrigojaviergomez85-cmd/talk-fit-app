@@ -289,11 +289,11 @@ function ModuleRow({
 
   const body = (
     <>
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex min-w-0 items-start gap-3">
-          <ModuleBadge moduleId={module.id} size="sm" locked={status.locked} es={es} />
-          <ModuleHeading module={module} size="sm" />
-        </div>
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex min-w-0 items-start gap-3">
+            <ModuleBadge moduleId={module.id} size="sm" es={es} />
+            <ModuleHeading module={module} size="sm" />
+          </div>
         <StatusBadge status={status} />
       </div>
       <ProgressBar value={total > 0 ? done / total : 0} />
