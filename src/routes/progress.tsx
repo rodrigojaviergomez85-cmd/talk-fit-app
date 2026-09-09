@@ -130,44 +130,20 @@ function ProgressPage() {
 
         {tab === "audio" ? <RecordingsPanel state={safe} /> : (
         <>
-        {/* This week */}
-        <section className="rounded-3xl bg-card p-4 shadow-[var(--shadow-card)]">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-            {t("prog.thisWeek")}
-          </h2>
-          <div className="mt-2 grid grid-cols-3 gap-2 text-center">
-            <WeekStat value={`${week.days} / 5`} label={t("prog.days")} />
-            <WeekStat value={`${week.reps}`} label={t("home.reps")} />
-            <WeekStat value={`${week.minutes}`} label={t("prog.minutes")} />
-          </div>
-        </section>
+        {/* 1. Current module */}
+        <CurrentModuleCard state={safe} />
 
-        {/* 66-day journey — compact accumulated view (the motivational card is on Home) */}
-        <section className="rounded-3xl bg-card p-4 shadow-[var(--shadow-card)]">
-          <div className="flex items-baseline justify-between gap-3">
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              {t("prog.journey66")}
-            </h2>
-            <p className="text-[15px] font-extrabold tabular-nums tracking-tight">
-              {habit.complete ? (
-                <>
-                  66 / {HABIT_GOAL} <span className="text-success">✓</span>
-                </>
-              ) : (
-                `${habit.shown} / ${HABIT_GOAL}`
-              )}
-            </p>
-          </div>
-          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary">
-            <div
-              className={cn("h-full rounded-full transition-all", habit.complete ? "bg-success" : "bg-primary")}
-              style={{ width: `${habitPercent}%` }}
-            />
-          </div>
-          <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-            {habitCount} {t("prog.practiceDays")}
-          </p>
-        </section>
+        {/* 2. Recent activity */}
+        <Last7DaysCard state={safe} />
+
+        {/* 3. Listen to your attempts (same practice only) */}
+        <ListenAttemptsCard state={safe} />
+
+        {/* 4. 66-day consistency */}
+        <HabitCard state={safe} />
+
+        {/* 5. Mi ruta — always visible */}
+        <JourneyList state={safe} />
 
         {/* Totals */}
         <section className="space-y-3">
