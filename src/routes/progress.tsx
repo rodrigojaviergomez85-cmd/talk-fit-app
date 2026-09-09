@@ -244,6 +244,8 @@ function ModuleRow({
   state: JourneyState;
 }) {
   const t = useT();
+  const { lang } = useAppLang();
+  const es = lang === "es";
   const done = JourneyService.completedCount(state, module.id);
   const total = module.days.length;
   const status = moduleAccessStatus(state, module.id, t);
@@ -252,7 +254,10 @@ function ModuleRow({
   const body = (
     <>
       <div className="flex items-start justify-between gap-3">
-        <ModuleHeading module={module} size="sm" />
+        <div className="flex min-w-0 items-start gap-3">
+          <ModuleBadge moduleId={module.id} size="sm" locked={status.locked} es={es} />
+          <ModuleHeading module={module} size="sm" />
+        </div>
         <StatusBadge status={status} />
       </div>
       <ProgressBar value={total > 0 ? done / total : 0} />
