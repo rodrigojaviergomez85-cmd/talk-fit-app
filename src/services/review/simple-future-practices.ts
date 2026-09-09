@@ -1,4 +1,7 @@
 import type { ReviewPractice } from "@/lib/review-types";
+import sceneSf1 from "@/assets/review/scene-sfut1-daniel.jpg";
+import sceneSf3 from "@/assets/review/scene-sfut3-paola.jpg";
+import sceneSf5 from "@/assets/review/scene-sfut5-marcos.jpg";
 
 /**
  * REVIEW · SIMPLE FUTURE (will + be going to) — five static practices.
