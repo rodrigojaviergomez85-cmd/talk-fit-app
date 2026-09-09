@@ -139,8 +139,11 @@ export const Route = createFileRoute("/api/rep2-correction")({
         const { rep2Chunks, rep2ChunkText, isRep2CorrectionEnabled } = await import("@/lib/rep-structure");
         let target: string;
         try {
-          const loaded = await CourseService.loadModule(moduleId as ModuleId);
-          const courseDay = loaded.days.find((d) => d.day === day);
+          // REVIEW practices come from the trusted Review registry, never from the course loader.
+          const { loadReviewDay } = await import("@/services/review/review-registry");
+          const reviewDay = loadReviewDay(moduleId, day);
+          const courseDay =
+            reviewDay ?? (await CourseService.loadModule(moduleId as ModuleId)).days.find((d) => d.day === day);
           if (!courseDay) throw new Error("Day not found");
           // Same authoritative rule as the Practice screen: real day + valid Rep 2 chunk.
           if (!isRep2CorrectionEnabled(moduleId as ModuleId, courseDay)) {

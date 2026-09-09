@@ -21,7 +21,13 @@ function asTransportModuleId(moduleId: ReviewModuleId): ModuleId {
 
 /** Runs the coach on the evaluated audio (position 4) of one Review practice. */
 export function runReviewCoach(
-  input: { moduleId: ReviewModuleId; practiceNumber: ReviewPracticeNumber; recording: Recording },
+  input: {
+    moduleId: ReviewModuleId;
+    practiceNumber: ReviewPracticeNumber;
+    recording: Recording;
+    /** Which take the learner chose as final (defaults to the evaluated position). */
+    takeNumber?: number;
+  },
   onState: (state: FinalCoachState) => void,
   signal?: AbortSignal,
 ): Promise<FinalCoachState> {
@@ -31,7 +37,7 @@ export function runReviewCoach(
       // Review has no role play: `day` is the practice number, no rep5Turns.
       day: { day: input.practiceNumber },
       finalRecording: input.recording,
-      finalTakeNumber: REVIEW_EVALUATED_TAKE,
+      finalTakeNumber: input.takeNumber ?? REVIEW_EVALUATED_TAKE,
     },
     onState,
     undefined,
