@@ -47,6 +47,9 @@ export const Route = createFileRoute("/progress")({
  */
 function ProgressPage() {
   const t = useT();
+  const navigate = useNavigate({ from: "/progress" });
+  const { tab: tabParam } = Route.useSearch();
+  const tab: ProgressTab = tabParam ?? "progress";
   const [state, setState] = useState<JourneyState | null>(null);
   const [failed, setFailed] = useState(false);
 
