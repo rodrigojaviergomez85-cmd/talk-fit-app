@@ -12,6 +12,10 @@ import { loadPreferences } from "./preferences";
 const STORAGE_KEY = "fluency-reps:journey:v2";
 const LEGACY_KEY = "fluency-reps:journey:v1";
 
+/** The three INTERMEDIATE modules that gate the whole ADVANCED family. */
+const INTERMEDIATE_MODULES: ModuleId[] = ["eagles", "tigers", "sharks"];
+
+
 export const emptyJourney: JourneyState = {
   days: {},
   streakDays: 0,
