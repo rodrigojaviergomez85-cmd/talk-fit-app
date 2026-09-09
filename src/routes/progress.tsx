@@ -6,6 +6,7 @@ import { StatusBadge } from "@/components/fluency/StatusBadge";
 import { ModuleHeading } from "@/components/fluency/ModuleHeading";
 import { SpeakingChart } from "@/components/fluency/SpeakingChart";
 import { BadgeGrid } from "@/components/fluency/BadgeGrid";
+import { ModuleBadgeGrid } from "@/components/fluency/ModuleBadgeGrid";
 import { HABIT_GOAL, habitDays, habitDisplay } from "@/lib/habit";
 import { CourseService, type DayOutline } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
@@ -209,6 +210,8 @@ function ProgressPage() {
         ) : null}
 
         <BadgeGrid state={safe} />
+
+        <ModuleBadgeGrid state={safe} />
 
         <AllDays state={safe} />
       </div>

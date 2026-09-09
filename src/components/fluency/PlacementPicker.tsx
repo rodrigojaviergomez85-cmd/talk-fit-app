@@ -4,6 +4,7 @@ import { JourneyService } from "@/services/journey-service";
 import type { ModuleId } from "@/lib/types";
 import { useAppLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { ModuleBadge } from "@/components/fluency/ModuleBadge";
 
 type PlacementKey =
   | "place.basic-zero"
@@ -93,6 +94,7 @@ export function PlacementPicker({
                   selected ? "border-primary bg-primary/5" : "border-border",
                 )}
               >
+                <ModuleBadge moduleId={module.id} size="sm" es={es} />
                 <span className="min-w-0 flex-1">
                   <span className="block text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
                     {module.label}

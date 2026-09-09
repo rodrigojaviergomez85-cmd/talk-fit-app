@@ -147,8 +147,13 @@ function ModulePage() {
         </Link>
 
         <div className="rounded-3xl bg-navy p-5 text-navy-foreground">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{meta.label}</p>
-          <h2 className="mt-1 text-2xl font-extrabold tracking-tight">{meta.title}</h2>
+          <div className="flex items-start gap-3">
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{meta.label}</p>
+              <h2 className="mt-1 text-2xl font-extrabold tracking-tight">{meta.title}</h2>
+            </div>
+            <ModuleBadge moduleId={meta.id} size="lg" es={lang === "es"} />
+          </div>
           <p className="mt-1 text-[14px] font-semibold text-navy-foreground/80">
             {lang === "es" ? meta.subtitleEs : meta.subtitle}
           </p>
