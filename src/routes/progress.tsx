@@ -420,28 +420,6 @@ function WeekBlock({
   );
 }
 
-function ProgressBar({ value }: { value: number }) {
-  return (
-    <div className="mt-3 h-2 overflow-hidden rounded-full bg-secondary">
-      <div
-        className="h-full rounded-full bg-primary transition-all"
-        style={{ width: `${Math.round(value * 100)}%` }}
-      />
-    </div>
-  );
-}
-
-function WeekStat({ value, label }: { value: string; label: string }) {
-  return (
-    <div>
-      <p className="text-xl font-extrabold tabular-nums tracking-tight">{value}</p>
-      <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-        {label}
-      </p>
-    </div>
-  );
-}
-
 function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div className="rounded-3xl bg-card p-3 text-center shadow-[var(--shadow-card)]">
