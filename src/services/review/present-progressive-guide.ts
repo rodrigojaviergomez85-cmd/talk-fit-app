@@ -1,4 +1,11 @@
 import type { ReviewGuideCard } from "@/lib/review-types";
+import pp1 from "@/assets/review/pp1-use.jpg";
+import pp2 from "@/assets/review/pp2-formula.jpg";
+import pp3 from "@/assets/review/pp3-spelling.jpg";
+import pp4 from "@/assets/review/pp4-negative.jpg";
+import pp5 from "@/assets/review/pp5-questions.jpg";
+import pp6 from "@/assets/review/pp6-now-vs-usually.jpg";
+import pp7 from "@/assets/review/pp7-stative.jpg";
 
 /**
  * "ENTIÉNDELO FÁCIL" — the seven Present Progressive basics.
@@ -13,6 +20,7 @@ export const PRESENT_PROGRESSIVE_GUIDE: ReviewGuideCard[] = [
     explanation: "Present Progressive is for actions happening right now or around this period of time.",
     explanationEs:
       "El Present Progressive sirve para lo que está pasando ahora mismo o en este período (esta semana, estos días). No es para rutinas: eso es Simple Present.",
+    image: { src: pp1, alt: "A woman talking on a call right now", altEs: "Una mujer hablando en una llamada ahora mismo" },
     examples: [
       { en: "I am working right now.", es: "Estoy trabajando ahora mismo." },
       { en: "She is talking to a customer.", es: "Ella está hablando con un cliente." },
@@ -31,6 +39,7 @@ export const PRESENT_PROGRESSIVE_GUIDE: ReviewGuideCard[] = [
     explanation: "Always two parts: the verb be (am, is, are) and the main verb with -ing. Never drop the be.",
     explanationEs:
       "Siempre son dos partes: el verbo be (am con I, is con he/she/it, are con you/we/they) más el verbo principal con -ing. Nunca digas “She working”: falta el is.",
+    image: { src: pp2, alt: "Three people reading at the same moment", altEs: "Tres personas leyendo en el mismo momento" },
     examples: [
       { en: "I am eating. / You are eating.", es: "Estoy comiendo. / Estás comiendo." },
       { en: "He is eating. / They are eating.", es: "Él está comiendo. / Ellos están comiendo." },
@@ -49,6 +58,7 @@ export const PRESENT_PROGRESSIVE_GUIDE: ReviewGuideCard[] = [
     explanation: "Most verbs just add -ing. Drop a final silent e, and double the last consonant in short stressed verbs.",
     explanationEs:
       "A casi todos los verbos solo les agregas -ing (work → working). Si termina en -e muda, quitas la e (make → making, write → writing). En verbos cortos con vocal + consonante, doblas la consonante (run → running, sit → sitting, get → getting). Ojo: study → studying (la y no cambia).",
+    image: { src: pp3, alt: "Making a cake, running and studying", altEs: "Haciendo un pastel, corriendo y estudiando" },
     examples: [
       { en: "make → making · take → taking", es: "make → making · take → taking" },
       { en: "run → running · put → putting", es: "run → running · put → putting" },
@@ -67,6 +77,7 @@ export const PRESENT_PROGRESSIVE_GUIDE: ReviewGuideCard[] = [
     explanation: "Put not after am / is / are. Never use don't or doesn't here.",
     explanationEs:
       "Para negar pones not después de am, is o are: I'm not working, she isn't working, they aren't working. Aquí NO se usa don't ni doesn't, porque el verbo be ya hace la negación.",
+    image: { src: pp4, alt: "A woman not answering the ringing phone", altEs: "Una mujer que no está contestando el teléfono" },
     examples: [
       { en: "I'm not working today.", es: "Hoy no estoy trabajando." },
       { en: "She isn't answering the phone.", es: "Ella no está contestando el teléfono." },
@@ -85,6 +96,7 @@ export const PRESENT_PROGRESSIVE_GUIDE: ReviewGuideCard[] = [
     explanation: "Move am / is / are to the front: Is she working? Question words go first: What is he doing?",
     explanationEs:
       "Para preguntar mueves am, is o are al inicio: Are you working? Is she working? Con palabra interrogativa va primero: What are you doing? Why is he calling? Respuestas cortas: Yes, I am / No, I'm not / Yes, she is / No, she isn't.",
+    image: { src: pp5, alt: "One person asking another a question", altEs: "Una persona haciéndole una pregunta a otra" },
     examples: [
       { en: "Are you working now? — Yes, I am.", es: "¿Estás trabajando ahora? — Sí." },
       { en: "Is she talking to a client? — No, she isn't.", es: "¿Está hablando con un cliente? — No." },
@@ -103,6 +115,7 @@ export const PRESENT_PROGRESSIVE_GUIDE: ReviewGuideCard[] = [
     explanation: "Use Present Progressive for now, and Simple Present for routines. Time words tell you which one.",
     explanationEs:
       "Usa el progresivo para AHORA (right now, at the moment, today, this week) y el Simple Present para RUTINAS (every day, usually, on Mondays). La palabra de tiempo te dice cuál usar.",
+    image: { src: pp6, alt: "Working at night usually and in the morning today", altEs: "Trabaja de noche normalmente y hoy en la mañana" },
     examples: [
       { en: "I usually work at night, but today I am working in the morning.", es: "Normalmente trabajo de noche, pero hoy estoy trabajando en la mañana." },
       { en: "She studies every day. Right now she is studying grammar.", es: "Ella estudia todos los días. Ahora mismo está estudiando gramática." },
@@ -121,6 +134,7 @@ export const PRESENT_PROGRESSIVE_GUIDE: ReviewGuideCard[] = [
     explanation: "Feelings and states — like, want, need, know, have (possess) — normally stay in Simple Present.",
     explanationEs:
       "Algunos verbos de estado casi nunca van en -ing: like, love, want, need, know, understand y have cuando significa tener. Se dice I want coffee, no “I am wanting coffee”. Pero sí se usa -ing cuando have es una acción: I am having lunch.",
+    image: { src: pp7, alt: "A man wanting coffee while having lunch", altEs: "Un hombre que quiere café mientras está almorzando" },
     examples: [
       { en: "I want a break. (NOT: I am wanting a break.)", es: "Quiero un descanso. (NO: I am wanting a break.)" },
       { en: "She knows the answer. (NOT: She is knowing.)", es: "Ella sabe la respuesta. (NO: She is knowing.)" },
