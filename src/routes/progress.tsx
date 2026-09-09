@@ -4,6 +4,7 @@ import { Check, ChevronDown, Lock, Mic, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
 import { ModuleHeading } from "@/components/fluency/ModuleHeading";
+import { ModuleBadge } from "@/components/fluency/ModuleBadge";
 import { SpeakingChart } from "@/components/fluency/SpeakingChart";
 import { BadgeGrid } from "@/components/fluency/BadgeGrid";
 import { ModuleBadgeGrid } from "@/components/fluency/ModuleBadgeGrid";
@@ -13,7 +14,7 @@ import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { Progression } from "@/services/progression";
 import type { JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { useT } from "@/lib/i18n";
+import { useT, useAppLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/progress")({
   head: () => ({
