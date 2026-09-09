@@ -52,7 +52,7 @@ function ReviewModulePage() {
           <p className="mt-2 text-xs text-navy-foreground/70">{showEs ? mod.subtitleEs : mod.subtitle}</p>
         </header>
 
-        <ReviewGuide cards={mod.guide} showEs={showEs} />
+        <ReviewGuide cards={mod.guide} showEs={showEs} errors={mod.commonErrors} heading={mod.title} headingEs={mod.titleEs} />
 
         <div className="space-y-3">
           {mod.practices.map((p) => {

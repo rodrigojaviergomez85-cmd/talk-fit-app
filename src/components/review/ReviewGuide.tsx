@@ -1,11 +1,24 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
-import { SIMPLE_PRESENT_COMMON_ERRORS } from "@/services/review/simple-present-guide";
 import type { ReviewGuideCard } from "@/lib/review-types";
 
 /** ENTIÉNDELO FÁCIL — the static grammar guide. Never AI-generated. */
-export function ReviewGuide({ cards, showEs, defaultOpen = false }: { cards: ReviewGuideCard[]; showEs: boolean; defaultOpen?: boolean }) {
+export function ReviewGuide({
+  cards,
+  showEs,
+  defaultOpen = false,
+  errors = [],
+  heading,
+  headingEs,
+}: {
+  cards: ReviewGuideCard[];
+  showEs: boolean;
+  defaultOpen?: boolean;
+  errors?: { wrong: string; right: string; es: string }[];
+  heading?: string;
+  headingEs?: string;
+}) {
   const [open, setOpen] = useState(defaultOpen);
   return (
     <section className="rounded-3xl border border-border bg-card p-4">
@@ -20,7 +33,9 @@ export function ReviewGuide({ cards, showEs, defaultOpen = false }: { cards: Rev
             {showEs ? "Entiéndelo fácil" : "Understand it easily"}
           </span>
           <span className="block text-sm font-semibold text-foreground">
-            {showEs ? "7 tarjetas de Presente Simple" : "7 Simple Present cards"}
+            {showEs
+              ? `${cards.length} tarjetas de ${headingEs ?? "gramática"}`
+              : `${cards.length} ${heading ?? "grammar"} cards`}
           </span>
         </span>
         <ChevronDown className={`size-5 shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
@@ -36,6 +51,14 @@ export function ReviewGuide({ cards, showEs, defaultOpen = false }: { cards: Rev
               <h3 className="mt-1 text-base font-extrabold text-foreground">{card.title}</h3>
               <p className="text-xs font-semibold text-muted-foreground">{card.titleEs}</p>
               <p className="mt-2 text-sm leading-relaxed text-foreground">{card.explanationEs}</p>
+              {card.image ? (
+                <img
+                  src={card.image.src}
+                  alt={showEs ? card.image.altEs : card.image.alt}
+                  loading="lazy"
+                  className="mt-3 aspect-[4/3] w-full rounded-xl object-cover"
+                />
+              ) : null}
               <ul className="mt-3 space-y-2">
                 {card.examples.map((ex) => (
                   <li key={ex.en} className="rounded-xl bg-card p-3">
@@ -60,12 +83,13 @@ export function ReviewGuide({ cards, showEs, defaultOpen = false }: { cards: Rev
             </article>
           ))}
 
+          {errors.length ? (
           <article className="rounded-2xl border border-destructive/30 bg-destructive/5 p-4">
             <h3 className="text-sm font-extrabold uppercase tracking-[0.18em] text-destructive">
               {showEs ? "Errores típicos" : "Typical mistakes"}
             </h3>
             <ul className="mt-2 space-y-2">
-              {SIMPLE_PRESENT_COMMON_ERRORS.map((e) => (
+              {errors.map((e) => (
                 <li key={e.wrong} className="text-sm">
                   <span className="font-bold text-destructive line-through">{e.wrong}</span>
                   <span className="mx-2 text-muted-foreground">→</span>
@@ -75,6 +99,7 @@ export function ReviewGuide({ cards, showEs, defaultOpen = false }: { cards: Rev
               ))}
             </ul>
           </article>
+          ) : null}
         </div>
       ) : null}
     </section>
