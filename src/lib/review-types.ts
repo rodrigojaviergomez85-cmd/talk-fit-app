@@ -106,6 +106,8 @@ export type ReviewPractice = {
   factSheet?: ReviewExample[] | undefined;
   /** Reference illustration of the scene the learner is describing (3rd person). */
   sceneImage?: { src: string; alt: string; altEs: string } | undefined;
+  /** Optional Step 2 illustration for each spoken chunk, in chunk order. */
+  rep2ChunkImages?: { src: string; alt: string; altEs: string }[] | undefined;
   finalPrompt: { question: string; questionEs: string; tips: { en: string; es: string } };
   /** What the AI feedback evaluates for this practice. */
   grammarGoals: string[];

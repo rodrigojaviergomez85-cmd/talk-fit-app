@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getReviewModule, getReviewPractice, loadReviewDay, listReviewModules } from "./review-registry";
 import { REVIEW_PRACTICE_COUNT, isReviewModuleId } from "@/lib/review-types";
-import { rep4Items } from "@/lib/rep-structure";
+import { rep2Chunks, rep4Items } from "@/lib/rep-structure";
 import { reviewPracticeToCourseDay } from "./review-registry";
 
 describe.each(listReviewModules())("Review · $title content", (mod) => {
@@ -69,5 +69,19 @@ describe.each(listReviewModules())("review step 4 questions · $title", (mod) =>
     );
     expect(cues).toContain("HOW OFTEN");
     expect(cues).toContain("HOW LONG");
+  });
+});
+
+describe("Review · Comparatives Step 2 reference images", () => {
+  it("provides one distinct image for every spoken chunk", () => {
+    const mod = getReviewModule("review-comparatives");
+    expect(mod).not.toBeNull();
+
+    for (const practice of mod?.practices ?? []) {
+      const images = practice.rep2ChunkImages ?? [];
+      expect(images).toHaveLength(rep2Chunks(reviewPracticeToCourseDay(practice)).length);
+      expect(new Set(images.map((image) => image.src)).size).toBe(images.length);
+      expect(images.every((image) => image.alt.length > 0 && image.altEs.length > 0)).toBe(true);
+    }
   });
 });

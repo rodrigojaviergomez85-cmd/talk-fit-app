@@ -1419,6 +1419,8 @@ export function Rep2Copy({
   moduleId,
   day,
   index,
+  chunkImage,
+  showEs,
   attempted,
   onRecorded,
   onSkip,
@@ -1427,6 +1429,7 @@ export function Rep2Copy({
   moduleId: ModuleId;
   day: CourseDay;
   index: number;
+  chunkImage?: { src: string; alt: string; altEs: string } | undefined;
   showEs: boolean;
   attempted: boolean;
   onRecorded: (rec: Recording) => void;
@@ -1530,7 +1533,23 @@ export function Rep2Copy({
 
       <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} />
 
-      <SceneImage day={day} />
+      {chunkImage ? (
+        <figure className="overflow-hidden rounded-3xl border border-border bg-card">
+          <img
+            src={chunkImage.src}
+            alt={showEs ? chunkImage.altEs : chunkImage.alt}
+            loading="lazy"
+            width={1024}
+            height={768}
+            className="aspect-[4/3] w-full object-cover"
+          />
+          <figcaption className="p-3 text-xs text-muted-foreground">
+            {showEs ? chunkImage.altEs : chunkImage.alt}
+          </figcaption>
+        </figure>
+      ) : (
+        <SceneImage day={day} />
+      )}
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
         {t("practice.chunk")} {index + 1} {t("practice.of")} {chunks.length}
       </p>

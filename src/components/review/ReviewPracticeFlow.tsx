@@ -242,7 +242,7 @@ export function ReviewPracticeFlow({ moduleId, practice, guide, showEs: showEsIn
         ) : null}
 
         {/* Reference scene: what the learner is describing (3rd person only). */}
-        {practice.sceneImage && step >= 2 ? (
+        {practice.sceneImage && step >= 2 && !(step === 2 && practice.rep2ChunkImages?.[subIndex]) ? (
           <figure className="overflow-hidden rounded-3xl border border-border bg-card">
             <img
               src={practice.sceneImage.src}
@@ -280,6 +280,7 @@ export function ReviewPracticeFlow({ moduleId, practice, guide, showEs: showEsIn
             moduleId={transportId}
             day={day}
             index={subIndex}
+            chunkImage={practice.rep2ChunkImages?.[subIndex]}
             showEs={showEs}
             attempted={Boolean(currentKey && attempted.includes(currentKey))}
             onRecorded={() => {
