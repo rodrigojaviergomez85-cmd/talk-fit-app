@@ -1,8 +1,11 @@
 import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { ReviewPracticeFlow } from "@/components/review/ReviewPracticeFlow";
 import { useAppLang } from "@/lib/i18n";
 import { getReviewModule, getReviewPractice } from "@/services/review/review-registry";
+import { ReviewProgress } from "@/services/review/review-progress";
+import type { ReviewModuleId, ReviewPracticeNumber } from "@/lib/review-types";
 
 export const Route = createFileRoute("/review/$moduleId/$practice")({
   head: () => ({
@@ -23,8 +26,29 @@ function ReviewPracticePage() {
   const { lang } = useAppLang();
   const mod = getReviewModule(moduleId);
   const found = getReviewPractice(moduleId, Number(practice));
+  const [access, setAccess] = useState<"checking" | "allowed" | "locked">("checking");
+
+  useEffect(() => {
+    if (!mod || !found) return;
+    if (found.number === 1) {
+      setAccess("allowed");
+      return;
+    }
+    let alive = true;
+    void ReviewProgress.load(mod.id).then((rows) => {
+      if (!alive) return;
+      const prev = rows.find((r) => r.practiceNumber === ((found.number - 1) as ReviewPracticeNumber));
+      setAccess((prev?.completedCount ?? 0) > 0 ? "allowed" : "locked");
+    });
+    return () => {
+      alive = false;
+    };
+  }, [mod, found]);
 
   if (!mod || !found) return <Navigate to="/review" replace />;
+  if (access === "locked")
+    return <Navigate to="/review/$moduleId" params={{ moduleId: mod.id as ReviewModuleId }} replace />;
+  if (access === "checking") return <AppShell><div className="p-4 text-sm text-muted-foreground">…</div></AppShell>;
 
   return (
     <AppShell>
