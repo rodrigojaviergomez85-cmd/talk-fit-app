@@ -1,6 +1,7 @@
 import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, CheckCircle2, Lock } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Lock } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 import { AppShell } from "@/components/fluency/AppShell";
 import { ReviewGuide } from "@/components/review/ReviewGuide";
