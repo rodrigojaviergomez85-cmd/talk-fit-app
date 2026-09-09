@@ -28,7 +28,7 @@ export const Route = createFileRoute("/report")({
   component: ReportPage,
 });
 
-const AREA_KEYS: Record<BugReportArea, string> = {
+const AREA_KEYS = {
   home: "report.areaHome",
   practice: "report.areaPractice",
   coach: "report.areaCoach",
@@ -36,7 +36,7 @@ const AREA_KEYS: Record<BugReportArea, string> = {
   recordings: "report.areaRecordings",
   account: "report.areaAccount",
   other: "report.areaOther",
-};
+} as const satisfies Record<BugReportArea, string>;
 
 function toBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
