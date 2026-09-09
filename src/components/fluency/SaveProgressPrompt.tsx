@@ -111,6 +111,7 @@ export function SaveProgressPrompt({ moduleId }: { moduleId: ModuleId }) {
             placeholder={t("account.password")}
             className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-[15px]"
           />
+          <p className="text-[12px] leading-relaxed text-muted-foreground">{t("account.passwordHint")}</p>
           <button
             type="button"
             disabled={busy || !email || !password}
