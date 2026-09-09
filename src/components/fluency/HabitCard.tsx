@@ -51,13 +51,10 @@ export function HabitCard({ state, variant = "home" }: Props) {
           <HabitCalendar done={shown} es={es} />
         </div>
 
-        <div className="mt-2 flex items-center justify-between gap-3">
+        <div className="mt-2 flex items-center gap-3">
           <p className="text-[13px] font-semibold text-muted-foreground tabular-nums">
             {t("home.habitDaysOf").replace("{done}", String(shown))}
           </p>
-          <Link to="/progress" className="flex items-center gap-1 text-[13px] font-bold text-foreground">
-            {t("home.seeProgress")} <span aria-hidden>→</span>
-          </Link>
         </div>
 
         {complete ? (
