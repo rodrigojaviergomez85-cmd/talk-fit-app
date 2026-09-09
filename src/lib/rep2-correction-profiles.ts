@@ -222,6 +222,8 @@ const PROFILES: Partial<Record<ModuleId, Rep2CorrectionProfile>> = {
 };
 
 export function getRep2CorrectionProfile(moduleId: ModuleId | string): Rep2CorrectionProfile {
+  // REVIEW reuses the profile of the grammar it reinforces (never its own tuning).
+  if (moduleId === "review-simple-present") return SIMPLE_PRESENT_PROFILE;
   return PROFILES[moduleId as ModuleId] ?? GENERIC_PROFILE;
 }
 
@@ -235,7 +237,9 @@ export function getRep2CorrectionProfile(moduleId: ModuleId | string): Rep2Corre
  * `isRep2CorrectionEnabled` (rep-structure.ts), shared by the Practice screen
  * and the `/api/rep2-correction` server guard.
  */
-const ROLLOUT_MODULES: ReadonlySet<ModuleId> = new Set<ModuleId>([
+const ROLLOUT_MODULES: ReadonlySet<string> = new Set<string>([
+  // REVIEW modules: same STEP 2 spoken correction as the course.
+  "review-simple-present",
   "basic-zero",
   "simple-future",
   "simple-present",
@@ -250,5 +254,5 @@ const ROLLOUT_MODULES: ReadonlySet<ModuleId> = new Set<ModuleId>([
 ]);
 
 export function hasRep2CorrectionRollout(moduleId: ModuleId | string): boolean {
-  return ROLLOUT_MODULES.has(moduleId as ModuleId);
+  return ROLLOUT_MODULES.has(moduleId);
 }

@@ -1404,7 +1404,7 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 
 /* -------------------------------- Rep 2 ---------------------------------- */
 
-function Rep2Copy({
+export function Rep2Copy({
   moduleId,
   day,
   index,
@@ -1649,7 +1649,7 @@ function NoAiDisclaimer({ tKey }: { tKey: "rep3.noAi" | "rep4.noAi" }) {
  * Live shadowing only: continuous model audio + chunk highlight, the learner
  * speaks WITH the model. No recording, no images — deliberately unlike Rep 2.
  */
-function Rep3Shadow({ day, onNext, onSkip }: { day: CourseDay; onNext: () => void; onSkip: () => void }) {
+export function Rep3Shadow({ day, onNext, onSkip }: { day: CourseDay; onNext: () => void; onSkip: () => void }) {
   return (
     <div className="space-y-4">
       <div className="rounded-3xl bg-navy p-5 space-y-2">
@@ -1670,7 +1670,7 @@ function Rep3Shadow({ day, onNext, onSkip }: { day: CourseDay; onNext: () => voi
 
 /* -------------------------------- Rep 4 ---------------------------------- */
 
-function Rep4MakeItYours({
+export function Rep4MakeItYours({
   day,
   index,
   attempted,
@@ -1781,7 +1781,7 @@ function Rep4MakeItYours({
 
 /* -------------------------------- Rep 5 ---------------------------------- */
 
-function Rep5FinalRep({
+export function Rep5FinalRep({
   moduleId,
   day,
   takes,

@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { getReviewModule, getReviewPractice, loadReviewDay, listReviewModules } from "./review-registry";
 import { REVIEW_PRACTICE_COUNT, isReviewModuleId } from "@/lib/review-types";
+import { rep4Items } from "@/lib/rep-structure";
+import { reviewPracticeToCourseDay } from "./review-registry";
+import { SIMPLE_PRESENT_PRACTICES } from "./simple-present-practices";
 
 describe("Review · Simple Present content", () => {
   const mod = getReviewModule("review-simple-present")!;
@@ -45,5 +48,28 @@ describe("Review · identity isolation", () => {
 
   it("lists only review modules", () => {
     expect(listReviewModules().every((m) => isReviewModuleId(m.id))).toBe(true);
+  });
+});
+
+const WH = ["HOW OFTEN", "HOW LONG", "WHAT TIME", "WHAT", "WHERE", "WHEN", "WHY", "WHO", "HOW"];
+const whOf = (q: string) => WH.find((w) => q.toUpperCase().includes(w)) ?? "";
+
+describe("review step 4 questions", () => {
+  it("shows exactly three prompts per practice, with a different WH word each", () => {
+    for (const practice of SIMPLE_PRESENT_PRACTICES) {
+      const items = rep4Items(reviewPracticeToCourseDay(practice));
+      expect(items).toHaveLength(3);
+      const cues = items.map((i) => whOf(i.question));
+      expect(cues.every(Boolean)).toBe(true);
+      expect(new Set(cues).size).toBe(3);
+    }
+  });
+
+  it("covers HOW OFTEN and HOW LONG across the module", () => {
+    const cues = SIMPLE_PRESENT_PRACTICES.flatMap((p) =>
+      rep4Items(reviewPracticeToCourseDay(p)).map((i) => whOf(i.question)),
+    );
+    expect(cues).toContain("HOW OFTEN");
+    expect(cues).toContain("HOW LONG");
   });
 });
