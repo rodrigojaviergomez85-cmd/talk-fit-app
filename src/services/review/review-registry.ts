@@ -11,6 +11,8 @@ import {
 } from "@/lib/review-types";
 import { SIMPLE_PRESENT_GUIDE } from "./simple-present-guide";
 import { SIMPLE_PRESENT_PRACTICES } from "./simple-present-practices";
+import { PRESENT_PROGRESSIVE_GUIDE } from "./present-progressive-guide";
+import { PRESENT_PROGRESSIVE_PRACTICES } from "./present-progressive-practices";
 
 /**
  * Trusted, server-usable registry of Review content.
