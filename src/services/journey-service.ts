@@ -221,10 +221,13 @@ export const JourneyService = {
     const modules = CourseService.modules();
     const index = modules.findIndex((m) => m.id === moduleId);
     if (index <= 0) return true;
-    // ADVANCED is CYCLICAL, not a ladder: ADVANCED 1 / 2 / 3 are parallel entry
-    // points and are always open — they never require ADVANCED 1 or any earlier
-    // module to be finished first.
-    if (modules[index]!.family === "advanced") return true;
+    // ADVANCED is CYCLICAL among itself (A1 / A2 / A3 are parallel entry points),
+    // but the whole family only opens once the three INTERMEDIATE modules
+    // (EAGLES, TIGERS, SHARKS) are complete.
+    if (modules[index]!.family === "advanced") {
+      return INTERMEDIATE_MODULES.every((id) => JourneyService.moduleComplete(state, id));
+    }
+
 
     if (JourneyService.moduleComplete(state, modules[index - 1]!.id)) return true;
     if (JourneyService.completedCount(state, moduleId) > 0) return true;
