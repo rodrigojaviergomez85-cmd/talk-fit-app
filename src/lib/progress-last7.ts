@@ -22,6 +22,22 @@ export function last7PracticeDays(state: JourneyState): number {
   return habitDatesOf(state).filter((d) => keys.has(d)).length;
 }
 
+/**
+ * The last 7 local calendar dates, oldest first, each flagged when that exact
+ * date has a qualifying practice. One cell per calendar day — never per practice.
+ */
+export function last7Calendar(state: JourneyState): { key: string; date: Date; practiced: boolean }[] {
+  const practiced = new Set(habitDatesOf(state));
+  const now = Date.now();
+  const out: { key: string; date: Date; practiced: boolean }[] = [];
+  for (let i = 6; i >= 0; i -= 1) {
+    const date = new Date(now - i * 86400000);
+    const key = JourneyService.dayKey(date);
+    out.push({ key, date, practiced: practiced.has(key) });
+  }
+  return out;
+}
+
 /** Real speaking seconds in the last 7 days (0 when nothing recorded). */
 export function last7SpeakingSeconds(state: JourneyState): number {
   const keys = last7Keys();
