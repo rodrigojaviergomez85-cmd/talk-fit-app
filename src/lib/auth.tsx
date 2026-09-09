@@ -105,6 +105,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         PracticeAttempts.clearLocalCache();
         VerbBank.hydrate({});
         scopeTo(null);
+        setUnlimitedAccess(null);
       },
     }),
     [user, loading, sync],
