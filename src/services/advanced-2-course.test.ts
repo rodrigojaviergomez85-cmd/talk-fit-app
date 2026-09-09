@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { CourseService } from "./course-service";
-import { JourneyService } from "./journey-service";
+import { JourneyService, recordKey } from "./journey-service";
 import { MODULE_INDEX, isModuleId, UPCOMING_LEVELS } from "./course-index";
 import { ADVANCED_2_WEEK_1_DAYS } from "./advanced-2-course";
 import { ADVANCED_2_WEEKS_2_4_DAYS } from "./advanced-2-weeks-2-4-course";
