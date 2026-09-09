@@ -30,6 +30,8 @@ import { COMPARATIVES_GUIDE, COMPARATIVES_COMMON_ERRORS } from "./comparatives-g
 import { COMPARATIVES_PRACTICES } from "./comparatives-practices";
 import { MODALS_GUIDE, MODALS_COMMON_ERRORS } from "./modals-guide";
 import { MODALS_PRACTICES } from "./modals-practices";
+import { USED_TO_GUIDE, USED_TO_COMMON_ERRORS } from "./used-to-guide";
+import { USED_TO_PRACTICES } from "./used-to-practices";
 
 /**
  * Trusted, server-usable registry of Review content.
@@ -135,6 +137,17 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     guide: MODALS_GUIDE,
     commonErrors: MODALS_COMMON_ERRORS,
     practices: MODALS_PRACTICES,
+  },
+  "review-used-to": {
+    id: "review-used-to",
+    label: "REVIEW",
+    title: "Used to, Be used to & Get used to",
+    titleEs: "Used to, Be used to y Get used to",
+    subtitle: "Past habits, familiar situations and adaptation — five complete speaking practices.",
+    subtitleEs: "Hábitos pasados, situaciones familiares y adaptación: cinco prácticas completas de speaking.",
+    guide: USED_TO_GUIDE,
+    commonErrors: USED_TO_COMMON_ERRORS,
+    practices: USED_TO_PRACTICES,
   },
 };
 
