@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Lock } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { ReviewGuide } from "@/components/review/ReviewGuide";
 import { useAppLang } from "@/lib/i18n";
@@ -57,6 +57,42 @@ function ReviewModulePage() {
         <div className="space-y-3">
           {mod.practices.map((p) => {
             const done = (progress.find((r) => r.practiceNumber === p.number)?.completedCount ?? 0) > 0;
+            const prevDone = p.number === 1 || (progress.find((r) => r.practiceNumber === ((p.number - 1) as typeof p.number))?.completedCount ?? 0) > 0;
+            const locked = !prevDone;
+
+            const inner = (
+              <>
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-extrabold text-foreground">
+                  {p.number}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-base font-bold text-foreground">{p.title}</span>
+                  <span className="block truncate text-xs text-muted-foreground">
+                    {locked ? (showEs ? "Completa la práctica anterior" : "Complete the previous practice") : p.titleEs}
+                  </span>
+                </span>
+                {locked ? (
+                  <Lock className="size-5 text-muted-foreground" />
+                ) : done ? (
+                  <CheckCircle2 className="size-5 text-primary" />
+                ) : (
+                  <ArrowRight className="size-5 text-muted-foreground" />
+                )}
+              </>
+            );
+
+            if (locked) {
+              return (
+                <div
+                  key={p.id}
+                  aria-disabled="true"
+                  className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 opacity-60"
+                >
+                  {inner}
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={p.id}
@@ -64,14 +100,7 @@ function ReviewModulePage() {
                 params={{ moduleId: mod.id as ReviewModuleId, practice: String(p.number) }}
                 className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 transition hover:border-primary"
               >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-extrabold text-foreground">
-                  {p.number}
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-base font-bold text-foreground">{p.title}</span>
-                  <span className="block truncate text-xs text-muted-foreground">{p.titleEs}</span>
-                </span>
-                {done ? <CheckCircle2 className="size-5 text-primary" /> : <ArrowRight className="size-5 text-muted-foreground" />}
+                {inner}
               </Link>
             );
           })}
