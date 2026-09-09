@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AppShell } from "@/components/fluency/AppShell";
 import { ReviewGuide } from "@/components/review/ReviewGuide";
+import { useAuth } from "@/lib/auth";
 import { useAppLang } from "@/lib/i18n";
 import { getReviewModule } from "@/services/review/review-registry";
 import { ReviewProgress, type ReviewPracticeProgress } from "@/services/review/review-progress";
@@ -34,17 +35,18 @@ function ReviewModulePage() {
   const { lang } = useAppLang();
   const showEs = lang === "es";
   const mod = getReviewModule(moduleId);
+  const { loading, sync, user } = useAuth();
   const [progress, setProgress] = useState<ReviewPracticeProgress[]>(ReviewProgress.emptyList());
   // Read after hydration only: localStorage is not available while rendering on the server.
   const [moduleAccess, setModuleAccess] = useState<"checking" | "allowed" | "locked">("checking");
   const [unlimited, setUnlimited] = useState(false);
 
   useEffect(() => {
-    if (!mod) return;
+    if (!mod || loading) return;
     const snapshot = getReviewAccessSnapshot();
     setUnlimited(snapshot.unlimited);
     setModuleAccess(isReviewModuleAccessible(mod, snapshot.currentModuleId, snapshot.unlimited) ? "allowed" : "locked");
-  }, [mod]);
+  }, [loading, mod, sync, user?.email]);
 
   useEffect(() => {
     if (!mod) return;

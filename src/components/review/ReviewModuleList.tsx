@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Lock } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth";
 import type { ModuleId } from "@/lib/types";
 import type { ReviewModule } from "@/lib/review-types";
 import {
@@ -20,10 +21,12 @@ export function ReviewModuleList({
   showEs: boolean;
 }) {
   const [access, setAccess] = useState<AccessSnapshot | null>(null);
+  const { loading, sync, user } = useAuth();
 
   useEffect(() => {
+    if (loading) return;
     setAccess(getReviewAccessSnapshot());
-  }, []);
+  }, [loading, sync, user?.email]);
 
   return (
     <>
