@@ -29,6 +29,62 @@ export function HabitCard({ state, variant = "home" }: Props) {
   const percent = Math.round((shown / HABIT_GOAL) * 100);
   const nextPractice = variant === "home" && recovery ? JourneyService.nextPractice(state) : null;
 
+  if (variant === "home") {
+    return (
+      <section
+        className={cn(
+          "rounded-3xl border bg-card p-5 shadow-[var(--shadow-card)]",
+          recovery ? "border-primary/40" : "border-border",
+        )}
+        aria-label={es ? "Hábito de inglés de 66 días" : "66-day English habit"}
+      >
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-[18px] font-extrabold tracking-tight">{t("home.consistency")}</h2>
+          <p className="flex items-center gap-1 text-[15px] font-extrabold tabular-nums">
+            <Flame className="size-5 text-primary" aria-hidden />
+            {streak} {es ? (streak === 1 ? "día" : "días") : streak === 1 ? "day" : "days"}
+          </p>
+        </div>
+
+        <div className="mt-3">
+          <HabitCalendar done={shown} es={es} />
+        </div>
+
+        <div className="mt-2 flex items-center justify-between gap-3">
+          <p className="text-[13px] font-semibold text-muted-foreground tabular-nums">
+            {t("home.habitDaysOf").replace("{done}", String(shown))}
+          </p>
+          <Link to="/progress" className="flex items-center gap-1 text-[13px] font-bold text-foreground">
+            {t("home.seeProgress")} <span aria-hidden>→</span>
+          </Link>
+        </div>
+
+        {complete ? (
+          <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.14em] text-success">
+            {es ? "HÁBITO DE 66 DÍAS COMPLETADO ✓" : "66-DAY HABIT COMPLETE ✓"}
+          </p>
+        ) : null}
+
+        {countdown !== null ? (
+          <p className="mt-2 text-[13px] font-extrabold text-primary">
+            {es ? "FINAL 6" : "FINAL 6"} · {countdown}{" "}
+            {es ? (countdown === 1 ? "DÍA MÁS" : "DÍAS MÁS") : countdown === 1 ? "MORE DAY" : "MORE DAYS"}
+          </p>
+        ) : null}
+
+        {recovery && nextPractice ? (
+          <Link
+            to="/practice"
+            search={{ day: nextPractice.day, module: nextPractice.moduleId }}
+            className="mt-3 flex min-h-[44px] w-full items-center justify-center rounded-2xl bg-primary px-4 text-[12px] font-bold uppercase tracking-[0.14em] text-primary-foreground"
+          >
+            {es ? "CONTINUAR MI PRÁCTICA" : "CONTINUE MY PRACTICE"}
+          </Link>
+        ) : null}
+      </section>
+    );
+  }
+
   return (
     <section
       className={cn(
@@ -37,6 +93,7 @@ export function HabitCard({ state, variant = "home" }: Props) {
       )}
       aria-label={es ? "Hábito de inglés de 66 días" : "66-day English habit"}
     >
+
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
