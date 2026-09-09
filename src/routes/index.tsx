@@ -5,6 +5,7 @@ import { AppShell } from "@/components/fluency/AppShell";
 import { CurrentModuleCard } from "@/components/fluency/CurrentModuleCard";
 import { NextModuleLocked } from "@/components/fluency/NextModuleLocked";
 import { HabitCard } from "@/components/fluency/HabitCard";
+import { HomeGreeting } from "@/components/fluency/HomeGreeting";
 import { Progression } from "@/services/progression";
 import { getPendingPlacement } from "@/services/preferences";
 import { useAuth } from "@/lib/auth";
@@ -80,6 +81,7 @@ function HomePage() {
   return (
     <AppShell title={t("home.today")}>
       <div className="space-y-6">
+        <HomeGreeting />
         <CurrentModuleCard state={state} />
         <Link
           to="/coach-check"
