@@ -68,24 +68,13 @@ function ProgressPage() {
   }, [load]);
 
   const safe = state ?? emptyJourney;
-  const modules = CourseService.modules();
   const totalDays = CourseService.totalDaysAll();
   const completedCount = JourneyService.completedCount(safe);
-  const week = JourneyService.weekStats(safe);
-  const next = JourneyService.nextPractice(safe);
-  const currentModuleId = next?.moduleId ?? JourneyService.currentModule(safe);
-  const currentIndex = CourseService.displayIndex(currentModuleId);
-  const forward = modules.filter((m) => CourseService.displayIndex(m.id) >= currentIndex);
-  const review = modules.filter((m) => CourseService.displayIndex(m.id) < currentIndex);
   const bests = JourneyService.personalBests(safe);
-  
-  const habitCount = habitDays(safe);
-  const habit = habitDisplay(habitCount);
-  const habitPercent = Math.round((habit.shown / HABIT_GOAL) * 100);
 
   if (!state) {
     return (
-      <AppShell title={t("prog.title")}>
+      <AppShell title={t("prog.title")} subtitle={t("prog.subtitle")}>
         <div className="space-y-3" aria-busy="true">
           {[0, 1, 2, 3].map((i) => (
             <div key={i} className="h-24 animate-pulse rounded-3xl bg-secondary" />
