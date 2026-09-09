@@ -11,6 +11,7 @@ import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { PracticeSessionService } from "@/services/practice-session";
 import { TestReadyService } from "@/services/test-ready-service";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
+import { ModuleBadge } from "@/components/fluency/ModuleBadge";
 import type { CourseDay, JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useAppLang, useT } from "@/lib/i18n";
