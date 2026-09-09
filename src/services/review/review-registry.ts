@@ -9,9 +9,9 @@ import {
   type ReviewPractice,
   type ReviewPracticeNumber,
 } from "@/lib/review-types";
-import { SIMPLE_PRESENT_GUIDE } from "./simple-present-guide";
+import { SIMPLE_PRESENT_GUIDE, SIMPLE_PRESENT_COMMON_ERRORS } from "./simple-present-guide";
 import { SIMPLE_PRESENT_PRACTICES } from "./simple-present-practices";
-import { PRESENT_PROGRESSIVE_GUIDE } from "./present-progressive-guide";
+import { PRESENT_PROGRESSIVE_GUIDE, PRESENT_PROGRESSIVE_COMMON_ERRORS } from "./present-progressive-guide";
 import { PRESENT_PROGRESSIVE_PRACTICES } from "./present-progressive-practices";
 
 /**
@@ -28,6 +28,7 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     subtitle: "Routines, habits and facts — five complete speaking practices.",
     subtitleEs: "Rutinas, hábitos y hechos: cinco prácticas completas de speaking.",
     guide: SIMPLE_PRESENT_GUIDE,
+    commonErrors: SIMPLE_PRESENT_COMMON_ERRORS,
     practices: SIMPLE_PRESENT_PRACTICES,
   },
   "review-present-progressive": {
@@ -38,6 +39,7 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     subtitle: "What is happening right now — five complete speaking practices.",
     subtitleEs: "Lo que está pasando ahora mismo: cinco prácticas completas de speaking.",
     guide: PRESENT_PROGRESSIVE_GUIDE,
+    commonErrors: PRESENT_PROGRESSIVE_COMMON_ERRORS,
     practices: PRESENT_PROGRESSIVE_PRACTICES,
   },
 };

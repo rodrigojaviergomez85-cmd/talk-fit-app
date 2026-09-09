@@ -51,6 +51,8 @@ export type ReviewGuideCard = {
   explanationEs: string;
   explanation: string;
   examples: ReviewExample[];
+  /** Optional reference illustration for the card (static asset URL). */
+  image?: { src: string; alt: string; altEs: string } | undefined;
   /** Small spoken check between cards (say it out loud, no AI). */
   check?: { promptEs: string; prompt: string; answer: string } | undefined;
 };
@@ -106,5 +108,7 @@ export type ReviewModule = {
   subtitle: string;
   subtitleEs: string;
   guide: ReviewGuideCard[];
+  /** Module-specific typical mistakes shown at the end of the guide. */
+  commonErrors: { wrong: string; right: string; es: string }[];
   practices: ReviewPractice[];
 };
