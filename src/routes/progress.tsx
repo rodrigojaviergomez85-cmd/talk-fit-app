@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { RecordingsPanel } from "@/components/fluency/RecordingsPanel";
 import { Check, ChevronDown, Lock, Mic, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
