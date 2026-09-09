@@ -91,9 +91,10 @@ export const SIMPLE_PAST_PRACTICES: ReviewPractice[] = [
     ],
     questions: [
       { id: "spast2-q1", question: "What did you do yesterday morning?", questionEs: "¿Qué hiciste ayer en la mañana?", hint: "Yesterday morning I…", hintEs: "Empieza con la expresión de tiempo." },
-      { id: "spast2-q2", question: "What did you eat yesterday?", questionEs: "¿Qué comiste ayer?", hint: "I ate… / I had…", hintEs: "eat → ate, have → had." },
-      { id: "spast2-q3", question: "What didn't you do yesterday?", questionEs: "¿Qué no hiciste ayer?", hint: "I didn't…", hintEs: "didn't + verbo base, nunca didn't went." },
-      { id: "spast2-q4", question: "How long did you study or work yesterday?", questionEs: "¿Cuánto tiempo estudiaste o trabajaste ayer?", hint: "I studied for…", hintEs: "Usa for + tiempo." },
+      { id: "spast2-q2", question: "How often did you practice English last week?", questionEs: "¿Con qué frecuencia practicaste inglés la semana pasada?", hint: "I practiced… times.", hintEs: "Usa una frecuencia: twice, three times." },
+      { id: "spast2-q3", question: "Where did you go yesterday?", questionEs: "¿Adónde fuiste ayer?", hint: "I went to…", hintEs: "go → went." },
+      { id: "spast2-q4", question: "What didn't you do yesterday?", questionEs: "¿Qué no hiciste ayer?", hint: "I didn't…", hintEs: "didn't + verbo base, nunca didn't went." },
+      { id: "spast2-q7", question: "How long did you study or work yesterday?", questionEs: "¿Cuánto tiempo estudiaste o trabajaste ayer?", hint: "I studied for…", hintEs: "Usa for + tiempo." },
       { id: "spast2-q5", question: "Who did you talk to last night?", questionEs: "¿Con quién hablaste anoche?", hint: "I talked to…", hintEs: "talk → talked." },
       { id: "spast2-q6", question: "How were you at the end of the day?", questionEs: "¿Cómo estabas al final del día?", hint: "I was…", hintEs: "Usa was + adjetivo." },
     ],
