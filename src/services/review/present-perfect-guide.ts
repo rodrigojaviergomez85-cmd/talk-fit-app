@@ -1,4 +1,11 @@
 import type { ReviewGuideCard } from "@/lib/review-types";
+import g1 from "@/assets/review/pperf1-use.jpg";
+import g2 from "@/assets/review/pperf2-formula.jpg";
+import g3 from "@/assets/review/pperf3-participles.jpg";
+import g4 from "@/assets/review/pperf4-ever-never.jpg";
+import g5 from "@/assets/review/pperf5-already-yet-just.jpg";
+import g6 from "@/assets/review/pperf6-for-since.jpg";
+import g7 from "@/assets/review/pperf7-questions.jpg";
 
 /**
  * "ENTIÉNDELO FÁCIL" — the seven Present Perfect basics (have / has + participle).
@@ -14,6 +21,7 @@ export const PRESENT_PERFECT_GUIDE: ReviewGuideCard[] = [
       "The present perfect connects the past with now: experiences in your life and actions with a result today.",
     explanationEs:
       "El present perfect conecta el pasado con el ahora: experiencias de tu vida y acciones que tienen resultado hoy. No dice CUÁNDO pasó exactamente; si dices el momento exacto (yesterday, in 2019), usas pasado simple.",
+    image: { src: g1, alt: "A woman today with a memory of her past work connected by an arrow", altEs: "Una mujer hoy con un recuerdo de su trabajo pasado unidos por una flecha" },
     examples: [
       { en: "I have worked in a call center.", es: "He trabajado en un call center." },
       { en: "She has finished the report.", es: "Ella ha terminado el reporte." },
@@ -32,6 +40,7 @@ export const PRESENT_PERFECT_GUIDE: ReviewGuideCard[] = [
     explanation: "I / you / we / they have. He / she / it has. The verb after it never changes.",
     explanationEs:
       "I, you, we, they → have. He, she, it → has. Después va el participio y ya no cambia: worked, studied, gone, seen, done. “He have worked” y “She has work” están mal.",
+    image: { src: g2, alt: "Groups of people fitting the same verb piece", altEs: "Grupos de personas encajando la misma pieza del verbo" },
     examples: [
       { en: "I have studied English for two years.", es: "He estudiado inglés por dos años." },
       { en: "He has sent the email.", es: "Él ha enviado el correo." },
@@ -50,6 +59,7 @@ export const PRESENT_PERFECT_GUIDE: ReviewGuideCard[] = [
     explanation: "Regular verbs add -ed. Irregular verbs have their own form and you learn them by using them.",
     explanationEs:
       "Verbos regulares: work → worked, study → studied. Irregulares: go → gone, see → seen, do → done, be → been, take → taken, write → written, eat → eaten, speak → spoken. Ojo: “I have went” está mal; es “I have gone”.",
+    image: { src: g3, alt: "Finished actions marked with checkmarks", altEs: "Acciones terminadas marcadas con palomitas" },
     examples: [
       { en: "I have gone to that store many times.", es: "He ido a esa tienda muchas veces." },
       { en: "She has written three emails today.", es: "Ella ha escrito tres correos hoy." },
@@ -68,6 +78,7 @@ export const PRESENT_PERFECT_GUIDE: ReviewGuideCard[] = [
     explanation: "Use ever in questions about your whole life, and never for no experience.",
     explanationEs:
       "Have you ever…? = ¿Alguna vez has…? La respuesta corta: Yes, I have / No, I haven't. Never ya es negativo: no digas “I haven't never”.",
+    image: { src: g4, alt: "Asking about a life experience and having never done it", altEs: "Preguntar por una experiencia de vida y nunca haberlo hecho" },
     examples: [
       { en: "Have you ever worked at night?", es: "¿Alguna vez has trabajado de noche?" },
       { en: "I have never been to Canada.", es: "Nunca he estado en Canadá." },
@@ -86,6 +97,7 @@ export const PRESENT_PERFECT_GUIDE: ReviewGuideCard[] = [
     explanation: "Already = it is done. Yet = not until now (negatives and questions). Just = a moment ago.",
     explanationEs:
       "Already = ya (afirmativo). Yet = todavía / ya, y va al final en negativas y preguntas: I haven't finished yet. Have you finished yet? Just = apenas: I have just arrived.",
+    image: { src: g5, alt: "Something already done, something not done yet and someone who just arrived", altEs: "Algo ya hecho, algo todavía no hecho y alguien que apenas llegó" },
     examples: [
       { en: "I have already sent the report.", es: "Ya envié el reporte." },
       { en: "She hasn't answered yet.", es: "Ella todavía no ha contestado." },
@@ -104,6 +116,7 @@ export const PRESENT_PERFECT_GUIDE: ReviewGuideCard[] = [
     explanation: "For + a period of time. Since + the moment it started.",
     explanationEs:
       "For + tiempo que dura: for two years, for six months, for a long time. Since + momento en que empezó: since 2020, since Monday, since I was a child.",
+    image: { src: g6, alt: "A timeline from a start date to right now", altEs: "Una línea de tiempo desde una fecha de inicio hasta ahora" },
     examples: [
       { en: "I have worked here for three years.", es: "He trabajado aquí por tres años." },
       { en: "She has lived in this city since 2019.", es: "Ella ha vivido en esta ciudad desde 2019." },
@@ -122,6 +135,7 @@ export const PRESENT_PERFECT_GUIDE: ReviewGuideCard[] = [
     explanation: "Have / Has goes first in questions. Haven't / hasn't for negatives.",
     explanationEs:
       "Pregunta: Have you finished? Has he called? What have you done today? Negativa: I haven't finished. He hasn't called. El participio nunca cambia.",
+    image: { src: g7, alt: "One person asking and another answering in the negative", altEs: "Una persona preguntando y otra respondiendo en negativo" },
     examples: [
       { en: "Have you finished the training?", es: "¿Ya terminaste la capacitación?" },
       { en: "What has she done today?", es: "¿Qué ha hecho ella hoy?" },
