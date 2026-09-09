@@ -38,7 +38,7 @@ export function HomeGreeting() {
         {greeting}
         {pretty ? `, ${pretty}` : ""}
       </h1>
-      <p className="mt-0.5 text-[12px] font-semibold capitalize text-muted-foreground">{date}</p>
+      <p className="mt-0.5 text-[12px] font-semibold text-muted-foreground">{date}</p>
     </div>
   );
 }
