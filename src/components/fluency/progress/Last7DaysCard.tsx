@@ -16,6 +16,8 @@ export function Last7DaysCard({ state }: { state: JourneyState }) {
   const es = lang === "es";
 
   const days = last7PracticeDays(state);
+  const calendar = last7Calendar(state);
+  const weekdays = es ? ["D", "L", "M", "M", "J", "V", "S"] : ["S", "M", "T", "W", "T", "F", "S"];
   const met = days >= GOAL;
   const time = speakingTimeLabel(state);
   let timeText: string;
