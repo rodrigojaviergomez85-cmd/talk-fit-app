@@ -1,1 +1,4 @@
 - [x] Add combined Past Perfect + Past Perfect Progressive Review module with five practices and images
+- [ ] Add Review category menus and level-based module access
+- [ ] Protect direct Review URLs and preserve unlimited accounts
+- [ ] Verify the full access matrix and mobile navigation
