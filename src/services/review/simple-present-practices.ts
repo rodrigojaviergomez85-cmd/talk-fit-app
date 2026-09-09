@@ -1,4 +1,7 @@
 import type { ReviewPractice } from "@/lib/review-types";
+import sceneSp1 from "@/assets/review/scene-sp1-elena.jpg";
+import sceneSp3 from "@/assets/review/scene-sp3-marco.jpg";
+import sceneSp5 from "@/assets/review/scene-sp5-sofia.jpg";
 
 /**
  * REVIEW · SIMPLE PRESENT — five static practices.
@@ -27,6 +30,7 @@ export const SIMPLE_PRESENT_PRACTICES: ReviewPractice[] = [
       en: "Elena is a student. Learn her weekday routine and then describe it out loud.",
       es: "Elena es estudiante. Aprende su rutina entre semana y después descríbela en voz alta.",
     },
+    sceneImage: { src: sceneSp1, alt: "Elena's weekday routine", altEs: "La rutina de Elena entre semana" },
     vocabulary: ["wake up", "take the bus", "class", "homework", "cook dinner", "on Sundays", "early", "at home"],
     lines: [
       { id: "p1-l1", text: "Elena wakes up at six in the morning.", es: "Elena se despierta a las seis de la mañana.", chunks: ["Elena wakes up", "at six", "in the morning."] },
@@ -132,6 +136,7 @@ export const SIMPLE_PRESENT_PRACTICES: ReviewPractice[] = [
       en: "Marco studies at night and loves cooking and exercising. Learn how often he does things.",
       es: "Marco estudia de noche y le encanta cocinar y hacer ejercicio. Aprende con qué frecuencia hace cada cosa.",
     },
+    sceneImage: { src: sceneSp3, alt: "Marco cooking, exercising and eating out", altEs: "Marco cocinando, haciendo ejercicio y comiendo fuera" },
     vocabulary: ["usually", "sometimes", "never", "twice a week", "cook at home", "exercise", "healthy", "how often"],
     lines: [
       { id: "p3-l1", text: "Marco usually cooks at home.", es: "Marco normalmente cocina en casa.", chunks: ["Marco usually cooks", "at home."] },
@@ -236,6 +241,7 @@ export const SIMPLE_PRESENT_PRACTICES: ReviewPractice[] = [
       en: "You get facts about Sofía, not a full model answer. Build the description yourself.",
       es: "Recibes datos sobre Sofía, no un monólogo completo. Tú construyes la descripción.",
     },
+    sceneImage: { src: sceneSp5, alt: "Sofía's weekend routine", altEs: "La rutina de fin de semana de Sofía" },
     vocabulary: ["weekend", "responsibilities", "take care of", "clean", "visit", "prefer", "rarely", "in the morning"],
     factSheet: [
       { en: "Sofía · 28 · lives with her sister", es: "Sofía · 28 años · vive con su hermana" },

@@ -95,6 +95,8 @@ export type ReviewPractice = {
   questions: ReviewQuestion[];
   /** Practice 5: key facts instead of a full model monologue. */
   factSheet?: ReviewExample[] | undefined;
+  /** Reference illustration of the scene the learner is describing (3rd person). */
+  sceneImage?: { src: string; alt: string; altEs: string } | undefined;
   finalPrompt: { question: string; questionEs: string; tips: { en: string; es: string } };
   /** What the AI feedback evaluates for this practice. */
   grammarGoals: string[];
