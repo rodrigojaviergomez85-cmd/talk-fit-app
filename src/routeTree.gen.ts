@@ -20,7 +20,6 @@ import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as RecordingsRouteImport } from './routes/recordings'
 import { Route as ReportRouteImport } from './routes/report'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as ReviewRouteImport } from './routes/review'
 import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
 import { Route as AdminBugReportsRouteImport } from './routes/admin.bug-reports'
@@ -32,6 +31,7 @@ import { Route as ApiRep2CorrectionRouteImport } from './routes/api/rep2-correct
 import { Route as ApiSentenceCountRouteImport } from './routes/api/sentence-count'
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as ModuleModuleIdRouteImport } from './routes/module.$moduleId'
+import { Route as ReviewIndexRouteImport } from './routes/review.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -86,11 +86,6 @@ const ReportRoute = ReportRouteImport.update({
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReviewRoute = ReviewRouteImport.update({
-  id: '/review',
-  path: '/review',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SprintRoute = SprintRouteImport.update({
@@ -149,6 +144,11 @@ const ModuleModuleIdRoute = ModuleModuleIdRouteImport.update({
   path: '/module/$moduleId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReviewIndexRoute = ReviewIndexRouteImport.update({
+  id: '/review/',
+  path: '/review/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -162,7 +162,6 @@ export interface FileRoutesByFullPath {
   '/recordings': typeof RecordingsRoute
   '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/review': typeof ReviewRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
@@ -174,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
+  '/review/': typeof ReviewIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -187,7 +187,6 @@ export interface FileRoutesByTo {
   '/recordings': typeof RecordingsRoute
   '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/review': typeof ReviewRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
@@ -199,6 +198,7 @@ export interface FileRoutesByTo {
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
+  '/review': typeof ReviewIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -213,7 +213,6 @@ export interface FileRoutesById {
   '/recordings': typeof RecordingsRoute
   '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/review': typeof ReviewRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
@@ -225,6 +224,7 @@ export interface FileRoutesById {
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
+  '/review/': typeof ReviewIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -240,7 +240,6 @@ export interface FileRouteTypes {
     | '/recordings'
     | '/report'
     | '/reset-password'
-    | '/review'
     | '/sprint'
     | '/verb-bank'
     | '/admin/bug-reports'
@@ -252,6 +251,7 @@ export interface FileRouteTypes {
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
+    | '/review/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -265,7 +265,6 @@ export interface FileRouteTypes {
     | '/recordings'
     | '/report'
     | '/reset-password'
-    | '/review'
     | '/sprint'
     | '/verb-bank'
     | '/admin/bug-reports'
@@ -277,6 +276,7 @@ export interface FileRouteTypes {
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
+    | '/review'
   id:
     | '__root__'
     | '/'
@@ -290,7 +290,6 @@ export interface FileRouteTypes {
     | '/recordings'
     | '/report'
     | '/reset-password'
-    | '/review'
     | '/sprint'
     | '/verb-bank'
     | '/admin/bug-reports'
@@ -302,6 +301,7 @@ export interface FileRouteTypes {
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
+    | '/review/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -316,7 +316,6 @@ export interface RootRouteChildren {
   RecordingsRoute: typeof RecordingsRoute
   ReportRoute: typeof ReportRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
-  ReviewRoute: typeof ReviewRoute
   SprintRoute: typeof SprintRoute
   VerbBankRoute: typeof VerbBankRoute
   AdminBugReportsRoute: typeof AdminBugReportsRoute
@@ -328,6 +327,7 @@ export interface RootRouteChildren {
   ApiSentenceCountRoute: typeof ApiSentenceCountRoute
   ApiTtsRoute: typeof ApiTtsRoute
   ModuleModuleIdRoute: typeof ModuleModuleIdRoute
+  ReviewIndexRoute: typeof ReviewIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -409,13 +409,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/review': {
-      id: '/review'
-      path: '/review'
-      fullPath: '/review'
-      preLoaderRoute: typeof ReviewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/sprint': {
       id: '/sprint'
       path: '/sprint'
@@ -493,6 +486,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ModuleModuleIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/review/': {
+      id: '/review/'
+      path: '/review'
+      fullPath: '/review/'
+      preLoaderRoute: typeof ReviewIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -508,7 +508,6 @@ const rootRouteChildren: RootRouteChildren = {
   RecordingsRoute: RecordingsRoute,
   ReportRoute: ReportRoute,
   ResetPasswordRoute: ResetPasswordRoute,
-  ReviewRoute: ReviewRoute,
   SprintRoute: SprintRoute,
   VerbBankRoute: VerbBankRoute,
   AdminBugReportsRoute: AdminBugReportsRoute,
@@ -520,6 +519,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSentenceCountRoute: ApiSentenceCountRoute,
   ApiTtsRoute: ApiTtsRoute,
   ModuleModuleIdRoute: ModuleModuleIdRoute,
+  ReviewIndexRoute: ReviewIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
