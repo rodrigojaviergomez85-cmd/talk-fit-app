@@ -198,8 +198,6 @@ function ProgressPage() {
           </div>
         </section>
 
-        {/* Speaking output over time (numbers only — playback lives in Recordings) */}
-        <SpeakingChart data={series} />
 
         {/* Personal bests */}
         {bests.longestSeconds || bests.mostIdeas ? (
