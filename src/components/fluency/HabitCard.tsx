@@ -19,7 +19,7 @@ type Props = {
  * streak, shown as two separate numbers. Never says "you lost" anything.
  */
 export function HabitCard({ state, variant = "home" }: Props) {
-  const { lang } = useAppLang();
+  const { lang, t } = useAppLang();
   const es = lang === "es";
   const count = habitDays(state);
   const { shown, complete } = habitDisplay(count);
@@ -168,27 +168,6 @@ export function HabitCard({ state, variant = "home" }: Props) {
         </div>
       ) : null}
 
-      {variant === "home" ? (
-        recovery && nextPractice ? (
-          <Link
-            to="/practice"
-            search={{ day: nextPractice.day, module: nextPractice.moduleId }}
-            className="mt-3 flex min-h-[44px] w-full items-center justify-center rounded-2xl bg-primary px-4 text-[12px] font-bold uppercase tracking-[0.14em] text-primary-foreground"
-          >
-            {es ? "CONTINUAR MI PRÁCTICA" : "CONTINUE MY PRACTICE"}
-          </Link>
-        ) : (
-          <p className="mt-3 text-[12px] font-semibold text-muted-foreground">
-            {count === 0
-              ? es
-                ? "Tu primer día completado será el Día 1 de tu hábito."
-                : "Your first completed day will be Day 1 of your habit."
-              : es
-                ? "Sigue construyendo tu rutina de inglés."
-                : "Keep building your English routine."}
-          </p>
-        )
-      ) : null}
     </section>
   );
 }
