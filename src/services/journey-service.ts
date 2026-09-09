@@ -222,6 +222,8 @@ export const JourneyService = {
 
   /** Ladder rule (see Progression.isUnlocked): first module, previous complete, at/before saved placement, or has records. */
   isModuleUnlocked(state: JourneyState, moduleId: ModuleId): boolean {
+    // Internal unlimited accounts see every module open.
+    if (hasUnlimitedAccess()) return true;
     const modules = CourseService.modules();
     const index = modules.findIndex((m) => m.id === moduleId);
     if (index <= 0) return true;

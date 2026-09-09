@@ -143,7 +143,7 @@ function PracticePage() {
 
   const { user } = useAuth();
   // TEST ACCOUNT EXEMPTION — remove this line and its usage to drop the exemption.
-  const isUnlimitedTestUser = user?.email?.toLowerCase() === "english4callcenters@gmail.com";
+  const isUnlimitedTestUser = isUnlimitedEmail(user?.email);
 
   // DAILY PRACTICE CAP — 5 real speaking sessions per LOCAL calendar day, any
   // mix of new days and repeats. The session already in progress here has

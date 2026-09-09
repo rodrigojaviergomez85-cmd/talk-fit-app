@@ -30,7 +30,7 @@ function ReviewPracticePage() {
 
   useEffect(() => {
     if (!mod || !found) return;
-    if (found.number === 1) {
+    if (found.number === 1 || hasUnlimitedAccess()) {
       setAccess("allowed");
       return;
     }
