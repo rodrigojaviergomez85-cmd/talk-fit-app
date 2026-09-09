@@ -312,6 +312,11 @@ const DICT = {
   "home.upNext": ["LO QUE SIGUE 🔒", "UP NEXT 🔒"],
   "home.unlockAfter": ["Se desbloquea al completar", "Unlock after completing"],
   "home.seeAllDays": ["VER TODOS LOS DÍAS", "SEE ALL DAYS"],
+  "home.seeDays": ["Ver días", "See days"],
+  "home.todaysChallenge": ["TU RETO DE HOY", "TODAY'S CHALLENGE"],
+  "home.consistency": ["Tu constancia", "Your consistency"],
+  "home.habitDaysOf": ["{done} de 66 días de hábito", "{done} of 66 habit days"],
+  "home.seeProgress": ["Ver progreso", "See progress"],
   "home.lockedTitle": ["MÓDULO BLOQUEADO", "MODULE LOCKED"],
   "home.lockedBody": [
     "Termina tu módulo actual para desbloquear este. Tu progreso se guarda automáticamente.",
