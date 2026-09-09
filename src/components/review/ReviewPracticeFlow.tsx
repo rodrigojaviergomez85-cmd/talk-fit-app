@@ -229,7 +229,7 @@ export function ReviewPracticeFlow({ moduleId, practice, guide, showEs: showEsIn
             <p className="rounded-2xl border border-border bg-card p-4 text-sm text-foreground">
               {showEs ? practice.reminder.es : practice.reminder.en}
             </p>
-            <ReviewGuide cards={guide} showEs={showEs} defaultOpen={practice.showFullGuide} />
+            <ReviewGuide cards={guide} showEs={showEs} defaultOpen={practice.showFullGuide} errors={reviewModule?.commonErrors ?? []} heading={reviewModule?.title} headingEs={reviewModule?.titleEs} />
             <p className="rounded-2xl bg-muted/50 p-3 text-xs text-muted-foreground">
               {showEs ? practice.instructions.es : practice.instructions.en}
             </p>
