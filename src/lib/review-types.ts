@@ -15,6 +15,7 @@ export const REVIEW_MODULE_IDS = [
   "review-simple-future",
   "review-present-perfect",
   "review-present-perfect-progressive",
+  "review-comparatives",
 ] as const;
 export type ReviewModuleId = (typeof REVIEW_MODULE_IDS)[number];
 

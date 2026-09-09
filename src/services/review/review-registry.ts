@@ -26,6 +26,8 @@ import {
   PRESENT_PERFECT_PROGRESSIVE_COMMON_ERRORS,
 } from "./present-perfect-progressive-guide";
 import { PRESENT_PERFECT_PROGRESSIVE_PRACTICES } from "./present-perfect-progressive-practices";
+import { COMPARATIVES_GUIDE, COMPARATIVES_COMMON_ERRORS } from "./comparatives-guide";
+import { COMPARATIVES_PRACTICES } from "./comparatives-practices";
 
 /**
  * Trusted, server-usable registry of Review content.
@@ -109,6 +111,17 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     guide: PRESENT_PERFECT_PROGRESSIVE_GUIDE,
     commonErrors: PRESENT_PERFECT_PROGRESSIVE_COMMON_ERRORS,
     practices: PRESENT_PERFECT_PROGRESSIVE_PRACTICES,
+  },
+  "review-comparatives": {
+    id: "review-comparatives",
+    label: "REVIEW",
+    title: "Comparatives",
+    titleEs: "Comparativos",
+    subtitle: "Short (-er) and long (more …) adjectives — five complete speaking practices.",
+    subtitleEs: "Adjetivos cortos (-er) y largos (more …): cinco prácticas completas de speaking.",
+    guide: COMPARATIVES_GUIDE,
+    commonErrors: COMPARATIVES_COMMON_ERRORS,
+    practices: COMPARATIVES_PRACTICES,
   },
 };
 
