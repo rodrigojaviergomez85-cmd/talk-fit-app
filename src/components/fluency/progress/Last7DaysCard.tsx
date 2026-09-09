@@ -1,5 +1,5 @@
 import { Check, Timer } from "lucide-react";
-import { last7PracticeDays, speakingTimeLabel } from "@/lib/progress-last7";
+import { last7Calendar, last7PracticeDays, speakingTimeLabel } from "@/lib/progress-last7";
 import type { JourneyState } from "@/lib/types";
 import { useAppLang, useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
