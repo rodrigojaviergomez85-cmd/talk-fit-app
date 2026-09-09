@@ -1,4 +1,24 @@
 import type { ReviewPractice } from "@/lib/review-types";
+import cmp1Chunk1 from "@/assets/review/comparatives/cmp1-chunk1.jpg";
+import cmp1Chunk2 from "@/assets/review/comparatives/cmp1-chunk2.jpg";
+import cmp1Chunk3 from "@/assets/review/comparatives/cmp1-chunk3.jpg";
+import cmp1Chunk4 from "@/assets/review/comparatives/cmp1-chunk4.jpg";
+import cmp2Chunk1 from "@/assets/review/comparatives/cmp2-chunk1.jpg";
+import cmp2Chunk2 from "@/assets/review/comparatives/cmp2-chunk2.jpg";
+import cmp2Chunk3 from "@/assets/review/comparatives/cmp2-chunk3.jpg";
+import cmp2Chunk4 from "@/assets/review/comparatives/cmp2-chunk4.jpg";
+import cmp3Chunk1 from "@/assets/review/comparatives/cmp3-chunk1.jpg";
+import cmp3Chunk2 from "@/assets/review/comparatives/cmp3-chunk2.jpg";
+import cmp3Chunk3 from "@/assets/review/comparatives/cmp3-chunk3.jpg";
+import cmp3Chunk4 from "@/assets/review/comparatives/cmp3-chunk4.jpg";
+import cmp4Chunk1 from "@/assets/review/comparatives/cmp4-chunk1.jpg";
+import cmp4Chunk2 from "@/assets/review/comparatives/cmp4-chunk2.jpg";
+import cmp4Chunk3 from "@/assets/review/comparatives/cmp4-chunk3.jpg";
+import cmp4Chunk4 from "@/assets/review/comparatives/cmp4-chunk4.jpg";
+import cmp5Chunk1 from "@/assets/review/comparatives/cmp5-chunk1.jpg";
+import cmp5Chunk2 from "@/assets/review/comparatives/cmp5-chunk2.jpg";
+import cmp5Chunk3 from "@/assets/review/comparatives/cmp5-chunk3.jpg";
+import cmp5Chunk4 from "@/assets/review/comparatives/cmp5-chunk4.jpg";
 
 /**
  * REVIEW · COMPARATIVES — five static practices (short -er vs long more).
@@ -27,6 +47,12 @@ export const COMPARATIVES_PRACTICES: ReviewPractice[] = [
       es: "Camila cambió de trabajo este año. Compara su trabajo nuevo con el anterior.",
     },
     vocabulary: ["better", "cheaper", "faster", "closer", "more comfortable", "more difficult", "than", "much"],
+    rep2ChunkImages: [
+      { src: cmp1Chunk1, alt: "Camila compares her better new job and its office close to home", altEs: "Camila compara su mejor trabajo nuevo y la oficina cerca de casa" },
+      { src: cmp1Chunk2, alt: "Camila's shorter commute, higher salary and more difficult tasks", altEs: "El viaje más corto, el salario más alto y las tareas más difíciles de Camila" },
+      { src: cmp1Chunk3, alt: "Camila's smaller organized team and comfortable office chairs", altEs: "El equipo más pequeño y organizado de Camila y sus sillas cómodas" },
+      { src: cmp1Chunk4, alt: "Camila's easier schedule and happier experience after a difficult start", altEs: "El horario más fácil de Camila y su mejor experiencia después de un inicio difícil" },
+    ],
     lines: [
       { id: "cmp1-l1", text: "Camila's new job is better than her old job.", es: "El trabajo nuevo de Camila es mejor que el anterior.", chunks: ["Camila's new job", "is better", "than her old job."] },
       { id: "cmp1-l2", text: "The new office is closer to her house.", es: "La oficina nueva está más cerca de su casa.", chunks: ["The new office", "is closer", "to her house."] },
@@ -78,6 +104,12 @@ export const COMPARATIVES_PRACTICES: ReviewPractice[] = [
       es: "Compara tu vida de hoy con tu vida de hace cinco años.",
     },
     vocabulary: ["better", "worse", "busier", "cheaper", "more expensive", "much", "a little", "than"],
+    rep2ChunkImages: [
+      { src: cmp2Chunk1, alt: "A busier life today and stronger English than five years ago", altEs: "Una vida más ocupada hoy y un mejor inglés que hace cinco años" },
+      { src: cmp2Chunk2, alt: "Higher living costs and a longer trip to work", altEs: "Costos de vida más altos y un viaje más largo al trabajo" },
+      { src: cmp2Chunk3, alt: "Less sleep and a more complicated morning routine", altEs: "Menos sueño y una rutina de mañana más complicada" },
+      { src: cmp2Chunk4, alt: "More confident English and shorter but more enjoyable weekends", altEs: "Más confianza al hablar inglés y fines de semana más cortos pero más divertidos" },
+    ],
     lines: [
       { id: "cmp2-l1", text: "My life today is busier than five years ago.", es: "Mi vida hoy es más ocupada que hace cinco años.", chunks: ["My life today", "is busier", "than five years ago."] },
       { id: "cmp2-l2", text: "My English is much better now.", es: "Mi inglés es mucho mejor ahora.", chunks: ["My English", "is much better", "now."] },
@@ -129,6 +161,12 @@ export const COMPARATIVES_PRACTICES: ReviewPractice[] = [
       es: "Andrés está eligiendo entre dos teléfonos en una tienda. Compáralos.",
     },
     vocabulary: ["cheaper", "bigger", "faster", "lighter", "more expensive", "more practical", "better", "than"],
+    rep2ChunkImages: [
+      { src: cmp3Chunk1, alt: "An expensive black phone and a cheaper white phone with a weaker camera", altEs: "Un teléfono negro más caro y uno blanco más barato con una cámara inferior" },
+      { src: cmp3Chunk2, alt: "A black phone with a bigger screen and a lighter white phone", altEs: "Un teléfono negro con pantalla más grande y uno blanco más liviano" },
+      { src: cmp3Chunk3, alt: "The black phone's longer battery life and practical large screen", altEs: "La batería más duradera y la pantalla grande y práctica del teléfono negro" },
+      { src: cmp3Chunk4, alt: "Andrés compares phone speed and chooses the better black phone", altEs: "Andrés compara la velocidad y elige el mejor teléfono negro" },
+    ],
     lines: [
       { id: "cmp3-l1", text: "The black phone is more expensive than the white one.", es: "El teléfono negro es más caro que el blanco.", chunks: ["The black phone", "is more expensive", "than the white one."] },
       { id: "cmp3-l2", text: "The white phone is cheaper, but the camera is worse.", es: "El teléfono blanco es más barato, pero la cámara es peor.", chunks: ["The white phone is cheaper,", "but the camera is worse."] },
@@ -180,6 +218,12 @@ export const COMPARATIVES_PRACTICES: ReviewPractice[] = [
       es: "Compara dos opciones reales de tu vida: dos trabajos, dos escuelas, dos ciudades o dos formas de viajar.",
     },
     vocabulary: ["safer", "cheaper", "faster", "more comfortable", "more useful", "better", "worse", "than"],
+    rep2ChunkImages: [
+      { src: cmp4Chunk1, alt: "Comparing a cheaper but slower bus with a taxi", altEs: "Comparación entre un bus más barato pero más lento y un taxi" },
+      { src: cmp4Chunk2, alt: "A more comfortable and safer taxi versus saving money", altEs: "Un taxi más cómodo y seguro frente a ahorrar dinero" },
+      { src: cmp4Chunk3, alt: "Easy online study compared with better speaking practice in class", altEs: "Estudio en línea más fácil comparado con mejor práctica oral en clase" },
+      { src: cmp4Chunk4, alt: "Choosing the less expensive option that better supports personal goals", altEs: "Elección de la opción menos cara que apoya mejor las metas personales" },
+    ],
     lines: [
       { id: "cmp4-l1", text: "I always compare two options before I decide.", es: "Siempre comparo dos opciones antes de decidir.", chunks: ["I always compare", "two options", "before I decide."] },
       { id: "cmp4-l2", text: "The bus is cheaper than a taxi, but it is slower.", es: "El bus es más barato que un taxi, pero es más lento.", chunks: ["The bus is cheaper", "than a taxi,", "but it is slower."] },
@@ -231,6 +275,12 @@ export const COMPARATIVES_PRACTICES: ReviewPractice[] = [
       es: "Usa los datos para comparar el equipo de la mañana y el de la noche.",
     },
     vocabulary: ["bigger", "faster", "quieter", "more experienced", "more organized", "better", "worse", "than"],
+    rep2ChunkImages: [
+      { src: cmp5Chunk1, alt: "Lucía compares a bigger morning team with a smaller night team", altEs: "Lucía compara un equipo de mañana más grande con uno nocturno más pequeño" },
+      { src: cmp5Chunk2, alt: "A quieter focused night team and faster morning agents", altEs: "Un equipo nocturno más silencioso y concentrado y agentes matutinos más rápidos" },
+      { src: cmp5Chunk3, alt: "Experienced night agents and better morning results", altEs: "Agentes nocturnos con más experiencia y mejores resultados por la mañana" },
+      { src: cmp5Chunk4, alt: "Longer difficult night calls and two teams with different strengths", altEs: "Llamadas nocturnas más largas y difíciles y dos equipos con fortalezas diferentes" },
+    ],
     lines: [
       { id: "cmp5-l1", text: "Lucía works with two teams in the same company.", es: "Lucía trabaja con dos equipos en la misma empresa.", chunks: ["Lucía works", "with two teams", "in the same company."] },
       { id: "cmp5-l2", text: "The morning team is bigger than the night team.", es: "El equipo de la mañana es más grande que el de la noche.", chunks: ["The morning team is bigger", "than the night team."] },
