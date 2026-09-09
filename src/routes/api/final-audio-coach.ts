@@ -28,7 +28,10 @@ export const Route = createFileRoute("/api/final-audio-coach")({
           return json({ error: "Invalid body." }, 400);
         }
         const { isModuleId } = await import("@/services/course-service");
-        const moduleId = typeof body.moduleId === "string" && isModuleId(body.moduleId) ? body.moduleId : null;
+        const { isReviewModuleId } = await import("@/lib/review-types");
+        // REVIEW is accepted explicitly — never by pretending it is a curriculum module.
+        const raw = typeof body.moduleId === "string" ? body.moduleId : "";
+        const moduleId = isModuleId(raw) || isReviewModuleId(raw) ? raw : null;
         const day = Number(body.day);
         const takeNumber = Number(body.takeNumber);
         // Lightweight only: the engine derives the real maximum Take number from the CourseDay.
@@ -61,6 +64,8 @@ export const Route = createFileRoute("/api/final-audio-coach")({
             return new Uint8Array(await data.arrayBuffer());
           },
           loadDay: async (mid, d) => {
+            const review = (await import("@/services/review/review-registry")).loadReviewDay(mid, d);
+            if (review) return review;
             try {
               const loaded = await CourseService.loadModule(mid as ModuleId);
               return loaded.days.find((x) => x.day === d) ?? null;
@@ -69,6 +74,7 @@ export const Route = createFileRoute("/api/final-audio-coach")({
             }
           },
           moduleLabel: (mid) => {
+            if (mid.startsWith("review-")) return "REVIEW Simple Present";
             const m = CourseService.getModule(mid as ModuleId);
             return `${m.label} ${m.title}`.trim();
           },

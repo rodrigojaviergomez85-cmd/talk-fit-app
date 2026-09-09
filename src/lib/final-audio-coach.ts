@@ -5,6 +5,7 @@
  * lives here: no transcript, hashes, storage paths or provider details.
  */
 import type { CourseDay } from "./types";
+import { isReviewModuleId } from "./review-types";
 
 /**
  * Resolves which Rep 5 turn a take answered, ONE-BASED.
@@ -109,12 +110,18 @@ export function isIntermediateCoachModule(moduleId: string): boolean {
   return INTERMEDIATE_MODULE_IDS.has(moduleId);
 }
 
-/** Level group of a coach module, or null when it is not rolled out (Advanced). */
+/**
+ * Level group of a coach module, or null when it is not rolled out (Advanced).
+ * REVIEW modules are explicit here: they are NOT curriculum modules, they only
+ * share the BASIC feedback shape (max 3 corrections).
+ */
 export function coachLevelGroupFor(moduleId: string): CoachLevelGroup | null {
+  if (isReviewModuleId(moduleId)) return "basic";
   if (isBasicCoachModule(moduleId)) return "basic";
   if (isIntermediateCoachModule(moduleId)) return "intermediate";
   return null;
 }
+
 
 /** Multi-correction gate — every day of every BASIC and INTERMEDIATE module. Advanced keeps v2. */
 export function isMultiCorrectionPilot(moduleId: string, day: number): boolean {
@@ -132,10 +139,13 @@ export const FINAL_AUDIO_COACH_VERSION_V2 = "v2";
 export const FINAL_AUDIO_COACH_VERSION_PILOT = "v3.2-basic";
 /** v3.3: same compact coach for every INTERMEDIATE day, up to 5 adaptive corrections. */
 export const FINAL_AUDIO_COACH_VERSION_INTERMEDIATE = "v3.3-intermediate";
+/** v3.4: REVIEW practices — same compact BASIC coach, separate cache namespace. */
+export const FINAL_AUDIO_COACH_VERSION_REVIEW = "v3.4-review";
 
 /** Durable cache/rubric version per request; scoped per level so other levels are never invalidated. */
 export function coachVersionFor(moduleId: string, day: number): string {
   if (!isMultiCorrectionPilot(moduleId, day)) return FINAL_AUDIO_COACH_VERSION_V2;
+  if (isReviewModuleId(moduleId)) return FINAL_AUDIO_COACH_VERSION_REVIEW;
   return coachLevelGroupFor(moduleId) === "intermediate"
     ? FINAL_AUDIO_COACH_VERSION_INTERMEDIATE
     : FINAL_AUDIO_COACH_VERSION_PILOT;

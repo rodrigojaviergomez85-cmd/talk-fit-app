@@ -60,7 +60,9 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
             file = null;
           }
           const { isModuleId, CourseService } = await import("@/services/course-service");
-          if (!moduleId || !isModuleId(moduleId) || !Number.isInteger(day) || day < 1) return json({ error: "Invalid input." }, 400);
+          const { isReviewModuleId } = await import("@/lib/review-types");
+          const validModule = !!moduleId && (isModuleId(moduleId) || isReviewModuleId(moduleId));
+          if (!validModule || !Number.isInteger(day) || day < 1) return json({ error: "Invalid input." }, 400);
           if (turnMalformed) return json({ error: "Invalid input." }, 400);
           // Missing/malformed feedback identity fails before storage, quota, lease or AI work.
           const { isFeedbackId } = await import("@/lib/final-audio-coach");
