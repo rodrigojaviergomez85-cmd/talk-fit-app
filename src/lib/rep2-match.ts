@@ -479,7 +479,7 @@ export function compareRep2(
   profile: Rep2CorrectionProfile = GENERIC_PROFILE,
 ): Rep2MatchResult {
   const targetWords = tokenize(target);
-  const transcriptWords = tokenize(transcript);
+  const transcriptWords = alignSpokenVariants(targetWords, tokenize(transcript));
 
   // --- A. ASR uncertainty: the transcription itself is unusable. ---
   if (confidence && (confidence.avgLogprob < AVG_LOGPROB_THRESHOLD || confidence.noSpeechProb > NO_SPEECH_THRESHOLD)) {
