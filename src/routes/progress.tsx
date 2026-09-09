@@ -111,6 +111,34 @@ function ProgressPage() {
           </div>
         ) : null}
 
+        {/* Progress and audio are two views of the same question: am I improving? */}
+        <div role="tablist" aria-label={t("prog.title")} className="flex gap-2 rounded-2xl bg-secondary p-1">
+          {(["progress", "audio"] as const).map((key) => (
+            <button
+              key={key}
+              type="button"
+              role="tab"
+              aria-selected={tab === key}
+              onClick={() =>
+                void navigate({
+                  search: key === "audio" ? { tab: "audio" } : {},
+                  replace: true,
+                })
+              }
+              className={cn(
+                "min-h-[44px] flex-1 rounded-xl px-3 text-[12px] font-bold uppercase tracking-[0.14em] transition-colors",
+                tab === key
+                  ? "bg-card text-foreground shadow-[var(--shadow-card)]"
+                  : "text-muted-foreground",
+              )}
+            >
+              {key === "audio" ? t("prog.tabAudio") : t("prog.tabProgress")}
+            </button>
+          ))}
+        </div>
+
+        {tab === "audio" ? <RecordingsPanel state={safe} /> : (
+        <>
         {/* This week */}
         <section className="rounded-3xl bg-card p-4 shadow-[var(--shadow-card)]">
           <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
