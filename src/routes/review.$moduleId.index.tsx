@@ -1,6 +1,7 @@
 import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowRight, CheckCircle2, Lock } from "lucide-react";
+import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 import { AppShell } from "@/components/fluency/AppShell";
 import { ReviewGuide } from "@/components/review/ReviewGuide";
 import { useAppLang } from "@/lib/i18n";
@@ -58,7 +59,7 @@ function ReviewModulePage() {
           {mod.practices.map((p) => {
             const done = (progress.find((r) => r.practiceNumber === p.number)?.completedCount ?? 0) > 0;
             const prevDone = p.number === 1 || (progress.find((r) => r.practiceNumber === ((p.number - 1) as typeof p.number))?.completedCount ?? 0) > 0;
-            const locked = !prevDone;
+            const locked = !prevDone && !hasUnlimitedAccess();
 
             const inner = (
               <>

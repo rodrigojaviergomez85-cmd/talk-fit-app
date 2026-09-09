@@ -7,6 +7,7 @@ import { PracticeSessionService, setSessionScope } from "@/services/practice-ses
 import { PracticeAttempts, setPracticeAttemptScope } from "@/services/practice-attempts";
 import { setPreferencesScope } from "@/services/preferences";
 import { setVerbBankScope, VerbBank } from "@/services/verb-bank";
+import { setUnlimitedAccess } from "@/lib/unlimited-access";
 
 /**
  * One auth listener for the whole app. It scopes local caches to the signed-in
@@ -52,6 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(next);
       setLoading(false);
       scopeTo(next?.id ?? null);
+      setUnlimitedAccess(next?.email ?? null);
       if (event === "SIGNED_OUT") {
         JourneyService.clearLocalCache();
         PracticeSessionService.clearAll();
@@ -65,6 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .then(({ data }) => {
         setUser(data.user ?? null);
         scopeTo(data.user?.id ?? null);
+        setUnlimitedAccess(data.user?.email ?? null);
       })
       .catch(() => undefined)
       .finally(() => setLoading(false));
@@ -102,6 +105,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         PracticeAttempts.clearLocalCache();
         VerbBank.hydrate({});
         scopeTo(null);
+        setUnlimitedAccess(null);
       },
     }),
     [user, loading, sync],

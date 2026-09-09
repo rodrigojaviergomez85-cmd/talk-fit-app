@@ -2,6 +2,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { DayRecord, JourneyState, ModuleId, RepDurations, SelfAssessment } from "@/lib/types";
 import { CourseService, DEFAULT_MODULE, isModuleId } from "./course-service";
 import { loadPreferences } from "./preferences";
+import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 
 /**
  * JourneyService — progress across learning modules (Basic Zero, Simple Present).
@@ -222,6 +223,8 @@ export const JourneyService = {
 
   /** Ladder rule (see Progression.isUnlocked): first module, previous complete, at/before saved placement, or has records. */
   isModuleUnlocked(state: JourneyState, moduleId: ModuleId): boolean {
+    // Internal unlimited accounts see every module open.
+    if (hasUnlimitedAccess()) return true;
     const modules = CourseService.modules();
     const index = modules.findIndex((m) => m.id === moduleId);
     if (index <= 0) return true;

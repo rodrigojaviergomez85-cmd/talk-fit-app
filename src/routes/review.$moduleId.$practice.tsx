@@ -6,6 +6,7 @@ import { useAppLang } from "@/lib/i18n";
 import { getReviewModule, getReviewPractice } from "@/services/review/review-registry";
 import { ReviewProgress } from "@/services/review/review-progress";
 import type { ReviewModuleId, ReviewPracticeNumber } from "@/lib/review-types";
+import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 
 export const Route = createFileRoute("/review/$moduleId/$practice")({
   head: () => ({
@@ -30,7 +31,7 @@ function ReviewPracticePage() {
 
   useEffect(() => {
     if (!mod || !found) return;
-    if (found.number === 1) {
+    if (found.number === 1 || hasUnlimitedAccess()) {
       setAccess("allowed");
       return;
     }
