@@ -50,7 +50,9 @@ export function PracticesTodayChip({ used, className }: { used: number; classNam
 export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalDays }: Props) {
   const t = useT();
   const used = usePracticesToday();
-  const capReached = used !== null && used >= DAILY_PRACTICE_CAP;
+  // A session already under way has ALREADY paid for its slot, so the cap must
+  // never remove its entry point — the practice screen itself allows resuming.
+  const capReached = used !== null && used >= DAILY_PRACTICE_CAP && !inProgress;
   const remaining = used === null ? null : Math.max(0, DAILY_PRACTICE_CAP - used);
   const ctaText = completed
     ? t("repeatDay.cta")
