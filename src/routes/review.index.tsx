@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
-import { useLang } from "@/lib/i18n";
+import { useAppLang } from "@/lib/i18n";
 import { listReviewModules } from "@/services/review/review-registry";
 
-export const Route = createFileRoute("/review")({
+export const Route = createFileRoute("/review/")({
   head: () => ({
     meta: [
       { title: "Review · Fluency App" },
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/review")({
 });
 
 function ReviewIndex() {
-  const { lang } = useLang();
+  const { lang } = useAppLang();
   const showEs = lang === "es";
   const modules = listReviewModules();
 
