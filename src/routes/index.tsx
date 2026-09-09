@@ -86,6 +86,13 @@ function HomePage() {
         >
           <span aria-hidden="true">👨‍🏫</span> {t("coach.showMyCoach")}
         </Link>
+        <Link
+          to="/report"
+          className="flex min-h-[44px] w-full items-start gap-2 rounded-2xl border border-primary/40 bg-primary/10 p-3 text-left text-[12px] font-semibold leading-snug text-foreground transition-colors hover:bg-primary/15"
+        >
+          <AlertTriangle className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
+          <span>{t("report.betaBanner")}</span>
+        </Link>
         <HabitCard state={state} />
 
         {failed ? (
