@@ -2,11 +2,7 @@ import type { ModuleId, Recording } from "@/lib/types";
 import type { ReviewModuleId, ReviewPracticeNumber } from "@/lib/review-types";
 import { REVIEW_EVALUATED_TAKE } from "@/lib/review-types";
 import { CloudSync } from "@/services/cloud-sync";
-import {
-  requestFinalCoachRetake,
-  runFinalCoachPipeline,
-  type CoachPipelineDeps,
-} from "@/services/final-audio-coach-client";
+import { requestFinalCoachRetake, runFinalCoachPipeline } from "@/services/final-audio-coach-client";
 import type { FinalCoachRetakeState, FinalCoachState } from "@/lib/final-audio-coach";
 
 /**
@@ -23,8 +19,6 @@ function asTransportModuleId(moduleId: ReviewModuleId): ModuleId {
   return moduleId as unknown as ModuleId;
 }
 
-const reviewDeps: CoachPipelineDeps | undefined = undefined;
-
 /** Runs the coach on the evaluated audio (position 4) of one Review practice. */
 export function runReviewCoach(
   input: { moduleId: ReviewModuleId; practiceNumber: ReviewPracticeNumber; recording: Recording },
@@ -40,7 +34,7 @@ export function runReviewCoach(
       finalTakeNumber: REVIEW_EVALUATED_TAKE,
     },
     onState,
-    reviewDeps ?? undefined,
+    undefined,
     signal,
   );
 }
