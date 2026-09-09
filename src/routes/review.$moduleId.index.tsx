@@ -113,6 +113,14 @@ function ReviewModulePage() {
             );
           })}
         </div>
+
+        <div className="pt-2">
+          <Button asChild variant="outline" className="w-full min-h-[48px] text-base font-bold">
+            <Link to="/review">
+              <ArrowLeft className="mr-2 size-4" /> {showEs ? "ATRÁS A REVIEW" : "BACK TO REVIEW"}
+            </Link>
+          </Button>
+        </div>
       </div>
     </AppShell>
   );
