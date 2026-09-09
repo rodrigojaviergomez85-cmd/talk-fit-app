@@ -34,6 +34,8 @@ import { USED_TO_GUIDE, USED_TO_COMMON_ERRORS } from "./used-to-guide";
 import { USED_TO_PRACTICES } from "./used-to-practices";
 import { PAST_PERFECT_GUIDE, PAST_PERFECT_COMMON_ERRORS } from "./past-perfect-guide";
 import { PAST_PERFECT_PRACTICES } from "./past-perfect-practices";
+import { MODAL_PERFECTS_GUIDE, MODAL_PERFECTS_COMMON_ERRORS } from "./modal-perfects-guide";
+import { MODAL_PERFECTS_PRACTICES } from "./modal-perfects-practices";
 
 /**
  * Trusted, server-usable registry of Review content.
