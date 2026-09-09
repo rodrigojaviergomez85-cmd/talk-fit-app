@@ -186,6 +186,19 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     commonErrors: PAST_PERFECT_COMMON_ERRORS,
     practices: PAST_PERFECT_PRACTICES,
   },
+  "review-modal-perfects": {
+    id: "review-modal-perfects",
+    category: "intermediate-advanced",
+    minimumModuleId: "eagles-week-1",
+    label: "REVIEW",
+    title: "Should have, Must have, Could have & Would have",
+    titleEs: "Should have, Must have, Could have y Would have",
+    subtitle: "Regrets, deductions and imagined past results — five complete speaking practices.",
+    subtitleEs: "Arrepentimientos, deducciones y resultados imaginarios del pasado: cinco prácticas completas de speaking.",
+    guide: MODAL_PERFECTS_GUIDE,
+    commonErrors: MODAL_PERFECTS_COMMON_ERRORS,
+    practices: MODAL_PERFECTS_PRACTICES,
+  },
 };
 
 export function getReviewModule(moduleId: string): ReviewModule | null {
