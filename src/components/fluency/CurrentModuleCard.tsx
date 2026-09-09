@@ -61,31 +61,39 @@ export function CurrentModuleCard({ state }: { state: JourneyState }) {
 
   return (
     <section className="rounded-3xl bg-navy p-6 text-navy-foreground shadow-[var(--shadow-lift)]">
-      <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{t("home.currentModule")}</p>
-      <div className="mt-2 flex items-start gap-3">
+      <div className="flex items-center gap-3">
+        <ModuleBadge moduleId={module.id} size="lg" es={es} className="shrink-0" />
         <div className="min-w-0 flex-1">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-navy-foreground/70">{module.label}</p>
-          <h2 className="mt-0.5 text-[28px] font-extrabold leading-none tracking-tight">{module.title}</h2>
+          <h2 className="text-[22px] font-extrabold leading-none tracking-tight">{module.title}</h2>
+          <p className="mt-1 text-[13px] font-semibold text-navy-foreground/70">{module.label}</p>
         </div>
-        <ModuleBadge moduleId={module.id} size="lg" es={es} className="rounded-full bg-background p-1" />
       </div>
-      <p className="mt-1.5 text-[14px] font-semibold text-navy-foreground/80">{es ? module.subtitleEs : module.subtitle}</p>
 
+      <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{t("home.todaysChallenge")}</p>
+      <h3 className="mt-1 text-[27px] font-extrabold leading-[1.1] tracking-tight">{es ? day.topicEs : day.topic}</h3>
+      <p className="mt-2 text-[14px] font-semibold text-navy-foreground/80">{es ? day.goalEs : day.goal}</p>
 
-      <div className="mt-4 flex items-baseline justify-between gap-3">
-        <p className="text-[15px] font-extrabold uppercase tracking-[0.12em] tabular-nums">
-          {t("home.day")} {day.day} / {total}
+      <div className="mt-5 flex items-baseline justify-between gap-3">
+        <p className="text-[15px] font-extrabold tabular-nums">
+          <span className="font-extrabold">
+            {t("home.day")} {day.day}
+          </span>{" "}
+          <span className="font-semibold text-navy-foreground/70">
+            {es ? "de" : "of"} {total}
+          </span>
         </p>
-        {day.week ? (
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-navy-foreground/70">
-            {t("home.week")} {day.week}
-          </p>
-        ) : null}
+        <Link
+          to="/module/$moduleId"
+          params={{ moduleId: module.id }}
+          className="flex items-center gap-1 text-[13px] font-bold text-navy-foreground/80"
+        >
+          {t("home.seeDays")} <ArrowRight className="size-3.5" />
+        </Link>
       </div>
       <div className="mt-2 h-2 overflow-hidden rounded-full bg-navy-foreground/15">
         <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${percent}%` }} />
       </div>
-      <p className="mt-1.5 text-[11px] font-semibold text-navy-foreground/60">{day.topic}</p>
+
 
       <Link
         to="/practice"
