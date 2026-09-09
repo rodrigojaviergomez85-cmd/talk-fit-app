@@ -85,3 +85,15 @@ describe("Review · Comparatives Step 2 reference images", () => {
     }
   });
 });
+
+describe("Review · Modal Verbs content", () => {
+  it("covers every requested modal family and provides a scene for every practice", () => {
+    const mod = getReviewModule("review-modals");
+    expect(mod).not.toBeNull();
+    const spoken = mod?.practices.flatMap((practice) => practice.lines.map((line) => line.text)).join(" ").toLowerCase() ?? "";
+    for (const modal of ["can", "could", "may", "might", "should", "would", "must", "had better"]) {
+      expect(spoken).toContain(modal);
+    }
+    expect(mod?.practices.every((practice) => Boolean(practice.sceneImage))).toBe(true);
+  });
+});
