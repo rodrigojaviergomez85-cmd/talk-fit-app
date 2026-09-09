@@ -4,6 +4,7 @@ import { Check, ChevronDown, Lock, Mic, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
 import { ModuleHeading } from "@/components/fluency/ModuleHeading";
+import { ModuleBadge } from "@/components/fluency/ModuleBadge";
 import { SpeakingChart } from "@/components/fluency/SpeakingChart";
 import { BadgeGrid } from "@/components/fluency/BadgeGrid";
 import { ModuleBadgeGrid } from "@/components/fluency/ModuleBadgeGrid";
@@ -13,7 +14,7 @@ import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { Progression } from "@/services/progression";
 import type { JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { useT } from "@/lib/i18n";
+import { useT, useAppLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/progress")({
   head: () => ({
@@ -243,6 +244,8 @@ function ModuleRow({
   state: JourneyState;
 }) {
   const t = useT();
+  const { lang } = useAppLang();
+  const es = lang === "es";
   const done = JourneyService.completedCount(state, module.id);
   const total = module.days.length;
   const status = moduleAccessStatus(state, module.id, t);
@@ -251,7 +254,10 @@ function ModuleRow({
   const body = (
     <>
       <div className="flex items-start justify-between gap-3">
-        <ModuleHeading module={module} size="sm" />
+        <div className="flex min-w-0 items-start gap-3">
+          <ModuleBadge moduleId={module.id} size="sm" locked={status.locked} es={es} />
+          <ModuleHeading module={module} size="sm" />
+        </div>
         <StatusBadge status={status} />
       </div>
       <ProgressBar value={total > 0 ? done / total : 0} />
