@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   last7PracticeDays,
   last7SpeakingSeconds,
@@ -9,10 +9,6 @@ import { emptyJourney, JourneyService } from "@/services/journey-service";
 function dayKeyAt(daysAgo: number): string {
   return JourneyService.dayKey(new Date(Date.now() - daysAgo * 86400000));
 }
-
-beforeEach(() => {
-  localStorage.clear();
-});
 
 describe("last7PracticeDays", () => {
   it("counts distinct dates inside the last 7 days, weekends included", () => {
