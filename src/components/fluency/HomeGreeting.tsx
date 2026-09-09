@@ -16,7 +16,7 @@ export function HomeGreeting() {
   const name = raw ? raw.split(" ")[0] : "";
   const pretty = name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
 
-  const rawDate = new Date().toLocaleDateString(es ? "es-ES" : "en-US", {
+  const rawDate = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     day: "numeric",
     month: "long",
