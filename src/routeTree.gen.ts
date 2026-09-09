@@ -33,6 +33,7 @@ import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as ModuleModuleIdRouteImport } from './routes/module.$moduleId'
 import { Route as ReviewIndexRouteImport } from './routes/review.index'
 import { Route as ReviewModuleIdIndexRouteImport } from './routes/review.$moduleId.index'
+import { Route as ReviewModuleIdPracticeRouteImport } from './routes/review.$moduleId.$practice'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -155,6 +156,11 @@ const ReviewModuleIdIndexRoute = ReviewModuleIdIndexRouteImport.update({
   path: '/review/$moduleId/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReviewModuleIdPracticeRoute = ReviewModuleIdPracticeRouteImport.update({
+  id: '/review/$moduleId/$practice',
+  path: '/review/$moduleId/$practice',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -180,6 +186,7 @@ export interface FileRoutesByFullPath {
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
   '/review/': typeof ReviewIndexRoute
+  '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/review/$moduleId/': typeof ReviewModuleIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -206,6 +213,7 @@ export interface FileRoutesByTo {
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
   '/review': typeof ReviewIndexRoute
+  '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/review/$moduleId': typeof ReviewModuleIdIndexRoute
 }
 export interface FileRoutesById {
@@ -233,6 +241,7 @@ export interface FileRoutesById {
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
   '/review/': typeof ReviewIndexRoute
+  '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/review/$moduleId/': typeof ReviewModuleIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -261,6 +270,7 @@ export interface FileRouteTypes {
     | '/api/tts'
     | '/module/$moduleId'
     | '/review/'
+    | '/review/$moduleId/$practice'
     | '/review/$moduleId/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -287,6 +297,7 @@ export interface FileRouteTypes {
     | '/api/tts'
     | '/module/$moduleId'
     | '/review'
+    | '/review/$moduleId/$practice'
     | '/review/$moduleId'
   id:
     | '__root__'
@@ -313,6 +324,7 @@ export interface FileRouteTypes {
     | '/api/tts'
     | '/module/$moduleId'
     | '/review/'
+    | '/review/$moduleId/$practice'
     | '/review/$moduleId/'
   fileRoutesById: FileRoutesById
 }
@@ -340,6 +352,7 @@ export interface RootRouteChildren {
   ApiTtsRoute: typeof ApiTtsRoute
   ModuleModuleIdRoute: typeof ModuleModuleIdRoute
   ReviewIndexRoute: typeof ReviewIndexRoute
+  ReviewModuleIdPracticeRoute: typeof ReviewModuleIdPracticeRoute
   ReviewModuleIdIndexRoute: typeof ReviewModuleIdIndexRoute
 }
 
@@ -513,6 +526,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReviewModuleIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/review/$moduleId/$practice': {
+      id: '/review/$moduleId/$practice'
+      path: '/review/$moduleId/$practice'
+      fullPath: '/review/$moduleId/$practice'
+      preLoaderRoute: typeof ReviewModuleIdPracticeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -540,6 +560,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiTtsRoute: ApiTtsRoute,
   ModuleModuleIdRoute: ModuleModuleIdRoute,
   ReviewIndexRoute: ReviewIndexRoute,
+  ReviewModuleIdPracticeRoute: ReviewModuleIdPracticeRoute,
   ReviewModuleIdIndexRoute: ReviewModuleIdIndexRoute,
 }
 export const routeTree = rootRouteImport
