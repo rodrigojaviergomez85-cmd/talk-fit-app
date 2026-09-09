@@ -19,6 +19,13 @@ import { PAST_PROGRESSIVE_GUIDE, PAST_PROGRESSIVE_COMMON_ERRORS } from "./past-p
 import { PAST_PROGRESSIVE_PRACTICES } from "./past-progressive-practices";
 import { SIMPLE_FUTURE_GUIDE, SIMPLE_FUTURE_COMMON_ERRORS } from "./simple-future-guide";
 import { SIMPLE_FUTURE_PRACTICES } from "./simple-future-practices";
+import { PRESENT_PERFECT_GUIDE, PRESENT_PERFECT_COMMON_ERRORS } from "./present-perfect-guide";
+import { PRESENT_PERFECT_PRACTICES } from "./present-perfect-practices";
+import {
+  PRESENT_PERFECT_PROGRESSIVE_GUIDE,
+  PRESENT_PERFECT_PROGRESSIVE_COMMON_ERRORS,
+} from "./present-perfect-progressive-guide";
+import { PRESENT_PERFECT_PROGRESSIVE_PRACTICES } from "./present-perfect-progressive-practices";
 
 /**
  * Trusted, server-usable registry of Review content.
@@ -80,6 +87,28 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     guide: SIMPLE_FUTURE_GUIDE,
     commonErrors: SIMPLE_FUTURE_COMMON_ERRORS,
     practices: SIMPLE_FUTURE_PRACTICES,
+  },
+  "review-present-perfect": {
+    id: "review-present-perfect",
+    label: "REVIEW",
+    title: "Present Perfect",
+    titleEs: "Presente Perfecto",
+    subtitle: "Experiences and results with have / has + past participle — five complete speaking practices.",
+    subtitleEs: "Experiencias y resultados con have / has + participio: cinco prácticas completas de speaking.",
+    guide: PRESENT_PERFECT_GUIDE,
+    commonErrors: PRESENT_PERFECT_COMMON_ERRORS,
+    practices: PRESENT_PERFECT_PRACTICES,
+  },
+  "review-present-perfect-progressive": {
+    id: "review-present-perfect-progressive",
+    label: "REVIEW",
+    title: "Present Perfect Progressive",
+    titleEs: "Presente Perfecto Progresivo",
+    subtitle: "How long something has been happening — five complete speaking practices.",
+    subtitleEs: "Cuánto tiempo lleva pasando algo: cinco prácticas completas de speaking.",
+    guide: PRESENT_PERFECT_PROGRESSIVE_GUIDE,
+    commonErrors: PRESENT_PERFECT_PROGRESSIVE_COMMON_ERRORS,
+    practices: PRESENT_PERFECT_PROGRESSIVE_PRACTICES,
   },
 };
 
