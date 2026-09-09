@@ -6,6 +6,7 @@
  * Completar o repetir Review no completa días, no desbloquea niveles y no cambia
  * el hábito de 66 días.
  */
+import type { ModuleId } from "@/lib/types";
 
 export const REVIEW_MODULE_IDS = [
   "review-simple-present",
@@ -118,6 +119,9 @@ export type ReviewPractice = {
 
 export type ReviewModule = {
   id: ReviewModuleId;
+  /** Menu grouping and minimum official-course placement required to open it. */
+  category: "basic" | "intermediate-advanced";
+  minimumModuleId: ModuleId;
   label: string;
   title: string;
   titleEs: string;

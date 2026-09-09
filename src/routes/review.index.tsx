@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, BriefcaseBusiness, GraduationCap, Layers3 } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
-import { listReviewModules } from "@/services/review/review-registry";
 
 export const Route = createFileRoute("/review/")({
   head: () => ({
@@ -21,8 +20,6 @@ export const Route = createFileRoute("/review/")({
 function ReviewIndex() {
   const { lang } = useAppLang();
   const showEs = lang === "es";
-  const modules = listReviewModules();
-
   return (
     <AppShell>
       <div className="space-y-4 p-4">
@@ -35,22 +32,52 @@ function ReviewIndex() {
           </p>
         </header>
 
-        {modules.map((mod) => (
+        <div className="space-y-3">
           <Link
-            key={mod.id}
-            to="/review/$moduleId"
-            params={{ moduleId: mod.id }}
-            className="block rounded-3xl border border-border bg-card p-5 transition hover:border-primary"
+            to="/review/basic"
+            className="flex min-h-[132px] items-center gap-4 rounded-2xl border border-border bg-card p-5 transition hover:border-primary"
           >
-            <p className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-primary">{mod.label}</p>
-            <h2 className="mt-1 text-xl font-extrabold text-foreground">{mod.title}</h2>
-            <p className="text-sm text-muted-foreground">{mod.titleEs}</p>
-            <p className="mt-2 text-xs text-muted-foreground">{showEs ? mod.subtitleEs : mod.subtitle}</p>
-            <span className="mt-3 flex items-center gap-1 text-xs font-extrabold uppercase tracking-widest text-primary">
-              {showEs ? "5 prácticas" : "5 practices"} <ArrowRight className="size-4" />
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <GraduationCap className="size-6" aria-hidden="true" />
             </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-xl font-extrabold text-foreground">Basic</span>
+              <span className="mt-1 block text-sm text-muted-foreground">
+                {showEs ? "Refuerza las estructuras esenciales." : "Reinforce essential structures."}
+              </span>
+            </span>
+            <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
           </Link>
-        ))}
+
+          <Link
+            to="/review/intermediate-advanced"
+            className="flex min-h-[132px] items-center gap-4 rounded-2xl border border-border bg-card p-5 transition hover:border-primary"
+          >
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Layers3 className="size-6" aria-hidden="true" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-xl font-extrabold text-foreground">Intermediate + Advanced</span>
+              <span className="mt-1 block text-sm text-muted-foreground">
+                {showEs ? "Perfecciona estructuras más avanzadas." : "Strengthen more advanced structures."}
+              </span>
+            </span>
+            <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
+          </Link>
+
+          <div aria-disabled="true" className="flex min-h-[132px] items-center gap-4 rounded-2xl border border-border bg-card p-5 opacity-60">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
+              <BriefcaseBusiness className="size-6" aria-hidden="true" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-xl font-extrabold text-foreground">Interview Simulator</span>
+              <span className="block text-sm text-muted-foreground">Simulador de entrevistas</span>
+              <span className="mt-2 block text-xs font-extrabold uppercase text-primary">
+                {showEs ? "Próximamente" : "Coming soon"}
+              </span>
+            </span>
+          </div>
+        </div>
       </div>
     </AppShell>
   );
