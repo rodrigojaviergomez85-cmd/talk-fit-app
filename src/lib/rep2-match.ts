@@ -320,7 +320,8 @@ function alignSpokenVariants(targetWords: string[], transcriptWords: string[]): 
 
     // "hardworking" (heard) → "hard working" (target)
     const targetNext = targetWords[i + 1];
-    if (target && targetNext && `${target}${targetNext}` === got) {
+    // Only long compounds ("hardworking"); short joins like "gohome" stay a difference.
+    if (target && targetNext && got.length >= 9 && `${target}${targetNext}` === got) {
       out.push(target, targetNext);
       i += 2;
       j++;
