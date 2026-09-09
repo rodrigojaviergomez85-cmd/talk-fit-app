@@ -67,7 +67,7 @@ export function CurrentModuleCard({ state }: { state: JourneyState }) {
           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-navy-foreground/70">{module.label}</p>
           <h2 className="mt-0.5 text-[28px] font-extrabold leading-none tracking-tight">{module.title}</h2>
         </div>
-        <ModuleBadge moduleId={module.id} size="lg" es={es} />
+        <ModuleBadge moduleId={module.id} size="lg" es={es} className="rounded-full bg-background p-1" />
       </div>
       <p className="mt-1.5 text-[14px] font-semibold text-navy-foreground/80">{es ? module.subtitleEs : module.subtitle}</p>
 

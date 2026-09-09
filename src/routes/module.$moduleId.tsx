@@ -153,7 +153,7 @@ function ModulePage() {
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{meta.label}</p>
               <h2 className="mt-1 text-2xl font-extrabold tracking-tight">{meta.title}</h2>
             </div>
-            <ModuleBadge moduleId={meta.id} size="lg" es={lang === "es"} />
+            <ModuleBadge moduleId={meta.id} size="lg" es={lang === "es"} className="rounded-full bg-background p-1" />
           </div>
           <p className="mt-1 text-[14px] font-semibold text-navy-foreground/80">
             {lang === "es" ? meta.subtitleEs : meta.subtitle}
