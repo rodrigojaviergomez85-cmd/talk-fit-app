@@ -18,14 +18,20 @@ export function Last7DaysCard({ state }: { state: JourneyState }) {
   const days = last7PracticeDays(state);
   const met = days >= GOAL;
   const time = speakingTimeLabel(state);
-  const timeText =
-    time.kind === "none"
-      ? t("prog.noData")
-      : time.kind === "zero"
-        ? t("prog.noTimeYet")
-        : time.kind === "under1"
-          ? t("prog.lessThanMin")
-          : `${time.minutes} min`;
+  let timeText: string;
+  switch (time.kind) {
+    case "none":
+      timeText = t("prog.noData");
+      break;
+    case "zero":
+      timeText = t("prog.noTimeYet");
+      break;
+    case "under1":
+      timeText = t("prog.lessThanMin");
+      break;
+    default:
+      timeText = `${time.minutes} min`;
+  }
 
   return (
     <section className="rounded-3xl bg-card p-4 shadow-[var(--shadow-card)]">

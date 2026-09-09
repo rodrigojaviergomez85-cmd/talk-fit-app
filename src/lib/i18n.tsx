@@ -429,6 +429,22 @@ const DICT = {
   "prog.tabProgress": ["Avance", "Progress"],
   "prog.tabAudio": ["Audios", "Audio"],
   "prog.badges": ["Logros", "Badges"],
+  "prog.subtitle": ["Paso a paso, Champion.", "Step by step, Champion."],
+  "prog.last7": ["Últimos 7 días", "Last 7 days"],
+  "prog.daysWord": ["días", "days"],
+  "prog.goalMet": ["¡Meta cumplida!", "Goal reached!"],
+  "prog.noData": ["Sin datos aún", "No data yet"],
+  "prog.noTimeYet": ["Aún sin tiempo registrado", "No speaking time yet"],
+  "prog.lessThanMin": ["menos de 1 min", "less than 1 min"],
+  "prog.listenAttempts": ["Escucha tus intentos", "Listen to your attempts"],
+  "prog.compareSame": ["Compara tus audios de la misma práctica.", "Compare recordings from the same practice."],
+  "prog.compareAlt": ["Aún no tienes dos audios de la misma práctica. Mira tus grabaciones.", "You don't have two recordings from the same practice yet. See your recordings."],
+  "prog.firstAttempt": ["Primer intento", "First attempt"],
+  "prog.latestAttempt": ["Más reciente", "Latest"],
+  "prog.viewAudios": ["Ver mis audios", "See my recordings"],
+  "prog.constancy": ["Mi constancia", "My consistency"],
+  "prog.myRoute": ["Mi ruta", "My route"],
+  "prog.doneJourney": ["Completaste todo el camino. ¡Increíble!", "You completed the whole journey. Amazing!"],
 
   // Account
   // Account gate + sync
