@@ -71,6 +71,48 @@ export type Database = {
         }
         Relationships: []
       }
+      bug_reports: {
+        Row: {
+          area: string
+          context: Json
+          created_at: string
+          email: string | null
+          expected: string | null
+          id: string
+          message: string
+          screenshot_path: string | null
+          status: Database["public"]["Enums"]["bug_report_status"]
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          area?: string
+          context?: Json
+          created_at?: string
+          email?: string | null
+          expected?: string | null
+          id?: string
+          message: string
+          screenshot_path?: string | null
+          status?: Database["public"]["Enums"]["bug_report_status"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          area?: string
+          context?: Json
+          created_at?: string
+          email?: string | null
+          expected?: string | null
+          id?: string
+          message?: string
+          screenshot_path?: string | null
+          status?: Database["public"]["Enums"]["bug_report_status"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       day_progress: {
         Row: {
           completed_at: string
@@ -725,6 +767,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      bug_report_status: "new" | "reviewed" | "resolved"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -853,6 +896,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      bug_report_status: ["new", "reviewed", "resolved"],
     },
   },
 } as const

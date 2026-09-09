@@ -18,9 +18,11 @@ import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as RecordingsRouteImport } from './routes/recordings'
+import { Route as ReportRouteImport } from './routes/report'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
+import { Route as AdminBugReportsRouteImport } from './routes/admin.bug-reports'
 import { Route as AdminCourseAudioRouteImport } from './routes/admin.course-audio'
 import { Route as AdminStorageReportRouteImport } from './routes/admin.storage-report'
 import { Route as ApiFinalAudioCoachRouteImport } from './routes/api/final-audio-coach'
@@ -75,6 +77,11 @@ const RecordingsRoute = RecordingsRouteImport.update({
   path: '/recordings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReportRoute = ReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -88,6 +95,11 @@ const SprintRoute = SprintRouteImport.update({
 const VerbBankRoute = VerbBankRouteImport.update({
   id: '/verb-bank',
   path: '/verb-bank',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBugReportsRoute = AdminBugReportsRouteImport.update({
+  id: '/admin/bug-reports',
+  path: '/admin/bug-reports',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminCourseAudioRoute = AdminCourseAudioRouteImport.update({
@@ -142,9 +154,11 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/recordings': typeof RecordingsRoute
+  '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
+  '/admin/bug-reports': typeof AdminBugReportsRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
@@ -164,9 +178,11 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/recordings': typeof RecordingsRoute
+  '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
+  '/admin/bug-reports': typeof AdminBugReportsRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
@@ -187,9 +203,11 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/recordings': typeof RecordingsRoute
+  '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
+  '/admin/bug-reports': typeof AdminBugReportsRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
@@ -211,9 +229,11 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/recordings'
+    | '/report'
     | '/reset-password'
     | '/sprint'
     | '/verb-bank'
+    | '/admin/bug-reports'
     | '/admin/course-audio'
     | '/admin/storage-report'
     | '/api/final-audio-coach'
@@ -233,9 +253,11 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/recordings'
+    | '/report'
     | '/reset-password'
     | '/sprint'
     | '/verb-bank'
+    | '/admin/bug-reports'
     | '/admin/course-audio'
     | '/admin/storage-report'
     | '/api/final-audio-coach'
@@ -255,9 +277,11 @@ export interface FileRouteTypes {
     | '/profile'
     | '/progress'
     | '/recordings'
+    | '/report'
     | '/reset-password'
     | '/sprint'
     | '/verb-bank'
+    | '/admin/bug-reports'
     | '/admin/course-audio'
     | '/admin/storage-report'
     | '/api/final-audio-coach'
@@ -278,9 +302,11 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   ProgressRoute: typeof ProgressRoute
   RecordingsRoute: typeof RecordingsRoute
+  ReportRoute: typeof ReportRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SprintRoute: typeof SprintRoute
   VerbBankRoute: typeof VerbBankRoute
+  AdminBugReportsRoute: typeof AdminBugReportsRoute
   AdminCourseAudioRoute: typeof AdminCourseAudioRoute
   AdminStorageReportRoute: typeof AdminStorageReportRoute
   ApiFinalAudioCoachRoute: typeof ApiFinalAudioCoachRoute
@@ -356,6 +382,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecordingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/report': {
+      id: '/report'
+      path: '/report'
+      fullPath: '/report'
+      preLoaderRoute: typeof ReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -375,6 +408,13 @@ declare module '@tanstack/react-router' {
       path: '/verb-bank'
       fullPath: '/verb-bank'
       preLoaderRoute: typeof VerbBankRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/bug-reports': {
+      id: '/admin/bug-reports'
+      path: '/admin/bug-reports'
+      fullPath: '/admin/bug-reports'
+      preLoaderRoute: typeof AdminBugReportsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/course-audio': {
@@ -446,9 +486,11 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   ProgressRoute: ProgressRoute,
   RecordingsRoute: RecordingsRoute,
+  ReportRoute: ReportRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SprintRoute: SprintRoute,
   VerbBankRoute: VerbBankRoute,
+  AdminBugReportsRoute: AdminBugReportsRoute,
   AdminCourseAudioRoute: AdminCourseAudioRoute,
   AdminStorageReportRoute: AdminStorageReportRoute,
   ApiFinalAudioCoachRoute: ApiFinalAudioCoachRoute,
