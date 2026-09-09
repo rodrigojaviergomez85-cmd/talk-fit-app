@@ -1,4 +1,7 @@
 import type { ReviewPractice } from "@/lib/review-types";
+import scenePperfp1 from "@/assets/review/scene-pperfp1-mateo.jpg";
+import scenePperfp3 from "@/assets/review/scene-pperfp3-valeria.jpg";
+import scenePperfp5 from "@/assets/review/scene-pperfp5-julio.jpg";
 
 /**
  * REVIEW · PRESENT PERFECT PROGRESSIVE (have / has been + -ing) — five static
@@ -20,6 +23,7 @@ export const PRESENT_PERFECT_PROGRESSIVE_PRACTICES: ReviewPractice[] = [
       es: "Siempre tres partes: has + been + verbo-ing. Nunca quites been.",
     },
     showFullGuide: true,
+    sceneImage: { src: scenePperfp1, alt: "Mateo studying English at night and preparing for an interview", altEs: "Mateo estudiando inglés de noche y preparándose para una entrevista" },
     instructions: {
       en: "Mateo is preparing for an interview. Say how long he has been doing each thing.",
       es: "Mateo se prepara para una entrevista. Di cuánto tiempo lleva haciendo cada cosa.",
@@ -122,6 +126,7 @@ export const PRESENT_PERFECT_PROGRESSIVE_PRACTICES: ReviewPractice[] = [
       es: "Los verbos de estado como know y have (posesión) no llevan -ing.",
     },
     showFullGuide: false,
+    sceneImage: { src: scenePperfp3, alt: "Valeria training new agents during her busy month", altEs: "Valeria capacitando agentes nuevos en su mes ocupado" },
     instructions: {
       en: "Valeria has had a very busy month. Say what she has been doing and for how long.",
       es: "Valeria ha tenido un mes muy ocupado. Di qué ha estado haciendo y por cuánto tiempo.",
@@ -224,6 +229,7 @@ export const PRESENT_PERFECT_PROGRESSIVE_PRACTICES: ReviewPractice[] = [
       es: "Duración = has been + -ing. Resultado = has + participio.",
     },
     showFullGuide: false,
+    sceneImage: { src: scenePperfp5, alt: "Julio's new daily routine: running, sleeping, studying and working at night", altEs: "La nueva rutina de Julio: correr, dormir, estudiar y trabajar de noche" },
     instructions: {
       en: "You have the key facts about Julio. Build his story out loud.",
       es: "Tienes los datos clave de Julio. Arma su historia en voz alta.",
