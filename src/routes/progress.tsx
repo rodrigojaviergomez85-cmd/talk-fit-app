@@ -20,9 +20,8 @@ import { useT, useAppLang } from "@/lib/i18n";
 type ProgressTab = "progress" | "audio";
 
 export const Route = createFileRoute("/progress")({
-  validateSearch: (search: Record<string, unknown>): { tab: ProgressTab } => ({
-    tab: search['tab'] === "audio" ? "audio" : "progress",
-  }),
+  validateSearch: (search: Record<string, unknown>): { tab?: ProgressTab } =>
+    search['tab'] === "audio" ? { tab: "audio" } : {},
   head: () => ({
     meta: [
       { title: "My Progress — Fluency App" },
