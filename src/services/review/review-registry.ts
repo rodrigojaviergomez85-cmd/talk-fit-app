@@ -223,6 +223,7 @@ export function listReviewModulesByCategory(category: ReviewModule["category"]):
     "review-modals",
     "review-used-to",
     "review-past-perfect",
+    "review-modal-perfects",
   ];
   return listReviewModules()
     .filter((module) => module.category === category)
