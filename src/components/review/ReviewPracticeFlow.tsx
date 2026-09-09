@@ -224,6 +224,23 @@ export function ReviewPracticeFlow({ moduleId, practice, guide, showEs: showEsIn
           </p>
         ) : null}
 
+        {/* Reference scene: what the learner is describing (3rd person only). */}
+        {practice.sceneImage && step >= 2 ? (
+          <figure className="overflow-hidden rounded-3xl border border-border bg-card">
+            <img
+              src={practice.sceneImage.src}
+              alt={showEs ? practice.sceneImage.altEs : practice.sceneImage.alt}
+              loading="lazy"
+              width={1024}
+              height={768}
+              className="w-full object-cover"
+            />
+            <figcaption className="p-3 text-xs text-muted-foreground">
+              {showEs ? practice.sceneImage.altEs : practice.sceneImage.alt}
+            </figcaption>
+          </figure>
+        ) : null}
+
         {/* ------------------------------ STEP 1 ------------------------------ */}
         {step === 1 ? (
           <section className="space-y-4">
