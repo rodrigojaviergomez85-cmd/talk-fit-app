@@ -23,7 +23,8 @@ Agregar un módulo independiente **Modal Verbs** dentro de Review, con cinco pr�
 ## Experiencia
 - Mantener los Pasos 1–5 existentes: COPY con corrección hablada, shadowing, tres preguntas WH, tres audios obligatorios más dos opcionales, selección final y AI Coach.
 - Solo la práctica 1 inicia desbloqueada; las demás se abren en orden.
-- Agregar imágenes de referencia limpias y sin texto para las prácticas en tercera persona, alineadas con sus situaciones.
+- Agregar imágenes de referencia a las cinco prácticas, fieles a sus escenas y al texto que el estudiante repetirá.
+- Las imágenes no incluirán palabras, números, rótulos ni interfaces legibles; se revisarán dos veces para detectar anatomía, objetos, acciones o artefactos incoherentes antes de aprobarlas.
 
 ## Detalles técnicos
 - Registrar `review-modals` como identidad aislada de Review.
