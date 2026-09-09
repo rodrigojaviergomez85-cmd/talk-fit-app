@@ -30,6 +30,16 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     guide: SIMPLE_PRESENT_GUIDE,
     practices: SIMPLE_PRESENT_PRACTICES,
   },
+  "review-present-progressive": {
+    id: "review-present-progressive",
+    label: "REVIEW",
+    title: "Present Progressive",
+    titleEs: "Presente Progresivo",
+    subtitle: "What is happening right now — five complete speaking practices.",
+    subtitleEs: "Lo que está pasando ahora mismo: cinco prácticas completas de speaking.",
+    guide: PRESENT_PROGRESSIVE_GUIDE,
+    practices: PRESENT_PROGRESSIVE_PRACTICES,
+  },
 };
 
 export function getReviewModule(moduleId: string): ReviewModule | null {
