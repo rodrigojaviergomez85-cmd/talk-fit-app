@@ -425,6 +425,8 @@ const DICT = {
   "prog.totals": ["Totales", "Totals"],
   "prog.bests": ["Mejores marcas", "Personal bests"],
   "prog.myJourney": ["Tu camino", "Your journey"],
+  "prog.tabProgress": ["Avance", "Progress"],
+  "prog.tabAudio": ["Audios", "Audio"],
   "prog.badges": ["Logros", "Badges"],
 
   // Account
