@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
-import { ArrowRight, Check, Info, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Info, Sparkles } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { toneForTurn, type ModelTone } from "@/lib/model-tone";
 import { rep2Chunks, rep4Items, rep2ChunkText, REP4_MAX, isRep2CorrectionEnabled } from "@/lib/rep-structure";
@@ -904,6 +904,16 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               }}
               onFinish={finish}
             />
+          ) : null}
+
+          {!coachReviewActive && (stage > 0 || subIndex > 0) ? (
+            <button
+              type="button"
+              onClick={goBack}
+              className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl border border-border bg-card px-6 text-[13px] font-bold uppercase tracking-[0.14em] text-foreground transition-colors hover:bg-secondary"
+            >
+              <ArrowLeft className="size-4" aria-hidden /> {esUi ? "ATRÁS" : "BACK"}
+            </button>
           ) : null}
         </main>
       </div>
