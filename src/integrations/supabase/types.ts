@@ -559,6 +559,45 @@ export type Database = {
         }
         Relationships: []
       }
+      review_progress: {
+        Row: {
+          completed_count: number
+          created_at: string
+          id: string
+          last_completed_at: string | null
+          last_idea_count: number | null
+          last_speaking_seconds: number
+          practice_number: number
+          review_module_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_count?: number
+          created_at?: string
+          id?: string
+          last_completed_at?: string | null
+          last_idea_count?: number | null
+          last_speaking_seconds?: number
+          practice_number: number
+          review_module_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_count?: number
+          created_at?: string
+          id?: string
+          last_completed_at?: string | null
+          last_idea_count?: number | null
+          last_speaking_seconds?: number
+          practice_number?: number
+          review_module_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       test_ready_progress: {
         Row: {
           attempts: number
