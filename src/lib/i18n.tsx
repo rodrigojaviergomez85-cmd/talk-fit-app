@@ -19,6 +19,7 @@ const DICT = {
   "nav.practice": ["PRÁCTICA", "PRACTICE"],
   "nav.progress": ["PROGRESO", "PROGRESS"],
   "nav.recordings": ["GRABACIONES", "RECORDINGS"],
+  "nav.review": ["REVIEW", "REVIEW"],
   "nav.account": ["MI CUENTA", "ACCOUNT"],
 
   // Generic actions

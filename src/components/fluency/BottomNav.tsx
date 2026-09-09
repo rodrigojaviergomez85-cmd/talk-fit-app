@@ -1,12 +1,13 @@
 import { Link } from "@tanstack/react-router";
-import { BarChart3, Home, User } from "lucide-react";
+import { BarChart3, BookOpen, Home, User } from "lucide-react";
 import { useT, type TKey } from "@/lib/i18n";
 
-// HOME = do · PROGRESS = see + hear (audio tab) · ACCOUNT = manage.
+// HOME = do · PROGRESS = see + hear (audio tab) · REVIEW = reinforce · ACCOUNT = manage.
 // Practice is reached from Home / module CTAs, not from the tab bar.
 const ITEMS = [
   { to: "/", key: "nav.home", icon: Home },
   { to: "/progress", key: "nav.progress", icon: BarChart3 },
+  { to: "/review", key: "nav.review", icon: BookOpen },
   { to: "/profile", key: "nav.account", icon: User },
 ] as const satisfies readonly { to: string; key: TKey; icon: typeof Home }[];
 

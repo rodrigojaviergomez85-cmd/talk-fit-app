@@ -60,7 +60,9 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
             file = null;
           }
           const { isModuleId, CourseService } = await import("@/services/course-service");
-          if (!moduleId || !isModuleId(moduleId) || !Number.isInteger(day) || day < 1) return json({ error: "Invalid input." }, 400);
+          const { isReviewModuleId } = await import("@/lib/review-types");
+          const validModule = !!moduleId && (isModuleId(moduleId) || isReviewModuleId(moduleId));
+          if (!moduleId || !validModule || !Number.isInteger(day) || day < 1) return json({ error: "Invalid input." }, 400);
           if (turnMalformed) return json({ error: "Invalid input." }, 400);
           // Missing/malformed feedback identity fails before storage, quota, lease or AI work.
           const { isFeedbackId } = await import("@/lib/final-audio-coach");
@@ -81,6 +83,8 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
           userId,
           now: () => Date.now(),
           loadDay: async (mid, d) => {
+            const review = (await import("@/services/review/review-registry")).loadReviewDay(mid, d);
+            if (review) return review;
             try {
               const loaded = await CourseService.loadModule(mid as ModuleId);
               return loaded.days.find((x) => x.day === d) ?? null;
@@ -89,6 +93,7 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
             }
           },
           moduleLabel: (mid) => {
+            if (mid.startsWith("review-")) return "REVIEW Simple Present";
             try {
               const m = CourseService.getModule(mid as ModuleId);
               return `${m.label} ${m.title}`.trim();

@@ -220,17 +220,21 @@ export const CloudSync = {
     if (typeof day === "number") query = query.eq("day", day);
     const { data, error } = await query;
     if (error || !data) return [];
-    return data.map((row) => ({
-      moduleId: asModuleId(row.module_id),
-      day: row.day,
-      takeNumber: row.take_number,
-      isFinalRep: row.is_final_rep,
-      durationSeconds: Number(row.duration_seconds),
-      estimatedIdeaCount: row.estimated_idea_count,
-      storagePath: row.storage_path,
-      createdAt: row.created_at,
-      audioPurgedAt: row.audio_purged_at,
-    }));
+    return data
+      // REVIEW audio lives outside the journey: it never appears in the course
+      // lists, but an explicit Review query still gets its own rows.
+      .filter((row) => (moduleId ? true : !String(row.module_id).startsWith("review-")))
+      .map((row) => ({
+        moduleId: asModuleId(row.module_id),
+        day: row.day,
+        takeNumber: row.take_number,
+        isFinalRep: row.is_final_rep,
+        durationSeconds: Number(row.duration_seconds),
+        estimatedIdeaCount: row.estimated_idea_count,
+        storagePath: row.storage_path,
+        createdAt: row.created_at,
+        audioPurgedAt: row.audio_purged_at,
+      }));
   },
 
   /* --------------------------- Practice position -------------------------- */
