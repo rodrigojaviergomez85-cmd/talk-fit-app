@@ -13,6 +13,8 @@ import { SIMPLE_PRESENT_GUIDE, SIMPLE_PRESENT_COMMON_ERRORS } from "./simple-pre
 import { SIMPLE_PRESENT_PRACTICES } from "./simple-present-practices";
 import { PRESENT_PROGRESSIVE_GUIDE, PRESENT_PROGRESSIVE_COMMON_ERRORS } from "./present-progressive-guide";
 import { PRESENT_PROGRESSIVE_PRACTICES } from "./present-progressive-practices";
+import { SIMPLE_PAST_GUIDE, SIMPLE_PAST_COMMON_ERRORS } from "./simple-past-guide";
+import { SIMPLE_PAST_PRACTICES } from "./simple-past-practices";
 
 /**
  * Trusted, server-usable registry of Review content.
@@ -41,6 +43,17 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     guide: PRESENT_PROGRESSIVE_GUIDE,
     commonErrors: PRESENT_PROGRESSIVE_COMMON_ERRORS,
     practices: PRESENT_PROGRESSIVE_PRACTICES,
+  },
+  "review-simple-past": {
+    id: "review-simple-past",
+    label: "REVIEW",
+    title: "Simple Past",
+    titleEs: "Pasado Simple",
+    subtitle: "Finished actions, regular and irregular verbs — five complete speaking practices.",
+    subtitleEs: "Acciones terminadas, verbos regulares e irregulares: cinco prácticas completas de speaking.",
+    guide: SIMPLE_PAST_GUIDE,
+    commonErrors: SIMPLE_PAST_COMMON_ERRORS,
+    practices: SIMPLE_PAST_PRACTICES,
   },
 };
 
