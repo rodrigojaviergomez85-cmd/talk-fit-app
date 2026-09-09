@@ -32,6 +32,8 @@ import { MODALS_GUIDE, MODALS_COMMON_ERRORS } from "./modals-guide";
 import { MODALS_PRACTICES } from "./modals-practices";
 import { USED_TO_GUIDE, USED_TO_COMMON_ERRORS } from "./used-to-guide";
 import { USED_TO_PRACTICES } from "./used-to-practices";
+import { PAST_PERFECT_GUIDE, PAST_PERFECT_COMMON_ERRORS } from "./past-perfect-guide";
+import { PAST_PERFECT_PRACTICES } from "./past-perfect-practices";
 
 /**
  * Trusted, server-usable registry of Review content.
@@ -148,6 +150,17 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     guide: USED_TO_GUIDE,
     commonErrors: USED_TO_COMMON_ERRORS,
     practices: USED_TO_PRACTICES,
+  },
+  "review-past-perfect": {
+    id: "review-past-perfect",
+    label: "REVIEW",
+    title: "Past Perfect & Past Perfect Progressive",
+    titleEs: "Pasado Perfecto y Pasado Perfecto Progresivo",
+    subtitle: "Earlier completed actions and their duration — five complete speaking practices.",
+    subtitleEs: "Acciones anteriores completadas y su duración: cinco prácticas completas de speaking.",
+    guide: PAST_PERFECT_GUIDE,
+    commonErrors: PAST_PERFECT_COMMON_ERRORS,
+    practices: PAST_PERFECT_PRACTICES,
   },
 };
 

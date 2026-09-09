@@ -109,3 +109,14 @@ describe("Review · Used to content", () => {
     expect(mod?.practices.every((practice) => Boolean(practice.sceneImage))).toBe(true);
   });
 });
+
+describe("Review · Past Perfect content", () => {
+  it("combines completed earlier actions and duration with a scene for every practice", () => {
+    const mod = getReviewModule("review-past-perfect");
+    expect(mod).not.toBeNull();
+    const spoken = mod?.practices.flatMap((practice) => practice.lines.map((line) => line.text)).join(" ").toLowerCase() ?? "";
+    expect(spoken).toContain("had been");
+    expect(spoken).toMatch(/had (woken|forgotten|called|delayed|left|researched|prepared|written|checked|planned|divided|tested|completed|booked|packed|failed|received|connected|restored)/);
+    expect(mod?.practices.every((practice) => Boolean(practice.sceneImage))).toBe(true);
+  });
+});
