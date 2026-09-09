@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { CourseService } from "./course-service";
-import { JourneyService } from "./journey-service";
+import { JourneyService, recordKey } from "./journey-service";
 import { MODULE_INDEX, isModuleId, UPCOMING_LEVELS } from "./course-index";
 import { ADVANCED_3_WEEK_1_DAYS } from "./advanced-3-course";
 import { ADVANCED_3_WEEKS_2_4_DAYS } from "./advanced-3-weeks-2-4-course";
@@ -115,12 +115,31 @@ describe("ADVANCED 3 — BEYOND THE SCRIPT", () => {
     expect(html).not.toContain(turns[1]!.text);
   });
 
-  it("never requires ADVANCED 1 or ADVANCED 2 (cyclical advanced family)", () => {
+  it("stays locked until the three INTERMEDIATE modules are complete, then opens the whole ADVANCED family", () => {
     const state = JourneyService.load();
-    expect(JourneyService.isModuleUnlocked(state, "advanced-3")).toBe(true);
-    expect(JourneyService.isModuleUnlocked(state, "advanced-2")).toBe(true);
-    expect(JourneyService.isModuleUnlocked(state, "advanced-1")).toBe(true);
+    expect(JourneyService.isModuleUnlocked(state, "advanced-3")).toBe(false);
+
+    const days: Record<string, unknown> = {};
+    for (const moduleId of ["eagles-week-1", "tigers", "sharks"] as const) {
+      for (let day = 1; day <= CourseService.totalDays(moduleId); day += 1) {
+        days[recordKey(moduleId, day)] = {
+          moduleId,
+          day,
+          completedAt: new Date().toISOString(),
+          dayKey: "2026-01-01",
+          practiceSeconds: 60,
+          finalSeconds: 60,
+          firstSeconds: 60,
+          recordingsCount: 1,
+        };
+      }
+    }
+    const intermediateDone = { ...state, days } as typeof state;
+    expect(JourneyService.isModuleUnlocked(intermediateDone, "advanced-3")).toBe(true);
+    expect(JourneyService.isModuleUnlocked(intermediateDone, "advanced-2")).toBe(true);
+    expect(JourneyService.isModuleUnlocked(intermediateDone, "advanced-1")).toBe(true);
   });
+
 
   it("leaves ADVANCED 1 and ADVANCED 2 untouched", async () => {
     const [a1, a2] = await Promise.all([CourseService.loadModule("advanced-1"), CourseService.loadModule("advanced-2")]);

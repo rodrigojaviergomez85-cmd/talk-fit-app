@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { CourseService } from "./course-service";
-import { JourneyService } from "./journey-service";
+import { JourneyService, recordKey } from "./journey-service";
 import { MODULE_INDEX, isModuleId, UPCOMING_LEVELS } from "./course-index";
 import { ADVANCED_2_WEEK_1_DAYS } from "./advanced-2-course";
 import { ADVANCED_2_WEEKS_2_4_DAYS } from "./advanced-2-weeks-2-4-course";
@@ -105,29 +105,30 @@ describe("ADVANCED 2 — DO THE JOB", () => {
     expect(cued(3)).toBeGreaterThanOrEqual(cued(4));
   });
 
-  it("never requires ADVANCED 1 (cyclical advanced family)", () => {
+  it("stays locked until the three INTERMEDIATE modules are complete, then never requires ADVANCED 1", () => {
     const state = JourneyService.load();
-    const sharksDone = {
-      ...state,
-      days: Object.fromEntries(
-        CourseService.getDays("sharks").map((d) => [
-          `sharks-${d.day}`,
-          {
-            moduleId: "sharks" as const,
-            day: d.day,
-            completedAt: new Date().toISOString(),
-            dayKey: "2026-01-01",
-            practiceSeconds: 60,
-            finalSeconds: 60,
-            firstSeconds: 60,
-            recordingsCount: 1,
-          },
-        ]),
-      ),
-    };
-    expect(JourneyService.isModuleUnlocked(sharksDone, "advanced-2")).toBe(true);
-    expect(JourneyService.isModuleUnlocked(sharksDone, "advanced-1")).toBe(true);
+    expect(JourneyService.isModuleUnlocked(state, "advanced-2")).toBe(false);
+
+    const days: Record<string, unknown> = {};
+    for (const moduleId of ["eagles-week-1", "tigers", "sharks"] as const) {
+      for (let day = 1; day <= CourseService.totalDays(moduleId); day += 1) {
+        days[recordKey(moduleId, day)] = {
+          moduleId,
+          day,
+          completedAt: new Date().toISOString(),
+          dayKey: "2026-01-01",
+          practiceSeconds: 60,
+          finalSeconds: 60,
+          firstSeconds: 60,
+          recordingsCount: 1,
+        };
+      }
+    }
+    const intermediateDone = { ...state, days } as typeof state;
+    expect(JourneyService.isModuleUnlocked(intermediateDone, "advanced-2")).toBe(true);
+    expect(JourneyService.isModuleUnlocked(intermediateDone, "advanced-1")).toBe(true);
   });
+
 
   it("leaves ADVANCED 1 untouched", async () => {
     const a1 = await CourseService.loadModule("advanced-1");
