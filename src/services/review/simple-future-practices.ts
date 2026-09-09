@@ -30,6 +30,7 @@ export const SIMPLE_FUTURE_PRACTICES: ReviewPractice[] = [
       en: "Daniel already planned his day tomorrow. Tell his plans in the future.",
       es: "Daniel ya planeó su día de mañana. Cuenta sus planes en futuro.",
     },
+    sceneImage: { src: sceneSf1, alt: "Daniel planning his day tomorrow", altEs: "Daniel planeando su día de mañana" },
     vocabulary: ["tomorrow", "is going to", "will", "in the morning", "at noon", "later", "tonight", "early"],
     lines: [
       { id: "sfut1-l1", text: "Daniel is going to wake up at five thirty tomorrow.", es: "Daniel se va a despertar a las cinco y media mañana.", chunks: ["Daniel is going to wake up", "at five thirty", "tomorrow."] },
@@ -132,6 +133,7 @@ export const SIMPLE_FUTURE_PRACTICES: ReviewPractice[] = [
       en: "Paola starts a new job next month. Tell her plans and your predictions.",
       es: "Paola empieza un trabajo nuevo el próximo mes. Cuenta sus planes y tus predicciones.",
     },
+    sceneImage: { src: sceneSf3, alt: "Paola at her new call center job", altEs: "Paola en su nuevo trabajo en el call center" },
     vocabulary: ["next month", "is going to", "will", "training", "team", "probably", "at first", "soon"],
     lines: [
       { id: "sfut3-l1", text: "Paola is going to start a new job next month.", es: "Paola va a empezar un trabajo nuevo el próximo mes.", chunks: ["Paola is going to start", "a new job", "next month."] },
@@ -234,6 +236,7 @@ export const SIMPLE_FUTURE_PRACTICES: ReviewPractice[] = [
       en: "Marcos is going to travel to Canada next month. Tell the whole plan.",
       es: "Marcos va a viajar a Canadá el próximo mes. Cuenta todo el plan.",
     },
+    sceneImage: { src: sceneSf5, alt: "Marcos at the airport before his trip to Canada", altEs: "Marcos en el aeropuerto antes de su viaje a Canadá" },
     vocabulary: ["next month", "flight", "two weeks", "is going to", "will", "cold", "visit", "come back"],
     lines: [
       { id: "sfut5-l1", text: "Marcos is going to travel to Canada next month.", es: "Marcos va a viajar a Canadá el próximo mes.", chunks: ["Marcos is going to travel", "to Canada", "next month."] },
