@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { AlertTriangle } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { CurrentModuleCard } from "@/components/fluency/CurrentModuleCard";
 import { NextModuleLocked } from "@/components/fluency/NextModuleLocked";
