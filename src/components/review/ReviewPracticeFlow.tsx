@@ -3,6 +3,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { FinalCoachReview } from "@/components/fluency/FinalCoachReview";
+import { RepProgress } from "@/components/fluency/RepProgress";
 import { SpanishProvider, SpanishToggle } from "@/components/fluency/TranslatableText";
 import { takeSlots } from "@/components/fluency/TakeBoard";
 import { Button } from "@/components/ui/button";
@@ -193,9 +194,25 @@ export function ReviewPracticeFlow({ moduleId, practice, guide, showEs: showEsIn
 
   const label = STEP_LABELS[step - 1] ?? STEP_LABELS[0]!;
 
+  const exitToModule = () => {
+    AudioService.stop();
+    void navigate({ to: "/review/$moduleId", params: { moduleId } });
+  };
+
   return (
     <SpanishProvider value={showEs}>
-      <div className="space-y-4">
+      <div className="min-h-screen bg-background pb-16">
+        {/* Same sticky top bar as the official modules: back / step title / forward / exit. */}
+        <RepProgress
+          current={step - 1}
+          total={5}
+          title={`${showEs ? "PRÁCTICA" : "PRACTICE"} ${practice.number} · ${showEs ? label.es : label.en}`}
+          {...(!coach ? { onBack: goBack } : {})}
+          {...(step < 5 && !coach ? { onNext: goForward } : {})}
+          onExit={exitToModule}
+        />
+
+        <main className="mx-auto w-full max-w-lg space-y-4 px-4 py-5">
         <header className="rounded-3xl bg-navy p-4 text-navy-foreground">
           <p className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-primary">
             {showEs ? label.es : label.en}
@@ -384,6 +401,7 @@ export function ReviewPracticeFlow({ moduleId, practice, guide, showEs: showEsIn
             ) : null}
           </nav>
         ) : null}
+        </main>
       </div>
     </SpanishProvider>
   );
