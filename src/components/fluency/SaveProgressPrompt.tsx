@@ -4,6 +4,7 @@ import { loadPreferences, savePreferences } from "@/services/preferences";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useT } from "@/lib/i18n";
+import { localPasswordIssueKey, signUpErrorKey } from "@/lib/auth-errors";
 import type { ModuleId } from "@/lib/types";
 
 /**
@@ -50,12 +51,23 @@ export function SaveProgressPrompt({ moduleId }: { moduleId: ModuleId }) {
   const signUp = async () => {
     setBusy(true);
     setMessage(null);
+    const localIssue = localPasswordIssueKey(password);
+    if (localIssue) {
+      setMessage(t(localIssue));
+      setBusy(false);
+      return;
+    }
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: { emailRedirectTo: window.location.origin },
     });
-    setMessage(error ? error.message : t("account.checkEmail"));
+    if (error) {
+      const key = signUpErrorKey(error);
+      setMessage(key ? t(key) : error.message);
+    } else {
+      setMessage(t("account.checkEmail"));
+    }
     setBusy(false);
   };
 
@@ -99,6 +111,7 @@ export function SaveProgressPrompt({ moduleId }: { moduleId: ModuleId }) {
             placeholder={t("account.password")}
             className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-[15px]"
           />
+          <p className="text-[12px] leading-relaxed text-muted-foreground">{t("account.passwordHint")}</p>
           <button
             type="button"
             disabled={busy || !email || !password}

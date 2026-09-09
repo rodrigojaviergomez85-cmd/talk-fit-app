@@ -466,6 +466,22 @@ const DICT = {
     "Tu correo aún no está confirmado. Revisa tu bandeja o reenvía el correo de confirmación.",
     "Your email is not confirmed yet. Check your inbox or resend the confirmation email.",
   ],
+  "account.passwordHint": [
+    "Mínimo 8 caracteres. Evita contraseñas comunes como 123456 o tu nombre.",
+    "At least 8 characters. Avoid common passwords like 123456 or your name.",
+  ],
+  "account.passwordTooShort": [
+    "Tu contraseña necesita al menos 8 caracteres.",
+    "Your password needs at least 8 characters.",
+  ],
+  "account.weakPassword": [
+    "Esa contraseña es muy fácil de adivinar. Usa al menos 8 caracteres y combina letras, números y un símbolo.",
+    "That password is too easy to guess. Use at least 8 characters and mix letters, numbers and a symbol.",
+  ],
+  "account.emailInUse": [
+    "Ya existe una cuenta con este correo. Entra con tu contraseña o restablécela.",
+    "An account already exists with this email. Sign in or reset your password.",
+  ],
   "account.forgotPassword": ["¿Olvidaste tu contraseña?", "Forgot your password?"],
   "account.resetSent": [
     "Te enviamos un enlace para restablecer tu contraseña. Revisa tu correo.",

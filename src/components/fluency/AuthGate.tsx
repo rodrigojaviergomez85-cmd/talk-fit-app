@@ -3,6 +3,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useT } from "@/lib/i18n";
+import { localPasswordIssueKey, signUpErrorKey } from "@/lib/auth-errors";
 import { cn } from "@/lib/utils";
 
 type Mode = "signin" | "signup";
@@ -53,12 +54,25 @@ export function AuthGate({ title, blocking = false }: { title?: string; blocking
     setMessage(null);
     setRecovery(null);
     if (mode === "signup") {
+      // Catch the obvious case before spending a round trip on it.
+      const localIssue = localPasswordIssueKey(password);
+      if (localIssue) {
+        setMessage(t(localIssue));
+        setBusy(false);
+        return;
+      }
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: { emailRedirectTo: window.location.origin },
       });
-      setMessage(error ? error.message : t("account.checkEmail"));
+      if (error) {
+        const key = signUpErrorKey(error);
+        setMessage(key ? t(key) : error.message);
+        if (key === "account.emailInUse") setRecovery("reset");
+      } else {
+        setMessage(t("account.checkEmail"));
+      }
       setBusy(false);
       return;
     }
@@ -226,6 +240,9 @@ export function AuthGate({ title, blocking = false }: { title?: string; blocking
               {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
             </button>
           </div>
+          {mode === "signup" ? (
+            <p className="text-[12px] leading-relaxed text-muted-foreground">{t("account.passwordHint")}</p>
+          ) : null}
         </div>
 
         <button

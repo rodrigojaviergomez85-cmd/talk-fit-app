@@ -369,11 +369,17 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
     goForward();
   };
 
-  const trackSeconds = (recording: Recording) => {
+  const trackSeconds = (recording: Recording, options?: { consumesSlot?: boolean }) => {
     practiceSeconds.current += recording.durationSeconds;
     // DAILY PRACTICE CAP: the learner's FIRST real recording of this session
-    // spends one of today's 5 slots. Idempotent — later recordings, retakes and
-    // a page refresh all belong to the same session and never spend another.
+    // spends one of today's 5 slots. Idempotent — later recordings and a page
+    // refresh belong to the same session and never spend another.
+    //
+    // The optional retake happens AFTER the day was committed, so the session's
+    // attempt is already closed: calling ensure() there would mint a brand-new
+    // attempt and silently burn a second slot. The bonus round is part of the
+    // same practice, so it never counts.
+    if (options?.consumesSlot === false) return;
     PracticeAttempts.consumeSlot(PracticeAttempts.ensure(moduleId, dayNumber, user?.id ?? null).id);
   };
 
@@ -535,7 +541,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   };
   const onRetakeRecorded = (rec: Recording) => {
     if (retakeState.status !== "recording") return;
-    trackSeconds(rec);
+    trackSeconds(rec, { consumesSlot: false });
     setRetakeRecording({ ...rec, countStatus: "pending", sentenceCount: null });
     setRetakeState({ status: "analyzing" });
     if (!rec.blob) {
