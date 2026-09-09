@@ -3,15 +3,13 @@ import { getReviewModule, getReviewPractice, loadReviewDay, listReviewModules } 
 import { REVIEW_PRACTICE_COUNT, isReviewModuleId } from "@/lib/review-types";
 import { rep4Items } from "@/lib/rep-structure";
 import { reviewPracticeToCourseDay } from "./review-registry";
-import { SIMPLE_PRESENT_PRACTICES } from "./simple-present-practices";
 
-describe("Review · Simple Present content", () => {
-  const mod = getReviewModule("review-simple-present")!;
-
+describe.each(listReviewModules())("Review · $title content", (mod) => {
   it("exposes exactly five complete practices", () => {
     expect(mod.practices).toHaveLength(REVIEW_PRACTICE_COUNT);
     for (const p of mod.practices) {
       expect(p.lines.length).toBeGreaterThanOrEqual(6);
+      expect(p.lines.every((l) => l.chunks.length > 0)).toBe(true);
       expect(p.questions.length).toBeGreaterThanOrEqual(5);
       expect(p.finalPrompt.question.length).toBeGreaterThan(0);
       expect(p.grammarGoals.length).toBeGreaterThan(0);
@@ -54,9 +52,9 @@ describe("Review · identity isolation", () => {
 const WH = ["HOW OFTEN", "HOW LONG", "WHAT TIME", "WHAT", "WHERE", "WHEN", "WHY", "WHO", "HOW"];
 const whOf = (q: string) => WH.find((w) => q.toUpperCase().includes(w)) ?? "";
 
-describe("review step 4 questions", () => {
+describe.each(listReviewModules())("review step 4 questions · $title", (mod) => {
   it("shows exactly three prompts per practice, with a different WH word each", () => {
-    for (const practice of SIMPLE_PRESENT_PRACTICES) {
+    for (const practice of mod.practices) {
       const items = rep4Items(reviewPracticeToCourseDay(practice));
       expect(items).toHaveLength(3);
       const cues = items.map((i) => whOf(i.question));
@@ -66,7 +64,7 @@ describe("review step 4 questions", () => {
   });
 
   it("covers HOW OFTEN and HOW LONG across the module", () => {
-    const cues = SIMPLE_PRESENT_PRACTICES.flatMap((p) =>
+    const cues = mod.practices.flatMap((p) =>
       rep4Items(reviewPracticeToCourseDay(p)).map((i) => whOf(i.question)),
     );
     expect(cues).toContain("HOW OFTEN");

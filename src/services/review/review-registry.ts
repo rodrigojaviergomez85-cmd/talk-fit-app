@@ -11,6 +11,8 @@ import {
 } from "@/lib/review-types";
 import { SIMPLE_PRESENT_GUIDE } from "./simple-present-guide";
 import { SIMPLE_PRESENT_PRACTICES } from "./simple-present-practices";
+import { PRESENT_PROGRESSIVE_GUIDE } from "./present-progressive-guide";
+import { PRESENT_PROGRESSIVE_PRACTICES } from "./present-progressive-practices";
 
 /**
  * Trusted, server-usable registry of Review content.
@@ -27,6 +29,16 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     subtitleEs: "Rutinas, hábitos y hechos: cinco prácticas completas de speaking.",
     guide: SIMPLE_PRESENT_GUIDE,
     practices: SIMPLE_PRESENT_PRACTICES,
+  },
+  "review-present-progressive": {
+    id: "review-present-progressive",
+    label: "REVIEW",
+    title: "Present Progressive",
+    titleEs: "Presente Progresivo",
+    subtitle: "What is happening right now — five complete speaking practices.",
+    subtitleEs: "Lo que está pasando ahora mismo: cinco prácticas completas de speaking.",
+    guide: PRESENT_PROGRESSIVE_GUIDE,
+    practices: PRESENT_PROGRESSIVE_PRACTICES,
   },
 };
 
