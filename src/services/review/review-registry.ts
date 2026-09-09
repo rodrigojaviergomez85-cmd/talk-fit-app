@@ -15,6 +15,8 @@ import { PRESENT_PROGRESSIVE_GUIDE, PRESENT_PROGRESSIVE_COMMON_ERRORS } from "./
 import { PRESENT_PROGRESSIVE_PRACTICES } from "./present-progressive-practices";
 import { SIMPLE_PAST_GUIDE, SIMPLE_PAST_COMMON_ERRORS } from "./simple-past-guide";
 import { SIMPLE_PAST_PRACTICES } from "./simple-past-practices";
+import { PAST_PROGRESSIVE_GUIDE, PAST_PROGRESSIVE_COMMON_ERRORS } from "./past-progressive-guide";
+import { PAST_PROGRESSIVE_PRACTICES } from "./past-progressive-practices";
 
 /**
  * Trusted, server-usable registry of Review content.
@@ -54,6 +56,17 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     guide: SIMPLE_PAST_GUIDE,
     commonErrors: SIMPLE_PAST_COMMON_ERRORS,
     practices: SIMPLE_PAST_PRACTICES,
+  },
+  "review-past-progressive": {
+    id: "review-past-progressive",
+    label: "REVIEW",
+    title: "Past Progressive",
+    titleEs: "Pasado Progresivo",
+    subtitle: "What was happening at a moment in the past — five complete speaking practices.",
+    subtitleEs: "Lo que estaba pasando en un momento del pasado: cinco prácticas completas de speaking.",
+    guide: PAST_PROGRESSIVE_GUIDE,
+    commonErrors: PAST_PROGRESSIVE_COMMON_ERRORS,
+    practices: PAST_PROGRESSIVE_PRACTICES,
   },
 };
 

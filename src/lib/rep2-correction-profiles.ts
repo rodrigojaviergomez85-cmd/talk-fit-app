@@ -224,7 +224,7 @@ const PROFILES: Partial<Record<ModuleId, Rep2CorrectionProfile>> = {
 export function getRep2CorrectionProfile(moduleId: ModuleId | string): Rep2CorrectionProfile {
   // REVIEW reuses the profile of the grammar it reinforces (never its own tuning).
   if (moduleId === "review-simple-present" || moduleId === "review-present-progressive") return SIMPLE_PRESENT_PROFILE;
-  if (moduleId === "review-simple-past") return PROFILES["past-stories"] ?? GENERIC_PROFILE;
+  if (moduleId === "review-simple-past" || moduleId === "review-past-progressive") return PROFILES["past-stories"] ?? GENERIC_PROFILE;
   return PROFILES[moduleId as ModuleId] ?? GENERIC_PROFILE;
 }
 
@@ -243,6 +243,7 @@ const ROLLOUT_MODULES: ReadonlySet<string> = new Set<string>([
   "review-simple-present",
   "review-present-progressive",
   "review-simple-past",
+  "review-past-progressive",
   "basic-zero",
   "simple-future",
   "simple-present",
