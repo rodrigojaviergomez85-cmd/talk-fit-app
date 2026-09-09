@@ -161,6 +161,9 @@ function normalize(text: string): string {
   return applyHyphenAliases(
     text
       .toLowerCase()
+      // Accents are a writing detail, never a speaking error ("Sofía" = "Sofia").
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
       .replace(/[\u2018\u2019\u02bc\u2032]/g, "'")
       .replace(/[\u201c\u201d]/g, '"'),
   )
