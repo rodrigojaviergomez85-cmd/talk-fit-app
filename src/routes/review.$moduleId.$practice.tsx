@@ -50,11 +50,5 @@ function ReviewPracticePage() {
     return <Navigate to="/review/$moduleId" params={{ moduleId: mod.id as ReviewModuleId }} replace />;
   if (access === "checking") return <AppShell><div className="p-4 text-sm text-muted-foreground">…</div></AppShell>;
 
-  return (
-    <AppShell>
-      <div className="p-4">
-        <ReviewPracticeFlow moduleId={mod.id} practice={found} guide={mod.guide} showEs={lang === "es"} />
-      </div>
-    </AppShell>
-  );
+  return <ReviewPracticeFlow moduleId={mod.id} practice={found} guide={mod.guide} showEs={lang === "es"} />;
 }
