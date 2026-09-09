@@ -5,6 +5,7 @@ import { CourseService } from "@/services/course-service";
 import type { JourneyState } from "@/lib/types";
 import { JourneyService } from "@/services/journey-service";
 import { PracticeSessionService } from "@/services/practice-session";
+import { ModuleBadge } from "@/components/fluency/ModuleBadge";
 import { useAppLang } from "@/lib/i18n";
 
 /**
@@ -61,9 +62,15 @@ export function CurrentModuleCard({ state }: { state: JourneyState }) {
   return (
     <section className="rounded-3xl bg-navy p-6 text-navy-foreground shadow-[var(--shadow-lift)]">
       <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{t("home.currentModule")}</p>
-      <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-navy-foreground/70">{module.label}</p>
-      <h2 className="mt-0.5 text-[28px] font-extrabold leading-none tracking-tight">{module.title}</h2>
+      <div className="mt-2 flex items-start gap-3">
+        <div className="min-w-0 flex-1">
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-navy-foreground/70">{module.label}</p>
+          <h2 className="mt-0.5 text-[28px] font-extrabold leading-none tracking-tight">{module.title}</h2>
+        </div>
+        <ModuleBadge moduleId={module.id} size="lg" es={es} className="rounded-full bg-background p-1" />
+      </div>
       <p className="mt-1.5 text-[14px] font-semibold text-navy-foreground/80">{es ? module.subtitleEs : module.subtitle}</p>
+
 
       <div className="mt-4 flex items-baseline justify-between gap-3">
         <p className="text-[15px] font-extrabold uppercase tracking-[0.12em] tabular-nums">
