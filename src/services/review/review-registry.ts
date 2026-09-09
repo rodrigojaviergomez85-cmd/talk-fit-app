@@ -28,6 +28,8 @@ import {
 import { PRESENT_PERFECT_PROGRESSIVE_PRACTICES } from "./present-perfect-progressive-practices";
 import { COMPARATIVES_GUIDE, COMPARATIVES_COMMON_ERRORS } from "./comparatives-guide";
 import { COMPARATIVES_PRACTICES } from "./comparatives-practices";
+import { MODALS_GUIDE, MODALS_COMMON_ERRORS } from "./modals-guide";
+import { MODALS_PRACTICES } from "./modals-practices";
 
 /**
  * Trusted, server-usable registry of Review content.
@@ -122,6 +124,17 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     guide: COMPARATIVES_GUIDE,
     commonErrors: COMPARATIVES_COMMON_ERRORS,
     practices: COMPARATIVES_PRACTICES,
+  },
+  "review-modals": {
+    id: "review-modals",
+    label: "REVIEW",
+    title: "Modal Verbs",
+    titleEs: "Verbos Modales",
+    subtitle: "Ability, possibility, advice, obligation and hypothetical choices — five complete speaking practices.",
+    subtitleEs: "Habilidad, posibilidad, consejos, obligación y decisiones hipotéticas: cinco prácticas completas de speaking.",
+    guide: MODALS_GUIDE,
+    commonErrors: MODALS_COMMON_ERRORS,
+    practices: MODALS_PRACTICES,
   },
 };
 

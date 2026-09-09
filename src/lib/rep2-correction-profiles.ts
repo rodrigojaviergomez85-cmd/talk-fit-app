@@ -229,6 +229,7 @@ export function getRep2CorrectionProfile(moduleId: ModuleId | string): Rep2Corre
   if (moduleId === "review-present-perfect" || moduleId === "review-present-perfect-progressive")
     return PROFILES["mixed-tenses"] ?? GENERIC_PROFILE;
   if (moduleId === "review-comparatives") return SIMPLE_PRESENT_PROFILE;
+  if (moduleId === "review-modals") return PROFILES["mixed-tenses"] ?? GENERIC_PROFILE;
   return PROFILES[moduleId as ModuleId] ?? GENERIC_PROFILE;
 }
 
@@ -252,6 +253,7 @@ const ROLLOUT_MODULES: ReadonlySet<string> = new Set<string>([
   "review-present-perfect",
   "review-present-perfect-progressive",
   "review-comparatives",
+  "review-modals",
   "basic-zero",
   "simple-future",
   "simple-present",
