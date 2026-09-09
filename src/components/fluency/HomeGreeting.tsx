@@ -1,24 +1,15 @@
 import { useAuth } from "@/lib/auth";
 import { useAppLang } from "@/lib/i18n";
 
-/** Time-of-day greeting + today's date. Presentation only. */
+/** Time-of-day greeting + today's date. The greeting is always in English
+ *  so learners see the target language first, even when the app is in Spanish. */
 export function HomeGreeting() {
   const { lang } = useAppLang();
   const { user } = useAuth();
   const es = lang === "es";
   const hour = new Date().getHours();
   const greeting =
-    hour < 12
-      ? es
-        ? "Buenos días"
-        : "Good morning"
-      : hour < 19
-        ? es
-          ? "Buenas tardes"
-          : "Good afternoon"
-        : es
-          ? "Buenas noches"
-          : "Good evening";
+    hour < 12 ? "Good morning" : hour < 19 ? "Good afternoon" : "Good evening";
 
   const meta = (user?.user_metadata ?? {}) as { full_name?: string; name?: string };
   const raw = meta.full_name || meta.name || user?.email?.split("@")[0] || "";
