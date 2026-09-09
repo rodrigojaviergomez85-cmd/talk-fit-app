@@ -238,6 +238,110 @@ function tokenize(text: string): string[] {
   return normalizeForCompare(text).split(/\s+/).filter(Boolean);
 }
 
+/**
+ * Spelling key for one spoken word. Two words with the same key sound the same
+ * but were written differently by the transcriber ("Sophia" / "Sofia",
+ * "realise" / "realize", "colour" / "color"). Spelling is never a speaking error.
+ */
+function spokenKey(word: string): string {
+  return word
+    .replace(/ph/g, "f")
+    .replace(/ck/g, "k")
+    .replace(/ise$/, "ize")
+    .replace(/ised$/, "ized")
+    .replace(/ising$/, "izing")
+    .replace(/our(s?)$/, "or$1")
+    .replace(/re$/, "er")
+    .replace(/(.)\1+/g, "$1");
+}
+
+/** One-character spelling drift, e.g. "saturday" vs "saterday". */
+function oneEditApart(a: string, b: string): boolean {
+  if (Math.abs(a.length - b.length) > 1) return false;
+  let i = 0;
+  let j = 0;
+  let edits = 0;
+  while (i < a.length && j < b.length) {
+    if (a[i] === b[j]) {
+      i++;
+      j++;
+      continue;
+    }
+    if (++edits > 1) return false;
+    if (a.length === b.length) {
+      i++;
+      j++;
+    } else if (a.length > b.length) {
+      i++;
+    } else {
+      j++;
+    }
+  }
+  return edits + (a.length - i) + (b.length - j) <= 1;
+}
+
+/** Same spoken word, different transcription spelling. */
+function sameSpokenWord(target: string, got: string): boolean {
+  if (target === got) return true;
+  if (PROTECTED_NEAR_MATCH_WORDS.has(target) || PROTECTED_NEAR_MATCH_WORDS.has(got)) return false;
+  if (spokenKey(target) === spokenKey(got)) return true;
+  // Only long words: short words carry grammar ("work" vs "works").
+  return target.length >= 6 && got.length >= 6 && oneEditApart(target, got);
+}
+
+/**
+ * Rewrites the transcript so that pure writing differences disappear before the
+ * diff: compound spacing ("hard working" vs "hardworking") and spelling
+ * variants of the same spoken word. The target is never modified.
+ */
+function alignSpokenVariants(targetWords: string[], transcriptWords: string[]): string[] {
+  const out: string[] = [];
+  let i = 0;
+  let j = 0;
+  while (j < transcriptWords.length) {
+    const target = targetWords[i];
+    const got = transcriptWords[j]!;
+
+    if (target && target === got) {
+      out.push(got);
+      i++;
+      j++;
+      continue;
+    }
+
+    // "hard working" (heard) → "hardworking" (target)
+    const next = transcriptWords[j + 1];
+    if (target && next && `${got}${next}` === target) {
+      out.push(target);
+      i++;
+      j += 2;
+      continue;
+    }
+
+    // "hardworking" (heard) → "hard working" (target)
+    const targetNext = targetWords[i + 1];
+    if (target && targetNext && `${target}${targetNext}` === got) {
+      out.push(target, targetNext);
+      i += 2;
+      j++;
+      continue;
+    }
+
+    if (target && sameSpokenWord(target, got)) {
+      out.push(target);
+      i++;
+      j++;
+      continue;
+    }
+
+    out.push(got);
+    // Keep the two sequences roughly in step; the diff handles real differences.
+    if (target) i++;
+    j++;
+  }
+  return out;
+}
+
 function wordDiff(targetWords: string[], transcriptWords: string[]): DiffOp[] {
   const m = targetWords.length;
   const n = transcriptWords.length;
