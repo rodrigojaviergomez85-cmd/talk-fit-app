@@ -43,6 +43,8 @@ import { PAST_PERFECT_PRACTICES } from "./past-perfect-practices";
 const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
   "review-simple-present": {
     id: "review-simple-present",
+    category: "basic",
+    minimumModuleId: "simple-present",
     label: "REVIEW",
     title: "Simple Present",
     titleEs: "Presente Simple",
@@ -54,6 +56,8 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
   },
   "review-present-progressive": {
     id: "review-present-progressive",
+    category: "basic",
+    minimumModuleId: "simple-present",
     label: "REVIEW",
     title: "Present Progressive",
     titleEs: "Presente Progresivo",
@@ -65,6 +69,8 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
   },
   "review-simple-past": {
     id: "review-simple-past",
+    category: "basic",
+    minimumModuleId: "past-stories",
     label: "REVIEW",
     title: "Simple Past",
     titleEs: "Pasado Simple",
@@ -76,6 +82,8 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
   },
   "review-past-progressive": {
     id: "review-past-progressive",
+    category: "basic",
+    minimumModuleId: "past-stories",
     label: "REVIEW",
     title: "Past Progressive",
     titleEs: "Pasado Progresivo",
@@ -87,6 +95,8 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
   },
   "review-simple-future": {
     id: "review-simple-future",
+    category: "basic",
+    minimumModuleId: "simple-future",
     label: "REVIEW",
     title: "Simple Future",
     titleEs: "Futuro Simple",
@@ -98,6 +108,8 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
   },
   "review-present-perfect": {
     id: "review-present-perfect",
+    category: "intermediate-advanced",
+    minimumModuleId: "eagles-week-1",
     label: "REVIEW",
     title: "Present Perfect",
     titleEs: "Presente Perfecto",
@@ -109,6 +121,8 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
   },
   "review-present-perfect-progressive": {
     id: "review-present-perfect-progressive",
+    category: "intermediate-advanced",
+    minimumModuleId: "eagles-week-1",
     label: "REVIEW",
     title: "Present Perfect Progressive",
     titleEs: "Presente Perfecto Progresivo",
@@ -120,6 +134,8 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
   },
   "review-comparatives": {
     id: "review-comparatives",
+    category: "intermediate-advanced",
+    minimumModuleId: "eagles-week-1",
     label: "REVIEW",
     title: "Comparatives",
     titleEs: "Comparativos",
@@ -131,6 +147,8 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
   },
   "review-modals": {
     id: "review-modals",
+    category: "intermediate-advanced",
+    minimumModuleId: "eagles-week-1",
     label: "REVIEW",
     title: "Modal Verbs",
     titleEs: "Verbos Modales",
@@ -142,6 +160,8 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
   },
   "review-used-to": {
     id: "review-used-to",
+    category: "intermediate-advanced",
+    minimumModuleId: "eagles-week-1",
     label: "REVIEW",
     title: "Used to, Be used to & Get used to",
     titleEs: "Used to, Be used to y Get used to",
@@ -153,6 +173,8 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
   },
   "review-past-perfect": {
     id: "review-past-perfect",
+    category: "intermediate-advanced",
+    minimumModuleId: "eagles-week-1",
     label: "REVIEW",
     title: "Past Perfect & Past Perfect Progressive",
     titleEs: "Pasado Perfecto y Pasado Perfecto Progresivo",
@@ -171,6 +193,25 @@ export function getReviewModule(moduleId: string): ReviewModule | null {
 
 export function listReviewModules(): ReviewModule[] {
   return Object.values(REVIEW_MODULES);
+}
+
+export function listReviewModulesByCategory(category: ReviewModule["category"]): ReviewModule[] {
+  const order: ReviewModuleId[] = [
+    "review-simple-future",
+    "review-simple-present",
+    "review-present-progressive",
+    "review-simple-past",
+    "review-past-progressive",
+    "review-present-perfect",
+    "review-present-perfect-progressive",
+    "review-comparatives",
+    "review-modals",
+    "review-used-to",
+    "review-past-perfect",
+  ];
+  return listReviewModules()
+    .filter((module) => module.category === category)
+    .sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
 }
 
 /** Returns the practice only when both the module id and the number are valid. */

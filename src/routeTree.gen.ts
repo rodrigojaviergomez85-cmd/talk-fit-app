@@ -32,6 +32,8 @@ import { Route as ApiSentenceCountRouteImport } from './routes/api/sentence-coun
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as ModuleModuleIdRouteImport } from './routes/module.$moduleId'
 import { Route as ReviewIndexRouteImport } from './routes/review.index'
+import { Route as ReviewBasicRouteImport } from './routes/review.basic'
+import { Route as ReviewIntermediateAdvancedRouteImport } from './routes/review.intermediate-advanced'
 import { Route as ReviewModuleIdIndexRouteImport } from './routes/review.$moduleId.index'
 import { Route as ReviewModuleIdPracticeRouteImport } from './routes/review.$moduleId.$practice'
 
@@ -151,6 +153,17 @@ const ReviewIndexRoute = ReviewIndexRouteImport.update({
   path: '/review/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReviewBasicRoute = ReviewBasicRouteImport.update({
+  id: '/review/basic',
+  path: '/review/basic',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewIntermediateAdvancedRoute =
+  ReviewIntermediateAdvancedRouteImport.update({
+    id: '/review/intermediate-advanced',
+    path: '/review/intermediate-advanced',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ReviewModuleIdIndexRoute = ReviewModuleIdIndexRouteImport.update({
   id: '/review/$moduleId/',
   path: '/review/$moduleId/',
@@ -185,6 +198,8 @@ export interface FileRoutesByFullPath {
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
+  '/review/basic': typeof ReviewBasicRoute
+  '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/review/': typeof ReviewIndexRoute
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/review/$moduleId/': typeof ReviewModuleIdIndexRoute
@@ -212,6 +227,8 @@ export interface FileRoutesByTo {
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
+  '/review/basic': typeof ReviewBasicRoute
+  '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/review': typeof ReviewIndexRoute
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/review/$moduleId': typeof ReviewModuleIdIndexRoute
@@ -240,6 +257,8 @@ export interface FileRoutesById {
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
+  '/review/basic': typeof ReviewBasicRoute
+  '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/review/': typeof ReviewIndexRoute
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/review/$moduleId/': typeof ReviewModuleIdIndexRoute
@@ -269,6 +288,8 @@ export interface FileRouteTypes {
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
+    | '/review/basic'
+    | '/review/intermediate-advanced'
     | '/review/'
     | '/review/$moduleId/$practice'
     | '/review/$moduleId/'
@@ -296,6 +317,8 @@ export interface FileRouteTypes {
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
+    | '/review/basic'
+    | '/review/intermediate-advanced'
     | '/review'
     | '/review/$moduleId/$practice'
     | '/review/$moduleId'
@@ -323,6 +346,8 @@ export interface FileRouteTypes {
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
+    | '/review/basic'
+    | '/review/intermediate-advanced'
     | '/review/'
     | '/review/$moduleId/$practice'
     | '/review/$moduleId/'
@@ -351,6 +376,8 @@ export interface RootRouteChildren {
   ApiSentenceCountRoute: typeof ApiSentenceCountRoute
   ApiTtsRoute: typeof ApiTtsRoute
   ModuleModuleIdRoute: typeof ModuleModuleIdRoute
+  ReviewBasicRoute: typeof ReviewBasicRoute
+  ReviewIntermediateAdvancedRoute: typeof ReviewIntermediateAdvancedRoute
   ReviewIndexRoute: typeof ReviewIndexRoute
   ReviewModuleIdPracticeRoute: typeof ReviewModuleIdPracticeRoute
   ReviewModuleIdIndexRoute: typeof ReviewModuleIdIndexRoute
@@ -519,6 +546,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReviewIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/review/basic': {
+      id: '/review/basic'
+      path: '/review/basic'
+      fullPath: '/review/basic'
+      preLoaderRoute: typeof ReviewBasicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/review/intermediate-advanced': {
+      id: '/review/intermediate-advanced'
+      path: '/review/intermediate-advanced'
+      fullPath: '/review/intermediate-advanced'
+      preLoaderRoute: typeof ReviewIntermediateAdvancedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/review/$moduleId/': {
       id: '/review/$moduleId/'
       path: '/review/$moduleId'
@@ -559,6 +600,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSentenceCountRoute: ApiSentenceCountRoute,
   ApiTtsRoute: ApiTtsRoute,
   ModuleModuleIdRoute: ModuleModuleIdRoute,
+  ReviewBasicRoute: ReviewBasicRoute,
+  ReviewIntermediateAdvancedRoute: ReviewIntermediateAdvancedRoute,
   ReviewIndexRoute: ReviewIndexRoute,
   ReviewModuleIdPracticeRoute: ReviewModuleIdPracticeRoute,
   ReviewModuleIdIndexRoute: ReviewModuleIdIndexRoute,
