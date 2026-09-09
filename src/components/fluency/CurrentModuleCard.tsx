@@ -70,10 +70,10 @@ export function CurrentModuleCard({ state }: { state: JourneyState }) {
       </div>
 
       <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{t("home.todaysChallenge")}</p>
-      <h3 className="mt-1 text-[27px] font-extrabold leading-[1.1] tracking-tight">{es ? day.topicEs : day.topic}</h3>
-      <p className="mt-2 text-[14px] font-semibold text-navy-foreground/80">
-        {es ? module.subtitleEs : module.subtitle}
-      </p>
+      <h3 className="mt-1 text-[27px] font-extrabold leading-[1.1] tracking-tight">{day.topic}</h3>
+      <p className="mt-1 text-[13px] font-medium leading-snug text-navy-foreground/60">{day.topicEs}</p>
+      <p className="mt-3 text-[14px] font-semibold text-navy-foreground/80">{module.subtitle}</p>
+      <p className="mt-1 text-[13px] font-medium leading-snug text-navy-foreground/60">{module.subtitleEs}</p>
 
       <div className="mt-5 flex items-baseline justify-between gap-3">
         <p className="text-[15px] font-extrabold tabular-nums">
