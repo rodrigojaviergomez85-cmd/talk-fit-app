@@ -11,16 +11,21 @@ import { ReviewProgress, type ReviewPracticeProgress } from "@/services/review/r
 import type { ReviewModuleId } from "@/lib/review-types";
 
 export const Route = createFileRoute("/review/$moduleId/")({
-  head: () => ({
-    meta: [
-      { title: "Review Simple Present · Fluency App" },
-      { name: "description", content: "Cinco prácticas habladas de Presente Simple con guía de gramática y feedback de IA." },
-      { property: "og:title", content: "Review Simple Present · Fluency App" },
-      { property: "og:description", content: "Cinco prácticas habladas de Presente Simple con guía de gramática y feedback de IA." },
+  head: ({ params }) => {
+    const mod = getReviewModule(params.moduleId);
+    const title = mod ? `${mod.title} · Review · Fluency App` : "Review · Fluency App";
+    const description = mod
+      ? `${mod.subtitle} Five complete speaking practices with a bilingual grammar guide.`
+      : "Independent speaking review for Fluency App.";
+    return { meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary" },
-    ],
-  }),
+    ] };
+  },
   component: ReviewModulePage,
 });
 
