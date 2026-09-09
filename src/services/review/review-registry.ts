@@ -17,6 +17,8 @@ import { SIMPLE_PAST_GUIDE, SIMPLE_PAST_COMMON_ERRORS } from "./simple-past-guid
 import { SIMPLE_PAST_PRACTICES } from "./simple-past-practices";
 import { PAST_PROGRESSIVE_GUIDE, PAST_PROGRESSIVE_COMMON_ERRORS } from "./past-progressive-guide";
 import { PAST_PROGRESSIVE_PRACTICES } from "./past-progressive-practices";
+import { SIMPLE_FUTURE_GUIDE, SIMPLE_FUTURE_COMMON_ERRORS } from "./simple-future-guide";
+import { SIMPLE_FUTURE_PRACTICES } from "./simple-future-practices";
 
 /**
  * Trusted, server-usable registry of Review content.
@@ -67,6 +69,17 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     guide: PAST_PROGRESSIVE_GUIDE,
     commonErrors: PAST_PROGRESSIVE_COMMON_ERRORS,
     practices: PAST_PROGRESSIVE_PRACTICES,
+  },
+  "review-simple-future": {
+    id: "review-simple-future",
+    label: "REVIEW",
+    title: "Simple Future",
+    titleEs: "Futuro Simple",
+    subtitle: "Plans and predictions with will and be going to — five complete speaking practices.",
+    subtitleEs: "Planes y predicciones con will y be going to: cinco prácticas completas de speaking.",
+    guide: SIMPLE_FUTURE_GUIDE,
+    commonErrors: SIMPLE_FUTURE_COMMON_ERRORS,
+    practices: SIMPLE_FUTURE_PRACTICES,
   },
 };
 
