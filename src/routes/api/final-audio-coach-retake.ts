@@ -83,6 +83,8 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
           userId,
           now: () => Date.now(),
           loadDay: async (mid, d) => {
+            const review = (await import("@/services/review/review-registry")).loadReviewDay(mid, d);
+            if (review) return review;
             try {
               const loaded = await CourseService.loadModule(mid as ModuleId);
               return loaded.days.find((x) => x.day === d) ?? null;
@@ -91,6 +93,7 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
             }
           },
           moduleLabel: (mid) => {
+            if (mid.startsWith("review-")) return "REVIEW Simple Present";
             try {
               const m = CourseService.getModule(mid as ModuleId);
               return `${m.label} ${m.title}`.trim();
