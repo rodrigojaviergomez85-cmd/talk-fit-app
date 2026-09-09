@@ -29,6 +29,12 @@ function ReviewModulePage() {
   const showEs = lang === "es";
   const mod = getReviewModule(moduleId);
   const [progress, setProgress] = useState<ReviewPracticeProgress[]>(ReviewProgress.emptyList());
+  // Read after hydration only: localStorage is not available while rendering on the server.
+  const [unlimited, setUnlimited] = useState(false);
+
+  useEffect(() => {
+    setUnlimited(hasUnlimitedAccess());
+  }, []);
 
   useEffect(() => {
     if (!mod) return;
