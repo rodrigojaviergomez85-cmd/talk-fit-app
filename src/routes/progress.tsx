@@ -4,12 +4,14 @@ import { RecordingsPanel } from "@/components/fluency/RecordingsPanel";
 import { Check, ChevronDown, Lock, Mic, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
-import { ModuleHeading } from "@/components/fluency/ModuleHeading";
-import { ModuleBadge } from "@/components/fluency/ModuleBadge";
+import { CurrentModuleCard } from "@/components/fluency/progress/CurrentModuleCard";
+import { Last7DaysCard } from "@/components/fluency/progress/Last7DaysCard";
+import { ListenAttemptsCard } from "@/components/fluency/progress/ListenAttemptsCard";
+import { HabitCard } from "@/components/fluency/progress/HabitCard";
+import { JourneyList, moduleAccessStatus } from "@/components/fluency/progress/JourneyList";
 
 import { BadgeGrid } from "@/components/fluency/BadgeGrid";
 import { ModuleBadgeGrid } from "@/components/fluency/ModuleBadgeGrid";
-import { HABIT_GOAL, habitDays, habitDisplay } from "@/lib/habit";
 import { CourseService, type DayOutline } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { Progression } from "@/services/progression";
