@@ -7,6 +7,7 @@ import { getReviewModule, getReviewPractice } from "@/services/review/review-reg
 import { ReviewProgress } from "@/services/review/review-progress";
 import type { ReviewModuleId, ReviewPracticeNumber } from "@/lib/review-types";
 import { hasUnlimitedAccess } from "@/lib/unlimited-access";
+import { getReviewAccessSnapshot, isReviewModuleAccessible } from "@/services/review/review-access";
 
 export const Route = createFileRoute("/review/$moduleId/$practice")({
   head: () => ({
@@ -31,6 +32,11 @@ function ReviewPracticePage() {
 
   useEffect(() => {
     if (!mod || !found) return;
+    const snapshot = getReviewAccessSnapshot();
+    if (!isReviewModuleAccessible(mod, snapshot.currentModuleId, snapshot.unlimited)) {
+      setAccess("locked");
+      return;
+    }
     if (found.number === 1 || hasUnlimitedAccess()) {
       setAccess("allowed");
       return;
@@ -47,8 +53,13 @@ function ReviewPracticePage() {
   }, [mod, found]);
 
   if (!mod || !found) return <Navigate to="/review" replace />;
-  if (access === "locked")
+  if (access === "locked") {
+    const snapshot = getReviewAccessSnapshot();
+    if (!isReviewModuleAccessible(mod, snapshot.currentModuleId, snapshot.unlimited)) {
+      return <Navigate to={mod.category === "basic" ? "/review/basic" : "/review/intermediate-advanced"} replace />;
+    }
     return <Navigate to="/review/$moduleId" params={{ moduleId: mod.id as ReviewModuleId }} replace />;
+  }
   if (access === "checking") return <AppShell><div className="p-4 text-sm text-muted-foreground">…</div></AppShell>;
 
   return <ReviewPracticeFlow moduleId={mod.id} practice={found} guide={mod.guide} showEs={lang === "es"} />;

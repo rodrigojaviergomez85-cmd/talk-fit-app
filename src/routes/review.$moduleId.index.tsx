@@ -2,13 +2,13 @@ import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, CheckCircle2, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 import { AppShell } from "@/components/fluency/AppShell";
 import { ReviewGuide } from "@/components/review/ReviewGuide";
 import { useAppLang } from "@/lib/i18n";
 import { getReviewModule } from "@/services/review/review-registry";
 import { ReviewProgress, type ReviewPracticeProgress } from "@/services/review/review-progress";
 import type { ReviewModuleId } from "@/lib/review-types";
+import { getReviewAccessSnapshot, isReviewModuleAccessible } from "@/services/review/review-access";
 
 export const Route = createFileRoute("/review/$moduleId/")({
   head: ({ params }) => {
@@ -36,11 +36,15 @@ function ReviewModulePage() {
   const mod = getReviewModule(moduleId);
   const [progress, setProgress] = useState<ReviewPracticeProgress[]>(ReviewProgress.emptyList());
   // Read after hydration only: localStorage is not available while rendering on the server.
+  const [moduleAccess, setModuleAccess] = useState<"checking" | "allowed" | "locked">("checking");
   const [unlimited, setUnlimited] = useState(false);
 
   useEffect(() => {
-    setUnlimited(hasUnlimitedAccess());
-  }, []);
+    if (!mod) return;
+    const snapshot = getReviewAccessSnapshot();
+    setUnlimited(snapshot.unlimited);
+    setModuleAccess(isReviewModuleAccessible(mod, snapshot.currentModuleId, snapshot.unlimited) ? "allowed" : "locked");
+  }, [mod]);
 
   useEffect(() => {
     if (!mod) return;
@@ -54,6 +58,8 @@ function ReviewModulePage() {
   }, [mod]);
 
   if (!mod) return <Navigate to="/review" replace />;
+  if (moduleAccess === "locked") return <Navigate to={mod.category === "basic" ? "/review/basic" : "/review/intermediate-advanced"} replace />;
+  if (moduleAccess === "checking") return <AppShell><div className="p-4 text-sm text-muted-foreground">…</div></AppShell>;
 
   return (
     <AppShell>

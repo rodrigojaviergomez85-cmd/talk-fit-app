@@ -18,7 +18,7 @@ export function isReviewModuleAccessible(
 export function getReviewAccessSnapshot(): { currentModuleId: ModuleId; unlimited: boolean } {
   const state = JourneyService.load();
   return {
-    currentModuleId: JourneyService.currentModule(state),
+    currentModuleId: JourneyService.nextPractice(state)?.moduleId ?? JourneyService.currentModule(state),
     unlimited: hasUnlimitedAccess(),
   };
 }

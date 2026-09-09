@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { getReviewModule, getReviewPractice, loadReviewDay, listReviewModules } from "./review-registry";
+import { getReviewModule, getReviewPractice, loadReviewDay, listReviewModules, listReviewModulesByCategory } from "./review-registry";
 import { REVIEW_PRACTICE_COUNT, isReviewModuleId } from "@/lib/review-types";
+import type { ModuleId } from "@/lib/types";
 import { rep2Chunks, rep4Items } from "@/lib/rep-structure";
 import { reviewPracticeToCourseDay } from "./review-registry";
+import { isReviewModuleAccessible } from "./review-access";
 
 describe.each(listReviewModules())("Review · $title content", (mod) => {
   it("exposes exactly five complete practices", () => {
@@ -46,6 +48,40 @@ describe("Review · identity isolation", () => {
 
   it("lists only review modules", () => {
     expect(listReviewModules().every((m) => isReviewModuleId(m.id))).toBe(true);
+  });
+});
+
+describe("Review · access by official level", () => {
+  const accessibleAt = (currentModuleId: ModuleId) =>
+    listReviewModules().filter((module) => isReviewModuleAccessible(module, currentModuleId));
+
+  it("groups every module into exactly one menu", () => {
+    const grouped = [
+      ...listReviewModulesByCategory("basic"),
+      ...listReviewModulesByCategory("intermediate-advanced"),
+    ];
+    expect(grouped).toHaveLength(listReviewModules().length);
+    expect(new Set(grouped.map((module) => module.id)).size).toBe(grouped.length);
+  });
+
+  it.each([
+    ["basic-zero", []],
+    ["simple-future", ["review-simple-future"]],
+    ["simple-present", ["review-simple-future", "review-simple-present", "review-present-progressive"]],
+    ["past-stories", ["review-simple-future", "review-simple-present", "review-present-progressive", "review-simple-past", "review-past-progressive"]],
+    ["mixed-tenses", ["review-simple-future", "review-simple-present", "review-present-progressive", "review-simple-past", "review-past-progressive"]],
+  ] as const)("applies the Basic access matrix at %s", (currentModuleId, expected) => {
+    expect(accessibleAt(currentModuleId).map((module) => module.id)).toEqual(expect.arrayContaining([...expected]));
+    expect(accessibleAt(currentModuleId)).toHaveLength(expected.length);
+  });
+
+  it.each(["eagles-week-1", "tigers", "sharks", "advanced-1", "advanced-2", "advanced-3"] as const)(
+    "opens every Review module at %s",
+    (currentModuleId) => expect(accessibleAt(currentModuleId)).toHaveLength(listReviewModules().length),
+  );
+
+  it("opens every Review module for an unlimited account at any level", () => {
+    expect(listReviewModules().every((module) => isReviewModuleAccessible(module, "basic-zero", true))).toBe(true);
   });
 });
 

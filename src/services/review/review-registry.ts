@@ -196,7 +196,22 @@ export function listReviewModules(): ReviewModule[] {
 }
 
 export function listReviewModulesByCategory(category: ReviewModule["category"]): ReviewModule[] {
-  return listReviewModules().filter((module) => module.category === category);
+  const order: ReviewModuleId[] = [
+    "review-simple-future",
+    "review-simple-present",
+    "review-present-progressive",
+    "review-simple-past",
+    "review-past-progressive",
+    "review-present-perfect",
+    "review-present-perfect-progressive",
+    "review-comparatives",
+    "review-modals",
+    "review-used-to",
+    "review-past-perfect",
+  ];
+  return listReviewModules()
+    .filter((module) => module.category === category)
+    .sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
 }
 
 /** Returns the practice only when both the module id and the number are valid. */
