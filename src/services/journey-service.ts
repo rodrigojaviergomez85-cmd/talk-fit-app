@@ -335,14 +335,6 @@ export const JourneyService = {
     return { days, reps: days * 5, minutes: JourneyService.speakingMinutesThisWeek(state) };
   },
 
-  /** Final rep duration by practice date, for the speaking-output chart. */
-  speakingSeries(state: JourneyState): { label: string; seconds: number; ideas: number }[] {
-    return JourneyService.recordsByDate(state).map((record) => ({
-      label: `D${record.day}`,
-      seconds: Math.round(record.finalSeconds),
-      ideas: record.sentenceCount ?? 0,
-    }));
-  },
 
 
   /**

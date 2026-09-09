@@ -6,7 +6,7 @@ import { AppShell } from "@/components/fluency/AppShell";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
 import { ModuleHeading } from "@/components/fluency/ModuleHeading";
 import { ModuleBadge } from "@/components/fluency/ModuleBadge";
-import { SpeakingChart } from "@/components/fluency/SpeakingChart";
+
 import { BadgeGrid } from "@/components/fluency/BadgeGrid";
 import { ModuleBadgeGrid } from "@/components/fluency/ModuleBadgeGrid";
 import { HABIT_GOAL, habitDays, habitDisplay } from "@/lib/habit";
