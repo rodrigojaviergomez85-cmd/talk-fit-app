@@ -6,10 +6,12 @@
  */
 export const MIN_PASSWORD_LENGTH = 8;
 
-type AuthLikeError = { code?: string | null; message?: string | null } | null | undefined;
+type AuthLikeError = { code?: string | null | undefined; message?: string | null | undefined } | null | undefined;
+
+type SignUpErrorKey = "account.weakPassword" | "account.emailInUse";
 
 /** i18n key for a sign-up error, or null when we have no better wording than the provider's. */
-export function signUpErrorKey(error: AuthLikeError): string | null {
+export function signUpErrorKey(error: AuthLikeError): SignUpErrorKey | null {
   if (!error) return null;
   const code = (error.code ?? "").toLowerCase();
   const message = (error.message ?? "").toLowerCase();
@@ -21,6 +23,6 @@ export function signUpErrorKey(error: AuthLikeError): string | null {
 }
 
 /** Client-side guard so an obviously too-short password never costs a round trip. */
-export function localPasswordIssueKey(password: string): string | null {
+export function localPasswordIssueKey(password: string): "account.passwordTooShort" | null {
   return password.length < MIN_PASSWORD_LENGTH ? "account.passwordTooShort" : null;
 }
