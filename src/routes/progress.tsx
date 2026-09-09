@@ -251,6 +251,8 @@ function ProgressPage() {
         <ModuleBadgeGrid state={safe} />
 
         <AllDays state={safe} />
+        </>
+        )}
       </div>
     </AppShell>
   );
