@@ -1420,6 +1420,7 @@ export function Rep2Copy({
   day,
   index,
   chunkImage,
+  showEs,
   attempted,
   onRecorded,
   onSkip,
