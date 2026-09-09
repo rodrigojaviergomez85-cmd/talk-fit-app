@@ -12,7 +12,7 @@ import { Rep2Copy, Rep3Shadow, Rep4MakeItYours, Rep5FinalRep } from "@/routes/pr
 import { rep2Chunks, rep4Items } from "@/lib/rep-structure";
 import { isFeedbackId, type FinalCoachRetakeState, type FinalCoachState } from "@/lib/final-audio-coach";
 import { objectiveResultInputFor } from "@/lib/final-coach-result";
-import { reviewPracticeToCourseDay } from "@/services/review/review-registry";
+import { getReviewModule, reviewPracticeToCourseDay } from "@/services/review/review-registry";
 import type { ReviewGuideCard, ReviewModuleId, ReviewPractice } from "@/lib/review-types";
 import type { ModuleId, Recording } from "@/lib/types";
 import { PracticeAttempts } from "@/services/practice-attempts";
@@ -59,6 +59,7 @@ export function ReviewPracticeFlow({ moduleId, practice, guide, showEs: showEsIn
   const day = useMemo(() => reviewPracticeToCourseDay(practice), [practice]);
   /** Review ids travel through curriculum-typed props; the server validates them explicitly. */
   const transportId = moduleId as unknown as ModuleId;
+  const reviewModule = getReviewModule(moduleId);
 
   const [showEs, setShowEs] = useState(showEsInitial);
   const [step, setStep] = useState(1);
