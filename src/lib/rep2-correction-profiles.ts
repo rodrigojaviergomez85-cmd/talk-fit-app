@@ -226,6 +226,8 @@ export function getRep2CorrectionProfile(moduleId: ModuleId | string): Rep2Corre
   if (moduleId === "review-simple-present" || moduleId === "review-present-progressive") return SIMPLE_PRESENT_PROFILE;
   if (moduleId === "review-simple-past" || moduleId === "review-past-progressive") return PROFILES["past-stories"] ?? GENERIC_PROFILE;
   if (moduleId === "review-simple-future") return SIMPLE_FUTURE_PROFILE;
+  if (moduleId === "review-present-perfect" || moduleId === "review-present-perfect-progressive")
+    return PROFILES["mixed-tenses"] ?? GENERIC_PROFILE;
   return PROFILES[moduleId as ModuleId] ?? GENERIC_PROFILE;
 }
 
@@ -246,6 +248,8 @@ const ROLLOUT_MODULES: ReadonlySet<string> = new Set<string>([
   "review-simple-past",
   "review-past-progressive",
   "review-simple-future",
+  "review-present-perfect",
+  "review-present-perfect-progressive",
   "basic-zero",
   "simple-future",
   "simple-present",
