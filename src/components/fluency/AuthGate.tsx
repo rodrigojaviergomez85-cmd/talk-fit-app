@@ -240,6 +240,9 @@ export function AuthGate({ title, blocking = false }: { title?: string; blocking
               {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
             </button>
           </div>
+          {mode === "signup" ? (
+            <p className="text-[12px] leading-relaxed text-muted-foreground">{t("account.passwordHint")}</p>
+          ) : null}
         </div>
 
         <button
