@@ -1,4 +1,7 @@
 import type { ReviewPractice } from "@/lib/review-types";
+import scenePp1 from "@/assets/review/scene-pp1-diego.jpg";
+import scenePp3 from "@/assets/review/scene-pp3-camila.jpg";
+import scenePp5 from "@/assets/review/scene-pp5-andres.jpg";
 
 /**
  * REVIEW · PRESENT PROGRESSIVE — five static practices.
@@ -27,6 +30,7 @@ export const PRESENT_PROGRESSIVE_PRACTICES: ReviewPractice[] = [
       en: "Diego is at work right now. Describe what is happening at this moment.",
       es: "Diego está en el trabajo ahora mismo. Describe lo que está pasando en este momento.",
     },
+    sceneImage: { src: scenePp1, alt: "Diego's busy office right now", altEs: "La oficina de Diego ahora mismo" },
     vocabulary: ["right now", "at the moment", "answer emails", "wait for", "print", "meeting", "upstairs", "busy"],
     lines: [
       { id: "pp1-l1", text: "Diego is working in the office right now.", es: "Diego está trabajando en la oficina ahora mismo.", chunks: ["Diego is working", "in the office", "right now."] },
@@ -129,6 +133,7 @@ export const PRESENT_PROGRESSIVE_PRACTICES: ReviewPractice[] = [
       en: "Camila is on a call with a customer. Ask and answer about what is happening.",
       es: "Camila está en una llamada con un cliente. Pregunta y responde sobre lo que está pasando.",
     },
+    sceneImage: { src: scenePp3, alt: "Camila on a call with a customer", altEs: "Camila en una llamada con un cliente" },
     vocabulary: ["customer", "check the system", "hold", "explain", "solve", "transfer", "Is she…?", "Yes, she is"],
     lines: [
       { id: "pp3-l1", text: "Camila is talking to a customer right now.", es: "Camila está hablando con un cliente ahora mismo.", chunks: ["Camila is talking", "to a customer", "right now."] },
@@ -231,6 +236,7 @@ export const PRESENT_PROGRESSIVE_PRACTICES: ReviewPractice[] = [
       en: "You get facts about the scene, not a full model answer. Build the live update yourself.",
       es: "Recibes datos de la escena, no un monólogo completo. Tú construyes el reporte en vivo.",
     },
+    sceneImage: { src: scenePp5, alt: "Andrés and his team in the meeting room", altEs: "Andrés y su equipo en la sala de reuniones" },
     vocabulary: ["team", "deadline", "fix", "test", "report", "at the moment", "still", "almost done"],
     factSheet: [
       { en: "Andrés · team leader · in the meeting room", es: "Andrés · líder de equipo · en la sala de reuniones" },
