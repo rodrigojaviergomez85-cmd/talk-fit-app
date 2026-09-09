@@ -617,3 +617,40 @@ describe("rollout", () => {
     }
   }, 60_000);
 });
+
+describe("transcription spelling variants are not speaking errors", () => {
+  const compare = (target: string, transcript: string) =>
+    compareGeneric(target, transcript, undefined, BASIC_ZERO_PROFILE);
+
+  it("accepts Sophia for Sofia", () => {
+    expect(compare("Sofia works every day.", "Sophia works every day").status).toBe("good");
+  });
+
+  it("accepts an accented name", () => {
+    expect(compare("Sofía works every day.", "Sofia works every day").status).toBe("good");
+  });
+
+  it("accepts hard-working spelled as two words", () => {
+    expect(compare("She is hardworking.", "She is hard working").status).toBe("good");
+  });
+
+  it("accepts hardworking when the target is two words", () => {
+    expect(compare("She is hard working.", "She is hardworking").status).toBe("good");
+  });
+
+  it("accepts one-letter transcription drift on a long word", () => {
+    expect(compare("I work on Saturday.", "I work on Saterday").status).toBe("good");
+  });
+
+  it("accepts British spelling", () => {
+    expect(compare("It is my favorite center.", "It is my favourite centre").status).toBe("good");
+  });
+
+  it("still flags a real word difference", () => {
+    expect(compare("Sofia works every day.", "Sofia work every day").status).toBe("correct");
+  });
+
+  it("still flags a dropped negative", () => {
+    expect(compare("She does not work here.", "She does work here").status).toBe("correct");
+  });
+});
