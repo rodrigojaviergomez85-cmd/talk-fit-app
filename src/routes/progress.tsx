@@ -85,7 +85,7 @@ function ProgressPage() {
   }
 
   return (
-    <AppShell title={t("prog.title")}>
+    <AppShell title={t("prog.title")} subtitle={t("prog.subtitle")}>
       <div className="space-y-6">
         {failed ? (
           <div className="rounded-2xl border border-border bg-card p-4">
