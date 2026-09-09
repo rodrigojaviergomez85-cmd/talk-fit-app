@@ -16,8 +16,8 @@ export function ReviewGuide({
   showEs: boolean;
   defaultOpen?: boolean;
   errors?: { wrong: string; right: string; es: string }[];
-  heading?: string;
-  headingEs?: string;
+  heading?: string | undefined;
+  headingEs?: string | undefined;
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
