@@ -4,18 +4,20 @@ import { RecordingsPanel } from "@/components/fluency/RecordingsPanel";
 import { Check, ChevronDown, Lock, Mic, Timer } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
-import { ModuleHeading } from "@/components/fluency/ModuleHeading";
-import { ModuleBadge } from "@/components/fluency/ModuleBadge";
+import { CurrentModuleCard } from "@/components/fluency/progress/CurrentModuleCard";
+import { Last7DaysCard } from "@/components/fluency/progress/Last7DaysCard";
+import { ListenAttemptsCard } from "@/components/fluency/progress/ListenAttemptsCard";
+import { HabitCard } from "@/components/fluency/progress/HabitCard";
+import { JourneyList, moduleAccessStatus } from "@/components/fluency/progress/JourneyList";
 
 import { BadgeGrid } from "@/components/fluency/BadgeGrid";
 import { ModuleBadgeGrid } from "@/components/fluency/ModuleBadgeGrid";
-import { HABIT_GOAL, habitDays, habitDisplay } from "@/lib/habit";
 import { CourseService, type DayOutline } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { Progression } from "@/services/progression";
 import type { JourneyState, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { useT, useAppLang } from "@/lib/i18n";
+import { useT } from "@/lib/i18n";
 
 type ProgressTab = "progress" | "audio";
 
@@ -66,24 +68,13 @@ function ProgressPage() {
   }, [load]);
 
   const safe = state ?? emptyJourney;
-  const modules = CourseService.modules();
   const totalDays = CourseService.totalDaysAll();
   const completedCount = JourneyService.completedCount(safe);
-  const week = JourneyService.weekStats(safe);
-  const next = JourneyService.nextPractice(safe);
-  const currentModuleId = next?.moduleId ?? JourneyService.currentModule(safe);
-  const currentIndex = CourseService.displayIndex(currentModuleId);
-  const forward = modules.filter((m) => CourseService.displayIndex(m.id) >= currentIndex);
-  const review = modules.filter((m) => CourseService.displayIndex(m.id) < currentIndex);
   const bests = JourneyService.personalBests(safe);
-  
-  const habitCount = habitDays(safe);
-  const habit = habitDisplay(habitCount);
-  const habitPercent = Math.round((habit.shown / HABIT_GOAL) * 100);
 
   if (!state) {
     return (
-      <AppShell title={t("prog.title")}>
+      <AppShell title={t("prog.title")} subtitle={t("prog.subtitle")}>
         <div className="space-y-3" aria-busy="true">
           {[0, 1, 2, 3].map((i) => (
             <div key={i} className="h-24 animate-pulse rounded-3xl bg-secondary" />
@@ -94,7 +85,7 @@ function ProgressPage() {
   }
 
   return (
-    <AppShell title={t("prog.title")}>
+    <AppShell title={t("prog.title")} subtitle={t("prog.subtitle")}>
       <div className="space-y-6">
         {failed ? (
           <div className="rounded-2xl border border-border bg-card p-4">
@@ -139,44 +130,20 @@ function ProgressPage() {
 
         {tab === "audio" ? <RecordingsPanel state={safe} /> : (
         <>
-        {/* This week */}
-        <section className="rounded-3xl bg-card p-4 shadow-[var(--shadow-card)]">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-            {t("prog.thisWeek")}
-          </h2>
-          <div className="mt-2 grid grid-cols-3 gap-2 text-center">
-            <WeekStat value={`${week.days} / 5`} label={t("prog.days")} />
-            <WeekStat value={`${week.reps}`} label={t("home.reps")} />
-            <WeekStat value={`${week.minutes}`} label={t("prog.minutes")} />
-          </div>
-        </section>
+        {/* 1. Current module */}
+        <CurrentModuleCard state={safe} />
 
-        {/* 66-day journey — compact accumulated view (the motivational card is on Home) */}
-        <section className="rounded-3xl bg-card p-4 shadow-[var(--shadow-card)]">
-          <div className="flex items-baseline justify-between gap-3">
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              {t("prog.journey66")}
-            </h2>
-            <p className="text-[15px] font-extrabold tabular-nums tracking-tight">
-              {habit.complete ? (
-                <>
-                  66 / {HABIT_GOAL} <span className="text-success">✓</span>
-                </>
-              ) : (
-                `${habit.shown} / ${HABIT_GOAL}`
-              )}
-            </p>
-          </div>
-          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary">
-            <div
-              className={cn("h-full rounded-full transition-all", habit.complete ? "bg-success" : "bg-primary")}
-              style={{ width: `${habitPercent}%` }}
-            />
-          </div>
-          <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-            {habitCount} {t("prog.practiceDays")}
-          </p>
-        </section>
+        {/* 2. Recent activity */}
+        <Last7DaysCard state={safe} />
+
+        {/* 3. Listen to your attempts (same practice only) */}
+        <ListenAttemptsCard state={safe} />
+
+        {/* 4. 66-day consistency */}
+        <HabitCard state={safe} />
+
+        {/* 5. Mi ruta — always visible */}
+        <JourneyList state={safe} />
 
         {/* Totals */}
         <section className="space-y-3">
@@ -224,26 +191,7 @@ function ProgressPage() {
           </section>
         ) : null}
 
-        {/* Forward journey, then earlier modules as optional review */}
-        <section className="space-y-3">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-            {t("prog.myJourney")}
-          </h2>
-          {forward.map((module) => (
-            <ModuleRow key={module.id} module={module} state={safe} />
-          ))}
-        </section>
-        {review.length ? (
-          <section className="space-y-3">
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              {t("prog.review")}
-            </h2>
-            {review.map((module) => (
-              <ModuleRow key={module.id} module={module} state={safe} />
-            ))}
-          </section>
-        ) : null}
-
+        {/* Stats and achievements — secondary, below the route */}
         <BadgeGrid state={safe} />
 
         <ModuleBadgeGrid state={safe} />
@@ -253,83 +201,6 @@ function ProgressPage() {
         )}
       </div>
     </AppShell>
-  );
-}
-
-type AccessStatus = { label: string; tone: "done" | "current" | "next"; locked: boolean };
-
-/**
- * One source of truth for module access on this page: JourneyService.moduleStatus
- * (done / current / review) plus Progression.isUnlocked for anything ahead.
- * Never inferred from display order or a "next" label.
- */
-function moduleAccessStatus(state: JourneyState, moduleId: ModuleId, t: ReturnType<typeof useT>): AccessStatus {
-  const kind = JourneyService.moduleStatus(state, moduleId);
-  if (kind === "done") return { label: t("status.complete"), tone: "done", locked: false };
-  if (kind === "current") return { label: t("status.current"), tone: "current", locked: false };
-  if (kind === "review") return { label: t("status.review"), tone: "next", locked: false };
-  if (!Progression.isUnlocked(state, moduleId)) return { label: t("status.locked"), tone: "next", locked: true };
-  return { label: t("status.upNext"), tone: "next", locked: false };
-}
-
-function ModuleRow({
-  module,
-  state,
-}: {
-  module: ReturnType<typeof CourseService.modules>[number];
-  state: JourneyState;
-}) {
-  const t = useT();
-  const { lang } = useAppLang();
-  const es = lang === "es";
-  const done = JourneyService.completedCount(state, module.id);
-  const total = module.days.length;
-  const status = moduleAccessStatus(state, module.id, t);
-  const prerequisite = Progression.prerequisiteOf(module.id);
-
-  const body = (
-    <>
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex min-w-0 items-start gap-3">
-            <ModuleBadge moduleId={module.id} size="sm" es={es} />
-            <ModuleHeading module={module} size="sm" />
-          </div>
-        <StatusBadge status={status} />
-      </div>
-      <ProgressBar value={total > 0 ? done / total : 0} />
-      <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-        {done} / {total} {t("home.days")}
-      </p>
-    </>
-  );
-
-  if (status.locked) {
-    return (
-      <div
-        aria-disabled="true"
-        className="block rounded-3xl border border-dashed border-border bg-secondary/40 p-4 text-muted-foreground"
-      >
-        {body}
-        {prerequisite ? (
-          <p className="mt-3 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em]">
-            <Lock className="size-3.5" aria-hidden /> {t("home.unlockAfter")} {CourseService.getModule(prerequisite).title}
-          </p>
-        ) : null}
-      </div>
-    );
-  }
-
-  return (
-    <Link
-      to="/module/$moduleId"
-      params={{ moduleId: module.id }}
-      className={cn(
-        "block rounded-3xl border bg-card p-4",
-        status.tone === "current" ? "border-primary" : "border-border",
-      )}
-    >
-      {body}
-    </Link>
   );
 }
 
@@ -545,28 +416,6 @@ function WeekBlock({
           })}
         </div>
       ) : null}
-    </div>
-  );
-}
-
-function ProgressBar({ value }: { value: number }) {
-  return (
-    <div className="mt-3 h-2 overflow-hidden rounded-full bg-secondary">
-      <div
-        className="h-full rounded-full bg-primary transition-all"
-        style={{ width: `${Math.round(value * 100)}%` }}
-      />
-    </div>
-  );
-}
-
-function WeekStat({ value, label }: { value: string; label: string }) {
-  return (
-    <div>
-      <p className="text-xl font-extrabold tabular-nums tracking-tight">{value}</p>
-      <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-        {label}
-      </p>
     </div>
   );
 }
