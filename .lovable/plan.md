@@ -17,6 +17,7 @@ Formulario corto y móvil primero:
 - ¿Dónde? (lista: Inicio, Práctica, Coach, Progreso, Grabaciones, Cuenta, Otro)
 - ¿Qué esperabas? (texto, opcional)
 - Correo de contacto (opcional; se rellena solo si la persona tiene sesión)
+- Adjuntar captura de pantalla (opcional): botón que abre la galería o cámara del teléfono, 1 imagen, máximo 5 MB, con vista previa y opción de quitarla
 
 Al enviar: mensaje de agradecimiento y botón para volver al inicio. Se guarda automáticamente, sin que el usuario lo escriba: módulo/día actual si aplica, idioma, dispositivo/navegador, versión de la app y fecha.
 
