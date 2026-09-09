@@ -13,7 +13,7 @@ const STORAGE_KEY = "fluency-reps:journey:v2";
 const LEGACY_KEY = "fluency-reps:journey:v1";
 
 /** The three INTERMEDIATE modules that gate the whole ADVANCED family. */
-const INTERMEDIATE_MODULES: ModuleId[] = ["eagles", "tigers", "sharks"];
+const INTERMEDIATE_MODULES: ModuleId[] = ["eagles-week-1", "tigers", "sharks"];
 
 
 export const emptyJourney: JourneyState = {
