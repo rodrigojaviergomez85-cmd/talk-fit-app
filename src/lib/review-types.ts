@@ -7,7 +7,12 @@
  * el hábito de 66 días.
  */
 
-export const REVIEW_MODULE_IDS = ["review-simple-present", "review-present-progressive", "review-simple-past"] as const;
+export const REVIEW_MODULE_IDS = [
+  "review-simple-present",
+  "review-present-progressive",
+  "review-simple-past",
+  "review-past-progressive",
+] as const;
 export type ReviewModuleId = (typeof REVIEW_MODULE_IDS)[number];
 
 export function isReviewModuleId(value: unknown): value is ReviewModuleId {
