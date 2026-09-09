@@ -140,6 +140,28 @@ describe("ADVANCED 3 — BEYOND THE SCRIPT", () => {
     expect(JourneyService.isModuleUnlocked(intermediateDone, "advanced-1")).toBe(true);
   });
 
+  it("keeps an Advanced module open when the learner already has progress there", () => {
+    const state = JourneyService.load();
+    const startedAdvanced = {
+      ...state,
+      days: {
+        ...state.days,
+        [recordKey("advanced-3", 1)]: {
+          moduleId: "advanced-3",
+          day: 1,
+          completedAt: new Date().toISOString(),
+          dayKey: "2026-01-01",
+          practiceSeconds: 60,
+          finalSeconds: 60,
+          firstSeconds: 60,
+          recordingsCount: 1,
+        },
+      },
+    } as typeof state;
+
+    expect(JourneyService.isModuleUnlocked(startedAdvanced, "advanced-3")).toBe(true);
+  });
+
 
   it("leaves ADVANCED 1 and ADVANCED 2 untouched", async () => {
     const [a1, a2] = await Promise.all([CourseService.loadModule("advanced-1"), CourseService.loadModule("advanced-2")]);
