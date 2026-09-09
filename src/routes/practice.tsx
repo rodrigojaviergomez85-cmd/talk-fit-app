@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
-import { ArrowRight, Check, Info, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Info, Sparkles } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { toneForTurn, type ModelTone } from "@/lib/model-tone";
 import { rep2Chunks, rep4Items, rep2ChunkText, REP4_MAX, isRep2CorrectionEnabled } from "@/lib/rep-structure";
