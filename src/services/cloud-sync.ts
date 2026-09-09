@@ -221,8 +221,9 @@ export const CloudSync = {
     const { data, error } = await query;
     if (error || !data) return [];
     return data
-      // REVIEW audio lives outside the journey: it never appears in the course lists.
-      .filter((row) => !String(row.module_id).startsWith("review-"))
+      // REVIEW audio lives outside the journey: it never appears in the course
+      // lists, but an explicit Review query still gets its own rows.
+      .filter((row) => (moduleId ? true : !String(row.module_id).startsWith("review-")))
       .map((row) => ({
         moduleId: asModuleId(row.module_id),
         day: row.day,
