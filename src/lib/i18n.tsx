@@ -23,6 +23,14 @@ const DICT = {
   "nav.natural": ["MÉTODO", "METHOD"],
   "nav.account": ["MI CUENTA", "ACCOUNT"],
 
+  // Natural Method
+  "natural.supportTitle": ["Tu cuaderno de vocabulario", "Your vocab notebook"],
+  "natural.supportBody": [
+    "Tu cuaderno de vocabulario es tu mejor aliado. Aprendete de memoria los 100 verbos más comunes: no hay shortcut, es la base de todo. Meta: 10 verbos por día + 10 palabras nuevas sacadas de frases reales de tu serie, audiolibro o peli favorita. También domina los phrasal verbs e idioms del día a día. Y porfa, nada de estar viendo el cel con distracciones: apaga notificaciones y concéntrate, tu futuro vale mucho más. 💪🔥",
+    "Your vocab notebook is your bestie. Memorize the 100 most common verbs: no shortcut, it's the foundation. Goal: 10 verbs a day + 10 new words from real phrases in your favorite show, audiobook, or movie. Also own the everyday phrasal verbs and idioms. And please, no getting distracted by your phone: turn off notifications and focus, your future is worth way more. 💪🔥",
+  ],
+
+
   // Generic actions
   "action.start": ["EMPEZAR", "START"],
   "dailyCap.badge": ["{cap} / {cap} PRÁCTICAS DE HOY ✅", "{cap} / {cap} PRACTICES TODAY ✅"],
