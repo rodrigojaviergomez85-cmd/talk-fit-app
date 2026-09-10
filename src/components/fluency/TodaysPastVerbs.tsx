@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { AudioPlayer } from "./AudioPlayer";
 import { useAppLang } from "@/lib/i18n";
 import { VerbBank, type PastVerb } from "@/services/verb-bank";
-import type { ModuleId } from "@/services/course-index";
+import type { ModuleId } from "@/lib/types";
 
 /** Horizontal preview of the past verbs the learner will meet today. */
 export function TodaysPastVerbs({
