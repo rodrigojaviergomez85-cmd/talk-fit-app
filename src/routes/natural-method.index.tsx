@@ -38,6 +38,25 @@ function NaturalMethodIndex() {
           </p>
         </header>
 
+        <section
+          className="rounded-2xl border border-border bg-card p-5"
+          aria-labelledby="natural-support-title"
+        >
+          <div className="flex items-start gap-4">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <BookOpen className="size-6" aria-hidden="true" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <h2 id="natural-support-title" className="text-lg font-extrabold text-foreground">
+                {t("natural.supportTitle")}
+              </h2>
+              <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
+                {t("natural.supportBody")}
+              </p>
+            </div>
+          </div>
+        </section>
+
         <div className="space-y-3">
           <Link
             to="/natural-method/verbs"
@@ -78,24 +97,6 @@ function NaturalMethodIndex() {
           </Link>
         </div>
 
-        <section
-          className="rounded-2xl border border-border bg-card p-5"
-          aria-labelledby="natural-support-title"
-        >
-          <div className="flex items-start gap-4">
-            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <BookOpen className="size-6" aria-hidden="true" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <h2 id="natural-support-title" className="text-lg font-extrabold text-foreground">
-                {t("natural.supportTitle")}
-              </h2>
-              <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
-                {t("natural.supportBody")}
-              </p>
-            </div>
-          </div>
-        </section>
       </div>
     </AppShell>
   );
