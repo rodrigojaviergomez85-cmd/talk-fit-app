@@ -11,6 +11,8 @@ import {
 } from "@/lib/review-types";
 import { SIMPLE_PRESENT_GUIDE, SIMPLE_PRESENT_COMMON_ERRORS } from "./simple-present-guide";
 import { SIMPLE_PRESENT_PRACTICES } from "./simple-present-practices";
+import { PLACE_PREPOSITIONS_GUIDE, PLACE_PREPOSITIONS_COMMON_ERRORS } from "./place-prepositions-guide";
+import { PLACE_PREPOSITIONS_PRACTICES } from "./place-prepositions-practices";
 import { PRESENT_PROGRESSIVE_GUIDE, PRESENT_PROGRESSIVE_COMMON_ERRORS } from "./present-progressive-guide";
 import { PRESENT_PROGRESSIVE_PRACTICES } from "./present-progressive-practices";
 import { SIMPLE_PAST_GUIDE, SIMPLE_PAST_COMMON_ERRORS } from "./simple-past-guide";
@@ -63,6 +65,19 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     guide: SIMPLE_PRESENT_GUIDE,
     commonErrors: SIMPLE_PRESENT_COMMON_ERRORS,
     practices: SIMPLE_PRESENT_PRACTICES,
+  },
+  "review-place-prepositions": {
+    id: "review-place-prepositions",
+    category: "basic",
+    minimumModuleId: "basic-zero",
+    label: "REVIEW",
+    title: "Prepositions of Place",
+    titleEs: "Preposiciones de Lugar",
+    subtitle: "in, on, under, next to, behind, in front of and more — five complete speaking practices.",
+    subtitleEs: "in, on, under, next to, behind, in front of y más: cinco prácticas completas de speaking.",
+    guide: PLACE_PREPOSITIONS_GUIDE,
+    commonErrors: PLACE_PREPOSITIONS_COMMON_ERRORS,
+    practices: PLACE_PREPOSITIONS_PRACTICES,
   },
   "review-present-progressive": {
     id: "review-present-progressive",
@@ -274,6 +289,7 @@ export function listReviewModulesByCategory(category: ReviewModule["category"]):
   const order: ReviewModuleId[] = [
     "review-simple-future",
     "review-simple-present",
+    "review-place-prepositions",
     "review-present-progressive",
     "review-simple-past",
     "review-past-progressive",

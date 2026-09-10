@@ -10,6 +10,7 @@ import type { ModuleId } from "@/lib/types";
 
 export const REVIEW_MODULE_IDS = [
   "review-simple-present",
+  "review-place-prepositions",
   "review-present-progressive",
   "review-simple-past",
   "review-past-progressive",

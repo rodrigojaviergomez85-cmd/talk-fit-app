@@ -65,11 +65,11 @@ describe("Review · access by official level", () => {
   });
 
   it.each([
-    ["basic-zero", []],
-    ["simple-future", ["review-simple-future"]],
-    ["simple-present", ["review-simple-future", "review-simple-present", "review-present-progressive"]],
-    ["past-stories", ["review-simple-future", "review-simple-present", "review-present-progressive", "review-simple-past", "review-past-progressive"]],
-    ["mixed-tenses", ["review-simple-future", "review-simple-present", "review-present-progressive", "review-simple-past", "review-past-progressive"]],
+    ["basic-zero", ["review-place-prepositions"]],
+    ["simple-future", ["review-simple-future", "review-place-prepositions"]],
+    ["simple-present", ["review-simple-future", "review-simple-present", "review-place-prepositions", "review-present-progressive"]],
+    ["past-stories", ["review-simple-future", "review-simple-present", "review-place-prepositions", "review-present-progressive", "review-simple-past", "review-past-progressive"]],
+    ["mixed-tenses", ["review-simple-future", "review-simple-present", "review-place-prepositions", "review-present-progressive", "review-simple-past", "review-past-progressive"]],
   ] as const)("applies the Basic access matrix at %s", (currentModuleId, expected) => {
     expect(accessibleAt(currentModuleId).map((module) => module.id)).toEqual(expect.arrayContaining([...expected]));
     expect(accessibleAt(currentModuleId)).toHaveLength(expected.length);
