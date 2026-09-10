@@ -1,8 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Lock } from "lucide-react";
+import { Bookmark, ChevronRight } from "lucide-react";
 import { ModuleBadge } from "@/components/fluency/ModuleBadge";
-import { ModuleHeading } from "@/components/fluency/ModuleHeading";
-import { StatusBadge } from "@/components/fluency/StatusBadge";
 import { CourseService } from "@/services/course-service";
 import { JourneyService } from "@/services/journey-service";
 import { Progression } from "@/services/progression";
@@ -12,6 +10,31 @@ import { useAppLang, useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 type AccessStatus = { label: string; tone: "done" | "current" | "next"; locked: boolean };
+
+/** Presentation-only short names for the route list (internal ids never change). */
+const ROUTE_NAMES: Record<string, string> = {
+  "basic-zero": "Basic Zero",
+  "simple-future": "Simple Future",
+  "simple-present": "Simple Present",
+  "past-stories": "Simple Past",
+  "mixed-tenses": "Mixed Tenses & Questions",
+  "eagles-week-1": "Eagles",
+  tigers: "Tigers",
+  sharks: "Sharks",
+  "advanced-1": "Get Hired",
+  "advanced-2": "Do the Job",
+  "advanced-3": "Beyond the Script",
+};
+
+/** Short level caps, matching the approved route design. */
+const ROUTE_LEVELS: Record<string, { es: string; en: string }> = {
+  "advanced-1": { es: "ADVANCED 1", en: "ADVANCED 1" },
+  "advanced-2": { es: "ADVANCED 2", en: "ADVANCED 2" },
+  "advanced-3": { es: "ADVANCED 3", en: "ADVANCED 3" },
+  "eagles-week-1": { es: "INTERMEDIO", en: "INTERMEDIATE" },
+  tigers: { es: "INTERMEDIO", en: "INTERMEDIATE" },
+  sharks: { es: "INTERMEDIO", en: "INTERMEDIATE" },
+};
 
 /**
  * One source of truth for module access: JourneyService.moduleStatus
@@ -32,16 +55,38 @@ export function moduleAccessStatus(
   return { label: t("status.upNext"), tone: "next", locked: false };
 }
 
-/** "Mi ruta": the full module journey, always expanded — badge, teaser, real status. */
+/** "Mi ruta": the full module journey — badge, short name, teaser, real status. */
 export function JourneyList({ state }: { state: JourneyState }) {
   const t = useT();
   const modules = CourseService.modules();
+  const currentId =
+    JourneyService.nextPractice(state)?.moduleId ?? JourneyService.currentModule(state);
+  const currentIndex = modules.findIndex((m) => m.id === currentId);
+  const nextId = currentIndex >= 0 ? modules[currentIndex + 1]?.id : undefined;
+
   return (
     <section className="space-y-3">
-      <h2 className="text-[16px] font-extrabold tracking-tight">{t("prog.myRoute")}</h2>
-      {modules.map((module) => (
-        <ModuleRow key={module.id} module={module} state={state} />
-      ))}
+      <div>
+        <h2 className="text-[20px] font-extrabold tracking-tight">{t("prog.myRoute")}</h2>
+        <p className="text-[13px] text-muted-foreground">{t("prog.myRouteSub")}</p>
+      </div>
+
+      <div className="relative space-y-2.5">
+        {/* Connector line behind the cards */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute bottom-6 left-[38px] top-6 w-px bg-border"
+        />
+        {modules.map((module) => (
+          <ModuleRow
+            key={module.id}
+            module={module}
+            state={state}
+            isCurrent={module.id === currentId}
+            isNext={module.id === nextId}
+          />
+        ))}
+      </div>
     </section>
   );
 }
@@ -49,9 +94,13 @@ export function JourneyList({ state }: { state: JourneyState }) {
 function ModuleRow({
   module,
   state,
+  isCurrent,
+  isNext,
 }: {
   module: ReturnType<typeof CourseService.modules>[number];
   state: JourneyState;
+  isCurrent: boolean;
+  isNext: boolean;
 }) {
   const t = useT();
   const { lang } = useAppLang();
@@ -59,71 +108,82 @@ function ModuleRow({
   const done = JourneyService.completedCount(state, module.id);
   const total = module.days.length;
   const status = moduleAccessStatus(state, module.id, t);
-  const prerequisite = Progression.prerequisiteOf(module.id);
   const teaser = MODULE_TEASERS[module.id];
+  const name = ROUTE_NAMES[module.id] ?? module.title;
+  const level = ROUTE_LEVELS[module.id];
+  const kicker = level ? (es ? level.es : level.en) : module.label;
+  const currentPractice = Math.min(total, done + 1);
 
   const body = (
     <>
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex min-w-0 items-start gap-3">
-          <ModuleBadge moduleId={module.id} size="sm" es={es} />
-          <ModuleHeading module={module} size="sm" />
+      <div className="flex items-center gap-3">
+        <ModuleBadge moduleId={module.id} size="sm" es={es} className="shrink-0" />
+        <div className="min-w-0 flex-1">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">{kicker}</p>
+          <h3 className="text-[16px] font-extrabold leading-tight tracking-tight">{name}</h3>
+          <p className="mt-0.5 text-[13px] leading-snug text-muted-foreground">
+            {es ? teaser.es : teaser.en}
+          </p>
         </div>
-        <StatusBadge status={status} />
+        {isCurrent || isNext ? (
+          <span
+            className={cn(
+              "shrink-0 rounded-full px-3 py-1 text-[11px] font-bold",
+              isCurrent
+                ? "bg-primary text-primary-foreground"
+                : "bg-primary/15 text-primary",
+            )}
+          >
+            {isCurrent ? t("prog.pillCurrent") : t("prog.pillNext")}
+          </span>
+        ) : null}
+        <ChevronRight className="size-5 shrink-0 text-muted-foreground" aria-hidden />
       </div>
-      <p
-        className={cn(
-          "mt-1.5 text-[13px] leading-snug",
-          status.locked ? "text-muted-foreground/80" : "text-muted-foreground",
-        )}
-      >
-        {es ? teaser.es : teaser.en}
-      </p>
-      <ProgressBar value={total > 0 ? done / total : 0} />
-      <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-        {done} / {total} {t("home.days")}
-      </p>
+
+      {isCurrent ? (
+        <>
+          <div className="mt-3 h-2 overflow-hidden rounded-full bg-secondary">
+            <div
+              className="h-full rounded-full bg-primary transition-all"
+              style={{ width: `${total > 0 ? Math.round((done / total) * 100) : 0}%` }}
+            />
+          </div>
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <p className="text-[12px] font-semibold text-foreground">
+              {t("prog.practicesOf")
+                .replace("{done}", `${currentPractice}`)
+                .replace("{total}", `${total}`)}
+            </p>
+            <p className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
+              <Bookmark className="size-3.5" aria-hidden /> {t("prog.badgeToEarn")}
+            </p>
+          </div>
+        </>
+      ) : null}
     </>
+  );
+
+  const shell = cn(
+    "block rounded-2xl border p-4",
+    isCurrent
+      ? "border-primary bg-card shadow-[var(--shadow-card)]"
+      : isNext
+        ? "border-primary/30 bg-primary/8"
+        : "border-border bg-card",
+    status.locked && !isNext && "text-foreground/80",
   );
 
   if (status.locked) {
     return (
-      <div
-        aria-disabled="true"
-        className="block rounded-3xl border border-dashed border-border bg-secondary/40 p-4 text-muted-foreground"
-      >
+      <div aria-disabled="true" className={cn(shell, "relative")}>
         {body}
-        {prerequisite ? (
-          <p className="mt-3 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em]">
-            <Lock className="size-3.5" aria-hidden /> {t("home.unlockAfter")}{" "}
-            {CourseService.getModule(prerequisite).title}
-          </p>
-        ) : null}
       </div>
     );
   }
 
   return (
-    <Link
-      to="/module/$moduleId"
-      params={{ moduleId: module.id }}
-      className={cn(
-        "block rounded-3xl border bg-card p-4",
-        status.tone === "current" ? "border-primary" : "border-border",
-      )}
-    >
+    <Link to="/module/$moduleId" params={{ moduleId: module.id }} className={cn(shell, "relative")}>
       {body}
     </Link>
-  );
-}
-
-function ProgressBar({ value }: { value: number }) {
-  return (
-    <div className="mt-3 h-2 overflow-hidden rounded-full bg-secondary">
-      <div
-        className="h-full rounded-full bg-primary transition-all"
-        style={{ width: `${Math.round(value * 100)}%` }}
-      />
-    </div>
   );
 }
