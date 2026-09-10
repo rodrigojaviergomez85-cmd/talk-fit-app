@@ -437,7 +437,7 @@ const DICT = {
   "prog.bests": ["Mejores marcas", "Personal bests"],
   "prog.myJourney": ["Tu camino", "Your journey"],
   "prog.tabProgress": ["Resumen", "Overview"],
-  "prog.tabAudio": ["Mis audios", "My audio"],
+  "prog.tabAudio": ["Mis audios", "My audios"],
   "prog.badges": ["Logros", "Badges"],
   "prog.myStats": ["Mis estadísticas", "My stats"],
   "prog.myBadges": ["Mis logros", "My achievements"],
