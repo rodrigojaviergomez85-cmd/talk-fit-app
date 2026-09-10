@@ -65,7 +65,7 @@ export const MODULE_INDEX: LearningModule[] = [
     subtitleEs: "Preséntate y habla de otra persona",
     description: "Build your first English speaking foundation.",
     descriptionEs: "Construye tu primera base para hablar inglés.",
-    meta: ["4 Weeks", "20 Days", "5 Fluency Reps per Day"],
+    meta: ["4 Weeks", "20 Days", "5 Steps per Day"],
   },
   {
     id: "simple-future",
@@ -77,7 +77,7 @@ export const MODULE_INDEX: LearningModule[] = [
     subtitleEs: "Planes, otras personas, decisiones y predicciones",
     description: "Talk about plans, decisions and predictions.",
     descriptionEs: "Habla de planes, decisiones y predicciones.",
-    meta: ["4 Weeks", "20 Days", "5 Fluency Reps per Day"],
+    meta: ["4 Weeks", "20 Days", "5 Steps per Day"],
   },
   {
     id: "simple-present",
@@ -89,7 +89,7 @@ export const MODULE_INDEX: LearningModule[] = [
     subtitleEs: "Rutinas · Hábitos · Acciones de ahora",
     description: "4-Week Fluency Journey.",
     descriptionEs: "Viaje de fluidez de 4 semanas.",
-    meta: ["4 Weeks", "20 Days", "5 Fluency Reps per Day"],
+    meta: ["4 Weeks", "20 Days", "5 Steps per Day"],
   },
   {
     id: "past-stories",
@@ -101,7 +101,7 @@ export const MODULE_INDEX: LearningModule[] = [
     subtitleEs: "Experiencias pasadas e historias",
     description: "Talk about the past and tell a complete story.",
     descriptionEs: "Habla del pasado y cuenta una historia completa.",
-    meta: ["4 Weeks", "20 Days", "5 Fluency Reps per Day"],
+    meta: ["4 Weeks", "20 Days", "5 Steps per Day"],
   },
   {
     id: "mixed-tenses",
@@ -113,7 +113,7 @@ export const MODULE_INDEX: LearningModule[] = [
     subtitleEs: "Habla del pasado, presente y futuro — sin trabarte",
     description: "Move between past, present, future and questions in real conversation.",
     descriptionEs: "Cambia entre pasado, presente, futuro y preguntas en una conversación real.",
-    meta: ["4 Weeks", "20 Days", "5 Fluency Reps per Day"],
+    meta: ["4 Weeks", "20 Days", "5 Steps per Day"],
     highlights: [
       { en: "Talk about what you do", es: "Hablar de lo que haces" },
       { en: "Tell what happened", es: "Contar lo que pasó" },
@@ -134,7 +134,7 @@ export const MODULE_INDEX: LearningModule[] = [
     statusLine: { en: "4 weeks · 20 days", es: "4 semanas · 20 días" },
     description: "Connect your ideas, solve problems, compare options and adapt when the situation changes.",
     descriptionEs: "Conecta tus ideas, resuelve problemas, compara opciones y adáptate cuando la situación cambia.",
-    meta: ["4 Weeks", "20 Days", "100 Fluency Reps", "Test Ready Sprints"],
+    meta: ["4 Weeks", "20 Days", "100 Steps", "Test Ready Sprints"],
     highlights: [
       { en: "Connect your ideas with reasons and details", es: "Conectar tus ideas con razones y detalles" },
       { en: "Explain experiences and decisions", es: "Explicar experiencias y decisiones" },
@@ -162,7 +162,7 @@ export const MODULE_INDEX: LearningModule[] = [
     statusLine: { en: "Month 2 · 4 weeks · 20 days", es: "Mes 2 · 4 semanas · 20 días" },
     description: "Don't just answer. Explain why, give evidence, compare alternatives and defend your decision.",
     descriptionEs: "No solo respondas. Explica por qué, da evidencia, compara alternativas y defiende tu decisión.",
-    meta: ["4 Weeks", "20 Days", "100 Fluency Reps", "12 Test Ready Sprints"],
+    meta: ["4 Weeks", "20 Days", "100 Steps", "12 Test Ready Sprints"],
     highlights: [
       { en: "Explain why, not just what", es: "Explicar por qué, no solo qué" },
       { en: "Give examples and evidence", es: "Dar ejemplos y evidencia" },
@@ -190,7 +190,7 @@ export const MODULE_INDEX: LearningModule[] = [
     statusLine: { en: "Month 3 · 4 weeks · 20 days", es: "Mes 3 · 4 semanas · 20 días" },
     description: "Respond when you don't know what's coming: react fast, clarify, rephrase, change your mind and keep talking under pressure.",
     descriptionEs: "Responde cuando no sabes qué viene: reacciona rápido, aclara, reformula, cambia de opinión y sigue hablando bajo presión.",
-    meta: ["4 Weeks", "20 Days", "100 Fluency Reps", "12 Test Ready Sprints"],
+    meta: ["4 Weeks", "20 Days", "100 Steps", "12 Test Ready Sprints"],
     highlights: [
       { en: "React with 5–10 seconds of prep", es: "Reaccionar con 5–10 segundos de preparación" },
       { en: "Adapt when the information changes", es: "Adaptarte cuando cambia la información" },
@@ -216,10 +216,10 @@ export const MODULE_INDEX: LearningModule[] = [
     title: "GET HIRED",
     subtitle: "Tell your story. Answer anything. Get the job.",
     subtitleEs: "Cuenta tu historia. Responde lo que sea. Consigue el trabajo.",
-    statusLine: { en: "4 Weeks · 20 Days · 100 Fluency Reps", es: "4 semanas · 20 días · 100 Fluency Reps" },
+    statusLine: { en: "4 Weeks · 20 Days · 100 Steps", es: "4 semanas · 20 días · 100 pasos" },
     description: "Build answers with reusable frameworks: tell your story, prove it with real examples, survive the hard questions and perform under job pressure — recruiter, customer and sales.",
     descriptionEs: "Construye respuestas con estructuras reutilizables: cuenta tu historia, pruébala con ejemplos reales, sobrevive a las preguntas difíciles y rinde bajo presión laboral — reclutador, cliente y ventas.",
-    meta: ["4 Weeks", "20 Days", "100 Fluency Reps", "12 Test Ready Sprints"],
+    meta: ["4 Weeks", "20 Days", "100 Steps", "12 Test Ready Sprints"],
     highlights: [
       { en: "Tell me about yourself — without sounding memorized", es: "Tell me about yourself — sin sonar memorizado/a" },
       { en: "Prove what you can do: challenge, mistake, difficult person", es: "Prueba lo que puedes hacer: reto, error, persona difícil" },
@@ -247,10 +247,10 @@ export const MODULE_INDEX: LearningModule[] = [
     title: "DO THE JOB",
     subtitle: "Handle customers. Solve problems. Perform in English.",
     subtitleEs: "Atiende clientes, resuelve problemas y comunícate profesionalmente en el trabajo.",
-    statusLine: { en: "4 Weeks · 20 Days · 100 Fluency Reps", es: "4 semanas · 20 días · 100 Fluency Reps" },
+    statusLine: { en: "4 Weeks · 20 Days · 100 Steps", es: "4 semanas · 20 días · 100 pasos" },
     description: "Take the call, recommend and sell, fix the problem and perform on the job — with reusable frameworks instead of memorized scripts.",
     descriptionEs: "Atiende la llamada, recomienda y vende, resuelve el problema y rinde en el trabajo — con estructuras reutilizables en lugar de guiones memorizados.",
-    meta: ["4 Weeks", "20 Days", "100 Fluency Reps", "Test Ready Sprints"],
+    meta: ["4 Weeks", "20 Days", "100 Steps", "Test Ready Sprints"],
     highlights: [
       { en: "Understand a customer who doesn't explain well", es: "Entender a un cliente que no explica bien" },
       { en: "Take reservations, explain bills and transfers", es: "Tomar reservaciones, explicar cobros y transferencias" },
@@ -278,10 +278,10 @@ export const MODULE_INDEX: LearningModule[] = [
     title: "BEYOND THE SCRIPT",
     subtitle: "Explain ideas. Handle what-ifs. Speak when there is no script.",
     subtitleEs: "Explica tus ideas, responde situaciones inesperadas y habla aunque no tengas un guion.",
-    statusLine: { en: "4 Weeks · 20 Days · 100 Fluency Reps", es: "4 semanas · 20 días · 100 Fluency Reps" },
+    statusLine: { en: "4 Weeks · 20 Days · 100 Steps", es: "4 semanas · 20 días · 100 pasos" },
     description: "Stop depending on memorized answers: recognize what kind of answer a question needs, organize your thoughts and speak — even when the question is new.",
     descriptionEs: "Deja de depender de respuestas memorizadas: reconoce qué tipo de respuesta necesita la pregunta, organiza tus ideas y habla — aunque la pregunta sea nueva.",
-    meta: ["4 Weeks", "20 Days", "100 Fluency Reps", "20 Test Ready Sprints"],
+    meta: ["4 Weeks", "20 Days", "100 Steps", "20 Test Ready Sprints"],
     highlights: [
       { en: "Organize your thoughts before you speak", es: "Organizar tus ideas antes de hablar" },
       { en: "Give a clear opinion and defend it", es: "Dar una opinión clara y defenderla" },

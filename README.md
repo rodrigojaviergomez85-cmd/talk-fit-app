@@ -198,7 +198,7 @@ Speak naturally for 35–45 seconds.
 
 Display:
 
-10 Fluency Reps
+10 practice steps
 
 8–12 minutes
 
