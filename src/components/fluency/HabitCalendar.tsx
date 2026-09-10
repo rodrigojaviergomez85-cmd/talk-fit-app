@@ -81,9 +81,6 @@ function DayDot({
       >
         {done ? <Check className={small ? "size-4" : "size-5"} aria-hidden /> : day}
       </div>
-      {!small ? (
-        <span className="text-[10px] font-bold tabular-nums text-muted-foreground">{day}</span>
-      ) : null}
     </div>
   );
 }
