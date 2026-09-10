@@ -30,6 +30,12 @@ import { COMPARATIVES_GUIDE, COMPARATIVES_COMMON_ERRORS } from "./comparatives-g
 import { COMPARATIVES_PRACTICES } from "./comparatives-practices";
 import { PREPOSITIONS_GUIDE, PREPOSITIONS_COMMON_ERRORS } from "./prepositions-guide";
 import { PREPOSITIONS_PRACTICES } from "./prepositions-practices";
+import { PASSIVE_VOICE_GUIDE, PASSIVE_VOICE_COMMON_ERRORS } from "./passive-voice-guide";
+import { PASSIVE_VOICE_PRACTICES } from "./passive-voice-practices";
+import { TAG_QUESTIONS_GUIDE, TAG_QUESTIONS_COMMON_ERRORS } from "./tag-questions-guide";
+import { TAG_QUESTIONS_PRACTICES } from "./tag-questions-practices";
+import { ABOUT_TO_GUIDE, ABOUT_TO_COMMON_ERRORS } from "./about-to-guide";
+import { ABOUT_TO_PRACTICES } from "./about-to-practices";
 import { MODALS_GUIDE, MODALS_COMMON_ERRORS } from "./modals-guide";
 import { MODALS_PRACTICES } from "./modals-practices";
 import { USED_TO_GUIDE, USED_TO_COMMON_ERRORS } from "./used-to-guide";
@@ -162,6 +168,45 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     commonErrors: PREPOSITIONS_COMMON_ERRORS,
     practices: PREPOSITIONS_PRACTICES,
   },
+  "review-passive-voice": {
+    id: "review-passive-voice",
+    category: "intermediate-advanced",
+    minimumModuleId: "eagles-week-1",
+    label: "REVIEW",
+    title: "Passive Voice",
+    titleEs: "Voz Pasiva",
+    subtitle: "be + past participle: The book was written by him — five complete speaking practices.",
+    subtitleEs: "be + participio pasado: The book was written by him — cinco prácticas completas de speaking.",
+    guide: PASSIVE_VOICE_GUIDE,
+    commonErrors: PASSIVE_VOICE_COMMON_ERRORS,
+    practices: PASSIVE_VOICE_PRACTICES,
+  },
+  "review-tag-questions": {
+    id: "review-tag-questions",
+    category: "intermediate-advanced",
+    minimumModuleId: "eagles-week-1",
+    label: "REVIEW",
+    title: "Tag Questions",
+    titleEs: "Tag Questions",
+    subtitle: "You ate pizza, didn't you? — five complete speaking practices.",
+    subtitleEs: "You ate pizza, didn't you? — cinco prácticas completas de speaking.",
+    guide: TAG_QUESTIONS_GUIDE,
+    commonErrors: TAG_QUESTIONS_COMMON_ERRORS,
+    practices: TAG_QUESTIONS_PRACTICES,
+  },
+  "review-about-to": {
+    id: "review-about-to",
+    category: "intermediate-advanced",
+    minimumModuleId: "eagles-week-1",
+    label: "REVIEW",
+    title: "Be About To (present & past)",
+    titleEs: "Be About To (presente y pasado)",
+    subtitle: "I am about to sleep · I was about to call you — five complete speaking practices.",
+    subtitleEs: "I am about to sleep · I was about to call you — cinco prácticas completas de speaking.",
+    guide: ABOUT_TO_GUIDE,
+    commonErrors: ABOUT_TO_COMMON_ERRORS,
+    practices: ABOUT_TO_PRACTICES,
+  },
   "review-modals": {
     id: "review-modals",
     category: "intermediate-advanced",
@@ -236,6 +281,9 @@ export function listReviewModulesByCategory(category: ReviewModule["category"]):
     "review-present-perfect-progressive",
     "review-comparatives",
     "review-prepositions",
+    "review-passive-voice",
+    "review-tag-questions",
+    "review-about-to",
     "review-modals",
     "review-used-to",
     "review-past-perfect",
