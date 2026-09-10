@@ -25,6 +25,7 @@ export const Route = createFileRoute("/natural-method/audiobooks")({
 function AudiobooksPage() {
   const showEs = useAppLang().lang === "es";
   const basicBooks = NATURAL_METHOD_AUDIOBOOKS.filter((book) => book.level === "basic");
+  const intermediateBooks = NATURAL_METHOD_AUDIOBOOKS.filter((book) => book.level === "intermediate");
 
   return (
     <AppShell>
@@ -48,41 +49,86 @@ function AudiobooksPage() {
           </p>
         </header>
 
-        <section className="space-y-3" aria-label={showEs ? "Nivel básico" : "Basic level"}>
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-            {showEs ? "Nivel básico" : "Basic level"}
-          </p>
-          <ul className="space-y-3">
-            {basicBooks.map((book) => (
-              <li key={book.id}>
-                <a
-                  href={book.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 rounded-2xl border border-border bg-card p-3 transition hover:border-primary"
-                >
-                  <img
-                    src={book.image}
-                    alt={book.imageAlt}
-                    width={512}
-                    height={512}
-                    loading="lazy"
-                    decoding="async"
-                    className="size-16 shrink-0 rounded-xl border border-border object-cover"
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[16px] font-extrabold text-foreground">{book.title}</span>
-                    <span className="mt-0.5 block text-[12px] text-muted-foreground">
-                      {showEs ? "Toca para ver y escuchar la historia" : "Tap to watch and listen to the story"}
-                    </span>
-                  </span>
-                  <PlayCircle className="size-7 shrink-0 text-primary" aria-hidden="true" />
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
+        <LevelSection
+          title={showEs ? "Nivel básico" : "Basic level"}
+          books={basicBooks}
+          showEs={showEs}
+          defaultOpen
+        />
+        <LevelSection
+          title={showEs ? "Nivel intermedio" : "Intermediate level"}
+          books={intermediateBooks}
+          showEs={showEs}
+        />
       </div>
     </AppShell>
+  );
+}
+
+function LevelSection({
+  title,
+  books,
+  showEs,
+  defaultOpen = false,
+}: {
+  title: string;
+  books: NaturalMethodAudiobook[];
+  showEs: boolean;
+  defaultOpen?: boolean;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  return (
+    <section className="overflow-hidden rounded-2xl border border-border bg-card" aria-label={title}>
+      <button
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        aria-expanded={open}
+        className="flex w-full items-center justify-between gap-3 p-4 text-left"
+      >
+        <span>
+          <span className="block text-[15px] font-extrabold text-foreground">{title}</span>
+          <span className="block text-[12px] text-muted-foreground">
+            {books.length} {showEs ? "historias" : "stories"}
+          </span>
+        </span>
+        <ChevronDown
+          className={`size-5 shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+          aria-hidden="true"
+        />
+      </button>
+
+      {open ? (
+        <ul className="space-y-3 border-t border-border p-3">
+          {books.map((book) => (
+            <li key={book.id}>
+              <a
+                href={book.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 rounded-2xl border border-border bg-background p-3 transition hover:border-primary"
+              >
+                <img
+                  src={book.image}
+                  alt={book.imageAlt}
+                  width={512}
+                  height={512}
+                  loading="lazy"
+                  decoding="async"
+                  className="size-16 shrink-0 rounded-xl border border-border object-cover"
+                />
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-[16px] font-extrabold text-foreground">{book.title}</span>
+                  <span className="mt-0.5 block text-[12px] text-muted-foreground">
+                    {showEs ? "Toca para ver y escuchar la historia" : "Tap to watch and listen to the story"}
+                  </span>
+                </span>
+                <PlayCircle className="size-7 shrink-0 text-primary" aria-hidden="true" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </section>
   );
 }
