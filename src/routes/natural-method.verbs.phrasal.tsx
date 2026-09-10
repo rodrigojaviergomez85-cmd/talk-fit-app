@@ -34,7 +34,9 @@ function PhrasalVerbsPage() {
   const items = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return PHRASAL_VERBS;
-    return PHRASAL_VERBS.filter((item) => `${item.phrase} ${item.es} ${item.example}`.toLowerCase().includes(q));
+    return PHRASAL_VERBS.filter((item) =>
+      `${item.phrase} ${item.past} ${item.es} ${item.example} ${item.pastExample}`.toLowerCase().includes(q),
+    );
   }, [query]);
 
   const { page, setPage, pageCount, start, end } = usePagination(items.length, query);
