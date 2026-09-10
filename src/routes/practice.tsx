@@ -1221,12 +1221,13 @@ function IntroStep({
             </div>
           ) : null}
           <QuestionBanner day={day} />
-          {day.story?.length ? <StoryStrip day={day} showCaptions={false} /> : null}
+          {day.storyPanels?.length ? <StoryStrip day={day} showCaptions={false} /> : null}
           {(day.focus || day.topic) ? (
             <p className="text-[13px] leading-relaxed text-muted-foreground">
-              {esUi ? day.focusEs : day.focus} {esUi ? day.topicEs : day.topic}
+              {lang === "es" ? day.focusEs : day.focus} {lang === "es" ? day.topicEs : day.topic}
             </p>
           ) : null}
+
         </CollapsibleHelp>
       )}
 
