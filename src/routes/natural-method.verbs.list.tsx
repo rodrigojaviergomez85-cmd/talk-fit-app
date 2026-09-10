@@ -33,7 +33,17 @@ function VerbsListPage() {
   const showEs = useAppLang().lang === "es";
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
+  const [translated, setTranslated] = useState<Set<string>>(new Set());
   const listTop = useRef<HTMLDivElement>(null);
+
+  const toggleTranslation = (base: string) => {
+    setTranslated((prev) => {
+      const next = new Set(prev);
+      if (next.has(base)) next.delete(base);
+      else next.add(base);
+      return next;
+    });
+  };
 
   const verbs = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -41,7 +51,9 @@ function VerbsListPage() {
       if (filter === "irregular" && !verb.irregular) return false;
       if (filter === "regular" && verb.irregular) return false;
       if (!q) return true;
-      return `${verb.base} ${verb.past} ${verb.participle} ${verb.es}`.toLowerCase().includes(q);
+      return `${verb.base} ${verb.past} ${verb.participle} ${verb.es} ${verb.example} ${verb.exampleEs}`
+        .toLowerCase()
+        .includes(q);
     });
   }, [query, filter]);
 
