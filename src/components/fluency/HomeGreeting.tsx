@@ -24,8 +24,7 @@ export function HomeGreeting() {
     <div>
       <h1 className="text-[28px] font-extrabold leading-tight tracking-tight">
         {greeting}
-        {pretty ? `, ${pretty}` : ""}
-        {es ? "!" : ""}
+        {pretty ? `, ${pretty}` : ""}!
       </h1>
       <p className="mt-0.5 text-[14px] font-semibold text-muted-foreground">{date}</p>
     </div>
