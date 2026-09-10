@@ -577,7 +577,7 @@ const DICT = {
   ],
   "account.resendConfirmation": ["REENVIAR CORREO DE CONFIRMACIÓN", "RESEND CONFIRMATION EMAIL"],
   "reset.title": ["NUEVA CONTRASEÑA", "NEW PASSWORD"],
-  "reset.newPassword": ["Nueva contraseña (mínimo 6 caracteres)", "New password (min 6 characters)"],
+  "reset.newPassword": ["Nueva contraseña (mínimo 8 caracteres)", "New password (min 8 characters)"],
   "reset.submit": ["GUARDAR CONTRASEÑA", "SAVE PASSWORD"],
   "reset.done": ["Listo. Tu contraseña fue actualizada.", "Done. Your password was updated."],
   "reset.invalid": [
