@@ -40,8 +40,8 @@ function BasicReviewPage() {
             <span className="block text-base font-extrabold text-foreground">Pictionary</span>
             <span className="block text-xs text-muted-foreground">
               {showEs
-                ? "100 palabras por categoría, con imagen y pronunciación. Refuerza vocabulario y estructuras esenciales."
-                : "100 words by category, with pictures and pronunciation. Reinforce vocabulary and essential structures."}
+                ? "100 palabras por categoría, con imagen y pronunciación."
+                : "100 words by category, with pictures and pronunciation."}
             </span>
           </span>
           <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
