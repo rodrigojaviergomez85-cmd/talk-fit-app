@@ -1107,7 +1107,17 @@ function VariantPicker({ day }: { day: CourseDay }) {
 
 /* ------------------------------ Step 0 intro ----------------------------- */
 
-function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseDay; onNext: () => void }) {
+function IntroStep({
+  moduleId,
+  day,
+  onNext,
+  onExit,
+}: {
+  moduleId: ModuleId;
+  day: CourseDay;
+  onNext: () => void;
+  onExit: () => void;
+}) {
   const t = useT();
   const { lang } = useAppLang();
   const [showEs] = useEsSupportPref();
