@@ -107,7 +107,7 @@ function HomePage() {
         >
           <span className="flex items-center gap-3 text-[14px] font-bold text-foreground">
             <BarChart3 className="size-5 shrink-0 text-muted-foreground" aria-hidden />
-            {t("coach.teacherSummary")}
+            {t("coach.showMyCoach")}
           </span>
           <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
         </Link>
