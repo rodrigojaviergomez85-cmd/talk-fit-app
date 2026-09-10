@@ -92,7 +92,6 @@ export const COMMON_VERBS: CommonVerb[] = [
   { base: "fall", past: "fell", participle: "fallen", es: "caer", irregular: true },
   { base: "cut", past: "cut", participle: "cut", es: "cortar", irregular: true },
   { base: "reach", past: "reached", participle: "reached", es: "alcanzar / llegar a", irregular: false },
-  { base: "kill", past: "killed", participle: "killed", es: "matar", irregular: false },
   { base: "raise", past: "raised", participle: "raised", es: "levantar / criar", irregular: false },
   { base: "pass", past: "passed", participle: "passed", es: "pasar / aprobar", irregular: false },
   { base: "sell", past: "sold", participle: "sold", es: "vender", irregular: true },
