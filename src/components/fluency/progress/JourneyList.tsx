@@ -75,7 +75,7 @@ export function JourneyList({ state }: { state: JourneyState }) {
         {/* Connector line behind the cards */}
         <div
           aria-hidden
-          className="pointer-events-none absolute bottom-6 left-[38px] top-6 w-px bg-border"
+          className="pointer-events-none absolute bottom-6 left-[44px] top-6 w-px bg-border"
         />
         {modules.map((module) => (
           <ModuleRow
@@ -117,7 +117,7 @@ function ModuleRow({
   const body = (
     <>
       <div className="flex items-center gap-3">
-        <ModuleBadge moduleId={module.id} size="sm" es={es} className="shrink-0" />
+        <ModuleBadge moduleId={module.id} size="xl" es={es} className="shrink-0" />
         <div className="min-w-0 flex-1">
           <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">{kicker}</p>
           <h3 className="text-[16px] font-extrabold leading-tight tracking-tight">{name}</h3>
