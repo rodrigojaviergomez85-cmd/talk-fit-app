@@ -30,7 +30,7 @@ export const MODULE_BADGE: Record<ModuleId, { src: string; es: string; en: strin
   "advanced-3": { src: advanced3, es: "Emblema fénix", en: "Phoenix emblem" },
 };
 
-const SIZES = { sm: "size-9", md: "size-12", lg: "size-16" } as const;
+const SIZES = { sm: "size-9", md: "size-12", lg: "size-16", xl: "size-14" } as const;
 
 export function ModuleBadge({
   moduleId,
