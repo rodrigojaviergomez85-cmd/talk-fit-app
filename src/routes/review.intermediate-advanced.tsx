@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ChevronRight } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { ReviewModuleList } from "@/components/review/ReviewModuleList";
 import { useAppLang } from "@/lib/i18n";
@@ -31,6 +32,23 @@ function IntermediateAdvancedReviewPage() {
             {showEs ? "Estos temas se desbloquean desde Eagles." : "These topics unlock from Eagles."}
           </p>
         </header>
+        <Link
+          to="/review/call-center"
+          className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-card p-4"
+        >
+          <span className="min-w-0">
+            <span className="block text-base font-extrabold text-foreground">
+              {showEs ? "Frases para Call Center" : "Call Center Phrases"}
+            </span>
+            <span className="block text-xs text-muted-foreground">
+              {showEs
+                ? "48 frases útiles para llamadas, clientes molestos y trabajo diario."
+                : "48 useful phrases for calls, upset customers and daily work."}
+            </span>
+          </span>
+          <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
+        </Link>
+
         <ReviewModuleList modules={listReviewModulesByCategory("intermediate-advanced")} showEs={showEs} />
       </div>
     </AppShell>

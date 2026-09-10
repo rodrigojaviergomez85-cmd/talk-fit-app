@@ -36,6 +36,7 @@ import { Route as NaturalMethodAudiobooksRouteImport } from './routes/natural-me
 import { Route as NaturalMethodVerbsRouteImport } from './routes/natural-method.verbs'
 import { Route as ReviewIndexRouteImport } from './routes/review.index'
 import { Route as ReviewBasicRouteImport } from './routes/review.basic'
+import { Route as ReviewCallCenterRouteImport } from './routes/review.call-center'
 import { Route as ReviewIntermediateAdvancedRouteImport } from './routes/review.intermediate-advanced'
 import { Route as ReviewPictionaryRouteImport } from './routes/review.pictionary'
 import { Route as NaturalMethodVerbsIndexRouteImport } from './routes/natural-method.verbs.index'
@@ -181,6 +182,11 @@ const ReviewBasicRoute = ReviewBasicRouteImport.update({
   path: '/review/basic',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReviewCallCenterRoute = ReviewCallCenterRouteImport.update({
+  id: '/review/call-center',
+  path: '/review/call-center',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReviewIntermediateAdvancedRoute =
   ReviewIntermediateAdvancedRouteImport.update({
     id: '/review/intermediate-advanced',
@@ -251,6 +257,7 @@ export interface FileRoutesByFullPath {
   '/natural-method/audiobooks': typeof NaturalMethodAudiobooksRoute
   '/natural-method/verbs': typeof NaturalMethodVerbsRouteWithChildren
   '/review/basic': typeof ReviewBasicRoute
+  '/review/call-center': typeof ReviewCallCenterRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/review/pictionary': typeof ReviewPictionaryRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
@@ -287,6 +294,7 @@ export interface FileRoutesByTo {
   '/module/$moduleId': typeof ModuleModuleIdRoute
   '/natural-method/audiobooks': typeof NaturalMethodAudiobooksRoute
   '/review/basic': typeof ReviewBasicRoute
+  '/review/call-center': typeof ReviewCallCenterRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/review/pictionary': typeof ReviewPictionaryRoute
   '/natural-method': typeof NaturalMethodIndexRoute
@@ -325,6 +333,7 @@ export interface FileRoutesById {
   '/natural-method/audiobooks': typeof NaturalMethodAudiobooksRoute
   '/natural-method/verbs': typeof NaturalMethodVerbsRouteWithChildren
   '/review/basic': typeof ReviewBasicRoute
+  '/review/call-center': typeof ReviewCallCenterRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/review/pictionary': typeof ReviewPictionaryRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
@@ -364,6 +373,7 @@ export interface FileRouteTypes {
     | '/natural-method/audiobooks'
     | '/natural-method/verbs'
     | '/review/basic'
+    | '/review/call-center'
     | '/review/intermediate-advanced'
     | '/review/pictionary'
     | '/natural-method/'
@@ -400,6 +410,7 @@ export interface FileRouteTypes {
     | '/module/$moduleId'
     | '/natural-method/audiobooks'
     | '/review/basic'
+    | '/review/call-center'
     | '/review/intermediate-advanced'
     | '/review/pictionary'
     | '/natural-method'
@@ -437,6 +448,7 @@ export interface FileRouteTypes {
     | '/natural-method/audiobooks'
     | '/natural-method/verbs'
     | '/review/basic'
+    | '/review/call-center'
     | '/review/intermediate-advanced'
     | '/review/pictionary'
     | '/natural-method/'
@@ -475,6 +487,7 @@ export interface RootRouteChildren {
   NaturalMethodAudiobooksRoute: typeof NaturalMethodAudiobooksRoute
   NaturalMethodVerbsRoute: typeof NaturalMethodVerbsRouteWithChildren
   ReviewBasicRoute: typeof ReviewBasicRoute
+  ReviewCallCenterRoute: typeof ReviewCallCenterRoute
   ReviewIntermediateAdvancedRoute: typeof ReviewIntermediateAdvancedRoute
   ReviewPictionaryRoute: typeof ReviewPictionaryRoute
   NaturalMethodIndexRoute: typeof NaturalMethodIndexRoute
@@ -674,6 +687,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReviewBasicRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/review/call-center': {
+      id: '/review/call-center'
+      path: '/review/call-center'
+      fullPath: '/review/call-center'
+      preLoaderRoute: typeof ReviewCallCenterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/review/intermediate-advanced': {
       id: '/review/intermediate-advanced'
       path: '/review/intermediate-advanced'
@@ -776,6 +796,7 @@ const rootRouteChildren: RootRouteChildren = {
   NaturalMethodAudiobooksRoute: NaturalMethodAudiobooksRoute,
   NaturalMethodVerbsRoute: NaturalMethodVerbsRouteWithChildren,
   ReviewBasicRoute: ReviewBasicRoute,
+  ReviewCallCenterRoute: ReviewCallCenterRoute,
   ReviewIntermediateAdvancedRoute: ReviewIntermediateAdvancedRoute,
   ReviewPictionaryRoute: ReviewPictionaryRoute,
   NaturalMethodIndexRoute: NaturalMethodIndexRoute,
