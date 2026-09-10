@@ -456,6 +456,11 @@ const DICT = {
   "prog.viewAudios": ["Ver mis audios", "See my recordings"],
   "prog.constancy": ["Mi constancia", "My consistency"],
   "prog.myRoute": ["Mi ruta", "My route"],
+  "prog.myRouteSub": ["Descubre lo que vas a practicar.", "Discover what you will practice."],
+  "prog.practicesOf": ["{done} de {total} prácticas", "{done} of {total} practices"],
+  "prog.badgeToEarn": ["Emblema por ganar", "Badge to earn"],
+  "prog.pillCurrent": ["Actual", "Current"],
+  "prog.pillNext": ["Lo que sigue", "Up next"],
   "prog.doneJourney": ["Completaste todo el camino. ¡Increíble!", "You completed the whole journey. Amazing!"],
 
   // Account
