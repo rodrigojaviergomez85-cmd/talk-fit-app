@@ -154,6 +154,28 @@ function VerbsListPage() {
                 <span>{showEs ? "Participio" : "Participle"}</span>
               </div>
               <p className="mt-2 text-[14px] text-muted-foreground">{verb.es}</p>
+              <div className="mt-3 flex items-start gap-2 rounded-xl bg-muted/40 p-3">
+                <SpeakButton text={verb.example} showEs={showEs} />
+                <p className="text-[14px] italic leading-8 text-foreground">“{verb.example}”</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => toggleTranslation(verb.base)}
+                aria-expanded={translated.has(verb.base)}
+                className="mt-2 inline-flex min-h-9 items-center gap-1.5 rounded-full border border-border px-3 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground"
+              >
+                <Languages className="size-3.5" aria-hidden="true" />
+                {translated.has(verb.base)
+                  ? showEs
+                    ? "Ocultar traducción"
+                    : "Hide translation"
+                  : showEs
+                    ? "Traducir"
+                    : "Translate"}
+              </button>
+              {translated.has(verb.base) ? (
+                <p className="mt-2 text-[14px] text-muted-foreground">“{verb.exampleEs}”</p>
+              ) : null}
             </li>
           ))}
         </ul>
