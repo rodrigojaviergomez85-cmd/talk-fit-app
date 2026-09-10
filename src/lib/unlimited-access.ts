@@ -12,6 +12,7 @@
 export const UNLIMITED_ACCESS_EMAILS = [
   "english4callcenters@gmail.com",
   "auxialeman@gmail.com",
+  "leticiamgth@gmail.com",
 ] as const;
 
 const KEY = "fluency.unlimitedAccess";
