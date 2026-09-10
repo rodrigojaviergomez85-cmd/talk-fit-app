@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Search } from "lucide-react";
+import { ArrowLeft, Languages, Search } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { Pager, SpeakButton, usePagination } from "@/components/fluency/NaturalMethodPager";
 import { COMMON_VERBS } from "@/services/natural-method-verbs";
@@ -33,7 +33,17 @@ function VerbsListPage() {
   const showEs = useAppLang().lang === "es";
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
+  const [translated, setTranslated] = useState<Set<string>>(new Set());
   const listTop = useRef<HTMLDivElement>(null);
+
+  const toggleTranslation = (base: string) => {
+    setTranslated((prev) => {
+      const next = new Set(prev);
+      if (next.has(base)) next.delete(base);
+      else next.add(base);
+      return next;
+    });
+  };
 
   const verbs = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -41,7 +51,9 @@ function VerbsListPage() {
       if (filter === "irregular" && !verb.irregular) return false;
       if (filter === "regular" && verb.irregular) return false;
       if (!q) return true;
-      return `${verb.base} ${verb.past} ${verb.participle} ${verb.es}`.toLowerCase().includes(q);
+      return `${verb.base} ${verb.past} ${verb.participle} ${verb.es} ${verb.example} ${verb.exampleEs}`
+        .toLowerCase()
+        .includes(q);
     });
   }, [query, filter]);
 
@@ -142,6 +154,28 @@ function VerbsListPage() {
                 <span>{showEs ? "Participio" : "Participle"}</span>
               </div>
               <p className="mt-2 text-[14px] text-muted-foreground">{verb.es}</p>
+              <div className="mt-3 flex items-start gap-2 rounded-xl bg-muted/40 p-3">
+                <SpeakButton text={verb.example} showEs={showEs} />
+                <p className="text-[14px] italic leading-8 text-foreground">“{verb.example}”</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => toggleTranslation(verb.base)}
+                aria-expanded={translated.has(verb.base)}
+                className="mt-2 inline-flex min-h-9 items-center gap-1.5 rounded-full border border-border px-3 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground"
+              >
+                <Languages className="size-3.5" aria-hidden="true" />
+                {translated.has(verb.base)
+                  ? showEs
+                    ? "Ocultar traducción"
+                    : "Hide translation"
+                  : showEs
+                    ? "Traducir"
+                    : "Translate"}
+              </button>
+              {translated.has(verb.base) ? (
+                <p className="mt-2 text-[14px] text-muted-foreground">“{verb.exampleEs}”</p>
+              ) : null}
             </li>
           ))}
         </ul>
