@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, BarChart3, ChevronRight } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { CurrentModuleCard } from "@/components/fluency/CurrentModuleCard";
 import { NextModuleLocked } from "@/components/fluency/NextModuleLocked";
-import { HabitCard } from "@/components/fluency/HabitCard";
+import { HomeWeekCard } from "@/components/fluency/HomeWeekCard";
 import { HomeGreeting } from "@/components/fluency/HomeGreeting";
 import { Progression } from "@/services/progression";
 import { getPendingPlacement } from "@/services/preferences";
@@ -76,27 +76,13 @@ function HomePage() {
   const active = Progression.activeModuleId(state);
   const upNext = active ? Progression.entryAfter(active) : null;
 
-  // HOME = "what do I do today?" — action first. Analytics live in PROGRESS,
-  // audio history in RECORDINGS; the streak is shown once, inside HabitCard.
+  // HOME = "what do I do today?" — greeting, today's practice, weekly
+  // consistency, locked next module, coach summary, beta footer.
   return (
     <AppShell title={t("home.today")}>
-      <div className="space-y-6">
+      <div className="space-y-5">
         <HomeGreeting />
         <CurrentModuleCard state={state} />
-        <Link
-          to="/coach-check"
-          className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl border border-border bg-card px-4 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground transition-colors hover:bg-secondary"
-        >
-          <span aria-hidden="true">👨‍🏫</span> {t("coach.showMyCoach")}
-        </Link>
-        <Link
-          to="/report"
-          className="flex min-h-[44px] w-full items-start gap-2 rounded-2xl border border-primary/40 bg-primary/10 p-3 text-left text-[12px] font-semibold leading-snug text-foreground transition-colors hover:bg-primary/15"
-        >
-          <AlertTriangle className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
-          <span>{t("report.betaBanner")}</span>
-        </Link>
-        <HabitCard state={state} />
 
         {failed ? (
           <div className="rounded-2xl border border-border bg-card p-4">
@@ -111,7 +97,28 @@ function HomePage() {
           </div>
         ) : null}
 
+        <HomeWeekCard state={state} />
+
         {active && upNext ? <NextModuleLocked entry={upNext} afterModuleId={active} /> : null}
+
+        <Link
+          to="/coach-check"
+          className="flex min-h-[56px] w-full items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 shadow-[var(--shadow-card)] transition-colors hover:bg-secondary"
+        >
+          <span className="flex items-center gap-3 text-[14px] font-bold text-foreground">
+            <BarChart3 className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+            {t("coach.teacherSummary")}
+          </span>
+          <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+        </Link>
+
+        <p className="flex items-center justify-center gap-1.5 pb-2 text-[12px] font-semibold text-muted-foreground">
+          <AlertTriangle className="size-3.5 shrink-0" aria-hidden />
+          {t("report.betaShort")} ·{" "}
+          <Link to="/report" className="font-bold text-primary underline underline-offset-2">
+            {t("report.reportLink")}
+          </Link>
+        </p>
       </div>
     </AppShell>
   );

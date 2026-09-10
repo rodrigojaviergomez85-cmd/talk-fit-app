@@ -49,7 +49,6 @@ export function CurrentModuleCard({ state }: { state: JourneyState }) {
   const day = CourseService.getDay(next.moduleId, next.day);
   const total = module.days.length;
   const completed = JourneyService.completedCount(state, next.moduleId);
-  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
   const fresh = completed === 0 && resumeStage === null;
 
   const cta =
@@ -61,53 +60,31 @@ export function CurrentModuleCard({ state }: { state: JourneyState }) {
 
   return (
     <section className="rounded-3xl bg-navy p-6 text-navy-foreground shadow-[var(--shadow-lift)]">
-      <div className="flex items-center gap-3">
-        <ModuleBadge moduleId={module.id} size="lg" es={es} className="shrink-0" />
-        <div className="min-w-0 flex-1">
-          <h2 className="text-[22px] font-extrabold leading-none tracking-tight">{module.title}</h2>
-          <p className="mt-1 text-[13px] font-semibold text-navy-foreground/70">{module.label}</p>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
+          <ModuleBadge moduleId={module.id} size="md" es={es} className="shrink-0" />
+          <h2 className="truncate text-[17px] font-extrabold tracking-tight">{module.title}</h2>
         </div>
+        <span className="shrink-0 rounded-full bg-navy-foreground/10 px-3 py-1.5 text-[11px] font-bold tabular-nums">
+          {t("home.dayPill").replace("{day}", String(day.day)).replace("{total}", String(total))}
+        </span>
       </div>
 
-      <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{t("home.todaysChallenge")}</p>
+      <p className="mt-6 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{t("home.todaysPractice")}</p>
       <h3 className="mt-1 text-[27px] font-extrabold leading-[1.1] tracking-tight">{day.topic}</h3>
-      <p className="mt-1 text-[13px] font-medium leading-snug text-navy-foreground/60">{day.topicEs}</p>
-      <p className="mt-3 text-[14px] font-semibold text-navy-foreground/80">{module.subtitle}</p>
-      <p className="mt-1 text-[13px] font-medium leading-snug text-navy-foreground/60">{module.subtitleEs}</p>
-
-      <div className="mt-5 flex items-baseline justify-between gap-3">
-        <p className="text-[15px] font-extrabold tabular-nums">
-          <span className="font-extrabold">
-            {t("home.day")} {day.day}
-          </span>{" "}
-          <span className="font-semibold text-navy-foreground/70">
-            {es ? "de" : "of"} {total}
-          </span>
-        </p>
-        <Link
-          to="/module/$moduleId"
-          params={{ moduleId: module.id }}
-          className="flex items-center gap-1 text-[13px] font-bold text-navy-foreground/80"
-        >
-          {t("home.seeDays")} <ArrowRight className="size-3.5" />
-        </Link>
-      </div>
-      <div className="mt-2 h-2 overflow-hidden rounded-full bg-navy-foreground/15">
-        <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${percent}%` }} />
-      </div>
-
+      <p className="mt-1 text-[14px] font-medium leading-snug text-navy-foreground/70">{day.topicEs}</p>
 
       <Link
         to="/practice"
         search={{ day: day.day, module: module.id }}
-        className="mt-5 flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-4 text-[15px] font-bold tracking-wide text-primary-foreground transition-transform active:scale-[0.98]"
+        className="mt-6 flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-4 text-[15px] font-bold tracking-wide text-primary-foreground transition-transform active:scale-[0.98]"
       >
         {cta} <ArrowRight className="size-4" />
       </Link>
       <Link
         to="/module/$moduleId"
         params={{ moduleId: module.id }}
-        className="mt-2 flex min-h-[44px] w-full items-center justify-center text-[11px] font-bold uppercase tracking-[0.16em] text-navy-foreground/70"
+        className="mt-2 flex min-h-[44px] w-full items-center justify-center text-[13px] font-semibold text-navy-foreground/70 underline underline-offset-4"
       >
         {t("home.seeAllDays")}
       </Link>
