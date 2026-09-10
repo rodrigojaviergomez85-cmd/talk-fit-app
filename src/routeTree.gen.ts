@@ -32,6 +32,7 @@ import { Route as ApiSentenceCountRouteImport } from './routes/api/sentence-coun
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as ModuleModuleIdRouteImport } from './routes/module.$moduleId'
 import { Route as NaturalMethodIndexRouteImport } from './routes/natural-method.index'
+import { Route as NaturalMethodVerbsRouteImport } from './routes/natural-method.verbs'
 import { Route as ReviewIndexRouteImport } from './routes/review.index'
 import { Route as ReviewBasicRouteImport } from './routes/review.basic'
 import { Route as ReviewIntermediateAdvancedRouteImport } from './routes/review.intermediate-advanced'
@@ -154,6 +155,11 @@ const NaturalMethodIndexRoute = NaturalMethodIndexRouteImport.update({
   path: '/natural-method/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NaturalMethodVerbsRoute = NaturalMethodVerbsRouteImport.update({
+  id: '/natural-method/verbs',
+  path: '/natural-method/verbs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReviewIndexRoute = ReviewIndexRouteImport.update({
   id: '/review/',
   path: '/review/',
@@ -204,6 +210,7 @@ export interface FileRoutesByFullPath {
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
+  '/natural-method/verbs': typeof NaturalMethodVerbsRoute
   '/review/basic': typeof ReviewBasicRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
@@ -234,6 +241,7 @@ export interface FileRoutesByTo {
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
+  '/natural-method/verbs': typeof NaturalMethodVerbsRoute
   '/review/basic': typeof ReviewBasicRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/natural-method': typeof NaturalMethodIndexRoute
@@ -265,6 +273,7 @@ export interface FileRoutesById {
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
+  '/natural-method/verbs': typeof NaturalMethodVerbsRoute
   '/review/basic': typeof ReviewBasicRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
@@ -297,6 +306,7 @@ export interface FileRouteTypes {
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
+    | '/natural-method/verbs'
     | '/review/basic'
     | '/review/intermediate-advanced'
     | '/natural-method/'
@@ -327,6 +337,7 @@ export interface FileRouteTypes {
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
+    | '/natural-method/verbs'
     | '/review/basic'
     | '/review/intermediate-advanced'
     | '/natural-method'
@@ -357,6 +368,7 @@ export interface FileRouteTypes {
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
+    | '/natural-method/verbs'
     | '/review/basic'
     | '/review/intermediate-advanced'
     | '/natural-method/'
@@ -388,6 +400,7 @@ export interface RootRouteChildren {
   ApiSentenceCountRoute: typeof ApiSentenceCountRoute
   ApiTtsRoute: typeof ApiTtsRoute
   ModuleModuleIdRoute: typeof ModuleModuleIdRoute
+  NaturalMethodVerbsRoute: typeof NaturalMethodVerbsRoute
   ReviewBasicRoute: typeof ReviewBasicRoute
   ReviewIntermediateAdvancedRoute: typeof ReviewIntermediateAdvancedRoute
   NaturalMethodIndexRoute: typeof NaturalMethodIndexRoute
@@ -559,6 +572,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NaturalMethodIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/natural-method/verbs': {
+      id: '/natural-method/verbs'
+      path: '/natural-method/verbs'
+      fullPath: '/natural-method/verbs'
+      preLoaderRoute: typeof NaturalMethodVerbsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/review/': {
       id: '/review/'
       path: '/review'
@@ -620,6 +640,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSentenceCountRoute: ApiSentenceCountRoute,
   ApiTtsRoute: ApiTtsRoute,
   ModuleModuleIdRoute: ModuleModuleIdRoute,
+  NaturalMethodVerbsRoute: NaturalMethodVerbsRoute,
   ReviewBasicRoute: ReviewBasicRoute,
   ReviewIntermediateAdvancedRoute: ReviewIntermediateAdvancedRoute,
   NaturalMethodIndexRoute: NaturalMethodIndexRoute,
