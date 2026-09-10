@@ -117,9 +117,9 @@ function VerbsPage() {
                 ) : null}
               </div>
               <div className="mt-1 grid grid-cols-3 gap-2">
-                <span className="text-[15px] font-extrabold text-foreground">{verb.base}</span>
-                <span className="text-[15px] font-extrabold text-foreground">{verb.past}</span>
-                <span className="text-[15px] font-extrabold text-foreground">{verb.participle}</span>
+                <SpeakWord text={verb.base} showEs={showEs} />
+                <SpeakWord text={verb.past} showEs={showEs} />
+                <SpeakWord text={verb.participle} showEs={showEs} />
               </div>
               <div className="mt-1 grid grid-cols-3 gap-2 text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
                 <span>{showEs ? "Presente" : "Present"}</span>
