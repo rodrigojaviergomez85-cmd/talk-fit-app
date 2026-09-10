@@ -134,3 +134,33 @@ function VerbsPage() {
     </AppShell>
   );
 }
+
+/** Word plus a play button that speaks it with the model voice. */
+function SpeakWord({ text, showEs }: { text: string; showEs: boolean }) {
+  const [playing, setPlaying] = useState(false);
+
+  const play = () => {
+    setPlaying(true);
+    AudioService.speak(text.replace(" / ", ", "), {
+      onEnd: () => setPlaying(false),
+      onError: () => setPlaying(false),
+    });
+  };
+
+  return (
+    <span className="flex items-start gap-1.5">
+      <button
+        type="button"
+        onClick={play}
+        aria-label={showEs ? `Escuchar ${text}` : `Listen to ${text}`}
+        className={cn(
+          "mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full border transition",
+          playing ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-primary",
+        )}
+      >
+        {playing ? <Volume2 className="size-3.5" aria-hidden="true" /> : <Play className="size-3.5" aria-hidden="true" />}
+      </button>
+      <span className="text-[15px] font-extrabold leading-7 text-foreground">{text}</span>
+    </span>
+  );
+}
