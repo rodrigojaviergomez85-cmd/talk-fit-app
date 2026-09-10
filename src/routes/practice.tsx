@@ -763,7 +763,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
 
           {stage === 0 ? (
             <>
-              <IntroStep moduleId={moduleId} day={day} onNext={goForward} />
+              <IntroStep moduleId={moduleId} day={day} onNext={goForward} onExit={() => setConfirmExit(true)} />
               <TodaysPastVerbs verbs={todaysVerbs} />
             </>
           ) : null}
@@ -1107,7 +1107,17 @@ function VariantPicker({ day }: { day: CourseDay }) {
 
 /* ------------------------------ Step 0 intro ----------------------------- */
 
-function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseDay; onNext: () => void }) {
+function IntroStep({
+  moduleId,
+  day,
+  onNext,
+  onExit,
+}: {
+  moduleId: ModuleId;
+  day: CourseDay;
+  onNext: () => void;
+  onExit: () => void;
+}) {
   const t = useT();
   const { lang } = useAppLang();
   const [showEs] = useEsSupportPref();
@@ -1197,8 +1207,17 @@ function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseD
           defaultOpen={false}
           heading="grammar"
           headingEs="gramática"
+          errors={day.guideErrors ?? []}
         />
       ) : null}
+
+      <button
+        type="button"
+        onClick={onExit}
+        className="min-h-[44px] w-full rounded-2xl border border-border text-sm font-extrabold uppercase tracking-[0.14em] text-muted-foreground"
+      >
+        {lang === "es" ? "SALIR" : "EXIT"}
+      </button>
     </div>
   );
 }

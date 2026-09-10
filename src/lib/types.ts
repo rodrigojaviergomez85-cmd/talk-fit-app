@@ -205,6 +205,8 @@ export type CourseDay = {
   testReadyOptional?: boolean | undefined;
   /** Optional "Entiéndelo fácil" grammar guide for this day, reused from Review. */
   guideCards?: ReviewGuideCard[] | undefined;
+  /** Typical mistakes shown at the end of the guide, reused from Review. */
+  guideErrors?: { wrong: string; right: string; es: string }[] | undefined;
 };
 
 /** One prewritten Rep 5 scenario (TIGERS FINAL bank). */
