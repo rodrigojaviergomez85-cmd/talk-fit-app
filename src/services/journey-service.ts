@@ -228,14 +228,18 @@ export const JourneyService = {
     const modules = CourseService.modules();
     const index = modules.findIndex((m) => m.id === moduleId);
     if (index <= 0) return true;
+    const saved = loadPreferences().currentModuleId;
+    const savedId = saved && isModuleId(saved) ? saved : null;
+    // A learner may move their level DOWN ("Cambiar mi nivel"). When they do,
+    // modules above the saved level lock again even if they were started
+    // earlier, so the route matches where they actually are.
+    const aboveSavedLevel =
+      savedId !== null && CourseService.displayIndex(moduleId) > CourseService.displayIndex(savedId);
     // Never strand a learner who already started this module or selected an
     // Advanced starting point during onboarding. These grandfathered access
     // paths must run before the new Intermediate-completion gate.
-    if (JourneyService.completedCount(state, moduleId) > 0) return true;
-    const saved = loadPreferences().currentModuleId;
-    if (saved && isModuleId(saved) && CourseService.displayIndex(moduleId) <= CourseService.displayIndex(saved)) {
-      return true;
-    }
+    if (!aboveSavedLevel && JourneyService.completedCount(state, moduleId) > 0) return true;
+    if (savedId && !aboveSavedLevel) return true;
     // ADVANCED is CYCLICAL among itself (A1 / A2 / A3 are parallel entry points),
     // but the whole family only opens once the three INTERMEDIATE modules
     // (EAGLES, TIGERS, SHARKS) are complete.
