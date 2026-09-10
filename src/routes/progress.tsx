@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { RecordingsPanel } from "@/components/fluency/RecordingsPanel";
-import { Check, ChevronDown, Lock, Mic, Timer } from "lucide-react";
+import { BarChart3, Check, ChevronDown, Lock, Mic, Timer, Trophy } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
 import { CurrentModuleCard } from "@/components/fluency/progress/CurrentModuleCard";
@@ -85,8 +85,45 @@ function ProgressPage() {
   }
 
   return (
-    <AppShell title={t("prog.title")} subtitle={t("prog.subtitle")}>
-      <div className="space-y-6">
+    <AppShell hideHeader hideSync>
+      {/* Navy header with the two views inside it */}
+      <header className="-mx-4 bg-navy px-5 pb-5 pt-[max(1.25rem,env(safe-area-inset-top))] text-navy-foreground">
+        <div className="mx-auto w-full max-w-lg">
+          <h1 className="text-2xl font-extrabold tracking-tight">{t("prog.title")}</h1>
+          <p className="mt-1 text-[14px] text-navy-foreground/75">{t("prog.subtitle")}</p>
+
+          <div
+            role="tablist"
+            aria-label={t("prog.title")}
+            className="mt-4 flex gap-1 rounded-2xl bg-navy-foreground/12 p-1"
+          >
+            {(["progress", "audio"] as const).map((key) => (
+              <button
+                key={key}
+                type="button"
+                role="tab"
+                aria-selected={tab === key}
+                onClick={() =>
+                  void navigate({
+                    search: key === "audio" ? { tab: "audio" } : {},
+                    replace: true,
+                  })
+                }
+                className={cn(
+                  "min-h-[44px] flex-1 rounded-xl px-3 text-[13px] font-bold transition-colors",
+                  tab === key
+                    ? "bg-card text-foreground shadow-[var(--shadow-card)]"
+                    : "text-navy-foreground/80",
+                )}
+              >
+                {key === "audio" ? t("prog.tabAudio") : t("prog.tabProgress")}
+              </button>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      <div className="space-y-6 pt-5">
         {failed ? (
           <div className="rounded-2xl border border-border bg-card p-4">
             <p className="text-[13px] font-semibold text-muted-foreground">
@@ -101,32 +138,6 @@ function ProgressPage() {
             </button>
           </div>
         ) : null}
-
-        {/* Progress and audio are two views of the same question: am I improving? */}
-        <div role="tablist" aria-label={t("prog.title")} className="flex gap-2 rounded-2xl bg-secondary p-1">
-          {(["progress", "audio"] as const).map((key) => (
-            <button
-              key={key}
-              type="button"
-              role="tab"
-              aria-selected={tab === key}
-              onClick={() =>
-                void navigate({
-                  search: key === "audio" ? { tab: "audio" } : {},
-                  replace: true,
-                })
-              }
-              className={cn(
-                "min-h-[44px] flex-1 rounded-xl px-3 text-[12px] font-bold uppercase tracking-[0.14em] transition-colors",
-                tab === key
-                  ? "bg-card text-foreground shadow-[var(--shadow-card)]"
-                  : "text-muted-foreground",
-              )}
-            >
-              {key === "audio" ? t("prog.tabAudio") : t("prog.tabProgress")}
-            </button>
-          ))}
-        </div>
 
         {tab === "audio" ? <RecordingsPanel state={safe} /> : (
         <>
@@ -145,62 +156,95 @@ function ProgressPage() {
         {/* 5. Mi ruta — always visible */}
         <JourneyList state={safe} />
 
-        {/* Totals */}
-        <section className="space-y-3">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-            {t("prog.totals")}
-          </h2>
-          <div className="grid grid-cols-3 gap-3">
-            <Stat icon={<Mic className="size-4 text-primary" />} label={t("home.reps")} value={`${safe.totalRepsCompleted}`} />
-            <Stat
-              icon={<Timer className="size-4 text-primary" />}
-              label={t("prog.minutes")}
-              value={`${JourneyService.totalSpeakingMinutes(safe)}`}
-            />
-            <Stat
-              icon={<Check className="size-4 text-primary" />}
-              label={t("prog.fullCurriculum")}
-              value={`${completedCount} / ${totalDays}`}
-            />
-          </div>
-        </section>
-
-
-        {/* Personal bests */}
-        {bests.longestSeconds || bests.mostIdeas ? (
-          <section className="space-y-3">
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              {t("prog.bests")}
-            </h2>
-            <div className="grid grid-cols-2 gap-3">
-              {bests.longestSeconds ? (
+        {/* Secondary: stats and achievements, collapsed rows */}
+        <Collapsible icon={<BarChart3 className="size-5 text-primary" />} label={t("prog.myStats")}>
+          <div className="space-y-6 pt-4">
+            <section className="space-y-3">
+              <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                {t("prog.totals")}
+              </h3>
+              <div className="grid grid-cols-3 gap-3">
+                <Stat icon={<Mic className="size-4 text-primary" />} label={t("home.reps")} value={`${safe.totalRepsCompleted}`} />
                 <Stat
                   icon={<Timer className="size-4 text-primary" />}
-                  label={t("prog.longest")}
-                  value={`${bests.longestSeconds} sec`}
+                  label={t("prog.minutes")}
+                  value={`${JourneyService.totalSpeakingMinutes(safe)}`}
                 />
-              ) : null}
-              {bests.mostIdeas ? (
                 <Stat
-                  icon={<Mic className="size-4 text-primary" />}
-                  label={t("prog.mostIdeas")}
-                  value={`${bests.mostIdeas} ideas`}
+                  icon={<Check className="size-4 text-primary" />}
+                  label={t("prog.fullCurriculum")}
+                  value={`${completedCount} / ${totalDays}`}
                 />
-              ) : null}
-            </div>
-          </section>
-        ) : null}
+              </div>
+            </section>
 
-        {/* Stats and achievements — secondary, below the route */}
-        <BadgeGrid state={safe} />
+            {bests.longestSeconds || bests.mostIdeas ? (
+              <section className="space-y-3">
+                <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                  {t("prog.bests")}
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {bests.longestSeconds ? (
+                    <Stat
+                      icon={<Timer className="size-4 text-primary" />}
+                      label={t("prog.longest")}
+                      value={`${bests.longestSeconds} sec`}
+                    />
+                  ) : null}
+                  {bests.mostIdeas ? (
+                    <Stat
+                      icon={<Mic className="size-4 text-primary" />}
+                      label={t("prog.mostIdeas")}
+                      value={`${bests.mostIdeas} ideas`}
+                    />
+                  ) : null}
+                </div>
+              </section>
+            ) : null}
 
-        <ModuleBadgeGrid state={safe} />
+            <AllDays state={safe} />
+          </div>
+        </Collapsible>
 
-        <AllDays state={safe} />
+        <Collapsible icon={<Trophy className="size-5 text-primary" />} label={t("prog.myBadges")}>
+          <div className="space-y-6 pt-4">
+            <BadgeGrid state={safe} />
+            <ModuleBadgeGrid state={safe} />
+          </div>
+        </Collapsible>
         </>
         )}
       </div>
     </AppShell>
+  );
+}
+
+function Collapsible({
+  icon,
+  label,
+  children,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <section className="rounded-3xl border border-border bg-card px-4 py-1 shadow-[var(--shadow-card)]">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex min-h-[56px] w-full items-center gap-3 text-left"
+      >
+        {icon}
+        <span className="min-w-0 flex-1 text-[15px] font-extrabold tracking-tight">{label}</span>
+        <ChevronDown
+          className={cn("size-5 shrink-0 text-muted-foreground transition-transform", open && "rotate-180")}
+        />
+      </button>
+      {open ? <div className="pb-4">{children}</div> : null}
+    </section>
   );
 }
 

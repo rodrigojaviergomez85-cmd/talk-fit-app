@@ -51,7 +51,7 @@ export function CurrentModuleCard({ state }: { state: JourneyState }) {
             {es ? "MÓDULO ACTUAL" : "CURRENT MODULE"}
           </p>
           <p className="mt-1 truncate text-[24px] font-extrabold tracking-tight">
-            {module.title}
+            {module.label}
           </p>
           <p className="mt-1 text-[14px] leading-snug text-navy-foreground/85">
             {es ? teaser.es : teaser.en}
