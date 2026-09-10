@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { ReviewModuleList } from "@/components/review/ReviewModuleList";
 import { useAppLang } from "@/lib/i18n";
