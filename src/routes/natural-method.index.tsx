@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, BookOpen, Headphones, ListChecks } from "lucide-react";
+import { ArrowRight, Headphones, ListChecks } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
+
 
 export const Route = createFileRoute("/natural-method/")({
   head: () => ({
@@ -31,31 +32,16 @@ function NaturalMethodIndex() {
       <div className="space-y-4 p-4">
         <header>
           <h1 className="text-2xl font-extrabold text-foreground">Natural Method</h1>
-          <p className="text-sm text-muted-foreground">
-            {showEs
-              ? "Material de apoyo: escucha, lee y repite. No cambia tu progreso del curso."
-              : "Support material: listen, read and repeat. It does not change your course progress."}
-          </p>
+          <div className="mt-2 space-y-2">
+            <p className="text-base font-bold text-foreground">
+              {t("natural.supportTitle")}
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              {t("natural.supportBody")}
+            </p>
+          </div>
         </header>
 
-        <section
-          className="rounded-2xl border border-border bg-card p-5"
-          aria-labelledby="natural-support-title"
-        >
-          <div className="flex items-start gap-4">
-            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <BookOpen className="size-6" aria-hidden="true" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <h2 id="natural-support-title" className="text-lg font-extrabold text-foreground">
-                {t("natural.supportTitle")}
-              </h2>
-              <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
-                {t("natural.supportBody")}
-              </p>
-            </div>
-          </div>
-        </section>
 
         <div className="space-y-3">
           <Link
