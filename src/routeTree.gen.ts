@@ -31,6 +31,7 @@ import { Route as ApiRep2CorrectionRouteImport } from './routes/api/rep2-correct
 import { Route as ApiSentenceCountRouteImport } from './routes/api/sentence-count'
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as ModuleModuleIdRouteImport } from './routes/module.$moduleId'
+import { Route as NaturalMethodIndexRouteImport } from './routes/natural-method.index'
 import { Route as ReviewIndexRouteImport } from './routes/review.index'
 import { Route as ReviewBasicRouteImport } from './routes/review.basic'
 import { Route as ReviewIntermediateAdvancedRouteImport } from './routes/review.intermediate-advanced'
@@ -148,6 +149,11 @@ const ModuleModuleIdRoute = ModuleModuleIdRouteImport.update({
   path: '/module/$moduleId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NaturalMethodIndexRoute = NaturalMethodIndexRouteImport.update({
+  id: '/natural-method/',
+  path: '/natural-method/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReviewIndexRoute = ReviewIndexRouteImport.update({
   id: '/review/',
   path: '/review/',
@@ -200,6 +206,7 @@ export interface FileRoutesByFullPath {
   '/module/$moduleId': typeof ModuleModuleIdRoute
   '/review/basic': typeof ReviewBasicRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
+  '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/review/$moduleId/': typeof ReviewModuleIdIndexRoute
@@ -229,6 +236,7 @@ export interface FileRoutesByTo {
   '/module/$moduleId': typeof ModuleModuleIdRoute
   '/review/basic': typeof ReviewBasicRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
+  '/natural-method': typeof NaturalMethodIndexRoute
   '/review': typeof ReviewIndexRoute
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/review/$moduleId': typeof ReviewModuleIdIndexRoute
@@ -259,6 +267,7 @@ export interface FileRoutesById {
   '/module/$moduleId': typeof ModuleModuleIdRoute
   '/review/basic': typeof ReviewBasicRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
+  '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/review/$moduleId/': typeof ReviewModuleIdIndexRoute
@@ -290,6 +299,7 @@ export interface FileRouteTypes {
     | '/module/$moduleId'
     | '/review/basic'
     | '/review/intermediate-advanced'
+    | '/natural-method/'
     | '/review/'
     | '/review/$moduleId/$practice'
     | '/review/$moduleId/'
@@ -319,6 +329,7 @@ export interface FileRouteTypes {
     | '/module/$moduleId'
     | '/review/basic'
     | '/review/intermediate-advanced'
+    | '/natural-method'
     | '/review'
     | '/review/$moduleId/$practice'
     | '/review/$moduleId'
@@ -348,6 +359,7 @@ export interface FileRouteTypes {
     | '/module/$moduleId'
     | '/review/basic'
     | '/review/intermediate-advanced'
+    | '/natural-method/'
     | '/review/'
     | '/review/$moduleId/$practice'
     | '/review/$moduleId/'
@@ -378,6 +390,7 @@ export interface RootRouteChildren {
   ModuleModuleIdRoute: typeof ModuleModuleIdRoute
   ReviewBasicRoute: typeof ReviewBasicRoute
   ReviewIntermediateAdvancedRoute: typeof ReviewIntermediateAdvancedRoute
+  NaturalMethodIndexRoute: typeof NaturalMethodIndexRoute
   ReviewIndexRoute: typeof ReviewIndexRoute
   ReviewModuleIdPracticeRoute: typeof ReviewModuleIdPracticeRoute
   ReviewModuleIdIndexRoute: typeof ReviewModuleIdIndexRoute
@@ -539,6 +552,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ModuleModuleIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/natural-method/': {
+      id: '/natural-method/'
+      path: '/natural-method'
+      fullPath: '/natural-method/'
+      preLoaderRoute: typeof NaturalMethodIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/review/': {
       id: '/review/'
       path: '/review'
@@ -602,6 +622,7 @@ const rootRouteChildren: RootRouteChildren = {
   ModuleModuleIdRoute: ModuleModuleIdRoute,
   ReviewBasicRoute: ReviewBasicRoute,
   ReviewIntermediateAdvancedRoute: ReviewIntermediateAdvancedRoute,
+  NaturalMethodIndexRoute: NaturalMethodIndexRoute,
   ReviewIndexRoute: ReviewIndexRoute,
   ReviewModuleIdPracticeRoute: ReviewModuleIdPracticeRoute,
   ReviewModuleIdIndexRoute: ReviewModuleIdIndexRoute,
