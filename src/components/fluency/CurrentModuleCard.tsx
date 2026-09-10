@@ -71,7 +71,7 @@ export function CurrentModuleCard({ state }: { state: JourneyState }) {
           <ModuleBadge moduleId={module.id} size="md" es={es} className="shrink-0" />
           <div className="min-w-0">
             <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-navy-foreground/60">
-              {es ? "Nivel" : "Level"}
+              {t("home.level")}
             </p>
             <h2 className="truncate text-[17px] font-extrabold tracking-tight">{levelName(module.label)}</h2>
           </div>
