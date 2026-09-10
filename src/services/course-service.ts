@@ -154,6 +154,7 @@ export const CourseService = {
         const daysWithGuides: CourseDay[] = days.map((day) => ({
           ...day,
           guideCards: guideCardsForDay(moduleId, day),
+          guideErrors: guideErrorsForDay(moduleId, day),
         }));
         const full: LoadedModule = { ...meta, days: daysWithGuides };
         loaded.set(moduleId, full);
