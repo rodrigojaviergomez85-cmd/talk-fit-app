@@ -1190,7 +1190,7 @@ function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseD
         <ArrowRight className="size-5" />
       </PrimaryButton>
 
-      {day.guideCards ? (
+      {day.guideCards?.length ? (
         <ReviewGuide
           cards={day.guideCards}
           showEs={showEs}
