@@ -1,3 +1,5 @@
+import type { ReviewGuideCard } from "./review-types";
+
 /**
  * Shared domain types for FLUENCY REPS.
  * MVP: no automatic evaluation — only objective, measurable practice data.
