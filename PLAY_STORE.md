@@ -1,4 +1,4 @@
-# Publicar Fluency Reps en Google Play (opción 1: PWA con TWA)
+# Publicar Fluency App en Google Play (opción 1: PWA con TWA)
 
 La app ya cumple los requisitos de instalación: manifest, íconos 192/512 + maskable,
 nombre, color de tema y modo pantalla completa (`standalone`).

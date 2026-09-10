@@ -3,7 +3,7 @@
  *
  * Job-oriented week: tell what happened → offer options → give advice →
  * recommend & sell → handle hypothetical situations.
- * Each day = the normal 5 Fluency Reps + a separate 3–5 min Test Ready Sprint.
+ * Each day = the normal 5 Steps + a separate 3–5 min Test Ready Sprint.
  *
  * DATA SAFETY: the module id ("eagles-week-1"), the day numbers 1–5 and every
  * `e1-*`…`e5-*` id in this file are persisted in learner progress and
