@@ -71,7 +71,7 @@ export function Pager({
 }
 
 /** Play button that speaks a phrase with the existing model voice. */
-export function SpeakButton({ text, showEs }: { text: string; showEs: boolean }) {
+export function SpeakButton({ text, showEs, className }: { text: string; showEs: boolean; className?: string }) {
   const [playing, setPlaying] = useState(false);
   const alive = useRef(true);
 
