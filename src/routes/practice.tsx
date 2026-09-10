@@ -1110,6 +1110,7 @@ function VariantPicker({ day }: { day: CourseDay }) {
 function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseDay; onNext: () => void }) {
   const t = useT();
   const { lang } = useAppLang();
+  const [showEs] = useEsSupportPref();
   const intro = day.intro;
   const tier = introTier(moduleId);
   const isBasic = tier === "basic-low" || tier === "basic-high";
