@@ -203,6 +203,8 @@ export type CourseDay = {
   repCopy?: RepCopy | undefined;
   /** ADVANCED: Test Ready is optional extra practice on this day (never blocks). */
   testReadyOptional?: boolean | undefined;
+  /** Optional "Entiéndelo fácil" grammar guide for this day, reused from Review. */
+  guideCards?: ReviewGuideCard[] | undefined;
 };
 
 /** One prewritten Rep 5 scenario (TIGERS FINAL bank). */
