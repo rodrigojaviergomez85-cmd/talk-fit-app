@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { BarChart3, BookOpen, Home, User } from "lucide-react";
+import { BarChart3, BookOpen, Headphones, Home, User } from "lucide-react";
 import { useT, type TKey } from "@/lib/i18n";
 
 // HOME = do · PROGRESS = see + hear (audio tab) · REVIEW = reinforce · ACCOUNT = manage.
