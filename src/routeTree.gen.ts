@@ -32,6 +32,7 @@ import { Route as ApiSentenceCountRouteImport } from './routes/api/sentence-coun
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as ModuleModuleIdRouteImport } from './routes/module.$moduleId'
 import { Route as NaturalMethodIndexRouteImport } from './routes/natural-method.index'
+import { Route as NaturalMethodAudiobooksRouteImport } from './routes/natural-method.audiobooks'
 import { Route as NaturalMethodVerbsRouteImport } from './routes/natural-method.verbs'
 import { Route as ReviewIndexRouteImport } from './routes/review.index'
 import { Route as ReviewBasicRouteImport } from './routes/review.basic'
@@ -155,6 +156,11 @@ const NaturalMethodIndexRoute = NaturalMethodIndexRouteImport.update({
   path: '/natural-method/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NaturalMethodAudiobooksRoute = NaturalMethodAudiobooksRouteImport.update({
+  id: '/natural-method/audiobooks',
+  path: '/natural-method/audiobooks',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NaturalMethodVerbsRoute = NaturalMethodVerbsRouteImport.update({
   id: '/natural-method/verbs',
   path: '/natural-method/verbs',
@@ -210,6 +216,7 @@ export interface FileRoutesByFullPath {
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
+  '/natural-method/audiobooks': typeof NaturalMethodAudiobooksRoute
   '/natural-method/verbs': typeof NaturalMethodVerbsRoute
   '/review/basic': typeof ReviewBasicRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
@@ -241,6 +248,7 @@ export interface FileRoutesByTo {
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
+  '/natural-method/audiobooks': typeof NaturalMethodAudiobooksRoute
   '/natural-method/verbs': typeof NaturalMethodVerbsRoute
   '/review/basic': typeof ReviewBasicRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
@@ -273,6 +281,7 @@ export interface FileRoutesById {
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
+  '/natural-method/audiobooks': typeof NaturalMethodAudiobooksRoute
   '/natural-method/verbs': typeof NaturalMethodVerbsRoute
   '/review/basic': typeof ReviewBasicRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
@@ -306,6 +315,7 @@ export interface FileRouteTypes {
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
+    | '/natural-method/audiobooks'
     | '/natural-method/verbs'
     | '/review/basic'
     | '/review/intermediate-advanced'
@@ -337,6 +347,7 @@ export interface FileRouteTypes {
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
+    | '/natural-method/audiobooks'
     | '/natural-method/verbs'
     | '/review/basic'
     | '/review/intermediate-advanced'
@@ -368,6 +379,7 @@ export interface FileRouteTypes {
     | '/api/sentence-count'
     | '/api/tts'
     | '/module/$moduleId'
+    | '/natural-method/audiobooks'
     | '/natural-method/verbs'
     | '/review/basic'
     | '/review/intermediate-advanced'
@@ -400,6 +412,7 @@ export interface RootRouteChildren {
   ApiSentenceCountRoute: typeof ApiSentenceCountRoute
   ApiTtsRoute: typeof ApiTtsRoute
   ModuleModuleIdRoute: typeof ModuleModuleIdRoute
+  NaturalMethodAudiobooksRoute: typeof NaturalMethodAudiobooksRoute
   NaturalMethodVerbsRoute: typeof NaturalMethodVerbsRoute
   ReviewBasicRoute: typeof ReviewBasicRoute
   ReviewIntermediateAdvancedRoute: typeof ReviewIntermediateAdvancedRoute
@@ -572,6 +585,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NaturalMethodIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/natural-method/audiobooks': {
+      id: '/natural-method/audiobooks'
+      path: '/natural-method/audiobooks'
+      fullPath: '/natural-method/audiobooks'
+      preLoaderRoute: typeof NaturalMethodAudiobooksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/natural-method/verbs': {
       id: '/natural-method/verbs'
       path: '/natural-method/verbs'
@@ -640,6 +660,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSentenceCountRoute: ApiSentenceCountRoute,
   ApiTtsRoute: ApiTtsRoute,
   ModuleModuleIdRoute: ModuleModuleIdRoute,
+  NaturalMethodAudiobooksRoute: NaturalMethodAudiobooksRoute,
   NaturalMethodVerbsRoute: NaturalMethodVerbsRoute,
   ReviewBasicRoute: ReviewBasicRoute,
   ReviewIntermediateAdvancedRoute: ReviewIntermediateAdvancedRoute,
