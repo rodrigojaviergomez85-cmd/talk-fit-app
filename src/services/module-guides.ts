@@ -172,13 +172,20 @@ function forMixedTenses(day: CourseDay): DayGuide | undefined {
   if (matches(f, "future", "tomorrow", "plan")) return SIMPLE_FUTURE;
   if (matches(f, "question")) {
     return {
+      title: "Question Formation",
+      titleEs: "Formación de Preguntas",
       cards: [...SIMPLE_PRESENT_GUIDE, ...SIMPLE_PAST_GUIDE, ...SIMPLE_FUTURE_GUIDE],
       errors: MIXED_ERRORS,
     };
   }
 
   // Week 4 / mixed conversation: concise reference cards from all three tenses.
-  return { cards: take(MIXED_TENSES_CARDS, MIXED_CARD_LIMIT), errors: MIXED_ERRORS };
+  return {
+    title: "Mixed Tenses",
+    titleEs: "Tiempos Mixtos",
+    cards: take(MIXED_TENSES_CARDS, MIXED_CARD_LIMIT),
+    errors: MIXED_ERRORS,
+  };
 }
 
 export function guideForDay(moduleId: ModuleId, day: CourseDay): DayGuide | undefined {
