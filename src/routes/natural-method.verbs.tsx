@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Search } from "lucide-react";
+import { ArrowLeft, Play, Search, Volume2 } from "lucide-react";
+import { AudioService } from "@/services/audio-service";
 import { AppShell } from "@/components/fluency/AppShell";
 import { COMMON_VERBS } from "@/services/natural-method-verbs";
 import { useAppLang } from "@/lib/i18n";
@@ -117,9 +118,9 @@ function VerbsPage() {
                 ) : null}
               </div>
               <div className="mt-1 grid grid-cols-3 gap-2">
-                <span className="text-[15px] font-extrabold text-foreground">{verb.base}</span>
-                <span className="text-[15px] font-extrabold text-foreground">{verb.past}</span>
-                <span className="text-[15px] font-extrabold text-foreground">{verb.participle}</span>
+                <SpeakWord text={verb.base} showEs={showEs} />
+                <SpeakWord text={verb.past} showEs={showEs} />
+                <SpeakWord text={verb.participle} showEs={showEs} />
               </div>
               <div className="mt-1 grid grid-cols-3 gap-2 text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
                 <span>{showEs ? "Presente" : "Present"}</span>
@@ -132,5 +133,35 @@ function VerbsPage() {
         </ul>
       </div>
     </AppShell>
+  );
+}
+
+/** Word plus a play button that speaks it with the model voice. */
+function SpeakWord({ text, showEs }: { text: string; showEs: boolean }) {
+  const [playing, setPlaying] = useState(false);
+
+  const play = () => {
+    setPlaying(true);
+    AudioService.speak(text.replace(" / ", ", "), {
+      onEnd: () => setPlaying(false),
+      onError: () => setPlaying(false),
+    });
+  };
+
+  return (
+    <span className="flex items-start gap-1.5">
+      <button
+        type="button"
+        onClick={play}
+        aria-label={showEs ? `Escuchar ${text}` : `Listen to ${text}`}
+        className={cn(
+          "mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full border transition",
+          playing ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-primary",
+        )}
+      >
+        {playing ? <Volume2 className="size-3.5" aria-hidden="true" /> : <Play className="size-3.5" aria-hidden="true" />}
+      </button>
+      <span className="text-[15px] font-extrabold leading-7 text-foreground">{text}</span>
+    </span>
   );
 }
