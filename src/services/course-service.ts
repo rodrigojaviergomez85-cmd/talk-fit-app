@@ -151,7 +151,11 @@ export const CourseService = {
     const meta = findModule(moduleId);
     const promise = importDays(moduleId)
       .then((days) => {
-        const full: LoadedModule = { ...meta, days };
+        const daysWithGuides: CourseDay[] = days.map((day) => ({
+          ...day,
+          guideCards: guideCardsForDay(moduleId, day),
+        }));
+        const full: LoadedModule = { ...meta, days: daysWithGuides };
         loaded.set(moduleId, full);
         notify();
         return full;
