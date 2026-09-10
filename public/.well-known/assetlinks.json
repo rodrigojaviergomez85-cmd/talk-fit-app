@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.fluencye4cc.twa",
+        "sha256_cert_fingerprints": ["1E:55:D3:01:0A:41:89:64:67:03:75:29:0D:DC:37:C0:33:E7:71:F9:42:4E:0D:16:70:14:4A:5D:C3:51:24:88"]
+      }
+    }]
