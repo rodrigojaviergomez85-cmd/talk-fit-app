@@ -323,7 +323,7 @@ const DICT = {
   "home.streakDays": ["{n} días seguidos", "{n} days in a row"],
   "home.todayWord": ["Hoy", "Today"],
   "home.consistency": ["Tu constancia", "Your consistency"],
-  "home.habitDaysOf": ["{done} de 66 días con práctica", "{done} of 66 days with practice"],
+  "home.habitDaysOf": ["{done}/66 días con práctica", "{done}/66 days with practice"],
   "home.seeProgress": ["Ver progreso", "See progress"],
   "home.lockedTitle": ["MÓDULO BLOQUEADO", "MODULE LOCKED"],
   "home.lockedBody": [
