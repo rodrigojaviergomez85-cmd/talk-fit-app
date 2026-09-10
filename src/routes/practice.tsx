@@ -27,6 +27,7 @@ import {
   useSpanishAll,
 } from "@/components/fluency/TranslatableText";
 import { CollapsibleHelp, TextToggle } from "@/components/fluency/CollapsibleHelp";
+import { ReviewGuide } from "@/components/review/ReviewGuide";
 import { supportLevel, prefersChunks, showsFullTextByDefault } from "@/lib/support-level";
 import { rep5Tier, primaryVisual, introTier, introExampleLimit, introImageIsEssential } from "@/lib/rep5-support";
 import { CourseService, DEFAULT_MODULE, isModuleId, type LoadedModule } from "@/services/course-service";
@@ -1109,6 +1110,7 @@ function VariantPicker({ day }: { day: CourseDay }) {
 function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseDay; onNext: () => void }) {
   const t = useT();
   const { lang } = useAppLang();
+  const [showEs] = useEsSupportPref();
   const intro = day.intro;
   const tier = introTier(moduleId);
   const isBasic = tier === "basic-low" || tier === "basic-high";
@@ -1188,28 +1190,15 @@ function IntroStep({ moduleId, day, onNext }: { moduleId: ModuleId; day: CourseD
         <ArrowRight className="size-5" />
       </PrimaryButton>
 
-      <CollapsibleHelp label="More help" labelEs="Más ayuda">
-        {!isBasic ? (
-          <TranslatableText es={intro.leadEs} supportOnly>
-            <p className="text-[15px] leading-relaxed text-foreground">{intro.lead}</p>
-          </TranslatableText>
-        ) : null}
-        {rest.length ? (
-          <div className="space-y-1.5">
-            {rest.map((example) => (
-              <p key={example} className="text-[16px] font-bold tracking-tight">
-                {example}
-              </p>
-            ))}
-          </div>
-        ) : null}
-        <QuestionBanner day={day} />
-        {!essentialImage ? <SceneImage day={day} /> : null}
-        <StoryStrip day={day} showCaptions={false} />
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-          {day.focus} · {day.topic}
-        </p>
-      </CollapsibleHelp>
+      {day.guideCards?.length ? (
+        <ReviewGuide
+          cards={day.guideCards}
+          showEs={showEs}
+          defaultOpen={false}
+          heading="grammar"
+          headingEs="gramática"
+        />
+      ) : null}
     </div>
   );
 }

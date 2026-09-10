@@ -1,4 +1,5 @@
 import type { CourseDay, ModuleId } from "@/lib/types";
+import { guideCardsForDay } from "./module-guides";
 import { MODULE_INDEX, isModuleId, type LearningModule, type DayOutline } from "./course-index";
 
 export {
@@ -150,7 +151,11 @@ export const CourseService = {
     const meta = findModule(moduleId);
     const promise = importDays(moduleId)
       .then((days) => {
-        const full: LoadedModule = { ...meta, days };
+        const daysWithGuides: CourseDay[] = days.map((day) => ({
+          ...day,
+          guideCards: guideCardsForDay(moduleId, day),
+        }));
+        const full: LoadedModule = { ...meta, days: daysWithGuides };
         loaded.set(moduleId, full);
         notify();
         return full;
