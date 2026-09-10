@@ -8,6 +8,12 @@ import { PracticeSessionService } from "@/services/practice-session";
 import { ModuleBadge } from "@/components/fluency/ModuleBadge";
 import { useAppLang } from "@/lib/i18n";
 
+function levelName(label: string) {
+  return label
+    .toLowerCase()
+    .replace(/(?:^|[\s·]+)\w/g, (m) => m.toUpperCase());
+}
+
 /**
  * The one dominant card on Home: the learner's CURRENT module and its next day.
  * Everything is derived from saved progress — nothing is hard-coded.
