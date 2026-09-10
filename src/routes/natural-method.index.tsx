@@ -47,12 +47,12 @@ function NaturalMethodIndex() {
             </span>
             <span className="min-w-0 flex-1">
               <span className="block text-xl font-extrabold text-foreground">
-                {showEs ? "Lista de verbos más comunes" : "Most common verbs list"}
+                {showEs ? "Verbos más comunes" : "Most Common Verbs"}
               </span>
               <span className="mt-1 block text-sm text-muted-foreground">
                 {showEs
-                  ? "Los 100 verbos del día a día: presente, pasado, participio y significado."
-                  : "The 100 everyday verbs: present, past, past participle and meaning."}
+                  ? "Lista de verbos, phrasal verbs e idioms con significado y ejemplos."
+                  : "List of Verbs, Phrasal Verbs and Idioms with meanings and examples."}
               </span>
             </span>
             <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
