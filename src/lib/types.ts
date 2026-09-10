@@ -207,6 +207,10 @@ export type CourseDay = {
   guideCards?: ReviewGuideCard[] | undefined;
   /** Typical mistakes shown at the end of the guide, reused from Review. */
   guideErrors?: { wrong: string; right: string; es: string }[] | undefined;
+  /** Grammar topic title shown in the guide header. */
+  guideTitle?: string | undefined;
+  /** Spanish translation of the grammar topic title. */
+  guideTitleEs?: string | undefined;
 };
 
 /** One prewritten Rep 5 scenario (TIGERS FINAL bank). */
