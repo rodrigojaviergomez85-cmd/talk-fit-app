@@ -67,7 +67,7 @@ function HomePage() {
 
   if (!state) {
     return (
-      <AppShell title={t("home.today")}>
+      <AppShell hideHeader hideSync>
         <HomeSkeleton />
       </AppShell>
     );
@@ -79,7 +79,7 @@ function HomePage() {
   // HOME = "what do I do today?" — greeting, today's practice, weekly
   // consistency, locked next module, coach summary, beta footer.
   return (
-    <AppShell title={t("home.today")}>
+    <AppShell hideHeader hideSync>
       <div className="space-y-5">
         <HomeGreeting />
         <CurrentModuleCard state={state} />
