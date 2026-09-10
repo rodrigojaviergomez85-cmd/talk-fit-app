@@ -3,9 +3,17 @@ import { Link } from "@tanstack/react-router";
 import { AudioPlayer } from "./AudioPlayer";
 import { useAppLang } from "@/lib/i18n";
 import { VerbBank, type PastVerb } from "@/services/verb-bank";
+import type { ModuleId } from "@/lib/types";
 
 /** Horizontal preview of the past verbs the learner will meet today. */
-export function TodaysPastVerbs({ verbs }: { verbs: PastVerb[] }) {
+export function TodaysPastVerbs({
+  verbs,
+  returnTo,
+}: {
+  verbs: PastVerb[];
+  /** When set, the bank's back button returns to this practice day instead of the day list. */
+  returnTo?: { moduleId: ModuleId; day: number };
+}) {
   const es = useAppLang().lang === "es";
   if (verbs.length === 0) return null;
 
@@ -18,6 +26,7 @@ export function TodaysPastVerbs({ verbs }: { verbs: PastVerb[] }) {
         </p>
         <Link
           to="/verb-bank"
+          search={returnTo ? { from: returnTo.moduleId, day: returnTo.day } : {}}
           className="inline-flex items-center gap-1 text-[12px] font-bold uppercase tracking-[0.12em] text-primary"
         >
           {es ? "BANCO" : "BANK"}

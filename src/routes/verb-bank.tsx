@@ -4,11 +4,19 @@ import { ArrowLeft } from "lucide-react";
 import { PastVerbCard } from "@/components/fluency/PastVerbCard";
 import { useVerbBank } from "@/hooks/use-verb-bank";
 import { PAST_VERBS, VerbBank, setVerbBankScope } from "@/services/verb-bank";
+import { isModuleId } from "@/services/course-index";
 import { supabase } from "@/integrations/supabase/client";
 import { useAppLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/verb-bank")({
+  validateSearch: (search: Record<string, unknown>) => {
+    const raw = search["from"];
+    const from = isModuleId(raw) ? raw : undefined;
+    const dayNum = Number(search["day"]);
+    const day = Number.isFinite(dayNum) && dayNum >= 1 ? Math.floor(dayNum) : undefined;
+    return from ? { from, day } : {};
+  },
   head: () => ({
     meta: [
       { title: "Past Verb Bank — Fluency App" },
@@ -40,6 +48,7 @@ function VerbBankPage() {
   }, []);
 
   const discovered = VerbBank.discoveredCount(state);
+  const { from, day } = Route.useSearch();
 
   const filters: { id: Filter; label: string }[] = [
     { id: "all", label: es ? "TODOS" : "ALL" },
@@ -63,14 +72,26 @@ function VerbBankPage() {
     <div className="min-h-screen bg-background pb-16">
       <header className="border-b border-border bg-card">
         <div className="mx-auto flex w-full max-w-lg items-center gap-3 px-4 py-4">
-          <Link
-            to="/module/$moduleId"
-            params={{ moduleId: "past-stories" }}
-            aria-label={es ? "Volver" : "Back"}
-            className="inline-flex size-10 items-center justify-center rounded-2xl border border-border"
-          >
-            <ArrowLeft className="size-4" aria-hidden />
-          </Link>
+          {from ? (
+            <Link
+              to="/practice"
+              search={{ module: from, day: day ?? 1 }}
+              aria-label={es ? "Volver a la práctica" : "Back to practice"}
+              className="inline-flex h-10 items-center gap-1.5 rounded-2xl border border-border px-3 text-[12px] font-bold uppercase tracking-[0.12em]"
+            >
+              <ArrowLeft className="size-4" aria-hidden />
+              {es ? "Práctica" : "Practice"}
+            </Link>
+          ) : (
+            <Link
+              to="/module/$moduleId"
+              params={{ moduleId: "past-stories" }}
+              aria-label={es ? "Volver" : "Back"}
+              className="inline-flex size-10 items-center justify-center rounded-2xl border border-border"
+            >
+              <ArrowLeft className="size-4" aria-hidden />
+            </Link>
+          )}
           <div>
             <h1 className="text-[18px] font-extrabold uppercase tracking-tight">
               {es ? "BANCO DE VERBOS EN PASADO" : "PAST VERB BANK"}
