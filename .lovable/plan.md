@@ -1,47 +1,30 @@
-# Rediseño de Home según la imagen de referencia
+# Nueva Home (parecida a tu imagen)
 
-Rediseñar **solo** `src/routes/index.tsx` (y componentes nuevos pequeños) para que la Home se vea como el mockup: saludo con fecha, tarjeta oscura de práctica de hoy, tarjeta "Mi constancia", "Lo que sigue" y enlace al coach. Sin tocar práctica, progreso, IA, cuotas, grabaciones ni navegación.
+Solo cambia la pantalla de Inicio. Nada del curso, progreso, audios, IA, Review, límites ni desbloqueos se toca.
 
-## Estructura propuesta (de arriba hacia abajo)
+## Cómo quedará, de arriba a abajo
 
-1. **Saludo** — "¡Hola, Rodrigo!" (nombre real del perfil; si no hay, saludo genérico) + fecha local en español/inglés ("Miércoles, 9 de septiembre"). Reutiliza/ajusta `HomeGreeting`.
-2. **Tarjeta de práctica de hoy** (fondo navy, como en la imagen):
-   - Badge del módulo (`ModuleBadge`) + nombre del módulo + chip "Día N de 20" (fecha real del journey).
-   - Etiqueta "TU PRÁCTICA DE HOY" en naranja.
-   - Título de la práctica del día (personaje + tema del día actual).
-   - Descripción breve del día (existente en los datos del curso).
-   - Botón naranja grande "Continuar práctica →" (o "Comenzar práctica" si no hay sesión en curso) que lleva al día actual.
-   - Enlace "Ver todos los días" → `/module/$moduleId`.
-   - Reutiliza la lógica de `CurrentModuleCard`; solo cambia la presentación a la versión oscura del mockup.
-3. **Mi constancia** — tarjeta blanca con:
-   - Título "Mi constancia".
-   - A la derecha: ícono de flama + "Racha actual · N días seguidos" (racha real).
-   - Fila de 7 círculos de la semana actual (Lun–Dom): días con práctica en naranja, día de hoy resaltado con anillo y etiqueta "Hoy", futuros en gris. Reutiliza los selectores de `progress-last7.ts` / lógica de hábito existente.
-   - Línea final: "N de 66 días con práctica" (dato del HabitCard actual).
-   - Esto reemplaza visualmente el `HabitCard` actual en Home (el HabitCard completo/calendario sigue disponible en Progress si ya está ahí; no se elimina ningún dato).
-4. **Lo que sigue** — tarjeta del siguiente módulo bloqueado:
-   - Ícono + nombre del módulo siguiente + su teaser bilingüe (ya existe `module-teasers.ts`).
-   - Nota con candado: "Se desbloquea al completar {módulo actual}".
-   - Reutiliza `NextModuleLocked` con estilo nuevo. Si no hay módulo siguiente, no se muestra.
-5. **Enlace coach** — fila blanca "Ver resumen para mi profesor →" → `/coach-check`.
-6. **Pie** — "Versión de prueba · Reportar un problema" (enlace a `/report`), más discreto que el banner naranja actual.
-7. **Estado de error de carga** se conserva (tarjeta con reintentar).
+1. **Saludo**: "¡Hola, Rodrigo!" en grande y debajo la fecha de hoy en tu idioma (Miércoles, 9 de septiembre).
+2. **Tarjeta azul oscuro de la práctica de hoy**
+   - A la izquierda, el **emblema real de tu módulo** (el pollito de Basic Zero, el tigre, el águila, etc. — el mismo dibujo que ya usas en Avance, no un ícono nuevo).
+   - Al lado, el nombre del módulo. A la derecha, la píldora "Día 2 de 20".
+   - Etiqueta naranja "TU PRÁCTICA DE HOY", el título del día ("Sofia — My Introduction") y dos líneas de descripción.
+   - Botón naranja ancho: "Continuar práctica →" (o "Empezar práctica" si aún no empezó ese día).
+   - Enlace subrayado "Ver todos los días".
+3. **Mi constancia**: llama actual y "8 días seguidos" arriba a la derecha; los siete días de la semana (Lun–Dom) con su número de fecha real; los días con práctica en naranja, hoy con anillo y la palabra "Hoy"; abajo "9 de 66 días con práctica".
+4. **Lo que sigue**: módulo siguiente con su emblema en gris, nombre, su frase de presentación y la nota "Se desbloquea al completar Basic Zero", con candado.
+5. **Fila** "Ver resumen para mi profesor" con flecha.
+6. **Pie**: "Versión de prueba · Reportar un problema".
+7. **Barra inferior** igual que ahora, sin cambios.
 
-## Qué NO cambia
+## Datos reales, no de ejemplo
 
-- Datos, servicios (`JourneyService`, `Progression`, hábito/racha), auth, sincronización.
-- Bottom nav, rutas, Progress, Review, práctica.
-- El calendario completo de 66 días se queda fuera de Home (ya vive en Progress/HabitCard); Home solo muestra la semana actual, como en el mockup.
+Todo sale de tu información actual: módulo activo, día actual, título del día, racha, días practicados, hábito de 66 días, siguiente módulo y sus reglas de desbloqueo. Si aún no hay datos cargados, se ve un estado de carga; si falla, aparece el botón de reintentar como hoy.
 
-## Detalles técnicos
+## Notas técnicas
 
-- Textos nuevos bilingües en `i18n.tsx` (keys `home.*` nuevas; no renombrar keys existentes usadas en otras pantallas).
-- Colores con tokens semánticos existentes (navy = token de superficie oscura ya usado en la app o uno nuevo en `styles.css` si no existe; naranja = `primary`).
-- Componentes nuevos: `HomeTodayCard.tsx`, `HomeWeekCard.tsx` (o adaptar `HabitCard` con variante compacta), ajuste de `NextModuleLocked` para aceptar estilo/teaser.
-- Tipografía y espaciados acordes al mockup, mobile-first, objetivos táctiles ≥44px.
-
-## Verificación
-
-- Typecheck + suite de tests existente.
-- Revisión en navegador a 390px: Home con sesión activa (día en curso), sin sesión iniciada hoy, y usuario nuevo; confirmar que el botón continúa la práctica correcta y que la racha/semana coinciden con datos reales.
-- Sin tests nuevos salvo que se agreguen selectores de fecha/semana nuevos (en ese caso, test enfocado del selector).
+- Editar `src/routes/index.tsx` y ajustar/crear componentes de Home (`CurrentModuleCard`, tarjeta semanal, `NextModuleLocked`), reutilizando `ModuleBadge` para el emblema en la tarjeta navy y en la tarjeta bloqueada.
+- Datos vía `JourneyService`, `Progression`, `course-service`, `habit.ts` y `module-teasers.ts`. Sin cambios de lógica ni de servicios.
+- Textos nuevos en `src/lib/i18n.tsx` (ES/EN); nada codificado en un solo idioma.
+- Colores por tokens del tema (navy/naranja); sin colores fijos en los componentes.
+- Verificación: idioma ES/EN, fechas locales, 360/390/430 px y escritorio, foco y tamaños táctiles ≥44px, typecheck, pruebas y build.
