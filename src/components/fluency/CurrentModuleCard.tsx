@@ -69,7 +69,12 @@ export function CurrentModuleCard({ state }: { state: JourneyState }) {
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <ModuleBadge moduleId={module.id} size="md" es={es} className="shrink-0" />
-          <h2 className="truncate text-[17px] font-extrabold tracking-tight">{module.title}</h2>
+          <div className="min-w-0">
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-navy-foreground/60">
+              {es ? "Nivel" : "Level"}
+            </p>
+            <h2 className="truncate text-[17px] font-extrabold tracking-tight">{levelName(module.label)}</h2>
+          </div>
         </div>
         <span className="shrink-0 rounded-full bg-navy-foreground/10 px-3 py-1.5 text-[11px] font-bold tabular-nums">
           {t("home.dayPill").replace("{day}", String(day.day)).replace("{total}", String(total))}
