@@ -82,12 +82,12 @@ function PictionaryPage() {
                           height={512}
                           className="mb-2 aspect-square w-full rounded-lg object-contain"
                         />
-                        <div className="flex items-center justify-between gap-1">
-                          <div className="min-w-0">
-                            <p className="break-words text-sm font-extrabold leading-tight text-foreground">{word.en}</p>
-                            <p className="break-words text-xs leading-tight text-muted-foreground">{word.es}</p>
+                        <div className="flex items-end justify-between gap-1">
+                          <div className="min-w-0 flex-1">
+                            <p className="text-[13px] font-extrabold leading-tight text-foreground">{word.en}</p>
+                            <p className="text-xs leading-tight text-muted-foreground">{word.es}</p>
                           </div>
-                          <SpeakButton text={word.en} showEs={showEs} />
+                          <SpeakButton text={word.en} showEs={showEs} className="shrink-0" />
                         </div>
                       </li>
                     ))}
