@@ -13,8 +13,18 @@ import leoTheRobot from "@/assets/audiobooks/leo-the-robot.jpg";
 import pacoThePenguin from "@/assets/audiobooks/paco-the-penguin.jpg";
 import miloTheCat from "@/assets/audiobooks/milo-the-cat.jpg";
 import sparkyTheDragon from "@/assets/audiobooks/sparky-the-dragon.jpg";
+import theLensOfPeace from "@/assets/audiobooks/the-lens-of-peace.jpg";
+import theHeartOfADoctor from "@/assets/audiobooks/the-heart-of-a-doctor.jpg";
+import theBlueCrystalDrone from "@/assets/audiobooks/the-blue-crystal-drone.jpg";
+import arloAndTheSecretInTheWoods from "@/assets/audiobooks/arlo-and-the-secret-in-the-woods.jpg";
+import theYellowCircle from "@/assets/audiobooks/the-yellow-circle.jpg";
+import theSecretOfTheGrayWall from "@/assets/audiobooks/the-secret-of-the-gray-wall.jpg";
+import theMountainPath from "@/assets/audiobooks/the-mountain-path.jpg";
+import theSoulOfTheString from "@/assets/audiobooks/the-soul-of-the-string.jpg";
+import theSecretOfTheSilverKey from "@/assets/audiobooks/the-secret-of-the-silver-key.jpg";
+import beyondTheBrightScreens from "@/assets/audiobooks/beyond-the-bright-screens.jpg";
 
-export type AudiobookLevel = "basic";
+export type AudiobookLevel = "basic" | "intermediate";
 
 export type NaturalMethodAudiobook = {
   id: string;
