@@ -26,6 +26,7 @@ function AudiobooksPage() {
   const showEs = useAppLang().lang === "es";
   const basicBooks = NATURAL_METHOD_AUDIOBOOKS.filter((book) => book.level === "basic");
   const intermediateBooks = NATURAL_METHOD_AUDIOBOOKS.filter((book) => book.level === "intermediate");
+  const advancedBooks = NATURAL_METHOD_AUDIOBOOKS.filter((book) => book.level === "advanced");
 
   return (
     <AppShell>
@@ -58,6 +59,11 @@ function AudiobooksPage() {
         <LevelSection
           title={showEs ? "Nivel intermedio" : "Intermediate level"}
           books={intermediateBooks}
+          showEs={showEs}
+        />
+        <LevelSection
+          title={showEs ? "Nivel avanzado" : "Advanced level"}
+          books={advancedBooks}
           showEs={showEs}
         />
       </div>
