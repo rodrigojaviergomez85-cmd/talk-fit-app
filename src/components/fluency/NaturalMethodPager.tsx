@@ -98,6 +98,7 @@ export function SpeakButton({ text, showEs, className }: { text: string; showEs:
       className={cn(
         "flex size-9 shrink-0 items-center justify-center rounded-full border transition",
         playing ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-primary",
+        className,
       )}
     >
       {playing ? <Volume2 className="size-4" aria-hidden="true" /> : <Play className="size-4" aria-hidden="true" />}
