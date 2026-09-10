@@ -4,20 +4,9 @@ import { useAppLang } from "@/lib/i18n";
 /** Greeting + today's local date, in the learner's chosen language. */
 export function HomeGreeting() {
   const { user } = useAuth();
-  const { lang } = useAppLang();
+  const { lang, t } = useAppLang();
   const es = lang === "es";
-  const hour = new Date().getHours();
-  const greeting = es
-    ? hour < 12
-      ? "¡Buenos días"
-      : hour < 19
-        ? "¡Buenas tardes"
-        : "¡Hola"
-    : hour < 12
-      ? "Good morning"
-      : hour < 19
-        ? "Good afternoon"
-        : "Good evening";
+  const greeting = es ? "¡Hola" : "Hello";
 
   const meta = (user?.user_metadata ?? {}) as { full_name?: string; name?: string };
   const raw = meta.full_name || meta.name || user?.email?.split("@")[0] || "";

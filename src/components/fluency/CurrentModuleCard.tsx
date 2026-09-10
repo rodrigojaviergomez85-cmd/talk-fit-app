@@ -8,6 +8,12 @@ import { PracticeSessionService } from "@/services/practice-session";
 import { ModuleBadge } from "@/components/fluency/ModuleBadge";
 import { useAppLang } from "@/lib/i18n";
 
+function levelName(label: string) {
+  return label
+    .toLowerCase()
+    .replace(/(?:^|[\s·]+)\w/g, (m) => m.toUpperCase());
+}
+
 /**
  * The one dominant card on Home: the learner's CURRENT module and its next day.
  * Everything is derived from saved progress — nothing is hard-coded.
@@ -63,7 +69,12 @@ export function CurrentModuleCard({ state }: { state: JourneyState }) {
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <ModuleBadge moduleId={module.id} size="md" es={es} className="shrink-0" />
-          <h2 className="truncate text-[17px] font-extrabold tracking-tight">{module.title}</h2>
+          <div className="min-w-0">
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-navy-foreground/60">
+              {t("home.level")}
+            </p>
+            <h2 className="truncate text-[17px] font-extrabold tracking-tight">{levelName(module.label)}</h2>
+          </div>
         </div>
         <span className="shrink-0 rounded-full bg-navy-foreground/10 px-3 py-1.5 text-[11px] font-bold tabular-nums">
           {t("home.dayPill").replace("{day}", String(day.day)).replace("{total}", String(total))}
