@@ -17,6 +17,7 @@ export const REVIEW_MODULE_IDS = [
   "review-present-perfect",
   "review-present-perfect-progressive",
   "review-comparatives",
+  "review-prepositions",
   "review-modals",
   "review-used-to",
   "review-past-perfect",
