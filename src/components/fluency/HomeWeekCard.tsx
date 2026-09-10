@@ -1,14 +1,13 @@
 import { Flame } from "lucide-react";
 import type { JourneyState } from "@/lib/types";
 import { HABIT_GOAL, habitDays, habitDisplay } from "@/lib/habit";
-import { JourneyService, habitDatesOf } from "@/services/journey-service";
+import { HabitCalendar } from "./HabitCalendar";
 import { useAppLang } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
 
 /**
- * "Mi constancia" — the current Monday–Sunday week as seven dated circles.
- * Practiced dates come from the same authoritative habit list used by the
- * 66-day habit; today gets a ring + "Hoy" label. Presentation only.
+ * "Mi constancia" — the 66-day habit on Home: streak in the header, the
+ * collapsible numbered calendar (1…66), and the "9 / 66 días" counter.
+ * Purely presentational; counting still comes from the habit helpers.
  */
 export function HomeWeekCard({ state }: { state: JourneyState }) {
   const { t, lang } = useAppLang();
@@ -16,27 +15,6 @@ export function HomeWeekCard({ state }: { state: JourneyState }) {
   const streak = state.streakDays || 0;
   const count = habitDays(state);
   const { shown } = habitDisplay(count);
-  const doneDates = new Set(habitDatesOf(state));
-
-  const now = new Date();
-  const monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
-  const todayKey = JourneyService.dayKey();
-  const labels = es
-    ? ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
-    : ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-  const week = labels.map((label, i) => {
-    const date = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i);
-    const key = JourneyService.dayKey(date);
-    return {
-      label,
-      num: date.getDate(),
-      key,
-      practiced: doneDates.has(key),
-      isToday: key === todayKey,
-      future: key > todayKey,
-    };
-  });
 
   return (
     <section
@@ -56,31 +34,8 @@ export function HomeWeekCard({ state }: { state: JourneyState }) {
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-7 gap-1">
-        {week.map((day) => (
-          <div key={day.key} className="flex flex-col items-center gap-1">
-            <span className="text-[10px] font-bold uppercase text-muted-foreground">{day.label}</span>
-            <span
-              aria-label={`${day.label} ${day.num}${day.practiced ? " ✓" : ""}${day.isToday ? ` (${t("home.todayWord")})` : ""}`}
-              className={cn(
-                "flex size-9 items-center justify-center rounded-full text-[13px] font-bold tabular-nums",
-                day.practiced ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground",
-                day.isToday ? "ring-2 ring-primary ring-offset-2 ring-offset-card" : "",
-              )}
-            >
-              {day.num}
-            </span>
-            <span
-              className={cn(
-                "h-3 text-[10px] font-extrabold",
-                day.isToday ? "text-primary" : "text-transparent",
-              )}
-              aria-hidden={!day.isToday}
-            >
-              {day.isToday ? t("home.todayWord") : "·"}
-            </span>
-          </div>
-        ))}
+      <div className="mt-3">
+        <HabitCalendar done={shown} es={es} />
       </div>
 
       <p className="mt-2 border-t border-border pt-3 text-[13px] font-semibold tabular-nums text-muted-foreground">
