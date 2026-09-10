@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { ReviewModuleList } from "@/components/review/ReviewModuleList";
 import { useAppLang } from "@/lib/i18n";
@@ -25,6 +25,14 @@ function BasicReviewPage() {
   return (
     <AppShell>
       <div className="space-y-4 p-4">
+        <Link
+          to="/review"
+          className="inline-flex items-center gap-1 text-xs font-extrabold uppercase text-primary"
+        >
+          <ChevronLeft className="size-4" />
+          {showEs ? "Volver a Review" : "Back to Review"}
+        </Link>
+
         <header>
           <p className="text-[11px] font-extrabold uppercase text-primary">Review</p>
           <h1 className="text-2xl font-extrabold text-foreground">Basic</h1>
