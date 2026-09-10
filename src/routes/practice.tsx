@@ -1205,8 +1205,8 @@ function IntroStep({
           cards={day.guideCards}
           showEs={showEs}
           defaultOpen={false}
-          heading="grammar"
-          headingEs="gramática"
+          heading={day.guideTitle ?? "grammar"}
+          headingEs={day.guideTitleEs ?? "gramática"}
           errors={day.guideErrors ?? []}
         />
       ) : null}
