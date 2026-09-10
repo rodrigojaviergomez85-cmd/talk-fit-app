@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, PlayCircle } from "lucide-react";
+import { ArrowLeft, ChevronDown, PlayCircle } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
-import { NATURAL_METHOD_AUDIOBOOKS } from "@/services/natural-method-audiobooks";
+import { NATURAL_METHOD_AUDIOBOOKS, type NaturalMethodAudiobook } from "@/services/natural-method-audiobooks";
 
 export const Route = createFileRoute("/natural-method/audiobooks")({
   head: () => ({
