@@ -68,7 +68,7 @@ export function CurrentModuleCard({ state }: { state: JourneyState }) {
     <section className="rounded-3xl bg-navy p-6 text-navy-foreground shadow-[var(--shadow-lift)]">
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
-          <ModuleBadge moduleId={module.id} size="md" es={es} className="shrink-0" />
+          <ModuleBadge moduleId={module.id} size="lg" es={es} className="shrink-0" />
           <div className="min-w-0">
             <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-navy-foreground/60">
               {t("home.level")}
