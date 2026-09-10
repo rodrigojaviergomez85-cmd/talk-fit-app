@@ -1,13 +1,14 @@
 import { Lock } from "lucide-react";
 import type { LadderEntry } from "@/services/progression";
 import { CourseService } from "@/services/course-service";
-import { NEXT_UP } from "@/lib/progress-moments";
+import { ModuleBadge } from "@/components/fluency/ModuleBadge";
 import type { ModuleId } from "@/lib/types";
 import { useAppLang } from "@/lib/i18n";
 
 /**
- * UP NEXT 🔒 — the single next ladder rung, shown as a small locked preview.
- * Never a link: it opens only once the current module is actually complete.
+ * "Lo que sigue" — the single next ladder rung, shown as a locked preview
+ * with its real module emblem in grey. Never a link: it opens only once the
+ * current module is actually complete.
  */
 export function NextModuleLocked({ entry, afterModuleId }: { entry: LadderEntry; afterModuleId: ModuleId }) {
   const { t, lang } = useAppLang();
@@ -24,35 +25,32 @@ export function NextModuleLocked({ entry, afterModuleId }: { entry: LadderEntry;
       : es
         ? entry.level.subtitleEs
         : entry.level.subtitle;
-  const emoji = entry.kind === "module" ? NEXT_UP[entry.module.id]?.emoji : entry.level.emoji;
 
   return (
     <section
       aria-disabled="true"
-      className="rounded-3xl border border-dashed border-border bg-secondary/40 p-5 text-muted-foreground"
+      className="rounded-3xl border border-border bg-card p-5 shadow-[var(--shadow-card)]"
     >
       <div className="flex items-center justify-between gap-3">
-        <p className="text-[11px] font-bold uppercase tracking-[0.22em]">{t("home.upNext")}</p>
-        {entry.kind === "upcoming" ? (
-          <span className="rounded-full bg-secondary px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em]">
-            {t("status.soon")}
-          </span>
-        ) : null}
+        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">{t("home.upNext")}</p>
+        <Lock className="size-4 text-muted-foreground" aria-hidden />
       </div>
-      <div className="mt-3 flex items-center gap-3">
-        {emoji ? (
-          <span className="text-3xl opacity-70 grayscale" aria-hidden>
-            {emoji}
-          </span>
+
+      <div className="mt-3 flex items-center gap-4">
+        {entry.kind === "module" ? (
+          <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-secondary">
+            <ModuleBadge moduleId={entry.module.id} size="md" locked es={es} />
+          </div>
         ) : null}
         <div className="min-w-0">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em]">{label}</p>
-          <p className="text-[20px] font-extrabold leading-tight tracking-tight text-foreground/70">{title}</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{label}</p>
+          <p className="text-[20px] font-extrabold leading-tight tracking-tight">{title}</p>
+          <p className="mt-1 text-[13px] font-semibold text-muted-foreground">{subtitle}</p>
         </div>
       </div>
-      <p className="mt-2 text-[13px] font-semibold">{subtitle}</p>
-      <p className="mt-3 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em]">
-        <Lock className="size-3.5" aria-hidden /> {t("home.unlockAfter")} {after.title}
+
+      <p className="mt-4 flex items-center gap-2 border-t border-border pt-3 text-[12px] font-semibold text-muted-foreground">
+        <Lock className="size-3.5 shrink-0" aria-hidden /> {t("home.unlockAfter")} {after.title}
       </p>
     </section>
   );
