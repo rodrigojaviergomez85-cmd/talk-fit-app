@@ -13,14 +13,16 @@ export type PictionaryCategory = {
   words: PictionaryWord[];
 };
 
-const ASSETS = import.meta.glob<string>("../../assets/pictionary/*/*.jpg", {
+const ASSETS = import.meta.glob<string>("../../assets/pictionary/*/*.{jpg,svg}", {
   eager: true,
   query: "?url",
   import: "default",
 });
 
 const img = (category: string, id: string) =>
-  ASSETS[`../../assets/pictionary/${category}/${id}.jpg`] ?? "";
+  ASSETS[`../../assets/pictionary/${category}/${id}.jpg`] ??
+  ASSETS[`../../assets/pictionary/${category}/${id}.svg`] ??
+  "";
 
 const build = (
   category: string,
