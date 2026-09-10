@@ -10,7 +10,8 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/verb-bank")({
   validateSearch: (search: Record<string, unknown>) => {
-    const from = typeof search["from"] === "string" ? search["from"] : undefined;
+    const raw = search["from"];
+    const from = isModuleId(raw) ? raw : undefined;
     const dayNum = Number(search["day"]);
     const day = Number.isFinite(dayNum) && dayNum >= 1 ? Math.floor(dayNum) : undefined;
     return from ? { from, day } : {};

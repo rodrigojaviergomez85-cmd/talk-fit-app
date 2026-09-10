@@ -764,7 +764,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
           {stage === 0 ? (
             <>
               <IntroStep moduleId={moduleId} day={day} onNext={goForward} onExit={() => setConfirmExit(true)} />
-              <TodaysPastVerbs verbs={todaysVerbs} returnTo={{ moduleId, day }} />
+              <TodaysPastVerbs verbs={todaysVerbs} returnTo={{ moduleId, day: dayNumber }} />
             </>
           ) : null}
           {stage === 1 ? <Rep1Listen day={day} showEs={esUi} onNext={goForward} /> : null}
