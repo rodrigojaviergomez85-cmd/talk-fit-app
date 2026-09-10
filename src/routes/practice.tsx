@@ -1207,8 +1207,17 @@ function IntroStep({
           defaultOpen={false}
           heading="grammar"
           headingEs="gramática"
+          errors={day.guideErrors ?? []}
         />
       ) : null}
+
+      <button
+        type="button"
+        onClick={onExit}
+        className="min-h-[44px] w-full rounded-2xl border border-border text-sm font-extrabold uppercase tracking-[0.14em] text-muted-foreground"
+      >
+        {lang === "es" ? "SALIR" : "EXIT"}
+      </button>
     </div>
   );
 }
