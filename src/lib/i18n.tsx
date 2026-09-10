@@ -317,6 +317,7 @@ const DICT = {
   "home.todaysChallenge": ["TU RETO DE HOY", "TODAY'S CHALLENGE"],
   "home.todaysPractice": ["TU PRÁCTICA DE HOY", "TODAY'S PRACTICE"],
   "home.dayPill": ["Día {day} de {total}", "Day {day} of {total}"],
+  "home.level": ["Nivel", "Level"],
   "home.myConsistency": ["Mi constancia", "My consistency"],
   "home.currentStreak": ["Racha actual", "Current streak"],
   "home.streakDays": ["{n} días seguidos", "{n} days in a row"],
