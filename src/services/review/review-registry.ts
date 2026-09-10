@@ -28,6 +28,8 @@ import {
 import { PRESENT_PERFECT_PROGRESSIVE_PRACTICES } from "./present-perfect-progressive-practices";
 import { COMPARATIVES_GUIDE, COMPARATIVES_COMMON_ERRORS } from "./comparatives-guide";
 import { COMPARATIVES_PRACTICES } from "./comparatives-practices";
+import { PREPOSITIONS_GUIDE, PREPOSITIONS_COMMON_ERRORS } from "./prepositions-guide";
+import { PREPOSITIONS_PRACTICES } from "./prepositions-practices";
 import { MODALS_GUIDE, MODALS_COMMON_ERRORS } from "./modals-guide";
 import { MODALS_PRACTICES } from "./modals-practices";
 import { USED_TO_GUIDE, USED_TO_COMMON_ERRORS } from "./used-to-guide";
@@ -147,6 +149,19 @@ const REVIEW_MODULES: Record<ReviewModuleId, ReviewModule> = {
     commonErrors: COMPARATIVES_COMMON_ERRORS,
     practices: COMPARATIVES_PRACTICES,
   },
+  "review-prepositions": {
+    id: "review-prepositions",
+    category: "intermediate-advanced",
+    minimumModuleId: "eagles-week-1",
+    label: "REVIEW",
+    title: "Prepositions of Time and Place",
+    titleEs: "Preposiciones de Tiempo y Lugar",
+    subtitle: "in, on, at, for, since and position words — five complete speaking practices.",
+    subtitleEs: "in, on, at, for, since y palabras de posición: cinco prácticas completas de speaking.",
+    guide: PREPOSITIONS_GUIDE,
+    commonErrors: PREPOSITIONS_COMMON_ERRORS,
+    practices: PREPOSITIONS_PRACTICES,
+  },
   "review-modals": {
     id: "review-modals",
     category: "intermediate-advanced",
@@ -220,6 +235,7 @@ export function listReviewModulesByCategory(category: ReviewModule["category"]):
     "review-present-perfect",
     "review-present-perfect-progressive",
     "review-comparatives",
+    "review-prepositions",
     "review-modals",
     "review-used-to",
     "review-past-perfect",
