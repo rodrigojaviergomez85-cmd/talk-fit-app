@@ -26,28 +26,85 @@ import { MODAL_PERFECTS_GUIDE, MODAL_PERFECTS_COMMON_ERRORS } from "./review/mod
 
 export type GuideErrors = ReviewModule["commonErrors"];
 
-export type DayGuide = { cards: ReviewGuideCard[]; errors: GuideErrors };
+export type DayGuide = { title: string; titleEs: string; cards: ReviewGuideCard[]; errors: GuideErrors };
 
 /** Keep the card count reasonable on mixed-tense days. */
 const MIXED_CARD_LIMIT = 4;
 /** Keep the mistake list short when several tenses are combined. */
 const MIXED_ERROR_LIMIT = 6;
 
-const SIMPLE_PRESENT: DayGuide = { cards: SIMPLE_PRESENT_GUIDE, errors: SIMPLE_PRESENT_COMMON_ERRORS };
-const SIMPLE_PAST: DayGuide = { cards: SIMPLE_PAST_GUIDE, errors: SIMPLE_PAST_COMMON_ERRORS };
-const SIMPLE_FUTURE: DayGuide = { cards: SIMPLE_FUTURE_GUIDE, errors: SIMPLE_FUTURE_COMMON_ERRORS };
-const PRESENT_PROGRESSIVE: DayGuide = { cards: PRESENT_PROGRESSIVE_GUIDE, errors: PRESENT_PROGRESSIVE_COMMON_ERRORS };
-const PAST_PROGRESSIVE: DayGuide = { cards: PAST_PROGRESSIVE_GUIDE, errors: PAST_PROGRESSIVE_COMMON_ERRORS };
-const PRESENT_PERFECT: DayGuide = { cards: PRESENT_PERFECT_GUIDE, errors: PRESENT_PERFECT_COMMON_ERRORS };
+const SIMPLE_PRESENT: DayGuide = {
+  title: "Simple Present",
+  titleEs: "Presente Simple",
+  cards: SIMPLE_PRESENT_GUIDE,
+  errors: SIMPLE_PRESENT_COMMON_ERRORS,
+};
+const SIMPLE_PAST: DayGuide = {
+  title: "Simple Past",
+  titleEs: "Pasado Simple",
+  cards: SIMPLE_PAST_GUIDE,
+  errors: SIMPLE_PAST_COMMON_ERRORS,
+};
+const SIMPLE_FUTURE: DayGuide = {
+  title: "Simple Future",
+  titleEs: "Futuro Simple",
+  cards: SIMPLE_FUTURE_GUIDE,
+  errors: SIMPLE_FUTURE_COMMON_ERRORS,
+};
+const PRESENT_PROGRESSIVE: DayGuide = {
+  title: "Present Progressive",
+  titleEs: "Presente Progresivo",
+  cards: PRESENT_PROGRESSIVE_GUIDE,
+  errors: PRESENT_PROGRESSIVE_COMMON_ERRORS,
+};
+const PAST_PROGRESSIVE: DayGuide = {
+  title: "Past Progressive",
+  titleEs: "Pasado Progresivo",
+  cards: PAST_PROGRESSIVE_GUIDE,
+  errors: PAST_PROGRESSIVE_COMMON_ERRORS,
+};
+const PRESENT_PERFECT: DayGuide = {
+  title: "Present Perfect",
+  titleEs: "Presente Perfecto",
+  cards: PRESENT_PERFECT_GUIDE,
+  errors: PRESENT_PERFECT_COMMON_ERRORS,
+};
 const PRESENT_PERFECT_PROGRESSIVE: DayGuide = {
+  title: "Present Perfect Progressive",
+  titleEs: "Presente Perfecto Progresivo",
   cards: PRESENT_PERFECT_PROGRESSIVE_GUIDE,
   errors: PRESENT_PERFECT_PROGRESSIVE_COMMON_ERRORS,
 };
-const COMPARATIVES: DayGuide = { cards: COMPARATIVES_GUIDE, errors: COMPARATIVES_COMMON_ERRORS };
-const MODALS: DayGuide = { cards: MODALS_GUIDE, errors: MODALS_COMMON_ERRORS };
-const USED_TO: DayGuide = { cards: USED_TO_GUIDE, errors: USED_TO_COMMON_ERRORS };
-const PAST_PERFECT: DayGuide = { cards: PAST_PERFECT_GUIDE, errors: PAST_PERFECT_COMMON_ERRORS };
-const MODAL_PERFECTS: DayGuide = { cards: MODAL_PERFECTS_GUIDE, errors: MODAL_PERFECTS_COMMON_ERRORS };
+const COMPARATIVES: DayGuide = {
+  title: "Comparatives & Superlatives",
+  titleEs: "Comparativos y Superlativos",
+  cards: COMPARATIVES_GUIDE,
+  errors: COMPARATIVES_COMMON_ERRORS,
+};
+const MODALS: DayGuide = {
+  title: "Modals",
+  titleEs: "Modales",
+  cards: MODALS_GUIDE,
+  errors: MODALS_COMMON_ERRORS,
+};
+const USED_TO: DayGuide = {
+  title: "Used to",
+  titleEs: "Used to",
+  cards: USED_TO_GUIDE,
+  errors: USED_TO_COMMON_ERRORS,
+};
+const PAST_PERFECT: DayGuide = {
+  title: "Past Perfect",
+  titleEs: "Pasado Perfecto",
+  cards: PAST_PERFECT_GUIDE,
+  errors: PAST_PERFECT_COMMON_ERRORS,
+};
+const MODAL_PERFECTS: DayGuide = {
+  title: "Modal Perfects",
+  titleEs: "Modales Perfectos",
+  cards: MODAL_PERFECTS_GUIDE,
+  errors: MODAL_PERFECTS_COMMON_ERRORS,
+};
 
 function pick(ids: string[], guide: ReviewGuideCard[]): ReviewGuideCard[] {
   return ids.map((id) => guide.find((c) => c.id === id)).filter(Boolean) as ReviewGuideCard[];
