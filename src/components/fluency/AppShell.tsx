@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 import { BottomNav } from "./BottomNav";
 import { SyncBanner } from "./SyncBanner";
 
