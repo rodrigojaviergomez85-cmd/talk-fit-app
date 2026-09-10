@@ -84,8 +84,8 @@ function PictionaryPage() {
                         />
                         <div className="flex items-center justify-between gap-1">
                           <div className="min-w-0">
-                            <p className="truncate text-sm font-extrabold text-foreground">{word.en}</p>
-                            <p className="truncate text-xs text-muted-foreground">{word.es}</p>
+                            <p className="break-words text-sm font-extrabold leading-tight text-foreground">{word.en}</p>
+                            <p className="break-words text-xs leading-tight text-muted-foreground">{word.es}</p>
                           </div>
                           <SpeakButton text={word.en} showEs={showEs} />
                         </div>
