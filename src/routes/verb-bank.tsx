@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { PastVerbCard } from "@/components/fluency/PastVerbCard";
 import { useVerbBank } from "@/hooks/use-verb-bank";
 import { PAST_VERBS, VerbBank, setVerbBankScope } from "@/services/verb-bank";
+import { isModuleId } from "@/services/course-index";
 import { supabase } from "@/integrations/supabase/client";
 import { useAppLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
