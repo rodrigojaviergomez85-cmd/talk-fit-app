@@ -71,7 +71,7 @@ export function Pager({
 }
 
 /** Play button that speaks a phrase with the existing model voice. */
-export function SpeakButton({ text, showEs }: { text: string; showEs: boolean }) {
+export function SpeakButton({ text, showEs, className }: { text: string; showEs: boolean; className?: string }) {
   const [playing, setPlaying] = useState(false);
   const alive = useRef(true);
 
@@ -98,6 +98,7 @@ export function SpeakButton({ text, showEs }: { text: string; showEs: boolean })
       className={cn(
         "flex size-9 shrink-0 items-center justify-center rounded-full border transition",
         playing ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-primary",
+        className,
       )}
     >
       {playing ? <Volume2 className="size-4" aria-hidden="true" /> : <Play className="size-4" aria-hidden="true" />}
