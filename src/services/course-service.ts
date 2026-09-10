@@ -1,4 +1,5 @@
 import type { CourseDay, ModuleId } from "@/lib/types";
+import { guideCardsForDay } from "./module-guides";
 import { MODULE_INDEX, isModuleId, type LearningModule, type DayOutline } from "./course-index";
 
 export {
