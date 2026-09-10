@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Search } from "lucide-react";
+import { ArrowLeft, Languages, Search } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { Pager, SpeakButton, usePagination } from "@/components/fluency/NaturalMethodPager";
 import { COMMON_VERBS } from "@/services/natural-method-verbs";
