@@ -55,8 +55,8 @@ function PhrasalVerbsPage() {
           <h1 className="text-2xl font-extrabold text-foreground">Phrasal Verbs</h1>
           <p className="text-sm text-muted-foreground">
             {showEs
-              ? "100 phrasal verbs en presente, con significado y ejemplo."
-              : "100 phrasal verbs in present, with meaning and example."}
+              ? "100 phrasal verbs en presente y pasado, con significado y ejemplos."
+              : "100 phrasal verbs in present and past, with meaning and examples."}
           </p>
         </header>
 
@@ -80,12 +80,30 @@ function PhrasalVerbsPage() {
           {visible.map((item, index) => (
             <li key={item.phrase} className="rounded-2xl border border-border bg-card p-4">
               <span className="text-[11px] font-bold text-muted-foreground">{start + index + 1}</span>
-              <div className="mt-1 flex items-center gap-2">
-                <SpeakButton text={item.phrase} showEs={showEs} />
-                <span className="text-[17px] font-extrabold text-foreground">{item.phrase}</span>
+              <div className="mt-1 space-y-2">
+                <div className="flex items-center gap-2">
+                  <SpeakButton text={item.phrase} showEs={showEs} />
+                  <span className="text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
+                    {showEs ? "Presente" : "Present"}
+                  </span>
+                  <span className="text-[17px] font-extrabold text-foreground">{item.phrase}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <SpeakButton text={item.past} showEs={showEs} />
+                  <span className="text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
+                    {showEs ? "Pasado" : "Past"}
+                  </span>
+                  <span className="text-[17px] font-extrabold text-foreground">{item.past}</span>
+                </div>
               </div>
               <p className="mt-2 text-[14px] text-muted-foreground">{item.es}</p>
               <p className="mt-1 text-[15px] italic text-foreground">“{item.example}”</p>
+              <p className="mt-1 text-[15px] italic text-foreground">
+                <span className="not-italic text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
+                  {showEs ? "Pasado: " : "Past: "}
+                </span>
+                “{item.pastExample}”
+              </p>
             </li>
           ))}
         </ul>
