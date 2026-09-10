@@ -38,6 +38,9 @@ import { Route as ReviewIndexRouteImport } from './routes/review.index'
 import { Route as ReviewBasicRouteImport } from './routes/review.basic'
 import { Route as ReviewIntermediateAdvancedRouteImport } from './routes/review.intermediate-advanced'
 import { Route as NaturalMethodVerbsIndexRouteImport } from './routes/natural-method.verbs.index'
+import { Route as NaturalMethodVerbsIdiomsRouteImport } from './routes/natural-method.verbs.idioms'
+import { Route as NaturalMethodVerbsListRouteImport } from './routes/natural-method.verbs.list'
+import { Route as NaturalMethodVerbsPhrasalRouteImport } from './routes/natural-method.verbs.phrasal'
 import { Route as ReviewModuleIdIndexRouteImport } from './routes/review.$moduleId.index'
 import { Route as ReviewModuleIdPracticeRouteImport } from './routes/review.$moduleId.$practice'
 
@@ -188,6 +191,23 @@ const NaturalMethodVerbsIndexRoute = NaturalMethodVerbsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => NaturalMethodVerbsRoute,
 } as any)
+const NaturalMethodVerbsIdiomsRoute =
+  NaturalMethodVerbsIdiomsRouteImport.update({
+    id: '/idioms',
+    path: '/idioms',
+    getParentRoute: () => NaturalMethodVerbsRoute,
+  } as any)
+const NaturalMethodVerbsListRoute = NaturalMethodVerbsListRouteImport.update({
+  id: '/list',
+  path: '/list',
+  getParentRoute: () => NaturalMethodVerbsRoute,
+} as any)
+const NaturalMethodVerbsPhrasalRoute =
+  NaturalMethodVerbsPhrasalRouteImport.update({
+    id: '/phrasal',
+    path: '/phrasal',
+    getParentRoute: () => NaturalMethodVerbsRoute,
+  } as any)
 const ReviewModuleIdIndexRoute = ReviewModuleIdIndexRouteImport.update({
   id: '/review/$moduleId/',
   path: '/review/$moduleId/',
@@ -228,6 +248,9 @@ export interface FileRoutesByFullPath {
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
+  '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
+  '/natural-method/verbs/list': typeof NaturalMethodVerbsListRoute
+  '/natural-method/verbs/phrasal': typeof NaturalMethodVerbsPhrasalRoute
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/natural-method/verbs/': typeof NaturalMethodVerbsIndexRoute
   '/review/$moduleId/': typeof ReviewModuleIdIndexRoute
@@ -260,6 +283,9 @@ export interface FileRoutesByTo {
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/natural-method': typeof NaturalMethodIndexRoute
   '/review': typeof ReviewIndexRoute
+  '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
+  '/natural-method/verbs/list': typeof NaturalMethodVerbsListRoute
+  '/natural-method/verbs/phrasal': typeof NaturalMethodVerbsPhrasalRoute
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/natural-method/verbs': typeof NaturalMethodVerbsIndexRoute
   '/review/$moduleId': typeof ReviewModuleIdIndexRoute
@@ -294,6 +320,9 @@ export interface FileRoutesById {
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
+  '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
+  '/natural-method/verbs/list': typeof NaturalMethodVerbsListRoute
+  '/natural-method/verbs/phrasal': typeof NaturalMethodVerbsPhrasalRoute
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/natural-method/verbs/': typeof NaturalMethodVerbsIndexRoute
   '/review/$moduleId/': typeof ReviewModuleIdIndexRoute
@@ -329,6 +358,9 @@ export interface FileRouteTypes {
     | '/review/intermediate-advanced'
     | '/natural-method/'
     | '/review/'
+    | '/natural-method/verbs/idioms'
+    | '/natural-method/verbs/list'
+    | '/natural-method/verbs/phrasal'
     | '/review/$moduleId/$practice'
     | '/natural-method/verbs/'
     | '/review/$moduleId/'
@@ -361,6 +393,9 @@ export interface FileRouteTypes {
     | '/review/intermediate-advanced'
     | '/natural-method'
     | '/review'
+    | '/natural-method/verbs/idioms'
+    | '/natural-method/verbs/list'
+    | '/natural-method/verbs/phrasal'
     | '/review/$moduleId/$practice'
     | '/natural-method/verbs'
     | '/review/$moduleId'
@@ -394,6 +429,9 @@ export interface FileRouteTypes {
     | '/review/intermediate-advanced'
     | '/natural-method/'
     | '/review/'
+    | '/natural-method/verbs/idioms'
+    | '/natural-method/verbs/list'
+    | '/natural-method/verbs/phrasal'
     | '/review/$moduleId/$practice'
     | '/natural-method/verbs/'
     | '/review/$moduleId/'
@@ -637,6 +675,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NaturalMethodVerbsIndexRouteImport
       parentRoute: typeof NaturalMethodVerbsRoute
     }
+    '/natural-method/verbs/idioms': {
+      id: '/natural-method/verbs/idioms'
+      path: '/idioms'
+      fullPath: '/natural-method/verbs/idioms'
+      preLoaderRoute: typeof NaturalMethodVerbsIdiomsRouteImport
+      parentRoute: typeof NaturalMethodVerbsRoute
+    }
+    '/natural-method/verbs/list': {
+      id: '/natural-method/verbs/list'
+      path: '/list'
+      fullPath: '/natural-method/verbs/list'
+      preLoaderRoute: typeof NaturalMethodVerbsListRouteImport
+      parentRoute: typeof NaturalMethodVerbsRoute
+    }
+    '/natural-method/verbs/phrasal': {
+      id: '/natural-method/verbs/phrasal'
+      path: '/phrasal'
+      fullPath: '/natural-method/verbs/phrasal'
+      preLoaderRoute: typeof NaturalMethodVerbsPhrasalRouteImport
+      parentRoute: typeof NaturalMethodVerbsRoute
+    }
     '/review/$moduleId/': {
       id: '/review/$moduleId/'
       path: '/review/$moduleId'
@@ -655,10 +714,16 @@ declare module '@tanstack/react-router' {
 }
 
 interface NaturalMethodVerbsRouteChildren {
+  NaturalMethodVerbsIdiomsRoute: typeof NaturalMethodVerbsIdiomsRoute
+  NaturalMethodVerbsListRoute: typeof NaturalMethodVerbsListRoute
+  NaturalMethodVerbsPhrasalRoute: typeof NaturalMethodVerbsPhrasalRoute
   NaturalMethodVerbsIndexRoute: typeof NaturalMethodVerbsIndexRoute
 }
 
 const NaturalMethodVerbsRouteChildren: NaturalMethodVerbsRouteChildren = {
+  NaturalMethodVerbsIdiomsRoute: NaturalMethodVerbsIdiomsRoute,
+  NaturalMethodVerbsListRoute: NaturalMethodVerbsListRoute,
+  NaturalMethodVerbsPhrasalRoute: NaturalMethodVerbsPhrasalRoute,
   NaturalMethodVerbsIndexRoute: NaturalMethodVerbsIndexRoute,
 }
 
