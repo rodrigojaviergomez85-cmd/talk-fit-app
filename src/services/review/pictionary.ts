@@ -13,8 +13,14 @@ export type PictionaryCategory = {
   words: PictionaryWord[];
 };
 
+const ASSETS = import.meta.glob<string>("../../assets/pictionary/*/*.jpg", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+
 const img = (category: string, id: string) =>
-  new URL(`../../assets/pictionary/${category}/${id}.jpg`, import.meta.url).href;
+  ASSETS[`../../assets/pictionary/${category}/${id}.jpg`] ?? "";
 
 const build = (
   category: string,
