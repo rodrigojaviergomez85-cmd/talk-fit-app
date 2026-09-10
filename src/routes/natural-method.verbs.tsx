@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Search } from "lucide-react";
+import { ArrowLeft, Play, Search, Volume2 } from "lucide-react";
+import { AudioService } from "@/services/audio-service";
 import { AppShell } from "@/components/fluency/AppShell";
 import { COMMON_VERBS } from "@/services/natural-method-verbs";
 import { useAppLang } from "@/lib/i18n";
