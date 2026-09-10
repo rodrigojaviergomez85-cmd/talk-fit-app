@@ -15,6 +15,7 @@ import { Route as InstallRouteImport } from './routes/install'
 import { Route as LevelRouteImport } from './routes/level'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as PracticeRouteImport } from './routes/practice'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as RecordingsRouteImport } from './routes/recordings'
@@ -74,6 +75,11 @@ const OnboardingRoute = OnboardingRouteImport.update({
 const PracticeRoute = PracticeRouteImport.update({
   id: '/practice',
   path: '/practice',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -238,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/level': typeof LevelRoute
   '/onboarding': typeof OnboardingRoute
   '/practice': typeof PracticeRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/recordings': typeof RecordingsRoute
@@ -276,6 +283,7 @@ export interface FileRoutesByTo {
   '/level': typeof LevelRoute
   '/onboarding': typeof OnboardingRoute
   '/practice': typeof PracticeRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/recordings': typeof RecordingsRoute
@@ -314,6 +322,7 @@ export interface FileRoutesById {
   '/level': typeof LevelRoute
   '/onboarding': typeof OnboardingRoute
   '/practice': typeof PracticeRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/recordings': typeof RecordingsRoute
@@ -354,6 +363,7 @@ export interface FileRouteTypes {
     | '/level'
     | '/onboarding'
     | '/practice'
+    | '/privacy-policy'
     | '/profile'
     | '/progress'
     | '/recordings'
@@ -392,6 +402,7 @@ export interface FileRouteTypes {
     | '/level'
     | '/onboarding'
     | '/practice'
+    | '/privacy-policy'
     | '/profile'
     | '/progress'
     | '/recordings'
@@ -429,6 +440,7 @@ export interface FileRouteTypes {
     | '/level'
     | '/onboarding'
     | '/practice'
+    | '/privacy-policy'
     | '/profile'
     | '/progress'
     | '/recordings'
@@ -468,6 +480,7 @@ export interface RootRouteChildren {
   LevelRoute: typeof LevelRoute
   OnboardingRoute: typeof OnboardingRoute
   PracticeRoute: typeof PracticeRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ProfileRoute: typeof ProfileRoute
   ProgressRoute: typeof ProgressRoute
   RecordingsRoute: typeof RecordingsRoute
@@ -538,6 +551,13 @@ declare module '@tanstack/react-router' {
       path: '/practice'
       fullPath: '/practice'
       preLoaderRoute: typeof PracticeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -777,6 +797,7 @@ const rootRouteChildren: RootRouteChildren = {
   LevelRoute: LevelRoute,
   OnboardingRoute: OnboardingRoute,
   PracticeRoute: PracticeRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
   ProfileRoute: ProfileRoute,
   ProgressRoute: ProgressRoute,
   RecordingsRoute: RecordingsRoute,

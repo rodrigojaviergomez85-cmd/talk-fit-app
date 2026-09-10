@@ -3,6 +3,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useT } from "@/lib/i18n";
+import { localPasswordIssueKey, signUpErrorKey } from "@/lib/auth-errors";
+
 
 /**
  * Public password-reset landing page. The recovery email links here with a
@@ -50,9 +52,18 @@ function ResetPasswordPage() {
   const submit = async () => {
     setBusy(true);
     setMessage(null);
+
+    const localKey = localPasswordIssueKey(password);
+    if (localKey) {
+      setMessage(t(localKey));
+      setBusy(false);
+      return;
+    }
+
     const { error } = await supabase.auth.updateUser({ password });
     if (error) {
-      setMessage(error.message);
+      const key = signUpErrorKey(error);
+      setMessage(key ? t(key) : error.message);
       setBusy(false);
       return;
     }
@@ -60,6 +71,7 @@ function ResetPasswordPage() {
     setBusy(false);
     window.setTimeout(() => void navigate({ to: "/profile" }), 1200);
   };
+
 
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-lg items-center p-5">
@@ -82,7 +94,7 @@ function ResetPasswordPage() {
             />
             <button
               type="button"
-              disabled={busy || !ready || password.length < 6}
+              disabled={busy || !ready || password.length < 8}
               onClick={() => void submit()}
               className="min-h-[52px] w-full rounded-2xl bg-primary px-5 text-[15px] font-bold tracking-wide text-primary-foreground disabled:opacity-40"
             >

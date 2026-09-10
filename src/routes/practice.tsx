@@ -1209,7 +1209,28 @@ function IntroStep({
           headingEs={day.guideTitleEs ?? "gramática"}
           errors={day.guideErrors ?? []}
         />
-      ) : null}
+      ) : (
+        <CollapsibleHelp label={t("intro.moreHelp")} labelEs={t("intro.moreHelp")}>
+          {rest.length > 0 ? (
+            <div className="space-y-1.5 rounded-2xl bg-secondary p-3">
+              {rest.map((example) => (
+                <p key={example} className="text-[16px] font-bold leading-snug text-foreground">
+                  {example}
+                </p>
+              ))}
+            </div>
+          ) : null}
+          <QuestionBanner day={day} />
+          {day.storyPanels?.length ? <StoryStrip day={day} showCaptions={false} /> : null}
+          {(day.focus || day.topic) ? (
+            <p className="text-[13px] leading-relaxed text-muted-foreground">
+              {lang === "es" ? day.focusEs : day.focus} {lang === "es" ? day.topicEs : day.topic}
+            </p>
+          ) : null}
+
+        </CollapsibleHelp>
+      )}
+
 
       <button
         type="button"
