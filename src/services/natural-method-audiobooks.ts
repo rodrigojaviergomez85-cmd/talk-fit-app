@@ -23,8 +23,18 @@ import theMountainPath from "@/assets/audiobooks/the-mountain-path.jpg";
 import theSoulOfTheString from "@/assets/audiobooks/the-soul-of-the-string.jpg";
 import theSecretOfTheSilverKey from "@/assets/audiobooks/the-secret-of-the-silver-key.jpg";
 import beyondTheBrightScreens from "@/assets/audiobooks/beyond-the-bright-screens.jpg";
+import theEssenceOfYesterday from "@/assets/audiobooks/the-essence-of-yesterday.jpg";
+import theSeedOfAeon from "@/assets/audiobooks/the-seed-of-aeon.jpg";
+import theFlourOfOakhaven from "@/assets/audiobooks/the-flour-of-oakhaven.jpg";
+import theWeightOfThePeak from "@/assets/audiobooks/the-weight-of-the-peak.jpg";
+import theMidnightLens from "@/assets/audiobooks/the-midnight-lens.jpg";
+import theArchitectsSilence from "@/assets/audiobooks/the-architects-silence.jpg";
+import theGardenOfTomorrow from "@/assets/audiobooks/the-garden-of-tomorrow.jpg";
+import goldInTheCracks from "@/assets/audiobooks/gold-in-the-cracks.jpg";
+import theUnwrittenChapter from "@/assets/audiobooks/the-unwritten-chapter.jpg";
+import theResonantRoom from "@/assets/audiobooks/the-resonant-room.jpg";
 
-export type AudiobookLevel = "basic" | "intermediate";
+export type AudiobookLevel = "basic" | "intermediate" | "advanced";
 
 export type NaturalMethodAudiobook = {
   id: string;
@@ -196,5 +206,85 @@ export const NATURAL_METHOD_AUDIOBOOKS: NaturalMethodAudiobook[] = [
     url: "https://gemini.google.com/share/a08a6850a020",
     image: beyondTheBrightScreens,
     imageAlt: "Beyond the Bright Screens — a person turning from screens toward a bright window",
+  },
+  {
+    id: "the-essence-of-yesterday",
+    title: "The Essence of Yesterday",
+    level: "advanced",
+    url: "https://gemini.google.com/share/0dedb439a19a",
+    image: theEssenceOfYesterday,
+    imageAlt: "The Essence of Yesterday — a child holding a faded photograph in golden light",
+  },
+  {
+    id: "the-seed-of-aeon",
+    title: "The Seed of Aeon",
+    level: "advanced",
+    url: "https://gemini.google.com/share/e772bb4efeeb",
+    image: theSeedOfAeon,
+    imageAlt: "The Seed of Aeon — a glowing magical seed sprouting under a starry sky",
+  },
+  {
+    id: "the-flour-of-oakhaven",
+    title: "The Flour of Oakhaven",
+    level: "advanced",
+    url: "https://gemini.google.com/share/d4eb03ac7f4d",
+    image: theFlourOfOakhaven,
+    imageAlt: "The Flour of Oakhaven — a village bakery at dawn with sacks of flour",
+  },
+  {
+    id: "the-weight-of-the-peak",
+    title: "The Weight of the Peak",
+    level: "advanced",
+    url: "https://gemini.google.com/share/3dc6d304d6b2",
+    image: theWeightOfThePeak,
+    imageAlt: "The Weight of the Peak — a small climber before a massive snowy mountain",
+  },
+  {
+    id: "the-midnight-lens",
+    title: "The Midnight Lens",
+    level: "advanced",
+    url: "https://gemini.google.com/share/477162aca750",
+    image: theMidnightLens,
+    imageAlt: "The Midnight Lens — a brass telescope under a starry midnight sky",
+  },
+  {
+    id: "the-architects-silence",
+    title: "The Architect's Silence",
+    level: "advanced",
+    url: "https://gemini.google.com/share/6feab4410835",
+    image: theArchitectsSilence,
+    imageAlt: "The Architect's Silence — blueprints and a building model in a quiet studio",
+  },
+  {
+    id: "the-garden-of-tomorrow",
+    title: "The Garden of Tomorrow",
+    level: "advanced",
+    url: "https://gemini.google.com/share/55bccb8b785c",
+    image: theGardenOfTomorrow,
+    imageAlt: "The Garden of Tomorrow — a lush garden with a glowing glass dome",
+  },
+  {
+    id: "gold-in-the-cracks",
+    title: "Gold in the Cracks",
+    level: "advanced",
+    url: "https://gemini.google.com/share/0eeb40618df2",
+    image: goldInTheCracks,
+    imageAlt: "Gold in the Cracks — a ceramic bowl repaired with glowing golden seams",
+  },
+  {
+    id: "the-unwritten-chapter",
+    title: "The Unwritten Chapter",
+    level: "advanced",
+    url: "https://gemini.google.com/share/709a8dda593b",
+    image: theUnwrittenChapter,
+    imageAlt: "The Unwritten Chapter — an open blank book with light rising from its pages",
+  },
+  {
+    id: "the-resonant-room",
+    title: "The Resonant Room",
+    level: "advanced",
+    url: "https://gemini.google.com/share/1589e6eb918f",
+    image: theResonantRoom,
+    imageAlt: "The Resonant Room — a child playing guitar surrounded by glowing sound waves",
   },
 ];
