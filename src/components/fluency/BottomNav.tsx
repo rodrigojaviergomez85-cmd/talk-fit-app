@@ -8,6 +8,7 @@ const ITEMS = [
   { to: "/", key: "nav.home", icon: Home },
   { to: "/progress", key: "nav.progress", icon: BarChart3 },
   { to: "/review", key: "nav.review", icon: BookOpen },
+  { to: "/natural-method", key: "nav.natural", icon: Headphones },
   { to: "/profile", key: "nav.account", icon: User },
 ] as const satisfies readonly { to: string; key: TKey; icon: typeof Home }[];
 
