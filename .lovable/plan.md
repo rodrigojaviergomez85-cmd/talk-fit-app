@@ -15,12 +15,20 @@ Agregar una tarjeta de "material de apoyo" debajo de los dos botones actuales en
 
    **ES:**
    ```
-   Tu cuaderno de vocabulario es tu mejor aliado. Aprendete de memoria los 100 verbos más comunes: no hay shortcut, es la base de todo. Meta: 10 verbos por día + 10 palabras nuevas sacadas de frases reales de tu serie, audiolibro o peli favorita. También domina los phrasal verbs e idioms del día a día. Y porfa, revisa la ortografía antes de grabar. 💪🔥
+   Tu cuaderno de vocabulario es tu mejor aliado. Aprendete de memoria los 100 verbos más comunes: no hay shortcut, es la base de todo. Meta: 10 verbos por día + 10 palabras nuevas sacadas de frases reales de tu serie, audiolibro o peli favorita. También domina los phrasal verbs e idioms del día a día.
+
+   Y porfa, cuando estudies deja las distracciones. Nada de estar viendo el celu a cada rato para ver quién te escribió. Foco total, que el inglés no se aprende a medias. 🔕📵💪🔥
+
+   Antes de grabar, revisa la ortografía. No regrets.
    ```
 
    **EN:**
    ```
-   Your vocab notebook is your bestie. Memorize the 100 most common verbs: no shortcut, it's the foundation. Goal: 10 verbs a day + 10 new words from real phrases in your favorite show, audiobook, or movie. Also own the everyday phrasal verbs and idioms. And please, double-check spelling before you hit record. 💪🔥
+   Your vocab notebook is your bestie. Memorize the 100 most common verbs: no shortcut, it's the foundation. Goal: 10 verbs a day + 10 new words from real phrases in your favorite show, audiobook, or movie. Also own the everyday phrasal verbs and idioms.
+
+   And please, when you study, cut the distractions. No checking your phone every two minutes to see who texted. Full focus — you don't learn English halfway. 🔕📵💪🔥
+
+   Before you hit record, double-check spelling. No regrets.
    ```
 
 3. **Opcional: extraer a i18n**  
