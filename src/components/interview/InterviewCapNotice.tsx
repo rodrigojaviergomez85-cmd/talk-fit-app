@@ -54,7 +54,7 @@ export function InterviewCapReached({ es, cap = DAILY_INTERVIEW_CAP }: { es: boo
             <button
               type="button"
               onClick={() => setDialogOpen(true)}
-              className="relative overflow-hidden rounded-xl bg-primary px-4 py-2.5 text-sm font-extrabold uppercase tracking-wide text-primary-foreground"
+              className="relative overflow-hidden rounded-xl bg-primary px-4 py-2.5 text-sm font-extrabold uppercase tracking-wide text-primary-foreground transition-all duration-200 hover:scale-[1.02] hover:shadow-lg hover:brightness-110 active:scale-[0.98]"
             >
               <Sparkles className="mr-2 inline size-4 align-text-bottom" aria-hidden="true" />
               {es ? "Adquirir premium" : "Get Premium"}
