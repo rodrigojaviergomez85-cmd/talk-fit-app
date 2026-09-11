@@ -68,9 +68,11 @@ function MetricsPage() {
   const es = lang === "es";
   const checkAdmin = useServerFn(isAdmin);
   const load = useServerFn(getAdminMetrics);
+  const loadCosts = useServerFn(getAdminCostCenter);
 
   const [admin, setAdmin] = useState<boolean | null>(null);
   const [data, setData] = useState<AdminMetrics | null>(null);
+  const [costs, setCosts] = useState<AdminCostCenter | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
