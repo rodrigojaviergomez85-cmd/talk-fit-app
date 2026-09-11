@@ -201,8 +201,9 @@ function OnboardingPage() {
     setPlacement(moduleId);
     // Pre-auth: kept locally until the account exists and the backend confirms.
     setPendingPlacement(moduleId);
-    setPendingChoice(null);
+    setSaveError(false);
     if (!user) {
+      setPendingChoice(null);
       setScreen(AUTH_SCREEN);
       return;
     }
@@ -211,9 +212,27 @@ function OnboardingPage() {
     const result = await CloudSync.applyPendingPlacement();
     setSaving(false);
     if (result === "failed") {
+      // Keep the confirmation open so the error and the retry stay visible.
       setSaveError(true);
       return;
     }
+    setPendingChoice(null);
+    finish("home");
+  };
+
+  /** Retry after a failed save (used by the banner outside the modal). */
+  const retrySave = async () => {
+    if (!placement) return;
+    setSaving(true);
+    setSaveError(false);
+    const { CloudSync } = await import("@/services/cloud-sync");
+    const result = await CloudSync.applyPendingPlacement();
+    setSaving(false);
+    if (result === "failed") {
+      setSaveError(true);
+      return;
+    }
+    setPendingChoice(null);
     finish("home");
   };
 
