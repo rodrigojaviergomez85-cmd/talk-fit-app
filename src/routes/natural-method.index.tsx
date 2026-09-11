@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Headphones, ListChecks } from "lucide-react";
+import { ArrowRight, Headphones, ListChecks, Mic } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
 
@@ -77,6 +77,24 @@ function NaturalMethodIndex() {
               </span>
               <span className="mt-1 block text-sm text-muted-foreground">
                 {showEs ? "Escucha historias completas y repite en voz alta." : "Listen to full stories and repeat out loud."}
+              </span>
+            </span>
+            <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
+          </Link>
+
+          <Link
+            to="/natural-method/pronunciation"
+            className="flex min-h-[132px] items-center gap-4 rounded-2xl border border-border bg-card p-5 transition hover:border-primary"
+          >
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Mic className="size-6" aria-hidden="true" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-xl font-extrabold text-foreground">
+                {showEs ? "Perfecciona tu pronunciación" : "Perfect Your Pronunciation"}
+              </span>
+              <span className="mt-1 block text-sm text-muted-foreground">
+                {showEs ? "Con American Accent Secrets." : "With American Accent Secrets."}
               </span>
             </span>
             <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />

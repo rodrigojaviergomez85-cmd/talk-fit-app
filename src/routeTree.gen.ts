@@ -36,6 +36,7 @@ import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as ModuleModuleIdRouteImport } from './routes/module.$moduleId'
 import { Route as NaturalMethodIndexRouteImport } from './routes/natural-method.index'
 import { Route as NaturalMethodAudiobooksRouteImport } from './routes/natural-method.audiobooks'
+import { Route as NaturalMethodPronunciationRouteImport } from './routes/natural-method.pronunciation'
 import { Route as NaturalMethodVerbsRouteImport } from './routes/natural-method.verbs'
 import { Route as ReviewIndexRouteImport } from './routes/review.index'
 import { Route as ReviewBasicRouteImport } from './routes/review.basic'
@@ -185,6 +186,12 @@ const NaturalMethodAudiobooksRoute = NaturalMethodAudiobooksRouteImport.update({
   path: '/natural-method/audiobooks',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NaturalMethodPronunciationRoute =
+  NaturalMethodPronunciationRouteImport.update({
+    id: '/natural-method/pronunciation',
+    path: '/natural-method/pronunciation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const NaturalMethodVerbsRoute = NaturalMethodVerbsRouteImport.update({
   id: '/natural-method/verbs',
   path: '/natural-method/verbs',
@@ -276,6 +283,7 @@ export interface FileRoutesByFullPath {
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
   '/natural-method/audiobooks': typeof NaturalMethodAudiobooksRoute
+  '/natural-method/pronunciation': typeof NaturalMethodPronunciationRoute
   '/natural-method/verbs': typeof NaturalMethodVerbsRouteWithChildren
   '/review/basic': typeof ReviewBasicRoute
   '/review/call-center': typeof ReviewCallCenterRoute
@@ -317,6 +325,7 @@ export interface FileRoutesByTo {
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
   '/natural-method/audiobooks': typeof NaturalMethodAudiobooksRoute
+  '/natural-method/pronunciation': typeof NaturalMethodPronunciationRoute
   '/review/basic': typeof ReviewBasicRoute
   '/review/call-center': typeof ReviewCallCenterRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
@@ -358,6 +367,7 @@ export interface FileRoutesById {
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
   '/natural-method/audiobooks': typeof NaturalMethodAudiobooksRoute
+  '/natural-method/pronunciation': typeof NaturalMethodPronunciationRoute
   '/natural-method/verbs': typeof NaturalMethodVerbsRouteWithChildren
   '/review/basic': typeof ReviewBasicRoute
   '/review/call-center': typeof ReviewCallCenterRoute
@@ -401,6 +411,7 @@ export interface FileRouteTypes {
     | '/api/tts'
     | '/module/$moduleId'
     | '/natural-method/audiobooks'
+    | '/natural-method/pronunciation'
     | '/natural-method/verbs'
     | '/review/basic'
     | '/review/call-center'
@@ -442,6 +453,7 @@ export interface FileRouteTypes {
     | '/api/tts'
     | '/module/$moduleId'
     | '/natural-method/audiobooks'
+    | '/natural-method/pronunciation'
     | '/review/basic'
     | '/review/call-center'
     | '/review/intermediate-advanced'
@@ -482,6 +494,7 @@ export interface FileRouteTypes {
     | '/api/tts'
     | '/module/$moduleId'
     | '/natural-method/audiobooks'
+    | '/natural-method/pronunciation'
     | '/natural-method/verbs'
     | '/review/basic'
     | '/review/call-center'
@@ -524,6 +537,7 @@ export interface RootRouteChildren {
   ApiTtsRoute: typeof ApiTtsRoute
   ModuleModuleIdRoute: typeof ModuleModuleIdRoute
   NaturalMethodAudiobooksRoute: typeof NaturalMethodAudiobooksRoute
+  NaturalMethodPronunciationRoute: typeof NaturalMethodPronunciationRoute
   NaturalMethodVerbsRoute: typeof NaturalMethodVerbsRouteWithChildren
   ReviewBasicRoute: typeof ReviewBasicRoute
   ReviewCallCenterRoute: typeof ReviewCallCenterRoute
@@ -726,6 +740,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NaturalMethodAudiobooksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/natural-method/pronunciation': {
+      id: '/natural-method/pronunciation'
+      path: '/natural-method/pronunciation'
+      fullPath: '/natural-method/pronunciation'
+      preLoaderRoute: typeof NaturalMethodPronunciationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/natural-method/verbs': {
       id: '/natural-method/verbs'
       path: '/natural-method/verbs'
@@ -857,6 +878,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiTtsRoute: ApiTtsRoute,
   ModuleModuleIdRoute: ModuleModuleIdRoute,
   NaturalMethodAudiobooksRoute: NaturalMethodAudiobooksRoute,
+  NaturalMethodPronunciationRoute: NaturalMethodPronunciationRoute,
   NaturalMethodVerbsRoute: NaturalMethodVerbsRouteWithChildren,
   ReviewBasicRoute: ReviewBasicRoute,
   ReviewCallCenterRoute: ReviewCallCenterRoute,
