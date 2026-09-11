@@ -102,44 +102,18 @@ export const Route = createFileRoute("/api/ai-coach")({
   },
 });
 
-/** Consumes the SSE stream server-side and joins the text deltas. */
-async function readAnswer(body: ReadableStream<Uint8Array>): Promise<string> {
-  const reader = body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = "";
-  let text = "";
-
-  while (true) {
-    const chunk = await reader.read();
-    if (chunk.done) break;
-    buffer += decoder.decode(chunk.value, { stream: true });
-
-    const lines = buffer.split("\n");
-    buffer = lines.pop() ?? "";
-    for (const line of lines) {
-      if (!line.startsWith("data:")) continue;
-      const payload = line.slice(5).trim();
-      if (!payload || payload === "[DONE]") continue;
-      try {
-        const event = JSON.parse(payload) as {
-          type?: string;
-          delta?: string;
-          response?: { output_text?: unknown };
-        };
-        if (event.type === "response.output_text.delta" && typeof event.delta === "string") {
-          text += event.delta;
-        } else if (event.type === "response.completed" && !text) {
-          const out = event.response?.output_text;
-          if (typeof out === "string") text = out;
-          else if (Array.isArray(out)) text = out.filter((v) => typeof v === "string").join("");
-        }
-      } catch {
-        /* ignore malformed keep-alive lines */
-      }
-    }
-  }
-
-  return text.trim();
+/** Removes markdown decoration so the chat shows clean plain text. */
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/```[\s\S]*?```/g, (block) => block.replace(/```/g, "").trim())
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/(^|[\s(])\*([^*\n]+)\*/g, "$1$2")
+    .replace(/(^|[\s(])_([^_\n]+)_/g, "$1$2")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/^\s{0,3}#{1,6}\s*/gm, "")
+    .replace(/^\s*[*+]\s+/gm, "- ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 function json(body: unknown, status = 200) {
