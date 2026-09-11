@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, BriefcaseBusiness } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
+import { useInterviewCap } from "@/hooks/use-interview-cap";
+import { DAILY_INTERVIEW_CAP } from "@/services/interview-attempts";
 
 export const Route = createFileRoute("/review/interview-simulators")({
   head: () => ({
@@ -26,6 +28,10 @@ export const Route = createFileRoute("/review/interview-simulators")({
 function InterviewSimulators() {
   const { lang } = useAppLang();
   const showEs = lang === "es";
+  // DAILY INTERVIEW CAP: 2 runs per local day, shared by the three simulators.
+  const cap = useInterviewCap("b4");
+  const used = Math.min(cap.status?.used ?? 0, DAILY_INTERVIEW_CAP);
+  const capFull = Boolean(cap.status && !cap.status.unlimited && cap.status.used >= DAILY_INTERVIEW_CAP);
 
   return (
     <AppShell>
