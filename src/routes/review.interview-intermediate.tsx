@@ -334,7 +334,17 @@ const CLARIFICATION_PHRASES: readonly string[] = [
 ];
 
 /** Secondary grey skip button used across the practice modules. */
-function SkipButton({ es, onClick, className }: { es: boolean; onClick: () => void; className?: string }) {
+function SkipButton({
+  es,
+  onClick,
+  className,
+  final,
+}: {
+  es: boolean;
+  onClick: () => void;
+  className?: string;
+  final?: boolean;
+}) {
   return (
     <button
       type="button"
@@ -345,7 +355,7 @@ function SkipButton({ es, onClick, className }: { es: boolean; onClick: () => vo
       )}
     >
       <SkipForward className="size-3" aria-hidden="true" />
-      {es ? "Saltar pregunta" : "Skip question"}
+      {final ? (es ? "Saltar" : "Skip") : es ? "Saltar pregunta" : "Skip question"}
     </button>
   );
 }
@@ -664,7 +674,11 @@ function IntermediateInterviewSimulator() {
               <Play className="size-5" aria-hidden="true" />
               {step === 0 ? (es ? "Empezar" : "Start") : es ? "Escuchar a Mike" : "Listen to Mike"}
             </button>
-            {step < PROMPTS.length - 1 ? <SkipButton es={es} onClick={goNext} /> : null}
+            {step < PROMPTS.length - 1 ? (
+              <SkipButton es={es} onClick={goNext} />
+            ) : (
+              <SkipButton es={es} onClick={finishInterview} final />
+            )}
           </div>
         ) : null}
 
@@ -673,7 +687,11 @@ function IntermediateInterviewSimulator() {
             <p className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               {es ? "Mike está hablando…" : "Mike is speaking…"}
             </p>
-            {step < PROMPTS.length - 1 ? <SkipButton es={es} onClick={goNext} /> : null}
+            {step < PROMPTS.length - 1 ? (
+              <SkipButton es={es} onClick={goNext} />
+            ) : (
+              <SkipButton es={es} onClick={finishInterview} final />
+            )}
           </div>
         ) : null}
 
@@ -724,16 +742,13 @@ function IntermediateInterviewSimulator() {
         ) : null}
 
         {phase === "ready" && current.seconds === 0 ? (
-          <div className="space-y-3">
-            <button
-              type="button"
-              onClick={finishInterview}
-              className="w-full rounded-2xl bg-primary p-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground"
-            >
-              {es ? "Terminar entrevista" : "Finish interview"}
-            </button>
-            <SkipButton es={es} onClick={finishInterview} />
-          </div>
+          <button
+            type="button"
+            onClick={finishInterview}
+            className="w-full rounded-2xl bg-primary p-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground"
+          >
+            {es ? "Terminar entrevista" : "Finish interview"}
+          </button>
         ) : null}
 
         {phase === "answered" && recording ? (
