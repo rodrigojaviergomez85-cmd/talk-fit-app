@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { AlertTriangle, BarChart3, ChevronRight } from "lucide-react";
+import { AlertTriangle, BarChart3, ChevronDown, ChevronRight } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { CurrentModuleCard } from "@/components/fluency/CurrentModuleCard";
 import { NextModuleLocked } from "@/components/fluency/NextModuleLocked";
@@ -36,6 +36,7 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const [state, setState] = useState<JourneyState | null>(null);
   const [failed, setFailed] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { t, prefs } = useAppLang();
   const { user, sync, loading: authLoading } = useAuth();
