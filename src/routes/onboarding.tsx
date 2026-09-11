@@ -450,6 +450,16 @@ function OnboardingPage() {
               <AuthGate />
             </section>
           ) : null}
+
+          {/* Save failed outside the confirmation (e.g. right after sign-up): always give a way forward. */}
+          {saveError && !pendingChoice && placement ? (
+            <div className="mt-4 space-y-3 rounded-2xl border border-destructive/40 bg-card p-4">
+              <p className="text-[13px] font-semibold text-destructive">{t("place.saveFailed")}</p>
+              <button type="button" disabled={saving} onClick={() => void retrySave()} className={primaryBtn}>
+                {t("place.sureYes")}
+              </button>
+            </div>
+          ) : null}
         </div>
 
         <div className="space-y-3">
