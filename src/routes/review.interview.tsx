@@ -377,9 +377,12 @@ function InterviewSimulator() {
         ) : null}
 
         {phase === "speaking" ? (
-          <p className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            {es ? "Mike está hablando…" : "Mike is speaking…"}
-          </p>
+          <div className="space-y-3">
+            <p className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              {es ? "Mike está hablando…" : "Mike is speaking…"}
+            </p>
+            {step < PROMPTS.length - 1 ? <SkipButton es={es} onClick={goNext} /> : null}
+          </div>
         ) : null}
 
         {phase === "ready" ? (
