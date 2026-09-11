@@ -122,6 +122,35 @@ function HomePage() {
           <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
         </Link>
 
+        <div className="rounded-2xl border border-border bg-card shadow-[var(--shadow-card)]">
+          <button
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-expanded={menuOpen}
+            className="flex min-h-[52px] w-full items-center justify-between gap-3 px-4 text-[13px] font-bold text-foreground"
+          >
+            {t("home.moreMenu")}
+            <ChevronDown
+              className={`size-4 shrink-0 text-muted-foreground transition-transform ${menuOpen ? "rotate-180" : ""}`}
+              aria-hidden
+            />
+          </button>
+          {menuOpen ? (
+            <div className="border-t border-border p-2">
+              <Link
+                to="/progress"
+                className="flex min-h-[48px] items-center justify-between gap-3 rounded-xl px-3 text-[14px] font-semibold text-foreground transition-colors hover:bg-secondary"
+              >
+                <span className="flex items-center gap-3">
+                  <BarChart3 className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+                  {t("home.myProgress")}
+                </span>
+                <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+              </Link>
+            </div>
+          ) : null}
+        </div>
+
         <p className="flex items-center justify-center gap-1.5 pb-2 text-[12px] font-semibold text-muted-foreground">
           <AlertTriangle className="size-3.5 shrink-0" aria-hidden />
           {t("report.betaShort")} ·{" "}
