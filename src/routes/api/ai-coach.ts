@@ -1,30 +1,65 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-const DAILY_LIMIT = 10;
-const DAY_SECONDS = 24 * 60 * 60;
 const MAX_QUESTION_CHARS = 600;
+/** Hard generation cap sent to the gateway (verified: enforced, finish_reason "length"). */
+const MAX_OUTPUT_TOKENS = 300;
 
 const SYSTEM_PROMPT =
   "You are the Fluency App English coach for Spanish-speaking adults learning English for call-center work. " +
   "Answer ONLY questions about the English language: grammar, vocabulary, phrasal verbs, idioms, written " +
   "pronunciation tips, sentence building, and how to say something in English. " +
   "If the question is not about English, reply in one short line that you can only help with English questions. " +
-  "Keep every answer under 120 words. Be concrete: a one-line rule plus 2-3 short examples. " +
+  "Keep every answer under 120 words: one short explanation plus one or two useful examples. " +
   "If the learner writes in Spanish, answer in Spanish but keep the English examples in English. " +
   "Never invent app features, never grade recordings, never ask follow-up questions. " +
   "Write in plain text only: no markdown, no asterisks, no bold, no headings, no numbered lists. " +
   "Use short lines and, when listing examples, start the line with a simple dash.";
 
+type QuotaRow = {
+  allowed: boolean;
+  unlimited: boolean;
+  daily_used: number;
+  monthly_used: number;
+  daily_limit: number;
+  monthly_limit: number;
+  day_reset_at: string;
+  month_reset_at: string;
+  blocked: string;
+};
+
+type QuotaSnapshot = {
+  unlimited: boolean;
+  dailyUsed: number;
+  monthlyUsed: number;
+  dailyLimit: number;
+  monthlyLimit: number;
+  dayResetAt: string;
+  monthResetAt: string;
+  blocked: "none" | "daily" | "monthly";
+};
+
 /**
- * Short, stateless English Q&A. No conversation memory is sent or stored:
- * every request is a single question. Max 10 questions per learner per day
- * (unlimited test accounts excluded).
+ * Short, stateless English Q&A. No conversation memory is sent or stored.
+ * Per learner: 5 questions per UTC day and 60 per UTC month, reserved
+ * atomically in the database BEFORE the provider is called. Unlimited internal
+ * accounts skip the counters but keep the technical output cap.
  */
 export const Route = createFileRoute("/api/ai-coach")({
   server: {
     handlers: {
+      // Counters for the UI. Never calls the model and never consumes a question.
+      GET: async ({ request }) => {
+        const { verifyRequestUser } = await import("@/lib/route-auth.server");
+        const userId = await verifyRequestUser(request);
+        if (!userId) return json({ error: "auth" }, 401);
+
+        const quota = await readQuota(userId);
+        if (!quota) return json({ error: "quota" }, 503);
+        return json({ quota });
+      },
+
       POST: async ({ request }) => {
-        const { verifyRequestUser, consumeQuota } = await import("@/lib/route-auth.server");
+        const { verifyRequestUser } = await import("@/lib/route-auth.server");
         const userId = await verifyRequestUser(request);
         if (!userId) return json({ error: "auth" }, 401);
 
@@ -38,23 +73,18 @@ export const Route = createFileRoute("/api/ai-coach")({
         if (!question) return json({ error: "empty" }, 400);
         if (question.length > MAX_QUESTION_CHARS) question = question.slice(0, MAX_QUESTION_CHARS);
 
-        // Unlimited internal accounts skip the daily counter entirely.
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-        const { data: unlimited } = await supabaseAdmin.rpc("is_unlimited_test_user", {
-          _user_id: userId,
-        });
-
-        let used = 0;
-        if (!unlimited) {
-          const quota = await consumeQuota(userId, "ai-coach", DAILY_LIMIT, DAY_SECONDS);
-          used = quota.requestCount;
-          if (!quota.allowed) {
-            return json({ error: "limit", used: DAILY_LIMIT, limit: DAILY_LIMIT }, 429);
-          }
-        }
-
+        // Config is validated before reserving the slot so a misconfigured
+        // server never burns a learner's question.
         const apiKey = process.env["LOVABLE_API_KEY"];
         if (!apiKey) return json({ error: "config" }, 500);
+
+        // Atomic reservation: month and day are checked and incremented
+        // together; neither is consumed when either one is exhausted.
+        const quota = await consumeQuota(userId);
+        if (!quota) return json({ error: "quota" }, 503);
+        if (quota.blocked !== "none") {
+          return json({ error: quota.blocked === "monthly" ? "monthly_limit" : "daily_limit", quota }, 429);
+        }
 
         let res: Response;
         try {
@@ -68,6 +98,12 @@ export const Route = createFileRoute("/api/ai-coach")({
             body: JSON.stringify({
               // Cheapest model that handles short grammar answers well.
               model: "google/gemini-3.1-flash-lite",
+              // Technical generation cap. A truncated answer is returned as is:
+              // we never make a second call to continue it.
+              max_tokens: MAX_OUTPUT_TOKENS,
+              // Minimum reasoning setting for these simple questions, so no
+              // reasoning tokens are billed.
+              reasoning: { enabled: false },
               messages: [
                 { role: "system", content: SYSTEM_PROMPT },
                 { role: "user", content: question },
@@ -75,14 +111,21 @@ export const Route = createFileRoute("/api/ai-coach")({
             }),
           });
         } catch (error) {
+          // Conservative: the slot stays consumed, we cannot know whether the
+          // provider processed the call.
           console.error("[ai-coach] gateway request failed", error);
-          return json({ error: "gateway" }, 502);
+          return json({ error: "provider_busy", quota }, 502);
         }
 
         if (!res.ok) {
           const detail = await res.text().catch(() => "");
           console.error(`[ai-coach] gateway error [${res.status}]: ${detail}`);
-          return json({ error: "gateway" }, gatewayStatus(res.status));
+          // A provider 429/5xx is NOT a personal quota problem.
+          const transient = res.status === 429 || res.status >= 500;
+          return json(
+            { error: transient ? "provider_busy" : "gateway", quota },
+            transient ? 503 : gatewayStatus(res.status),
+          );
         }
 
         const payload = (await res.json().catch(() => null)) as {
@@ -90,17 +133,49 @@ export const Route = createFileRoute("/api/ai-coach")({
         } | null;
         const raw = payload?.choices?.[0]?.message?.content;
         const answer = stripMarkdown(typeof raw === "string" ? raw : "");
-        if (!answer) return json({ error: "gateway" }, 502);
+        if (!answer) return json({ error: "gateway", quota }, 502);
 
-        return json({
-          answer,
-          used: unlimited ? 0 : used,
-          limit: unlimited ? null : DAILY_LIMIT,
-        });
+        return json({ answer, quota });
       },
     },
   },
 });
+
+function mapQuota(row: QuotaRow | undefined | null): QuotaSnapshot | null {
+  if (!row) return null;
+  const blocked = row.blocked === "monthly" || row.blocked === "daily" ? row.blocked : "none";
+  return {
+    unlimited: Boolean(row.unlimited),
+    dailyUsed: Number(row.daily_used ?? 0),
+    monthlyUsed: Number(row.monthly_used ?? 0),
+    dailyLimit: Number(row.daily_limit ?? 0),
+    monthlyLimit: Number(row.monthly_limit ?? 0),
+    dayResetAt: row.day_reset_at,
+    monthResetAt: row.month_reset_at,
+    blocked,
+  };
+}
+
+async function readQuota(userId: string): Promise<QuotaSnapshot | null> {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data, error } = await supabaseAdmin.rpc("get_ai_coach_quota", { _user_id: userId });
+  if (error) {
+    console.error(`[ai-coach] get_ai_coach_quota failed: ${error.message}`);
+    return null;
+  }
+  return mapQuota((Array.isArray(data) ? data[0] : data) as QuotaRow | null);
+}
+
+/** Fails closed: a database error means no provider call. */
+async function consumeQuota(userId: string): Promise<QuotaSnapshot | null> {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data, error } = await supabaseAdmin.rpc("consume_ai_coach_quota", { _user_id: userId });
+  if (error) {
+    console.error(`[ai-coach] consume_ai_coach_quota failed: ${error.message}`);
+    return null;
+  }
+  return mapQuota((Array.isArray(data) ? data[0] : data) as QuotaRow | null);
+}
 
 /** Removes markdown decoration so the chat shows clean plain text. */
 function stripMarkdown(text: string): string {
@@ -124,5 +199,5 @@ function json(body: unknown, status = 200) {
 }
 
 function gatewayStatus(status: number) {
-  return status === 429 || status === 402 || status === 403 ? status : 502;
+  return status === 402 || status === 403 ? status : 502;
 }
