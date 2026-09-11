@@ -58,7 +58,7 @@ describe("storage report classifier", () => {
 
   it("protects anything newer than 14 days", () => {
     const r = classifyRecordings([rec({ id: "a", created_at: RECENT })], completedDay1, NOW);
-    expect(r.excluded.newerThan14Days).toBe(1);
+    expect(r.excluded.tooRecent).toBe(1);
     expect(r.candidates.files).toBe(0);
   });
 

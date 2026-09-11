@@ -31,7 +31,7 @@ export const Route = createFileRoute("/admin/storage-report")({
 const REASONS: { key: ExclusionReason; es: string; en: string }[] = [
   { key: "finalByFlag", es: "Final Rep (is_final_rep)", en: "Final Rep (is_final_rep)" },
   { key: "finalByDayProgress", es: "Final Rep (day_progress.recording_path)", en: "Final Rep (day_progress.recording_path)" },
-  { key: "newerThan14Days", es: "Menos de 14 días", en: "Newer than 14 days" },
+  { key: "tooRecent", es: "Menos de 7 días", en: "Newer than 7 days" },
   { key: "dayNotCompleted", es: "Día no completado", en: "Day not completed" },
   { key: "alreadyPurged", es: "Ya purgado", en: "Already purged" },
 ];
