@@ -44,7 +44,7 @@ export type ExclusionReason =
   | "alreadyPurged"
   | "finalByFlag"
   | "finalByDayProgress"
-  | "newerThan14Days"
+  | "tooRecent"
   | "dayNotCompleted";
 
 export type Classification = { kind: "candidate" } | { kind: "excluded"; reason: ExclusionReason };
