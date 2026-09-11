@@ -405,7 +405,7 @@ function InterviewSimulator() {
         ) : null}
 
         {phase === "ready" || phase === "recording" ? (
-          <div className="space-y-2 rounded-2xl border border-border bg-card p-4">
+          <div className="space-y-3 rounded-2xl border border-border bg-card p-4">
             <p className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               {es ? `Grabar respuesta · máx ${timeLabel}` : `Record answer · max ${timeLabel}`}
             </p>
@@ -420,6 +420,7 @@ function InterviewSimulator() {
               onStart={() => setPhase("recording")}
               onComplete={onComplete}
             />
+            {step < PROMPTS.length - 1 ? <SkipButton es={es} onClick={goNext} /> : null}
           </div>
         ) : null}
 
