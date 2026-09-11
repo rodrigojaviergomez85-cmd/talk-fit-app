@@ -328,6 +328,19 @@ function InterviewSimulator() {
     if (el) el.pause();
   };
 
+  const goToLastQuestion = () => {
+    playback.stop();
+    stopSpeechRef.current?.();
+    setRecording(null);
+    setStep(LAST_QUESTION_INDEX);
+    setPhase("intro");
+    const el = videoRef.current;
+    if (el) {
+      el.pause();
+      el.currentTime = 0;
+    }
+  };
+
   const goalMin = current.followUp ? 2 : GOAL_MIN;
   const goalMax = current.followUp ? 4 : GOAL_MAX;
   const timeLabel = current.seconds === 30 ? "00:30" : "00:20";
