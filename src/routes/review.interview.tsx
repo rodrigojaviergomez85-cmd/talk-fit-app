@@ -220,6 +220,23 @@ const TENSE_LABEL: Record<Exclude<Tense, null>, { en: string; es: string }> = {
   future: { en: "Future", es: "Futuro" },
 };
 
+/** One English clarification phrase per prompt so students practice different replies. */
+const CLARIFICATION_PHRASES: readonly string[] = [
+  "Could you please repeat that?",
+  "Could you speak slower, please?",
+  "Could you rephrase your question, please?",
+  "Could you say that again?",
+  "I'm sorry, I didn't catch that.",
+  "Could you explain that in another way?",
+  "Could you give me an example, please?",
+  "What do you mean by that?",
+  "I didn't understand the question.",
+  "Could you repeat the last part, please?",
+  "I'm not sure I follow.",
+  "Could you break that down, please?",
+  "Sorry, can you say it one more time?",
+];
+
 /** Secondary grey skip button used across the practice modules. */
 function SkipButton({ es, onClick, className }: { es: boolean; onClick: () => void; className?: string }) {
   return (
@@ -557,29 +574,13 @@ function InterviewSimulator() {
 
         {phase === "ready" && current.seconds > 0 ? (
           <div className="space-y-3 rounded-2xl border border-dashed border-border bg-secondary/40 p-3">
-            <div className="space-y-1.5">
-              <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                {es ? "¿No entendiste? Practica estas frases en voz alta" : "Didn't catch it? Practice these phrases out loud"}
+            <div className="space-y-1.5 text-center">
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                {es ? "¿No entendiste? Practica esta frase en voz alta" : "Didn't catch it? Practice this phrase out loud"}
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-2">
-                {(
-                  [
-                    "Could you please repeat that?",
-                    "Could you speak slower, please?",
-                    "Could you rephrase your question, please?",
-                    "Could you say that again?",
-                    "I'm sorry, I didn't catch that.",
-                    "Could you explain that in another way?",
-                  ] as const
-                ).map((phrase) => (
-                  <span
-                    key={phrase}
-                    className="inline-flex items-center rounded-full border border-border bg-card px-2.5 py-1 text-[11px] font-semibold text-foreground"
-                  >
-                    “{phrase}”
-                  </span>
-                ))}
-              </div>
+              <p className="text-sm font-semibold text-foreground">
+                “{CLARIFICATION_PHRASES[step % CLARIFICATION_PHRASES.length]}”
+              </p>
             </div>
             <button
               type="button"
