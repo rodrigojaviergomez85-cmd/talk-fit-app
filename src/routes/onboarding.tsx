@@ -180,6 +180,9 @@ function OnboardingPage() {
   const { user } = useAuth();
   const [screen, setScreen] = useState(0);
   const [placement, setPlacement] = useState<ModuleId | null>(null);
+  const [pendingChoice, setPendingChoice] = useState<ModuleId | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState(false);
 
   // Restore a choice made before an OAuth redirect (client-only storage).
   useEffect(() => {
@@ -187,20 +190,37 @@ function OnboardingPage() {
   }, []);
 
   const choosePlacement = (moduleId: ModuleId) => {
+    setSaveError(false);
+    setPendingChoice(moduleId);
+  };
+
+  /** Confirmed their level: enroll right away — no extra "continue" step. */
+  const confirmChoice = async (moduleId: ModuleId) => {
     setPlacement(moduleId);
     // Pre-auth: kept locally until the account exists and the backend confirms.
     setPendingPlacement(moduleId);
-  };
-
-  /** Already signed in (e.g. via Mi Cuenta) but never placed: persist, then start. */
-  const confirmSignedInPlacement = async () => {
+    setPendingChoice(null);
+    if (!user) {
+      setScreen(AUTH_SCREEN);
+      return;
+    }
+    setSaving(true);
     const { CloudSync } = await import("@/services/cloud-sync");
     const result = await CloudSync.applyPendingPlacement();
-    if (result === "failed") return;
-    finish("day1");
+    setSaving(false);
+    if (result === "failed") {
+      setSaveError(true);
+      return;
+    }
+    finish("home");
   };
 
-  const finish = (to: "day1" | "explore") => {
+  const finish = (to: "day1" | "explore" | "home") => {
+    if (to === "home") {
+      setPrefs({ onboardingCompleted: true });
+      void navigate({ to: "/" });
+      return;
+    }
     setPrefs({ onboardingCompleted: true });
     if (to === "explore") {
       void navigate({ to: "/" });
