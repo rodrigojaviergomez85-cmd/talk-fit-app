@@ -16,6 +16,7 @@ export type PronunciationVideo = {
 
 const VIDEOS: Array<{ id: string; videoId: string; title: string }> = [
   { id: "r-sound", videoId: "Br__K4cM_C0", title: "R SOUND" },
+  { id: "ed-sound", videoId: "lBckqgOx0LM", title: "ED SOUNDS" },
   { id: "m-n-ng-sounds", videoId: "svNGlM890uU", title: "M, N, NG SOUNDS" },
   { id: "s-sound", videoId: "jcdITk2mQNc", title: "S & Z SOUNDS" },
   { id: "h-sound", videoId: "Z--2nelhngE", title: "H SOUND" },
@@ -30,7 +31,6 @@ const VIDEOS: Array<{ id: string; videoId: string; title: string }> = [
   { id: "w-sound", videoId: "tqbSHZe2T3M", title: "W SOUND" },
   { id: "j-sound", videoId: "K4LUMRYebk4", title: "J SOUND" },
   { id: "l-sound", videoId: "9DLLrH6c_l4", title: "L SOUND" },
-  { id: "ed-sound", videoId: "lBckqgOx0LM", title: "ED SOUNDS" },
   { id: "o-sound", videoId: "3BmWJdaiF1I", title: "O SOUND" },
   { id: "y-sound", videoId: "cQsIl5BrwLI", title: "Y SOUND" },
   { id: "final-sounds", videoId: "U7z4nHlOhoA", title: "FINAL SOUNDS" },
