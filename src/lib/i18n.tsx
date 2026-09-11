@@ -77,7 +77,7 @@ const DICT = {
   ],
 
   // Home quick menu
-  "home.moreMenu": ["Ver más", "See more"],
+  "home.moreMenu": ["Ver ruta completa", "See full path"],
   "home.myProgress": ["Mi progreso y audios", "My progress and audio"],
 
 
