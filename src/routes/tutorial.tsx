@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useAppLang } from "@/lib/i18n";
-import slide1 from "@/assets/tour/slide-1.png.asset.json";
-import slide4 from "@/assets/tour/slide-4.png.asset.json";
-import slide5 from "@/assets/tour/slide-5.png.asset.json";
+import slide1 from "@/assets/tour/slide-1-v3.png.asset.json";
+import slide4 from "@/assets/tour/slide-2-v3.png.asset.json";
+import slide5 from "@/assets/tour/slide-3-v3.png.asset.json";
 
 const TOUR_KEY = "fluency-reps:app-tour:v2";
 
