@@ -28,8 +28,10 @@ export const Route = createFileRoute("/api/public/hooks/purge-audio")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const unauthorized = await authenticateCronRequest(request);
-        if (unauthorized) return unauthorized;
+        if (!(await jobTokenAccepted(request))) {
+          const unauthorized = await authenticateCronRequest(request);
+          if (unauthorized) return unauthorized;
+        }
 
         try {
           const result = await purgeExpiredTakes();
