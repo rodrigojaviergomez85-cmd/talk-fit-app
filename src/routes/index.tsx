@@ -8,6 +8,8 @@ import { HomeWeekCard } from "@/components/fluency/HomeWeekCard";
 import { HomeGreeting } from "@/components/fluency/HomeGreeting";
 import { Progression } from "@/services/progression";
 import { getPendingPlacement } from "@/services/preferences";
+import { isAppTourDone } from "@/routes/tutorial";
+
 import { useAuth } from "@/lib/auth";
 import { JourneyService } from "@/services/journey-service";
 import type { JourneyState } from "@/lib/types";
@@ -64,6 +66,14 @@ function HomePage() {
     if (getPendingPlacement()) return;
     void navigate({ to: "/onboarding" });
   }, [state, prefs.onboardingCompleted, prefs.currentModuleId, user, sync, authLoading, navigate]);
+
+  // App tour ("how to use the app") — shown once, after the intro is done.
+  useEffect(() => {
+    if (!prefs.onboardingCompleted) return;
+    if (isAppTourDone()) return;
+    void navigate({ to: "/tutorial" });
+  }, [prefs.onboardingCompleted, navigate]);
+
 
   if (!state) {
     return (

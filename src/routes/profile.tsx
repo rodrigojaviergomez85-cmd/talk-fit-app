@@ -125,11 +125,19 @@ function ProfilePage() {
 
 
           <Link
+            to="/tutorial"
+            className="mt-1 inline-flex min-h-[44px] w-full items-center justify-center rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
+          >
+            {esUi ? "¿Cómo usar la app?" : "How to use the app?"}
+          </Link>
+
+          <Link
             to="/onboarding"
             className="mt-1 inline-flex min-h-[44px] w-full items-center justify-center rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
           >
             {t("account.viewIntro")}
           </Link>
+
         </section>
 
         <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
