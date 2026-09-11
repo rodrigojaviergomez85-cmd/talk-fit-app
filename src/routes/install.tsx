@@ -13,6 +13,7 @@ import {
   Search,
 } from "lucide-react";
 import { useAppLang } from "@/lib/i18n";
+import { isInstalledPwa } from "@/lib/pwa";
 import { Button } from "@/components/ui/button";
 
 const INSTALL_URL = "https://fluencye4cc.app/install";
