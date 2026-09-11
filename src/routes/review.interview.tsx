@@ -363,14 +363,17 @@ function InterviewSimulator() {
         <p className="text-center text-sm text-muted-foreground">{current.es}</p>
 
         {phase === "intro" ? (
-          <button
-            type="button"
-            onClick={playMike}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary p-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground"
-          >
-            <Play className="size-5" aria-hidden="true" />
-            {step === 0 ? (es ? "Empezar" : "Start") : es ? "Escuchar a Mike" : "Listen to Mike"}
-          </button>
+          <div className="space-y-3">
+            <button
+              type="button"
+              onClick={playMike}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary p-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground"
+            >
+              <Play className="size-5" aria-hidden="true" />
+              {step === 0 ? (es ? "Empezar" : "Start") : es ? "Escuchar a Mike" : "Listen to Mike"}
+            </button>
+            {step < PROMPTS.length - 1 ? <SkipButton es={es} onClick={goNext} /> : null}
+          </div>
         ) : null}
 
         {phase === "speaking" ? (
