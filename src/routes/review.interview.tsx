@@ -467,9 +467,19 @@ function InterviewSimulator() {
   return (
     <AppShell>
       <div className="space-y-4 p-4">
-        <Link to="/review" className="inline-flex items-center gap-2 text-sm font-semibold text-primary">
-          <ArrowLeft className="size-4" aria-hidden="true" /> Review
-        </Link>
+        {step < LAST_QUESTION_INDEX ? (
+          <button
+            type="button"
+            onClick={goToLastQuestion}
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-bold uppercase tracking-wide text-foreground"
+          >
+            <SkipForward className="size-4" aria-hidden="true" /> {es ? "Última pregunta" : "Last question"}
+          </button>
+        ) : (
+          <Link to="/review" className="inline-flex items-center gap-2 text-sm font-semibold text-primary">
+            <ArrowLeft className="size-4" aria-hidden="true" /> Review
+          </Link>
+        )}
 
         <header>
           <h1 className="text-2xl font-extrabold text-foreground">B4 Interview Simulator</h1>
