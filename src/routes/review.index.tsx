@@ -79,7 +79,6 @@ function ReviewIndex() {
                 {showEs ? "Pasado, presente y futuro · 11 turnos" : "Past, present and future · 11 turns"}
               </span>
             </span>
-            </span>
             <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
           </Link>
         </div>
