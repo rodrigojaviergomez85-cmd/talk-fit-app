@@ -33,16 +33,21 @@ export const listSectionLimits = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async (): Promise<SectionLimitRow[]> => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data, error } = await supabaseAdmin
-      .from("section_limits")
-      .select("section_key, label, free_limit, sort_order")
-      .order("sort_order", { ascending: true });
+    const [{ data, error }, settings] = await Promise.all([
+      supabaseAdmin
+        .from("section_limits")
+        .select("section_key, label, free_limit, sort_order")
+        .order("sort_order", { ascending: true }),
+      supabaseAdmin.from("app_settings").select("pro_multiplier").eq("id", "global").maybeSingle(),
+    ]);
     if (error || !data) return [];
+    // The multiplier is the admin-editable one, never a constant in the code.
+    const multiplier = settings.data?.pro_multiplier ?? 4;
     return data.map((row) => ({
       sectionKey: row.section_key,
       label: row.label,
       freeLimit: row.free_limit,
-      proLimit: row.free_limit * 4,
+      proLimit: row.free_limit * multiplier,
       sortOrder: row.sort_order ?? 0,
     }));
   });

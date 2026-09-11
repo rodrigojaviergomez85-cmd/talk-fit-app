@@ -17,7 +17,7 @@ export const Route = createFileRoute("/api/final-audio-coach")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { verifyRequestUser, consumeQuota } = await import("@/lib/route-auth.server");
+        const { verifyRequestUser, consumeQuota, sectionDailyLimit } = await import("@/lib/route-auth.server");
         const userId = await verifyRequestUser(request);
         if (!userId) return json({ error: "Sign in first." }, 401);
 
@@ -145,8 +145,12 @@ export const Route = createFileRoute("/api/final-audio-coach")({
               if (error) console.error("[final-audio-coach] finalize failed", error.message);
             },
           },
-          consumeQuota: async (uid) =>
-            (await consumeQuota(uid, engine.COACH_QUOTA_ENDPOINT, engine.COACH_QUOTA_LIMIT, engine.COACH_QUOTA_WINDOW_SECONDS)).allowed,
+          // The cap comes from `section_limits` (free x plan multiplier), never a constant:
+          // a Pro learner really gets the multiplied number of analyses.
+          consumeQuota: async (uid) => {
+            const limit = await sectionDailyLimit(uid, "final_coach", engine.COACH_QUOTA_LIMIT);
+            return (await consumeQuota(uid, engine.COACH_QUOTA_ENDPOINT, limit, engine.COACH_QUOTA_WINDOW_SECONDS)).allowed;
+          },
           stt: async (audio, mime) => (await import("@/lib/final-coach-providers.server")).transcribeFinalAudio(audio, mime),
           llm: (rubric, transcript, ideas, seconds) => evaluate(rubric, transcript, ideas, seconds ?? null),
           log: (entry) => console.info("[final-audio-coach]", entry),

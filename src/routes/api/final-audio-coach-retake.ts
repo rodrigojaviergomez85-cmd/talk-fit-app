@@ -26,7 +26,7 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
     handlers: {
       POST: async ({ request }) => {
         try {
-          const { verifyRequestUser, consumeQuota } = await import("@/lib/route-auth.server");
+          const { verifyRequestUser, consumeQuota, sectionDailyLimit } = await import("@/lib/route-auth.server");
           const userId = await verifyRequestUser(request);
           if (!userId) return json({ error: "Sign in first." }, 401);
 
@@ -210,8 +210,11 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
               if (error) console.error("[final-audio-coach-retake] discard failed", error.message);
             },
           },
-          consumeQuota: async (uid) =>
-            (await consumeQuota(uid, engine.RETAKE_QUOTA_ENDPOINT, engine.RETAKE_QUOTA_LIMIT, engine.RETAKE_QUOTA_WINDOW_SECONDS)).allowed,
+          // Cap from `section_limits` (free x plan multiplier), so Pro really gets more retakes.
+          consumeQuota: async (uid) => {
+            const limit = await sectionDailyLimit(uid, "coach_retake", engine.RETAKE_QUOTA_LIMIT);
+            return (await consumeQuota(uid, engine.RETAKE_QUOTA_ENDPOINT, limit, engine.RETAKE_QUOTA_WINDOW_SECONDS)).allowed;
+          },
           stt: (bytes, m) => providers.transcribeFinalAudio(bytes, m, "final-audio-coach-retake"),
           llm: (ctx, transcript) => providers.coachChatJson(engine.buildRetakeMessages(ctx, transcript), engine.RETAKE_JSON_SCHEMA, "final-audio-coach-retake"),
           log: (entry) => console.info("[final-audio-coach-retake]", entry),
