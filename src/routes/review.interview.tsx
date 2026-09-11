@@ -12,6 +12,15 @@ import { cn } from "@/lib/utils";
 import welcomeClip from "@/assets/interview/mike-welcome.mp4.asset.json";
 import questionClip from "@/assets/interview/mike-question-1.mp4.asset.json";
 import waitingClip from "@/assets/interview/mike-waiting.mp4.asset.json";
+import tellMeMoreClip from "@/assets/interview/mike-tell-me-more.mp4.asset.json";
+import routineClip from "@/assets/interview/mike-routine.mp4.asset.json";
+import lastJobClip from "@/assets/interview/mike-last-job.mp4.asset.json";
+import explainWhyClip from "@/assets/interview/mike-explain-why.mp4.asset.json";
+import favoriteMovieClip from "@/assets/interview/mike-favorite-movie.mp4.asset.json";
+import opinionClip from "@/assets/interview/mike-opinion.mp4.asset.json";
+import learnedClip from "@/assets/interview/mike-learned.mp4.asset.json";
+import twoYearsClip from "@/assets/interview/mike-two-years.mp4.asset.json";
+import afterCourseClip from "@/assets/interview/mike-after-course.mp4.asset.json";
 
 export const Route = createFileRoute("/review/interview")({
   head: () => ({
