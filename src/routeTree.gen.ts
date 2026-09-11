@@ -25,6 +25,7 @@ import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
 import { Route as AdminBugReportsRouteImport } from './routes/admin.bug-reports'
 import { Route as AdminCourseAudioRouteImport } from './routes/admin.course-audio'
+import { Route as AdminMetricsRouteImport } from './routes/admin.metrics'
 import { Route as AdminStorageReportRouteImport } from './routes/admin.storage-report'
 import { Route as ApiFinalAudioCoachRouteImport } from './routes/api/final-audio-coach'
 import { Route as ApiFinalAudioCoachRetakeRouteImport } from './routes/api/final-audio-coach-retake'
@@ -125,6 +126,11 @@ const AdminBugReportsRoute = AdminBugReportsRouteImport.update({
 const AdminCourseAudioRoute = AdminCourseAudioRouteImport.update({
   id: '/admin/course-audio',
   path: '/admin/course-audio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMetricsRoute = AdminMetricsRouteImport.update({
+  id: '/admin/metrics',
+  path: '/admin/metrics',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminStorageReportRoute = AdminStorageReportRouteImport.update({
@@ -254,6 +260,7 @@ export interface FileRoutesByFullPath {
   '/verb-bank': typeof VerbBankRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
+  '/admin/metrics': typeof AdminMetricsRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
@@ -293,6 +300,7 @@ export interface FileRoutesByTo {
   '/verb-bank': typeof VerbBankRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
+  '/admin/metrics': typeof AdminMetricsRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
@@ -332,6 +340,7 @@ export interface FileRoutesById {
   '/verb-bank': typeof VerbBankRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
+  '/admin/metrics': typeof AdminMetricsRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
@@ -373,6 +382,7 @@ export interface FileRouteTypes {
     | '/verb-bank'
     | '/admin/bug-reports'
     | '/admin/course-audio'
+    | '/admin/metrics'
     | '/admin/storage-report'
     | '/api/final-audio-coach'
     | '/api/final-audio-coach-retake'
@@ -412,6 +422,7 @@ export interface FileRouteTypes {
     | '/verb-bank'
     | '/admin/bug-reports'
     | '/admin/course-audio'
+    | '/admin/metrics'
     | '/admin/storage-report'
     | '/api/final-audio-coach'
     | '/api/final-audio-coach-retake'
@@ -450,6 +461,7 @@ export interface FileRouteTypes {
     | '/verb-bank'
     | '/admin/bug-reports'
     | '/admin/course-audio'
+    | '/admin/metrics'
     | '/admin/storage-report'
     | '/api/final-audio-coach'
     | '/api/final-audio-coach-retake'
@@ -490,6 +502,7 @@ export interface RootRouteChildren {
   VerbBankRoute: typeof VerbBankRoute
   AdminBugReportsRoute: typeof AdminBugReportsRoute
   AdminCourseAudioRoute: typeof AdminCourseAudioRoute
+  AdminMetricsRoute: typeof AdminMetricsRoute
   AdminStorageReportRoute: typeof AdminStorageReportRoute
   ApiFinalAudioCoachRoute: typeof ApiFinalAudioCoachRoute
   ApiFinalAudioCoachRetakeRoute: typeof ApiFinalAudioCoachRetakeRoute
@@ -621,6 +634,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/course-audio'
       fullPath: '/admin/course-audio'
       preLoaderRoute: typeof AdminCourseAudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/metrics': {
+      id: '/admin/metrics'
+      path: '/admin/metrics'
+      fullPath: '/admin/metrics'
+      preLoaderRoute: typeof AdminMetricsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/storage-report': {
@@ -807,6 +827,7 @@ const rootRouteChildren: RootRouteChildren = {
   VerbBankRoute: VerbBankRoute,
   AdminBugReportsRoute: AdminBugReportsRoute,
   AdminCourseAudioRoute: AdminCourseAudioRoute,
+  AdminMetricsRoute: AdminMetricsRoute,
   AdminStorageReportRoute: AdminStorageReportRoute,
   ApiFinalAudioCoachRoute: ApiFinalAudioCoachRoute,
   ApiFinalAudioCoachRetakeRoute: ApiFinalAudioCoachRetakeRoute,
