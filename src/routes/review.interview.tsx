@@ -529,8 +529,8 @@ function InterviewSimulator() {
             {es ? "Repregunta" : "Follow-up"}
           </p>
         ) : null}
-        <p className="text-center text-base font-semibold text-foreground">{current.en}</p>
-        <p className="text-center text-sm text-muted-foreground">{current.es}</p>
+        <p className="text-center text-base font-semibold text-foreground">{es ? current.es : current.en}</p>
+        {es ? <p className="text-center text-sm text-muted-foreground">{current.en}</p> : null}
 
         {phase === "intro" ? (
           <div className="space-y-3">
