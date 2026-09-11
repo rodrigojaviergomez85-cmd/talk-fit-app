@@ -9,6 +9,8 @@ import { useAppLang } from "@/lib/i18n";
 import { isAdmin } from "@/lib/storage-report.functions";
 import { getAdminMetrics } from "@/lib/admin-metrics.functions";
 import { fmtNum, fmtPct, pct, type AdminMetrics } from "@/lib/admin-metrics";
+import { getAdminCostCenter } from "@/lib/admin-cost-center.functions";
+import { estimateCosts, fmtUsd, type AdminCostCenter } from "@/lib/admin-cost-center";
 
 /** Admin-only engagement dashboard. Not linked from learner navigation. */
 export const Route = createFileRoute("/admin/metrics")({
