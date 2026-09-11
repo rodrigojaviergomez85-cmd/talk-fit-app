@@ -154,6 +154,8 @@ export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalD
             : t("dailyCap.remaining").replace("{n}", String(remaining))}
         </p>
       ) : null}
+
+      <LimitDialog sectionKey={SECTION_KEYS.practice} open={limitOpen} onOpenChange={setLimitOpen} />
     </section>
   );
 }
