@@ -3,6 +3,23 @@ import { authenticateCronRequest } from "@/integrations/supabase/cron-auth";
 import { purgeExpiredTakes } from "@/lib/storage-purge.server";
 
 /**
+ * The scheduled job authenticates with a random token stored in the internal
+ * `job_tokens` table (readable only with the service role, and by the cron job
+ * itself inside the database). The platform cron secret is also accepted.
+ */
+async function jobTokenAccepted(request: Request): Promise<boolean> {
+  const match = /^Bearer ([^\s,]+)$/.exec(request.headers.get("authorization") ?? "");
+  const provided = match?.[1];
+  if (!provided) return false;
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data } = await supabaseAdmin.from("job_tokens").select("token").eq("name", "purge-audio").maybeSingle();
+  const expected = data?.token;
+  if (!expected || expected.length !== provided.length) return false;
+  const { timingSafeEqual } = await import("node:crypto");
+  return timingSafeEqual(Buffer.from(provided), Buffer.from(expected));
+}
+
+/**
  * Daily audio retention job (called by pg_cron with the cron secret).
  * Deletes non-final practice takes older than 7 days on completed days.
  * Final Rep audio is never touched.
