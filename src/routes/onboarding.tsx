@@ -442,9 +442,7 @@ function OnboardingPage() {
                 {t("action.startDay1")}
               </button>
             ) : (
-              <button type="button" onClick={() => finish("explore")} className={secondaryBtn}>
-                {t("onb.explore")}
-              </button>
+              null
             )
           ) : screen < METHOD_SCREENS - 1 ? (
             <>
@@ -456,18 +454,13 @@ function OnboardingPage() {
               </button>
             </>
           ) : (
-            <>
-              <button
-                type="button"
-                onClick={() => (user && prefs.currentModuleId ? finish("day1") : setScreen(PLACEMENT_SCREEN))}
-                className={primaryBtn}
-              >
-                {user && prefs.currentModuleId ? t("action.startDay1") : t("action.startJourney")}
-              </button>
-              <button type="button" onClick={() => finish("explore")} className={secondaryBtn}>
-                {t("onb.explore")}
-              </button>
-            </>
+            <button
+              type="button"
+              onClick={() => (user && prefs.currentModuleId ? finish("day1") : setScreen(PLACEMENT_SCREEN))}
+              className={primaryBtn}
+            >
+              {user && prefs.currentModuleId ? t("action.startDay1") : t("action.startJourney")}
+            </button>
           )}
         </div>
       </div>
