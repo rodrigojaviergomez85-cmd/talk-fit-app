@@ -313,6 +313,125 @@ function InterviewSimulator() {
   const goalMax = current.followUp ? 4 : GOAL_MAX;
   const timeLabel = current.seconds === 30 ? "00:30" : "00:20";
 
+  const finishInterview = () => {
+    playback.stop();
+    stopSpeechRef.current?.();
+    const el = videoRef.current;
+    if (el) el.pause();
+    setFinished(true);
+  };
+
+  const countValues = Object.values(counts);
+  const average =
+    countValues.length > 0
+      ? countValues.reduce((sum, value) => sum + value, 0) / countValues.length
+      : null;
+  const averageOk = average !== null && average >= GOAL_MIN;
+
+  if (finished) {
+    return (
+      <AppShell>
+        <div className="space-y-4 p-4">
+          <Link to="/review" className="inline-flex items-center gap-2 text-sm font-semibold text-primary">
+            <ArrowLeft className="size-4" aria-hidden="true" /> Review
+          </Link>
+
+          <div className="overflow-hidden rounded-2xl border border-border bg-navy">
+            <img src={mikeCartoon} alt="Mike" className="aspect-video w-full object-cover" />
+          </div>
+
+          <h1 className="text-center text-2xl font-extrabold text-foreground">
+            {es ? "¡Gracias por aplicar!" : "Thanks for applying!"}
+          </h1>
+          <p className="text-center text-sm text-muted-foreground">
+            {es
+              ? "“Thank you for applying. It was a pleasure talking with you today. We'll be in touch soon.” — Mike"
+              : "“Thank you for applying. It was a pleasure talking with you today. We'll be in touch soon.” — Mike"}
+          </p>
+
+          <div className="rounded-2xl border border-border bg-card p-4 text-center">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              {es ? "Promedio final · conteo de oraciones" : "Final average · sentence count"}
+            </p>
+            {average === null ? (
+              <p className="mt-2 text-sm text-muted-foreground">
+                {es ? "Sin respuestas contadas" : "No answers counted"}
+              </p>
+            ) : (
+              <>
+                <p
+                  className={cn(
+                    "mt-1 text-3xl font-extrabold tabular-nums",
+                    averageOk ? "text-success" : "text-destructive",
+                  )}
+                >
+                  {averageOk ? "🟢" : "🔴"} {average.toFixed(1)}
+                </p>
+                <p className="mt-1 text-[12px] text-muted-foreground">
+                  {es
+                    ? `Meta ${GOAL_MIN}–${GOAL_MAX} oraciones · ${countValues.length} respuestas contadas`
+                    : `Goal ${GOAL_MIN}–${GOAL_MAX} sentences · ${countValues.length} answers counted`}
+                </p>
+              </>
+            )}
+          </div>
+
+          <div className="space-y-2 rounded-2xl border border-border bg-secondary/40 p-4 text-sm text-foreground">
+            <p className="font-semibold">
+              {es
+                ? `Asegúrate de llegar al mínimo de ${GOAL_MIN}–${GOAL_MAX} oraciones para sonar fluido.`
+                : `Reach at least ${GOAL_MIN}–${GOAL_MAX} sentences to sound fluent.`}
+            </p>
+            <p>
+              {es
+                ? "Usa diferentes verbos, frases y conectores (and, because, so, but, then, also)."
+                : "Use different verbs, phrases and connectors (and, because, so, but, then, also)."}
+            </p>
+            <p>
+              {es
+                ? "Repasa en Review los temas gramaticales y en Método Natural aprende nuevas palabras para sonar más fluido."
+                : "Go over grammar topics in Review, and learn new words in Natural Method to sound more fluent."}
+            </p>
+            <p className="font-extrabold text-primary">
+              {es
+                ? "Te deseo lo mejor en la entrevista real. You can do it, champion!"
+                : "I wish you the best in the real interview. You can do it, champion!"}
+            </p>
+          </div>
+
+          <div className="grid gap-2">
+            <Link
+              to="/review"
+              className="w-full rounded-2xl bg-primary p-4 text-center text-base font-extrabold uppercase tracking-wide text-primary-foreground"
+            >
+              {es ? "Ir a Review" : "Go to Review"}
+            </Link>
+            <Link
+              to="/natural-method"
+              className="w-full rounded-2xl border border-border p-4 text-center text-sm font-bold uppercase tracking-wide text-foreground"
+            >
+              {es ? "Método Natural" : "Natural Method"}
+            </Link>
+            <button
+              type="button"
+              onClick={() => {
+                setCounts({});
+                setRecording(null);
+                setStep(0);
+                setPhase("intro");
+                setFinished(false);
+              }}
+              className="w-full rounded-2xl border border-border p-3 text-sm font-bold uppercase tracking-wide text-muted-foreground"
+            >
+              {es ? "Repetir entrevista" : "Restart interview"}
+            </button>
+          </div>
+        </div>
+      </AppShell>
+    );
+  }
+
+
   return (
     <AppShell>
       <div className="space-y-4 p-4">
