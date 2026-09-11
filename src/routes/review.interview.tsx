@@ -37,12 +37,16 @@ const TURNS = [
   {
     id: "welcome",
     src: welcomeClip.url,
+    // Mike's voice ends ~6.5s in; the clip keeps playing to 8s.
+    speechEnd: 6.6,
     en: "Hi! Welcome to the interview. I'm Mike, your recruiter today. How's it going?",
     es: "¡Hola! Bienvenido a la entrevista. Soy Mike, tu reclutador de hoy. ¿Cómo vas?",
   },
   {
     id: "tell-me",
     src: questionClip.url,
+    // Voice ends ~3.6s in; enable recording right after he stops talking.
+    speechEnd: 3.7,
     en: "Let's get started. Tell me about yourself.",
     es: "Empecemos. Háblame de ti.",
   },
@@ -122,6 +126,9 @@ function InterviewSimulator() {
             muted={waiting}
             loop={waiting}
             preload="auto"
+            onTimeUpdate={(e) => {
+              if (!waiting && e.currentTarget.currentTime >= current.speechEnd) setPhase("ready");
+            }}
             onEnded={() => {
               if (!waiting) setPhase("ready");
             }}
