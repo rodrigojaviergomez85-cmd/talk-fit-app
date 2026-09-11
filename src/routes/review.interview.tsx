@@ -207,7 +207,7 @@ const PROMPTS: Prompt[] = [
     id: "goodbye",
     en: "Thank you for applying. It was a pleasure talking with you today. We'll be in touch soon. I wish you the best in the real interview. You can do it, champion!",
     es: "Gracias por aplicar. Fue un placer hablar contigo hoy. Estaremos en contacto pronto. Te deseo lo mejor en la entrevista real. You can do it, champion!",
-    video: { src: goodbyeClip.url, speechEnd: 7.6 },
+    video: { src: goodbyeClip.url, speechEnd: 8 },
     seconds: 0,
     followUp: false,
     tense: null,
