@@ -3,7 +3,17 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ChevronDown, PlayCircle } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
-import { NATURAL_METHOD_AUDIOBOOKS, type NaturalMethodAudiobook } from "@/services/natural-method-audiobooks";
+import {
+  NATURAL_METHOD_AUDIOBOOKS,
+  audiobookGrammar,
+  type AudiobookGrammar,
+  type NaturalMethodAudiobook,
+} from "@/services/natural-method-audiobooks";
+
+const GRAMMAR_LABELS: Record<AudiobookGrammar, { en: string; es: string }> = {
+  "simple-present": { en: "Simple Present", es: "Presente simple" },
+  "simple-future": { en: "Simple Future", es: "Futuro simple" },
+};
 
 export const Route = createFileRoute("/natural-method/audiobooks")({
   head: () => ({
