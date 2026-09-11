@@ -328,11 +328,11 @@ function InterviewSimulator() {
     if (el) el.pause();
   };
 
-  const goToLastQuestion = () => {
+  const goBack = () => {
     playback.stop();
     stopSpeechRef.current?.();
     setRecording(null);
-    setStep(LAST_QUESTION_INDEX);
+    setStep((value) => Math.max(0, value - 1));
     setPhase("intro");
     const el = videoRef.current;
     if (el) {
