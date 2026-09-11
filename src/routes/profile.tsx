@@ -153,6 +153,14 @@ function ProfilePage() {
             </p>
             <p className="text-[16px] font-bold">{userEmail}</p>
             <p className="text-[13px] text-muted-foreground">{t("account.syncNote")}</p>
+            {/* Consumo y facturación: solo con sesión iniciada. */}
+            <Link
+              to="/cuenta"
+              className="inline-flex min-h-[48px] w-full items-center justify-between rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
+            >
+              {esUi ? "Mi consumo y facturación" : "Usage & billing"}
+              <ChevronRight className="size-4 text-muted-foreground" />
+            </Link>
             <button
               type="button"
               onClick={() => void signOut()}

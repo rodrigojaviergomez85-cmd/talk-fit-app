@@ -98,6 +98,33 @@ export type Database = {
         }
         Relationships: []
       }
+      app_settings: {
+        Row: {
+          billing_enabled: boolean
+          id: string
+          limits_enabled: boolean
+          pro_multiplier: number
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          billing_enabled?: boolean
+          id?: string
+          limits_enabled?: boolean
+          pro_multiplier?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          billing_enabled?: boolean
+          id?: string
+          limits_enabled?: boolean
+          pro_multiplier?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       bug_reports: {
         Row: {
           area: string
@@ -682,6 +709,7 @@ export type Database = {
       section_limits: {
         Row: {
           created_at: string
+          enabled: boolean
           free_limit: number
           free_monthly_limit: number | null
           label: string
@@ -691,6 +719,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          enabled?: boolean
           free_limit: number
           free_monthly_limit?: number | null
           label: string
@@ -700,12 +729,46 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          enabled?: boolean
           free_limit?: number
           free_monthly_limit?: number | null
           label?: string
           section_key?: string
           sort_order?: number
           updated_at?: string
+        }
+        Relationships: []
+      }
+      settings_audit_log: {
+        Row: {
+          changed_by: string | null
+          changed_by_email: string | null
+          created_at: string
+          field: string
+          id: string
+          new_value: string | null
+          old_value: string | null
+          scope: string
+        }
+        Insert: {
+          changed_by?: string | null
+          changed_by_email?: string | null
+          created_at?: string
+          field: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+          scope: string
+        }
+        Update: {
+          changed_by?: string | null
+          changed_by_email?: string | null
+          created_at?: string
+          field?: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+          scope?: string
         }
         Relationships: []
       }
@@ -1068,6 +1131,14 @@ export type Database = {
           unlimited: boolean
         }[]
       }
+      get_usage_history: {
+        Args: { _days?: number; _user_id: string }
+        Returns: {
+          day_key: string
+          section_key: string
+          used: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1075,8 +1146,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_admin: { Args: { p_user_id: string }; Returns: boolean }
       is_pro_subscriber: { Args: { _user_id: string }; Returns: boolean }
       is_unlimited_test_user: { Args: { _user_id: string }; Returns: boolean }
+      limits_enabled: { Args: never; Returns: boolean }
       plan_multiplier: { Args: { _user_id: string }; Returns: number }
       release_tts_lock: {
         Args: { _clip_key: string; _owner: string }
