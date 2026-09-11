@@ -117,27 +117,27 @@ function ModuleRow({
 
   const body = (
     <>
-      <div className="flex items-center gap-3">
-        <ModuleBadge moduleId={module.id} size="xl" es={es} className="shrink-0" />
+      <div className="flex items-center gap-2.5">
+        <ModuleBadge moduleId={module.id} size="sm" es={es} className="shrink-0" />
         <div className="min-w-0 flex-1">
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">{kicker}</p>
-          <h3 className="flex items-center gap-1.5 text-[16px] font-extrabold leading-tight tracking-tight">
-            {status.locked ? <Lock className="size-3.5 shrink-0 text-muted-foreground" aria-hidden /> : null}
+          <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-primary">{kicker}</p>
+          <h3 className="flex items-center gap-1 text-sm font-extrabold leading-tight tracking-tight">
+            {status.locked ? <Lock className="size-3 shrink-0 text-muted-foreground" aria-hidden /> : null}
             <span className="min-w-0 truncate">{name}</span>
           </h3>
-          <p className="mt-0.5 text-[13px] leading-snug text-muted-foreground">
+          <p className="text-[11px] leading-snug text-muted-foreground">
             {es ? teaser.es : teaser.en}
           </p>
         </div>
         {status.locked ? (
-          <span className="flex shrink-0 items-center gap-1 rounded-full bg-secondary px-3 py-1 text-[11px] font-bold text-muted-foreground">
-            <Lock className="size-3" aria-hidden />
+          <span className="flex shrink-0 items-center gap-1 rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold text-muted-foreground">
+            <Lock className="size-2.5" aria-hidden />
             {t("prog.pillLocked")}
           </span>
         ) : isCurrent || isNext ? (
           <span
             className={cn(
-              "shrink-0 rounded-full px-3 py-1 text-[11px] font-bold",
+              "shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold",
               isCurrent
                 ? "bg-primary text-primary-foreground"
                 : "bg-primary/15 text-primary",
@@ -146,31 +146,31 @@ function ModuleRow({
             {isCurrent ? t("prog.pillCurrent") : t("prog.pillNext")}
           </span>
         ) : isReview ? (
-          <span className="shrink-0 rounded-full bg-secondary px-3 py-1 text-[11px] font-bold text-foreground/70">
+          <span className="shrink-0 rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold text-foreground/70">
             {t("prog.pillReview")}
           </span>
         ) : null}
         {status.locked ? null : (
-          <ChevronRight className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+          <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
         )}
       </div>
 
       {isCurrent ? (
         <>
-          <div className="mt-3 h-2 overflow-hidden rounded-full bg-secondary">
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary">
             <div
               className="h-full rounded-full bg-primary transition-all"
               style={{ width: `${total > 0 ? Math.round((done / total) * 100) : 0}%` }}
             />
           </div>
-          <div className="mt-2 flex items-center justify-between gap-2">
-            <p className="text-[12px] font-semibold text-foreground">
+          <div className="mt-1.5 flex items-center justify-between gap-2">
+            <p className="text-[10px] font-semibold text-foreground">
               {t("prog.practicesOf")
                 .replace("{done}", `${currentPractice}`)
                 .replace("{total}", `${total}`)}
             </p>
-            <p className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
-              <Bookmark className="size-3.5" aria-hidden /> {t("prog.badgeToEarn")}
+            <p className="flex items-center gap-1 text-[10px] text-muted-foreground">
+              <Bookmark className="size-3" aria-hidden /> {t("prog.badgeToEarn")}
             </p>
           </div>
         </>
@@ -179,7 +179,7 @@ function ModuleRow({
   );
 
   const shell = cn(
-    "block rounded-2xl border p-4",
+    "block rounded-2xl border p-3",
     isCurrent
       ? "border-primary bg-card shadow-[var(--shadow-card)]"
       : isNext
