@@ -1587,6 +1587,8 @@ export function Rep2Copy({
         ))}
       </div>
 
+      <AudioPlayer text={chunkText} label={t("practice.listen")} rate={0.9} voice={day.speakerVoice} />
+
       {/* Genuine tap on the recorder unlocks Web Audio for iOS/Safari — no prompt, no blocking. */}
       <div onPointerDownCapture={correctionEnabled ? unlockFeedbackAudio : undefined}>
         <VoiceRecorder
