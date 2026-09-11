@@ -271,3 +271,15 @@ function AiCoachPage() {
     </AppShell>
   );
 }
+
+/** Shows a UTC reset timestamp in the learner's local time. */
+function formatLocalReset(iso: string, lang: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat(lang === "es" ? "es" : "en", {
+    day: "numeric",
+    month: "short",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
+}
