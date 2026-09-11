@@ -179,6 +179,7 @@ function OnboardingPage() {
   const navigate = useNavigate();
   const { t, prefs, setPrefs } = useAppLang();
   const { user } = useAuth();
+  const installedPwa = useIsInstalledPwa();
   const [screen, setScreen] = useState(0);
   const [placement, setPlacement] = useState<ModuleId | null>(null);
   const [pendingChoice, setPendingChoice] = useState<ModuleId | null>(null);
