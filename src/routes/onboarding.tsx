@@ -375,7 +375,37 @@ function OnboardingPage() {
             </section>
           ) : null}
 
-          {screen === PLACEMENT_SCREEN ? <PlacementPicker value={placement} onSelect={choosePlacement} initialPlacement /> : null}
+          {screen === PLACEMENT_SCREEN ? (
+            <>
+              <PlacementPicker value={placement} onSelect={choosePlacement} initialPlacement />
+              {pendingChoice ? (
+                <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+                  <div className="w-full max-w-lg space-y-4 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+                    <p className="text-[18px] font-extrabold tracking-tight">{t("place.sureTitle")}</p>
+                    <p className="text-[15px] text-muted-foreground">
+                      {t("place.sureBody")}{" "}
+                      <span className="font-extrabold text-foreground">
+                        {CourseService.getModule(pendingChoice).label} · {CourseService.getModule(pendingChoice).title}
+                      </span>
+                      ?
+                    </p>
+                    {saveError ? <p className="text-[13px] font-semibold text-destructive">{t("place.saveFailed")}</p> : null}
+                    <button
+                      type="button"
+                      disabled={saving}
+                      onClick={() => void confirmChoice(pendingChoice)}
+                      className={primaryBtn}
+                    >
+                      {t("place.sureYes")}
+                    </button>
+                    <button type="button" onClick={() => setPendingChoice(null)} className={secondaryBtn}>
+                      {t("place.sureNo")}
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+            </>
+          ) : null}
           {screen === AUTH_SCREEN ? (
             <section className="space-y-4">
               <AuthGate />
