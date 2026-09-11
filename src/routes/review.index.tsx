@@ -76,7 +76,7 @@ function ReviewIndex() {
               <span className="block text-xl font-extrabold text-foreground">B4 Interview Simulator</span>
               <span className="block text-sm text-muted-foreground">Simulador de entrevistas</span>
               <span className="mt-2 block text-xs font-extrabold uppercase text-primary">
-                {showEs ? "Pasado, presente y futuro · 11 turnos" : "Past, present and future · 11 turns"}
+                {showEs ? "Pasado, presente y futuro · 12 turnos" : "Past, present and future · 12 turns"}
               </span>
             </span>
             <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />

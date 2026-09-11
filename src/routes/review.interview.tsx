@@ -14,11 +14,12 @@ import questionClip from "@/assets/interview/mike-question-1.mp4.asset.json";
 import waitingClip from "@/assets/interview/mike-waiting.mp4.asset.json";
 import tellMeMoreClip from "@/assets/interview/mike-tell-me-more.mp4.asset.json";
 import routineClip from "@/assets/interview/mike-routine.mp4.asset.json";
+import presentProgressiveClip from "@/assets/interview/mike-present-progressive.mp4.asset.json";
 import lastJobClip from "@/assets/interview/mike-last-job.mp4.asset.json";
 import explainWhyClip from "@/assets/interview/mike-explain-why.mp4.asset.json";
 import favoriteMovieClip from "@/assets/interview/mike-favorite-movie.mp4.asset.json";
 import opinionClip from "@/assets/interview/mike-opinion.mp4.asset.json";
-import learnedClip from "@/assets/interview/mike-learned.mp4.asset.json";
+import pastProgressiveClip from "@/assets/interview/mike-past-progressive.mp4.asset.json";
 import twoYearsClip from "@/assets/interview/mike-two-years.mp4.asset.json";
 import afterCourseClip from "@/assets/interview/mike-after-course.mp4.asset.json";
 
@@ -129,6 +130,15 @@ const PROMPTS: Prompt[] = [
     tense: "present",
   },
   {
+    id: "present-progressive",
+    en: "What is your mom doing right now?",
+    es: "¿Qué está haciendo tu mamá ahora mismo?",
+    video: { src: presentProgressiveClip.url, speechEnd: 2.7 },
+    seconds: MAIN_SECONDS,
+    followUp: false,
+    tense: "present",
+  },
+  {
     id: "last-job",
     en: "Tell me about your last job or your last vacation. What happened?",
     es: "Háblame de tu último trabajo o de tus últimas vacaciones. ¿Qué pasó?",
@@ -165,10 +175,10 @@ const PROMPTS: Prompt[] = [
     tense: "past",
   },
   {
-    id: "learned",
-    en: "What did you learn from that experience?",
-    es: "¿Qué aprendiste de esa experiencia?",
-    video: { src: learnedClip.url, speechEnd: 3.2 },
+    id: "past-progressive",
+    en: "What were you doing at 1 p.m. yesterday?",
+    es: "¿Qué estabas haciendo ayer a la 1 p.m.?",
+    video: { src: pastProgressiveClip.url, speechEnd: 2.5 },
     seconds: MAIN_SECONDS,
     followUp: false,
     tense: "past",
