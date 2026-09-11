@@ -220,6 +220,23 @@ const TENSE_LABEL: Record<Exclude<Tense, null>, { en: string; es: string }> = {
   future: { en: "Future", es: "Futuro" },
 };
 
+/** One English clarification phrase per prompt so students practice different replies. */
+const CLARIFICATION_PHRASES: readonly string[] = [
+  "Could you please repeat that?",
+  "Could you speak slower, please?",
+  "Could you rephrase your question, please?",
+  "Could you say that again?",
+  "I'm sorry, I didn't catch that.",
+  "Could you explain that in another way?",
+  "Could you give me an example, please?",
+  "What do you mean by that?",
+  "I didn't understand the question.",
+  "Could you repeat the last part, please?",
+  "I'm not sure I follow.",
+  "Could you break that down, please?",
+  "Sorry, can you say it one more time?",
+];
+
 /** Secondary grey skip button used across the practice modules. */
 function SkipButton({ es, onClick, className }: { es: boolean; onClick: () => void; className?: string }) {
   return (
