@@ -68,12 +68,6 @@ function HomePage() {
     void navigate({ to: "/onboarding" });
   }, [state, prefs.onboardingCompleted, prefs.currentModuleId, user, sync, authLoading, navigate]);
 
-  // App tour ("how to use the app") — shown once, after the intro is done.
-  useEffect(() => {
-    if (!prefs.onboardingCompleted) return;
-    if (isAppTourDone()) return;
-    void navigate({ to: "/tutorial" });
-  }, [prefs.onboardingCompleted, navigate]);
 
 
   if (!state) {
