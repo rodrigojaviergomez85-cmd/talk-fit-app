@@ -65,17 +65,17 @@ export function JourneyList({ state }: { state: JourneyState }) {
   const nextId = currentIndex >= 0 ? modules[currentIndex + 1]?.id : undefined;
 
   return (
-    <section className="space-y-3">
+    <section className="space-y-2">
       <div>
-        <h2 className="text-[20px] font-extrabold tracking-tight">{t("prog.myRoute")}</h2>
-        <p className="text-[13px] text-muted-foreground">{t("prog.myRouteSub")}</p>
+        <h2 className="text-lg font-extrabold tracking-tight">{t("prog.myRoute")}</h2>
+        <p className="text-xs text-muted-foreground">{t("prog.myRouteSub")}</p>
       </div>
 
-      <div className="relative space-y-2.5">
+      <div className="relative space-y-2">
         {/* Connector line behind the cards */}
         <div
           aria-hidden
-          className="pointer-events-none absolute bottom-6 left-[44px] top-6 w-px bg-border"
+          className="pointer-events-none absolute bottom-5 left-[34px] top-5 w-px bg-border"
         />
         {modules.map((module) => (
           <ModuleRow
