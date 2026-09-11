@@ -94,13 +94,15 @@ function MetricsPage() {
     setBusy(true);
     setError(null);
     try {
-      setData(await load());
+      const [m, c] = await Promise.all([load(), loadCosts()]);
+      setData(m);
+      setCosts(c);
     } catch {
       setError(es ? "No se pudieron cargar las métricas." : "Could not load metrics.");
     } finally {
       setBusy(false);
     }
-  }, [load, es]);
+  }, [load, loadCosts, es]);
 
   useEffect(() => {
     if (admin === true) void refresh();
