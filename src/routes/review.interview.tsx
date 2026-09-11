@@ -474,21 +474,14 @@ function InterviewSimulator() {
           >
             <ArrowLeft className="size-4" aria-hidden="true" /> Review
           </Link>
-        ) : step < LAST_QUESTION_INDEX ? (
+        ) : (
           <button
             type="button"
-            onClick={goToLastQuestion}
+            onClick={goBack}
             className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground"
           >
-            <SkipForward className="size-4" aria-hidden="true" /> {es ? "Última pregunta" : "Last question"}
+            <ArrowLeft className="size-4" aria-hidden="true" /> {es ? "Atrás" : "Back"}
           </button>
-        ) : (
-          <Link
-            to="/review"
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-semibold text-primary"
-          >
-            <ArrowLeft className="size-4" aria-hidden="true" /> Review
-          </Link>
         )}
 
         <header>
