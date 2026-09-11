@@ -91,6 +91,14 @@ export type InterviewCapStatus = {
   unlimited: boolean;
 };
 
+/**
+ * Why a slot was (not) consumed.
+ * - "capped": today's interviews really are used up.
+ * - "auth": no account yet — sign in and try again, nothing was consumed.
+ * - "error": transient write failure — retry, nothing was consumed.
+ */
+export type InterviewSlotResult = "ok" | "capped" | "auth" | "error";
+
 let unlimited = false;
 /** FREE default; raised to free x4 for Pro from the server-decided limit. */
 let effectiveCap = DAILY_INTERVIEW_CAP;
