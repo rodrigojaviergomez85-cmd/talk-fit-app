@@ -204,6 +204,11 @@ function InterviewSimulator() {
             <p className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               {es ? "Grabar respuesta · máx 00:30" : "Record answer · max 00:30"}
             </p>
+            <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              {es
+                ? `Meta · ${GOAL_MIN}–${GOAL_MAX} oraciones`
+                : `Goal · ${GOAL_MIN}–${GOAL_MAX} sentences`}
+            </p>
             <VoiceRecorder
               key={current.id}
               label={es ? "GRABAR" : "RECORD"}
