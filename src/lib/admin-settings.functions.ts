@@ -109,63 +109,20 @@ export const updateAdminSettings = createServerFn({ method: "POST" })
     const supabaseAdmin = await assertAdmin(context);
     const email = typeof context.claims["email"] === "string" ? (context.claims["email"] as string) : null;
 
-    const { data: before } = await supabaseAdmin
-      .from("app_settings")
-      .select("limits_enabled, billing_enabled, pro_multiplier")
-      .eq("id", "global")
-      .maybeSingle();
-    const { data: sectionsBefore } = await supabaseAdmin
-      .from("section_limits")
-      .select("section_key, free_limit, enabled");
-
-    const audit: {
-      changed_by: string;
-      changed_by_email: string | null;
-      scope: string;
-      field: string;
-      old_value: string | null;
-      new_value: string | null;
-    }[] = [];
-    const track = (scope: string, field: string, oldV: unknown, newV: unknown) => {
-      if (String(oldV) === String(newV)) return;
-      audit.push({
-        changed_by: context.userId,
-        changed_by_email: email,
-        scope,
-        field,
-        old_value: oldV === null || oldV === undefined ? null : String(oldV),
-        new_value: newV === null || newV === undefined ? null : String(newV),
-      });
-    };
-
-    track("app_settings", "limits_enabled", before?.limits_enabled, data.limitsEnabled);
-    track("app_settings", "billing_enabled", before?.billing_enabled, data.billingEnabled);
-    track("app_settings", "pro_multiplier", before?.pro_multiplier, data.proMultiplier);
-
-    const { error: settingsError } = await supabaseAdmin
-      .from("app_settings")
-      .update({
-        limits_enabled: data.limitsEnabled,
-        billing_enabled: data.billingEnabled,
-        pro_multiplier: data.proMultiplier,
-        updated_by: context.userId,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", "global");
-    if (settingsError) throw new Error("No se pudieron guardar los ajustes generales");
-
-    for (const section of data.sections) {
-      const prev = (sectionsBefore ?? []).find((s) => s.section_key === section.sectionKey);
-      if (!prev) continue;
-      track(section.sectionKey, "free_limit", prev.free_limit, section.freeLimit);
-      track(section.sectionKey, "enabled", prev.enabled, section.enabled);
-      const { error } = await supabaseAdmin
-        .from("section_limits")
-        .update({ free_limit: section.freeLimit, enabled: section.enabled, updated_at: new Date().toISOString() })
-        .eq("section_key", section.sectionKey);
-      if (error) throw new Error(`No se pudo guardar la sección ${section.sectionKey}`);
+    // One transaction in Postgres: switches, multiplier, every section and the
+    // audit trail are saved together or not at all. It re-checks the admin role
+    // with the id from the verified session.
+    const { error } = await supabaseAdmin.rpc("apply_admin_settings", {
+      _admin_id: context.userId,
+      _admin_email: email,
+      _limits_enabled: data.limitsEnabled,
+      _billing_enabled: data.billingEnabled,
+      _pro_multiplier: data.proMultiplier,
+      _sections: data.sections as never,
+    });
+    if (error) {
+      console.error("[admin-settings] apply failed", error.message);
+      throw new Error("No se pudieron guardar los ajustes. No se cambió nada.");
     }
-
-    if (audit.length > 0) await supabaseAdmin.from("settings_audit_log").insert(audit);
     return { ok: true };
   });
