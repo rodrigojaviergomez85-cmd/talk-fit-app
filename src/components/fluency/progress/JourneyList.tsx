@@ -71,11 +71,11 @@ export function JourneyList({ state }: { state: JourneyState }) {
         <p className="text-xs text-muted-foreground">{t("prog.myRouteSub")}</p>
       </div>
 
-      <div className="relative space-y-2">
+      <div className="relative space-y-1.5">
         {/* Connector line behind the cards */}
         <div
           aria-hidden
-          className="pointer-events-none absolute bottom-5 left-[34px] top-5 w-px bg-border"
+          className="pointer-events-none absolute bottom-4 left-[28px] top-4 w-px bg-border"
         />
         {modules.map((module) => (
           <ModuleRow
