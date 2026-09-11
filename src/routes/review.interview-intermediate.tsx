@@ -334,7 +334,17 @@ const CLARIFICATION_PHRASES: readonly string[] = [
 ];
 
 /** Secondary grey skip button used across the practice modules. */
-function SkipButton({ es, onClick, className }: { es: boolean; onClick: () => void; className?: string }) {
+function SkipButton({
+  es,
+  onClick,
+  className,
+  final,
+}: {
+  es: boolean;
+  onClick: () => void;
+  className?: string;
+  final?: boolean;
+}) {
   return (
     <button
       type="button"
@@ -345,7 +355,7 @@ function SkipButton({ es, onClick, className }: { es: boolean; onClick: () => vo
       )}
     >
       <SkipForward className="size-3" aria-hidden="true" />
-      {es ? "Saltar pregunta" : "Skip question"}
+      {final ? (es ? "Saltar" : "Skip") : es ? "Saltar pregunta" : "Skip question"}
     </button>
   );
 }
