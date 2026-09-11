@@ -168,7 +168,12 @@ function InterviewSimulator() {
             loop={waiting}
             preload="auto"
             onTimeUpdate={(e) => {
-              if (!waiting && e.currentTarget.currentTime >= current.speechEnd) setPhase("ready");
+              if (!waiting && e.currentTarget.currentTime >= current.speechEnd) {
+                const el = e.currentTarget;
+                el.pause();
+                el.muted = true;
+                setPhase("ready");
+              }
             }}
             onEnded={() => {
               if (!waiting) setPhase("ready");
