@@ -3,7 +3,6 @@ import { ArrowRight, BriefcaseBusiness } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
 import { useInterviewCap } from "@/hooks/use-interview-cap";
-import { DAILY_INTERVIEW_CAP } from "@/services/interview-attempts";
 
 export const Route = createFileRoute("/review/interview-simulators")({
   head: () => ({
@@ -28,10 +27,12 @@ export const Route = createFileRoute("/review/interview-simulators")({
 function InterviewSimulators() {
   const { lang } = useAppLang();
   const showEs = lang === "es";
-  // DAILY INTERVIEW CAP: 2 runs per local day, shared by the three simulators.
+  // DAILY INTERVIEW CAP shared by the three simulators. The number comes from
+  // the server (free limit x plan multiplier), so Pro sees its real cap.
   const cap = useInterviewCap("b4");
-  const used = Math.min(cap.status?.used ?? 0, DAILY_INTERVIEW_CAP);
-  const capFull = Boolean(cap.status && !cap.status.unlimited && cap.status.used >= DAILY_INTERVIEW_CAP);
+  const dailyCap = cap.limit > 0 ? cap.limit : (cap.status?.cap ?? 0);
+  const used = Math.min(cap.status?.used ?? 0, dailyCap);
+  const capFull = Boolean(cap.status && !cap.status.unlimited && dailyCap > 0 && cap.status.used >= dailyCap);
 
   return (
     <AppShell>
@@ -52,7 +53,7 @@ function InterviewSimulators() {
           </p>
         </header>
 
-        {cap.status && !cap.status.unlimited ? (
+        {cap.status && !cap.status.unlimited && dailyCap > 0 ? (
           <p
             className={`rounded-xl border px-3 py-2 text-xs font-semibold ${
               capFull
@@ -62,11 +63,11 @@ function InterviewSimulators() {
           >
             {capFull
               ? showEs
-                ? `Has usado ${DAILY_INTERVIEW_CAP} / ${DAILY_INTERVIEW_CAP} entrevistas hoy. Vuelve mañana.`
-                : `You've used ${DAILY_INTERVIEW_CAP} / ${DAILY_INTERVIEW_CAP} interviews today. Come back tomorrow.`
+                ? `Has usado ${dailyCap} / ${dailyCap} entrevistas hoy. Vuelve mañana.`
+                : `You've used ${dailyCap} / ${dailyCap} interviews today. Come back tomorrow.`
               : showEs
-                ? `Entrevistas hoy: ${used} / ${DAILY_INTERVIEW_CAP}`
-                : `Interviews today: ${used} / ${DAILY_INTERVIEW_CAP}`}
+                ? `Entrevistas hoy: ${used} / ${dailyCap}`
+                : `Interviews today: ${used} / ${dailyCap}`}
           </p>
         ) : null}
 
