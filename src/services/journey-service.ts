@@ -258,6 +258,16 @@ export const JourneyService = {
       return INTERMEDIATE_MODULES.every((id) => JourneyService.moduleComplete(state, id));
     }
 
+    // INTERMEDIATE is a parallel block: a learner placed in any of EAGLES /
+    // TIGERS / SHARKS has all three open, no sequential completion required.
+    if (
+      INTERMEDIATE_MODULES.includes(moduleId) &&
+      savedId !== null &&
+      INTERMEDIATE_MODULES.includes(savedId)
+    ) {
+      return true;
+    }
+
     if (JourneyService.moduleComplete(state, modules[index - 1]!.id)) return true;
     return false;
   },

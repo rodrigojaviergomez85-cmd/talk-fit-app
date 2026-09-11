@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Bookmark, ChevronRight } from "lucide-react";
+import { Bookmark, ChevronRight, Lock } from "lucide-react";
 import { ModuleBadge } from "@/components/fluency/ModuleBadge";
 import { CourseService } from "@/services/course-service";
 import { JourneyService } from "@/services/journey-service";
@@ -108,6 +108,8 @@ function ModuleRow({
   const done = JourneyService.completedCount(state, module.id);
   const total = module.days.length;
   const status = moduleAccessStatus(state, module.id, t);
+  const isReview = JourneyService.moduleStatus(state, module.id) === "review";
+  const prerequisite = status.locked ? Progression.prerequisiteOf(module.id) : null;
   const teaser = MODULE_TEASERS[module.id];
   const name = ROUTE_NAMES[module.id] ?? module.title;
   const level = ROUTE_LEVELS[module.id];
@@ -120,12 +122,25 @@ function ModuleRow({
         <ModuleBadge moduleId={module.id} size="xl" es={es} className="shrink-0" />
         <div className="min-w-0 flex-1">
           <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">{kicker}</p>
-          <h3 className="text-[16px] font-extrabold leading-tight tracking-tight">{name}</h3>
+          <h3 className="flex items-center gap-1.5 text-[16px] font-extrabold leading-tight tracking-tight">
+            {status.locked ? <Lock className="size-3.5 shrink-0 text-muted-foreground" aria-hidden /> : null}
+            <span className="min-w-0 truncate">{name}</span>
+          </h3>
           <p className="mt-0.5 text-[13px] leading-snug text-muted-foreground">
             {es ? teaser.es : teaser.en}
           </p>
+          {status.locked && prerequisite ? (
+            <p className="mt-1 text-[11px] font-semibold text-muted-foreground">
+              {t("home.unlockAfter")} {CourseService.getModule(prerequisite).title}
+            </p>
+          ) : null}
         </div>
-        {isCurrent || isNext ? (
+        {status.locked ? (
+          <span className="flex shrink-0 items-center gap-1 rounded-full bg-secondary px-3 py-1 text-[11px] font-bold text-muted-foreground">
+            <Lock className="size-3" aria-hidden />
+            {t("prog.pillLocked")}
+          </span>
+        ) : isCurrent || isNext ? (
           <span
             className={cn(
               "shrink-0 rounded-full px-3 py-1 text-[11px] font-bold",
@@ -136,8 +151,14 @@ function ModuleRow({
           >
             {isCurrent ? t("prog.pillCurrent") : t("prog.pillNext")}
           </span>
+        ) : isReview ? (
+          <span className="shrink-0 rounded-full bg-secondary px-3 py-1 text-[11px] font-bold text-foreground/70">
+            {t("prog.pillReview")}
+          </span>
         ) : null}
-        <ChevronRight className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+        {status.locked ? null : (
+          <ChevronRight className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+        )}
       </div>
 
       {isCurrent ? (
