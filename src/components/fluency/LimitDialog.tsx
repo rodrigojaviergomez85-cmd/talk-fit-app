@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
 import { useDailyUsage, useSectionLimits } from "@/hooks/use-daily-usage";
 import { createCheckoutSession } from "@/lib/subscription.functions";
-import { PRO_MULTIPLIER } from "@/config/limits";
 import { useAppSettings } from "@/hooks/use-app-settings";
 
 /**
@@ -42,7 +41,9 @@ export function LimitDialog({
   const startCheckout = useServerFn(createCheckoutSession);
   const [loading, setLoading] = useState(false);
 
-  const proLimit = freeLimit * PRO_MULTIPLIER;
+  // El x4 es un ajuste editable por el admin: nunca un número fijo en el código.
+  const multiplier = settings.proMultiplier;
+  const proLimit = sections.data?.find((s) => s.sectionKey === sectionKey)?.proLimit ?? freeLimit * multiplier;
 
   async function subscribe() {
     if (!user) {
@@ -97,7 +98,7 @@ export function LimitDialog({
             <DialogHeader>
               <DialogTitle>Llegaste a tu límite diario</DialogTitle>
               <DialogDescription>
-                Usaste tus {freeLimit} intentos gratis de hoy en {label}. Con Pro multiplicas por 4
+                Usaste tus {freeLimit} intentos gratis de hoy en {label}. Con Pro multiplicas por {multiplier}
                 tus intentos en todas las secciones: aquí tendrías {proLimit} al día, por 4.99 USD al
                 mes. Renovación automática y cancelas cuando quieras.
               </DialogDescription>
