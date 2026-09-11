@@ -442,9 +442,7 @@ function OnboardingPage() {
                 {t("action.startDay1")}
               </button>
             ) : (
-              <button type="button" onClick={() => finish("explore")} className={secondaryBtn}>
-                {t("onb.explore")}
-              </button>
+              null
             )
           ) : screen < METHOD_SCREENS - 1 ? (
             <>
