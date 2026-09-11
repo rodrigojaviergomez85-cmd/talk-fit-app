@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Headphones, ListChecks } from "lucide-react";
+import { ArrowRight, Headphones, ListChecks, Mic } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
 
