@@ -9,6 +9,8 @@ import { useAppLang } from "@/lib/i18n";
 import { isAdmin } from "@/lib/storage-report.functions";
 import { getAdminMetrics } from "@/lib/admin-metrics.functions";
 import { fmtNum, fmtPct, pct, type AdminMetrics } from "@/lib/admin-metrics";
+import { getAdminCostCenter } from "@/lib/admin-cost-center.functions";
+import { estimateCosts, fmtUsd, type AdminCostCenter } from "@/lib/admin-cost-center";
 
 /** Admin-only engagement dashboard. Not linked from learner navigation. */
 export const Route = createFileRoute("/admin/metrics")({
@@ -66,9 +68,11 @@ function MetricsPage() {
   const es = lang === "es";
   const checkAdmin = useServerFn(isAdmin);
   const load = useServerFn(getAdminMetrics);
+  const loadCosts = useServerFn(getAdminCostCenter);
 
   const [admin, setAdmin] = useState<boolean | null>(null);
   const [data, setData] = useState<AdminMetrics | null>(null);
+  const [costs, setCosts] = useState<AdminCostCenter | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -90,13 +94,15 @@ function MetricsPage() {
     setBusy(true);
     setError(null);
     try {
-      setData(await load());
+      const [m, c] = await Promise.all([load(), loadCosts()]);
+      setData(m);
+      setCosts(c);
     } catch {
       setError(es ? "No se pudieron cargar las métricas." : "Could not load metrics.");
     } finally {
       setBusy(false);
     }
-  }, [load, es]);
+  }, [load, loadCosts, es]);
 
   useEffect(() => {
     if (admin === true) void refresh();
@@ -311,6 +317,75 @@ function MetricsPage() {
                 />
               </div>
             </Card>
+
+            {/* 7. Centro de costos */}
+            {costs ? (
+              <Card title={es ? "7. Centro de costos (últimos 30 días)" : "7. Cost center (last 30 days)"}>
+                {(() => {
+                  const est = estimateCosts(costs);
+                  const labels: Record<string, string> = {
+                    stt: es ? "Transcripción de voz (Groq Whisper)" : "Speech transcription (Groq Whisper)",
+                    coach: es ? "Coach IA (análisis de audio final)" : "AI Coach (final audio analysis)",
+                    tts: es ? "Voces generadas (TTS)" : "Generated voices (TTS)",
+                    cloud: es ? "Nube (base de datos + audios)" : "Cloud (database + audio storage)",
+                  };
+                  const active = costs.users.active_30d || 1;
+                  return (
+                    <>
+                      <div className="mb-3 grid grid-cols-2 gap-2">
+                        <Stat
+                          label={es ? "Costo estimado del mes" : "Estimated month cost"}
+                          value={fmtUsd(est.totalUsd)}
+                          hint={es ? "solo uso de estudiantes" : "learner usage only"}
+                        />
+                        <Stat
+                          label={es ? "Por usuario activo" : "Per active user"}
+                          value={fmtUsd(est.totalUsd / active)}
+                          hint={`${fmtNum(active)} ${es ? "activos" : "active"}`}
+                        />
+                        <Stat
+                          label={es ? "Groq (transcripción)" : "Groq (transcription)"}
+                          value={fmtUsd(est.groqUsd)}
+                          hint={es ? "se paga aparte en Groq" : "billed separately by Groq"}
+                        />
+                        <Stat
+                          label={es ? "Lovable (IA + nube)" : "Lovable (AI + cloud)"}
+                          value={fmtUsd(est.lovableUsd)}
+                          hint={es ? "se descuenta de tus créditos" : "deducted from your credits"}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        {est.lines.map((l) => (
+                          <div key={l.key} className="flex items-baseline justify-between gap-2 text-[12px] font-semibold">
+                            <span>{labels[l.key]}</span>
+                            <span className="text-muted-foreground">
+                              {fmtNum(l.requests)} {es ? "llamadas" : "calls"} · {l.unitLabel} · {fmtUsd(l.usd)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-3 grid grid-cols-2 gap-2">
+                        <Stat
+                          label={es ? "Minutos de audio grabados" : "Minutes of audio recorded"}
+                          value={fmtNum(costs.recordings.minutes_30d)}
+                          hint={`${fmtNum(costs.recordings.count_30d)} ${es ? "grabaciones" : "recordings"}`}
+                        />
+                        <Stat
+                          label={es ? "Sesiones de práctica" : "Practice sessions"}
+                          value={fmtNum(costs.attempts.sessions_30d)}
+                          hint={es ? "últimos 30 días" : "last 30 days"}
+                        />
+                      </div>
+                      <p className="mt-3 text-[11px] leading-snug text-muted-foreground">
+                        {es
+                          ? "Estimado con precios públicos de Groq y Lovable. La factura exacta de Groq se ve en console.groq.com y la de Lovable en Configuración → Planes y créditos. No incluye la suscripción mensual."
+                          : "Estimated from public Groq and Lovable pricing. Exact Groq billing is at console.groq.com and Lovable usage in Settings → Plans & credits. Monthly subscription not included."}
+                      </p>
+                    </>
+                  );
+                })()}
+              </Card>
+            ) : null}
 
             <p className="text-center text-[11px] text-muted-foreground">
               {es ? "Actualizado: " : "Updated: "}

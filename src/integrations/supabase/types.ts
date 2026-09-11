@@ -778,6 +778,7 @@ export type Database = {
         Args: { _clip_key: string; _lease_seconds: number; _owner: string }
         Returns: boolean
       }
+      admin_cost_center: { Args: never; Returns: Json }
       admin_engagement_metrics: { Args: never; Returns: Json }
       consume_ai_quota: {
         Args: {
