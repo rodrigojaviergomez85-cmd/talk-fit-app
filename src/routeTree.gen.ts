@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AiCoachRouteImport } from './routes/ai-coach'
 import { Route as CoachCheckRouteImport } from './routes/coach-check'
 import { Route as InstallRouteImport } from './routes/install'
 import { Route as LevelRouteImport } from './routes/level'
@@ -28,6 +29,7 @@ import { Route as AdminBugReportsRouteImport } from './routes/admin.bug-reports'
 import { Route as AdminCourseAudioRouteImport } from './routes/admin.course-audio'
 import { Route as AdminMetricsRouteImport } from './routes/admin.metrics'
 import { Route as AdminStorageReportRouteImport } from './routes/admin.storage-report'
+import { Route as ApiAiCoachRouteImport } from './routes/api/ai-coach'
 import { Route as ApiFinalAudioCoachRouteImport } from './routes/api/final-audio-coach'
 import { Route as ApiFinalAudioCoachRetakeRouteImport } from './routes/api/final-audio-coach-retake'
 import { Route as ApiRep2CorrectionRouteImport } from './routes/api/rep2-correction'
@@ -57,6 +59,11 @@ import { Route as ReviewModuleIdPracticeRouteImport } from './routes/review.$mod
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiCoachRoute = AiCoachRouteImport.update({
+  id: '/ai-coach',
+  path: '/ai-coach',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CoachCheckRoute = CoachCheckRouteImport.update({
@@ -147,6 +154,11 @@ const AdminMetricsRoute = AdminMetricsRouteImport.update({
 const AdminStorageReportRoute = AdminStorageReportRouteImport.update({
   id: '/admin/storage-report',
   path: '/admin/storage-report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAiCoachRoute = ApiAiCoachRouteImport.update({
+  id: '/api/ai-coach',
+  path: '/api/ai-coach',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiFinalAudioCoachRoute = ApiFinalAudioCoachRouteImport.update({
@@ -284,6 +296,7 @@ const ReviewModuleIdPracticeRoute = ReviewModuleIdPracticeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai-coach': typeof AiCoachRoute
   '/coach-check': typeof CoachCheckRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
@@ -302,6 +315,7 @@ export interface FileRoutesByFullPath {
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/metrics': typeof AdminMetricsRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
+  '/api/ai-coach': typeof ApiAiCoachRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
   '/api/rep2-correction': typeof ApiRep2CorrectionRoute
@@ -330,6 +344,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai-coach': typeof AiCoachRoute
   '/coach-check': typeof CoachCheckRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
@@ -348,6 +363,7 @@ export interface FileRoutesByTo {
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/metrics': typeof AdminMetricsRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
+  '/api/ai-coach': typeof ApiAiCoachRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
   '/api/rep2-correction': typeof ApiRep2CorrectionRoute
@@ -376,6 +392,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai-coach': typeof AiCoachRoute
   '/coach-check': typeof CoachCheckRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
@@ -394,6 +411,7 @@ export interface FileRoutesById {
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/metrics': typeof AdminMetricsRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
+  '/api/ai-coach': typeof ApiAiCoachRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
   '/api/rep2-correction': typeof ApiRep2CorrectionRoute
@@ -424,6 +442,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ai-coach'
     | '/coach-check'
     | '/install'
     | '/level'
@@ -442,6 +461,7 @@ export interface FileRouteTypes {
     | '/admin/course-audio'
     | '/admin/metrics'
     | '/admin/storage-report'
+    | '/api/ai-coach'
     | '/api/final-audio-coach'
     | '/api/final-audio-coach-retake'
     | '/api/rep2-correction'
@@ -470,6 +490,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/ai-coach'
     | '/coach-check'
     | '/install'
     | '/level'
@@ -488,6 +509,7 @@ export interface FileRouteTypes {
     | '/admin/course-audio'
     | '/admin/metrics'
     | '/admin/storage-report'
+    | '/api/ai-coach'
     | '/api/final-audio-coach'
     | '/api/final-audio-coach-retake'
     | '/api/rep2-correction'
@@ -515,6 +537,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/ai-coach'
     | '/coach-check'
     | '/install'
     | '/level'
@@ -533,6 +556,7 @@ export interface FileRouteTypes {
     | '/admin/course-audio'
     | '/admin/metrics'
     | '/admin/storage-report'
+    | '/api/ai-coach'
     | '/api/final-audio-coach'
     | '/api/final-audio-coach-retake'
     | '/api/rep2-correction'
@@ -562,6 +586,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiCoachRoute: typeof AiCoachRoute
   CoachCheckRoute: typeof CoachCheckRoute
   InstallRoute: typeof InstallRoute
   LevelRoute: typeof LevelRoute
@@ -580,6 +605,7 @@ export interface RootRouteChildren {
   AdminCourseAudioRoute: typeof AdminCourseAudioRoute
   AdminMetricsRoute: typeof AdminMetricsRoute
   AdminStorageReportRoute: typeof AdminStorageReportRoute
+  ApiAiCoachRoute: typeof ApiAiCoachRoute
   ApiFinalAudioCoachRoute: typeof ApiFinalAudioCoachRoute
   ApiFinalAudioCoachRetakeRoute: typeof ApiFinalAudioCoachRetakeRoute
   ApiRep2CorrectionRoute: typeof ApiRep2CorrectionRoute
@@ -610,6 +636,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai-coach': {
+      id: '/ai-coach'
+      path: '/ai-coach'
+      fullPath: '/ai-coach'
+      preLoaderRoute: typeof AiCoachRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/coach-check': {
@@ -736,6 +769,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/storage-report'
       fullPath: '/admin/storage-report'
       preLoaderRoute: typeof AdminStorageReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ai-coach': {
+      id: '/api/ai-coach'
+      path: '/api/ai-coach'
+      fullPath: '/api/ai-coach'
+      preLoaderRoute: typeof ApiAiCoachRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/final-audio-coach': {
@@ -935,6 +975,7 @@ const NaturalMethodVerbsRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiCoachRoute: AiCoachRoute,
   CoachCheckRoute: CoachCheckRoute,
   InstallRoute: InstallRoute,
   LevelRoute: LevelRoute,
@@ -953,6 +994,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminCourseAudioRoute: AdminCourseAudioRoute,
   AdminMetricsRoute: AdminMetricsRoute,
   AdminStorageReportRoute: AdminStorageReportRoute,
+  ApiAiCoachRoute: ApiAiCoachRoute,
   ApiFinalAudioCoachRoute: ApiFinalAudioCoachRoute,
   ApiFinalAudioCoachRetakeRoute: ApiFinalAudioCoachRetakeRoute,
   ApiRep2CorrectionRoute: ApiRep2CorrectionRoute,

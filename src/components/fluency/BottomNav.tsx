@@ -1,12 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { BarChart3, BookOpen, Headphones, Home, User } from "lucide-react";
+import { BookOpen, Headphones, Home, MessageCircle, User } from "lucide-react";
 import { useT, type TKey } from "@/lib/i18n";
 
-// HOME = do · PROGRESS = see + hear (audio tab) · REVIEW = reinforce · ACCOUNT = manage.
-// Practice is reached from Home / module CTAs, not from the tab bar.
+// HOME = do · AI COACH = ask · REVIEW = reinforce · ACCOUNT = manage.
+// Practice is reached from Home / module CTAs; Progress lives in the Home menu.
 const ITEMS = [
   { to: "/", key: "nav.home", icon: Home },
-  { to: "/progress", key: "nav.progress", icon: BarChart3 },
+  { to: "/ai-coach", key: "nav.aiCoach", icon: MessageCircle },
   { to: "/review", key: "nav.review", icon: BookOpen },
   { to: "/natural-method", key: "nav.natural", icon: Headphones },
   { to: "/profile", key: "nav.account", icon: User },
