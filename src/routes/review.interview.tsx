@@ -33,6 +33,36 @@ export const Route = createFileRoute("/review/interview")({
 });
 
 const MAX_SECONDS = 30;
+/** Same sentence goal as the course modules (Rep 5). */
+const GOAL_MIN = 5;
+const GOAL_MAX = 8;
+/** Server accepts at most 3 MB; skip the call locally for anything larger. */
+const SENTENCE_COUNT_MAX_BYTES = 3 * 1024 * 1024;
+
+/**
+ * Estimated complete spoken ideas for one answer — the same counter the
+ * course modules use. Returns null when unavailable; never throws.
+ */
+async function countSentences(blob: Blob | null): Promise<number | null> {
+  if (!blob || blob.size < 2048 || blob.size > SENTENCE_COUNT_MAX_BYTES) return null;
+  try {
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+    if (!token) return null;
+    const form = new FormData();
+    form.append("file", blob, "answer");
+    const res = await fetch("/api/sentence-count", {
+      method: "POST",
+      body: form,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) return null;
+    const body = (await res.json()) as { sentences?: unknown };
+    return typeof body.sentences === "number" ? body.sentences : null;
+  } catch {
+    return null;
+  }
+}
 
 const TURNS = [
   {
