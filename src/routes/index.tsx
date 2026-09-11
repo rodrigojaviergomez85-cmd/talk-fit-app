@@ -8,7 +8,6 @@ import { HomeWeekCard } from "@/components/fluency/HomeWeekCard";
 import { HomeGreeting } from "@/components/fluency/HomeGreeting";
 import { Progression } from "@/services/progression";
 import { getPendingPlacement } from "@/services/preferences";
-import { isAppTourDone } from "./tutorial";
 
 import { useAuth } from "@/lib/auth";
 import { JourneyService } from "@/services/journey-service";
