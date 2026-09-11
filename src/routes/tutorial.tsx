@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useAppLang } from "@/lib/i18n";
 import slide1 from "@/assets/tour/slide-1.png.asset.json";
@@ -50,13 +50,30 @@ const SLIDES = [
   { image: slide5.url, alt: "Mi Cuenta: idioma, nivel y micrófono" },
 ];
 
+type Rect = { top: number; left: number; width: number; height: number };
+
 function TutorialPage() {
   const { lang } = useAppLang();
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
+  const [rect, setRect] = useState<Rect | null>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
   const es = lang === "es";
   const last = index === SLIDES.length - 1;
   const slide = SLIDES[index]!;
+
+  const measure = useCallback(() => {
+    const img = imgRef.current;
+    if (!img) return;
+    const r = img.getBoundingClientRect();
+    setRect({ top: r.top, left: r.left, width: r.width, height: r.height });
+  }, []);
+
+  useEffect(() => {
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [measure, index]);
 
   const finish = () => {
     markAppTourDone();
@@ -64,12 +81,25 @@ function TutorialPage() {
   };
   const next = () => (last ? finish() : setIndex((v) => v + 1));
 
+  // Buttons baked into the artwork: main CTA ~84%–92% height, "Saltar" bottom right.
+  const zone = (topPct: number, heightPct: number, leftPct: number, widthPct: number) =>
+    rect
+      ? {
+          top: rect.top + rect.height * topPct,
+          left: rect.left + rect.width * leftPct,
+          height: rect.height * heightPct,
+          width: rect.width * widthPct,
+        }
+      : { display: "none" as const };
+
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-black">
+    <main className="relative flex h-[100dvh] w-full items-center justify-center overflow-hidden bg-[#101418]">
       <img
+        ref={imgRef}
         src={slide.image}
         alt={slide.alt}
-        className="absolute inset-0 h-full w-full object-cover"
+        onLoad={measure}
+        className="h-full w-full object-contain"
         draggable={false}
       />
 
@@ -78,13 +108,15 @@ function TutorialPage() {
         type="button"
         onClick={next}
         aria-label={last ? (es ? "¡Empezar!" : "Start!") : es ? "Siguiente" : "Next"}
-        className="absolute inset-x-0 top-[84%] h-[8%] w-full cursor-pointer"
+        style={zone(0.84, 0.08, 0, 1)}
+        className="fixed cursor-pointer"
       />
       <button
         type="button"
         onClick={finish}
         aria-label={es ? "Saltar" : "Skip"}
-        className="absolute bottom-[2%] right-0 h-[6%] w-1/3 cursor-pointer"
+        style={zone(0.915, 0.06, 0.66, 0.34)}
+        className="fixed cursor-pointer"
       />
     </main>
   );
