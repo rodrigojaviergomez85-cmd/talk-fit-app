@@ -2,3 +2,4 @@
 - [x] Add Review category menus and level-based module access
 - [x] Protect direct Review URLs and preserve unlimited accounts
 - [x] Verify the full access matrix and mobile navigation
+- [x] Redesign the Home streak card without the clickable 66-day calendar

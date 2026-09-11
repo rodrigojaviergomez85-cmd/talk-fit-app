@@ -426,6 +426,12 @@ const DICT = {
   "home.todayWord": ["Hoy", "Today"],
   "home.consistency": ["Tu constancia", "Your consistency"],
   "home.habitDaysOf": ["{done}/66 días con práctica", "{done}/66 days with practice"],
+  "home.challenge66": ["Reto de 66 días", "66-day challenge"],
+  "home.challengeProgress": ["{done} de 66 días completados", "{done} of 66 days completed"],
+  "home.nextMilestoneIn": ["Te faltan {n} días para tu próximo logro.", "{n} days until your next achievement."],
+  "home.challengeComplete": ["¡Completaste el reto de 66 días!", "You completed the 66-day challenge!"],
+  "home.practiceToday": ["Completa tu práctica de hoy y suma otro día.", "Complete today's practice and add another day."],
+  "home.keepPracticing": ["Sigue practicando para mantener viva tu constancia.", "Keep practicing to maintain your consistency."],
   "home.seeProgress": ["Ver progreso", "See progress"],
   "home.lockedTitle": ["MÓDULO BLOQUEADO", "MODULE LOCKED"],
   "home.lockedBody": [
