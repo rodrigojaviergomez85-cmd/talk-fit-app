@@ -2,15 +2,16 @@ import { Link } from "@tanstack/react-router";
 import { BookOpen, Headphones, Home, MessageCircle, User } from "lucide-react";
 import { useT, type TKey } from "@/lib/i18n";
 
-// HOME = do · AI COACH = ask · REVIEW = reinforce · ACCOUNT = manage.
+// HOME = do · REVIEW = reinforce · METHOD = support · AI COACH = ask · ACCOUNT = manage.
 // Practice is reached from Home / module CTAs; Progress lives in the Home menu.
 const ITEMS = [
   { to: "/", key: "nav.home", icon: Home },
-  { to: "/ai-coach", key: "nav.aiCoach", icon: MessageCircle },
   { to: "/review", key: "nav.review", icon: BookOpen },
   { to: "/natural-method", key: "nav.natural", icon: Headphones },
+  { to: "/ai-coach", key: "nav.aiCoach", icon: MessageCircle },
   { to: "/profile", key: "nav.account", icon: User },
 ] as const satisfies readonly { to: string; key: TKey; icon: typeof Home }[];
+
 
 
 export function BottomNav() {
