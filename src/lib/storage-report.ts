@@ -14,7 +14,7 @@
  *   6. otherwise             → candidate
  */
 
-export const PURGE_MIN_AGE_DAYS = 14;
+export const PURGE_MIN_AGE_DAYS = 7;
 
 /** Capture bitrate is 32 kbps → ~4 KB per second of audio. */
 const BYTES_PER_SECOND = 32_000 / 8;
