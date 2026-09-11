@@ -227,11 +227,11 @@ function SkipButton({ es, onClick, className }: { es: boolean; onClick: () => vo
       type="button"
       onClick={onClick}
       className={cn(
-        "inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-border bg-secondary p-3 text-sm font-bold uppercase tracking-wide text-secondary-foreground transition-colors hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+        "mx-auto inline-flex items-center justify-center gap-1.5 rounded-lg px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
         className,
       )}
     >
-      <SkipForward className="size-4" aria-hidden="true" />
+      <SkipForward className="size-3" aria-hidden="true" />
       {es ? "Saltar pregunta" : "Skip question"}
     </button>
   );
