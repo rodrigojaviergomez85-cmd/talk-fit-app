@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   InterviewAttempts,
+  setEffectiveInterviewCap,
   type InterviewCapStatus,
   type InterviewSimulator,
 } from "@/services/interview-attempts";
+import { useDailyUsage } from "@/hooks/use-daily-usage";
+import { SECTION_KEYS } from "@/config/limits";
 
 /**
  * DAILY INTERVIEW CAP — 2 interview runs per local calendar day, shared by the
