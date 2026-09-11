@@ -114,7 +114,7 @@ export const updateAdminSettings = createServerFn({ method: "POST" })
     // with the id from the verified session.
     const { error } = await supabaseAdmin.rpc("apply_admin_settings", {
       _admin_id: context.userId,
-      _admin_email: email,
+      _admin_email: email ?? "",
       _limits_enabled: data.limitsEnabled,
       _billing_enabled: data.billingEnabled,
       _pro_multiplier: data.proMultiplier,
