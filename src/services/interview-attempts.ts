@@ -91,6 +91,14 @@ export type InterviewCapStatus = {
   unlimited: boolean;
 };
 
+/**
+ * Why a slot was (not) consumed.
+ * - "capped": today's interviews really are used up.
+ * - "auth": no account yet — sign in and try again, nothing was consumed.
+ * - "error": transient write failure — retry, nothing was consumed.
+ */
+export type InterviewSlotResult = "ok" | "capped" | "auth" | "error";
+
 let unlimited = false;
 /** FREE default; raised to free x4 for Pro from the server-decided limit. */
 let effectiveCap = DAILY_INTERVIEW_CAP;
@@ -147,17 +155,18 @@ export const InterviewAttempts = {
    * Idempotent per run. Returns false when the cap blocks the run — the
    * database is authoritative, so a rejected insert also returns false.
    */
-  async consumeSlot(attemptId: string): Promise<boolean> {
+  async consumeSlot(attemptId: string): Promise<InterviewSlotResult> {
     const all = readAll();
     const attempt = all.find((a) => a.id === attemptId);
-    if (!attempt) return false;
-    if (attempt.firstRecordingAt) return true; // refresh / resume — already counted
-    if (!InterviewAttempts.status(attemptId).allowed) return false;
+    if (!attempt) return "error";
+    if (attempt.firstRecordingAt) return "ok"; // refresh / resume — already counted
+    if (!InterviewAttempts.status(attemptId).allowed) return "capped";
 
     const counted: InterviewAttempt = { ...attempt, firstRecordingAt: new Date().toISOString() };
     const { data } = await supabase.auth.getUser();
     const uid = data.user?.id;
-    if (!uid) return false; // interviews require an account (sentence counting does too)
+    // Not signed in: interviews need an account, but this is NOT a used-up cap.
+    if (!uid) return "auth";
 
     const { error } = await supabase.from("interview_attempts").insert({
       id: counted.id,
@@ -168,12 +177,14 @@ export const InterviewAttempts = {
       first_recording_at: counted.firstRecordingAt,
     });
     if (error) {
-      // Cap trigger (or any write failure) — do not let the run proceed.
       await InterviewAttempts.refresh();
-      return false;
+      // Only the cap trigger means "no interviews left today"; anything else is
+      // a transient write failure and must not lock the simulator.
+      const capped = !InterviewAttempts.status(attemptId).allowed;
+      return capped ? "capped" : "error";
     }
     upsertLocal(counted);
-    return true;
+    return "ok";
   },
 
   /** Marks the run finished so the next one mints a fresh id. */

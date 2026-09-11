@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import {
   InterviewAttempts,
   setEffectiveInterviewCap,
@@ -36,14 +37,24 @@ export function useInterviewCap(simulator: InterviewSimulator) {
     };
   }, [serverLimit]);
 
-  /** Call on the learner's first recorded answer. Returns false when blocked. */
+  /**
+   * Call on the learner's first recorded answer. Returns false when the answer
+   * cannot be counted. Only a REAL cap hit locks the simulator; sign-in or
+   * network failures show a message and let the learner try again.
+   */
   const consume = useCallback(async () => {
     if (!attemptId.current) attemptId.current = InterviewAttempts.ensure(simulator).id;
-    const ok = await InterviewAttempts.consumeSlot(attemptId.current);
+    const result = await InterviewAttempts.consumeSlot(attemptId.current);
     setStatus(InterviewAttempts.status(attemptId.current));
     void refreshUsage();
-    if (!ok) setBlocked(true);
-    return ok;
+    if (result === "capped") {
+      setBlocked(true);
+    } else if (result === "auth") {
+      toast.error("Inicia sesión para practicar la entrevista. Tu intento no se descontó.");
+    } else if (result === "error") {
+      toast.error("No pudimos guardar tu respuesta. Revisa tu conexión e inténtalo de nuevo.");
+    }
+    return result === "ok";
   }, [simulator, refreshUsage]);
 
   /** Call when the run ends so the next interview mints a fresh id. */
