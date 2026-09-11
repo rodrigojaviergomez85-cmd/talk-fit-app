@@ -112,17 +112,6 @@ function HomePage() {
 
         {active && upNext ? <NextModuleLocked entry={upNext} afterModuleId={active} /> : null}
 
-        <Link
-          to="/coach-check"
-          className="flex min-h-[56px] w-full items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 shadow-[var(--shadow-card)] transition-colors hover:bg-secondary"
-        >
-          <span className="flex items-center gap-3 text-[14px] font-bold text-foreground">
-            <BarChart3 className="size-5 shrink-0 text-muted-foreground" aria-hidden />
-            {t("coach.showMyCoach")}
-          </span>
-          <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-        </Link>
-
         <div className="rounded-2xl border border-border bg-card shadow-[var(--shadow-card)]">
           <button
             type="button"
@@ -151,6 +140,17 @@ function HomePage() {
             </div>
           ) : null}
         </div>
+
+        <Link
+          to="/coach-check"
+          className="flex min-h-[56px] w-full items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 shadow-[var(--shadow-card)] transition-colors hover:bg-secondary"
+        >
+          <span className="flex items-center gap-3 text-[14px] font-bold text-foreground">
+            <BarChart3 className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+            {t("coach.showMyCoach")}
+          </span>
+          <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+        </Link>
 
         <p className="flex items-center justify-center gap-1.5 pb-2 text-[12px] font-semibold text-muted-foreground">
           <AlertTriangle className="size-3.5 shrink-0" aria-hidden />
