@@ -523,7 +523,7 @@ function AdvancedInterviewSimulator() {
       : null;
   const averageOk = average !== null && average >= GOAL_MIN;
 
-  if (cap.capReached) return <InterviewCapReached es={es} />;
+  if (cap.capReached) return <InterviewCapReached es={es} cap={cap.limit} />;
 
   if (finished) {
     return (
@@ -656,7 +656,7 @@ function AdvancedInterviewSimulator() {
           <span>
             {step + 1} / {PROMPTS.length}
           </span>
-          <InterviewCapCounter es={es} used={cap.status?.used ?? 0} unlimited={cap.status?.unlimited ?? false} />
+          <InterviewCapCounter es={es} used={cap.status?.used ?? 0} unlimited={cap.status?.unlimited ?? false} cap={cap.limit} isPro={cap.isPro} />
           {current.skill ? (
             <span className="rounded-full bg-secondary px-3 py-1 text-secondary-foreground">
               {es ? SKILL_LABEL[current.skill].es : SKILL_LABEL[current.skill].en}
