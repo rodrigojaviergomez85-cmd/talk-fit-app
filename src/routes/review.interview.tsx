@@ -214,6 +214,14 @@ const PROMPTS: Prompt[] = [
   },
 ];
 
+/** Index of the last prompt the student must answer (just before the goodbye). */
+const LAST_QUESTION_INDEX = (() => {
+  for (let i = PROMPTS.length - 1; i >= 0; i--) {
+    if (PROMPTS[i]!.seconds > 0) return i;
+  }
+  return PROMPTS.length - 1;
+})();
+
 const TENSE_LABEL: Record<Exclude<Tense, null>, { en: string; es: string }> = {
   present: { en: "Present", es: "Presente" },
   past: { en: "Past", es: "Pasado" },
@@ -318,6 +326,19 @@ function InterviewSimulator() {
     setPhase("intro");
     const el = videoRef.current;
     if (el) el.pause();
+  };
+
+  const goToLastQuestion = () => {
+    playback.stop();
+    stopSpeechRef.current?.();
+    setRecording(null);
+    setStep(LAST_QUESTION_INDEX);
+    setPhase("intro");
+    const el = videoRef.current;
+    if (el) {
+      el.pause();
+      el.currentTime = 0;
+    }
   };
 
   const goalMin = current.followUp ? 2 : GOAL_MIN;
@@ -446,9 +467,19 @@ function InterviewSimulator() {
   return (
     <AppShell>
       <div className="space-y-4 p-4">
-        <Link to="/review" className="inline-flex items-center gap-2 text-sm font-semibold text-primary">
-          <ArrowLeft className="size-4" aria-hidden="true" /> Review
-        </Link>
+        {step < LAST_QUESTION_INDEX ? (
+          <button
+            type="button"
+            onClick={goToLastQuestion}
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-bold uppercase tracking-wide text-foreground"
+          >
+            <SkipForward className="size-4" aria-hidden="true" /> {es ? "Última pregunta" : "Last question"}
+          </button>
+        ) : (
+          <Link to="/review" className="inline-flex items-center gap-2 text-sm font-semibold text-primary">
+            <ArrowLeft className="size-4" aria-hidden="true" /> Review
+          </Link>
+        )}
 
         <header>
           <h1 className="text-2xl font-extrabold text-foreground">B4 Interview Simulator</h1>
