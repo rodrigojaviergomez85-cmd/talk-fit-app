@@ -92,6 +92,13 @@ export type InterviewCapStatus = {
 };
 
 let unlimited = false;
+/** FREE default; raised to free x4 for Pro from the server-decided limit. */
+let effectiveCap = DAILY_INTERVIEW_CAP;
+
+/** Set from `useDailyUsage("interview")`. The DB trigger stays authoritative. */
+export function setEffectiveInterviewCap(cap: number): void {
+  if (Number.isFinite(cap) && cap > 0) effectiveCap = Math.floor(cap);
+}
 
 export const InterviewAttempts = {
   cap: DAILY_INTERVIEW_CAP,
@@ -103,10 +110,10 @@ export const InterviewAttempts = {
     const resuming = Boolean(activeId && counted.some((a) => a.id === activeId));
     const used = counted.length;
     return {
-      allowed: unlimited || resuming || used < DAILY_INTERVIEW_CAP,
+      allowed: unlimited || resuming || used < effectiveCap,
       used,
-      remaining: Math.max(0, DAILY_INTERVIEW_CAP - used),
-      cap: DAILY_INTERVIEW_CAP,
+      remaining: Math.max(0, effectiveCap - used),
+      cap: effectiveCap,
       unlimited,
     };
   },

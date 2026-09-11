@@ -6,6 +6,10 @@ import type { CourseDay, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 import { DAILY_PRACTICE_CAP, PracticeAttempts } from "@/services/practice-attempts";
+import { setEffectivePracticeCap } from "@/lib/practice-cap";
+import { useDailyUsage } from "@/hooks/use-daily-usage";
+import { SECTION_KEYS } from "@/config/limits";
+import { LimitDialog } from "./LimitDialog";
 
 
 type Props = {
@@ -26,10 +30,30 @@ export function usePracticesToday(): number | null {
   return used;
 }
 
+/** Effective daily practice cap: free, or free x4 with an active Pro plan. */
+export function usePracticeCap(): { cap: number; isPro: boolean; refresh: () => void } {
+  const usage = useDailyUsage(SECTION_KEYS.practice);
+  const cap = usage.limit > 0 ? usage.limit : DAILY_PRACTICE_CAP;
+  useEffect(() => {
+    setEffectivePracticeCap(cap);
+  }, [cap]);
+  return { cap, isPro: usage.isPro, refresh: usage.refresh };
+}
+
 /** "PRACTICES TODAY 2 / 5" — always visible, never scolding. */
-export function PracticesTodayChip({ used, className }: { used: number; className?: string }) {
+export function PracticesTodayChip({
+  used,
+  className,
+  cap = DAILY_PRACTICE_CAP,
+  isPro = false,
+}: {
+  used: number;
+  className?: string;
+  cap?: number;
+  isPro?: boolean;
+}) {
   const t = useT();
-  const full = used >= DAILY_PRACTICE_CAP;
+  const full = used >= cap;
   return (
     <span
       className={cn(
@@ -40,8 +64,9 @@ export function PracticesTodayChip({ used, className }: { used: number; classNam
     >
       {t("dailyCap.indicator")}{" "}
       <span className="tabular-nums">
-        {used} / {DAILY_PRACTICE_CAP}
+        {used} / {cap}
       </span>
+      {isPro ? <span className="font-black text-primary">Pro</span> : null}
     </span>
   );
 }
@@ -50,10 +75,12 @@ export function PracticesTodayChip({ used, className }: { used: number; classNam
 export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalDays }: Props) {
   const t = useT();
   const used = usePracticesToday();
+  const { cap, isPro } = usePracticeCap();
+  const [limitOpen, setLimitOpen] = useState(false);
   // A session already under way has ALREADY paid for its slot, so the cap must
   // never remove its entry point — the practice screen itself allows resuming.
-  const capReached = used !== null && used >= DAILY_PRACTICE_CAP && !inProgress;
-  const remaining = used === null ? null : Math.max(0, DAILY_PRACTICE_CAP - used);
+  const capReached = used !== null && used >= cap && !inProgress;
+  const remaining = used === null ? null : Math.max(0, cap - used);
   const ctaText = completed
     ? t("repeatDay.cta")
     : inProgress
@@ -65,7 +92,7 @@ export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalD
         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
           {t("home.dayOfTotal").replace("{day}", String(day.day)).replace("{total}", String(totalDays))}
         </p>
-        {used !== null ? <PracticesTodayChip used={used} /> : null}
+        {used !== null ? <PracticesTodayChip used={used} cap={cap} isPro={isPro} /> : null}
       </div>
 
       <TranslatableText es={day.topicEs} className="mt-2">
@@ -87,15 +114,24 @@ export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalD
           <p className="text-[11px] font-black uppercase tracking-[0.14em] text-success">{t("repeatDay.done")}</p>
           <p className="mt-1 text-[13px] font-bold uppercase tracking-[0.12em]">{t("repeatDay.question")}</p>
           <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
-            {t("repeatDay.body").replace("{cap}", String(DAILY_PRACTICE_CAP))}
+            {t("repeatDay.body").replace("{cap}", String(cap))}
           </p>
         </div>
       ) : null}
 
       {capReached ? (
-        <p className="mt-4 rounded-2xl bg-success/10 p-4 text-[13px] leading-relaxed text-success">
-          {t("dailyCap.body").replace("{cap}", String(DAILY_PRACTICE_CAP))}
-        </p>
+        <div className="mt-4 space-y-3 rounded-2xl bg-success/10 p-4">
+          <p className="text-[13px] leading-relaxed text-success">
+            {t("dailyCap.body").replace("{cap}", String(cap))}
+          </p>
+          <button
+            type="button"
+            onClick={() => setLimitOpen(true)}
+            className="w-full rounded-xl bg-primary px-4 py-2.5 text-[13px] font-extrabold uppercase tracking-wide text-primary-foreground"
+          >
+            Ver mis opciones
+          </button>
+        </div>
       ) : (
         <Link
           to="/practice"
@@ -118,6 +154,8 @@ export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalD
             : t("dailyCap.remaining").replace("{n}", String(remaining))}
         </p>
       ) : null}
+
+      <LimitDialog sectionKey={SECTION_KEYS.practice} open={limitOpen} onOpenChange={setLimitOpen} />
     </section>
   );
 }

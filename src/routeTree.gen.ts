@@ -49,6 +49,8 @@ import { Route as ReviewInterviewAdvancedRouteImport } from './routes/review.int
 import { Route as ReviewInterviewIntermediateRouteImport } from './routes/review.interview-intermediate'
 import { Route as ReviewInterviewSimulatorsRouteImport } from './routes/review.interview-simulators'
 import { Route as ReviewPictionaryRouteImport } from './routes/review.pictionary'
+import { Route as SuscripcionCanceladoRouteImport } from './routes/suscripcion.cancelado'
+import { Route as SuscripcionExitoRouteImport } from './routes/suscripcion.exito'
 import { Route as NaturalMethodVerbsIndexRouteImport } from './routes/natural-method.verbs.index'
 import { Route as NaturalMethodVerbsIdiomsRouteImport } from './routes/natural-method.verbs.idioms'
 import { Route as NaturalMethodVerbsListRouteImport } from './routes/natural-method.verbs.list'
@@ -263,6 +265,16 @@ const ReviewPictionaryRoute = ReviewPictionaryRouteImport.update({
   path: '/review/pictionary',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SuscripcionCanceladoRoute = SuscripcionCanceladoRouteImport.update({
+  id: '/suscripcion/cancelado',
+  path: '/suscripcion/cancelado',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SuscripcionExitoRoute = SuscripcionExitoRouteImport.update({
+  id: '/suscripcion/exito',
+  path: '/suscripcion/exito',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NaturalMethodVerbsIndexRoute = NaturalMethodVerbsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -346,6 +358,8 @@ export interface FileRoutesByFullPath {
   '/review/interview-intermediate': typeof ReviewInterviewIntermediateRoute
   '/review/interview-simulators': typeof ReviewInterviewSimulatorsRoute
   '/review/pictionary': typeof ReviewPictionaryRoute
+  '/suscripcion/cancelado': typeof SuscripcionCanceladoRoute
+  '/suscripcion/exito': typeof SuscripcionExitoRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
   '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
@@ -395,6 +409,8 @@ export interface FileRoutesByTo {
   '/review/interview-intermediate': typeof ReviewInterviewIntermediateRoute
   '/review/interview-simulators': typeof ReviewInterviewSimulatorsRoute
   '/review/pictionary': typeof ReviewPictionaryRoute
+  '/suscripcion/cancelado': typeof SuscripcionCanceladoRoute
+  '/suscripcion/exito': typeof SuscripcionExitoRoute
   '/natural-method': typeof NaturalMethodIndexRoute
   '/review': typeof ReviewIndexRoute
   '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
@@ -446,6 +462,8 @@ export interface FileRoutesById {
   '/review/interview-intermediate': typeof ReviewInterviewIntermediateRoute
   '/review/interview-simulators': typeof ReviewInterviewSimulatorsRoute
   '/review/pictionary': typeof ReviewPictionaryRoute
+  '/suscripcion/cancelado': typeof SuscripcionCanceladoRoute
+  '/suscripcion/exito': typeof SuscripcionExitoRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
   '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
@@ -498,6 +516,8 @@ export interface FileRouteTypes {
     | '/review/interview-intermediate'
     | '/review/interview-simulators'
     | '/review/pictionary'
+    | '/suscripcion/cancelado'
+    | '/suscripcion/exito'
     | '/natural-method/'
     | '/review/'
     | '/natural-method/verbs/idioms'
@@ -547,6 +567,8 @@ export interface FileRouteTypes {
     | '/review/interview-intermediate'
     | '/review/interview-simulators'
     | '/review/pictionary'
+    | '/suscripcion/cancelado'
+    | '/suscripcion/exito'
     | '/natural-method'
     | '/review'
     | '/natural-method/verbs/idioms'
@@ -597,6 +619,8 @@ export interface FileRouteTypes {
     | '/review/interview-intermediate'
     | '/review/interview-simulators'
     | '/review/pictionary'
+    | '/suscripcion/cancelado'
+    | '/suscripcion/exito'
     | '/natural-method/'
     | '/review/'
     | '/natural-method/verbs/idioms'
@@ -648,6 +672,8 @@ export interface RootRouteChildren {
   ReviewInterviewIntermediateRoute: typeof ReviewInterviewIntermediateRoute
   ReviewInterviewSimulatorsRoute: typeof ReviewInterviewSimulatorsRoute
   ReviewPictionaryRoute: typeof ReviewPictionaryRoute
+  SuscripcionCanceladoRoute: typeof SuscripcionCanceladoRoute
+  SuscripcionExitoRoute: typeof SuscripcionExitoRoute
   NaturalMethodIndexRoute: typeof NaturalMethodIndexRoute
   ReviewIndexRoute: typeof ReviewIndexRoute
   ReviewModuleIdPracticeRoute: typeof ReviewModuleIdPracticeRoute
@@ -938,6 +964,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReviewPictionaryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/suscripcion/cancelado': {
+      id: '/suscripcion/cancelado'
+      path: '/suscripcion/cancelado'
+      fullPath: '/suscripcion/cancelado'
+      preLoaderRoute: typeof SuscripcionCanceladoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/suscripcion/exito': {
+      id: '/suscripcion/exito'
+      path: '/suscripcion/exito'
+      fullPath: '/suscripcion/exito'
+      preLoaderRoute: typeof SuscripcionExitoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/natural-method/verbs/': {
       id: '/natural-method/verbs/'
       path: '/'
@@ -1053,6 +1093,8 @@ const rootRouteChildren: RootRouteChildren = {
   ReviewInterviewIntermediateRoute: ReviewInterviewIntermediateRoute,
   ReviewInterviewSimulatorsRoute: ReviewInterviewSimulatorsRoute,
   ReviewPictionaryRoute: ReviewPictionaryRoute,
+  SuscripcionCanceladoRoute: SuscripcionCanceladoRoute,
+  SuscripcionExitoRoute: SuscripcionExitoRoute,
   NaturalMethodIndexRoute: NaturalMethodIndexRoute,
   ReviewIndexRoute: ReviewIndexRoute,
   ReviewModuleIdPracticeRoute: ReviewModuleIdPracticeRoute,

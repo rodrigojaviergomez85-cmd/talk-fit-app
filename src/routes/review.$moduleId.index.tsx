@@ -10,7 +10,8 @@ import { getReviewModule } from "@/services/review/review-registry";
 import { ReviewProgress, type ReviewPracticeProgress } from "@/services/review/review-progress";
 import type { ReviewModuleId } from "@/lib/review-types";
 import { getReviewAccessSnapshot, isReviewModuleAccessible } from "@/services/review/review-access";
-import { DAILY_PRACTICE_CAP, PracticeAttempts } from "@/services/practice-attempts";
+import { PracticeAttempts } from "@/services/practice-attempts";
+import { usePracticeCap } from "@/components/fluency/DailyPracticeCard";
 
 export const Route = createFileRoute("/review/$moduleId/")({
   head: ({ params }) => {
@@ -43,6 +44,7 @@ function ReviewModulePage() {
   const [unlimited, setUnlimited] = useState(false);
   // DAILY PRACTICE CAP: Review shares the same 5 sessions per local day as the modules.
   const [practiceUsed, setPracticeUsed] = useState<number | null>(null);
+  const { cap: practiceCap } = usePracticeCap();
 
   useEffect(() => {
     let alive = true;
@@ -89,18 +91,18 @@ function ReviewModulePage() {
         {practiceUsed !== null && !unlimited ? (
           <p
             className={`rounded-xl border px-3 py-2 text-xs font-semibold ${
-              practiceUsed >= DAILY_PRACTICE_CAP
+              practiceUsed >= practiceCap
                 ? "border-primary/40 bg-primary/10 text-foreground"
                 : "border-border bg-card text-muted-foreground"
             }`}
           >
-            {practiceUsed >= DAILY_PRACTICE_CAP
+            {practiceUsed >= practiceCap
               ? showEs
-                ? `Prácticas de hoy: ${DAILY_PRACTICE_CAP} / ${DAILY_PRACTICE_CAP}. Vuelve mañana.`
-                : `Today's practice: ${DAILY_PRACTICE_CAP} / ${DAILY_PRACTICE_CAP}. Come back tomorrow.`
+                ? `Prácticas de hoy: ${practiceCap} / ${practiceCap}. Vuelve mañana.`
+                : `Today's practice: ${practiceCap} / ${practiceCap}. Come back tomorrow.`
               : showEs
-                ? `Prácticas de hoy: ${practiceUsed} / ${DAILY_PRACTICE_CAP} (módulos + Review)`
-                : `Today's practice: ${practiceUsed} / ${DAILY_PRACTICE_CAP} (modules + Review)`}
+                ? `Prácticas de hoy: ${practiceUsed} / ${practiceCap} (módulos + Review)`
+                : `Today's practice: ${practiceUsed} / ${practiceCap} (modules + Review)`}
           </p>
         ) : null}
 

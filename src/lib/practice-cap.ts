@@ -20,7 +20,19 @@ import type { ModuleId } from "./types";
  * the real boundary and is what makes the cap hold across devices.
  */
 
+/** FREE tier default. The effective cap is free x4 for Pro subscribers. */
 export const DAILY_PRACTICE_CAP = 5;
+
+let effectiveCap = DAILY_PRACTICE_CAP;
+
+/** Set from the server-decided limit (`useDailyUsage("practice")`). */
+export function setEffectivePracticeCap(cap: number): void {
+  if (Number.isFinite(cap) && cap > 0) effectiveCap = Math.floor(cap);
+}
+
+export function effectivePracticeCap(): number {
+  return effectiveCap;
+}
 
 /** One real practice session (first completion OR repeat) of one curriculum day. */
 export type PracticeAttempt = {
@@ -72,11 +84,12 @@ export function canStartPractice(
   const counted = countedAttempts(attempts, localDayKey);
   const used = counted.length;
   const resuming = Boolean(activeAttemptId && counted.some((a) => a.id === activeAttemptId));
+  const cap = effectivePracticeCap();
   return {
-    allowed: resuming || used < DAILY_PRACTICE_CAP,
+    allowed: resuming || used < cap,
     used,
-    remaining: Math.max(0, DAILY_PRACTICE_CAP - used),
-    cap: DAILY_PRACTICE_CAP,
+    remaining: Math.max(0, cap - used),
+    cap,
   };
 }
 
