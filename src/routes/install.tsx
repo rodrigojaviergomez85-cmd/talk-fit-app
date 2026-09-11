@@ -73,6 +73,7 @@ const STRINGS = {
     openApp: "ABRIR FLUENCY APP",
     alreadyInstalled: "FLUENCY APP YA ESTÁ INSTALADA",
     installedOk: "FLUENCY APP INSTALADA ✅",
+    installedNext: "Cierra esta pestaña del navegador y toca el ícono de Fluency App en tu pantalla de inicio para abrir la app.",
     iphoneTitle: "INSTALA FLUENCY APP EN TU IPHONE",
     iphoneIntro: "Haz estos 3 pasos en Safari. No necesitas descargar nada del App Store.",
     iosStep1: 'Toca el botón Compartir en la barra de Safari.',
@@ -110,6 +111,7 @@ const STRINGS = {
     openApp: "OPEN FLUENCY APP",
     alreadyInstalled: "FLUENCY APP IS ALREADY INSTALLED",
     installedOk: "FLUENCY APP INSTALLED ✅",
+    installedNext: "Close this browser tab and tap the Fluency App icon on your home screen to open the app.",
     iphoneTitle: "INSTALL FLUENCY APP ON YOUR IPHONE",
     iphoneIntro: "Follow these 3 steps in Safari. You do not need to download anything from the App Store.",
     iosStep1: "Tap the Share button in the Safari toolbar.",
@@ -336,13 +338,23 @@ function InstallPage() {
             <h1 className="text-2xl font-extrabold tracking-tight text-foreground">
               {justInstalled ? s.installedOk : s.alreadyInstalled}
             </h1>
-            <Button
-              type="button"
-              onClick={goHome}
-              className="min-h-12 w-full rounded-2xl px-6 text-sm font-bold uppercase tracking-wide shadow-md"
-            >
-              {s.openApp}
-            </Button>
+            {env === "installed" ? (
+              // Already inside the installed app — navigating here really does open the app.
+              <Button
+                type="button"
+                onClick={goHome}
+                className="min-h-12 w-full rounded-2xl px-6 text-sm font-bold uppercase tracking-wide shadow-md"
+              >
+                {s.openApp}
+              </Button>
+            ) : (
+              // Just installed while in the browser: a web page cannot force-open
+              // the installed app, so guide the user to the home-screen icon.
+              <div className="flex w-full items-start gap-3 rounded-2xl bg-accent px-4 py-3 text-left">
+                <img src="/icon-192.png" alt="Fluency App" className="size-11 shrink-0 rounded-xl" width={44} height={44} />
+                <p className="text-sm font-semibold leading-5 text-accent-foreground">{s.installedNext}</p>
+              </div>
+            )}
           </>
         ) : env === "ios-inapp" || env === "ios-other" ? (
           <>
