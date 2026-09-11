@@ -10,9 +10,10 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import welcomeClip from "@/assets/interview/mike-welcome.mp4.asset.json";
-import questionClip from "@/assets/interview/mike-question-1.mp4.asset.json";
 import waitingClip from "@/assets/interview/mike-waiting.mp4.asset.json";
 import tellMeMoreClip from "@/assets/interview/mike-tell-me-more.mp4.asset.json";
+import happyMomentClip from "@/assets/interview/mike-happy-moment.mp4.asset.json";
+import whyHappyClip from "@/assets/interview/mike-why-happy.mp4.asset.json";
 
 import opinionClip from "@/assets/interview/mike-opinion.mp4.asset.json";
 import pastProgressiveClip from "@/assets/interview/mike-past-progressive.mp4.asset.json";
