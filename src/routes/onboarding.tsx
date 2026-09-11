@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowDown, ArrowRight, BookOpen, CheckCircle2, Clapperboard, Home, Mic, Tv } from "lucide-react";
 import { CourseService } from "@/services/course-service";
 import { useAppLang } from "@/lib/i18n";
@@ -462,6 +462,14 @@ function OnboardingPage() {
               {user && prefs.currentModuleId ? t("action.startDay1") : t("action.startJourney")}
             </button>
           )}
+          {screen === 0 || screen === AUTH_SCREEN ? (
+            <Link
+              to="/install"
+              className="block text-center text-[13px] font-bold text-primary underline underline-offset-4"
+            >
+              {t("onb.installCta")}
+            </Link>
+          ) : null}
         </div>
       </div>
     </div>
