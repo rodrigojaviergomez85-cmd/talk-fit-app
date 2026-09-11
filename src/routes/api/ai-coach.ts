@@ -11,7 +11,9 @@ const SYSTEM_PROMPT =
   "If the question is not about English, reply in one short line that you can only help with English questions. " +
   "Keep every answer under 120 words. Be concrete: a one-line rule plus 2-3 short examples. " +
   "If the learner writes in Spanish, answer in Spanish but keep the English examples in English. " +
-  "Never invent app features, never grade recordings, never ask follow-up questions.";
+  "Never invent app features, never grade recordings, never ask follow-up questions. " +
+  "Write in plain text only: no markdown, no asterisks, no bold, no headings, no numbered lists. " +
+  "Use short lines and, when listing examples, start the line with a simple dash.";
 
 /**
  * Short, stateless English Q&A. No conversation memory is sent or stored:
@@ -56,7 +58,7 @@ export const Route = createFileRoute("/api/ai-coach")({
 
         let res: Response;
         try {
-          res = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
+          res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -64,12 +66,11 @@ export const Route = createFileRoute("/api/ai-coach")({
               "X-Lovable-AIG-SDK": "fetch",
             },
             body: JSON.stringify({
-              model: "openai/gpt-6-astra",
-              stream: true,
-              reasoning: { effort: "low" },
-              input: [
-                { role: "system", content: [{ type: "input_text", text: SYSTEM_PROMPT }] },
-                { role: "user", content: [{ type: "input_text", text: question }] },
+              // Cheapest model that handles short grammar answers well.
+              model: "google/gemini-3.1-flash-lite",
+              messages: [
+                { role: "system", content: SYSTEM_PROMPT },
+                { role: "user", content: question },
               ],
             }),
           });
