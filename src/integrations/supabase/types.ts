@@ -679,6 +679,36 @@ export type Database = {
         }
         Relationships: []
       }
+      section_limits: {
+        Row: {
+          created_at: string
+          free_limit: number
+          free_monthly_limit: number | null
+          label: string
+          section_key: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          free_limit: number
+          free_monthly_limit?: number | null
+          label: string
+          section_key: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          free_limit?: number
+          free_monthly_limit?: number | null
+          label?: string
+          section_key?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       stripe_events: {
         Row: {
           id: string
@@ -1016,6 +1046,28 @@ export type Database = {
           unlimited: boolean
         }[]
       }
+      get_daily_limit: {
+        Args: { p_section_key: string; p_user_id: string }
+        Returns: number
+      }
+      get_monthly_limit: {
+        Args: { p_section_key: string; p_user_id: string }
+        Returns: number
+      }
+      get_section_usage: {
+        Args: { _local_day_key: string; _section_key: string; _user_id: string }
+        Returns: {
+          day_limit: number
+          day_used: number
+          free_limit: number
+          is_pro: boolean
+          label: string
+          month_limit: number
+          month_used: number
+          section_key: string
+          unlimited: boolean
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1023,7 +1075,9 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_pro_subscriber: { Args: { _user_id: string }; Returns: boolean }
       is_unlimited_test_user: { Args: { _user_id: string }; Returns: boolean }
+      plan_multiplier: { Args: { _user_id: string }; Returns: number }
       release_tts_lock: {
         Args: { _clip_key: string; _owner: string }
         Returns: boolean
