@@ -37,7 +37,7 @@ export function HabitExplainer({ tone = "card", iconOnly = false }: Props) {
         onClick={() => setOpen(true)}
         className={cn(
           iconOnly
-            ? "size-10 rounded-full text-muted-foreground hover:text-foreground"
+            ? "size-7 rounded-full text-muted-foreground hover:text-foreground"
             : "min-h-[44px] rounded-full px-3 text-[12px] font-bold",
           !iconOnly && tone === "navy"
             ? "border border-navy-foreground/25 text-navy-foreground"
@@ -45,7 +45,7 @@ export function HabitExplainer({ tone = "card", iconOnly = false }: Props) {
         )}
         aria-label={label}
       >
-        <Info className={cn("shrink-0", iconOnly ? "size-6" : "size-3.5")} />
+        <Info className={cn("shrink-0", iconOnly ? "size-4" : "size-3.5")} />
         {iconOnly ? <span className="sr-only">{label}</span> : label}
       </Button>
 
