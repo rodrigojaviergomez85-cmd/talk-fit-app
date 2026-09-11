@@ -356,8 +356,8 @@ function InterviewSimulator() {
           </h1>
           <p className="text-center text-sm text-muted-foreground">
             {es
-              ? "“Thank you for applying. It was a pleasure talking with you today. We'll be in touch soon.” — Mike"
-              : "“Thank you for applying. It was a pleasure talking with you today. We'll be in touch soon.” — Mike"}
+              ? "“Thank you for applying. It was a pleasure talking with you today. We'll be in touch soon. I wish you the best in the real interview. You can do it, champion!” — Mike"
+              : "“Thank you for applying. It was a pleasure talking with you today. We'll be in touch soon. I wish you the best in the real interview. You can do it, champion!” — Mike"}
           </p>
 
           <div className="rounded-2xl border border-border bg-card p-4 text-center">
@@ -529,7 +529,7 @@ function InterviewSimulator() {
           </div>
         ) : null}
 
-        {phase === "ready" ? (
+        {phase === "ready" && current.seconds > 0 ? (
           <div className="space-y-2 rounded-2xl border border-dashed border-border bg-secondary/40 p-3">
             <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
               {es ? "¿No entendiste? Dilo en inglés" : "Didn't catch it? Say it in English"}
@@ -548,7 +548,7 @@ function InterviewSimulator() {
           </div>
         ) : null}
 
-        {phase === "ready" || phase === "recording" ? (
+        {current.seconds > 0 && (phase === "ready" || phase === "recording") ? (
           <div className="space-y-3 rounded-2xl border border-border bg-card p-4">
             <p className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               {es ? `Grabar respuesta · máx ${timeLabel}` : `Record answer · max ${timeLabel}`}
@@ -566,6 +566,16 @@ function InterviewSimulator() {
             />
             {step < PROMPTS.length - 1 ? <SkipButton es={es} onClick={goNext} /> : null}
           </div>
+        ) : null}
+
+        {phase === "ready" && current.seconds === 0 ? (
+          <button
+            type="button"
+            onClick={finishInterview}
+            className="w-full rounded-2xl bg-primary p-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground"
+          >
+            {es ? "Terminar entrevista" : "Finish interview"}
+          </button>
         ) : null}
 
         {phase === "answered" && recording ? (
