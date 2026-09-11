@@ -135,6 +135,14 @@ function LevelSection({
                 />
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[16px] font-extrabold text-foreground">{book.title}</span>
+                  {(() => {
+                    const grammar = audiobookGrammar(book);
+                    return grammar ? (
+                      <span className="mt-0.5 inline-block rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-primary">
+                        {showEs ? GRAMMAR_LABELS[grammar].es : GRAMMAR_LABELS[grammar].en}
+                      </span>
+                    ) : null;
+                  })()}
                   <span className="mt-0.5 block text-[12px] text-muted-foreground">
                     {showEs ? "Toca para ver y escuchar la historia" : "Tap to watch and listen to the story"}
                   </span>
