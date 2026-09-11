@@ -147,17 +147,18 @@ export const InterviewAttempts = {
    * Idempotent per run. Returns false when the cap blocks the run — the
    * database is authoritative, so a rejected insert also returns false.
    */
-  async consumeSlot(attemptId: string): Promise<boolean> {
+  async consumeSlot(attemptId: string): Promise<InterviewSlotResult> {
     const all = readAll();
     const attempt = all.find((a) => a.id === attemptId);
-    if (!attempt) return false;
-    if (attempt.firstRecordingAt) return true; // refresh / resume — already counted
-    if (!InterviewAttempts.status(attemptId).allowed) return false;
+    if (!attempt) return "error";
+    if (attempt.firstRecordingAt) return "ok"; // refresh / resume — already counted
+    if (!InterviewAttempts.status(attemptId).allowed) return "capped";
 
     const counted: InterviewAttempt = { ...attempt, firstRecordingAt: new Date().toISOString() };
     const { data } = await supabase.auth.getUser();
     const uid = data.user?.id;
-    if (!uid) return false; // interviews require an account (sentence counting does too)
+    // Not signed in: interviews need an account, but this is NOT a used-up cap.
+    if (!uid) return "auth";
 
     const { error } = await supabase.from("interview_attempts").insert({
       id: counted.id,
