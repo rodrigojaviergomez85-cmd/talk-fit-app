@@ -8,6 +8,7 @@ import { useT } from "@/lib/i18n";
 import { DAILY_PRACTICE_CAP, PracticeAttempts } from "@/services/practice-attempts";
 import { setEffectivePracticeCap } from "@/lib/practice-cap";
 import { useDailyUsage } from "@/hooks/use-daily-usage";
+import { useAppSettings } from "@/hooks/use-app-settings";
 import { SECTION_KEYS } from "@/config/limits";
 import { LimitDialog } from "./LimitDialog";
 
@@ -76,11 +77,14 @@ export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalD
   const t = useT();
   const used = usePracticesToday();
   const { cap, isPro } = usePracticeCap();
+  const settings = useAppSettings();
   const [limitOpen, setLimitOpen] = useState(false);
+  // Global kill switch: when limits are off, no consumption UI is shown at all.
+  const showLimits = settings.limitsEnabled;
   // A session already under way has ALREADY paid for its slot, so the cap must
   // never remove its entry point — the practice screen itself allows resuming.
-  const capReached = used !== null && used >= cap && !inProgress;
-  const remaining = used === null ? null : Math.max(0, cap - used);
+  const capReached = showLimits && used !== null && used >= cap && !inProgress;
+  const remaining = showLimits && used !== null ? Math.max(0, cap - used) : null;
   const ctaText = completed
     ? t("repeatDay.cta")
     : inProgress
@@ -92,7 +96,7 @@ export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalD
         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
           {t("home.dayOfTotal").replace("{day}", String(day.day)).replace("{total}", String(totalDays))}
         </p>
-        {used !== null ? <PracticesTodayChip used={used} cap={cap} isPro={isPro} /> : null}
+        {showLimits && used !== null ? <PracticesTodayChip used={used} cap={cap} isPro={isPro} /> : null}
       </div>
 
       <TranslatableText es={day.topicEs} className="mt-2">
