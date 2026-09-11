@@ -14,6 +14,8 @@ type VoiceRecorderProps = {
   maxSeconds?: number;
   showTimer?: boolean;
   size?: "md" | "lg";
+  /** Fired once the microphone is actually capturing. */
+  onStart?: () => void;
   onComplete: (recording: Recording) => void;
   className?: string;
 };
@@ -45,6 +47,7 @@ export function VoiceRecorder({
   maxSeconds,
   showTimer = true,
   size = "lg",
+  onStart,
   onComplete,
   className,
 }: VoiceRecorderProps) {
@@ -71,6 +74,7 @@ export function VoiceRecorder({
       activeRef.current = active;
       setSeconds(0);
       setRecording(true);
+      onStart?.();
       timerRef.current = setInterval(
         () =>
           setSeconds((value) => {
