@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AiCoachRouteImport } from './routes/ai-coach'
 import { Route as CoachCheckRouteImport } from './routes/coach-check'
+import { Route as CuentaRouteImport } from './routes/cuenta'
 import { Route as InstallRouteImport } from './routes/install'
 import { Route as LevelRouteImport } from './routes/level'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
@@ -73,6 +74,11 @@ const AiCoachRoute = AiCoachRouteImport.update({
 const CoachCheckRoute = CoachCheckRouteImport.update({
   id: '/coach-check',
   path: '/coach-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CuentaRoute = CuentaRouteImport.update({
+  id: '/cuenta',
+  path: '/cuenta',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InstallRoute = InstallRouteImport.update({
@@ -323,6 +329,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ai-coach': typeof AiCoachRoute
   '/coach-check': typeof CoachCheckRoute
+  '/cuenta': typeof CuentaRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
   '/onboarding': typeof OnboardingRoute
@@ -375,6 +382,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai-coach': typeof AiCoachRoute
   '/coach-check': typeof CoachCheckRoute
+  '/cuenta': typeof CuentaRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
   '/onboarding': typeof OnboardingRoute
@@ -427,6 +435,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/ai-coach': typeof AiCoachRoute
   '/coach-check': typeof CoachCheckRoute
+  '/cuenta': typeof CuentaRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
   '/onboarding': typeof OnboardingRoute
@@ -481,6 +490,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai-coach'
     | '/coach-check'
+    | '/cuenta'
     | '/install'
     | '/level'
     | '/onboarding'
@@ -533,6 +543,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai-coach'
     | '/coach-check'
+    | '/cuenta'
     | '/install'
     | '/level'
     | '/onboarding'
@@ -584,6 +595,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai-coach'
     | '/coach-check'
+    | '/cuenta'
     | '/install'
     | '/level'
     | '/onboarding'
@@ -637,6 +649,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AiCoachRoute: typeof AiCoachRoute
   CoachCheckRoute: typeof CoachCheckRoute
+  CuentaRoute: typeof CuentaRoute
   InstallRoute: typeof InstallRoute
   LevelRoute: typeof LevelRoute
   OnboardingRoute: typeof OnboardingRoute
@@ -703,6 +716,13 @@ declare module '@tanstack/react-router' {
       path: '/coach-check'
       fullPath: '/coach-check'
       preLoaderRoute: typeof CoachCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cuenta': {
+      id: '/cuenta'
+      path: '/cuenta'
+      fullPath: '/cuenta'
+      preLoaderRoute: typeof CuentaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/install': {
@@ -1058,6 +1078,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AiCoachRoute: AiCoachRoute,
   CoachCheckRoute: CoachCheckRoute,
+  CuentaRoute: CuentaRoute,
   InstallRoute: InstallRoute,
   LevelRoute: LevelRoute,
   OnboardingRoute: OnboardingRoute,
