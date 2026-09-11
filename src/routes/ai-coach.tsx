@@ -27,25 +27,61 @@ export const Route = createFileRoute("/ai-coach")({
 
 type Turn = { role: "user" | "coach"; text: string };
 
+type Quota = {
+  unlimited: boolean;
+  dailyUsed: number;
+  monthlyUsed: number;
+  dailyLimit: number;
+  monthlyLimit: number;
+  dayResetAt: string;
+  monthResetAt: string;
+  blocked: "none" | "daily" | "monthly";
+};
+
+async function authHeaders(): Promise<Record<string, string> | null> {
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) return null;
+  return { "content-type": "application/json", Authorization: `Bearer ${token}` };
+}
+
 function AiCoachPage() {
-  const { t } = useAppLang();
+  const { t, lang } = useAppLang();
   const [turns, setTurns] = useState<Turn[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [limitReached, setLimitReached] = useState(false);
-  const [used, setUsed] = useState<number | null>(null);
-  const [limit, setLimit] = useState<number | null>(null);
+  const [quota, setQuota] = useState<Quota | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
+  /** Reads the counters without calling the model or consuming a question. */
+  async function refreshQuota() {
+    try {
+      const headers = await authHeaders();
+      if (!headers) return;
+      const res = await fetch("/api/ai-coach", { method: "GET", headers });
+      const body = (await res.json().catch(() => null)) as { quota?: Quota } | null;
+      if (body?.quota) {
+        setQuota(body.quota);
+        if (body.quota.blocked === "none") setError(null);
+      }
+    } catch {
+      /* counters stay hidden; asking still works */
+    }
+  }
+
   useEffect(() => {
     inputRef.current?.focus();
+    void refreshQuota();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [turns, busy]);
+
+  const limitReached = quota ? quota.blocked !== "none" : false;
 
   async function ask(question: string) {
     const text = question.trim();
@@ -57,33 +93,33 @@ function AiCoachPage() {
     setBusy(true);
 
     try {
-      const { data } = await supabase.auth.getSession();
-      const token = data.session?.access_token;
-      if (!token) {
+      const headers = await authHeaders();
+      if (!headers) {
         setError(t("aiCoach.authError"));
         return;
       }
 
       const res = await fetch("/api/ai-coach", {
         method: "POST",
-        headers: { "content-type": "application/json", Authorization: `Bearer ${token}` },
+        headers,
         body: JSON.stringify({ question: text }),
       });
       const body = (await res.json().catch(() => null)) as {
         answer?: string;
-        used?: number;
-        limit?: number | null;
+        quota?: Quota;
         error?: string;
       } | null;
 
-      if (res.status === 429 || body?.error === "limit") {
-        setLimitReached(true);
-        setUsed(body?.used ?? null);
-        setLimit(body?.limit ?? null);
-        return;
-      }
+      if (body?.quota) setQuota(body.quota);
+
+      if (body?.error === "daily_limit" || body?.error === "monthly_limit") return;
       if (res.status === 401) {
         setError(t("aiCoach.authError"));
+        return;
+      }
+      // Provider overload / 429 — not the learner's personal quota.
+      if (body?.error === "provider_busy") {
+        setError(t("aiCoach.busy"));
         return;
       }
       if (!res.ok || !body?.answer) {
@@ -92,8 +128,6 @@ function AiCoachPage() {
       }
 
       setTurns((prev) => [...prev, { role: "coach", text: body.answer as string }]);
-      setUsed(typeof body.used === "number" ? body.used : null);
-      setLimit(typeof body.limit === "number" ? body.limit : null);
     } catch {
       setError(t("aiCoach.error"));
     } finally {
@@ -102,10 +136,28 @@ function AiCoachPage() {
     }
   }
 
-  const counter =
-    limit !== null && used !== null
-      ? t("aiCoach.counter").replace("{used}", String(used)).replace("{limit}", String(limit))
-      : null;
+  const counter = !quota
+    ? null
+    : quota.unlimited
+      ? t("aiCoach.unlimited")
+      : t("aiCoach.counter")
+          .replace("{dayUsed}", String(quota.dailyUsed))
+          .replace("{dayLimit}", String(quota.dailyLimit))
+          .replace("{monthUsed}", String(quota.monthlyUsed))
+          .replace("{monthLimit}", String(quota.monthlyLimit));
+
+  const monthly = quota?.blocked === "monthly";
+  const limitTitle = !quota
+    ? ""
+    : monthly
+      ? t("aiCoach.limitTitleMonthly").replace("{monthLimit}", String(quota.monthlyLimit))
+      : t("aiCoach.limitTitleDaily").replace("{dayLimit}", String(quota.dailyLimit));
+  const resetText = !quota
+    ? ""
+    : t("aiCoach.limitReset").replace(
+        "{reset}",
+        formatLocalReset(monthly ? quota.monthResetAt : quota.dayResetAt, lang),
+      );
 
   return (
     <AppShell title={t("aiCoach.title")} subtitle={t("aiCoach.subtitle")} hideSync>
