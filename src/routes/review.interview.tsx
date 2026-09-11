@@ -199,6 +199,23 @@ const TENSE_LABEL: Record<Exclude<Tense, null>, { en: string; es: string }> = {
   future: { en: "Future", es: "Futuro" },
 };
 
+/** Secondary grey skip button used across the practice modules. */
+function SkipButton({ es, onClick, className }: { es: boolean; onClick: () => void; className?: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-border bg-secondary p-3 text-sm font-bold uppercase tracking-wide text-secondary-foreground transition-colors hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+        className,
+      )}
+    >
+      <SkipForward className="size-4" aria-hidden="true" />
+      {es ? "Saltar pregunta" : "Skip question"}
+    </button>
+  );
+}
+
 type Phase = "intro" | "speaking" | "ready" | "recording" | "answered";
 
 function InterviewSimulator() {
