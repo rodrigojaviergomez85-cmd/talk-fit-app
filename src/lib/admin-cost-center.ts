@@ -80,7 +80,7 @@ export function estimateCosts(data: AdminCostCenter): { lines: CostLine[]; total
   lines.push({
     key: "tts",
     requests: ttsGen,
-    unitLabel: `$${TTS_USD_PER_GENERATION}/voz`,
+    unitLabel: `$${TTS_USD_PER_GENERATION}/voice`,
     usd: ttsGen * TTS_USD_PER_GENERATION,
     provider: "lovable-ai",
   });
