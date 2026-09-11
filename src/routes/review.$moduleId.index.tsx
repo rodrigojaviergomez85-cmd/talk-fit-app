@@ -10,6 +10,7 @@ import { getReviewModule } from "@/services/review/review-registry";
 import { ReviewProgress, type ReviewPracticeProgress } from "@/services/review/review-progress";
 import type { ReviewModuleId } from "@/lib/review-types";
 import { getReviewAccessSnapshot, isReviewModuleAccessible } from "@/services/review/review-access";
+import { DAILY_PRACTICE_CAP, PracticeAttempts } from "@/services/practice-attempts";
 
 export const Route = createFileRoute("/review/$moduleId/")({
   head: ({ params }) => {
@@ -40,6 +41,18 @@ function ReviewModulePage() {
   // Read after hydration only: localStorage is not available while rendering on the server.
   const [moduleAccess, setModuleAccess] = useState<"checking" | "allowed" | "locked">("checking");
   const [unlimited, setUnlimited] = useState(false);
+  // DAILY PRACTICE CAP: Review shares the same 5 sessions per local day as the modules.
+  const [practiceUsed, setPracticeUsed] = useState<number | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    void PracticeAttempts.pull().then(() => {
+      if (alive) setPracticeUsed(PracticeAttempts.usedToday());
+    });
+    return () => {
+      alive = false;
+    };
+  }, [user?.id]);
 
   useEffect(() => {
     if (!mod || loading) return;
