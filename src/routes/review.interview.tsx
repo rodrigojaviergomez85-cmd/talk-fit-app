@@ -4,6 +4,7 @@ import { ArrowLeft, Play, RotateCcw } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { useRecordingPlayback } from "@/hooks/use-recording-playback";
+import { AudioService } from "@/services/audio-service";
 import { useAppLang } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import type { Recording } from "@/lib/types";
@@ -15,15 +16,17 @@ import waitingClip from "@/assets/interview/mike-waiting.mp4.asset.json";
 export const Route = createFileRoute("/review/interview")({
   head: () => ({
     meta: [
-      { title: "Interview Simulator · Fluency App" },
+      { title: "B4 Interview Simulator · Fluency App" },
       {
         name: "description",
-        content: "Prueba del simulador de entrevistas con Mike: escucha, responde en voz alta y escúchate.",
+        content:
+          "Simulador de entrevista en inglés: practica pasado, presente y futuro respondiendo en voz alta a Mike.",
       },
-      { property: "og:title", content: "Interview Simulator · Fluency App" },
+      { property: "og:title", content: "B4 Interview Simulator · Fluency App" },
       {
         property: "og:description",
-        content: "Prueba del simulador de entrevistas con Mike: escucha, responde en voz alta y escúchate.",
+        content:
+          "Simulador de entrevista en inglés: practica pasado, presente y futuro respondiendo en voz alta a Mike.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -32,7 +35,8 @@ export const Route = createFileRoute("/review/interview")({
   component: InterviewSimulator,
 });
 
-const MAX_SECONDS = 30;
+const MAIN_SECONDS = 30;
+const FOLLOWUP_SECONDS = 20;
 /** Same sentence goal as the course modules (Rep 5). */
 const GOAL_MIN = 5;
 const GOAL_MAX = 8;
@@ -64,36 +68,131 @@ async function countSentences(blob: Blob | null): Promise<number | null> {
   }
 }
 
-const TURNS = [
+type Tense = "present" | "past" | "future" | null;
+
+type Prompt = {
+  id: string;
+  en: string;
+  es: string;
+  /** Pre-produced Mike clip; absent prompts play the app voice over the waiting loop. */
+  video?: { src: string; speechEnd: number };
+  seconds: number;
+  followUp: boolean;
+  tense: Tense;
+};
+
+const PROMPTS: Prompt[] = [
   {
     id: "welcome",
-    src: welcomeClip.url,
-    // Mike's voice ends ~6.4s in; stop before the clip's glitchy tail.
-    speechEnd: 6.4,
     en: "Hi! Welcome to the interview. I'm Mike, your recruiter today. How's it going?",
     es: "¡Hola! Bienvenido a la entrevista. Soy Mike, tu reclutador de hoy. ¿Cómo vas?",
+    // Mike's voice ends ~6.4s in; stop before the clip's glitchy tail.
+    video: { src: welcomeClip.url, speechEnd: 6.4 },
+    seconds: MAIN_SECONDS,
+    followUp: false,
+    tense: "present",
   },
   {
     id: "tell-me",
-    src: questionClip.url,
-    // Voice ends ~3.6s in; enable recording right after he stops talking.
-    speechEnd: 3.7,
     en: "Let's get started. Tell me about yourself.",
     es: "Empecemos. Háblame de ti.",
+    video: { src: questionClip.url, speechEnd: 3.7 },
+    seconds: MAIN_SECONDS,
+    followUp: false,
+    tense: "present",
   },
-] as const;
+  {
+    id: "tell-me-more",
+    en: "Give me more details, please.",
+    es: "Dame más detalles, por favor.",
+    seconds: FOLLOWUP_SECONDS,
+    followUp: true,
+    tense: "present",
+  },
+  {
+    id: "routine",
+    en: "What do you do every day at work or at school?",
+    es: "¿Qué haces todos los días en el trabajo o en la escuela?",
+    seconds: MAIN_SECONDS,
+    followUp: false,
+    tense: "present",
+  },
+  {
+    id: "last-job",
+    en: "Tell me about your last job or your last vacation. What happened?",
+    es: "Háblame de tu último trabajo o de tus últimas vacaciones. ¿Qué pasó?",
+    seconds: MAIN_SECONDS,
+    followUp: false,
+    tense: "past",
+  },
+  {
+    id: "explain-why",
+    en: "Explain why. Why was that important for you?",
+    es: "Explícame por qué. ¿Por qué fue importante para ti?",
+    seconds: FOLLOWUP_SECONDS,
+    followUp: true,
+    tense: "past",
+  },
+  {
+    id: "favorite-movie",
+    en: "Tell me about your favorite movie or book. What was it about?",
+    es: "Háblame de tu película o libro favorito. ¿De qué trataba?",
+    seconds: MAIN_SECONDS,
+    followUp: false,
+    tense: "past",
+  },
+  {
+    id: "opinion",
+    en: "What do you think about that? Would you recommend it?",
+    es: "¿Qué opinas de eso? ¿Lo recomendarías?",
+    seconds: FOLLOWUP_SECONDS,
+    followUp: true,
+    tense: "past",
+  },
+  {
+    id: "learned",
+    en: "What did you learn from that experience?",
+    es: "¿Qué aprendiste de esa experiencia?",
+    seconds: MAIN_SECONDS,
+    followUp: false,
+    tense: "past",
+  },
+  {
+    id: "two-years",
+    en: "Where do you see yourself in two years?",
+    es: "¿Dónde te ves en dos años?",
+    seconds: MAIN_SECONDS,
+    followUp: false,
+    tense: "future",
+  },
+  {
+    id: "after-course",
+    en: "What are you going to do after this course?",
+    es: "¿Qué vas a hacer después de este curso?",
+    seconds: MAIN_SECONDS,
+    followUp: false,
+    tense: "future",
+  },
+];
+
+const TENSE_LABEL: Record<Exclude<Tense, null>, { en: string; es: string }> = {
+  present: { en: "Present", es: "Presente" },
+  past: { en: "Past", es: "Pasado" },
+  future: { en: "Future", es: "Futuro" },
+};
 
 type Phase = "intro" | "speaking" | "ready" | "recording" | "answered";
 
 function InterviewSimulator() {
   const { lang } = useAppLang();
   const es = lang === "es";
-  const [turn, setTurn] = useState(0);
+  const [step, setStep] = useState(0);
   const [phase, setPhase] = useState<Phase>("intro");
   const [recording, setRecording] = useState<Recording | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const current = TURNS[turn]!;
-  const waiting = phase === "recording";
+  const stopSpeechRef = useRef<(() => void) | null>(null);
+  const current = PROMPTS[step]!;
+  const waiting = phase === "recording" || !current.video;
   const playback = useRecordingPlayback(recording?.id ?? "none");
 
   // Mike's voice never overlaps the microphone: the talking clip is stopped
@@ -107,39 +206,63 @@ function InterviewSimulator() {
     }
   }, [waiting]);
 
+  useEffect(() => {
+    return () => {
+      stopSpeechRef.current?.();
+      stopSpeechRef.current = null;
+    };
+  }, []);
+
   const playMike = useCallback(() => {
     setPhase("speaking");
     playback.stop();
-    const el = videoRef.current;
-    if (el) {
-      el.muted = false;
-      el.currentTime = 0;
-      void el.play().catch(() => setPhase("ready"));
+    stopSpeechRef.current?.();
+    if (current.video) {
+      const el = videoRef.current;
+      if (el) {
+        el.muted = false;
+        el.currentTime = 0;
+        void el.play().catch(() => setPhase("ready"));
+      }
+      return;
     }
-  }, [playback]);
+    // No pre-produced clip: Mike stays on the silent waiting loop while the
+    // app voice reads the prompt aloud.
+    stopSpeechRef.current = AudioService.speak(current.en, {
+      voice: "male",
+      onEnd: () => setPhase("ready"),
+      onError: () => setPhase("ready"),
+    });
+  }, [current, playback]);
 
   const onComplete = (rec: Recording) => {
     const pending: Recording = { ...rec, countStatus: "pending", sentenceCount: null };
     setRecording(pending);
     setPhase("answered");
     void countSentences(rec.blob ?? null).then((count) => {
-      setRecording((current) =>
-        current && current.id === pending.id
+      setRecording((value) =>
+        value && value.id === pending.id
           ? count === null
-            ? { ...current, countStatus: "failed", sentenceCount: null }
-            : { ...current, countStatus: "done", sentenceCount: count }
-          : current,
+            ? { ...value, countStatus: "failed", sentenceCount: null }
+            : { ...value, countStatus: "done", sentenceCount: count }
+          : value,
       );
     });
   };
 
   const goNext = () => {
+    playback.stop();
+    stopSpeechRef.current?.();
     setRecording(null);
-    setTurn((value) => value + 1);
+    setStep((value) => value + 1);
     setPhase("intro");
     const el = videoRef.current;
     if (el) el.pause();
   };
+
+  const goalMin = current.followUp ? 2 : GOAL_MIN;
+  const goalMax = current.followUp ? 4 : GOAL_MAX;
+  const timeLabel = current.seconds === 30 ? "00:30" : "00:20";
 
   return (
     <AppShell>
@@ -149,26 +272,38 @@ function InterviewSimulator() {
         </Link>
 
         <header>
-          <h1 className="text-2xl font-extrabold text-foreground">Interview Simulator</h1>
+          <h1 className="text-2xl font-extrabold text-foreground">B4 Interview Simulator</h1>
           <p className="text-sm text-muted-foreground">
             {es
-              ? "Prueba con Mike. Escúchalo, graba tu respuesta y escúchate."
-              : "Test run with Mike. Listen, record your answer and play it back."}
+              ? "Entrevista con Mike en pasado, presente y futuro. Escúchalo, responde en voz alta y escúchate."
+              : "Interview with Mike in past, present and future. Listen, answer out loud and play it back."}
           </p>
         </header>
+
+        <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+          <span>
+            {step + 1} / {PROMPTS.length}
+          </span>
+          {current.tense ? (
+            <span className="rounded-full bg-secondary px-3 py-1 text-secondary-foreground">
+              {es ? TENSE_LABEL[current.tense].es : TENSE_LABEL[current.tense].en}
+            </span>
+          ) : null}
+        </div>
 
         <div className="overflow-hidden rounded-2xl border border-border bg-navy">
           <video
             key={waiting ? "waiting" : current.id}
             ref={videoRef}
-            src={waiting ? waitingClip.url : current.src}
+            src={waiting ? waitingClip.url : current.video?.src}
             className="aspect-video w-full object-cover"
             playsInline
             muted={waiting}
             loop={waiting}
             preload="auto"
             onTimeUpdate={(e) => {
-              if (!waiting && e.currentTarget.currentTime >= current.speechEnd) {
+              const end = current.video?.speechEnd;
+              if (!waiting && end && e.currentTarget.currentTime >= end) {
                 const el = e.currentTarget;
                 el.pause();
                 el.muted = true;
@@ -184,6 +319,11 @@ function InterviewSimulator() {
           />
         </div>
 
+        {current.followUp ? (
+          <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+            {es ? "Repregunta" : "Follow-up"}
+          </p>
+        ) : null}
         <p className="text-center text-base font-semibold text-foreground">{current.en}</p>
         <p className="text-center text-sm text-muted-foreground">{current.es}</p>
 
@@ -194,7 +334,7 @@ function InterviewSimulator() {
             className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary p-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground"
           >
             <Play className="size-5" aria-hidden="true" />
-            {es ? "Empezar" : "Start"}
+            {step === 0 ? (es ? "Empezar" : "Start") : es ? "Escuchar a Mike" : "Listen to Mike"}
           </button>
         ) : null}
 
@@ -207,18 +347,16 @@ function InterviewSimulator() {
         {phase === "ready" || phase === "recording" ? (
           <div className="space-y-2 rounded-2xl border border-border bg-card p-4">
             <p className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-              {es ? "Grabar respuesta · máx 00:30" : "Record answer · max 00:30"}
+              {es ? `Grabar respuesta · máx ${timeLabel}` : `Record answer · max ${timeLabel}`}
             </p>
             <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-              {es
-                ? `Meta · ${GOAL_MIN}–${GOAL_MAX} oraciones`
-                : `Goal · ${GOAL_MIN}–${GOAL_MAX} sentences`}
+              {es ? `Meta · ${goalMin}–${goalMax} oraciones` : `Goal · ${goalMin}–${goalMax} sentences`}
             </p>
             <VoiceRecorder
               key={current.id}
               label={es ? "GRABAR" : "RECORD"}
               stopLabel="STOP"
-              maxSeconds={MAX_SECONDS}
+              maxSeconds={current.seconds}
               onStart={() => setPhase("recording")}
               onComplete={onComplete}
             />
@@ -229,7 +367,7 @@ function InterviewSimulator() {
           <div className="space-y-3 rounded-2xl border border-border bg-card p-4">
             <div className="rounded-2xl bg-secondary p-3 text-center">
               <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-                {es ? "Oraciones" : "Sentences"} · {es ? "meta" : "goal"} {GOAL_MIN}–{GOAL_MAX}
+                {es ? "Oraciones" : "Sentences"} · {es ? "meta" : "goal"} {goalMin}–{goalMax}
               </p>
               {recording.countStatus === "pending" ? (
                 <p className="mt-1 text-[13px] font-semibold text-muted-foreground">
@@ -239,11 +377,11 @@ function InterviewSimulator() {
                 <p
                   className={cn(
                     "mt-1 text-[16px] font-extrabold tabular-nums",
-                    recording.sentenceCount >= GOAL_MIN ? "text-success" : "text-destructive",
+                    recording.sentenceCount >= goalMin ? "text-success" : "text-destructive",
                   )}
                 >
-                  {recording.sentenceCount >= GOAL_MIN ? "🟢" : "🔴"} {recording.sentenceCount} / {GOAL_MIN}
-                  {recording.sentenceCount >= GOAL_MIN
+                  {recording.sentenceCount >= goalMin ? "🟢" : "🔴"} {recording.sentenceCount} / {goalMin}
+                  {recording.sentenceCount >= goalMin
                     ? es
                       ? " · ¡Meta lograda!"
                       : " · Goal reached!"
@@ -282,7 +420,7 @@ function InterviewSimulator() {
               {es ? "Grabar otra vez" : "Record again"}
             </button>
 
-            {turn < TURNS.length - 1 ? (
+            {step < PROMPTS.length - 1 ? (
               <button
                 type="button"
                 onClick={goNext}
@@ -292,7 +430,7 @@ function InterviewSimulator() {
               </button>
             ) : (
               <p className="text-center text-sm font-semibold text-success">
-                {es ? "Fin de la prueba. ¡Bien hecho!" : "End of the test. Well done!"}
+                {es ? "Fin de la entrevista. ¡Bien hecho!" : "End of the interview. Well done!"}
               </p>
             )}
           </div>
