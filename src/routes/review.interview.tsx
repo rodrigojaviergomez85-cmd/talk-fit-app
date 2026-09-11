@@ -214,14 +214,6 @@ const PROMPTS: Prompt[] = [
   },
 ];
 
-/** Index of the last prompt the student must answer (just before the goodbye). */
-const LAST_QUESTION_INDEX = (() => {
-  for (let i = PROMPTS.length - 1; i >= 0; i--) {
-    if (PROMPTS[i]!.seconds > 0) return i;
-  }
-  return PROMPTS.length - 1;
-})();
-
 const TENSE_LABEL: Record<Exclude<Tense, null>, { en: string; es: string }> = {
   present: { en: "Present", es: "Presente" },
   past: { en: "Past", es: "Pasado" },
@@ -328,11 +320,11 @@ function InterviewSimulator() {
     if (el) el.pause();
   };
 
-  const goToLastQuestion = () => {
+  const goBack = () => {
     playback.stop();
     stopSpeechRef.current?.();
     setRecording(null);
-    setStep(LAST_QUESTION_INDEX);
+    setStep((value) => Math.max(0, value - 1));
     setPhase("intro");
     const el = videoRef.current;
     if (el) {
@@ -474,21 +466,14 @@ function InterviewSimulator() {
           >
             <ArrowLeft className="size-4" aria-hidden="true" /> Review
           </Link>
-        ) : step < LAST_QUESTION_INDEX ? (
+        ) : (
           <button
             type="button"
-            onClick={goToLastQuestion}
+            onClick={goBack}
             className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground"
           >
-            <SkipForward className="size-4" aria-hidden="true" /> {es ? "Última pregunta" : "Last question"}
+            <ArrowLeft className="size-4" aria-hidden="true" /> {es ? "Atrás" : "Back"}
           </button>
-        ) : (
-          <Link
-            to="/review"
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-semibold text-primary"
-          >
-            <ArrowLeft className="size-4" aria-hidden="true" /> Review
-          </Link>
         )}
 
         <header>
