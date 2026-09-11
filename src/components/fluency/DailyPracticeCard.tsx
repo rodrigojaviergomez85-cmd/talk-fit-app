@@ -6,6 +6,10 @@ import type { CourseDay, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 import { DAILY_PRACTICE_CAP, PracticeAttempts } from "@/services/practice-attempts";
+import { setEffectivePracticeCap } from "@/lib/practice-cap";
+import { useDailyUsage } from "@/hooks/use-daily-usage";
+import { SECTION_KEYS } from "@/config/limits";
+import { LimitDialog } from "./LimitDialog";
 
 
 type Props = {
