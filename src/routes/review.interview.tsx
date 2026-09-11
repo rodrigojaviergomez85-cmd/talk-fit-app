@@ -493,11 +493,7 @@ function InterviewSimulator() {
           </button>
         )}
 
-        <p className="text-xs text-muted-foreground">
-          {es
-            ? "Entrevista con Mike en pasado, presente y futuro. Escúchalo, responde en voz alta y escúchate."
-            : "Interview with Mike in past, present and future. Listen, answer out loud and play it back."}
-        </p>
+        <h1 className="text-xl font-extrabold text-foreground">B4 Interview Simulator</h1>
 
         <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
           <span>
