@@ -310,6 +310,13 @@ function InterviewSimulator() {
     });
   }, [current, playback]);
 
+  // After Continue/Skip, Mike starts talking on his own (step 0 keeps Start).
+  useEffect(() => {
+    if (step === 0 || finished || phase !== "intro") return;
+    playMike();
+  }, [step, finished, phase, playMike]);
+
+
   const onComplete = (rec: Recording) => {
     const pending: Recording = { ...rec, countStatus: "pending", sentenceCount: null };
     const promptId = current.id;
