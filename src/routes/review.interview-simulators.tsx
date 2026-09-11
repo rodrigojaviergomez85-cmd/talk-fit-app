@@ -56,6 +56,9 @@ function InterviewSimulators() {
             </span>
             <span className="min-w-0 flex-1">
               <span className="block text-lg font-extrabold text-foreground">B4 Interview Simulator</span>
+              <span className="mt-1 block text-sm text-muted-foreground">
+                {showEs ? "Pasado, presente y futuro · 13 turnos" : "Past, present and future · 13 turns"}
+              </span>
             </span>
             <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
           </Link>
