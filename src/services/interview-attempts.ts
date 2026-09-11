@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { localDayKey } from "./practice-attempts";
+import { isUnlimitedEmail } from "@/lib/unlimited-access";
 
 /**
  * InterviewAttempts — DAILY INTERVIEW CAP: max 2 interview simulations per
@@ -189,8 +190,9 @@ export const InterviewAttempts = {
     const uid = auth.user?.id;
     if (!uid) return InterviewAttempts.status();
 
-    const { data: unlimitedFlag } = await supabase.rpc("is_unlimited_test_user", { _user_id: uid });
-    unlimited = unlimitedFlag === true;
+    // UI-only hint. The database trigger is what actually exempts internal
+    // accounts, so a spoofed local value cannot buy extra interviews.
+    unlimited = isUnlimitedEmail(auth.user?.email ?? null);
 
     const since = localDayKey(new Date(Date.now() - 2 * 86400000));
     const { data, error } = await supabase
