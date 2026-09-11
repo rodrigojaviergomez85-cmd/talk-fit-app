@@ -16,6 +16,7 @@ import { useAuth } from "@/lib/auth";
 import { useDailyUsage, useSectionLimits } from "@/hooks/use-daily-usage";
 import { createCheckoutSession } from "@/lib/subscription.functions";
 import { PRO_MULTIPLIER } from "@/config/limits";
+import { useAppSettings } from "@/hooks/use-app-settings";
 
 /**
  * LimitDialog — shown when a section's daily cap is reached.
@@ -37,6 +38,7 @@ export function LimitDialog({
   const { user } = useAuth();
   const { label, freeLimit, limit, isPro } = useDailyUsage(sectionKey);
   const sections = useSectionLimits();
+  const settings = useAppSettings();
   const startCheckout = useServerFn(createCheckoutSession);
   const [loading, setLoading] = useState(false);
 
@@ -80,7 +82,7 @@ export function LimitDialog({
                 className="w-full"
                 onClick={() => {
                   onOpenChange(false);
-                  void navigate({ to: "/profile" });
+                  void navigate({ to: "/cuenta" });
                 }}
               >
                 Ver mi consumo
@@ -115,10 +117,13 @@ export function LimitDialog({
             ) : null}
 
             <DialogFooter className="flex-col gap-2 sm:flex-col">
-              <Button className="w-full" onClick={subscribe} disabled={loading}>
-                {loading ? <Loader2 className="mr-2 size-4 animate-spin" /> : null}
-                Suscribirme por $4.99/mes
-              </Button>
+              {/* El admin puede apagar la venta sin tocar código. */}
+              {settings.billingEnabled ? (
+                <Button className="w-full" onClick={subscribe} disabled={loading}>
+                  {loading ? <Loader2 className="mr-2 size-4 animate-spin" /> : null}
+                  Suscribirme por $4.99/mes
+                </Button>
+              ) : null}
               <Button variant="ghost" className="w-full" onClick={() => onOpenChange(false)}>
                 Ahora no
               </Button>
