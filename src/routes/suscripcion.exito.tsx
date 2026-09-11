@@ -25,12 +25,27 @@ export const Route = createFileRoute("/suscripcion/exito")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: () => (
-    <AuthGate>
-      <SuccessPage />
-    </AuthGate>
-  ),
+  component: SuccessRoute,
 });
+
+function SuccessRoute() {
+  const { user, isLoading } = useAuth();
+  if (isLoading) {
+    return (
+      <main className="flex min-h-screen items-center justify-center">
+        <Loader2 className="size-8 animate-spin text-primary" />
+      </main>
+    );
+  }
+  if (!user) {
+    return (
+      <main className="mx-auto min-h-screen max-w-md px-6 py-10">
+        <AuthGate title="Inicia sesión para confirmar tu pago" />
+      </main>
+    );
+  }
+  return <SuccessPage />;
+}
 
 const MAX_ATTEMPTS = 5;
 const DELAY_MS = 2000;
