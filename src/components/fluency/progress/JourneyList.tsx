@@ -109,7 +109,6 @@ function ModuleRow({
   const total = module.days.length;
   const status = moduleAccessStatus(state, module.id, t);
   const isReview = JourneyService.moduleStatus(state, module.id) === "review";
-  const prerequisite = status.locked ? Progression.prerequisiteOf(module.id) : null;
   const teaser = MODULE_TEASERS[module.id];
   const name = ROUTE_NAMES[module.id] ?? module.title;
   const level = ROUTE_LEVELS[module.id];
