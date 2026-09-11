@@ -13,7 +13,7 @@ import welcomeClip from "@/assets/interview/mike-welcome.mp4.asset.json";
 import questionClip from "@/assets/interview/mike-question-1.mp4.asset.json";
 import waitingClip from "@/assets/interview/mike-waiting.mp4.asset.json";
 import tellMeMoreClip from "@/assets/interview/mike-tell-me-more.mp4.asset.json";
-import explainWhyClip from "@/assets/interview/mike-explain-why.mp4.asset.json";
+
 import opinionClip from "@/assets/interview/mike-opinion.mp4.asset.json";
 import pastProgressiveClip from "@/assets/interview/mike-past-progressive.mp4.asset.json";
 import goodbyeClip from "@/assets/interview/mike-goodbye.mp4.asset.json";
@@ -173,15 +173,6 @@ const PROMPTS: Prompt[] = [
     skill: "comparatives",
   },
   {
-    id: "explain-why",
-    en: "Explain why. Why was that important for you?",
-    es: "Explícame por qué. ¿Por qué fue importante para ti?",
-    video: { src: explainWhyClip.url, speechEnd: 3.8 },
-    seconds: FOLLOWUP_SECONDS,
-    followUp: true,
-    skill: "opinion",
-  },
-  {
     id: "best-worst",
     en: "What is the best day you have had this year, and the worst one?",
     es: "¿Cuál es el mejor día que has tenido este año y cuál el peor?",
@@ -330,7 +321,7 @@ const CLARIFICATION_PHRASES: readonly string[] = [
   "I didn't understand the question.",
   "Could you repeat the last part, please?",
   "I'm not sure I follow.",
-  "Could you break that down, please?",
+  
   "Sorry, can you say it one more time?",
   "Would you mind repeating the question?",
   "Just to be sure, are you asking about my routine?",
