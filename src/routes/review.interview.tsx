@@ -119,8 +119,18 @@ function InterviewSimulator() {
   }, [playback]);
 
   const onComplete = (rec: Recording) => {
-    setRecording(rec);
+    const pending: Recording = { ...rec, countStatus: "pending", sentenceCount: null };
+    setRecording(pending);
     setPhase("answered");
+    void countSentences(rec.blob ?? null).then((count) => {
+      setRecording((current) =>
+        current && current.id === pending.id
+          ? count === null
+            ? { ...current, countStatus: "failed", sentenceCount: null }
+            : { ...current, countStatus: "done", sentenceCount: count }
+          : current,
+      );
+    });
   };
 
   const goNext = () => {
