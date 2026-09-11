@@ -65,11 +65,11 @@ function PronunciationPage() {
                 <img
                   src={video.image}
                   alt={video.imageAlt}
-                  width={512}
-                  height={512}
+                  width={480}
+                  height={360}
                   loading="lazy"
                   decoding="async"
-                  className="size-16 shrink-0 rounded-xl border border-border object-cover"
+                  className="h-16 w-24 shrink-0 rounded-xl border border-border object-cover"
                 />
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[16px] font-extrabold text-foreground">{video.title}</span>
