@@ -116,10 +116,13 @@ function OnboardingPage() {
     finish("practice", placement, week);
   };
 
-  // Account just created after choosing level + week: enroll and start practice.
+  // Account just created (or returning from the Google redirect) after choosing
+  // level + week: enroll and start practice. After a full-page OAuth redirect the
+  // wizard remounts at screen 0, so we rely on the stored pending placement.
   const enrolled = useRef(false);
   useEffect(() => {
-    if (screen !== AUTH_SCREEN || !user || !placement || enrolled.current) return;
+    if (!user || !placement || enrolled.current) return;
+    if (screen !== AUTH_SCREEN && !getPendingPlacement()) return;
     enrolled.current = true;
     void (async () => {
       const { CloudSync } = await import("@/services/cloud-sync");
@@ -127,12 +130,14 @@ function OnboardingPage() {
       if (result === "failed") {
         enrolled.current = false;
         setSaveError(true);
+        setScreen(AUTH_SCREEN);
         return;
       }
       finish("practice", placement, week);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screen, user, placement, week]);
+
 
   const finish = (to: "practice" | "home", moduleId?: ModuleId, chosenWeek?: number) => {
     setPrefs({ onboardingCompleted: true });
