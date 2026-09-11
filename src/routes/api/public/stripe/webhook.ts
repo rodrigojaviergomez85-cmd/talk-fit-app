@@ -110,6 +110,8 @@ export const Route = createFileRoute("/api/public/stripe/webhook")({
         } catch (error) {
           const message = error instanceof Error ? error.message : "processing failed";
           console.error(`[stripe-webhook] ${event.type} (${event.id}) failed:`, message);
+          // Release the claim so Stripe's retry is not treated as a duplicate.
+          await sync.releaseEvent(event.id).catch(() => undefined);
           // 500 so Stripe retries — never swallow the failure with a 200.
           return json({ error: message }, 500);
         }
