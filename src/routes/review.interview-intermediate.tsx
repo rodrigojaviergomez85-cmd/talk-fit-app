@@ -10,9 +10,10 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import welcomeClip from "@/assets/interview/mike-welcome.mp4.asset.json";
-import questionClip from "@/assets/interview/mike-question-1.mp4.asset.json";
 import waitingClip from "@/assets/interview/mike-waiting.mp4.asset.json";
 import tellMeMoreClip from "@/assets/interview/mike-tell-me-more.mp4.asset.json";
+import happyMomentClip from "@/assets/interview/mike-happy-moment.mp4.asset.json";
+import whyHappyClip from "@/assets/interview/mike-why-happy.mp4.asset.json";
 
 import opinionClip from "@/assets/interview/mike-opinion.mp4.asset.json";
 import pastProgressiveClip from "@/assets/interview/mike-past-progressive.mp4.asset.json";
@@ -128,22 +129,22 @@ const PROMPTS: Prompt[] = [
     skill: "present",
   },
   {
-    id: "tell-me",
-    en: "Let's get started. Tell me about yourself and your daily routine.",
-    es: "Empecemos. Háblame de ti y de tu rutina diaria.",
-    video: { src: questionClip.url, speechEnd: 3.7 },
+    id: "happy-moment",
+    en: "Tell me about a happy moment. When was it, who was there, and what happened?",
+    es: "Cuéntame sobre un momento feliz. ¿Cuándo fue, quién estaba ahí y qué pasó?",
+    video: { src: happyMomentClip.url, speechEnd: 5.4 },
     seconds: MAIN_SECONDS,
     followUp: false,
-    skill: "present",
+    skill: "past",
   },
   {
-    id: "tell-me-more",
-    en: "Give me more details, please.",
-    es: "Dame más detalles, por favor.",
-    video: { src: tellMeMoreClip.url, speechEnd: 2.6 },
+    id: "why-happy",
+    en: "Why was it a happy moment for you?",
+    es: "¿Por qué fue un momento feliz para ti?",
+    video: { src: whyHappyClip.url, speechEnd: 3.2 },
     seconds: FOLLOWUP_SECONDS,
     followUp: true,
-    skill: "present",
+    skill: "past",
   },
   {
     id: "improve-english",
