@@ -1,0 +1,2 @@
+ALTER TABLE public.user_preferences ADD COLUMN start_week smallint NOT NULL DEFAULT 1;
+ALTER TABLE public.user_preferences ADD CONSTRAINT user_preferences_start_week_check CHECK (start_week BETWEEN 1 AND 4);

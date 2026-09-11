@@ -965,6 +965,7 @@ export type Database = {
           placement_selected_at: string | null
           placement_source: string | null
           spanish_support: boolean
+          start_week: number
           updated_at: string
           user_id: string
         }
@@ -980,6 +981,7 @@ export type Database = {
           placement_selected_at?: string | null
           placement_source?: string | null
           spanish_support?: boolean
+          start_week?: number
           updated_at?: string
           user_id: string
         }
@@ -995,6 +997,7 @@ export type Database = {
           placement_selected_at?: string | null
           placement_source?: string | null
           spanish_support?: boolean
+          start_week?: number
           updated_at?: string
           user_id?: string
         }
