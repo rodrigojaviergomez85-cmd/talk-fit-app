@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, Loader2 } from "lucide-react";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth";
 import { checkSubscription } from "@/lib/subscription.functions";
 import { useSectionLimits } from "@/hooks/use-daily-usage";
 
