@@ -153,6 +153,17 @@ export const JourneyService = {
   /** The day the learner should practice next (sequential unlock, no waiting). */
   currentDay(state: JourneyState, moduleId: ModuleId): number {
     const total = CourseService.totalDays(moduleId);
+    // A brand-new learner who picked a starting week during onboarding begins
+    // on that week's first day. Earlier days stay open, not auto-completed.
+    const hasRecords = Object.keys(state.days).some((key) => key.startsWith(`${moduleId}:`));
+    if (!hasRecords) {
+      const prefs = loadPreferences();
+      const placementModule = prefs.initialPlacementModuleId ?? prefs.currentModuleId;
+      if (placementModule === moduleId && prefs.startWeek > 1) {
+        const firstOfWeek = CourseService.getDays(moduleId).find((d) => d.week === prefs.startWeek)?.day;
+        return firstOfWeek ?? (prefs.startWeek - 1) * 5 + 1;
+      }
+    }
     for (let day = 1; day <= total; day += 1) {
       if (!state.days[recordKey(moduleId, day)]) return day;
     }
