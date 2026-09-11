@@ -22,6 +22,49 @@ const DICT = {
   "nav.review": ["REVIEW", "REVIEW"],
   "nav.natural": ["MÉTODO", "METHOD"],
   "nav.account": ["MI CUENTA", "ACCOUNT"],
+  "nav.aiCoach": ["AI COACH", "AI COACH"],
+
+  // AI Coach (chat)
+  "aiCoach.title": ["AI Coach", "AI Coach"],
+  "aiCoach.subtitle": [
+    "Preguntas de inglés: gramática, vocabulario y cómo decir algo.",
+    "English questions: grammar, vocabulary and how to say something.",
+  ],
+  "aiCoach.placeholder": ["Escribe tu pregunta de inglés…", "Type your English question…"],
+  "aiCoach.send": ["ENVIAR", "SEND"],
+  "aiCoach.counter": ["{used} / {limit} consultas hoy", "{used} / {limit} questions today"],
+  "aiCoach.unlimited": ["Consultas ilimitadas", "Unlimited questions"],
+  "aiCoach.limitTitle": ["Llegaste a tus 10 consultas de hoy", "You reached your 10 questions for today"],
+  "aiCoach.limitBody": [
+    "Mañana se reinicia el contador. Mientras tanto, repasa gramática en Review o vocabulario en Método Natural.",
+    "The counter resets tomorrow. Meanwhile, review grammar in Review or vocabulary in Natural Method.",
+  ],
+  "aiCoach.error": [
+    "No pude responder ahorita. Intenta de nuevo en un momento.",
+    "I couldn't answer right now. Please try again in a moment.",
+  ],
+  "aiCoach.authError": ["Inicia sesión para usar el AI Coach.", "Sign in to use the AI Coach."],
+  "aiCoach.thinking": ["Pensando…", "Thinking…"],
+  "aiCoach.disclaimer": [
+    "Este coach explica inglés; no evalúa tus grabaciones. No guarda tus conversaciones.",
+    "This coach explains English; it does not grade your recordings. It keeps no conversation history.",
+  ],
+  "aiCoach.suggestionsTitle": ["Prueba con:", "Try asking:"],
+  "aiCoach.suggestion1": ["¿Cuándo uso have o has?", "When do I use have or has?"],
+  "aiCoach.suggestion2": [
+    "¿Cómo digo «me tomó una hora» en inglés?",
+    "How do I say “it took me an hour” in English?",
+  ],
+  "aiCoach.suggestion3": [
+    "¿Cuál es la diferencia entre make y do?",
+    "What is the difference between make and do?",
+  ],
+
+  // Home quick menu
+  "home.moreMenu": ["Ver más", "See more"],
+  "home.myProgress": ["Mi progreso y audios", "My progress and audio"],
+
+
 
   // Natural Method
   "natural.supportTitle": ["Tu cuaderno de vocabulario", "Your vocab notebook"],
