@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowDown, ArrowRight, BookOpen, CheckCircle2, Clapperboard, Home, Mic, Tv } from "lucide-react";
 import { CourseService } from "@/services/course-service";
