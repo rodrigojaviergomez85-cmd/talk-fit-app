@@ -52,6 +52,24 @@ function InterviewSimulators() {
           </p>
         </header>
 
+        {cap.status && !cap.status.unlimited ? (
+          <p
+            className={`rounded-xl border px-3 py-2 text-xs font-semibold ${
+              capFull
+                ? "border-primary/40 bg-primary/10 text-foreground"
+                : "border-border bg-card text-muted-foreground"
+            }`}
+          >
+            {capFull
+              ? showEs
+                ? `Has usado ${DAILY_INTERVIEW_CAP} / ${DAILY_INTERVIEW_CAP} entrevistas hoy. Vuelve mañana.`
+                : `You've used ${DAILY_INTERVIEW_CAP} / ${DAILY_INTERVIEW_CAP} interviews today. Come back tomorrow.`
+              : showEs
+                ? `Entrevistas hoy: ${used} / ${DAILY_INTERVIEW_CAP}`
+                : `Interviews today: ${used} / ${DAILY_INTERVIEW_CAP}`}
+          </p>
+        ) : null}
+
         <div className="space-y-3">
           <Link
             to="/review/interview"
