@@ -415,22 +415,12 @@ function OnboardingPage() {
 
         <div className="space-y-3">
           {screen === PLACEMENT_SCREEN ? (
-            <>
-              <button
-                type="button"
-                disabled={!placement}
-                onClick={() => (user ? void confirmSignedInPlacement() : setScreen(AUTH_SCREEN))}
-                className={primaryBtn}
-              >
-                {t("action.next")}
-              </button>
-              <button type="button" onClick={() => setScreen(METHOD_SCREENS - 1)} className={secondaryBtn}>
-                {t("action.back")}
-              </button>
-            </>
+            <button type="button" onClick={() => setScreen(METHOD_SCREENS - 1)} className={secondaryBtn}>
+              {t("action.back")}
+            </button>
           ) : screen === AUTH_SCREEN ? (
             user ? (
-              <button type="button" onClick={() => finish("day1")} className={primaryBtn}>
+              <button type="button" onClick={() => finish("home")} className={primaryBtn}>
                 {t("action.startDay1")}
               </button>
             ) : (
