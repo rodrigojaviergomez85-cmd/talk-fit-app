@@ -86,6 +86,24 @@ function ReviewModulePage() {
           <p className="mt-2 text-xs text-navy-foreground/70">{showEs ? mod.subtitleEs : mod.subtitle}</p>
         </header>
 
+        {practiceUsed !== null && !unlimited ? (
+          <p
+            className={`rounded-xl border px-3 py-2 text-xs font-semibold ${
+              practiceUsed >= DAILY_PRACTICE_CAP
+                ? "border-primary/40 bg-primary/10 text-foreground"
+                : "border-border bg-card text-muted-foreground"
+            }`}
+          >
+            {practiceUsed >= DAILY_PRACTICE_CAP
+              ? showEs
+                ? `Prácticas de hoy: ${DAILY_PRACTICE_CAP} / ${DAILY_PRACTICE_CAP}. Vuelve mañana.`
+                : `Today's practice: ${DAILY_PRACTICE_CAP} / ${DAILY_PRACTICE_CAP}. Come back tomorrow.`
+              : showEs
+                ? `Prácticas de hoy: ${practiceUsed} / ${DAILY_PRACTICE_CAP} (módulos + Review)`
+                : `Today's practice: ${practiceUsed} / ${DAILY_PRACTICE_CAP} (modules + Review)`}
+          </p>
+        ) : null}
+
         <ReviewGuide cards={mod.guide} showEs={showEs} errors={mod.commonErrors} heading={mod.title} headingEs={mod.titleEs} />
 
         <div className="space-y-3">
