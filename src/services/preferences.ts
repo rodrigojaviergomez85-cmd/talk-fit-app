@@ -25,6 +25,8 @@ export type Preferences = {
   placementSelectedAt: string | null;
   placementChangedAt: string | null;
   placementChangeCount: number;
+  /** Week (1–4) of the placement module where the learner chose to begin. */
+  startWeek: number;
 };
 
 const PREFIX = "fluency-reps:prefs:v1";
@@ -45,6 +47,7 @@ export const defaultPreferences: Preferences = {
   placementSelectedAt: null,
   placementChangedAt: null,
   placementChangeCount: 0,
+  startWeek: 1,
 };
 
 const MODULE_IDS = new Set<string>([
@@ -63,6 +66,15 @@ const MODULE_IDS = new Set<string>([
 
 function asModuleId(value: unknown): ModuleId | null {
   return typeof value === "string" && MODULE_IDS.has(value) ? (value as ModuleId) : null;
+}
+
+export function asWeek(value: unknown): number {
+  return typeof value === "number" && value >= 1 && value <= 4 ? Math.floor(value) : 1;
+}
+
+/** First curriculum day of a week (1–4); every module has 5 days per week. */
+export function weekStartDay(week: number): number {
+  return (asWeek(week) - 1) * 5 + 1;
 }
 
 let scope = "guest";
@@ -113,6 +125,7 @@ export function loadPreferences(): Preferences {
       placementChangedAt: str(parsed.placementChangedAt),
       placementChangeCount:
         typeof parsed.placementChangeCount === "number" ? parsed.placementChangeCount : 0,
+      startWeek: asWeek(parsed.startWeek),
     };
   } catch {
     return defaultPreferences;
@@ -145,27 +158,31 @@ export function savePreferences(patch: Partial<Preferences>): Preferences {
 
 /* ----------------------- Pending placement (pre-auth) ---------------------- */
 
-export function setPendingPlacement(moduleId: ModuleId) {
+export function setPendingPlacement(moduleId: ModuleId, week = 1) {
   if (typeof window === "undefined") return;
   try {
     window.localStorage.setItem(
       PENDING_PLACEMENT_KEY,
-      JSON.stringify({ moduleId, selectedAt: new Date().toISOString() }),
+      JSON.stringify({ moduleId, week: asWeek(week), selectedAt: new Date().toISOString() }),
     );
   } catch {
     /* storage unavailable */
   }
 }
 
-export function getPendingPlacement(): { moduleId: ModuleId; selectedAt: string } | null {
+export function getPendingPlacement(): { moduleId: ModuleId; week: number; selectedAt: string } | null {
   if (typeof window === "undefined") return null;
   try {
     const raw = window.localStorage.getItem(PENDING_PLACEMENT_KEY);
     if (!raw) return null;
-    const parsed = JSON.parse(raw) as { moduleId?: unknown; selectedAt?: unknown };
+    const parsed = JSON.parse(raw) as { moduleId?: unknown; week?: unknown; selectedAt?: unknown };
     const moduleId = asModuleId(parsed.moduleId);
     if (!moduleId) return null;
-    return { moduleId, selectedAt: typeof parsed.selectedAt === "string" ? parsed.selectedAt : new Date().toISOString() };
+    return {
+      moduleId,
+      week: asWeek(parsed.week),
+      selectedAt: typeof parsed.selectedAt === "string" ? parsed.selectedAt : new Date().toISOString(),
+    };
   } catch {
     return null;
   }
