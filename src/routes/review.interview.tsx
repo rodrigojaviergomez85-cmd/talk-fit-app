@@ -362,6 +362,25 @@ function InterviewSimulator() {
           </p>
         ) : null}
 
+        {phase === "ready" ? (
+          <div className="space-y-2 rounded-2xl border border-dashed border-border bg-secondary/40 p-3">
+            <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              {es ? "¿No entendiste? Dilo en inglés" : "Didn't catch it? Say it in English"}
+            </p>
+            <p className="text-center text-sm font-semibold text-foreground">
+              “Could you please repeat that?” · “Could you speak slower, please?”
+            </p>
+            <button
+              type="button"
+              onClick={playMike}
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card p-3 text-sm font-extrabold uppercase tracking-wide text-foreground"
+            >
+              <RotateCcw className="size-4" aria-hidden="true" />
+              {es ? "Repetir pregunta" : "Repeat question"}
+            </button>
+          </div>
+        ) : null}
+
         {phase === "ready" || phase === "recording" ? (
           <div className="space-y-2 rounded-2xl border border-border bg-card p-4">
             <p className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
