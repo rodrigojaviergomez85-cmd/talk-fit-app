@@ -8,7 +8,6 @@ import { HomeWeekCard } from "@/components/fluency/HomeWeekCard";
 import { HomeGreeting } from "@/components/fluency/HomeGreeting";
 import { Progression } from "@/services/progression";
 import { getPendingPlacement } from "@/services/preferences";
-import { isAppTourDone } from "./tutorial";
 
 import { useAuth } from "@/lib/auth";
 import { JourneyService } from "@/services/journey-service";
@@ -54,15 +53,9 @@ function HomePage() {
     load();
   }, [load]);
 
-  // First install: brief 3-screen tour before anything else, exactly once.
-  useEffect(() => {
-    if (!isAppTourDone()) void navigate({ to: "/tutorial" });
-  }, [navigate]);
-
   // First-time learners see the intro + placement once; active learners never do.
   useEffect(() => {
     if (!state) return;
-    if (!isAppTourDone()) return;
     if (prefs.onboardingCompleted) return;
     if (prefs.currentModuleId) return;
     if (JourneyService.completedCount(state) > 0) return;
