@@ -1558,8 +1558,6 @@ export function Rep2Copy({
     <div className="space-y-5">
       <RepHeader titleKey="rep2.title" instrKey="rep2.instr" copy={day.repCopy?.rep2} />
 
-      <QuestionBanner day={day} />
-
       <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} />
 
       {chunkImage ? (
@@ -1588,8 +1586,6 @@ export function Rep2Copy({
           <LineCard key={line.id} line={line} chunked={prefersChunks(level)} />
         ))}
       </div>
-
-      <AudioPlayer text={chunkText} label={t("practice.listen")} rate={0.9} voice={day.speakerVoice} />
 
       {/* Genuine tap on the recorder unlocks Web Audio for iOS/Safari — no prompt, no blocking. */}
       <div onPointerDownCapture={correctionEnabled ? unlockFeedbackAudio : undefined}>
