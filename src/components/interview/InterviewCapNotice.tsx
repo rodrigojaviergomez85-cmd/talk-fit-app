@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { LimitDialog } from "@/components/fluency/LimitDialog";
+import { useAppSettings } from "@/hooks/use-app-settings";
 import { SECTION_KEYS } from "@/config/limits";
 import { DAILY_INTERVIEW_CAP } from "@/services/interview-attempts";
 import capMascot from "@/assets/interview/cap-mascot.jpg";
@@ -10,6 +11,7 @@ import capMascot from "@/assets/interview/cap-mascot.jpg";
 /** Shown instead of the interview when today's runs are already used. */
 export function InterviewCapReached({ es, cap = DAILY_INTERVIEW_CAP }: { es: boolean; cap?: number }) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const settings = useAppSettings();
 
   return (
     <AppShell>
@@ -51,17 +53,19 @@ export function InterviewCapReached({ es, cap = DAILY_INTERVIEW_CAP }: { es: boo
             >
               {es ? "Método Natural" : "Natural Method"}
             </Link>
-            <button
-              type="button"
-              onClick={() => setDialogOpen(true)}
-              className="relative overflow-hidden rounded-xl bg-primary px-4 py-2.5 text-sm font-extrabold uppercase tracking-wide text-primary-foreground transition-all duration-200 hover:scale-[1.02] hover:shadow-lg hover:brightness-110 active:scale-[0.98]"
-            >
-              <Sparkles className="mr-2 inline size-4 align-text-bottom" aria-hidden="true" />
-              {es ? "Adquirir premium" : "Get Premium"}
-              <span className="pointer-events-none absolute inset-0 overflow-hidden">
-                <span className="shine-sweep absolute -left-1/2 top-0 h-full w-1/2 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-60" />
-              </span>
-            </button>
+            {settings.billingEnabled ? (
+              <button
+                type="button"
+                onClick={() => setDialogOpen(true)}
+                className="relative overflow-hidden rounded-xl bg-primary px-4 py-2.5 text-sm font-extrabold uppercase tracking-wide text-primary-foreground transition-all duration-200 hover:scale-[1.02] hover:shadow-lg hover:brightness-110 active:scale-[0.98]"
+              >
+                <Sparkles className="mr-2 inline size-4 align-text-bottom" aria-hidden="true" />
+                {es ? "Adquirir premium" : "Get Premium"}
+                <span className="pointer-events-none absolute inset-0 overflow-hidden">
+                  <span className="shine-sweep absolute -left-1/2 top-0 h-full w-1/2 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-60" />
+                </span>
+              </button>
+            ) : null}
           </div>
         </div>
       </div>
@@ -85,7 +89,8 @@ export function InterviewCapCounter({
   cap?: number;
   isPro?: boolean;
 }) {
-  if (unlimited) return null;
+  const settings = useAppSettings();
+  if (unlimited || !settings.limitsEnabled) return null;
   return (
     <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em] text-secondary-foreground">
       {es ? "Entrevistas hoy" : "Interviews today"} {Math.min(used, cap)} / {cap}
