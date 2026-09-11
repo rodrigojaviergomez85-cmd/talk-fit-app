@@ -13,6 +13,17 @@ export type CreateCheckoutResult = { url: string };
 export const createCheckoutSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<CreateCheckoutResult> => {
+    // Global kill switch: when billing is off nobody can start a payment,
+    // not even by hitting this endpoint or /suscripcion/cancelado directly.
+    const { data: settings } = await context.supabase
+      .from("app_settings")
+      .select("billing_enabled")
+      .eq("id", "global")
+      .maybeSingle();
+    if (settings && settings.billing_enabled === false) {
+      throw new Error("Los pagos no están disponibles por ahora.");
+    }
+
     const email = typeof context.claims["email"] === "string" ? (context.claims["email"] as string) : null;
     if (!email) throw new Error("No email found for this account");
 

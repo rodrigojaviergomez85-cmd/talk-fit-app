@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createCheckoutSession } from "@/lib/subscription.functions";
+import { useAppSettings } from "@/hooks/use-app-settings";
 
 export const Route = createFileRoute("/suscripcion/cancelado")({
   head: () => ({
@@ -24,6 +25,7 @@ export const Route = createFileRoute("/suscripcion/cancelado")({
 function CancelPage() {
   const navigate = useNavigate();
   const startCheckout = useServerFn(createCheckoutSession);
+  const { billingEnabled } = useAppSettings();
   const [loading, setLoading] = useState(false);
 
   async function retry() {
@@ -44,10 +46,12 @@ function CancelPage() {
         No te cobramos nada. Puedes seguir usando tus intentos gratis y suscribirte cuando quieras.
       </p>
       <div className="mt-2 flex w-full flex-col gap-2">
-        <Button className="w-full" onClick={retry} disabled={loading}>
-          {loading ? <Loader2 className="mr-2 size-4 animate-spin" /> : null}
-          Intentar de nuevo
-        </Button>
+        {billingEnabled ? (
+          <Button className="w-full" onClick={retry} disabled={loading}>
+            {loading ? <Loader2 className="mr-2 size-4 animate-spin" /> : null}
+            Intentar de nuevo
+          </Button>
+        ) : null}
         <Button variant="ghost" className="w-full" onClick={() => void navigate({ to: "/" })}>
           Volver al inicio
         </Button>
