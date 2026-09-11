@@ -10,17 +10,19 @@ import {
 import { HABIT_EXPLANATION } from "@/lib/habit";
 import { useAppLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   /** "card" = subtle link on the habit card; "navy" = button on the dark 66-day celebration. */
   tone?: "card" | "navy";
+  iconOnly?: boolean;
 };
 
 /**
  * ¿POR QUÉ 66 DÍAS? — opens a bottom sheet explaining what the 66-day habit
  * challenge is and the research behind it. Self-contained trigger + sheet.
  */
-export function HabitExplainer({ tone = "card" }: Props) {
+export function HabitExplainer({ tone = "card", iconOnly = false }: Props) {
   const { lang } = useAppLang();
   const es = lang === "es";
   const [open, setOpen] = useState(false);
@@ -28,19 +30,24 @@ export function HabitExplainer({ tone = "card" }: Props) {
 
   return (
     <>
-      <button
+      <Button
         type="button"
+        variant="ghost"
+        size={iconOnly ? "icon" : "default"}
         onClick={() => setOpen(true)}
         className={cn(
-          "inline-flex min-h-[44px] items-center gap-1.5 rounded-full px-3 text-[12px] font-bold",
-          tone === "navy"
+          iconOnly
+            ? "size-10 rounded-full text-muted-foreground hover:text-foreground"
+            : "min-h-[44px] rounded-full px-3 text-[12px] font-bold",
+          !iconOnly && tone === "navy"
             ? "border border-navy-foreground/25 text-navy-foreground"
-            : "text-primary underline-offset-4 hover:underline",
+            : !iconOnly && "text-primary underline-offset-4 hover:underline",
         )}
+        aria-label={label}
       >
-        <Info className="size-3.5 shrink-0" />
-        {label}
-      </button>
+        <Info className={cn("shrink-0", iconOnly ? "size-6" : "size-3.5")} />
+        {iconOnly ? <span className="sr-only">{label}</span> : label}
+      </Button>
 
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerContent className="max-h-[92vh]">
