@@ -30,8 +30,8 @@ export const Route = createFileRoute("/suscripcion/exito")({
 });
 
 function SuccessRoute() {
-  const { user, isLoading } = useAuth();
-  if (isLoading) {
+  const { user, loading } = useAuth();
+  if (loading) {
     return (
       <main className="flex min-h-screen items-center justify-center">
         <Loader2 className="size-8 animate-spin text-primary" />
