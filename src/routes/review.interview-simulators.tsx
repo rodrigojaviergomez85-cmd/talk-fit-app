@@ -83,22 +83,25 @@ function InterviewSimulators() {
             <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
           </Link>
 
-          <div className="flex min-h-[112px] items-center gap-4 rounded-2xl border border-dashed border-border bg-muted/40 p-5 opacity-80">
-            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
-              <Lock className="size-6" aria-hidden="true" />
+          <Link
+            to="/review/interview-advanced"
+            className="flex min-h-[112px] items-center gap-4 rounded-2xl border border-border bg-card p-5 transition hover:border-primary"
+          >
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <BriefcaseBusiness className="size-6" aria-hidden="true" />
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block text-lg font-extrabold text-muted-foreground">Advanced Simulator</span>
+              <span className="block text-lg font-extrabold text-foreground">
+                Advanced Interview Simulator
+              </span>
               <span className="mt-1 block text-sm text-muted-foreground">
                 {showEs
-                  ? "Entrevistas exigentes con repreguntas profundas."
-                  : "Demanding interviews with deep follow-ups."}
-              </span>
-              <span className="mt-2 block text-xs font-extrabold uppercase text-muted-foreground">
-                {showEs ? "Próximamente" : "Coming soon"}
+                  ? "Hipotéticos, customer service, ventas y persuasión · 22 turnos"
+                  : "Hypotheticals, customer service, sales and persuasion · 22 turns"}
               </span>
             </span>
-          </div>
+            <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
+          </Link>
         </div>
       </div>
     </AppShell>
