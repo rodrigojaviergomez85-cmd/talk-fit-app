@@ -5,6 +5,7 @@ import { AppShell } from "@/components/fluency/AppShell";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { useRecordingPlayback } from "@/hooks/use-recording-playback";
 import { useAppLang } from "@/lib/i18n";
+import { supabase } from "@/integrations/supabase/client";
 import type { Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import welcomeClip from "@/assets/interview/mike-welcome.mp4.asset.json";
@@ -32,6 +33,36 @@ export const Route = createFileRoute("/review/interview")({
 });
 
 const MAX_SECONDS = 30;
+/** Same sentence goal as the course modules (Rep 5). */
+const GOAL_MIN = 5;
+const GOAL_MAX = 8;
+/** Server accepts at most 3 MB; skip the call locally for anything larger. */
+const SENTENCE_COUNT_MAX_BYTES = 3 * 1024 * 1024;
+
+/**
+ * Estimated complete spoken ideas for one answer — the same counter the
+ * course modules use. Returns null when unavailable; never throws.
+ */
+async function countSentences(blob: Blob | null): Promise<number | null> {
+  if (!blob || blob.size < 2048 || blob.size > SENTENCE_COUNT_MAX_BYTES) return null;
+  try {
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+    if (!token) return null;
+    const form = new FormData();
+    form.append("file", blob, "answer");
+    const res = await fetch("/api/sentence-count", {
+      method: "POST",
+      body: form,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) return null;
+    const body = (await res.json()) as { sentences?: unknown };
+    return typeof body.sentences === "number" ? body.sentences : null;
+  } catch {
+    return null;
+  }
+}
 
 const TURNS = [
   {
@@ -88,8 +119,18 @@ function InterviewSimulator() {
   }, [playback]);
 
   const onComplete = (rec: Recording) => {
-    setRecording(rec);
+    const pending: Recording = { ...rec, countStatus: "pending", sentenceCount: null };
+    setRecording(pending);
     setPhase("answered");
+    void countSentences(rec.blob ?? null).then((count) => {
+      setRecording((current) =>
+        current && current.id === pending.id
+          ? count === null
+            ? { ...current, countStatus: "failed", sentenceCount: null }
+            : { ...current, countStatus: "done", sentenceCount: count }
+          : current,
+      );
+    });
   };
 
   const goNext = () => {
@@ -163,6 +204,11 @@ function InterviewSimulator() {
             <p className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               {es ? "Grabar respuesta · máx 00:30" : "Record answer · max 00:30"}
             </p>
+            <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              {es
+                ? `Meta · ${GOAL_MIN}–${GOAL_MAX} oraciones`
+                : `Goal · ${GOAL_MIN}–${GOAL_MAX} sentences`}
+            </p>
             <VoiceRecorder
               key={current.id}
               label={es ? "GRABAR" : "RECORD"}
@@ -176,6 +222,36 @@ function InterviewSimulator() {
 
         {phase === "answered" && recording ? (
           <div className="space-y-3 rounded-2xl border border-border bg-card p-4">
+            <div className="rounded-2xl bg-secondary p-3 text-center">
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                {es ? "Oraciones" : "Sentences"} · {es ? "meta" : "goal"} {GOAL_MIN}–{GOAL_MAX}
+              </p>
+              {recording.countStatus === "pending" ? (
+                <p className="mt-1 text-[13px] font-semibold text-muted-foreground">
+                  {es ? "Contando…" : "Counting…"}
+                </p>
+              ) : recording.countStatus === "done" && typeof recording.sentenceCount === "number" ? (
+                <p
+                  className={cn(
+                    "mt-1 text-[16px] font-extrabold tabular-nums",
+                    recording.sentenceCount >= GOAL_MIN ? "text-success" : "text-destructive",
+                  )}
+                >
+                  {recording.sentenceCount >= GOAL_MIN ? "🟢" : "🔴"} {recording.sentenceCount} / {GOAL_MIN}
+                  {recording.sentenceCount >= GOAL_MIN
+                    ? es
+                      ? " · ¡Meta lograda!"
+                      : " · Goal reached!"
+                    : es
+                      ? " · intenta decir un poco más"
+                      : " · try to say a little more"}
+                </p>
+              ) : (
+                <p className="mt-1 text-[12px] text-muted-foreground">
+                  {es ? "Conteo no disponible" : "Count unavailable"}
+                </p>
+              )}
+            </div>
             <button
               type="button"
               onClick={() => playback.toggle(() => recording.url)}
