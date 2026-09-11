@@ -35,7 +35,6 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const [state, setState] = useState<JourneyState | null>(null);
   const [failed, setFailed] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { t, prefs } = useAppLang();
   const { user, sync, loading: authLoading } = useAuth();
