@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Play, RotateCcw } from "lucide-react";
+import { ArrowLeft, Play, RotateCcw, SkipForward } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { useRecordingPlayback } from "@/hooks/use-recording-playback";
@@ -199,6 +199,23 @@ const TENSE_LABEL: Record<Exclude<Tense, null>, { en: string; es: string }> = {
   future: { en: "Future", es: "Futuro" },
 };
 
+/** Secondary grey skip button used across the practice modules. */
+function SkipButton({ es, onClick, className }: { es: boolean; onClick: () => void; className?: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-border bg-secondary p-3 text-sm font-bold uppercase tracking-wide text-secondary-foreground transition-colors hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+        className,
+      )}
+    >
+      <SkipForward className="size-4" aria-hidden="true" />
+      {es ? "Saltar pregunta" : "Skip question"}
+    </button>
+  );
+}
+
 type Phase = "intro" | "speaking" | "ready" | "recording" | "answered";
 
 function InterviewSimulator() {
@@ -346,20 +363,26 @@ function InterviewSimulator() {
         <p className="text-center text-sm text-muted-foreground">{current.es}</p>
 
         {phase === "intro" ? (
-          <button
-            type="button"
-            onClick={playMike}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary p-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground"
-          >
-            <Play className="size-5" aria-hidden="true" />
-            {step === 0 ? (es ? "Empezar" : "Start") : es ? "Escuchar a Mike" : "Listen to Mike"}
-          </button>
+          <div className="space-y-3">
+            <button
+              type="button"
+              onClick={playMike}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary p-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground"
+            >
+              <Play className="size-5" aria-hidden="true" />
+              {step === 0 ? (es ? "Empezar" : "Start") : es ? "Escuchar a Mike" : "Listen to Mike"}
+            </button>
+            {step < PROMPTS.length - 1 ? <SkipButton es={es} onClick={goNext} /> : null}
+          </div>
         ) : null}
 
         {phase === "speaking" ? (
-          <p className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            {es ? "Mike está hablando…" : "Mike is speaking…"}
-          </p>
+          <div className="space-y-3">
+            <p className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              {es ? "Mike está hablando…" : "Mike is speaking…"}
+            </p>
+            {step < PROMPTS.length - 1 ? <SkipButton es={es} onClick={goNext} /> : null}
+          </div>
         ) : null}
 
         {phase === "ready" ? (
@@ -382,7 +405,7 @@ function InterviewSimulator() {
         ) : null}
 
         {phase === "ready" || phase === "recording" ? (
-          <div className="space-y-2 rounded-2xl border border-border bg-card p-4">
+          <div className="space-y-3 rounded-2xl border border-border bg-card p-4">
             <p className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               {es ? `Grabar respuesta · máx ${timeLabel}` : `Record answer · max ${timeLabel}`}
             </p>
@@ -397,6 +420,7 @@ function InterviewSimulator() {
               onStart={() => setPhase("recording")}
               onComplete={onComplete}
             />
+            {step < PROMPTS.length - 1 ? <SkipButton es={es} onClick={goNext} /> : null}
           </div>
         ) : null}
 
