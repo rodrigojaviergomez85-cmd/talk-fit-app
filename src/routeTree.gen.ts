@@ -56,6 +56,7 @@ import { Route as NaturalMethodVerbsPhrasalRouteImport } from './routes/natural-
 import { Route as ReviewModuleIdIndexRouteImport } from './routes/review.$moduleId.index'
 import { Route as ReviewModuleIdPracticeRouteImport } from './routes/review.$moduleId.$practice'
 import { Route as ApiPublicHooksPurgeAudioRouteImport } from './routes/api/public/hooks/purge-audio'
+import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -300,6 +301,11 @@ const ApiPublicHooksPurgeAudioRoute =
     path: '/api/public/hooks/purge-audio',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicStripeWebhookRoute = ApiPublicStripeWebhookRouteImport.update({
+  id: '/api/public/stripe/webhook',
+  path: '/api/public/stripe/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -349,6 +355,7 @@ export interface FileRoutesByFullPath {
   '/natural-method/verbs/': typeof NaturalMethodVerbsIndexRoute
   '/review/$moduleId/': typeof ReviewModuleIdIndexRoute
   '/api/public/hooks/purge-audio': typeof ApiPublicHooksPurgeAudioRoute
+  '/api/public/stripe/webhook': typeof ApiPublicStripeWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -397,6 +404,7 @@ export interface FileRoutesByTo {
   '/natural-method/verbs': typeof NaturalMethodVerbsIndexRoute
   '/review/$moduleId': typeof ReviewModuleIdIndexRoute
   '/api/public/hooks/purge-audio': typeof ApiPublicHooksPurgeAudioRoute
+  '/api/public/stripe/webhook': typeof ApiPublicStripeWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -447,6 +455,7 @@ export interface FileRoutesById {
   '/natural-method/verbs/': typeof NaturalMethodVerbsIndexRoute
   '/review/$moduleId/': typeof ReviewModuleIdIndexRoute
   '/api/public/hooks/purge-audio': typeof ApiPublicHooksPurgeAudioRoute
+  '/api/public/stripe/webhook': typeof ApiPublicStripeWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -498,6 +507,7 @@ export interface FileRouteTypes {
     | '/natural-method/verbs/'
     | '/review/$moduleId/'
     | '/api/public/hooks/purge-audio'
+    | '/api/public/stripe/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -546,6 +556,7 @@ export interface FileRouteTypes {
     | '/natural-method/verbs'
     | '/review/$moduleId'
     | '/api/public/hooks/purge-audio'
+    | '/api/public/stripe/webhook'
   id:
     | '__root__'
     | '/'
@@ -595,6 +606,7 @@ export interface FileRouteTypes {
     | '/natural-method/verbs/'
     | '/review/$moduleId/'
     | '/api/public/hooks/purge-audio'
+    | '/api/public/stripe/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -641,6 +653,7 @@ export interface RootRouteChildren {
   ReviewModuleIdPracticeRoute: typeof ReviewModuleIdPracticeRoute
   ReviewModuleIdIndexRoute: typeof ReviewModuleIdIndexRoute
   ApiPublicHooksPurgeAudioRoute: typeof ApiPublicHooksPurgeAudioRoute
+  ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -974,6 +987,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHooksPurgeAudioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/stripe/webhook': {
+      id: '/api/public/stripe/webhook'
+      path: '/api/public/stripe/webhook'
+      fullPath: '/api/public/stripe/webhook'
+      preLoaderRoute: typeof ApiPublicStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1038,6 +1058,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReviewModuleIdPracticeRoute: ReviewModuleIdPracticeRoute,
   ReviewModuleIdIndexRoute: ReviewModuleIdIndexRoute,
   ApiPublicHooksPurgeAudioRoute: ApiPublicHooksPurgeAudioRoute,
+  ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
