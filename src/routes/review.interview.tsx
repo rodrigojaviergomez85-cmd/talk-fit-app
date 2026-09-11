@@ -222,6 +222,36 @@ function InterviewSimulator() {
 
         {phase === "answered" && recording ? (
           <div className="space-y-3 rounded-2xl border border-border bg-card p-4">
+            <div className="rounded-2xl bg-secondary p-3 text-center">
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                {es ? "Oraciones" : "Sentences"} · {es ? "meta" : "goal"} {GOAL_MIN}–{GOAL_MAX}
+              </p>
+              {recording.countStatus === "pending" ? (
+                <p className="mt-1 text-[13px] font-semibold text-muted-foreground">
+                  {es ? "Contando…" : "Counting…"}
+                </p>
+              ) : recording.countStatus === "done" && typeof recording.sentenceCount === "number" ? (
+                <p
+                  className={cn(
+                    "mt-1 text-[16px] font-extrabold tabular-nums",
+                    recording.sentenceCount >= GOAL_MIN ? "text-success" : "text-destructive",
+                  )}
+                >
+                  {recording.sentenceCount >= GOAL_MIN ? "🟢" : "🔴"} {recording.sentenceCount} / {GOAL_MIN}
+                  {recording.sentenceCount >= GOAL_MIN
+                    ? es
+                      ? " · ¡Meta lograda!"
+                      : " · Goal reached!"
+                    : es
+                      ? " · intenta decir un poco más"
+                      : " · try to say a little more"}
+                </p>
+              ) : (
+                <p className="mt-1 text-[12px] text-muted-foreground">
+                  {es ? "Conteo no disponible" : "Count unavailable"}
+                </p>
+              )}
+            </div>
             <button
               type="button"
               onClick={() => playback.toggle(() => recording.url)}
