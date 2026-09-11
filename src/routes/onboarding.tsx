@@ -464,7 +464,7 @@ function OnboardingPage() {
               {user && prefs.currentModuleId ? t("action.startDay1") : t("action.startJourney")}
             </button>
           )}
-          {screen === 0 || screen === AUTH_SCREEN ? (
+          {(screen === 0 || screen === AUTH_SCREEN) && !installedPwa ? (
             <Link
               to="/install"
               className="block text-center text-[13px] font-bold text-primary underline underline-offset-4"
