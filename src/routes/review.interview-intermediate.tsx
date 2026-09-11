@@ -674,7 +674,11 @@ function IntermediateInterviewSimulator() {
               <Play className="size-5" aria-hidden="true" />
               {step === 0 ? (es ? "Empezar" : "Start") : es ? "Escuchar a Mike" : "Listen to Mike"}
             </button>
-            {step < PROMPTS.length - 1 ? <SkipButton es={es} onClick={goNext} /> : null}
+            {step < PROMPTS.length - 1 ? (
+              <SkipButton es={es} onClick={goNext} />
+            ) : (
+              <SkipButton es={es} onClick={finishInterview} final />
+            )}
           </div>
         ) : null}
 
