@@ -169,12 +169,14 @@ export const InterviewAttempts = {
       first_recording_at: counted.firstRecordingAt,
     });
     if (error) {
-      // Cap trigger (or any write failure) — do not let the run proceed.
       await InterviewAttempts.refresh();
-      return false;
+      // Only the cap trigger means "no interviews left today"; anything else is
+      // a transient write failure and must not lock the simulator.
+      const capped = !InterviewAttempts.status(attemptId).allowed;
+      return capped ? "capped" : "error";
     }
     upsertLocal(counted);
-    return true;
+    return "ok";
   },
 
   /** Marks the run finished so the next one mints a fresh id. */
