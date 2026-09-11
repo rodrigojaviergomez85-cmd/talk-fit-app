@@ -234,6 +234,8 @@ function InterviewSimulator() {
   const [step, setStep] = useState(0);
   const [phase, setPhase] = useState<Phase>("intro");
   const [recording, setRecording] = useState<Recording | null>(null);
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [finished, setFinished] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const stopSpeechRef = useRef<(() => void) | null>(null);
   const current = PROMPTS[step]!;
