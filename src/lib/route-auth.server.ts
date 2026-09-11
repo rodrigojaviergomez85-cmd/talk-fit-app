@@ -80,3 +80,28 @@ export async function consumeQuota(
   const row = Array.isArray(data) ? data[0] : data;
   return { allowed: Boolean(row?.allowed), requestCount: Number(row?.used_count ?? 0) };
 }
+
+/**
+ * Effective daily cap for a section, decided in Postgres from `section_limits`
+ * (free limit x the plan multiplier, and "no practical cap" when the admin
+ * turned limits or the section off). Falls back to the free default only when
+ * the RPC itself fails, so a Pro learner never gets silently downgraded to the
+ * free number by a hardcoded constant.
+ */
+export async function sectionDailyLimit(
+  userId: string,
+  sectionKey: string,
+  fallback: number,
+): Promise<number> {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data, error } = await supabaseAdmin.rpc("get_daily_limit", {
+    p_user_id: userId,
+    p_section_key: sectionKey,
+  });
+  if (error) {
+    console.error(`[route-auth] get_daily_limit(${sectionKey}) failed: ${error.message}`);
+    return fallback;
+  }
+  const limit = Number(data);
+  return Number.isFinite(limit) && limit > 0 ? limit : fallback;
+}
