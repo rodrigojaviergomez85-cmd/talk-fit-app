@@ -116,6 +116,7 @@ const DICT = {
   "action.exit": ["SALIR", "EXIT"],
   "action.next": ["SIGUIENTE", "NEXT"],
   "action.skip": ["SALTAR", "SKIP"],
+  "onb.installCta": ["📲 Instala la app en tu celular — toca aquí", "📲 Install the app on your phone — tap here"],
   "action.tryAgain": ["INTENTAR DE NUEVO", "TRY AGAIN"],
   "action.loadMore": ["VER MÁS", "LOAD MORE"],
   "action.continuePractice": ["CONTINUAR PRÁCTICA", "CONTINUE PRACTICE"],

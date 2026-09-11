@@ -15,7 +15,7 @@ import {
 import { useAppLang } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 
-const INSTALL_URL = "https://talk-fit-app.lovable.app/install";
+const INSTALL_URL = "https://fluencye4cc.app/install";
 
 type Env =
   | "installed"
@@ -179,7 +179,7 @@ function IphoneStepVisual({ step, labels }: { step: 1 | 2 | 3; labels: { share: 
         {step === 1 ? (
           <>
             <div className="flex h-9 items-center justify-center border-b border-border bg-muted text-[10px] font-semibold text-muted-foreground">
-              talk-fit-app.lovable.app
+              fluencye4cc.app
             </div>
             <div className="flex h-16 items-center justify-center">
               <img src="/icon-192.png" alt="" className="size-10 rounded-lg" width={40} height={40} />
@@ -215,7 +215,7 @@ function IphoneStepVisual({ step, labels }: { step: 1 | 2 | 3; labels: { share: 
               <img src="/icon-192.png" alt="" className="size-12 rounded-xl" width={48} height={48} />
               <div className="min-w-0 flex-1 text-left">
                 <p className="text-xs font-bold text-foreground">Fluency App</p>
-                <p className="truncate text-[10px] text-muted-foreground">talk-fit-app.lovable.app</p>
+                <p className="truncate text-[10px] text-muted-foreground">fluencye4cc.app</p>
               </div>
             </div>
           </>
