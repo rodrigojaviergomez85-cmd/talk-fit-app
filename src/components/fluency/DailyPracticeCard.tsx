@@ -92,7 +92,7 @@ export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalD
         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
           {t("home.dayOfTotal").replace("{day}", String(day.day)).replace("{total}", String(totalDays))}
         </p>
-        {used !== null ? <PracticesTodayChip used={used} /> : null}
+        {used !== null ? <PracticesTodayChip used={used} cap={cap} isPro={isPro} /> : null}
       </div>
 
       <TranslatableText es={day.topicEs} className="mt-2">
@@ -114,15 +114,24 @@ export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalD
           <p className="text-[11px] font-black uppercase tracking-[0.14em] text-success">{t("repeatDay.done")}</p>
           <p className="mt-1 text-[13px] font-bold uppercase tracking-[0.12em]">{t("repeatDay.question")}</p>
           <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
-            {t("repeatDay.body").replace("{cap}", String(DAILY_PRACTICE_CAP))}
+            {t("repeatDay.body").replace("{cap}", String(cap))}
           </p>
         </div>
       ) : null}
 
       {capReached ? (
-        <p className="mt-4 rounded-2xl bg-success/10 p-4 text-[13px] leading-relaxed text-success">
-          {t("dailyCap.body").replace("{cap}", String(DAILY_PRACTICE_CAP))}
-        </p>
+        <div className="mt-4 space-y-3 rounded-2xl bg-success/10 p-4">
+          <p className="text-[13px] leading-relaxed text-success">
+            {t("dailyCap.body").replace("{cap}", String(cap))}
+          </p>
+          <button
+            type="button"
+            onClick={() => setLimitOpen(true)}
+            className="w-full rounded-xl bg-primary px-4 py-2.5 text-[13px] font-extrabold uppercase tracking-wide text-primary-foreground"
+          >
+            Ver mis opciones
+          </button>
+        </div>
       ) : (
         <Link
           to="/practice"
