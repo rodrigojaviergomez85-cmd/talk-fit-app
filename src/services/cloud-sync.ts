@@ -354,7 +354,7 @@ export const CloudSync = {
     const { data } = await supabase
       .from("user_preferences")
       .select(
-        "app_language, spanish_support, onboarding_completed, current_module_id, initial_placement_module_id, placement_source, placement_selected_at, placement_changed_at, placement_change_count",
+        "app_language, spanish_support, onboarding_completed, current_module_id, initial_placement_module_id, placement_source, placement_selected_at, placement_changed_at, placement_change_count, start_week",
       )
       .eq("user_id", uid)
       .maybeSingle();
@@ -371,6 +371,7 @@ export const CloudSync = {
       placementSelectedAt: data.placement_selected_at,
       placementChangedAt: data.placement_changed_at,
       placementChangeCount: data.placement_change_count ?? 0,
+      startWeek: asWeek(data.start_week),
     });
   },
 
@@ -407,6 +408,7 @@ export const CloudSync = {
         placement_source: "self_selected",
         placement_selected_at: pending.selectedAt,
         onboarding_completed: true,
+        start_week: pending.week,
       },
       { onConflict: "user_id" },
     );
@@ -421,6 +423,7 @@ export const CloudSync = {
       placementSource: "self_selected",
       placementSelectedAt: pending.selectedAt,
       onboardingCompleted: true,
+      startWeek: pending.week,
     });
     return "saved";
   },
