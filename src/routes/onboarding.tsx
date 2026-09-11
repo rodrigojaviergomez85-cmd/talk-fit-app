@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowDown, ArrowRight, BookOpen, CheckCircle2, Clapperboard, Home, Mic, Tv } from "lucide-react";
 import { CourseService } from "@/services/course-service";
@@ -180,6 +180,9 @@ function OnboardingPage() {
   const { user } = useAuth();
   const [screen, setScreen] = useState(0);
   const [placement, setPlacement] = useState<ModuleId | null>(null);
+  const [pendingChoice, setPendingChoice] = useState<ModuleId | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState(false);
 
   // Restore a choice made before an OAuth redirect (client-only storage).
   useEffect(() => {
@@ -187,20 +190,55 @@ function OnboardingPage() {
   }, []);
 
   const choosePlacement = (moduleId: ModuleId) => {
+    setSaveError(false);
+    setPendingChoice(moduleId);
+  };
+
+  /** Confirmed their level: enroll right away — no extra "continue" step. */
+  const confirmChoice = async (moduleId: ModuleId) => {
     setPlacement(moduleId);
     // Pre-auth: kept locally until the account exists and the backend confirms.
     setPendingPlacement(moduleId);
-  };
-
-  /** Already signed in (e.g. via Mi Cuenta) but never placed: persist, then start. */
-  const confirmSignedInPlacement = async () => {
+    setPendingChoice(null);
+    if (!user) {
+      setScreen(AUTH_SCREEN);
+      return;
+    }
+    setSaving(true);
     const { CloudSync } = await import("@/services/cloud-sync");
     const result = await CloudSync.applyPendingPlacement();
-    if (result === "failed") return;
-    finish("day1");
+    setSaving(false);
+    if (result === "failed") {
+      setSaveError(true);
+      return;
+    }
+    finish("home");
   };
 
-  const finish = (to: "day1" | "explore") => {
+  // Account just created after choosing a level: enroll and open Home on its own.
+  const enrolled = useRef(false);
+  useEffect(() => {
+    if (screen !== AUTH_SCREEN || !user || !placement || enrolled.current) return;
+    enrolled.current = true;
+    void (async () => {
+      const { CloudSync } = await import("@/services/cloud-sync");
+      const result = await CloudSync.applyPendingPlacement();
+      if (result === "failed") {
+        enrolled.current = false;
+        setSaveError(true);
+        return;
+      }
+      finish("home");
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screen, user, placement]);
+
+  const finish = (to: "day1" | "explore" | "home") => {
+    if (to === "home") {
+      setPrefs({ onboardingCompleted: true });
+      void navigate({ to: "/" });
+      return;
+    }
     setPrefs({ onboardingCompleted: true });
     if (to === "explore") {
       void navigate({ to: "/" });
@@ -355,7 +393,37 @@ function OnboardingPage() {
             </section>
           ) : null}
 
-          {screen === PLACEMENT_SCREEN ? <PlacementPicker value={placement} onSelect={choosePlacement} initialPlacement /> : null}
+          {screen === PLACEMENT_SCREEN ? (
+            <>
+              <PlacementPicker value={placement} onSelect={choosePlacement} initialPlacement />
+              {pendingChoice ? (
+                <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+                  <div className="w-full max-w-lg space-y-4 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+                    <p className="text-[18px] font-extrabold tracking-tight">{t("place.sureTitle")}</p>
+                    <p className="text-[15px] text-muted-foreground">
+                      {t("place.sureBody")}{" "}
+                      <span className="font-extrabold text-foreground">
+                        {CourseService.getModule(pendingChoice).label} · {CourseService.getModule(pendingChoice).title}
+                      </span>
+                      ?
+                    </p>
+                    {saveError ? <p className="text-[13px] font-semibold text-destructive">{t("place.saveFailed")}</p> : null}
+                    <button
+                      type="button"
+                      disabled={saving}
+                      onClick={() => void confirmChoice(pendingChoice)}
+                      className={primaryBtn}
+                    >
+                      {t("place.sureYes")}
+                    </button>
+                    <button type="button" onClick={() => setPendingChoice(null)} className={secondaryBtn}>
+                      {t("place.sureNo")}
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+            </>
+          ) : null}
           {screen === AUTH_SCREEN ? (
             <section className="space-y-4">
               <AuthGate />
@@ -365,22 +433,12 @@ function OnboardingPage() {
 
         <div className="space-y-3">
           {screen === PLACEMENT_SCREEN ? (
-            <>
-              <button
-                type="button"
-                disabled={!placement}
-                onClick={() => (user ? void confirmSignedInPlacement() : setScreen(AUTH_SCREEN))}
-                className={primaryBtn}
-              >
-                {t("action.next")}
-              </button>
-              <button type="button" onClick={() => setScreen(METHOD_SCREENS - 1)} className={secondaryBtn}>
-                {t("action.back")}
-              </button>
-            </>
+            <button type="button" onClick={() => setScreen(METHOD_SCREENS - 1)} className={secondaryBtn}>
+              {t("action.back")}
+            </button>
           ) : screen === AUTH_SCREEN ? (
             user ? (
-              <button type="button" onClick={() => finish("day1")} className={primaryBtn}>
+              <button type="button" onClick={() => finish("home")} className={primaryBtn}>
                 {t("action.startDay1")}
               </button>
             ) : (

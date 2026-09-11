@@ -239,6 +239,13 @@ const DICT = {
     "I want to explain my ideas, handle unexpected situations and speak without a script.",
   ],
   "place.locked": ["BLOQUEADO", "LOCKED"],
+  "place.sureTitle": ["¿ESTÁS SEGURO?", "ARE YOU SURE?"],
+  "place.sureBody": [
+    "¿Estás seguro de que tu nivel actual en E4CC es",
+    "Are you sure your current level at E4CC is",
+  ],
+  "place.sureYes": ["SÍ, ESE ES MI NIVEL", "YES, THAT'S MY LEVEL"],
+  "place.sureNo": ["ELEGIR OTRO", "CHOOSE ANOTHER"],
   "take.round": ["ROUND", "ROUND"],
   "take.target": ["META", "TARGET"],
   "take.think": ["PIENSA", "THINK"],
