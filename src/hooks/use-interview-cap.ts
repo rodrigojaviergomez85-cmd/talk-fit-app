@@ -20,8 +20,13 @@ export function useInterviewCap(simulator: InterviewSimulator) {
   const [status, setStatus] = useState<InterviewCapStatus | null>(null);
   const [blocked, setBlocked] = useState(false);
   const attemptId = useRef<string | null>(null);
+  // Server-decided cap for this section (free, or free x4 with Pro).
+  const usage = useDailyUsage(SECTION_KEYS.interview);
+  const serverLimit = usage.limit;
+  const refreshUsage = usage.refresh;
 
   useEffect(() => {
+    if (serverLimit > 0) setEffectiveInterviewCap(serverLimit);
     let cancelled = false;
     void InterviewAttempts.refresh().then((next) => {
       if (!cancelled) setStatus(next);
@@ -29,16 +34,17 @@ export function useInterviewCap(simulator: InterviewSimulator) {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [serverLimit]);
 
   /** Call on the learner's first recorded answer. Returns false when blocked. */
   const consume = useCallback(async () => {
     if (!attemptId.current) attemptId.current = InterviewAttempts.ensure(simulator).id;
     const ok = await InterviewAttempts.consumeSlot(attemptId.current);
     setStatus(InterviewAttempts.status(attemptId.current));
+    void refreshUsage();
     if (!ok) setBlocked(true);
     return ok;
-  }, [simulator]);
+  }, [simulator, refreshUsage]);
 
   /** Call when the run ends so the next interview mints a fresh id. */
   const finish = useCallback(() => {
