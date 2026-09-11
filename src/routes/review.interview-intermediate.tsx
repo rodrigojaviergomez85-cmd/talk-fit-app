@@ -6,6 +6,8 @@ import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { useRecordingPlayback } from "@/hooks/use-recording-playback";
 import { AudioService } from "@/services/audio-service";
 import { useAppLang } from "@/lib/i18n";
+import { useInterviewCap } from "@/hooks/use-interview-cap";
+import { InterviewCapCounter, InterviewCapReached } from "@/components/interview/InterviewCapNotice";
 import { supabase } from "@/integrations/supabase/client";
 import type { Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -65,7 +67,7 @@ const FOLLOWUP_GOAL_MAX = 5;
 const SENTENCE_COUNT_MAX_BYTES = 3 * 1024 * 1024;
 
 /** Estimated complete spoken ideas for one answer. Returns null when unavailable. */
-async function countSentences(blob: Blob | null): Promise<number | null> {
+async function countSentences(blob: Blob | null, attemptId: string | null): Promise<number | null> {
   if (!blob || blob.size < 2048 || blob.size > SENTENCE_COUNT_MAX_BYTES) return null;
   try {
     const { data } = await supabase.auth.getSession();
@@ -73,6 +75,8 @@ async function countSentences(blob: Blob | null): Promise<number | null> {
     if (!token) return null;
     const form = new FormData();
     form.append("file", blob, "answer");
+    // Server-side proof that this run paid for one of today's 2 interview slots.
+    if (attemptId) form.append("interviewAttemptId", attemptId);
     const res = await fetch("/api/sentence-count", {
       method: "POST",
       body: form,
@@ -365,6 +369,7 @@ type Phase = "intro" | "speaking" | "ready" | "recording" | "answered";
 function IntermediateInterviewSimulator() {
   const { lang } = useAppLang();
   const es = lang === "es";
+  const cap = useInterviewCap("intermediate");
   const [step, setStep] = useState(0);
   const [phase, setPhase] = useState<Phase>("intro");
   const [recording, setRecording] = useState<Recording | null>(null);
@@ -421,7 +426,9 @@ function IntermediateInterviewSimulator() {
   }, [step, finished, phase, playMike]);
 
 
-  const onComplete = (rec: Recording) => {
+  const onComplete = async (rec: Recording) => {
+    // DAILY INTERVIEW CAP: the first recorded answer spends one of today's 2 runs.
+    if (!(await cap.consume())) return;
     const isReading = Boolean(current.reading);
     const pending: Recording = {
       ...rec,
@@ -432,7 +439,7 @@ function IntermediateInterviewSimulator() {
     setRecording(pending);
     setPhase("answered");
     if (isReading) return;
-    void countSentences(rec.blob ?? null).then((count) => {
+    void countSentences(rec.blob ?? null, cap.currentAttemptId()).then((count) => {
       if (count !== null) setCounts((prev) => ({ ...prev, [promptId]: count }));
       setRecording((value) =>
         value && value.id === pending.id
@@ -476,6 +483,7 @@ function IntermediateInterviewSimulator() {
     stopSpeechRef.current?.();
     const el = videoRef.current;
     if (el) el.pause();
+    cap.finish();
     setFinished(true);
   };
 
@@ -485,6 +493,8 @@ function IntermediateInterviewSimulator() {
       ? countValues.reduce((sum, value) => sum + value, 0) / countValues.length
       : null;
   const averageOk = average !== null && average >= GOAL_MIN;
+
+  if (cap.capReached) return <InterviewCapReached es={es} />;
 
   if (finished) {
     return (
@@ -617,6 +627,7 @@ function IntermediateInterviewSimulator() {
           <span>
             {step + 1} / {PROMPTS.length}
           </span>
+          <InterviewCapCounter es={es} used={cap.status?.used ?? 0} unlimited={cap.status?.unlimited ?? false} />
           {current.skill ? (
             <span className="rounded-full bg-secondary px-3 py-1 text-secondary-foreground">
               {es ? SKILL_LABEL[current.skill].es : SKILL_LABEL[current.skill].en}

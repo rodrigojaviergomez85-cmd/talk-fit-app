@@ -10,6 +10,7 @@ import { getReviewModule } from "@/services/review/review-registry";
 import { ReviewProgress, type ReviewPracticeProgress } from "@/services/review/review-progress";
 import type { ReviewModuleId } from "@/lib/review-types";
 import { getReviewAccessSnapshot, isReviewModuleAccessible } from "@/services/review/review-access";
+import { DAILY_PRACTICE_CAP, PracticeAttempts } from "@/services/practice-attempts";
 
 export const Route = createFileRoute("/review/$moduleId/")({
   head: ({ params }) => {
@@ -40,6 +41,18 @@ function ReviewModulePage() {
   // Read after hydration only: localStorage is not available while rendering on the server.
   const [moduleAccess, setModuleAccess] = useState<"checking" | "allowed" | "locked">("checking");
   const [unlimited, setUnlimited] = useState(false);
+  // DAILY PRACTICE CAP: Review shares the same 5 sessions per local day as the modules.
+  const [practiceUsed, setPracticeUsed] = useState<number | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    void PracticeAttempts.pull().then(() => {
+      if (alive) setPracticeUsed(PracticeAttempts.usedToday());
+    });
+    return () => {
+      alive = false;
+    };
+  }, [user?.id]);
 
   useEffect(() => {
     if (!mod || loading) return;
@@ -72,6 +85,24 @@ function ReviewModulePage() {
           <p className="text-sm text-navy-foreground/80">{mod.titleEs}</p>
           <p className="mt-2 text-xs text-navy-foreground/70">{showEs ? mod.subtitleEs : mod.subtitle}</p>
         </header>
+
+        {practiceUsed !== null && !unlimited ? (
+          <p
+            className={`rounded-xl border px-3 py-2 text-xs font-semibold ${
+              practiceUsed >= DAILY_PRACTICE_CAP
+                ? "border-primary/40 bg-primary/10 text-foreground"
+                : "border-border bg-card text-muted-foreground"
+            }`}
+          >
+            {practiceUsed >= DAILY_PRACTICE_CAP
+              ? showEs
+                ? `Prácticas de hoy: ${DAILY_PRACTICE_CAP} / ${DAILY_PRACTICE_CAP}. Vuelve mañana.`
+                : `Today's practice: ${DAILY_PRACTICE_CAP} / ${DAILY_PRACTICE_CAP}. Come back tomorrow.`
+              : showEs
+                ? `Prácticas de hoy: ${practiceUsed} / ${DAILY_PRACTICE_CAP} (módulos + Review)`
+                : `Today's practice: ${practiceUsed} / ${DAILY_PRACTICE_CAP} (modules + Review)`}
+          </p>
+        ) : null}
 
         <ReviewGuide cards={mod.guide} showEs={showEs} errors={mod.commonErrors} heading={mod.title} headingEs={mod.titleEs} />
 
