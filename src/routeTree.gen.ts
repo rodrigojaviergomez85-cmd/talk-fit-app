@@ -43,6 +43,7 @@ import { Route as ReviewBasicRouteImport } from './routes/review.basic'
 import { Route as ReviewCallCenterRouteImport } from './routes/review.call-center'
 import { Route as ReviewIntermediateAdvancedRouteImport } from './routes/review.intermediate-advanced'
 import { Route as ReviewInterviewRouteImport } from './routes/review.interview'
+import { Route as ReviewInterviewSimulatorsRouteImport } from './routes/review.interview-simulators'
 import { Route as ReviewPictionaryRouteImport } from './routes/review.pictionary'
 import { Route as NaturalMethodVerbsIndexRouteImport } from './routes/natural-method.verbs.index'
 import { Route as NaturalMethodVerbsIdiomsRouteImport } from './routes/natural-method.verbs.idioms'
@@ -224,6 +225,12 @@ const ReviewInterviewRoute = ReviewInterviewRouteImport.update({
   path: '/review/interview',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReviewInterviewSimulatorsRoute =
+  ReviewInterviewSimulatorsRouteImport.update({
+    id: '/review/interview-simulators',
+    path: '/review/interview-simulators',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ReviewPictionaryRoute = ReviewPictionaryRouteImport.update({
   id: '/review/pictionary',
   path: '/review/pictionary',
@@ -295,6 +302,7 @@ export interface FileRoutesByFullPath {
   '/review/call-center': typeof ReviewCallCenterRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/review/interview': typeof ReviewInterviewRoute
+  '/review/interview-simulators': typeof ReviewInterviewSimulatorsRoute
   '/review/pictionary': typeof ReviewPictionaryRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
@@ -337,6 +345,7 @@ export interface FileRoutesByTo {
   '/review/call-center': typeof ReviewCallCenterRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/review/interview': typeof ReviewInterviewRoute
+  '/review/interview-simulators': typeof ReviewInterviewSimulatorsRoute
   '/review/pictionary': typeof ReviewPictionaryRoute
   '/natural-method': typeof NaturalMethodIndexRoute
   '/review': typeof ReviewIndexRoute
@@ -381,6 +390,7 @@ export interface FileRoutesById {
   '/review/call-center': typeof ReviewCallCenterRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
   '/review/interview': typeof ReviewInterviewRoute
+  '/review/interview-simulators': typeof ReviewInterviewSimulatorsRoute
   '/review/pictionary': typeof ReviewPictionaryRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
@@ -426,6 +436,7 @@ export interface FileRouteTypes {
     | '/review/call-center'
     | '/review/intermediate-advanced'
     | '/review/interview'
+    | '/review/interview-simulators'
     | '/review/pictionary'
     | '/natural-method/'
     | '/review/'
@@ -468,6 +479,7 @@ export interface FileRouteTypes {
     | '/review/call-center'
     | '/review/intermediate-advanced'
     | '/review/interview'
+    | '/review/interview-simulators'
     | '/review/pictionary'
     | '/natural-method'
     | '/review'
@@ -511,6 +523,7 @@ export interface FileRouteTypes {
     | '/review/call-center'
     | '/review/intermediate-advanced'
     | '/review/interview'
+    | '/review/interview-simulators'
     | '/review/pictionary'
     | '/natural-method/'
     | '/review/'
@@ -555,6 +568,7 @@ export interface RootRouteChildren {
   ReviewCallCenterRoute: typeof ReviewCallCenterRoute
   ReviewIntermediateAdvancedRoute: typeof ReviewIntermediateAdvancedRoute
   ReviewInterviewRoute: typeof ReviewInterviewRoute
+  ReviewInterviewSimulatorsRoute: typeof ReviewInterviewSimulatorsRoute
   ReviewPictionaryRoute: typeof ReviewPictionaryRoute
   NaturalMethodIndexRoute: typeof NaturalMethodIndexRoute
   ReviewIndexRoute: typeof ReviewIndexRoute
@@ -802,6 +816,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReviewInterviewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/review/interview-simulators': {
+      id: '/review/interview-simulators'
+      path: '/review/interview-simulators'
+      fullPath: '/review/interview-simulators'
+      preLoaderRoute: typeof ReviewInterviewSimulatorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/review/pictionary': {
       id: '/review/pictionary'
       path: '/review/pictionary'
@@ -904,6 +925,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReviewCallCenterRoute: ReviewCallCenterRoute,
   ReviewIntermediateAdvancedRoute: ReviewIntermediateAdvancedRoute,
   ReviewInterviewRoute: ReviewInterviewRoute,
+  ReviewInterviewSimulatorsRoute: ReviewInterviewSimulatorsRoute,
   ReviewPictionaryRoute: ReviewPictionaryRoute,
   NaturalMethodIndexRoute: NaturalMethodIndexRoute,
   ReviewIndexRoute: ReviewIndexRoute,
