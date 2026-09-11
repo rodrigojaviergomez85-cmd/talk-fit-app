@@ -209,6 +209,19 @@
   text-wrap: balance;
 }
 
+@keyframes shine-slide {
+  0% {
+    transform: translateX(-100%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(300%) skewX(-18deg);
+  }
+}
+
+@utility shine-sweep {
+  animation: shine-slide 2.5s ease-in-out infinite;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);

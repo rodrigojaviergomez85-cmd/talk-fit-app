@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, CalendarClock } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { LimitDialog } from "@/components/fluency/LimitDialog";
 import { SECTION_KEYS } from "@/config/limits";
 import { DAILY_INTERVIEW_CAP } from "@/services/interview-attempts";
+import capMascot from "@/assets/interview/cap-mascot.jpg";
 
 /** Shown instead of the interview when today's runs are already used. */
 export function InterviewCapReached({ es, cap = DAILY_INTERVIEW_CAP }: { es: boolean; cap?: number }) {
@@ -21,23 +22,23 @@ export function InterviewCapReached({ es, cap = DAILY_INTERVIEW_CAP }: { es: boo
         </Link>
 
         <div className="space-y-3 rounded-2xl border border-border bg-card p-5 text-center">
-          <CalendarClock className="mx-auto size-8 text-primary" aria-hidden="true" />
+          <img
+            src={capMascot}
+            alt={es ? "Mascota animándote a seguir practicando" : "Friendly mascot cheering you on to keep practicing"}
+            width={160}
+            height={160}
+            loading="lazy"
+            className="mx-auto size-40 object-contain"
+          />
           <h1 className="text-lg font-extrabold text-foreground">
             {es ? "Ya usaste tus entrevistas de hoy" : "You've used today's interviews"}
           </h1>
           <p className="text-sm text-muted-foreground">
             {es
-              ? `Puedes hacer ${cap} entrevistas por día en total. Vuelve mañana y practica mientras tanto en Review o Método Natural.`
-              : `You can do ${cap} interviews per day in total. Come back tomorrow, and practice meanwhile in Review or Natural Method.`}
+              ? `Puedes hacer ${cap} entrevistas por día en total, pero no te preocupes. Aún puedes seguir practicando.`
+              : `You can do ${cap} interviews per day in total, but don't worry. You can still keep practicing.`}
           </p>
           <div className="flex flex-col gap-2 pt-1">
-            <button
-              type="button"
-              onClick={() => setDialogOpen(true)}
-              className="rounded-xl bg-primary px-4 py-2.5 text-sm font-extrabold uppercase tracking-wide text-primary-foreground"
-            >
-              {es ? "Ver mis opciones" : "See my options"}
-            </button>
             <Link
               to="/review"
               className="rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground"
@@ -50,6 +51,17 @@ export function InterviewCapReached({ es, cap = DAILY_INTERVIEW_CAP }: { es: boo
             >
               {es ? "Método Natural" : "Natural Method"}
             </Link>
+            <button
+              type="button"
+              onClick={() => setDialogOpen(true)}
+              className="relative overflow-hidden rounded-xl bg-primary px-4 py-2.5 text-sm font-extrabold uppercase tracking-wide text-primary-foreground"
+            >
+              <Sparkles className="mr-2 inline size-4 align-text-bottom" aria-hidden="true" />
+              {es ? "Adquirir premium" : "Get Premium"}
+              <span className="pointer-events-none absolute inset-0 overflow-hidden">
+                <span className="shine-sweep absolute -left-1/2 top-0 h-full w-1/2 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-60" />
+              </span>
+            </button>
           </div>
         </div>
       </div>
