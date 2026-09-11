@@ -5,6 +5,7 @@ import { AppShell } from "@/components/fluency/AppShell";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { useRecordingPlayback } from "@/hooks/use-recording-playback";
 import { useAppLang } from "@/lib/i18n";
+import { supabase } from "@/integrations/supabase/client";
 import type { Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import welcomeClip from "@/assets/interview/mike-welcome.mp4.asset.json";
