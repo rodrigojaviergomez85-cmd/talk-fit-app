@@ -379,6 +379,42 @@ export type Database = {
         }
         Relationships: []
       }
+      interview_attempts: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          first_recording_at: string | null
+          id: string
+          local_day_key: string
+          simulator: string
+          started_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          first_recording_at?: string | null
+          id?: string
+          local_day_key: string
+          simulator: string
+          started_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          first_recording_at?: string | null
+          id?: string
+          local_day_key?: string
+          simulator?: string
+          started_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       practice_attempts: {
         Row: {
           completed_at: string | null
