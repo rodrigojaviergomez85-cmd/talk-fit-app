@@ -117,27 +117,27 @@ function ModuleRow({
 
   const body = (
     <>
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-center gap-2">
         <ModuleBadge moduleId={module.id} size="sm" es={es} className="shrink-0" />
         <div className="min-w-0 flex-1">
-          <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-primary">{kicker}</p>
-          <h3 className="flex items-center gap-1 text-sm font-extrabold leading-tight tracking-tight">
+          <p className="text-[8px] font-bold uppercase tracking-[0.18em] text-primary">{kicker}</p>
+          <h3 className="flex items-center gap-1 text-[13px] font-extrabold leading-tight tracking-tight">
             {status.locked ? <Lock className="size-3 shrink-0 text-muted-foreground" aria-hidden /> : null}
             <span className="min-w-0 truncate">{name}</span>
           </h3>
-          <p className="text-[11px] leading-snug text-muted-foreground">
+          <p className="text-[10px] leading-snug text-muted-foreground">
             {es ? teaser.es : teaser.en}
           </p>
         </div>
         {status.locked ? (
-          <span className="flex shrink-0 items-center gap-1 rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold text-muted-foreground">
+          <span className="flex shrink-0 items-center gap-1 rounded-full bg-secondary px-1.5 py-0.5 text-[9px] font-bold text-muted-foreground">
             <Lock className="size-2.5" aria-hidden />
             {t("prog.pillLocked")}
           </span>
         ) : isCurrent || isNext ? (
           <span
             className={cn(
-              "shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold",
+              "shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-bold",
               isCurrent
                 ? "bg-primary text-primary-foreground"
                 : "bg-primary/15 text-primary",
@@ -146,7 +146,7 @@ function ModuleRow({
             {isCurrent ? t("prog.pillCurrent") : t("prog.pillNext")}
           </span>
         ) : isReview ? (
-          <span className="shrink-0 rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold text-foreground/70">
+          <span className="shrink-0 rounded-full bg-secondary px-1.5 py-0.5 text-[9px] font-bold text-foreground/70">
             {t("prog.pillReview")}
           </span>
         ) : null}
@@ -157,13 +157,13 @@ function ModuleRow({
 
       {isCurrent ? (
         <>
-          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary">
+          <div className="mt-2 h-1 overflow-hidden rounded-full bg-secondary">
             <div
               className="h-full rounded-full bg-primary transition-all"
               style={{ width: `${total > 0 ? Math.round((done / total) * 100) : 0}%` }}
             />
           </div>
-          <div className="mt-1.5 flex items-center justify-between gap-2">
+          <div className="mt-1 flex items-center justify-between gap-2">
             <p className="text-[10px] font-semibold text-foreground">
               {t("prog.practicesOf")
                 .replace("{done}", `${currentPractice}`)
@@ -179,7 +179,7 @@ function ModuleRow({
   );
 
   const shell = cn(
-    "block rounded-2xl border p-3",
+    "block rounded-2xl border p-2.5",
     isCurrent
       ? "border-primary bg-card shadow-[var(--shadow-card)]"
       : isNext
