@@ -556,13 +556,31 @@ function InterviewSimulator() {
         ) : null}
 
         {phase === "ready" && current.seconds > 0 ? (
-          <div className="space-y-2 rounded-2xl border border-dashed border-border bg-secondary/40 p-3">
-            <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-              {es ? "¿No entendiste? Dilo en inglés" : "Didn't catch it? Say it in English"}
-            </p>
-            <p className="text-center text-sm font-semibold text-foreground">
-              “Could you please repeat that?” · “Could you speak slower, please?”
-            </p>
+          <div className="space-y-3 rounded-2xl border border-dashed border-border bg-secondary/40 p-3">
+            <div className="space-y-1.5">
+              <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                {es ? "¿No entendiste? Practica estas frases en voz alta" : "Didn't catch it? Practice these phrases out loud"}
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                {(
+                  [
+                    "Could you please repeat that?",
+                    "Could you speak slower, please?",
+                    "Could you rephrase your question, please?",
+                    "Could you say that again?",
+                    "I'm sorry, I didn't catch that.",
+                    "Could you explain that in another way?",
+                  ] as const
+                ).map((phrase) => (
+                  <span
+                    key={phrase}
+                    className="inline-flex items-center rounded-full border border-border bg-card px-2.5 py-1 text-[11px] font-semibold text-foreground"
+                  >
+                    “{phrase}”
+                  </span>
+                ))}
+              </div>
+            </div>
             <button
               type="button"
               onClick={playMike}
