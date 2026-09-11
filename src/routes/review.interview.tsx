@@ -125,6 +125,9 @@ function InterviewSimulator() {
             onEnded={() => {
               if (!waiting) setPhase("ready");
             }}
+            onError={() => {
+              if (!waiting) setPhase("ready");
+            }}
           />
         </div>
 
