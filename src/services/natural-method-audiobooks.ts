@@ -33,11 +33,9 @@ import theGardenOfTomorrow from "@/assets/audiobooks/the-garden-of-tomorrow.jpg"
 import goldInTheCracks from "@/assets/audiobooks/gold-in-the-cracks.jpg";
 import theUnwrittenChapter from "@/assets/audiobooks/the-unwritten-chapter.jpg";
 import theResonantRoom from "@/assets/audiobooks/the-resonant-room.jpg";
-import silasAndTheNeoHunt from "@/assets/audiobooks/silas-and-the-neo-hunt.jpg";
-import theSecretOfAquaria from "@/assets/audiobooks/the-secret-of-aquaria.jpg";
 
 export type AudiobookLevel = "basic" | "intermediate" | "advanced";
-export type AudiobookGrammar = "simple-present" | "simple-future";
+export type AudiobookGrammar = "simple-present" | "simple-past" | "simple-future";
 
 export type NaturalMethodAudiobook = {
   id: string;
@@ -126,6 +124,7 @@ export const NATURAL_METHOD_AUDIOBOOKS: NaturalMethodAudiobook[] = [
     id: "milo-the-cat",
     title: "Milo the Cat",
     level: "basic",
+    grammar: "simple-past",
     url: "https://gemini.google.com/share/ea90296b1f96",
     image: miloTheCat,
     imageAlt: "Milo the Cat — a playful orange tabby cat with a ball of yarn",
@@ -137,24 +136,6 @@ export const NATURAL_METHOD_AUDIOBOOKS: NaturalMethodAudiobook[] = [
     url: "https://gemini.google.com/share/0977de459037",
     image: sparkyTheDragon,
     imageAlt: "Sparky the Dragon — a small friendly green baby dragon",
-  },
-  {
-    id: "silas-and-the-neo-hunt",
-    title: "Silas and the Neo Hunt",
-    level: "basic",
-    grammar: "simple-future",
-    url: "https://gemini.google.com/share/ta1ICIIK35rY",
-    image: silasAndTheNeoHunt,
-    imageAlt: "Silas and the Neo Hunt — a boy with a flashlight finding a glowing creature in a night forest",
-  },
-  {
-    id: "the-secret-of-aquaria",
-    title: "The Secret of Aquaria",
-    level: "basic",
-    grammar: "simple-future",
-    url: "https://gemini.google.com/share/UPChF44yLUlR",
-    image: theSecretOfAquaria,
-    imageAlt: "The Secret of Aquaria — a glowing shell treasure in an underwater kingdom with fish",
   },
   {
     id: "the-lens-of-peace",

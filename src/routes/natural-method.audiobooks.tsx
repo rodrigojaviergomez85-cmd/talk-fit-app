@@ -12,6 +12,7 @@ import {
 
 const GRAMMAR_LABELS: Record<AudiobookGrammar, { en: string; es: string }> = {
   "simple-present": { en: "Simple Present", es: "Presente simple" },
+  "simple-past": { en: "Simple Past", es: "Pasado simple" },
   "simple-future": { en: "Simple Future", es: "Futuro simple" },
 };
 
