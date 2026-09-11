@@ -569,6 +569,8 @@ const DICT = {
   "prog.badgeToEarn": ["Emblema por ganar", "Badge to earn"],
   "prog.pillCurrent": ["Actual", "Current"],
   "prog.pillNext": ["Lo que sigue", "Up next"],
+  "prog.pillReview": ["Disponible para repaso", "Available for review"],
+  "prog.pillLocked": ["Bloqueado", "Locked"],
   "prog.doneJourney": ["Completaste todo el camino. ¡Increíble!", "You completed the whole journey. Amazing!"],
 
   // Account
