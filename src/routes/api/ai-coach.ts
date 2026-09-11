@@ -11,7 +11,9 @@ const SYSTEM_PROMPT =
   "If the question is not about English, reply in one short line that you can only help with English questions. " +
   "Keep every answer under 120 words. Be concrete: a one-line rule plus 2-3 short examples. " +
   "If the learner writes in Spanish, answer in Spanish but keep the English examples in English. " +
-  "Never invent app features, never grade recordings, never ask follow-up questions.";
+  "Never invent app features, never grade recordings, never ask follow-up questions. " +
+  "Write in plain text only: no markdown, no asterisks, no bold, no headings, no numbered lists. " +
+  "Use short lines and, when listing examples, start the line with a simple dash.";
 
 /**
  * Short, stateless English Q&A. No conversation memory is sent or stored:
@@ -56,7 +58,7 @@ export const Route = createFileRoute("/api/ai-coach")({
 
         let res: Response;
         try {
-          res = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
+          res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -64,12 +66,11 @@ export const Route = createFileRoute("/api/ai-coach")({
               "X-Lovable-AIG-SDK": "fetch",
             },
             body: JSON.stringify({
-              model: "openai/gpt-6-astra",
-              stream: true,
-              reasoning: { effort: "low" },
-              input: [
-                { role: "system", content: [{ type: "input_text", text: SYSTEM_PROMPT }] },
-                { role: "user", content: [{ type: "input_text", text: question }] },
+              // Cheapest model that handles short grammar answers well.
+              model: "google/gemini-3.1-flash-lite",
+              messages: [
+                { role: "system", content: SYSTEM_PROMPT },
+                { role: "user", content: question },
               ],
             }),
           });
@@ -78,13 +79,17 @@ export const Route = createFileRoute("/api/ai-coach")({
           return json({ error: "gateway" }, 502);
         }
 
-        if (!res.ok || !res.body) {
+        if (!res.ok) {
           const detail = await res.text().catch(() => "");
           console.error(`[ai-coach] gateway error [${res.status}]: ${detail}`);
           return json({ error: "gateway" }, gatewayStatus(res.status));
         }
 
-        const answer = await readAnswer(res.body);
+        const payload = (await res.json().catch(() => null)) as {
+          choices?: Array<{ message?: { content?: unknown } }>;
+        } | null;
+        const raw = payload?.choices?.[0]?.message?.content;
+        const answer = stripMarkdown(typeof raw === "string" ? raw : "");
         if (!answer) return json({ error: "gateway" }, 502);
 
         return json({
@@ -97,44 +102,18 @@ export const Route = createFileRoute("/api/ai-coach")({
   },
 });
 
-/** Consumes the SSE stream server-side and joins the text deltas. */
-async function readAnswer(body: ReadableStream<Uint8Array>): Promise<string> {
-  const reader = body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = "";
-  let text = "";
-
-  while (true) {
-    const chunk = await reader.read();
-    if (chunk.done) break;
-    buffer += decoder.decode(chunk.value, { stream: true });
-
-    const lines = buffer.split("\n");
-    buffer = lines.pop() ?? "";
-    for (const line of lines) {
-      if (!line.startsWith("data:")) continue;
-      const payload = line.slice(5).trim();
-      if (!payload || payload === "[DONE]") continue;
-      try {
-        const event = JSON.parse(payload) as {
-          type?: string;
-          delta?: string;
-          response?: { output_text?: unknown };
-        };
-        if (event.type === "response.output_text.delta" && typeof event.delta === "string") {
-          text += event.delta;
-        } else if (event.type === "response.completed" && !text) {
-          const out = event.response?.output_text;
-          if (typeof out === "string") text = out;
-          else if (Array.isArray(out)) text = out.filter((v) => typeof v === "string").join("");
-        }
-      } catch {
-        /* ignore malformed keep-alive lines */
-      }
-    }
-  }
-
-  return text.trim();
+/** Removes markdown decoration so the chat shows clean plain text. */
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/```[\s\S]*?```/g, (block) => block.replace(/```/g, "").trim())
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/(^|[\s(])\*([^*\n]+)\*/g, "$1$2")
+    .replace(/(^|[\s(])_([^_\n]+)_/g, "$1$2")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/^\s{0,3}#{1,6}\s*/gm, "")
+    .replace(/^\s*[*+]\s+/gm, "- ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 function json(body: unknown, status = 200) {
