@@ -55,6 +55,7 @@ import { Route as NaturalMethodVerbsListRouteImport } from './routes/natural-met
 import { Route as NaturalMethodVerbsPhrasalRouteImport } from './routes/natural-method.verbs.phrasal'
 import { Route as ReviewModuleIdIndexRouteImport } from './routes/review.$moduleId.index'
 import { Route as ReviewModuleIdPracticeRouteImport } from './routes/review.$moduleId.$practice'
+import { Route as ApiPublicHooksPurgeAudioRouteImport } from './routes/api/public/hooks/purge-audio'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -293,6 +294,12 @@ const ReviewModuleIdPracticeRoute = ReviewModuleIdPracticeRouteImport.update({
   path: '/review/$moduleId/$practice',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicHooksPurgeAudioRoute =
+  ApiPublicHooksPurgeAudioRouteImport.update({
+    id: '/api/public/hooks/purge-audio',
+    path: '/api/public/hooks/purge-audio',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -341,6 +348,7 @@ export interface FileRoutesByFullPath {
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/natural-method/verbs/': typeof NaturalMethodVerbsIndexRoute
   '/review/$moduleId/': typeof ReviewModuleIdIndexRoute
+  '/api/public/hooks/purge-audio': typeof ApiPublicHooksPurgeAudioRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -388,6 +396,7 @@ export interface FileRoutesByTo {
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/natural-method/verbs': typeof NaturalMethodVerbsIndexRoute
   '/review/$moduleId': typeof ReviewModuleIdIndexRoute
+  '/api/public/hooks/purge-audio': typeof ApiPublicHooksPurgeAudioRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -437,6 +446,7 @@ export interface FileRoutesById {
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/natural-method/verbs/': typeof NaturalMethodVerbsIndexRoute
   '/review/$moduleId/': typeof ReviewModuleIdIndexRoute
+  '/api/public/hooks/purge-audio': typeof ApiPublicHooksPurgeAudioRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -487,6 +497,7 @@ export interface FileRouteTypes {
     | '/review/$moduleId/$practice'
     | '/natural-method/verbs/'
     | '/review/$moduleId/'
+    | '/api/public/hooks/purge-audio'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -534,6 +545,7 @@ export interface FileRouteTypes {
     | '/review/$moduleId/$practice'
     | '/natural-method/verbs'
     | '/review/$moduleId'
+    | '/api/public/hooks/purge-audio'
   id:
     | '__root__'
     | '/'
@@ -582,6 +594,7 @@ export interface FileRouteTypes {
     | '/review/$moduleId/$practice'
     | '/natural-method/verbs/'
     | '/review/$moduleId/'
+    | '/api/public/hooks/purge-audio'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -627,6 +640,7 @@ export interface RootRouteChildren {
   ReviewIndexRoute: typeof ReviewIndexRoute
   ReviewModuleIdPracticeRoute: typeof ReviewModuleIdPracticeRoute
   ReviewModuleIdIndexRoute: typeof ReviewModuleIdIndexRoute
+  ApiPublicHooksPurgeAudioRoute: typeof ApiPublicHooksPurgeAudioRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -953,6 +967,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReviewModuleIdPracticeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/purge-audio': {
+      id: '/api/public/hooks/purge-audio'
+      path: '/api/public/hooks/purge-audio'
+      fullPath: '/api/public/hooks/purge-audio'
+      preLoaderRoute: typeof ApiPublicHooksPurgeAudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1016,6 +1037,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReviewIndexRoute: ReviewIndexRoute,
   ReviewModuleIdPracticeRoute: ReviewModuleIdPracticeRoute,
   ReviewModuleIdIndexRoute: ReviewModuleIdIndexRoute,
+  ApiPublicHooksPurgeAudioRoute: ApiPublicHooksPurgeAudioRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

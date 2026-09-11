@@ -14,7 +14,7 @@
  *   6. otherwise             → candidate
  */
 
-export const PURGE_MIN_AGE_DAYS = 14;
+export const PURGE_MIN_AGE_DAYS = 7;
 
 /** Capture bitrate is 32 kbps → ~4 KB per second of audio. */
 const BYTES_PER_SECOND = 32_000 / 8;
@@ -44,7 +44,7 @@ export type ExclusionReason =
   | "alreadyPurged"
   | "finalByFlag"
   | "finalByDayProgress"
-  | "newerThan14Days"
+  | "tooRecent"
   | "dayNotCompleted";
 
 export type Classification = { kind: "candidate" } | { kind: "excluded"; reason: ExclusionReason };
@@ -100,7 +100,7 @@ export function classifyRecording(
   if (rec.is_final_rep) return { kind: "excluded", reason: "finalByFlag" };
   if (lookups.finalPaths.has(rec.storage_path)) return { kind: "excluded", reason: "finalByDayProgress" };
   const ageMs = now.getTime() - new Date(rec.created_at).getTime();
-  if (!(ageMs >= PURGE_MIN_AGE_DAYS * 86_400_000)) return { kind: "excluded", reason: "newerThan14Days" };
+  if (!(ageMs >= PURGE_MIN_AGE_DAYS * 86_400_000)) return { kind: "excluded", reason: "tooRecent" };
   if (!lookups.completed.has(completionKey(rec.user_id, rec.module_id, rec.day))) {
     return { kind: "excluded", reason: "dayNotCompleted" };
   }
@@ -121,7 +121,7 @@ export function classifyRecordings(
     alreadyPurged: 0,
     finalByFlag: 0,
     finalByDayProgress: 0,
-    newerThan14Days: 0,
+    tooRecent: 0,
     dayNotCompleted: 0,
   };
   const candidates: RecordingRow[] = [];

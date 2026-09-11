@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { classifyRecordings, type DayProgressRow, type RecordingRow } from "./storage-report";
 
 const NOW = new Date("2026-09-02T12:00:00Z");
-const OLD = "2026-08-01T10:00:00Z"; // > 14 days
-const RECENT = "2026-08-30T10:00:00Z"; // < 14 days
+const OLD = "2026-08-01T10:00:00Z"; // > 7 days
+const RECENT = "2026-08-30T10:00:00Z"; // < 7 days
 
 function rec(over: Partial<RecordingRow> & { id: string }): RecordingRow {
   return {
@@ -56,9 +56,9 @@ describe("storage report classifier", () => {
     expect(r.excluded.finalByDayProgress).toBe(1);
   });
 
-  it("protects anything newer than 14 days", () => {
+  it("protects anything newer than 7 days", () => {
     const r = classifyRecordings([rec({ id: "a", created_at: RECENT })], completedDay1, NOW);
-    expect(r.excluded.newerThan14Days).toBe(1);
+    expect(r.excluded.tooRecent).toBe(1);
     expect(r.candidates.files).toBe(0);
   });
 
