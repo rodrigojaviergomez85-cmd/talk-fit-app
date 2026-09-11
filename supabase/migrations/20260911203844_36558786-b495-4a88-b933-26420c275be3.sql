@@ -1,0 +1,12 @@
+REVOKE EXECUTE ON FUNCTION public.is_admin(uuid) FROM PUBLIC, anon;
+REVOKE EXECUTE ON FUNCTION public.limits_enabled() FROM PUBLIC, anon;
+REVOKE EXECUTE ON FUNCTION public.get_usage_history(uuid, integer) FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.get_daily_limit(uuid, text) FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.get_monthly_limit(uuid, text) FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.get_section_usage(uuid, text, text) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.is_admin(uuid) TO authenticated, service_role;
+GRANT EXECUTE ON FUNCTION public.limits_enabled() TO authenticated, service_role;
+GRANT EXECUTE ON FUNCTION public.get_usage_history(uuid, integer) TO service_role;
+GRANT EXECUTE ON FUNCTION public.get_daily_limit(uuid, text) TO service_role;
+GRANT EXECUTE ON FUNCTION public.get_monthly_limit(uuid, text) TO service_role;
+GRANT EXECUTE ON FUNCTION public.get_section_usage(uuid, text, text) TO service_role;
