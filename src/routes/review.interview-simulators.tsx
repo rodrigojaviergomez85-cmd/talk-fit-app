@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, BriefcaseBusiness, Lock } from "lucide-react";
+import { ArrowRight, BriefcaseBusiness } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
 
@@ -76,8 +76,8 @@ function InterviewSimulators() {
               </span>
               <span className="mt-1 block text-sm text-muted-foreground">
                 {showEs
-                  ? "Comparativos, superlativos, modales, present perfect y -ed · 20 turnos"
-                  : "Comparatives, superlatives, modals, present perfect and -ed · 20 turns"}
+                  ? "Comparativos, superlativos, modales, present perfect y -ed · 19 turnos"
+                  : "Comparatives, superlatives, modals, present perfect and -ed · 19 turns"}
               </span>
             </span>
             <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
