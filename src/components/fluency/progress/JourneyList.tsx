@@ -109,7 +109,6 @@ function ModuleRow({
   const total = module.days.length;
   const status = moduleAccessStatus(state, module.id, t);
   const isReview = JourneyService.moduleStatus(state, module.id) === "review";
-  const prerequisite = status.locked ? Progression.prerequisiteOf(module.id) : null;
   const teaser = MODULE_TEASERS[module.id];
   const name = ROUTE_NAMES[module.id] ?? module.title;
   const level = ROUTE_LEVELS[module.id];
@@ -129,11 +128,6 @@ function ModuleRow({
           <p className="mt-0.5 text-[13px] leading-snug text-muted-foreground">
             {es ? teaser.es : teaser.en}
           </p>
-          {status.locked && prerequisite ? (
-            <p className="mt-1 text-[11px] font-semibold text-muted-foreground">
-              {t("home.unlockAfter")} {CourseService.getModule(prerequisite).title}
-            </p>
-          ) : null}
         </div>
         {status.locked ? (
           <span className="flex shrink-0 items-center gap-1 rounded-full bg-secondary px-3 py-1 text-[11px] font-bold text-muted-foreground">
