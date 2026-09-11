@@ -1068,6 +1068,17 @@ export type Database = {
       }
       admin_cost_center: { Args: never; Returns: Json }
       admin_engagement_metrics: { Args: never; Returns: Json }
+      apply_admin_settings: {
+        Args: {
+          _admin_email: string
+          _admin_id: string
+          _billing_enabled: boolean
+          _limits_enabled: boolean
+          _pro_multiplier: number
+          _sections: Json
+        }
+        Returns: undefined
+      }
       consume_ai_coach_quota: {
         Args: { _user_id: string }
         Returns: {

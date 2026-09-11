@@ -103,6 +103,25 @@ function CuentaPage() {
     }
   }
 
+  if (query.isError) {
+    return (
+      <AppShell title="Mi cuenta">
+        <Card>
+          <p className="text-sm text-foreground">
+            No pudimos cargar tu consumo y tu facturación. Revisa tu conexión e inténtalo de nuevo.
+          </p>
+          <button
+            type="button"
+            onClick={() => void query.refetch()}
+            className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+          >
+            Reintentar
+          </button>
+        </Card>
+      </AppShell>
+    );
+  }
+
   if (query.isLoading || !query.data) {
     return (
       <AppShell title="Mi cuenta">
@@ -117,7 +136,8 @@ function CuentaPage() {
 
   const { settings, subscription, sections, history, payments, isAdmin } = query.data;
   const isPro = subscription.subscribed;
-  const hasBilling = subscription.subscribed || payments.length > 0 || subscription.hasCustomer;
+  // Solo mostramos facturación cuando hay suscripción activa o pagos reales.
+  const hasBilling = subscription.subscribed || payments.length > 0;
 
   // La tarjeta más cercana al tope lleva el botón de venta.
   const closest = sections
