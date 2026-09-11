@@ -191,3 +191,9 @@ export async function claimEvent(eventId: string, type: string): Promise<boolean
   if (error.code === "23505") return true; // duplicate delivery
   throw new Error(`stripe_events insert failed: ${error.message}`);
 }
+
+/** Undo a claim so a failed event is reprocessed on Stripe's retry. */
+export async function releaseEvent(eventId: string): Promise<void> {
+  const db = await admin();
+  await db.from("stripe_events").delete().eq("id", eventId);
+}
