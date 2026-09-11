@@ -30,7 +30,7 @@ const VIDEOS: Array<{ id: string; videoId: string; title: string }> = [
   { id: "w-sound", videoId: "tqbSHZe2T3M", title: "W SOUND" },
   { id: "j-sound", videoId: "K4LUMRYebk4", title: "J SOUND" },
   { id: "l-sound", videoId: "9DLLrH6c_l4", title: "L SOUND" },
-  { id: "ed-sound", videoId: "teEXXsM5GL8", title: "ED SOUNDS 3.0" },
+  { id: "ed-sound", videoId: "lBckqgOx0LM", title: "ED SOUNDS" },
   { id: "o-sound", videoId: "3BmWJdaiF1I", title: "O SOUND" },
   { id: "y-sound", videoId: "cQsIl5BrwLI", title: "Y SOUND" },
   { id: "final-sounds", videoId: "U7z4nHlOhoA", title: "FINAL SOUNDS" },
