@@ -7,7 +7,7 @@ export function getStripe(): Stripe {
   if (!key) throw new Error("Missing STRIPE_SECRET_KEY");
 
   return new Stripe(key, {
-    apiVersion: "2025-08-27.basil",
+    apiVersion: "2026-08-26.dahlia",
     // Workers runtime: use the fetch-based HTTP client instead of Node http.
     httpClient: Stripe.createFetchHttpClient(),
   });
