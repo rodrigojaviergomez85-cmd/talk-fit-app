@@ -53,15 +53,9 @@ function HomePage() {
     load();
   }, [load]);
 
-  // First install: brief 3-screen tour before anything else, exactly once.
-  useEffect(() => {
-    if (!isAppTourDone()) void navigate({ to: "/tutorial" });
-  }, [navigate]);
-
   // First-time learners see the intro + placement once; active learners never do.
   useEffect(() => {
     if (!state) return;
-    if (!isAppTourDone()) return;
     if (prefs.onboardingCompleted) return;
     if (prefs.currentModuleId) return;
     if (JourneyService.completedCount(state) > 0) return;
