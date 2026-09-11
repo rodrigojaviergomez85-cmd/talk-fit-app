@@ -82,6 +82,14 @@ function PronunciationPage() {
             </li>
           ))}
         </ul>
+
+        <Link
+          to="/natural-method"
+          className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-2xl border border-border px-3 text-[12px] font-bold uppercase tracking-[0.12em]"
+        >
+          <ArrowLeft className="size-4" aria-hidden="true" />
+          {showEs ? "Volver a Natural Method" : "Back to Natural Method"}
+        </Link>
       </div>
     </AppShell>
   );
