@@ -724,13 +724,16 @@ function IntermediateInterviewSimulator() {
         ) : null}
 
         {phase === "ready" && current.seconds === 0 ? (
-          <button
-            type="button"
-            onClick={finishInterview}
-            className="w-full rounded-2xl bg-primary p-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground"
-          >
-            {es ? "Terminar entrevista" : "Finish interview"}
-          </button>
+          <div className="space-y-3">
+            <button
+              type="button"
+              onClick={finishInterview}
+              className="w-full rounded-2xl bg-primary p-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground"
+            >
+              {es ? "Terminar entrevista" : "Finish interview"}
+            </button>
+            <SkipButton es={es} onClick={finishInterview} />
+          </div>
         ) : null}
 
         {phase === "answered" && recording ? (
