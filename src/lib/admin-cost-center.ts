@@ -71,7 +71,7 @@ export function estimateCosts(data: AdminCostCenter): { lines: CostLine[]; total
   lines.push({
     key: "coach",
     requests: coachRequests,
-    unitLabel: `$${COACH_USD_PER_ANALYSIS}/análisis`,
+    unitLabel: `$${COACH_USD_PER_ANALYSIS}/analysis`,
     usd: coachRequests * COACH_USD_PER_ANALYSIS,
     provider: "lovable-ai",
   });
