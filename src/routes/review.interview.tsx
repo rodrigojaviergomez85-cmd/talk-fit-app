@@ -12,6 +12,15 @@ import { cn } from "@/lib/utils";
 import welcomeClip from "@/assets/interview/mike-welcome.mp4.asset.json";
 import questionClip from "@/assets/interview/mike-question-1.mp4.asset.json";
 import waitingClip from "@/assets/interview/mike-waiting.mp4.asset.json";
+import tellMeMoreClip from "@/assets/interview/mike-tell-me-more.mp4.asset.json";
+import routineClip from "@/assets/interview/mike-routine.mp4.asset.json";
+import lastJobClip from "@/assets/interview/mike-last-job.mp4.asset.json";
+import explainWhyClip from "@/assets/interview/mike-explain-why.mp4.asset.json";
+import favoriteMovieClip from "@/assets/interview/mike-favorite-movie.mp4.asset.json";
+import opinionClip from "@/assets/interview/mike-opinion.mp4.asset.json";
+import learnedClip from "@/assets/interview/mike-learned.mp4.asset.json";
+import twoYearsClip from "@/assets/interview/mike-two-years.mp4.asset.json";
+import afterCourseClip from "@/assets/interview/mike-after-course.mp4.asset.json";
 
 export const Route = createFileRoute("/review/interview")({
   head: () => ({
@@ -105,6 +114,7 @@ const PROMPTS: Prompt[] = [
     id: "tell-me-more",
     en: "Give me more details, please.",
     es: "Dame más detalles, por favor.",
+    video: { src: tellMeMoreClip.url, speechEnd: 2.6 },
     seconds: FOLLOWUP_SECONDS,
     followUp: true,
     tense: "present",
@@ -113,6 +123,7 @@ const PROMPTS: Prompt[] = [
     id: "routine",
     en: "What do you do every day at work or at school?",
     es: "¿Qué haces todos los días en el trabajo o en la escuela?",
+    video: { src: routineClip.url, speechEnd: 3.5 },
     seconds: MAIN_SECONDS,
     followUp: false,
     tense: "present",
@@ -121,6 +132,7 @@ const PROMPTS: Prompt[] = [
     id: "last-job",
     en: "Tell me about your last job or your last vacation. What happened?",
     es: "Háblame de tu último trabajo o de tus últimas vacaciones. ¿Qué pasó?",
+    video: { src: lastJobClip.url, speechEnd: 5.3 },
     seconds: MAIN_SECONDS,
     followUp: false,
     tense: "past",
@@ -129,6 +141,7 @@ const PROMPTS: Prompt[] = [
     id: "explain-why",
     en: "Explain why. Why was that important for you?",
     es: "Explícame por qué. ¿Por qué fue importante para ti?",
+    video: { src: explainWhyClip.url, speechEnd: 3.8 },
     seconds: FOLLOWUP_SECONDS,
     followUp: true,
     tense: "past",
@@ -137,6 +150,7 @@ const PROMPTS: Prompt[] = [
     id: "favorite-movie",
     en: "Tell me about your favorite movie or book. What was it about?",
     es: "Háblame de tu película o libro favorito. ¿De qué trataba?",
+    video: { src: favoriteMovieClip.url, speechEnd: 5.4 },
     seconds: MAIN_SECONDS,
     followUp: false,
     tense: "past",
@@ -145,6 +159,7 @@ const PROMPTS: Prompt[] = [
     id: "opinion",
     en: "What do you think about that? Would you recommend it?",
     es: "¿Qué opinas de eso? ¿Lo recomendarías?",
+    video: { src: opinionClip.url, speechEnd: 4.1 },
     seconds: FOLLOWUP_SECONDS,
     followUp: true,
     tense: "past",
@@ -153,6 +168,7 @@ const PROMPTS: Prompt[] = [
     id: "learned",
     en: "What did you learn from that experience?",
     es: "¿Qué aprendiste de esa experiencia?",
+    video: { src: learnedClip.url, speechEnd: 3.2 },
     seconds: MAIN_SECONDS,
     followUp: false,
     tense: "past",
@@ -161,6 +177,7 @@ const PROMPTS: Prompt[] = [
     id: "two-years",
     en: "Where do you see yourself in two years?",
     es: "¿Dónde te ves en dos años?",
+    video: { src: twoYearsClip.url, speechEnd: 3.2 },
     seconds: MAIN_SECONDS,
     followUp: false,
     tense: "future",
@@ -169,6 +186,7 @@ const PROMPTS: Prompt[] = [
     id: "after-course",
     en: "What are you going to do after this course?",
     es: "¿Qué vas a hacer después de este curso?",
+    video: { src: afterCourseClip.url, speechEnd: 2.7 },
     seconds: MAIN_SECONDS,
     followUp: false,
     tense: "future",
@@ -342,6 +360,25 @@ function InterviewSimulator() {
           <p className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             {es ? "Mike está hablando…" : "Mike is speaking…"}
           </p>
+        ) : null}
+
+        {phase === "ready" ? (
+          <div className="space-y-2 rounded-2xl border border-dashed border-border bg-secondary/40 p-3">
+            <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              {es ? "¿No entendiste? Dilo en inglés" : "Didn't catch it? Say it in English"}
+            </p>
+            <p className="text-center text-sm font-semibold text-foreground">
+              “Could you please repeat that?” · “Could you speak slower, please?”
+            </p>
+            <button
+              type="button"
+              onClick={playMike}
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card p-3 text-sm font-extrabold uppercase tracking-wide text-foreground"
+            >
+              <RotateCcw className="size-4" aria-hidden="true" />
+              {es ? "Repetir pregunta" : "Repeat question"}
+            </button>
+          </div>
         ) : null}
 
         {phase === "ready" || phase === "recording" ? (
