@@ -284,9 +284,11 @@ function InterviewSimulator() {
 
   const onComplete = (rec: Recording) => {
     const pending: Recording = { ...rec, countStatus: "pending", sentenceCount: null };
+    const promptId = current.id;
     setRecording(pending);
     setPhase("answered");
     void countSentences(rec.blob ?? null).then((count) => {
+      if (count !== null) setCounts((prev) => ({ ...prev, [promptId]: count }));
       setRecording((value) =>
         value && value.id === pending.id
           ? count === null
