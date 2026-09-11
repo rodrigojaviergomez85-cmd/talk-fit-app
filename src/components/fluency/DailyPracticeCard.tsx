@@ -64,8 +64,9 @@ export function PracticesTodayChip({
     >
       {t("dailyCap.indicator")}{" "}
       <span className="tabular-nums">
-        {used} / {DAILY_PRACTICE_CAP}
+        {used} / {cap}
       </span>
+      {isPro ? <span className="font-black text-primary">Pro</span> : null}
     </span>
   );
 }
