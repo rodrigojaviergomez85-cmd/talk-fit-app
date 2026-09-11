@@ -4,6 +4,7 @@ import { ArrowDown, ArrowRight, BookOpen, CheckCircle2, Clapperboard, Home, Mic,
 import { CourseService } from "@/services/course-service";
 import { useAppLang } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
+import { useIsInstalledPwa } from "@/lib/pwa";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { PlacementPicker } from "@/components/fluency/PlacementPicker";
 import { getPendingPlacement, setPendingPlacement } from "@/services/preferences";
