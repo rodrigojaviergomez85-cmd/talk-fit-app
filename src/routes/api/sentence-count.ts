@@ -38,12 +38,31 @@ export const Route = createFileRoute("/api/sentence-count")({
         }
 
         let file: File | null = null;
+        let interviewAttemptId: string | null = null;
         try {
           const form = await request.formData();
           const value = form.get("file");
           if (value instanceof File) file = value;
+          const attempt = form.get("interviewAttemptId");
+          if (typeof attempt === "string" && attempt) interviewAttemptId = attempt;
         } catch {
           file = null;
+        }
+
+        // DAILY INTERVIEW CAP (2 runs per local day): interview answers must
+        // belong to a run that already paid for a slot. The database trigger is
+        // what enforces the cap; this only stops paid work for uncounted runs.
+        if (interviewAttemptId) {
+          const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+          const { data: attempt } = await supabaseAdmin
+            .from("interview_attempts")
+            .select("id, first_recording_at")
+            .eq("id", interviewAttemptId)
+            .eq("user_id", userId)
+            .maybeSingle();
+          if (!attempt?.first_recording_at) {
+            return json({ error: "Daily interview limit reached." }, 429);
+          }
         }
 
         if (!file || file.size < MIN_BYTES) {
