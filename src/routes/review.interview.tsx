@@ -513,12 +513,12 @@ function InterviewSimulator() {
           ) : null}
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-border bg-navy max-h-36">
+        <div className="overflow-hidden rounded-2xl border border-border bg-navy">
           <video
             key={waiting ? "waiting" : current.id}
             ref={videoRef}
             src={waiting ? waitingClip.url : current.video?.src}
-            className="aspect-video w-full object-cover"
+            className="aspect-video w-full object-contain"
             playsInline
             muted={waiting}
             loop={waiting}
