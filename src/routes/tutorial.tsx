@@ -112,7 +112,11 @@ function TutorialPage() {
       : { display: "none" as const };
 
   return (
-    <main className="relative flex h-[100dvh] w-full items-center justify-center overflow-hidden bg-[#101418]">
+    <main
+      className="relative flex h-[100dvh] w-full touch-pan-y items-center justify-center overflow-hidden bg-[#101418] select-none"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
       <img
         ref={imgRef}
         src={slide.image}
