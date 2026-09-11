@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { AlertTriangle, BarChart3, ChevronDown, ChevronRight } from "lucide-react";
+import { AlertTriangle, BarChart3, ChevronRight } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { CurrentModuleCard } from "@/components/fluency/CurrentModuleCard";
 import { NextModuleLocked } from "@/components/fluency/NextModuleLocked";
@@ -35,7 +35,6 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const [state, setState] = useState<JourneyState | null>(null);
   const [failed, setFailed] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { t, prefs } = useAppLang();
   const { user, sync, loading: authLoading } = useAuth();
@@ -105,34 +104,16 @@ function HomePage() {
 
         {active && upNext ? <NextModuleLocked entry={upNext} afterModuleId={active} /> : null}
 
-        <div className="rounded-2xl border border-border bg-card shadow-[var(--shadow-card)]">
-          <button
-            type="button"
-            onClick={() => setMenuOpen((open) => !open)}
-            aria-expanded={menuOpen}
-            className="flex min-h-[52px] w-full items-center justify-between gap-3 px-4 text-[13px] font-bold text-foreground"
-          >
+        <Link
+          to="/progress"
+          className="flex min-h-[52px] w-full items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 shadow-[var(--shadow-card)] transition-colors hover:bg-secondary"
+        >
+          <span className="flex items-center gap-3 text-[13px] font-bold text-foreground">
+            <BarChart3 className="size-5 shrink-0 text-muted-foreground" aria-hidden />
             {t("home.moreMenu")}
-            <ChevronDown
-              className={`size-4 shrink-0 text-muted-foreground transition-transform ${menuOpen ? "rotate-180" : ""}`}
-              aria-hidden
-            />
-          </button>
-          {menuOpen ? (
-            <div className="border-t border-border p-2">
-              <Link
-                to="/progress"
-                className="flex min-h-[48px] items-center justify-between gap-3 rounded-xl px-3 text-[14px] font-semibold text-foreground transition-colors hover:bg-secondary"
-              >
-                <span className="flex items-center gap-3">
-                  <BarChart3 className="size-5 shrink-0 text-muted-foreground" aria-hidden />
-                  {t("home.myProgress")}
-                </span>
-                <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-              </Link>
-            </div>
-          ) : null}
-        </div>
+          </span>
+          <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+        </Link>
 
         <Link
           to="/coach-check"
