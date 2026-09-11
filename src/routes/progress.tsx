@@ -6,8 +6,6 @@ import { AppShell } from "@/components/fluency/AppShell";
 import { StatusBadge } from "@/components/fluency/StatusBadge";
 import { CurrentModuleCard } from "@/components/fluency/progress/CurrentModuleCard";
 import { Last7DaysCard } from "@/components/fluency/progress/Last7DaysCard";
-import { ListenAttemptsCard } from "@/components/fluency/progress/ListenAttemptsCard";
-import { HabitCard } from "@/components/fluency/progress/HabitCard";
 import { JourneyList, moduleAccessStatus } from "@/components/fluency/progress/JourneyList";
 
 import { BadgeGrid } from "@/components/fluency/BadgeGrid";
@@ -147,13 +145,7 @@ function ProgressPage() {
         {/* 2. Recent activity */}
         <Last7DaysCard state={safe} />
 
-        {/* 3. Listen to your attempts (same practice only) */}
-        <ListenAttemptsCard state={safe} />
-
-        {/* 4. 66-day consistency */}
-        <HabitCard state={safe} />
-
-        {/* 5. Mi ruta — always visible */}
+        {/* 3. Mi ruta — full path, right after recent activity */}
         <JourneyList state={safe} />
 
         {/* Secondary: stats and achievements, collapsed rows */}
