@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Play, RotateCcw } from "lucide-react";
+import { ArrowLeft, Play, RotateCcw, SkipForward } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { useRecordingPlayback } from "@/hooks/use-recording-playback";
