@@ -214,14 +214,6 @@ const PROMPTS: Prompt[] = [
   },
 ];
 
-/** Index of the last prompt the student must answer (just before the goodbye). */
-const LAST_QUESTION_INDEX = (() => {
-  for (let i = PROMPTS.length - 1; i >= 0; i--) {
-    if (PROMPTS[i]!.seconds > 0) return i;
-  }
-  return PROMPTS.length - 1;
-})();
-
 const TENSE_LABEL: Record<Exclude<Tense, null>, { en: string; es: string }> = {
   present: { en: "Present", es: "Presente" },
   past: { en: "Past", es: "Pasado" },
