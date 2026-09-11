@@ -44,6 +44,33 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_coach_usage: {
+        Row: {
+          created_at: string
+          period_key: string
+          period_type: string
+          updated_at: string
+          used: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          period_key: string
+          period_type: string
+          updated_at?: string
+          used?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          period_key?: string
+          period_type?: string
+          updated_at?: string
+          used?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_usage_limits: {
         Row: {
           endpoint: string
@@ -780,6 +807,20 @@ export type Database = {
       }
       admin_cost_center: { Args: never; Returns: Json }
       admin_engagement_metrics: { Args: never; Returns: Json }
+      consume_ai_coach_quota: {
+        Args: { _user_id: string }
+        Returns: {
+          allowed: boolean
+          blocked: string
+          daily_limit: number
+          daily_used: number
+          day_reset_at: string
+          month_reset_at: string
+          monthly_limit: number
+          monthly_used: number
+          unlimited: boolean
+        }[]
+      }
       consume_ai_quota: {
         Args: {
           _endpoint: string
@@ -791,6 +832,20 @@ export type Database = {
           allowed: boolean
           used_count: number
           window_started: string
+        }[]
+      }
+      get_ai_coach_quota: {
+        Args: { _user_id: string }
+        Returns: {
+          allowed: boolean
+          blocked: string
+          daily_limit: number
+          daily_used: number
+          day_reset_at: string
+          month_reset_at: string
+          monthly_limit: number
+          monthly_used: number
+          unlimited: boolean
         }[]
       }
       has_role: {
