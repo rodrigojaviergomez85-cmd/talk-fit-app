@@ -217,8 +217,16 @@ function AiCoachPage() {
 
         {limitReached ? (
           <div className="rounded-2xl border border-border bg-secondary p-4">
-            <p className="text-[14px] font-bold text-foreground">{t("aiCoach.limitTitle")}</p>
+            <p className="text-[14px] font-bold text-foreground">{limitTitle}</p>
+            <p className="mt-1 text-[13px] text-muted-foreground">{resetText}</p>
             <p className="mt-1 text-[13px] text-muted-foreground">{t("aiCoach.limitBody")}</p>
+            <button
+              type="button"
+              onClick={() => void refreshQuota()}
+              className="mt-3 min-h-[44px] w-full rounded-xl border border-border bg-card px-3 text-[13px] font-bold text-foreground"
+            >
+              {t("aiCoach.refresh")}
+            </button>
           </div>
         ) : (
           <form
