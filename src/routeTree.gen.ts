@@ -42,6 +42,7 @@ import { Route as ReviewIndexRouteImport } from './routes/review.index'
 import { Route as ReviewBasicRouteImport } from './routes/review.basic'
 import { Route as ReviewCallCenterRouteImport } from './routes/review.call-center'
 import { Route as ReviewIntermediateAdvancedRouteImport } from './routes/review.intermediate-advanced'
+import { Route as ReviewInterviewRouteImport } from './routes/review.interview'
 import { Route as ReviewPictionaryRouteImport } from './routes/review.pictionary'
 import { Route as NaturalMethodVerbsIndexRouteImport } from './routes/natural-method.verbs.index'
 import { Route as NaturalMethodVerbsIdiomsRouteImport } from './routes/natural-method.verbs.idioms'
@@ -218,6 +219,11 @@ const ReviewIntermediateAdvancedRoute =
     path: '/review/intermediate-advanced',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ReviewInterviewRoute = ReviewInterviewRouteImport.update({
+  id: '/review/interview',
+  path: '/review/interview',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReviewPictionaryRoute = ReviewPictionaryRouteImport.update({
   id: '/review/pictionary',
   path: '/review/pictionary',
@@ -288,6 +294,7 @@ export interface FileRoutesByFullPath {
   '/review/basic': typeof ReviewBasicRoute
   '/review/call-center': typeof ReviewCallCenterRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
+  '/review/interview': typeof ReviewInterviewRoute
   '/review/pictionary': typeof ReviewPictionaryRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
@@ -329,6 +336,7 @@ export interface FileRoutesByTo {
   '/review/basic': typeof ReviewBasicRoute
   '/review/call-center': typeof ReviewCallCenterRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
+  '/review/interview': typeof ReviewInterviewRoute
   '/review/pictionary': typeof ReviewPictionaryRoute
   '/natural-method': typeof NaturalMethodIndexRoute
   '/review': typeof ReviewIndexRoute
@@ -372,6 +380,7 @@ export interface FileRoutesById {
   '/review/basic': typeof ReviewBasicRoute
   '/review/call-center': typeof ReviewCallCenterRoute
   '/review/intermediate-advanced': typeof ReviewIntermediateAdvancedRoute
+  '/review/interview': typeof ReviewInterviewRoute
   '/review/pictionary': typeof ReviewPictionaryRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
@@ -416,6 +425,7 @@ export interface FileRouteTypes {
     | '/review/basic'
     | '/review/call-center'
     | '/review/intermediate-advanced'
+    | '/review/interview'
     | '/review/pictionary'
     | '/natural-method/'
     | '/review/'
@@ -457,6 +467,7 @@ export interface FileRouteTypes {
     | '/review/basic'
     | '/review/call-center'
     | '/review/intermediate-advanced'
+    | '/review/interview'
     | '/review/pictionary'
     | '/natural-method'
     | '/review'
@@ -499,6 +510,7 @@ export interface FileRouteTypes {
     | '/review/basic'
     | '/review/call-center'
     | '/review/intermediate-advanced'
+    | '/review/interview'
     | '/review/pictionary'
     | '/natural-method/'
     | '/review/'
@@ -542,6 +554,7 @@ export interface RootRouteChildren {
   ReviewBasicRoute: typeof ReviewBasicRoute
   ReviewCallCenterRoute: typeof ReviewCallCenterRoute
   ReviewIntermediateAdvancedRoute: typeof ReviewIntermediateAdvancedRoute
+  ReviewInterviewRoute: typeof ReviewInterviewRoute
   ReviewPictionaryRoute: typeof ReviewPictionaryRoute
   NaturalMethodIndexRoute: typeof NaturalMethodIndexRoute
   ReviewIndexRoute: typeof ReviewIndexRoute
@@ -782,6 +795,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReviewIntermediateAdvancedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/review/interview': {
+      id: '/review/interview'
+      path: '/review/interview'
+      fullPath: '/review/interview'
+      preLoaderRoute: typeof ReviewInterviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/review/pictionary': {
       id: '/review/pictionary'
       path: '/review/pictionary'
@@ -883,6 +903,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReviewBasicRoute: ReviewBasicRoute,
   ReviewCallCenterRoute: ReviewCallCenterRoute,
   ReviewIntermediateAdvancedRoute: ReviewIntermediateAdvancedRoute,
+  ReviewInterviewRoute: ReviewInterviewRoute,
   ReviewPictionaryRoute: ReviewPictionaryRoute,
   NaturalMethodIndexRoute: NaturalMethodIndexRoute,
   ReviewIndexRoute: ReviewIndexRoute,
