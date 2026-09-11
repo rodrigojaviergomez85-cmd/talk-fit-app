@@ -475,11 +475,11 @@ function InterviewSimulator() {
 
   return (
     <AppShell>
-      <div className="space-y-4 p-4">
+      <div className="space-y-1.5 p-2">
         {step === 0 ? (
           <Link
             to="/review"
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-semibold text-primary"
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-1.5 text-sm font-semibold text-primary"
           >
             <ArrowLeft className="size-4" aria-hidden="true" /> Review
           </Link>
@@ -487,15 +487,15 @@ function InterviewSimulator() {
           <button
             type="button"
             onClick={goBack}
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground"
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-1.5 text-sm font-semibold text-foreground"
           >
             <ArrowLeft className="size-4" aria-hidden="true" /> {es ? "Atrás" : "Back"}
           </button>
         )}
 
         <header>
-          <h1 className="text-2xl font-extrabold text-foreground">B4 Interview Simulator</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="text-xl font-extrabold text-foreground">B4 Interview Simulator</h1>
+          <p className="text-xs text-muted-foreground">
             {es
               ? "Entrevista con Mike en pasado, presente y futuro. Escúchalo, responde en voz alta y escúchate."
               : "Interview with Mike in past, present and future. Listen, answer out loud and play it back."}
@@ -513,7 +513,7 @@ function InterviewSimulator() {
           ) : null}
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-border bg-navy">
+        <div className="overflow-hidden rounded-2xl border border-border bg-navy max-h-36">
           <video
             key={waiting ? "waiting" : current.id}
             ref={videoRef}
@@ -542,12 +542,14 @@ function InterviewSimulator() {
         </div>
 
         {current.followUp ? (
-          <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+          <p className="text-center text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
             {es ? "Repregunta" : "Follow-up"}
           </p>
         ) : null}
-        <p className="text-center text-base font-semibold text-foreground">{current.en}</p>
-        {es ? <p className="text-center text-sm text-muted-foreground">{current.es}</p> : null}
+        <div className="space-y-0.5 text-center">
+          <p className="text-sm font-semibold leading-snug text-foreground">{current.en}</p>
+          {es ? <p className="text-xs text-muted-foreground">{current.es}</p> : null}
+        </div>
 
         {phase === "intro" ? (
           <div className="space-y-3">
@@ -573,39 +575,40 @@ function InterviewSimulator() {
         ) : null}
 
         {phase === "ready" && current.seconds > 0 ? (
-          <div className="space-y-3 rounded-2xl border border-dashed border-border bg-secondary/40 p-3">
-            <div className="space-y-1.5 text-center">
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                {es ? "¿No entendiste? Practica esta frase en voz alta" : "Didn't catch it? Practice this phrase out loud"}
+          <div className="rounded-2xl border border-dashed border-border bg-secondary/40 p-2">
+            <div className="flex flex-col gap-1.5">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                {es ? "¿No entendiste? Practica en voz alta" : "Didn't catch it? Practice out loud"}
               </p>
-              <p className="text-sm font-semibold text-foreground">
+              <p className="text-xs font-semibold leading-tight text-foreground">
                 “{CLARIFICATION_PHRASES[step % CLARIFICATION_PHRASES.length]}”
               </p>
+              <button
+                type="button"
+                onClick={playMike}
+                className="mt-0.5 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-border bg-card py-1.5 text-xs font-semibold text-foreground"
+              >
+                <RotateCcw className="size-3" aria-hidden="true" />
+                {es ? "Repetir pregunta" : "Repeat question"}
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={playMike}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card p-3 text-sm font-extrabold uppercase tracking-wide text-foreground"
-            >
-              <RotateCcw className="size-4" aria-hidden="true" />
-              {es ? "Repetir pregunta" : "Repeat question"}
-            </button>
           </div>
         ) : null}
 
         {current.seconds > 0 && (phase === "ready" || phase === "recording") ? (
-          <div className="space-y-3 rounded-2xl border border-border bg-card p-4">
-            <p className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-              {es ? `Grabar respuesta · máx ${timeLabel}` : `Record answer · max ${timeLabel}`}
-            </p>
-            <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-              {es ? `Meta · ${goalMin}–${goalMax} oraciones` : `Goal · ${goalMin}–${goalMax} sentences`}
+          <div className="space-y-2 rounded-2xl border border-border bg-card p-2">
+            <p className="text-center text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+              {es
+                ? `Grabar respuesta · máx ${timeLabel} · meta ${goalMin}–${goalMax} oraciones`
+                : `Record answer · max ${timeLabel} · goal ${goalMin}–${goalMax} sentences`}
             </p>
             <VoiceRecorder
               key={current.id}
               label={es ? "GRABAR" : "RECORD"}
               stopLabel="STOP"
               maxSeconds={current.seconds}
+              size="sm"
+              className="gap-1"
               onStart={() => setPhase("recording")}
               onComplete={onComplete}
             />

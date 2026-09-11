@@ -13,7 +13,7 @@ type VoiceRecorderProps = {
   /** Hard limit: the recording stops by itself when reached. */
   maxSeconds?: number;
   showTimer?: boolean;
-  size?: "md" | "lg";
+  size?: "sm" | "md" | "lg";
   /** Fired once the microphone is actually capturing. */
   onStart?: () => void;
   onComplete: (recording: Recording) => void;
@@ -118,6 +118,13 @@ export function VoiceRecorder({
   const nearLimit = !!maxSeconds && recording && seconds >= maxSeconds - 5;
   const inTarget = targetSeconds && seconds >= targetSeconds[0] && seconds <= targetSeconds[1];
 
+  const sizeClasses =
+    size === "lg"
+      ? { button: "size-28 text-xs", iconOn: "size-8", iconOff: "size-10", timer: "text-3xl" }
+      : size === "md"
+        ? { button: "size-20 text-[10px]", iconOn: "size-6", iconOff: "size-7", timer: "text-3xl" }
+        : { button: "size-16 text-[10px]", iconOn: "size-5", iconOff: "size-6", timer: "text-2xl" };
+
   return (
     <div className={cn("flex flex-col items-center gap-4", className)}>
       {recording ? <WaveformPlayer active /> : null}
@@ -127,14 +134,14 @@ export function VoiceRecorder({
         onClick={recording ? stop : start}
         className={cn(
           "flex flex-col items-center justify-center gap-1 rounded-full font-bold tracking-widest transition-transform active:scale-95",
-          size === "lg" ? "size-28 text-xs" : "size-20 text-[10px]",
+          sizeClasses.button,
           recording
             ? "bg-navy text-navy-foreground"
             : "bg-primary text-primary-foreground shadow-[var(--shadow-lift)] animate-[var(--animate-pulse-ring)]",
         )}
         aria-label={recording ? stopLabel : label}
       >
-        {recording ? <Square className={size === "lg" ? "size-8 fill-current" : "size-6 fill-current"} /> : <Mic className={size === "lg" ? "size-10" : "size-7"} />}
+        {recording ? <Square className={cn("fill-current", sizeClasses.iconOn)} /> : <Mic className={sizeClasses.iconOff} />}
         <span>{recording ? stopLabel : label}</span>
       </button>
 
@@ -142,7 +149,8 @@ export function VoiceRecorder({
         <div className="text-center">
           <p
             className={cn(
-              "font-mono text-3xl font-bold tabular-nums",
+              "font-mono font-bold tabular-nums",
+              sizeClasses.timer,
               nearLimit ? "text-destructive" : inTarget ? "text-success" : recording ? "text-foreground" : "text-muted-foreground",
             )}
           >
