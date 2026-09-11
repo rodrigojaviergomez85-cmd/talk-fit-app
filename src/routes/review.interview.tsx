@@ -22,6 +22,7 @@ import opinionClip from "@/assets/interview/mike-opinion.mp4.asset.json";
 import pastProgressiveClip from "@/assets/interview/mike-past-progressive.mp4.asset.json";
 import twoYearsClip from "@/assets/interview/mike-two-years.mp4.asset.json";
 import afterCourseClip from "@/assets/interview/mike-after-course.mp4.asset.json";
+import goodbyeClip from "@/assets/interview/mike-goodbye.mp4.asset.json";
 import mikeCartoon from "@/assets/interview/mike-cartoon.jpg";
 
 export const Route = createFileRoute("/review/interview")({
@@ -201,6 +202,15 @@ const PROMPTS: Prompt[] = [
     seconds: MAIN_SECONDS,
     followUp: false,
     tense: "future",
+  },
+  {
+    id: "goodbye",
+    en: "Thank you for applying. It was a pleasure talking with you today. We'll be in touch soon. I wish you the best in the real interview. You can do it, champion!",
+    es: "Gracias por aplicar. Fue un placer hablar contigo hoy. Estaremos en contacto pronto. Te deseo lo mejor en la entrevista real. You can do it, champion!",
+    video: { src: goodbyeClip.url, speechEnd: 7.6 },
+    seconds: 0,
+    followUp: false,
+    tense: null,
   },
 ];
 
