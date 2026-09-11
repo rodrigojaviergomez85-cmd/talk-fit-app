@@ -1558,8 +1558,6 @@ export function Rep2Copy({
     <div className="space-y-5">
       <RepHeader titleKey="rep2.title" instrKey="rep2.instr" copy={day.repCopy?.rep2} />
 
-      <QuestionBanner day={day} />
-
       <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} />
 
       {chunkImage ? (
