@@ -215,6 +215,24 @@ function OnboardingPage() {
     finish("home");
   };
 
+  // Account just created after choosing a level: enroll and open Home on its own.
+  const enrolled = useRef(false);
+  useEffect(() => {
+    if (screen !== AUTH_SCREEN || !user || !placement || enrolled.current) return;
+    enrolled.current = true;
+    void (async () => {
+      const { CloudSync } = await import("@/services/cloud-sync");
+      const result = await CloudSync.applyPendingPlacement();
+      if (result === "failed") {
+        enrolled.current = false;
+        setSaveError(true);
+        return;
+      }
+      finish("home");
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screen, user, placement]);
+
   const finish = (to: "day1" | "explore" | "home") => {
     if (to === "home") {
       setPrefs({ onboardingCompleted: true });
