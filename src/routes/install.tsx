@@ -39,10 +39,7 @@ function detectEnv(hasInstallPrompt: boolean): Env {
   const ua = navigator.userAgent;
 
   // Already running as installed PWA
-  const standalone =
-    window.matchMedia("(display-mode: standalone)").matches ||
-    (navigator as Navigator & { standalone?: boolean }).standalone === true;
-  if (standalone) return "installed";
+  if (isInstalledPwa()) return "installed";
 
   const isIOS = /iP(hone|ad|od)/.test(ua);
   const isAndroid = /Android/i.test(ua);
