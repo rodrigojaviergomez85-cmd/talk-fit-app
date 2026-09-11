@@ -4,6 +4,7 @@ import { ArrowDown, ArrowRight, BookOpen, CheckCircle2, Clapperboard, Home, Mic,
 import { CourseService } from "@/services/course-service";
 import { useAppLang } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
+import { useIsInstalledPwa } from "@/lib/pwa";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { PlacementPicker } from "@/components/fluency/PlacementPicker";
 import { getPendingPlacement, setPendingPlacement } from "@/services/preferences";
@@ -178,6 +179,7 @@ function OnboardingPage() {
   const navigate = useNavigate();
   const { t, prefs, setPrefs } = useAppLang();
   const { user } = useAuth();
+  const installedPwa = useIsInstalledPwa();
   const [screen, setScreen] = useState(0);
   const [placement, setPlacement] = useState<ModuleId | null>(null);
   const [pendingChoice, setPendingChoice] = useState<ModuleId | null>(null);
@@ -462,7 +464,7 @@ function OnboardingPage() {
               {user && prefs.currentModuleId ? t("action.startDay1") : t("action.startJourney")}
             </button>
           )}
-          {screen === 0 || screen === AUTH_SCREEN ? (
+          {(screen === 0 || screen === AUTH_SCREEN) && !installedPwa ? (
             <Link
               to="/install"
               className="block text-center text-[13px] font-bold text-primary underline underline-offset-4"
