@@ -80,6 +80,25 @@ function TutorialPage() {
     void navigate({ to: "/" });
   };
   const next = () => (last ? finish() : setIndex((v) => v + 1));
+  const back = () => setIndex((v) => Math.max(0, v - 1));
+
+  // Swipe: left = next slide, right = previous slide.
+  const touch = useRef<{ x: number; y: number } | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0]!;
+    touch.current = { x: t.clientX, y: t.clientY };
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touch.current;
+    touch.current = null;
+    if (!start) return;
+    const t = e.changedTouches[0]!;
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    if (dx < 0) next();
+    else back();
+  };
 
   // Buttons baked into the artwork: main CTA ~84%–92% height, "Saltar" bottom right.
   const zone = (topPct: number, heightPct: number, leftPct: number, widthPct: number) =>
@@ -93,7 +112,11 @@ function TutorialPage() {
       : { display: "none" as const };
 
   return (
-    <main className="relative flex h-[100dvh] w-full items-center justify-center overflow-hidden bg-[#101418]">
+    <main
+      className="relative flex h-[100dvh] w-full touch-pan-y items-center justify-center overflow-hidden bg-[#101418] select-none"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
       <img
         ref={imgRef}
         src={slide.image}
