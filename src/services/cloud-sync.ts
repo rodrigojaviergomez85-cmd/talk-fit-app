@@ -4,6 +4,7 @@ import { CourseService } from "./course-service";
 import { PracticeSessionService, type PracticeSession } from "./practice-session";
 import { VerbBank, type VerbBankState } from "./verb-bank";
 import {
+  asWeek,
   clearPendingPlacement,
   getPendingPlacement,
   loadPreferences,
