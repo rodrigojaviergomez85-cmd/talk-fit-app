@@ -1,15 +1,18 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowDown, ArrowRight, BookOpen, CheckCircle2, Clapperboard, Home, Mic, Tv } from "lucide-react";
 import { CourseService } from "@/services/course-service";
 import { useAppLang } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import { useIsInstalledPwa } from "@/lib/pwa";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { PlacementPicker } from "@/components/fluency/PlacementPicker";
-import { getPendingPlacement, setPendingPlacement } from "@/services/preferences";
+import { getPendingPlacement, setPendingPlacement, weekStartDay } from "@/services/preferences";
 import type { ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import slide1Asset from "@/assets/onboarding/slide-40.png.asset.json";
+import slide2Asset from "@/assets/onboarding/slide-41.png.asset.json";
+import slide3Asset from "@/assets/onboarding/slide-42.png.asset.json";
+import slide4Asset from "@/assets/onboarding/slide-43.png.asset.json";
 
 export const Route = createFileRoute("/onboarding")({
   head: () => ({
@@ -17,10 +20,14 @@ export const Route = createFileRoute("/onboarding")({
       { title: "Empieza aquí — Fluency App" },
       {
         name: "description",
-        content: "El método E4CC: Natural Method, Teachable y Fluency App. 3–5 audios al día en 5–10 minutos.",
+        content:
+          "Graba tus audios, prepárate para entrevistas y practica la tarea del día de E4CC.",
       },
       { property: "og:title", content: "Empieza aquí — Fluency App" },
-      { property: "og:description", content: "El método E4CC en 3 pasos: vocabulario, refuerzo y speaking diario." },
+      {
+        property: "og:description",
+        content: "Graba tus audios, prepárate para entrevistas y practica la tarea del día.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -28,152 +35,17 @@ export const Route = createFileRoute("/onboarding")({
   component: OnboardingPage,
 });
 
-const METHOD_SCREENS = 6;
-const PLACEMENT_SCREEN = 6;
-const AUTH_SCREEN = 7;
-const TOTAL_DOTS = 8;
+const SLIDE_COUNT = 4;
+const PLACEMENT_SCREEN = 4;
+const WEEK_SCREEN = 5;
+const AUTH_SCREEN = 6;
 
-/* ---------- small presentational helpers ---------- */
-
-function Title({ children }: { children: ReactNode }) {
-  return <h1 className="text-center text-[26px] font-extrabold leading-tight tracking-tight">{children}</h1>;
-}
-
-function Mantra({ children, big }: { children: ReactNode; big?: boolean }) {
-  return (
-    <p
-      className={cn(
-        "text-center font-extrabold uppercase tracking-[0.12em] text-primary",
-        big ? "text-[18px]" : "text-[13px]",
-      )}
-    >
-      {children}
-    </p>
-  );
-}
-
-function TimePill({ children }: { children: ReactNode }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-[14px] font-extrabold tracking-wide text-primary-foreground">
-      ⏱️ {children}
-    </span>
-  );
-}
-
-function StatCard({ value, label }: { value: string; label?: string }) {
-  return (
-    <div className="rounded-2xl bg-card p-4 text-center shadow-[var(--shadow-card)]">
-      <p className="text-[24px] font-extrabold leading-none tracking-tight text-primary">{value}</p>
-      {label ? <p className="mt-1.5 text-[12px] font-semibold text-muted-foreground">{label}</p> : null}
-    </div>
-  );
-}
-
-function ArrowFlow({ items }: { items: string[] }) {
-  return (
-    <ol className="flex flex-col items-center gap-1">
-      {items.map((item, i) => (
-        <li key={item} className="flex flex-col items-center gap-1">
-          {i > 0 ? <ArrowDown className="size-4 text-primary" aria-hidden /> : null}
-          <span className="rounded-xl border border-border bg-card px-3 py-1.5 text-center text-[13px] font-extrabold uppercase tracking-tight">
-            {item}
-          </span>
-        </li>
-      ))}
-    </ol>
-  );
-}
-
-function ChipFlow({ items }: { items: string[] }) {
-  return (
-    <ul className="flex flex-wrap items-center justify-center gap-1.5">
-      {items.map((item, i) => (
-        <li key={item} className="flex items-center gap-1.5">
-          {i > 0 ? <ArrowRight className="size-3.5 text-primary" aria-hidden /> : null}
-          <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[12px] font-extrabold uppercase tracking-tight text-primary">
-            {item}
-          </span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function IconRow({ icon: Icon, label }: { icon: typeof Tv; label: string }) {
-  return (
-    <li className="flex items-center gap-3 rounded-2xl border border-border bg-card px-3.5 py-2.5">
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-        <Icon className="size-4.5" />
-      </span>
-      <span className="text-[14px] font-extrabold uppercase tracking-tight">{label}</span>
-    </li>
-  );
-}
-
-function RoutineStep({
-  n,
-  icon: Icon,
-  title,
-  action,
-  time,
-}: {
-  n: number;
-  icon: typeof Tv;
-  title: string;
-  action: string;
-  time: string;
-}) {
-  return (
-    <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-3">
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-[15px] font-extrabold text-primary-foreground">
-        {n}
-      </span>
-      <div className="min-w-0 flex-1">
-        <p className="text-[15px] font-extrabold uppercase tracking-tight">{title}</p>
-        <p className="flex items-center gap-1.5 text-[13px] text-muted-foreground">
-          <Icon className="size-3.5 shrink-0 text-primary" aria-hidden />
-          {action}
-        </p>
-      </div>
-      <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-[12px] font-extrabold text-primary">
-        ⏱️ {time}
-      </span>
-    </div>
-  );
-}
-
-function TimelineRow({
-  time,
-  icon: Icon,
-  title,
-  lines,
-}: {
-  time: string;
-  icon: typeof Tv;
-  title: string;
-  lines: string[];
-}) {
-  return (
-    <li className="relative flex gap-3 pl-1">
-      <div className="flex w-16 shrink-0 flex-col items-start">
-        <span className="text-[13px] font-extrabold text-primary">{time}</span>
-      </div>
-      <div className="min-w-0 flex-1 rounded-2xl border border-border bg-card p-3">
-        <p className="flex items-center gap-1.5 text-[14px] font-extrabold uppercase tracking-tight">
-          <Icon className="size-4 text-primary" aria-hidden />
-          {title}
-        </p>
-        {lines.map((l) => (
-          <p key={l} className="mt-0.5 text-[13px] text-muted-foreground">
-            {l}
-          </p>
-        ))}
-      </div>
-    </li>
-  );
-}
-
-/* ---------- page ---------- */
+const SLIDES = [
+  { img: slide1Asset.url, title: "onb.slide1.title", body: "onb.slide1.body", cta: "onb.slide1.cta" },
+  { img: slide2Asset.url, title: "onb.slide2.title", body: "onb.slide2.body", cta: "action.next" },
+  { img: slide3Asset.url, title: "onb.slide3.title", body: "onb.slide3.body", sub: "onb.slide3.sub", cta: "action.next" },
+  { img: slide4Asset.url, title: "onb.slide4.title", body: "onb.slide4.body", cta: "onb.slide4.cta" },
+] as const;
 
 function OnboardingPage() {
   const navigate = useNavigate();
@@ -182,13 +54,16 @@ function OnboardingPage() {
   const installedPwa = useIsInstalledPwa();
   const [screen, setScreen] = useState(0);
   const [placement, setPlacement] = useState<ModuleId | null>(null);
+  const [week, setWeek] = useState<number>(1);
   const [pendingChoice, setPendingChoice] = useState<ModuleId | null>(null);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState(false);
 
   // Restore a choice made before an OAuth redirect (client-only storage).
   useEffect(() => {
-    setPlacement(getPendingPlacement()?.moduleId ?? null);
+    const pending = getPendingPlacement();
+    setPlacement(pending?.moduleId ?? null);
+    setWeek(pending?.week ?? 1);
   }, []);
 
   const choosePlacement = (moduleId: ModuleId) => {
@@ -196,14 +71,22 @@ function OnboardingPage() {
     setPendingChoice(moduleId);
   };
 
-  /** Confirmed their level: enroll right away — no extra "continue" step. */
-  const confirmChoice = async (moduleId: ModuleId) => {
+  /** Level confirmed in the modal: now ask which week they are on. */
+  const confirmChoice = (moduleId: ModuleId) => {
     setPlacement(moduleId);
-    // Pre-auth: kept locally until the account exists and the backend confirms.
-    setPendingPlacement(moduleId);
+    setPendingChoice(null);
     setSaveError(false);
+    setScreen(WEEK_SCREEN);
+  };
+
+  /** Week chosen: persist level + week, then go to auth or straight to practice. */
+  const confirmWeek = async (chosenWeek: number) => {
+    if (!placement) return;
+    setWeek(chosenWeek);
+    setSaveError(false);
+    // Pre-auth: kept locally until the account exists and the backend confirms.
+    setPendingPlacement(placement, chosenWeek);
     if (!user) {
-      setPendingChoice(null);
       setScreen(AUTH_SCREEN);
       return;
     }
@@ -212,15 +95,13 @@ function OnboardingPage() {
     const result = await CloudSync.applyPendingPlacement();
     setSaving(false);
     if (result === "failed") {
-      // Keep the confirmation open so the error and the retry stay visible.
       setSaveError(true);
       return;
     }
-    setPendingChoice(null);
-    finish("home");
+    finish("practice", placement, chosenWeek);
   };
 
-  /** Retry after a failed save (used by the banner outside the modal). */
+  /** Retry after a failed save (used by the banner on the week/auth screens). */
   const retrySave = async () => {
     if (!placement) return;
     setSaving(true);
@@ -232,11 +113,10 @@ function OnboardingPage() {
       setSaveError(true);
       return;
     }
-    setPendingChoice(null);
-    finish("home");
+    finish("practice", placement, week);
   };
 
-  // Account just created after choosing a level: enroll and open Home on its own.
+  // Account just created after choosing level + week: enroll and start practice.
   const enrolled = useRef(false);
   useEffect(() => {
     if (screen !== AUTH_SCREEN || !user || !placement || enrolled.current) return;
@@ -249,29 +129,28 @@ function OnboardingPage() {
         setSaveError(true);
         return;
       }
-      finish("home");
+      finish("practice", placement, week);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [screen, user, placement]);
+  }, [screen, user, placement, week]);
 
-  const finish = (to: "day1" | "explore" | "home") => {
-    if (to === "home") {
-      setPrefs({ onboardingCompleted: true });
-      void navigate({ to: "/" });
-      return;
-    }
+  const finish = (to: "practice" | "home", moduleId?: ModuleId, chosenWeek?: number) => {
     setPrefs({ onboardingCompleted: true });
-    if (to === "explore") {
+    if (to === "home") {
       void navigate({ to: "/" });
       return;
     }
+    const target = moduleId ?? placement;
     // Existing learners (already placed) go back to Home, which points to their saved position.
-    if (!placement && prefs.currentModuleId) {
+    if (!target && prefs.currentModuleId) {
       void navigate({ to: "/" });
       return;
     }
     const first = CourseService.modules()[0];
-    void navigate({ to: "/practice", search: { day: 1, module: placement ?? first?.id ?? "basic-zero" } });
+    void navigate({
+      to: "/practice",
+      search: { day: weekStartDay(chosenWeek ?? week), module: target ?? first?.id ?? "basic-zero" },
+    });
   };
 
   const primaryBtn =
@@ -279,220 +158,153 @@ function OnboardingPage() {
   const secondaryBtn =
     "min-h-[48px] w-full rounded-2xl border border-border px-6 text-[13px] font-bold uppercase tracking-[0.14em] text-muted-foreground";
 
+  const isSlide = screen < SLIDE_COUNT;
+  const slide = isSlide ? SLIDES[screen] : null;
+
   return (
-    <div className="flex min-h-screen flex-col bg-background px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))]">
+    <div className="flex min-h-screen flex-col bg-background pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))]">
       <div className="mx-auto flex w-full max-w-lg flex-1 flex-col">
-        <div className="flex items-center gap-1.5" aria-hidden>
-          {Array.from({ length: TOTAL_DOTS }, (_, i) => (
-            <span
-              key={i}
-              className={cn("h-1.5 flex-1 rounded-full", i <= screen ? "bg-primary" : "bg-secondary")}
-            />
-          ))}
+        {/* Header: brand + skip (slides only) */}
+        <div className="flex items-center justify-between px-5">
+          <span className="text-[13px] font-extrabold uppercase tracking-[0.28em] text-foreground">
+            Fluency App
+          </span>
+          {isSlide ? (
+            <button
+              type="button"
+              onClick={() => setScreen(PLACEMENT_SCREEN)}
+              className="px-2 py-1 text-[14px] font-semibold text-muted-foreground"
+            >
+              {t("action.skip")}
+            </button>
+          ) : null}
         </div>
 
-        <div className="flex flex-1 flex-col justify-center py-5">
-          {screen === 0 ? (
-            <section className="space-y-4 text-center">
-              <p className="text-[12px] font-extrabold uppercase tracking-[0.28em] text-primary">{t("onb.s1.kicker")}</p>
-              <Title>{t("onb.s1.title")}</Title>
-              <p className="text-[15px] font-semibold text-muted-foreground">{t("onb.s1.body")}</p>
-              <p className="text-[13px] font-bold uppercase tracking-[0.12em] text-muted-foreground">{t("onb.s1.work")}</p>
-              <div className="flex items-center justify-center gap-2">
-                {[t("onb.s1.p1"), t("onb.s1.p2"), t("onb.s1.p3")].map((p, i) => (
-                  <div key={p} className="flex items-center gap-2">
-                    {i > 0 ? <span className="text-[18px] font-extrabold text-primary">+</span> : null}
-                    <span className="rounded-xl bg-card px-3 py-2 text-[13px] font-extrabold uppercase tracking-tight shadow-[var(--shadow-card)]">
-                      {p}
-                    </span>
-                  </div>
-                ))}
+        <div className="flex flex-1 flex-col">
+          {slide ? (
+            <section className="flex flex-1 flex-col">
+              <img
+                src={slide.img}
+                alt=""
+                className="mt-1 w-full object-contain"
+                loading={screen === 0 ? "eager" : "lazy"}
+              />
+              <div className="space-y-3 px-6 pt-2 text-center">
+                <h1 className="text-[28px] font-extrabold leading-tight tracking-tight">
+                  {t(slide.title)}
+                </h1>
+                <p className="text-[15px] font-semibold text-muted-foreground">{t(slide.body)}</p>
+                {"sub" in slide ? (
+                  <p className="text-[13px] font-semibold text-muted-foreground">{t(slide.sub)}</p>
+                ) : null}
+                <div className="flex items-center justify-center gap-2 pt-1" aria-hidden>
+                  {Array.from({ length: SLIDE_COUNT }, (_, i) => (
+                    <span
+                      key={i}
+                      className={cn(
+                        "size-2 rounded-full",
+                        i === screen ? "bg-primary" : "bg-secondary",
+                      )}
+                    />
+                  ))}
+                </div>
               </div>
-              <Mantra big>{t("onb.m.canDo")} 💪</Mantra>
-              <p className="text-[14px] font-semibold text-muted-foreground">
-                {t("onb.s1.l1")}
-                <br />
-                {t("onb.s1.l2")}
-              </p>
-            </section>
-          ) : null}
-
-          {screen === 1 ? (
-            <section className="space-y-3.5">
-              <Title>{t("onb.s2.title")}</Title>
-              <p className="text-center text-[15px] font-semibold text-muted-foreground">{t("onb.s2.body")}</p>
-              <StatCard value={t("onb.s2.stat")} />
-              <div className="flex flex-col items-center gap-1.5">
-                <TimePill>{t("onb.s2.time")}</TimePill>
-                <p className="text-[12px] font-semibold text-muted-foreground">{t("onb.s2.timeLabel")}</p>
-              </div>
-              <ul className="space-y-1.5">
-                <IconRow icon={Clapperboard} label={t("onb.s2.c1")} />
-                <IconRow icon={Tv} label={t("onb.s2.c2")} />
-                <IconRow icon={Home} label={t("onb.s2.c3")} />
-              </ul>
-              <ArrowFlow items={[t("onb.s2.f1"), t("onb.s2.f2"), t("onb.s2.f3")]} />
-              <p className="text-center text-[14px] font-bold">{t("onb.s2.line")}</p>
-              <Mantra>{t("onb.m.mistakes")}</Mantra>
-            </section>
-          ) : null}
-
-          {screen === 2 ? (
-            <section className="space-y-5 text-center">
-              <Title>{t("onb.s3.title")}</Title>
-              <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <CheckCircle2 className="size-8" />
-              </div>
-              <p className="text-[15px] font-semibold text-muted-foreground">{t("onb.s3.body")}</p>
-              <div>
-                <TimePill>{t("onb.s3.time")}</TimePill>
-              </div>
-              <p className="rounded-2xl bg-card p-4 text-[14px] font-semibold text-muted-foreground shadow-[var(--shadow-card)]">
-                {t("onb.s3.l1")}
-                <br />
-                {t("onb.s3.l2")}
-              </p>
-              <Mantra big>{t("onb.s3.close")}</Mantra>
-            </section>
-          ) : null}
-
-          {screen === 3 ? (
-            <section className="space-y-3.5">
-              <Title>{t("onb.s4.title")}</Title>
-              <p className="text-center text-[15px] font-semibold text-muted-foreground">{t("onb.s4.body")}</p>
-              <p className="text-center text-[15px] font-semibold">
-                {t("onb.s4.for")} <span className="font-extrabold text-primary">{t("onb.s4.forStrong")}</span>
-              </p>
-              <div className="grid grid-cols-2 gap-2">
-                <StatCard value={`🎙️ ${t("onb.s4.audios")}`} />
-                <StatCard value={`⏱️ ${t("onb.s4.time")}`} />
-              </div>
-              <p className="text-center text-[14px] font-semibold text-muted-foreground">{t("onb.s4.purpose")}</p>
-              <ChipFlow items={[t("onb.s4.p1"), t("onb.s4.p2"), t("onb.s4.p3"), t("onb.s4.p4")]} />
-              <div className="space-y-1 rounded-2xl bg-card p-3.5 text-center shadow-[var(--shadow-card)]">
-                <p className="text-[13px] font-semibold text-muted-foreground">{t("onb.s4.fear")}</p>
-                <Mantra>{t("onb.m.mistakes")}</Mantra>
-                <p className="text-[15px] font-extrabold uppercase tracking-[0.08em]">{t("onb.m.speak")}</p>
-              </div>
-            </section>
-          ) : null}
-
-          {screen === 4 ? (
-            <section className="space-y-3">
-              <Title>{t("onb.s5.title")}</Title>
-              <div className="space-y-1">
-                <RoutineStep n={1} icon={Clapperboard} title={t("onb.s5.r1")} action={t("onb.s5.r1a")} time={t("onb.s5.r1t")} />
-                <ArrowDown className="mx-auto size-4 text-primary" aria-hidden />
-                <RoutineStep n={2} icon={CheckCircle2} title={t("onb.s5.r2")} action={t("onb.s5.r2a")} time={t("onb.s5.r2t")} />
-                <ArrowDown className="mx-auto size-4 text-primary" aria-hidden />
-                <RoutineStep n={3} icon={Mic} title={t("onb.s5.r3")} action={t("onb.s5.r3a")} time={t("onb.s5.r3t")} />
-                <ArrowDown className="mx-auto size-4 text-primary" aria-hidden />
-                <p className="text-center text-[15px] font-extrabold uppercase tracking-[0.1em] text-primary">
-                  {t("onb.s5.repeat")}
-                </p>
-              </div>
-              <p className="text-center text-[14px] font-semibold text-muted-foreground">{t("onb.s5.habit")}</p>
-              <p className="text-center text-[14px] font-bold">{t("onb.s5.goal")}</p>
-              <Mantra>{t("onb.s5.one")}</Mantra>
-            </section>
-          ) : null}
-
-          {screen === 5 ? (
-            <section className="space-y-3.5">
-              <Title>{t("onb.s6.title")}</Title>
-              <ol className="space-y-2">
-                <TimelineRow icon={Clapperboard} time={t("onb.s6.t1")} title={t("onb.s5.r1")} lines={[t("onb.s6.t1a"), t("onb.s6.t1b")]} />
-                <TimelineRow icon={CheckCircle2} time={t("onb.s6.t2")} title={t("onb.s5.r2")} lines={[t("onb.s6.t2a")]} />
-                <TimelineRow icon={Mic} time={t("onb.s6.t3")} title={t("onb.s5.r3")} lines={[t("onb.s6.t3a")]} />
-              </ol>
-              <div className="space-y-0.5 rounded-2xl bg-card p-4 text-center shadow-[var(--shadow-card)]">
-                <p className="text-[16px] font-extrabold uppercase tracking-[0.08em]">{t("onb.s6.done")}</p>
-                <p className="text-[14px] font-semibold text-muted-foreground">{t("onb.s6.great")}</p>
-                <p className="text-[14px] font-semibold text-muted-foreground">{t("onb.s6.see")}</p>
-              </div>
-              <Mantra big>{t("onb.m.canDo")} 🔥</Mantra>
             </section>
           ) : null}
 
           {screen === PLACEMENT_SCREEN ? (
-            <>
+            <div className="px-5">
               <PlacementPicker value={placement} onSelect={choosePlacement} initialPlacement />
-              {pendingChoice ? (
-                <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-                  <div className="w-full max-w-lg space-y-4 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-                    <p className="text-[18px] font-extrabold tracking-tight">{t("place.sureTitle")}</p>
-                    <p className="text-[15px] text-muted-foreground">
-                      {t("place.sureBody")}{" "}
-                      <span className="font-extrabold text-foreground">
-                        {CourseService.getModule(pendingChoice).label} · {CourseService.getModule(pendingChoice).title}
-                      </span>
-                      ?
-                    </p>
-                    {saveError ? <p className="text-[13px] font-semibold text-destructive">{t("place.saveFailed")}</p> : null}
-                    <button
-                      type="button"
-                      disabled={saving}
-                      onClick={() => void confirmChoice(pendingChoice)}
-                      className={primaryBtn}
-                    >
-                      {t("place.sureYes")}
-                    </button>
-                    <button type="button" onClick={() => setPendingChoice(null)} className={secondaryBtn}>
-                      {t("place.sureNo")}
-                    </button>
-                  </div>
-                </div>
-              ) : null}
-            </>
+            </div>
           ) : null}
+
+          {screen === WEEK_SCREEN && placement ? (
+            <section className="flex flex-1 flex-col justify-center space-y-5 px-5">
+              <div className="text-center">
+                <h1 className="text-[26px] font-extrabold leading-tight tracking-tight">
+                  {t("place.weekTitle")}
+                </h1>
+                <p className="mt-2 text-[14px] font-semibold text-muted-foreground">
+                  {CourseService.getModule(placement).label} · {CourseService.getModule(placement).title}
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-2.5">
+                {[1, 2, 3, 4].map((w) => (
+                  <button
+                    key={w}
+                    type="button"
+                    disabled={saving}
+                    onClick={() => void confirmWeek(w)}
+                    className={cn(
+                      "min-h-[64px] rounded-2xl border bg-card text-[16px] font-extrabold tracking-tight transition-colors active:scale-[0.98] disabled:opacity-40",
+                      week === w ? "border-primary bg-primary/5 text-primary" : "border-border",
+                    )}
+                  >
+                    {t("place.week").replace("{n}", String(w))}
+                  </button>
+                ))}
+              </div>
+              <p className="text-center text-[13px] font-semibold text-muted-foreground">
+                {t("place.weekBody")}
+              </p>
+              {saveError ? (
+                <p className="text-center text-[13px] font-semibold text-destructive">
+                  {t("place.saveFailed")}
+                </p>
+              ) : null}
+            </section>
+          ) : null}
+
           {screen === AUTH_SCREEN ? (
-            <section className="space-y-4">
+            <section className="space-y-4 px-5">
               <AuthGate />
             </section>
           ) : null}
 
-          {/* Save failed outside the confirmation (e.g. right after sign-up): always give a way forward. */}
-          {saveError && !pendingChoice && placement ? (
-            <div className="mt-4 space-y-3 rounded-2xl border border-destructive/40 bg-card p-4">
+          {/* Save failed outside the week buttons (e.g. right after sign-up). */}
+          {saveError && screen === AUTH_SCREEN && placement ? (
+            <div className="mx-5 mt-4 space-y-3 rounded-2xl border border-destructive/40 bg-card p-4">
               <p className="text-[13px] font-semibold text-destructive">{t("place.saveFailed")}</p>
               <button type="button" disabled={saving} onClick={() => void retrySave()} className={primaryBtn}>
-                {t("place.sureYes")}
+                {t("action.tryAgain")}
               </button>
             </div>
           ) : null}
         </div>
 
-        <div className="space-y-3">
-          {screen === PLACEMENT_SCREEN ? (
-            <button type="button" onClick={() => setScreen(METHOD_SCREENS - 1)} className={secondaryBtn}>
-              {t("action.back")}
-            </button>
-          ) : screen === AUTH_SCREEN ? (
-            user ? (
-              <button type="button" onClick={() => finish("home")} className={primaryBtn}>
-                {t("action.startDay1")}
-              </button>
-            ) : (
-              null
-            )
-          ) : screen < METHOD_SCREENS - 1 ? (
-            <>
-              <button type="button" onClick={() => setScreen((s) => s + 1)} className={primaryBtn}>
-                {t("action.next")} →
-              </button>
-              <button type="button" onClick={() => finish("explore")} className={secondaryBtn}>
-                {t("action.skip")}
-              </button>
-            </>
-          ) : (
+        {/* Bottom actions */}
+        <div className="space-y-3 px-5 pt-4">
+          {slide ? (
             <button
               type="button"
-              onClick={() => (user && prefs.currentModuleId ? finish("day1") : setScreen(PLACEMENT_SCREEN))}
+              onClick={() => {
+                if (screen === SLIDE_COUNT - 1) {
+                  if (user && prefs.currentModuleId) finish("home");
+                  else setScreen(PLACEMENT_SCREEN);
+                } else {
+                  setScreen((s) => s + 1);
+                }
+              }}
               className={primaryBtn}
             >
-              {user && prefs.currentModuleId ? t("action.startDay1") : t("action.startJourney")}
+              {t(slide.cta)}
             </button>
-          )}
+          ) : null}
+          {screen === PLACEMENT_SCREEN ? (
+            <button type="button" onClick={() => setScreen(0)} className={secondaryBtn}>
+              {t("action.back")}
+            </button>
+          ) : null}
+          {screen === WEEK_SCREEN ? (
+            <button type="button" onClick={() => setScreen(PLACEMENT_SCREEN)} className={secondaryBtn}>
+              {t("action.back")}
+            </button>
+          ) : null}
+          {screen === AUTH_SCREEN && user ? (
+            <button type="button" onClick={() => finish("home")} className={primaryBtn}>
+              {t("action.startPractice")}
+            </button>
+          ) : null}
           {(screen === 0 || screen === AUTH_SCREEN) && !installedPwa ? (
             <Link
               to="/install"
@@ -503,6 +315,28 @@ function OnboardingPage() {
           ) : null}
         </div>
       </div>
+
+      {/* "Are you sure?" confirmation modal after picking a level */}
+      {pendingChoice ? (
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+          <div className="w-full max-w-lg space-y-4 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+            <p className="text-[18px] font-extrabold tracking-tight">{t("place.sureTitle")}</p>
+            <p className="text-[15px] text-muted-foreground">
+              {t("place.sureBody")}{" "}
+              <span className="font-extrabold text-foreground">
+                {CourseService.getModule(pendingChoice).label} · {CourseService.getModule(pendingChoice).title}
+              </span>
+              ?
+            </p>
+            <button type="button" onClick={() => confirmChoice(pendingChoice)} className={primaryBtn}>
+              {t("place.sureYes")}
+            </button>
+            <button type="button" onClick={() => setPendingChoice(null)} className={secondaryBtn}>
+              {t("place.sureNo")}
+            </button>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
