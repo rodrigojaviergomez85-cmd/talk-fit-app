@@ -22,6 +22,7 @@ import opinionClip from "@/assets/interview/mike-opinion.mp4.asset.json";
 import pastProgressiveClip from "@/assets/interview/mike-past-progressive.mp4.asset.json";
 import twoYearsClip from "@/assets/interview/mike-two-years.mp4.asset.json";
 import afterCourseClip from "@/assets/interview/mike-after-course.mp4.asset.json";
+import mikeCartoon from "@/assets/interview/mike-cartoon.jpg";
 
 export const Route = createFileRoute("/review/interview")({
   head: () => ({
