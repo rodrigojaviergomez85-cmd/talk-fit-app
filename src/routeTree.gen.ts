@@ -28,6 +28,7 @@ import { Route as TutorialRouteImport } from './routes/tutorial'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
 import { Route as AdminBugReportsRouteImport } from './routes/admin.bug-reports'
 import { Route as AdminCourseAudioRouteImport } from './routes/admin.course-audio'
+import { Route as AdminLimitesRouteImport } from './routes/admin.limites'
 import { Route as AdminMetricsRouteImport } from './routes/admin.metrics'
 import { Route as AdminStorageReportRouteImport } from './routes/admin.storage-report'
 import { Route as ApiAiCoachRouteImport } from './routes/api/ai-coach'
@@ -154,6 +155,11 @@ const AdminBugReportsRoute = AdminBugReportsRouteImport.update({
 const AdminCourseAudioRoute = AdminCourseAudioRouteImport.update({
   id: '/admin/course-audio',
   path: '/admin/course-audio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLimitesRoute = AdminLimitesRouteImport.update({
+  id: '/admin/limites',
+  path: '/admin/limites',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminMetricsRoute = AdminMetricsRouteImport.update({
@@ -345,6 +351,7 @@ export interface FileRoutesByFullPath {
   '/verb-bank': typeof VerbBankRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
+  '/admin/limites': typeof AdminLimitesRoute
   '/admin/metrics': typeof AdminMetricsRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/ai-coach': typeof ApiAiCoachRoute
@@ -398,6 +405,7 @@ export interface FileRoutesByTo {
   '/verb-bank': typeof VerbBankRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
+  '/admin/limites': typeof AdminLimitesRoute
   '/admin/metrics': typeof AdminMetricsRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/ai-coach': typeof ApiAiCoachRoute
@@ -451,6 +459,7 @@ export interface FileRoutesById {
   '/verb-bank': typeof VerbBankRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
+  '/admin/limites': typeof AdminLimitesRoute
   '/admin/metrics': typeof AdminMetricsRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/ai-coach': typeof ApiAiCoachRoute
@@ -506,6 +515,7 @@ export interface FileRouteTypes {
     | '/verb-bank'
     | '/admin/bug-reports'
     | '/admin/course-audio'
+    | '/admin/limites'
     | '/admin/metrics'
     | '/admin/storage-report'
     | '/api/ai-coach'
@@ -559,6 +569,7 @@ export interface FileRouteTypes {
     | '/verb-bank'
     | '/admin/bug-reports'
     | '/admin/course-audio'
+    | '/admin/limites'
     | '/admin/metrics'
     | '/admin/storage-report'
     | '/api/ai-coach'
@@ -611,6 +622,7 @@ export interface FileRouteTypes {
     | '/verb-bank'
     | '/admin/bug-reports'
     | '/admin/course-audio'
+    | '/admin/limites'
     | '/admin/metrics'
     | '/admin/storage-report'
     | '/api/ai-coach'
@@ -665,6 +677,7 @@ export interface RootRouteChildren {
   VerbBankRoute: typeof VerbBankRoute
   AdminBugReportsRoute: typeof AdminBugReportsRoute
   AdminCourseAudioRoute: typeof AdminCourseAudioRoute
+  AdminLimitesRoute: typeof AdminLimitesRoute
   AdminMetricsRoute: typeof AdminMetricsRoute
   AdminStorageReportRoute: typeof AdminStorageReportRoute
   ApiAiCoachRoute: typeof ApiAiCoachRoute
@@ -828,6 +841,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/course-audio'
       fullPath: '/admin/course-audio'
       preLoaderRoute: typeof AdminCourseAudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/limites': {
+      id: '/admin/limites'
+      path: '/admin/limites'
+      fullPath: '/admin/limites'
+      preLoaderRoute: typeof AdminLimitesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/metrics': {
@@ -1094,6 +1114,7 @@ const rootRouteChildren: RootRouteChildren = {
   VerbBankRoute: VerbBankRoute,
   AdminBugReportsRoute: AdminBugReportsRoute,
   AdminCourseAudioRoute: AdminCourseAudioRoute,
+  AdminLimitesRoute: AdminLimitesRoute,
   AdminMetricsRoute: AdminMetricsRoute,
   AdminStorageReportRoute: AdminStorageReportRoute,
   ApiAiCoachRoute: ApiAiCoachRoute,
