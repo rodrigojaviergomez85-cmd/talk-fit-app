@@ -57,5 +57,13 @@ export function useInterviewCap(simulator: InterviewSimulator) {
 
   const capReached = blocked || (status !== null && !status.allowed && attemptId.current === null);
 
-  return { status, capReached, consume, finish, currentAttemptId };
+  return {
+    status,
+    capReached,
+    consume,
+    finish,
+    currentAttemptId,
+    limit: serverLimit > 0 ? serverLimit : (status?.cap ?? 0),
+    isPro: usage.isPro,
+  };
 }
