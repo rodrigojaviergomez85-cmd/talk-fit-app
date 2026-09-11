@@ -624,9 +624,13 @@ function InterviewSimulator() {
                 {es ? "Continuar" : "Continue"}
               </button>
             ) : (
-              <p className="text-center text-sm font-semibold text-success">
-                {es ? "Fin de la entrevista. ¡Bien hecho!" : "End of the interview. Well done!"}
-              </p>
+              <button
+                type="button"
+                onClick={finishInterview}
+                className="w-full rounded-2xl bg-primary p-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground"
+              >
+                {es ? "Terminar entrevista" : "Finish interview"}
+              </button>
             )}
           </div>
         ) : null}
