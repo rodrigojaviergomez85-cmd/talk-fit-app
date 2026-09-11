@@ -79,13 +79,17 @@ export const Route = createFileRoute("/api/ai-coach")({
           return json({ error: "gateway" }, 502);
         }
 
-        if (!res.ok || !res.body) {
+        if (!res.ok) {
           const detail = await res.text().catch(() => "");
           console.error(`[ai-coach] gateway error [${res.status}]: ${detail}`);
           return json({ error: "gateway" }, gatewayStatus(res.status));
         }
 
-        const answer = await readAnswer(res.body);
+        const payload = (await res.json().catch(() => null)) as {
+          choices?: Array<{ message?: { content?: unknown } }>;
+        } | null;
+        const raw = payload?.choices?.[0]?.message?.content;
+        const answer = stripMarkdown(typeof raw === "string" ? raw : "");
         if (!answer) return json({ error: "gateway" }, 502);
 
         return json({
