@@ -32,12 +32,28 @@ const DICT = {
   ],
   "aiCoach.placeholder": ["Escribe tu pregunta de inglés…", "Type your English question…"],
   "aiCoach.send": ["ENVIAR", "SEND"],
-  "aiCoach.counter": ["{used} / {limit} consultas hoy", "{used} / {limit} questions today"],
+  "aiCoach.counter": [
+    "{dayUsed} / {dayLimit} consultas hoy · {monthUsed} / {monthLimit} este mes",
+    "{dayUsed} / {dayLimit} questions today · {monthUsed} / {monthLimit} this month",
+  ],
   "aiCoach.unlimited": ["Consultas ilimitadas", "Unlimited questions"],
-  "aiCoach.limitTitle": ["Llegaste a tus 10 consultas de hoy", "You reached your 10 questions for today"],
+  "aiCoach.limitTitleDaily": [
+    "Llegaste a tus {dayLimit} consultas de hoy",
+    "You reached your {dayLimit} questions for today",
+  ],
+  "aiCoach.limitTitleMonthly": [
+    "Llegaste a tus {monthLimit} consultas de este mes",
+    "You reached your {monthLimit} questions for this month",
+  ],
+  "aiCoach.limitReset": ["Se reinicia el {reset}.", "Resets on {reset}."],
   "aiCoach.limitBody": [
-    "Mañana se reinicia el contador. Mientras tanto, repasa gramática en Review o vocabulario en Método Natural.",
-    "The counter resets tomorrow. Meanwhile, review grammar in Review or vocabulary in Natural Method.",
+    "Mientras tanto, repasa gramática en Review o vocabulario en Método Natural.",
+    "Meanwhile, review grammar in Review or vocabulary in Natural Method.",
+  ],
+  "aiCoach.refresh": ["Actualizar estado", "Refresh status"],
+  "aiCoach.busy": [
+    "El servicio está ocupado ahorita. No gastaste consultas extra; intenta de nuevo en un momento.",
+    "The service is busy right now. You didn't spend extra questions; try again in a moment.",
   ],
   "aiCoach.error": [
     "No pude responder ahorita. Intenta de nuevo en un momento.",
