@@ -30,10 +30,30 @@ export function usePracticesToday(): number | null {
   return used;
 }
 
+/** Effective daily practice cap: free, or free x4 with an active Pro plan. */
+export function usePracticeCap(): { cap: number; isPro: boolean; refresh: () => void } {
+  const usage = useDailyUsage(SECTION_KEYS.practice);
+  const cap = usage.limit > 0 ? usage.limit : DAILY_PRACTICE_CAP;
+  useEffect(() => {
+    setEffectivePracticeCap(cap);
+  }, [cap]);
+  return { cap, isPro: usage.isPro, refresh: usage.refresh };
+}
+
 /** "PRACTICES TODAY 2 / 5" — always visible, never scolding. */
-export function PracticesTodayChip({ used, className }: { used: number; className?: string }) {
+export function PracticesTodayChip({
+  used,
+  className,
+  cap = DAILY_PRACTICE_CAP,
+  isPro = false,
+}: {
+  used: number;
+  className?: string;
+  cap?: number;
+  isPro?: boolean;
+}) {
   const t = useT();
-  const full = used >= DAILY_PRACTICE_CAP;
+  const full = used >= cap;
   return (
     <span
       className={cn(
