@@ -219,11 +219,11 @@ export function TakeBoard({
         const turn = isRetrySlot ? turns![retryIndex!] : turns?.[index];
         // Pressure Round: future rounds stay fully hidden until the learner gets there.
         if (pressure && !take && !isActive) return null;
-        const turnTarget = turn?.targetSeconds ?? goalSeconds;
+        const turnTarget: [number, number] = turn?.targetSeconds ? capTarget(turn.targetSeconds) : cappedGoal;
         // Classic Step 5: hard per-tier cap (30s basic / 45s higher). Turns with
-        // their own authored targetSeconds (Advanced / Pressure Round) keep their
-        // authored goal but are still capped at 45s.
-        const turnMax = turn?.targetSeconds ? Math.min(45, Math.max(90, turn.targetSeconds[1] + 15)) : takeMax;
+        // their own authored targetSeconds (Advanced / Pressure Round) are clamped
+        // to the same cap so the displayed target stays reachable.
+        const turnMax = takeMax;
         // Retry slots always show the question being answered — before, during, and after recording.
         const showTurn = Boolean(turn) && (isActive || Boolean(take) || isRetrySlot);
         // Classic Step 5: every take card shows the question being answered (text only).
