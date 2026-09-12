@@ -550,6 +550,65 @@ function QuizSlide({
   );
 }
 
+function MindsetSlide({
+  mindset,
+  voice,
+  es,
+  onSaid,
+}: {
+  mindset: NonNullable<StorybookEpisode["mindsetCard"]>;
+  voice?: "female" | "male";
+  es: boolean;
+  onSaid: () => void;
+}) {
+  const [recorded, setRecorded] = useState(false);
+  return (
+    <div className="space-y-4 text-center">
+      <div className="rounded-3xl border border-border bg-card p-5">
+        <p className="text-4xl" aria-hidden="true">
+          🔥
+        </p>
+        <p className="mt-2 text-[13px] font-extrabold uppercase tracking-[0.12em] text-primary">
+          {es ? "Nunca te rindas" : "Never give up"}
+        </p>
+        <h2 className="mt-2 text-2xl font-extrabold leading-tight text-foreground">{mindset.phrase}</h2>
+        <p className="mt-1 text-base font-medium text-muted-foreground">{mindset.es}</p>
+      </div>
+
+      <button
+        type="button"
+        onClick={() => AudioService.speak(mindset.phrase, { voice })}
+        className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-2 text-sm font-bold text-foreground"
+      >
+        <Volume2 className="size-4 text-primary" /> {es ? "Escuchar" : "Listen"}
+      </button>
+
+      <div className="rounded-3xl border border-border bg-card p-5">
+        <p className="mb-3 text-[14px] font-bold text-foreground">
+          {es ? "Repítelo en voz alta:" : "Say it out loud:"}
+        </p>
+        {recorded ? (
+          <p className="flex items-center justify-center gap-2 text-[13px] font-bold text-primary">
+            <Check className="size-4" /> {es ? "¡Lo dijiste! +1 ⭐" : "You said it! +1 ⭐"}
+          </p>
+        ) : (
+          <VoiceRecorder
+            label={es ? "REPETIR" : "REPEAT"}
+            stopLabel={es ? "PARAR" : "STOP"}
+            maxSeconds={15}
+            countdown
+            size="md"
+            onComplete={() => {
+              setRecorded(true);
+              onSaid();
+            }}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
 function FinaleSlide({
   episode,
   es,
