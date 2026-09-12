@@ -616,10 +616,13 @@ function FinaleSlide({
             </li>
           ))}
         </ul>
+        <p className="text-[12px] font-bold uppercase tracking-[0.1em] opacity-80">
+          {es ? "Máximo 15 segundos · unas 5 oraciones" : "Max 15 seconds · about 5 sentences"}
+        </p>
         <VoiceRecorder
           label={es ? "GRABAR MI PRESENTACIÓN" : "RECORD MY INTRO"}
           stopLabel={es ? "PARAR" : "STOP"}
-          maxSeconds={45}
+          maxSeconds={15}
           countdown
           onComplete={() => setRecorded(true)}
         />
