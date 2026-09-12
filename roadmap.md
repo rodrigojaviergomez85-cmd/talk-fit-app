@@ -3,4 +3,4 @@
 - [x] Protect direct Review URLs and preserve unlimited accounts
 - [x] Verify the full access matrix and mobile navigation
 - [x] Redesign the Home streak card without the clickable 66-day calendar
-- [ ] Produce and integrate approved Storybook Episodes 8–12 with consistent characters, voices, and daily unlocking
+- [x] Produce and integrate approved Storybook Episodes 8–12 with consistent characters, voices, and daily unlocking
