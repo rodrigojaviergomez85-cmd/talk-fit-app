@@ -35,12 +35,24 @@ El gancho del Episodio 12 es la carpeta roja del nuevo supervisor. Este lote res
 - `src/services/storybook/glossary.ts` — añadir vocabulario nuevo (supervisor, folder, problem, team, interview, etc.).
 - `src/services/storybook/types.ts` — si es necesario, añadir `"ana"` a `StorybookSpeaker`.
 
+## Cómo evitamos los errores de piel y voz (sistema nuevo, permanente)
+
+En vez de corregir después, se agrega un control en tres capas que se aplica a este lote y a todos los siguientes.
+
+**Capa 1 — Fichas fijas de referencia.** Se crea una carpeta `src/assets/storybook/_canon/` con una imagen de referencia definitiva por personaje (Vale, Mateo, Mr. Reyes, Kat, Dylan, Luis, Camila, Ana). Toda ilustración con personajes se hace editando a partir de esas referencias, nunca desde cero. Así el tono de piel y la cara no pueden "derivar".
+
+**Capa 2 — Revisión en hoja de contactos antes de escribir código.** Al terminar las 11 imágenes de un episodio se arma una sola hoja de contactos junto a la ficha canónica y se revisa: identidad, edad, tono de piel, pelo, ropa, dos brazos y dos manos, y continuidad de objetos. Cualquier imagen dudosa se regenera en ese momento; el episodio no se integra hasta que la hoja esté limpia.
+
+**Capa 3 — Pruebas automáticas de voz.** Se añade una prueba que falla si: alguna escena no declara hablante, algún hablante no está en el mapa de voces, o alguna línea de Vale no usa su voz/tono aprobado. Además, por episodio se genera y escucha un clip real de cada personaje nuevo antes de publicar.
+
+Con eso, los errores de piel se atajan en la capa 1 y 2, y los de voz quedan imposibles de pasar por alto porque rompen la prueba.
+
 ### Verificación visual y de audio (obligatoria antes de publicar)
-1. Comparar cada escena contra la portada del episodio y `STYLE.md`.
+1. Comparar cada escena contra la ficha canónica del personaje y `STYLE.md`.
 2. Confirmar tono de piel de Vale: morena cálida / light-tan latina, no oscura, no pálida.
 3. Confirmar exactamente dos brazos y dos manos por personaje.
 4. Confirmar que Ana se ve mujer adulta, no masculina, no jovencita.
-5. Reproducir todas las líneas de Vale y confirmar voz dulce/juvenil/femenina; si suena grave, regenerar el clip o corregir mapeo de voz.
+5. Escuchar las líneas de Vale y de Ana; si algo suena grave o distinto, regenerar antes de integrar.
 6. Revisar que cada escena declara `speaker` correcto y que el texto coincide con el hablante.
 
 ### Validación final
