@@ -190,7 +190,7 @@ export const VALE_S2_THEIR_FUTURE: StorybookEpisode = {
       options: [
         { label: "A free English school", emoji: "📚" },
         { label: "A big hotel", emoji: "🏨" },
-        { label: "A music店", emoji: "🎶" },
+        { label: "A music school", emoji: "🎶" },
       ],
       answer: 0,
       sayIt: "I'll open a free English school in my neighborhood.",
