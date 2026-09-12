@@ -1,6 +1,7 @@
 import { Mic } from "lucide-react";
 import { AudioPlayer } from "./AudioPlayer";
 import { useT } from "@/lib/i18n";
+import type { Rep2DisplayDiff, Rep2DisplayToken } from "@/lib/rep2-match";
 
 export type Rep2CorrectionResult = {
   status: "good" | "correct" | "uncertain";
@@ -8,7 +9,32 @@ export type Rep2CorrectionResult = {
   target: string;
   focus?: string;
   retryRecommended: boolean;
+  /** Word-level highlights computed server-side; null when there are too many differences. */
+  diff?: Rep2DisplayDiff | null;
 };
+
+function DiffTokens({ tokens, variant }: { tokens: Rep2DisplayToken[]; variant: "said" | "target" }) {
+  return (
+    <>
+      {tokens.map((token, i) =>
+        token.changed ? (
+          <mark
+            key={i}
+            className={
+              variant === "said"
+                ? "rounded bg-amber-500/25 px-0.5 font-bold text-amber-700 dark:text-amber-400"
+                : "rounded bg-primary/15 px-0.5 font-bold text-primary"
+            }
+          >
+            {token.text}
+          </mark>
+        ) : (
+          <span key={i}>{token.text} </span>
+        ),
+      )}
+    </>
+  );
+}
 
 type Rep2FeedbackProps = {
   result: Rep2CorrectionResult;
