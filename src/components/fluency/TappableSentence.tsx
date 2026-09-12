@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Volume2, X } from "lucide-react";
 import { AudioService } from "@/services/audio-service";
 import { tokenizeWords } from "@/lib/syllables";
 import { useAppLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { SlowWordPanel } from "./SlowWordPanel";
 
 type Props = {
   text: string;
@@ -54,45 +54,7 @@ export function TappableSentence({ text, voice, className }: Props) {
       </p>
 
       {open ? (
-        <div className="mt-3 rounded-2xl border border-border bg-secondary/50 p-3">
-          <div className="flex items-center justify-between gap-2">
-            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              {es ? "Pronunciación lenta" : "Slow pronunciation"}
-            </p>
-            <button
-              type="button"
-              onClick={() => setOpen(null)}
-              aria-label={es ? "Cerrar" : "Close"}
-              className="rounded-full p-1 text-muted-foreground hover:bg-card"
-            >
-              <X className="size-4" />
-            </button>
-          </div>
-
-          <div className="mt-2 flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => say(open, 0.25)}
-              className="inline-flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-2 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground active:scale-[0.97]"
-            >
-              <Volume2 className="size-4" /> 0.25x
-            </button>
-            <button
-              type="button"
-              onClick={() => say(open, 0.5)}
-              className="inline-flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-2 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground active:scale-[0.97]"
-            >
-              <Volume2 className="size-4" /> 0.5x
-            </button>
-            <button
-              type="button"
-              onClick={() => say(open, 0.75)}
-              className="inline-flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-2 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground active:scale-[0.97]"
-            >
-              <Volume2 className="size-4" /> 0.75x
-            </button>
-          </div>
-        </div>
+        <SlowWordPanel word={open} voice={voice} onClose={() => setOpen(null)} />
       ) : null}
 
     </div>
