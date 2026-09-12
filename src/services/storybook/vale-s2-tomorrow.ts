@@ -43,6 +43,7 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
     {
       id: "s1",
       image: s1,
+      imageAlt: "Escena 1 del episodio.",
       imageAlt: "Vale revisa su mochila en la parada del bus.",
       text: "Vale opens her backpack at the bus stop. Her notebook is not there.",
       es: "Vale abre su mochila en la parada del bus. Su cuaderno no está ahí.",
@@ -56,6 +57,7 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
     {
       id: "s2",
       image: s2,
+      imageAlt: "Escena 2 del episodio.",
       text: "Vale says: \"I’m going to call Mateo.\"",
       es: "Vale dice: «Voy a llamar a Mateo.»",
       speaker: "vale",
@@ -66,6 +68,7 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
     {
       id: "s3",
       image: s3,
+      imageAlt: "Escena 3 del episodio.",
       text: "Mateo answers: \"I’m going to bring your notebook to the office.\"",
       es: "Mateo contesta: «Voy a llevar tu cuaderno a la oficina.»",
       speaker: "mateo",
@@ -78,6 +81,7 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
     {
       id: "s4",
       image: s4,
+      imageAlt: "Escena 4 del episodio.",
       text: "On the bus, Vale thinks about tomorrow. \"I’m going to wake up early.\"",
       es: "En el bus, Vale piensa en mañana. «Voy a despertarme temprano.»",
       speaker: "vale",
@@ -90,6 +94,7 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
     {
       id: "s5",
       image: s5,
+      imageAlt: "Escena 5 del episodio.",
       text: "\"I’m going to exercise before work,\" she says.",
       es: "«Voy a hacer ejercicio antes del trabajo», dice ella.",
       speaker: "vale",
@@ -101,6 +106,7 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
     {
       id: "s6",
       image: s6,
+      imageAlt: "Escena 6 del episodio.",
       text: "\"After lunch, I’m going to study English.\"",
       es: "«Después del almuerzo, voy a estudiar inglés.»",
       speaker: "vale",
@@ -113,6 +119,7 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
     {
       id: "s7",
       image: s7,
+      imageAlt: "Escena 7 del episodio.",
       text: "\"I’m not going to stay at the office late.\"",
       es: "«No me voy a quedar tarde en la oficina.»",
       speaker: "vale",
@@ -125,6 +132,7 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
     {
       id: "s8",
       image: s8,
+      imageAlt: "Escena 8 del episodio.",
       text: "\"At night, I’m going to relax at home.\"",
       es: "«En la noche voy a descansar en casa.»",
       speaker: "vale",
@@ -136,6 +144,7 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
     {
       id: "s9",
       image: s9,
+      imageAlt: "Escena 9 del episodio.",
       text: "At the team meeting, Vale says: \"We’re going to plan the first event.\"",
       es: "En la reunión del equipo, Vale dice: «Vamos a planear el primer evento.»",
       speaker: "vale",
@@ -148,6 +157,7 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
     {
       id: "s10",
       image: s10,
+      imageAlt: "Escena 10 del episodio.",
       text: "Ana looks serious. \"But the client wants the event this weekend!\"",
       es: "Ana se ve seria. «¡Pero el cliente quiere el evento este fin de semana!»",
       speaker: "ana",

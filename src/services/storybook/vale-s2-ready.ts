@@ -39,6 +39,7 @@ export const VALE_S2_READY: StorybookEpisode = {
     {
       id: "s1",
       image: s1,
+      imageAlt: "Escena 1 del episodio.",
       imageAlt: "Vale mira su teléfono con una noticia de Ana.",
       text: "Vale receives a message from Ana.",
       es: "Vale recibe un mensaje de Ana.",
@@ -51,6 +52,7 @@ export const VALE_S2_READY: StorybookEpisode = {
     {
       id: "s2",
       image: s2,
+      imageAlt: "Escena 2 del episodio.",
       text: "Ana says: \"You are ready for the next step.\"",
       es: "Ana dice: «Estás lista para el siguiente paso.»",
       speaker: "ana",
@@ -64,6 +66,7 @@ export const VALE_S2_READY: StorybookEpisode = {
     {
       id: "s3",
       image: s3,
+      imageAlt: "Escena 3 del episodio.",
       text: "Vale smiles. \"I am ready. I can do it.\"",
       es: "Vale sonríe. «Estoy lista. Puedo hacerlo.»",
       speaker: "vale",
@@ -75,6 +78,7 @@ export const VALE_S2_READY: StorybookEpisode = {
     {
       id: "s4",
       image: s4,
+      imageAlt: "Escena 4 del episodio.",
       text: "Ana explains the new project: \"We are going to help young people find their first bilingual job.\"",
       es: "Ana explica el nuevo proyecto: «Vamos a ayudar a jóvenes a conseguir su primer empleo bilingüe.»",
       speaker: "ana",
@@ -93,6 +97,7 @@ export const VALE_S2_READY: StorybookEpisode = {
     {
       id: "s5",
       image: s5,
+      imageAlt: "Escena 5 del episodio.",
       text: "Vale thinks hard. \"I’m going to work hard every day.\"",
       es: "Vale piensa con fuerza. «Voy a trabajar duro todos los días.»",
       speaker: "vale",
@@ -107,6 +112,7 @@ export const VALE_S2_READY: StorybookEpisode = {
     {
       id: "s6",
       image: s6,
+      imageAlt: "Escena 6 del episodio.",
       text: "Ana says: \"Tonight, you’re going to prepare your first idea.\"",
       es: "Ana dice: «Esta noche vas a preparar tu primera idea.»",
       speaker: "ana",
@@ -119,6 +125,7 @@ export const VALE_S2_READY: StorybookEpisode = {
     {
       id: "s7",
       image: s7,
+      imageAlt: "Escena 7 del episodio.",
       text: "At home, Vale opens her notebook. \"I’m going to write three ideas.\"",
       es: "En casa, Vale abre su cuaderno. «Voy a escribir tres ideas.»",
       speaker: "vale",
@@ -132,6 +139,7 @@ export const VALE_S2_READY: StorybookEpisode = {
     {
       id: "s8",
       image: s8,
+      imageAlt: "Escena 8 del episodio.",
       text: "She looks at the clock. \"I’m not going to sleep late.\"",
       es: "Ella mira el reloj. «No voy a dormir tarde.»",
       speaker: "vale",
@@ -145,6 +153,7 @@ export const VALE_S2_READY: StorybookEpisode = {
     {
       id: "s9",
       image: s9,
+      imageAlt: "Escena 9 del episodio.",
       text: "Vale writes: \"My plan is going to be clear.\"",
       es: "Vale escribe: «Mi plan va a ser claro.»",
       speaker: "vale",
@@ -156,6 +165,7 @@ export const VALE_S2_READY: StorybookEpisode = {
     {
       id: "s10",
       image: s10,
+      imageAlt: "Escena 10 del episodio.",
       text: "Her phone buzzes. Ana sends one more message: \"See you tomorrow.\"",
       es: "Su teléfono vibra. Ana envía un mensaje más: «Nos vemos mañana.»",
       words: [

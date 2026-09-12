@@ -43,6 +43,7 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
     {
       id: "s1",
       image: s1,
+      imageAlt: "Escena 1 del episodio.",
       imageAlt: "Vale, Mateo y Kat en un café con papeles en la mesa.",
       text: "The team meets at a cafe on Saturday.",
       es: "El equipo se reúne en un café el sábado.",
@@ -55,6 +56,7 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
     {
       id: "s2",
       image: s2,
+      imageAlt: "Escena 2 del episodio.",
       text: "Vale says: \"We’re going to help young people practice English.\"",
       es: "Vale dice: «Vamos a ayudar a jóvenes a practicar inglés.»",
       speaker: "vale",
@@ -67,6 +69,7 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
     {
       id: "s3",
       image: s3,
+      imageAlt: "Escena 3 del episodio.",
       text: "Mateo says: \"I’m going to design the posters.\"",
       es: "Mateo dice: «Voy a diseñar los carteles.»",
       speaker: "mateo",
@@ -78,6 +81,7 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
     {
       id: "s4",
       image: s4,
+      imageAlt: "Escena 4 del episodio.",
       text: "Kat says: \"I’m going to invite my friends from college.\"",
       es: "Kat dice: «Voy a invitar a mis amigos de la universidad.»",
       speaker: "kat",
@@ -90,6 +94,7 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
     {
       id: "s5",
       image: s5,
+      imageAlt: "Escena 5 del episodio.",
       text: "Vale says: \"I’m going to prepare the activities.\"",
       es: "Vale dice: «Voy a preparar las actividades.»",
       speaker: "vale",
@@ -101,6 +106,7 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
     {
       id: "s6",
       image: s6,
+      imageAlt: "Escena 6 del episodio.",
       text: "Mateo adds: \"I’m not going to forget the markers.\"",
       es: "Mateo agrega: «No voy a olvidar los marcadores.»",
       speaker: "mateo",
@@ -112,6 +118,7 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
     {
       id: "s7",
       image: s7,
+      imageAlt: "Escena 7 del episodio.",
       text: "Kat says: \"We’re going to post on social media.\"",
       es: "Kat dice: «Vamos a publicar en redes sociales.»",
       speaker: "kat",
@@ -124,6 +131,7 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
     {
       id: "s8",
       image: s8,
+      imageAlt: "Escena 8 del episodio.",
       text: "Vale smiles. \"It’s going to be a busy weekend.\"",
       es: "Vale sonríe. «Va a ser un fin de semana ocupado.»",
       speaker: "vale",
@@ -134,6 +142,7 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
     {
       id: "s9",
       image: s9,
+      imageAlt: "Escena 9 del episodio.",
       text: "A young man approaches the table. \"Can I join the team?\"",
       es: "Un joven se acerca a la mesa. «¿Puedo unirme al equipo?»",
       words: [
@@ -145,6 +154,7 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
     {
       id: "s10",
       image: s10,
+      imageAlt: "Escena 10 del episodio.",
       text: "Vale says: \"Yes! We’re going to need more help.\"",
       es: "Vale dice: «¡Sí! Vamos a necesitar más ayuda.»",
       speaker: "vale",

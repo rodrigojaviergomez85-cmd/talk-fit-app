@@ -43,6 +43,7 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
     {
       id: "s1",
       image: s1,
+      imageAlt: "Escena 1 del episodio.",
       imageAlt: "Vale frente a un espejo, practicando su plan.",
       text: "Vale practices her plan out loud.",
       es: "Vale practica su plan en voz alta.",
@@ -55,6 +56,7 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
     {
       id: "s2",
       image: s2,
+      imageAlt: "Escena 2 del episodio.",
       text: "\"Tonight, I’m going to review my notes,\" she says.",
       es: "«Esta noche voy a repasar mis apuntes», dice ella.",
       speaker: "vale",
@@ -67,6 +69,7 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
     {
       id: "s3",
       image: s3,
+      imageAlt: "Escena 3 del episodio.",
       text: "\"Tomorrow, I’m going to wake up early.\"",
       es: "«Mañana me voy a despertar temprano.»",
       speaker: "vale",
@@ -79,6 +82,7 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
     {
       id: "s4",
       image: s4,
+      imageAlt: "Escena 4 del episodio.",
       text: "\"This weekend, I’m going to travel with the team.\"",
       es: "«Este fin de semana voy a viajar con el equipo.»",
       speaker: "vale",
@@ -91,6 +95,7 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
     {
       id: "s5",
       image: s5,
+      imageAlt: "Escena 5 del episodio.",
       text: "\"We’re going to present at the job fair.\"",
       es: "«Vamos a presentar en la feria de empleo.»",
       speaker: "vale",
@@ -102,6 +107,7 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
     {
       id: "s6",
       image: s6,
+      imageAlt: "Escena 6 del episodio.",
       text: "\"Next month, I’m going to lead a workshop for young people.\"",
       es: "«El próximo mes voy a liderar un taller para jóvenes.»",
       speaker: "vale",
@@ -114,6 +120,7 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
     {
       id: "s7",
       image: s7,
+      imageAlt: "Escena 7 del episodio.",
       text: "\"I’m not going to give up.\"",
       es: "«No me voy a rendir.»",
       speaker: "vale",
@@ -125,6 +132,7 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
     {
       id: "s8",
       image: s8,
+      imageAlt: "Escena 8 del episodio.",
       text: "Ana says: \"Now tell the team your plan.\"",
       es: "Ana dice: «Ahora cuéntale el plan al equipo.»",
       speaker: "ana",
@@ -136,6 +144,7 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
     {
       id: "s9",
       image: s9,
+      imageAlt: "Escena 9 del episodio.",
       text: "Vale speaks to the team: \"I’m going to work hard because young people need opportunities.\"",
       es: "Vale le habla al equipo: «Voy a trabajar duro porque los jóvenes necesitan oportunidades.»",
       speaker: "vale",
@@ -149,6 +158,7 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
     {
       id: "s10",
       image: s10,
+      imageAlt: "Escena 10 del episodio.",
       text: "Ana looks worried. \"There is another team. They want the same grant.\"",
       es: "Ana se ve preocupada. «Hay otro equipo. Quieren el mismo apoyo financiero.»",
       speaker: "ana",

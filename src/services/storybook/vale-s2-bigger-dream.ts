@@ -43,6 +43,7 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
     {
       id: "s1",
       image: s1,
+      imageAlt: "Escena 1 del episodio.",
       imageAlt: "El equipo habla frente a un mapa en la pared de la oficina.",
       text: "The team talks about the next city.",
       es: "El equipo habla de la siguiente ciudad.",
@@ -55,6 +56,7 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
     {
       id: "s2",
       image: s2,
+      imageAlt: "Escena 2 del episodio.",
       text: "Vale says: \"We’re going to travel to Santa Ana.\"",
       es: "Vale dice: «Vamos a viajar a Santa Ana.»",
       speaker: "vale",
@@ -65,6 +67,7 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
     {
       id: "s3",
       image: s3,
+      imageAlt: "Escena 3 del episodio.",
       text: "Mateo says: \"I’m going to call the bus company.\"",
       es: "Mateo dice: «Voy a llamar a la empresa de buses.»",
       speaker: "mateo",
@@ -77,6 +80,7 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
     {
       id: "s4",
       image: s4,
+      imageAlt: "Escena 4 del episodio.",
       text: "Kat says: \"We’re going to visit a job fair.\"",
       es: "Kat dice: «Vamos a visitar una feria de empleo.»",
       speaker: "kat",
@@ -89,6 +93,7 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
     {
       id: "s5",
       image: s5,
+      imageAlt: "Escena 5 del episodio.",
       text: "Vale says: \"I’m going to speak with the organizers.\"",
       es: "Vale dice: «Voy a hablar con los organizadores.»",
       speaker: "vale",
@@ -100,6 +105,7 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
     {
       id: "s6",
       image: s6,
+      imageAlt: "Escena 6 del episodio.",
       text: "Ana says: \"You’re going to present your idea to the director.\"",
       es: "Ana dice: «Van a presentar su idea al director.»",
       speaker: "ana",
@@ -111,6 +117,7 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
     {
       id: "s7",
       image: s7,
+      imageAlt: "Escena 7 del episodio.",
       text: "Vale says: \"I’m going to practice my presentation.\"",
       es: "Vale dice: «Voy a practicar mi presentación.»",
       speaker: "vale",
@@ -122,6 +129,7 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
     {
       id: "s8",
       image: s8,
+      imageAlt: "Escena 8 del episodio.",
       text: "Vale looks at the mirror. \"I’m not going to be nervous.\"",
       es: "Vale mira el espejo. «No voy a estar nerviosa.»",
       speaker: "vale",
@@ -133,6 +141,7 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
     {
       id: "s9",
       image: s9,
+      imageAlt: "Escena 9 del episodio.",
       text: "The team cheers: \"Our dream is going to help many people!\"",
       es: "El equipo celebra: «¡Nuestro sueño va a ayudar a muchas personas!»",
       words: [
@@ -143,6 +152,7 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
     {
       id: "s10",
       image: s10,
+      imageAlt: "Escena 10 del episodio.",
       text: "The phone rings. \"The director wants to meet tomorrow!\"",
       es: "El teléfono suena. «¡El director quiere reunirse mañana!»",
       words: [
