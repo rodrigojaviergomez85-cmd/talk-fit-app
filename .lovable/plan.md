@@ -103,6 +103,39 @@ Cada lote incluye: guion bilingüe, 10-11 ilustraciones por episodio, vocabulari
 
 ---
 
+## Consistencia obligatoria de personajes y voces
+
+Antes de cerrar cada episodio se aplica este control, para evitar lo que pasó en el Episodio 3 (Mr. Reyes joven, Vale masculinizada):
+
+**Ilustraciones**
+- Toda imagen nueva se genera usando la portada del Episodio 1 y la ficha de `STYLE.md` como referencia visual de cada personaje.
+- Revisión escena por escena antes de dar el episodio por terminado: identidad correcta (pelo, ropa, edad), dos brazos y dos manos, mismo estilo webtoon.
+- Cualquier escena que no coincida se vuelve a generar; no se acepta "casi igual".
+
+**Fichas canónicas (documentadas en `STYLE.md`)**
+- Vale: 19 años, pelo largo negro, camiseta mostaza.
+- Mateo: ~20 años, pelo corto negro, chaqueta de mezclilla azul, camisa blanca.
+- Mr. Reyes: mayor, pelo oscuro con canas, barba completa, camisa gris y corbata oscura.
+- Kat: agente senior, diseño fijo de la temporada.
+- Dylan: compañero canadiense, diseño fijo.
+- Todo personaje nuevo se agrega a `STYLE.md` con su ficha antes de ilustrarlo.
+
+**Voces**
+- Cada personaje mantiene la misma voz en toda la serie; el mapa de voces vive en un solo lugar y no se cambia por episodio.
+- Vale: voz femenina joven, dulce, con entonación natural (la ya aprobada).
+- Mateo, Kat, Dylan, Mr. Reyes y el narrador conservan sus voces actuales.
+- Un personaje nuevo recibe voz propia y se registra en el mapa; nunca se reutiliza la de otro personaje.
+- Cada línea de escena declara su `speaker`; si falta, se corrige antes de publicar el episodio.
+
+**Checklist de cierre por episodio**
+1. Todas las escenas revisadas visualmente.
+2. Todos los `speaker` asignados y escuchados al menos una vez.
+3. Personajes nuevos documentados en `STYLE.md` y en el mapa de voces.
+4. Tests del cuento en verde.
+
+---
+
+
 ## Métricas de éxito por temporada
 
 - 80-100 palabras tappeables nuevas por episodio.
