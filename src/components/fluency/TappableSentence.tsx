@@ -69,24 +69,32 @@ export function TappableSentence({ text, voice, className }: Props) {
             </button>
           </div>
 
-          <div className="mt-2 flex gap-2">
+          <div className="mt-2 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => say(open, 0.25)}
+              className="inline-flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-2 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground active:scale-[0.97]"
+            >
+              <Volume2 className="size-4" /> 0.25x
+            </button>
             <button
               type="button"
               onClick={() => say(open, 0.5)}
-              className="inline-flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-3 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground active:scale-[0.97]"
+              className="inline-flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-2 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground active:scale-[0.97]"
             >
               <Volume2 className="size-4" /> 0.5x
             </button>
             <button
               type="button"
               onClick={() => say(open, 0.75)}
-              className="inline-flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-3 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground active:scale-[0.97]"
+              className="inline-flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-2 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground active:scale-[0.97]"
             >
               <Volume2 className="size-4" /> 0.75x
             </button>
           </div>
         </div>
       ) : null}
+
     </div>
   );
 }
