@@ -13,7 +13,7 @@ import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary"
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
 import type { NextEpisodeInfo } from "@/services/storybook";
 import { JourneyService } from "@/services/journey-service";
-import type { JourneyState } from "@/lib/types";
+import type { JourneyState, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type Slide =
