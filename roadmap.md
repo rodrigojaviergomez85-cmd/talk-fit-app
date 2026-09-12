@@ -6,3 +6,7 @@
 - [x] Produce and integrate approved Storybook Episodes 8–12 with consistent characters, voices, and daily unlocking
 - [x] Produce and integrate Storybook Episodes 15–20 (Season 1 complete through graduation)
 - [x] Correct inconsistent past-time sentences in Storybook Episodes 17–18 and validate them
+- [x] Write Season 2 (Basic 1 / Simple Future) Episodes 1–5 scripts aligned to curriculum
+- [ ] Generate webtoon images and register Season 2 Episodes 1–5
+- [ ] Write and produce Season 2 Episodes 6–20
+
