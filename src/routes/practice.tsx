@@ -2074,7 +2074,7 @@ export function Rep5FinalRep({
       {chunksAbove ? <PowerChunks chunks={day.powerChunks} size="mini" coreOnly /> : null}
       {visual === "story" ? <StoryStrip day={day} showCaptions={false} /> : null}
       {visual === "scene" ? <SceneImage day={day} /> : null}
-      {showVisuals ? <VariantPicker day={day} /> : null}
+      <VariantPicker day={day} />
 
       {/* SPEAK */}
       {board}
