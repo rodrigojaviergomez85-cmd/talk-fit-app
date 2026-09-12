@@ -101,8 +101,8 @@ function speakWithBrowser(text: string, options: SpeakOptions): () => void {
   synth.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.rate = options.rate ?? 1;
-  // "girl" keeps a higher, youthful pitch for storybook characters like Vale.
-  utterance.pitch = options.voice === "girl" ? 1.3 : 1;
+  // "girl" keeps a high, youthful pitch for storybook characters like Vale.
+  utterance.pitch = options.voice === "girl" ? 1.5 : 1;
   utterance.lang = "en-US";
   const selected = pickVoice(options.voice ?? "neutral");
   if (selected) utterance.voice = selected;
