@@ -1,0 +1,30 @@
+import type { StorybookEpisode } from "./types";
+import cover from "@/assets/storybook/vale-ep9/cover.jpg";
+import s1 from "@/assets/storybook/vale-ep9/s1.jpg"; import s2 from "@/assets/storybook/vale-ep9/s2.jpg"; import s3 from "@/assets/storybook/vale-ep9/s3.jpg"; import s4 from "@/assets/storybook/vale-ep9/s4.jpg"; import s5 from "@/assets/storybook/vale-ep9/s5.jpg"; import s6 from "@/assets/storybook/vale-ep9/s6.jpg"; import s7 from "@/assets/storybook/vale-ep9/s7.jpg"; import s8 from "@/assets/storybook/vale-ep9/s8.jpg"; import s9 from "@/assets/storybook/vale-ep9/s9.jpg"; import s10 from "@/assets/storybook/vale-ep9/s10.jpg";
+
+export const VALE_HOBBIES: StorybookEpisode = {
+  id: "vale-hobbies", moduleId: "basic-zero", week: 2, title: "My hobbies", titleEs: "Mis pasatiempos", episodeLabel: { en: "Episode 9", es: "Episodio 9" },
+  previously: [{ en: "Vale found her lunch.", es: "Vale encontró su almuerzo." }, { en: "She spoke about her favorite food.", es: "Habló de su comida favorita." }, { en: "A Talent Day invitation appeared.", es: "Apareció una invitación al Día de talentos." }],
+  reviewWords: [{ word: "favorite", es: "favorito" }, { word: "music", es: "música" }, { word: "videos", es: "videos" }],
+  blurb: { en: "Talent Day feels like Reels, but Vale is nervous.", es: "El Día de talentos parece Reels, pero Vale está nerviosa." }, cover, voice: "female",
+  scenes: [
+    { id: "s1", image: s1, imageAlt: "El equipo prepara videos cortos.", text: "The team records short videos for Talent Day.", es: "El equipo graba videos cortos para el Día de talentos.", words: [{ word: "records", es: "graba" }, { word: "videos", es: "videos" }] },
+    { id: "s2", image: s2, imageAlt: "Kat cocina frente a una cámara.", text: '"My hobbies are cooking and taking photos," says Kat.', es: "«Mis pasatiempos son cocinar y tomar fotos», dice Kat.", speaker: "kat", words: [{ word: "hobbies", es: "pasatiempos" }, { word: "cooking", es: "cocinar" }, { word: "photos", es: "fotos" }] },
+    { id: "s3", image: s3, imageAlt: "Mateo sostiene un balón de fútbol.", text: '"My hobbies are soccer and music," says Mateo.', es: "«Mis pasatiempos son el fútbol y la música», dice Mateo.", speaker: "mateo", words: [{ word: "soccer", es: "fútbol" }, { word: "music", es: "música" }] },
+    { id: "s4", image: s4, imageAlt: "Dylan juega videojuegos.", text: '"In my free time, I like to play video games," says Dylan.', es: "«En mi tiempo libre, me gusta jugar videojuegos», dice Dylan.", speaker: "dylan", words: [{ word: "free", es: "libre" }, { word: "play", es: "jugar" }, { word: "games", es: "juegos" }] },
+    { id: "s5", image: s5, imageAlt: "Vale quiere bailar ante la cámara.", text: "Vale wants to make a dance video, but everyone is watching.", es: "Vale quiere hacer un video de baile, pero todos están mirando.", words: [{ word: "dance", es: "baile" }, { word: "watching", es: "mirando" }] },
+    { id: "s6", image: s6, imageAlt: "Vale mira nerviosa su teléfono.", text: '"I am nervous. Maybe my video is not good," says Vale.', es: "«Estoy nerviosa. Quizás mi video no es bueno», dice Vale.", speaker: "vale", words: [{ word: "nervous", es: "nerviosa" }, { word: "maybe", es: "quizás" }] },
+    { id: "s7", image: s7, imageAlt: "Kat anima a Vale.", text: '"Start small. One move, then another," says Kat.', es: "«Empieza poco a poco. Un movimiento y luego otro», dice Kat.", speaker: "kat", words: [{ word: "small", es: "poco a poco" }, { word: "move", es: "movimiento" }] },
+    { id: "s8", image: s8, imageAlt: "Vale se prepara con confianza.", text: '"I believe in myself. I am creative," says Vale.', es: "«Creo en mí misma. Soy creativa», dice Vale.", speaker: "vale", words: [{ word: "believe", es: "creo" }, { word: "creative", es: "creativa" }] },
+    { id: "s9", image: s9, imageAlt: "Vale graba un video alegre.", text: '"My hobbies are dancing and making videos. I also like music."', es: "«Mis pasatiempos son bailar y hacer videos. También me gusta la música.»", speaker: "vale", words: [{ word: "dancing", es: "bailar" }, { word: "making", es: "hacer" }] },
+    { id: "s10", image: s10, imageAlt: "El video recibe un mensaje sorpresa.", text: 'The video gets a surprise message: "Vale, present yourself tomorrow."', es: "El video recibe un mensaje sorpresa: «Vale, preséntate mañana».", words: [{ word: "surprise", es: "sorpresa" }, { word: "present", es: "presentar" }] },
+  ],
+  quizzes: [
+    { id: "q1", afterScene: "s3", questionEn: "Is Mateo's hobby music?", questionEs: "¿Es la música un pasatiempo de Mateo?", options: [{ label: "Yes", emoji: "🎵" }, { label: "No", emoji: "❌" }, { label: "Maybe", emoji: "🤔" }], answer: 0, sayIt: "His hobby is music.", sayItEs: "Repite: «Su pasatiempo es la música.»" },
+    { id: "q2", afterScene: "s6", questionEn: "Is Vale nervous or angry?", questionEs: "¿Vale está nerviosa o enojada?", options: [{ label: "Nervous", emoji: "😬" }, { label: "Angry", emoji: "😠" }, { label: "Sleepy", emoji: "😴" }], answer: 0, sayIt: "I am nervous, but I can try.", sayItEs: "Ahora tú: «Estoy nervioso, pero puedo intentarlo.»" },
+    { id: "q3", afterScene: "s9", questionEn: "What are Vale's hobbies?", questionEs: "¿Cuáles son los pasatiempos de Vale?", options: [{ label: "Dancing and making videos", emoji: "💃" }, { label: "Cooking and soccer", emoji: "⚽" }, { label: "Reading and painting", emoji: "📚" }], answer: 0, sayIt: "My hobbies are… and…", sayItEs: "Ahora di tus pasatiempos." },
+  ],
+  mindsetCard: { afterScene: "s8", phrase: "I believe in myself. I am creative.", es: "Creo en mí. Soy creativo / creativa." },
+  continuePrompt: { en: "Say two hobbies and one more thing you like.", es: "Di dos pasatiempos y algo más que te gusta." }, continueWith: ["My hobbies are…", "In my free time…", "I also like…", "I believe in myself."],
+  cliffhanger: { en: "Tomorrow, Mr. Reyes watches Vale's complete presentation.", es: "Mañana, el señor Reyes ve la presentación completa de Vale." },
+};
