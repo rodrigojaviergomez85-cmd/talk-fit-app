@@ -13,7 +13,7 @@ import {
   STORYBOOK_SEASONS,
   getStorybookEpisode,
   completedDaysInModule,
-  unlockedWeek,
+  unlockedDay,
 } from "@/services/storybook";
 import { JourneyService } from "@/services/journey-service";
 import type { JourneyState } from "@/lib/types";
@@ -171,7 +171,7 @@ function LevelSection({
   );
 }
 
-/** Season map: one card per week, future weeks locked until the learner gets there. */
+/** Season map: one card per day, future days locked until the learner gets there. */
 function SeasonMap({ showEs }: { showEs: boolean }) {
   const [state, setState] = useState<JourneyState | null>(null);
 
@@ -184,7 +184,7 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
     <div className="space-y-3">
       {STORYBOOK_SEASONS.map((season) => {
         const done = state ? completedDaysInModule(state, season.moduleId) : 0;
-        const open = unlockedWeek(done);
+        const open = unlockedDay(done);
         return (
           <section key={season.moduleId} className="space-y-2">
             <h2 className="text-[12px] font-bold uppercase tracking-[0.16em] text-primary">
@@ -192,8 +192,8 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
             </h2>
             {season.slots.map((slot) => {
               const episode = slot.episodeId ? getStorybookEpisode(slot.episodeId) : undefined;
-              const unlocked = slot.week <= open && !!episode;
-              const weekLabel = showEs ? `Semana ${slot.week}` : `Week ${slot.week}`;
+              const unlocked = slot.day <= open && !!episode;
+              const weekLabel = showEs ? `Día ${slot.day}` : `Day ${slot.day}`;
               const title = episode
                 ? showEs
                   ? episode.titleEs
@@ -205,7 +205,7 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
               if (!unlocked) {
                 return (
                   <div
-                    key={slot.week}
+                    key={slot.day}
                     className="flex items-center gap-4 rounded-3xl border border-dashed border-border bg-muted/30 p-3 opacity-70"
                   >
                     <div className="flex size-20 shrink-0 items-center justify-center rounded-2xl border border-border bg-muted">
@@ -219,8 +219,8 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
                       <p className="text-[12px] text-muted-foreground">
                         {episode
                           ? showEs
-                            ? "Se abre cuando llegues a esta semana"
-                            : "Unlocks when you reach this week"
+                            ? "Se abre cuando llegues a este día"
+                            : "Unlocks when you reach this day"
                           : showEs
                             ? "Muy pronto"
                             : "Coming soon"}
@@ -232,7 +232,7 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
 
               return (
                 <Link
-                  key={slot.week}
+                  key={slot.day}
                   to="/natural-method/cuento/$storyId"
                   params={{ storyId: episode.id }}
                   className="flex items-center gap-4 rounded-3xl border-2 border-primary/40 bg-primary/5 p-3"

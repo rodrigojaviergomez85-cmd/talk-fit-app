@@ -1,6 +1,6 @@
 /**
  * Season map for "El mundo de Vale".
- * A season = a curriculum module. An episode = a week inside that module.
+ * A season = a curriculum module. An episode = one day inside that module.
  * Unlocking is derived from the existing journey progress: no new tables.
  */
 import type { JourneyState } from "@/lib/types";
@@ -8,7 +8,8 @@ import type { JourneyState } from "@/lib/types";
 export type SeasonWeek = 1 | 2 | 3 | 4;
 
 export type SeasonEpisodeSlot = {
-  week: SeasonWeek;
+  /** Day of the module this episode belongs to (1-based). */
+  day: number;
   /** Episode id once produced; null while the episode is still in production. */
   episodeId: string | null;
   /** Shown while the slot has no episode yet. */
@@ -29,22 +30,22 @@ export const STORYBOOK_SEASONS: Season[] = [
     title: { en: "Season 1 · Vale's world", es: "Temporada 1 · El mundo de Vale" },
     slots: [
       {
-        week: 1,
+        day: 1,
         episodeId: "vale-first-day",
         teaser: { en: "Vale's first day", es: "El primer día de Vale" },
       },
       {
-        week: 2,
+        day: 2,
         episodeId: "vale-first-call",
         teaser: { en: "The first call", es: "La primera llamada" },
       },
       {
-        week: 3,
+        day: 3,
         episodeId: null,
         teaser: { en: "Who is she?", es: "¿Quién es ella?" },
       },
       {
-        week: 4,
+        day: 4,
         episodeId: null,
         teaser: { en: "The photo on her phone", es: "La foto en el celular" },
       },
@@ -63,14 +64,19 @@ export function completedDaysInModule(state: JourneyState, moduleId: string): nu
 }
 
 /**
- * Highest story week the learner has reached.
- * Week 1 is always open; each block of 5 completed days opens the next week.
+ * Highest story day the learner can open.
+ * Day 1 is always open; each completed module day opens the next episode.
  */
+export function unlockedDay(completedDays: number): number {
+  return Math.max(0, completedDays) + 1;
+}
+
+export function isDayUnlocked(state: JourneyState, moduleId: string, day: number): boolean {
+  return day <= unlockedDay(completedDaysInModule(state, moduleId));
+}
+
+/** Week the learner has reached (kept for language-scope checks). */
 export function unlockedWeek(completedDays: number): SeasonWeek {
   const week = Math.floor(Math.max(0, completedDays) / 5) + 1;
   return (week > 4 ? 4 : week) as SeasonWeek;
-}
-
-export function isWeekUnlocked(state: JourneyState, moduleId: string, week: SeasonWeek): boolean {
-  return week <= unlockedWeek(completedDaysInModule(state, moduleId));
 }
