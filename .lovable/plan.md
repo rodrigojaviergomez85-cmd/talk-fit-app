@@ -1,0 +1,99 @@
+# Temporada 2 · Basic 1: «El reto de Vale»
+
+## Diagnóstico curricular
+
+En la app, **Basic 1 corresponde a Simple Future**, no a Simple Present. La temporada debe seguir exactamente sus 20 días:
+
+- **Semana 1:** planes propios con `I’m going to / I’m not going to`.
+- **Semana 2:** planes de otras personas con `he/she/they’re going to` y negativos.
+- **Semana 3:** decisiones inmediatas, promesas y predicciones con `will / won’t`.
+- **Semana 4:** elección natural entre `going to` y `will`, terminando con producción libre.
+
+La historia no copiará mecánicamente los ejemplos genéricos del módulo. Convertirá cada función comunicativa en una situación real dentro del mundo de Vale, manteniendo el mismo orden y dificultad.
+
+## Concepto narrativo
+
+Ana eligió a Vale para un **reto juvenil de liderazgo en el call center**. Durante un mes, Vale y su equipo deben preparar y presentar una idea para ayudar a jóvenes a conseguir su primer empleo bilingüe.
+
+Esto continúa directamente el final de la temporada 1: **“Yes… she is ready.”** El proyecto permite hablar naturalmente de planes, responsabilidades, decisiones inesperadas, promesas y predicciones. También refuerza la visión de la academia: disciplina, resiliencia, servicio y liderazgo.
+
+No será una temporada encerrada en una oficina. Habrá casa, bus, cancha, café, mercado, parque, videollamada, lluvia, evento comunitario y presentación final.
+
+## Guion maestro de 20 episodios
+
+### Semana 1 · Mis planes — `I’m going to`
+
+1. **She is ready** — Ana invita a Vale al reto. Vale explica qué va a hacer esa noche para prepararse. Gancho: debe responder mañana.
+2. **Tomorrow starts now** — Vale organiza mañana: trabajo, práctica, reunión y descanso. Algo importante desaparece de su mochila.
+3. **The weekend plan** — Vale reúne a Mateo y Kat en un café para formar equipo; expresa planes positivos y negativos.
+4. **A bigger dream** — El equipo imagina llevar el proyecto a otra ciudad y visitar una feria de empleo. Vale piensa en grande sin salir del lenguaje de `going to`.
+5. **My plan, my voice** — Primer reto: Vale presenta sus planes de esta noche, mañana, fin de semana y próximo mes. Ana revela que competirán contra otro equipo.
+
+### Semana 2 · Los planes de otros — `he/she/they’re going to`
+
+6. **Mateo’s big weekend** — Mateo va a jugar fútbol, reunirse con el equipo y grabar entrevistas a jóvenes.
+7. **Mom has a plan** — La mamá de Vale va a preparar comida para recaudar fondos; se muestra trabajo, familia y dignidad.
+8. **Ana’s impossible schedule** — Ana va a terminar un reporte, llamar clientes y viajar; Vale debe asumir más responsabilidad.
+9. **Two different plans** — Camila va a estudiar desde Honduras; Luis va a visitar empresas. Sus planes distintos se complementan.
+10. **Everybody has a mission** — Vale presenta los planes de tres integrantes. Gancho: el cliente adelanta la fecha del evento.
+
+### Semana 3 · Decisiones, promesas y predicciones — `will / won’t`
+
+11. **I’ll handle it** — Suena el teléfono, llegan cajas y falta una persona. Vale toma decisiones inmediatas: `I’ll answer`, `I’ll help`.
+12. **A promise to the team** — Vale promete practicar, apoyar a su familia y no rendirse: `I’ll keep going. I won’t give up.`
+13. **The storm is coming** — El cielo cambia y el evento corre peligro. El equipo hace predicciones con `I think it will…`.
+14. **Ana sees a leader** — Ana predice el futuro de Vale y de su equipo: empleo, empresa, supervisión y liderazgo.
+15. **The hardest day** — Una crisis reúne decisión, promesa y predicción. Vale lidera seis ideas habladas y termina con: `It won’t be perfect, but it will be possible.`
+
+### Semana 4 · Fluidez del futuro — `going to + will`
+
+16. **Plan or decision?** — El equipo distingue lo ya planeado de lo que decide en el momento durante el montaje del evento.
+17. **Plans can change** — Un problema familiar altera el fin de semana de Vale. Ella protege su descanso y responde a sorpresas con `If…, I’ll…`.
+18. **Camila’s future** — Camila comparte sus planes desde Honduras; Vale predice que será una gran líder. Se fortalece la dimensión centroamericana.
+19. **Look at the sky** — Lluvia, tráfico y retrasos dan evidencia visible para `going to`; Vale usa `will` para opiniones y decisiones.
+20. **The future starts today** — Vale presenta sin guion sus planes, decisiones, promesas y predicciones. El proyecto recibe una oportunidad real y el cierre abre la temporada 3.
+
+## Experiencia de cada episodio
+
+- 10–12 escenas con: gancho, dificultad, repetición natural del chunk, giro y cliffhanger.
+- 3 preguntas TPRS con respuesta oral corta.
+- Toda palabra inglesa será tocable, con significado y pronunciación lenta.
+- 12–15 palabras activas nuevas; 3–5 palabras anteriores en repaso espaciado.
+- Una afirmación hablada y rotativa, conectada con el conflicto; no repetir la misma diariamente.
+- Grabación final de **máximo 15 segundos, unas 5 oraciones**, con `LISTEN TO ME` y opción de repetir.
+- Inglés principal y español bajo demanda.
+- Un episodio desbloqueado por cada día completado; acceso total para cuentas internas.
+
+## Afirmaciones propuestas
+
+Rotar según la historia: `I have a plan`, `I am disciplined`, `I believe in myself`, `I can adapt`, `I keep my promises`, `I won’t give up`, `I can lead`, `Challenges make me stronger`, `My future is bright`, `I am ready for the next step`.
+
+## Reglas de alineación
+
+- Semanas 1–2: no usar `will/won’t`; solo `going to` dentro del objetivo nuevo.
+- Semana 3: separar claramente decisión inmediata, promesa y predicción.
+- Semana 4: contrastar formas únicamente cuando la situación lo haga evidente.
+- Reciclar Basic Zero sin reenseñarlo: identidad, origen, familia, gustos, equipo y afirmaciones.
+- Evitar pasado narrativo no estudiado; recuerdos se presentan con fórmulas simples ya conocidas.
+- Mantener metas del curso: 30–45 segundos en días normales; 45–60 y 6–8 ideas en retos, aunque el cuento conserve su grabación final breve de 15 segundos.
+
+## Continuidad visual y de voces
+
+- Vale conserva 19 años, piel canónica clara-cálida, cabello negro largo y camiseta mostaza; su voz sigue joven, dulce y claramente femenina.
+- Cada personaje mantiene una sola ficha visual y una sola voz durante toda la temporada.
+- Documentar a Ana completamente antes de producir el episodio 1 de la temporada.
+- Cualquier personaje nuevo tendrá ficha, imagen canónica y voz aprobada antes de aparecer.
+- Generar usando las referencias canónicas, no solo descripciones textuales.
+- Triple revisión por lote: identidad/piel/ropa; anatomía/objetos; hablante/voz/texto.
+- Prueba automática del alcance gramatical por semana y de cada palabra marcada.
+- Revisión visual en hoja de contacto, muestra real de audio por personaje y recorrido móvil antes de cerrar cada lote.
+
+## Estrategia de producción recomendada
+
+1. Aprobar este arco completo de 20 días.
+2. Escribir primero los guiones completos de los episodios 1–5, sin generar imágenes.
+3. Revisar alineación, tensión narrativa, repetición y cliffhangers del lote.
+4. Producir e integrar en lotes de cinco: 1–5, 6–10, 11–15 y 16–20.
+5. No publicar un lote hasta superar la triple revisión visual, de voz y curricular.
+
+Así se aprueba la temporada completa una sola vez, pero se mantiene control de calidad en bloques manejables.
