@@ -30,8 +30,14 @@ export function EdReminder({ text, voice, variant = "step4" }: Props) {
     [],
   );
 
-  const playAll = () => {
-    if (playing || !words.length) return;
+  const togglePlay = () => {
+    if (!words.length) return;
+    if (playing) {
+      cancelled.current = true;
+      AudioService.stop();
+      setPlaying(false);
+      return;
+    }
     cancelled.current = false;
     setPlaying(true);
     let index = 0;
