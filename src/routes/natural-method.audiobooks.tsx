@@ -17,6 +17,7 @@ import {
 } from "@/services/storybook";
 import { JourneyService } from "@/services/journey-service";
 import type { JourneyState } from "@/lib/types";
+import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 
 const GRAMMAR_LABELS: Record<AudiobookGrammar, { en: string; es: string }> = {
   "simple-present": { en: "Simple Present", es: "Presente simple" },
