@@ -250,6 +250,10 @@ const DICT = {
   ],
   "rep5.title": ["TU TURNO", "YOUR TURN"],
   "rep5.instr": ["Habla solo. Conecta 5 ideas o más.", "Speak alone. Connect 5 or more ideas."],
+  "rep5.takeSummary": [
+    "3 tomas obligatorias · 2 extras opcionales",
+    "3 required takes · 2 optional extras",
+  ],
   "rep5.aiDisclaimer": [
     "La IA analizará tu Audio Final y puede cometer errores. Úsala como guía para mejorar.",
     "AI will analyze your Final Audio and may make mistakes. Use it as a guide to improve.",
