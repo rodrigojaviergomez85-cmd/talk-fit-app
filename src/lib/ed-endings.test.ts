@@ -80,3 +80,20 @@ describe("edPronunciationHint", () => {
     expect(edPronunciationHint("hopped", "id")).toBe("HOP-PED");
   });
 });
+
+describe("extractEdWords / hasEdWords", () => {
+  it("collects unique regular -ed verbs in reading order", () => {
+    expect(extractEdWords("She started, then talked and started again.")).toEqual([
+      "started",
+      "talked",
+    ]);
+  });
+
+  it("ignores texts without regular past verbs", () => {
+    expect(hasEdWords("I go to work every day and I need a red bed.")).toBe(false);
+  });
+
+  it("detects at least one verb", () => {
+    expect(hasEdWords("He arrived late.")).toBe(true);
+  });
+});
