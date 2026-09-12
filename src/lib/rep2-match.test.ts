@@ -654,3 +654,40 @@ describe("transcription spelling variants are not speaking errors", () => {
     expect(compare("She does not work here.", "She does work here").status).toBe("correct");
   });
 });
+
+describe("computeRep2DisplayDiff (display-only highlights)", () => {
+  it("highlights only the differing words, keeping original casing", async () => {
+    const { computeRep2DisplayDiff } = await import("./rep2-match");
+    const diff = computeRep2DisplayDiff(
+      "If I received five thousand dollars, I could travel.",
+      "If I received $2000 I could travel.",
+    );
+    expect(diff).toBeDefined();
+    const saidChanged = diff!.said.filter((t) => t.changed).map((t) => t.text);
+    const targetChanged = diff!.target.filter((t) => t.changed).map((t) => t.text);
+    expect(saidChanged).toEqual(["$2000"]);
+    expect(targetChanged).toEqual(["five", "thousand", "dollars,"]);
+    // Matching words stay unchanged and keep original text.
+    expect(diff!.target[0]).toEqual({ text: "If", changed: false });
+  });
+
+  it("returns undefined when nothing differs", async () => {
+    const { computeRep2DisplayDiff } = await import("./rep2-match");
+    expect(computeRep2DisplayDiff("I like coffee.", "I like coffee.")).toBeUndefined();
+  });
+
+  it("returns undefined when there are too many differences", async () => {
+    const { computeRep2DisplayDiff, REP2_DISPLAY_DIFF_MAX_CHANGED_WORDS } = await import("./rep2-match");
+    const target = "one two three four five six seven eight nine ten";
+    const said = "uno dos tres cuatro cinco seis siete ocho nueve diez";
+    const diff = computeRep2DisplayDiff(target, said);
+    expect(diff).toBeUndefined();
+    expect(REP2_DISPLAY_DIFF_MAX_CHANGED_WORDS).toBeLessThan(20);
+  });
+
+  it("returns undefined for empty input", async () => {
+    const { computeRep2DisplayDiff } = await import("./rep2-match");
+    expect(computeRep2DisplayDiff("", "hello")).toBeUndefined();
+    expect(computeRep2DisplayDiff("hello", "")).toBeUndefined();
+  });
+});
