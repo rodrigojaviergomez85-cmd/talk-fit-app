@@ -453,13 +453,15 @@ export function TakeBoard({
                   />
                 ) : (
                   <>
-                    <TranslatableText supportOnly es={turn?.prepSeconds ? "¡AHORA HABLA!" : turn ? (recruiter ? "Responde al reclutador" : "Responde al cliente") : "Listo para grabar"} align="center" className="text-center">
+                    <TranslatableText supportOnly es={turn?.prepSeconds ? "¡AHORA HABLA!" : turn ? (recruiter ? "Responde al reclutador" : "Responde al cliente") : optional ? t("take.optionalEmpty") : "Listo para grabar"} align="center" className="text-center">
                       <p className="text-center text-[13px] text-muted-foreground">
                         {turn?.prepSeconds
                           ? "SPEAK NOW!"
                           : turn
                             ? (recruiter ? "Respond to the recruiter" : "Respond to the customer")
-                            : "Ready to record"}
+                            : optional
+                              ? t("take.optionalEmpty")
+                              : "Ready to record"}
                       </p>
                     </TranslatableText>
                     <VoiceRecorder
