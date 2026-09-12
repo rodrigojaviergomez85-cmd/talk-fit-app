@@ -152,6 +152,7 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
           {slide.kind === "quiz" ? (
             <QuizSlide
               quiz={slide.quiz}
+              episodeGlossary={episodeGlossary}
               voice={episode.voice}
               es={es}
               done={Boolean(quizDone[slide.quiz.id])}
