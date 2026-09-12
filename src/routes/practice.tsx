@@ -1753,7 +1753,17 @@ function NoAiDisclaimer({ tKey }: { tKey: "rep3.noAi" | "rep4.noAi" }) {
  * Live shadowing only: continuous model audio + chunk highlight, the learner
  * speaks WITH the model. No recording, no images — deliberately unlike Rep 2.
  */
-export function Rep3Shadow({ day, onNext, onSkip }: { day: CourseDay; onNext: () => void; onSkip: () => void }) {
+export function Rep3Shadow({
+  day,
+  onNext,
+  onSkip,
+  highlightEd = false,
+}: {
+  day: CourseDay;
+  onNext: () => void;
+  onSkip: () => void;
+  highlightEd?: boolean;
+}) {
   return (
     <div className="space-y-4">
       <div className="rounded-3xl bg-navy p-5 space-y-2">
@@ -1761,12 +1771,15 @@ export function Rep3Shadow({ day, onNext, onSkip }: { day: CourseDay; onNext: ()
         <NoAiDisclaimer tKey="rep3.noAi" />
       </div>
 
+      {highlightEd ? <EdLegend /> : null}
+
       <ShadowKaraoke
         lines={day.lines}
         text={CourseService.getModelText(day)}
         voice={day.speakerVoice}
         onNext={onNext}
         onSkip={onSkip}
+        highlightEd={highlightEd}
       />
     </div>
   );
