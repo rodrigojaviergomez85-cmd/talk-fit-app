@@ -1487,6 +1487,7 @@ export function Rep2Copy({
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   /** Model audio speed for Step 2 — slow options for learners who miss the pronunciation. */
   const [speed, setSpeed] = useState<number>(1);
+  const [playRequest, setPlayRequest] = useState(0);
 
   useEffect(() => {
     setMine(null);
@@ -1609,7 +1610,10 @@ export function Rep2Copy({
           <button
             key={rate}
             type="button"
-            onClick={() => setSpeed(rate)}
+            onClick={() => {
+              setSpeed(rate);
+              setPlayRequest((request) => request + 1);
+            }}
             className={cn(
               "min-h-[40px] flex-1 rounded-2xl border px-3 text-[12px] font-bold uppercase tracking-[0.12em] transition-colors",
               speed === rate ? "border-primary bg-primary/10 text-primary" : "border-border bg-card text-muted-foreground",
@@ -1620,7 +1624,13 @@ export function Rep2Copy({
         ))}
       </div>
 
-      <AudioPlayer text={chunkText} label={t("practice.listen")} rate={speed} voice={day.speakerVoice} />
+      <AudioPlayer
+        text={chunkText}
+        label={t("practice.listen")}
+        rate={speed}
+        voice={day.speakerVoice}
+        playRequest={playRequest}
+      />
 
       {/* Genuine tap on the recorder unlocks Web Audio for iOS/Safari — no prompt, no blocking. */}
       <div onPointerDownCapture={correctionEnabled ? unlockFeedbackAudio : undefined}>
