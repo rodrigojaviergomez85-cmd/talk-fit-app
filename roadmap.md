@@ -11,3 +11,7 @@
 - [x] Write Season 2 Episodes 6–20 scripts (weeks 2–4: going to others, will, mixed)
 - [ ] Generate webtoon images and register Season 2 Episodes 6–20
 
+
+## Temporada 2 — estado
+- Episodios 1–5: ilustraciones dedicadas, registrados y activados (días 1–5). QA visual + tests OK.
+- Episodios 6–20: guiones escritos; faltan ilustraciones, registro y QA.
