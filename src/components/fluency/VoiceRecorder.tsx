@@ -12,6 +12,8 @@ type VoiceRecorderProps = {
   targetSeconds?: [number, number];
   /** Hard limit: the recording stops by itself when reached. */
   maxSeconds?: number;
+  /** Show remaining time (maxSeconds - elapsed) instead of an ascending count. */
+  countdown?: boolean;
   showTimer?: boolean;
   size?: "sm" | "md" | "lg";
   /** Fired once the microphone is actually capturing. */
@@ -45,6 +47,7 @@ export function VoiceRecorder({
   stopLabel = "STOP",
   targetSeconds,
   maxSeconds,
+  countdown = false,
   showTimer = true,
   size = "lg",
   onStart,
