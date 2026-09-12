@@ -2071,6 +2071,12 @@ export function Rep5FinalRep({
     <div className="space-y-5">
       <RepHeader titleKey="rep5.title" instrKey="rep5.instr" label={day.rep5Label} copy={day.repCopy?.rep5} />
 
+      <div className="flex justify-center">
+        <span className="rounded-full border border-primary/25 bg-primary/10 px-3.5 py-1.5 text-center text-[11px] font-extrabold uppercase tracking-[0.14em] text-primary">
+          {t("rep5.takeSummary")}
+        </span>
+      </div>
+
       {/* PROMPT / SITUATION — hidden on role-play days: Turn 1 audio delivers the question. */}
       {!hasTurns ? (
         <>
