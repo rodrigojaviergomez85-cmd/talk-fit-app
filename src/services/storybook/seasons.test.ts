@@ -64,4 +64,13 @@ describe("storybook seasons", () => {
       }
     }
   });
+
+  it("returns a locked Season 2 teaser after the Season 1 finale", () => {
+    const state: JourneyState = { days: {}, currentModule: "basic-zero", currentDay: 20, version: 1 };
+    const next = getNextEpisodeSlot("vale-graduation", state);
+    expect(next).toBeTruthy();
+    expect(next!.teaser.en).toBe("She is ready");
+    expect(next!.episodeId).toBeNull();
+    expect(next!.unlocked).toBe(false);
+  });
 });
