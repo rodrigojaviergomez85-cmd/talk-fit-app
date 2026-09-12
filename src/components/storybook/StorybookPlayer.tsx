@@ -281,7 +281,7 @@ function SceneSlide({
 
   return (
     <div className="overflow-hidden rounded-3xl border border-border bg-card">
-      <div className="relative">
+      <div className="relative aspect-square overflow-hidden">
         <img
           src={scene.image}
           alt={scene.imageAlt}
@@ -289,7 +289,7 @@ function SceneSlide({
           height={1024}
           loading="lazy"
           decoding="async"
-          className="aspect-square w-full object-cover"
+          className="h-full w-full object-cover"
           style={{ animation: `${flip ? "sb-kenburns-a" : "sb-kenburns-b"} 16s ease-in-out infinite alternate` }}
         />
         <span
