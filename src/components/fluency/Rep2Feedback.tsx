@@ -17,21 +17,42 @@ export type Rep2CorrectionResult = {
   diff?: Rep2DisplayDiff | null;
 };
 
-function DiffTokens({ tokens, variant }: { tokens: Rep2DisplayToken[]; variant: "said" | "target" }) {
+function DiffTokens({
+  tokens,
+  variant,
+  openWord,
+  onTapWord,
+}: {
+  tokens: Rep2DisplayToken[];
+  variant: "said" | "target";
+  openWord?: string | null;
+  onTapWord?: ((word: string) => void) | undefined;
+}) {
   return (
     <>
       {tokens.map((token, i) =>
         token.changed ? (
-          <mark
-            key={i}
-            className={
-              variant === "said"
-                ? "rounded bg-amber-500/25 px-0.5 font-bold text-amber-700 dark:text-amber-400"
-                : "rounded bg-primary/15 px-0.5 font-bold text-primary"
-            }
-          >
-            {token.text}{" "}
-          </mark>
+          variant === "target" && onTapWord ? (
+            <button
+              key={i}
+              type="button"
+              onClick={() => onTapWord(token.text)}
+              aria-label={`Pronounce ${token.text}`}
+              className={cn(
+                "rounded bg-primary/15 px-0.5 font-bold text-primary transition-transform active:scale-[0.96]",
+                openWord === token.text && "bg-primary/25",
+              )}
+            >
+              {token.text}{" "}
+            </button>
+          ) : (
+            <mark
+              key={i}
+              className="rounded bg-amber-500/25 px-0.5 font-bold text-amber-700 dark:text-amber-400"
+            >
+              {token.text}{" "}
+            </mark>
+          )
         ) : (
           <span key={i}>{token.text} </span>
         ),
