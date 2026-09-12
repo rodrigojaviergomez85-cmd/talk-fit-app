@@ -33,6 +33,8 @@ function buildSlides(episode: StorybookEpisode): Slide[] {
 function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice {
   if (speaker === "vale") return "girl";
   if (speaker === "boss") return "boss";
+  if (speaker === "kat") return "female";
+  if (speaker === "dylan") return "male";
   return "neutral";
 }
 
@@ -208,6 +210,20 @@ function CoverSlide({ episode, es, onStart }: { episode: StorybookEpisode; es: b
         </div>
       </div>
       <div className="space-y-3 p-4">
+        {episode.previously && episode.previously.length > 0 ? (
+          <div className="rounded-2xl border border-border bg-muted/40 p-3">
+            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+              {es ? "Anteriormente…" : "Previously…"}
+            </p>
+            <ul className="mt-1.5 space-y-1">
+              {episode.previously.map((line) => (
+                <li key={line.en} className="text-[13px] leading-snug text-foreground">
+                  • {es ? line.es : line.en}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
         <p className="text-[14px] text-muted-foreground">{es ? episode.blurb.es : episode.blurb.en}</p>
         <button
           type="button"
