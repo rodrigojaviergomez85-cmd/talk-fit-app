@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Check, Info, Sparkles } from "lucide-react";
 import { isUnlimitedEmail } from "@/lib/unlimited-access";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { TappableSentence } from "@/components/fluency/TappableSentence";
+import { EdLegend } from "@/components/fluency/EdLegend";
 import { toneForTurn, type ModelTone } from "@/lib/model-tone";
 import { rep2Chunks, rep4Items, rep2ChunkText, REP4_MAX, isRep2CorrectionEnabled } from "@/lib/rep-structure";
 export { REP4_MAX };
@@ -1476,6 +1477,8 @@ export function Rep2Copy({
 }) {
   const t = useT();
   const correctionEnabled = isRep2CorrectionEnabled(moduleId, day);
+  /** Pilot: color-code regular -ed verbs only on Simple Past day 2. */
+  const highlightEd = moduleId === "past-stories" && day.day === 2;
   const chunks = rep2Chunks(day);
   const chunk = chunks[index] ?? chunks[0]!;
   const [mine, setMine] = useState<Recording | null>(null);
@@ -1596,12 +1599,13 @@ export function Rep2Copy({
       <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {chunk.lines.map((line) => (
           <TranslatableText key={line.id} es={line.es}>
-            <TappableSentence text={line.text} voice={day.speakerVoice} />
+            <TappableSentence text={line.text} voice={day.speakerVoice} highlightEd={highlightEd} />
           </TranslatableText>
         ))}
         <p className="text-[11px] font-semibold text-muted-foreground">
           {t("practice.tapWordHint")}
         </p>
+        {highlightEd ? <EdLegend /> : null}
       </div>
 
       {/* Model audio speed: slow options for learners who miss the pronunciation. */}

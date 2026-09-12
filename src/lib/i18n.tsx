@@ -205,6 +205,11 @@ const DICT = {
     "Toca la palabra marcada para pronunciación más lenta.",
     "Tap the marked word for slower pronunciation.",
   ],
+  "ed.legendTitle": ["El sonido del -ed", "The sound of -ed"],
+  "ed.legendNote": [
+    "Rojo y azul: la -ed NO agrega sílaba. Verde: sí agrega sílaba.",
+    "Red and blue: -ed adds NO extra syllable. Green: it does.",
+  ],
 
   "rep3.title": ["SHADOWING 🎧", "SHADOWING 🎧"],
   "rep3.instr": [

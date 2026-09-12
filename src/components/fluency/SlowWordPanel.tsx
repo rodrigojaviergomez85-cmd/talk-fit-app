@@ -10,13 +10,15 @@ type Props = {
   onClose: () => void;
   /** Compact layout for tight spaces (e.g. correction card). */
   compact?: boolean;
+  /** Regular-past -ed hint shown as a header (Simple Past pilot). */
+  edHint?: { sound: "t" | "d" | "id"; hint: string } | undefined;
 };
 
 /**
  * Slow-pronunciation panel for a single word: 0.25x / 0.5x / 0.75x.
  * Pronunciation aid only — it never changes practice state.
  */
-export function SlowWordPanel({ word, voice, onClose, compact = false }: Props) {
+export function SlowWordPanel({ word, voice, onClose, compact = false, edHint }: Props) {
   const es = useAppLang().lang === "es";
 
   const say = (rate: number) => {
@@ -39,6 +41,23 @@ export function SlowWordPanel({ word, voice, onClose, compact = false }: Props) 
           <X className={compact ? "size-3.5" : "size-4"} />
         </button>
       </div>
+
+      {edHint ? (
+        <div className={compact ? "mt-1.5 rounded-lg bg-card px-2 py-1.5" : "mt-2 rounded-xl bg-card px-2.5 py-2"}>
+          <p className={compact ? "text-[13px] font-extrabold" : "text-[15px] font-extrabold"}>
+            {word} → <span className={edHint.sound === "t" ? "text-ed-t" : edHint.sound === "d" ? "text-ed-d" : "text-ed-id"}>{edHint.hint}</span>
+          </p>
+          <p className={compact ? "text-[10px] leading-snug text-muted-foreground" : "text-[11px] leading-snug text-muted-foreground"}>
+            {edHint.sound === "id"
+              ? es
+                ? "La -ed SÍ agrega una sílaba."
+                : "The -ed DOES add a syllable."
+              : es
+                ? "La -ed NO agrega sílaba. Suena como una sola."
+                : "The -ed adds NO syllable. It sounds like one."}
+          </p>
+        </div>
+      ) : null}
 
       <div className={compact ? "mt-1.5 flex flex-wrap gap-1.5" : "mt-2 flex flex-wrap gap-2"}>
         {SPEEDS.map((rate) => (
