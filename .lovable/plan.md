@@ -8,6 +8,11 @@ Además, cada episodio debe enseñar mentalidad de perseverancia: no rendirse cu
 
 - **English is easy.**
 - **I can do it.**
+- **I believe in myself.**
+- **I am amazing.**
+- **I am awesome.**
+- **You are amazing.**
+- **You are awesome.**
 - **Mistakes are part of the process.**
 - **Effort makes progress.** / El esfuerzo produce progreso.
 
