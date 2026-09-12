@@ -170,3 +170,100 @@ function LevelSection({
     </section>
   );
 }
+
+/** Season map: one card per week, future weeks locked until the learner gets there. */
+function SeasonMap({ showEs }: { showEs: boolean }) {
+  const [state, setState] = useState<JourneyState | null>(null);
+
+  useEffect(() => {
+    setState(JourneyService.load());
+    void JourneyService.pull().then(setState).catch(() => {});
+  }, []);
+
+  return (
+    <div className="space-y-3">
+      {STORYBOOK_SEASONS.map((season) => {
+        const done = state ? completedDaysInModule(state, season.moduleId) : 0;
+        const open = unlockedWeek(done);
+        return (
+          <section key={season.moduleId} className="space-y-2">
+            <h2 className="text-[12px] font-bold uppercase tracking-[0.16em] text-primary">
+              {showEs ? season.title.es : season.title.en}
+            </h2>
+            {season.slots.map((slot) => {
+              const episode = slot.episodeId ? getStorybookEpisode(slot.episodeId) : undefined;
+              const unlocked = slot.week <= open && !!episode;
+              const weekLabel = showEs ? `Semana ${slot.week}` : `Week ${slot.week}`;
+              const title = episode
+                ? showEs
+                  ? episode.titleEs
+                  : episode.title
+                : showEs
+                  ? slot.teaser.es
+                  : slot.teaser.en;
+
+              if (!unlocked) {
+                return (
+                  <div
+                    key={slot.week}
+                    className="flex items-center gap-4 rounded-3xl border border-dashed border-border bg-muted/30 p-3 opacity-70"
+                  >
+                    <div className="flex size-20 shrink-0 items-center justify-center rounded-2xl border border-border bg-muted">
+                      <Lock className="size-6 text-muted-foreground" aria-hidden="true" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                        {weekLabel}
+                      </p>
+                      <p className="mt-0.5 text-[17px] font-extrabold text-muted-foreground">{title}</p>
+                      <p className="text-[12px] text-muted-foreground">
+                        {episode
+                          ? showEs
+                            ? "Se abre cuando llegues a esta semana"
+                            : "Unlocks when you reach this week"
+                          : showEs
+                            ? "Muy pronto"
+                            : "Coming soon"}
+                      </p>
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <Link
+                  key={slot.week}
+                  to="/natural-method/cuento/$storyId"
+                  params={{ storyId: episode.id }}
+                  className="flex items-center gap-4 rounded-3xl border-2 border-primary/40 bg-primary/5 p-3"
+                >
+                  <img
+                    src={episode.cover}
+                    alt={showEs ? `Portada de ${episode.titleEs}` : `${episode.title} cover`}
+                    width={1024}
+                    height={1024}
+                    loading="lazy"
+                    decoding="async"
+                    className="size-20 shrink-0 rounded-2xl border border-border object-cover"
+                  />
+                  <span className="min-w-0">
+                    <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
+                      {weekLabel} ·{" "}
+                      {showEs ? episode.episodeLabel.es : episode.episodeLabel.en}
+                    </span>
+                    <span className="mt-0.5 block text-[17px] font-extrabold text-foreground">{title}</span>
+                    <span className="block text-[12px] text-muted-foreground">
+                      {showEs
+                        ? "Pasa la página, toca las palabras y responde en voz alta"
+                        : "Turn the page, tap the words and answer out loud"}
+                    </span>
+                  </span>
+                </Link>
+              );
+            })}
+          </section>
+        );
+      })}
+    </div>
+  );
+}
