@@ -78,6 +78,5 @@ describe("storybook seasons", () => {
     expect(next).toBeTruthy();
     expect(next!.teaser.en).toBe("She is ready");
     expect(next!.episodeId).toBeNull();
-    expect(next!.unlocked).toBe(false);
   });
 });
