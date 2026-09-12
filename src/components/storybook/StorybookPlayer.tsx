@@ -9,6 +9,7 @@ import { tokenizeWords } from "@/lib/syllables";
 import { AudioService } from "@/services/audio-service";
 import type { ModelVoice } from "@/services/audio-service";
 import { getNextEpisodeSlot } from "@/services/storybook";
+import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
 import type { NextEpisodeInfo } from "@/services/storybook";
 import { JourneyService } from "@/services/journey-service";
