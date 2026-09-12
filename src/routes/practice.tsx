@@ -2056,6 +2056,9 @@ export function Rep5FinalRep({
       finalIndex={finalIndex}
       goalSeconds={day.goalSeconds}
       goalSentences={day.goalSentences ?? 5}
+      tier={boardTier}
+      promptQuestion={day.rep5Prompt.question}
+      promptQuestionEs={day.rep5Prompt.questionEs}
       turns={day.rep5Turns}
       onRecorded={onRecorded}
       onDelete={onDelete}
