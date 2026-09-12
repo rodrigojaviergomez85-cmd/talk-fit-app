@@ -42,6 +42,14 @@ export type StorybookQuiz = {
   sayItEs: string;
 };
 
+export type StorybookMindsetCard = {
+  /** Scene id after which the mindset card appears. */
+  afterScene: string;
+  phrase: string;
+  /** Spanish meaning of the affirmation. */
+  es: string;
+};
+
 export type StorybookEpisode = {
   id: string;
   /** Curriculum module this episode belongs to (a season). */
@@ -61,6 +69,8 @@ export type StorybookEpisode = {
   voice?: "female" | "male";
   scenes: StorybookScene[];
   quizzes: StorybookQuiz[];
+  /** Optional resilience / mindset affirmation the learner says out loud. */
+  mindsetCard?: StorybookMindsetCard;
   /** Final "continúa la historia" prompt. */
   continuePrompt: { en: string; es: string };
   /** Week-1 chunks the learner reuses in their own version. */
