@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
+import type { JourneyState } from "@/lib/types";
 import { STORYBOOK_EPISODES } from "./index";
-import { STORYBOOK_SEASONS, unlockedWeek, unlockedDay } from "./seasons";
+import { STORYBOOK_SEASONS, unlockedWeek, unlockedDay, getNextEpisodeSlot } from "./seasons";
 
 /** Structures the learner has NOT seen yet in Basic Zero weeks 1-2. */
 const OUT_OF_SCOPE = [
