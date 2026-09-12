@@ -61,6 +61,25 @@ function AudiobooksPage() {
           </p>
         </header>
 
+        {INTERACTIVE_STORIES.map((story) => (
+          <Link
+            key={story.id}
+            to="/natural-method/story/$storyId"
+            params={{ storyId: story.id }}
+            className="block rounded-3xl border-2 border-primary/40 bg-primary/5 p-4"
+          >
+            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
+              {showEs ? "Historia interactiva · nueva" : "Interactive story · new"}
+            </p>
+            <p className="mt-1 text-[17px] font-extrabold text-foreground">{story.title}</p>
+            <p className="text-[13px] text-muted-foreground">{showEs ? story.blurb.es : story.blurb.en}</p>
+            <p className="mt-2 text-[12px] font-bold uppercase tracking-[0.12em] text-primary">
+              {showEs ? "Escucha · Entiende · Lee · Habla" : "Listen · Understand · Read · Speak"}
+            </p>
+          </Link>
+        ))}
+
+
         <LevelSection
           title={showEs ? "Nivel básico" : "Basic level"}
           books={basicBooks}
