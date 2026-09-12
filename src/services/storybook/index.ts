@@ -16,7 +16,9 @@ export {
   unlockedWeek,
   unlockedDay,
   isDayUnlocked,
+  getNextEpisodeSlot,
   type Season,
   type SeasonEpisodeSlot,
   type SeasonWeek,
+  type NextEpisodeInfo,
 } from "./seasons";

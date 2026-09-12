@@ -17,6 +17,17 @@ export type SeasonEpisodeSlot = {
   teaser: { en: string; es: string };
 };
 
+export type NextEpisodeInfo = {
+  /** Next produced episode id, or null when the slot is still in production. */
+  episodeId: string | null;
+  /** Day of the module that unlocks the next slot. */
+  day: number;
+  /** Preview text for the coming episode. */
+  teaser: { en: string; es: string };
+  /** Whether the learner can open it now. */
+  unlocked: boolean;
+};
+
 export type Season = {
   moduleId: string;
   seasonNumber: number;
@@ -81,4 +92,19 @@ export function isDayUnlocked(state: JourneyState, moduleId: string, day: number
 export function unlockedWeek(completedDays: number): SeasonWeek {
   const week = Math.floor(Math.max(0, completedDays) / 5) + 1;
   return (week > 4 ? 4 : week) as SeasonWeek;
+}
+
+/** The slot that follows the current episode, including unlock status. */
+export function getNextEpisodeSlot(currentEpisodeId: string, state: JourneyState): NextEpisodeInfo | null {
+  const season = STORYBOOK_SEASONS.find((s) => s.slots.some((slot) => slot.episodeId === currentEpisodeId));
+  if (!season) return null;
+  const idx = season.slots.findIndex((slot) => slot.episodeId === currentEpisodeId);
+  if (idx < 0 || idx === season.slots.length - 1) return null;
+  const next = season.slots[idx + 1]!;
+  return {
+    episodeId: next.episodeId,
+    day: next.day,
+    teaser: next.teaser,
+    unlocked: isDayUnlocked(state, season.moduleId, next.day),
+  };
 }

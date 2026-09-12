@@ -34,7 +34,7 @@ function StorybookPage() {
   return (
     <AppShell>
       <div className="p-4 pb-8">
-        <StorybookPlayer episode={episode} />
+        <StorybookPlayer key={episode.id} episode={episode} />
       </div>
     </AppShell>
   );
