@@ -193,8 +193,8 @@ export const VALE_FIRST_CALL: StorybookEpisode = {
     {
       id: "q2",
       afterScene: "s7",
-      questionEn: "How does Vale speak?",
-      questionEs: "¿Cómo habla Vale?",
+      questionEn: "How is Vale's voice?",
+      questionEs: "¿Cómo es la voz de Vale?",
       options: [
         { label: "Slowly and calm", emoji: "😌" },
         { label: "Very fast", emoji: "💨" },
