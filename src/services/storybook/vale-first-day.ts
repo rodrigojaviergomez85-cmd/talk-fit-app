@@ -178,8 +178,8 @@ export const VALE_FIRST_DAY: StorybookEpisode = {
         { label: "Sofía", emoji: "👩" },
       ],
       answer: 0,
-      sayIt: "My name is Vale.",
-      sayItEs: "Dilo tú: «Me llamo Vale.»",
+      sayIt: "What is your name?",
+      sayItEs: "Ahora pregúntala tú: «¿Cómo te llamas?»",
     },
     {
       id: "q2",
@@ -192,8 +192,8 @@ export const VALE_FIRST_DAY: StorybookEpisode = {
         { label: "Tacos", emoji: "🌮" },
       ],
       answer: 0,
-      sayIt: "My favorite food is pupusas.",
-      sayItEs: "Dilo tú: «Mi comida favorita son las pupusas.»",
+      sayIt: "What is your favorite food?",
+      sayItEs: "Ahora pregúntala tú: «¿Cuál es tu comida favorita?»",
     },
     {
       id: "q3",
@@ -206,8 +206,8 @@ export const VALE_FIRST_DAY: StorybookEpisode = {
         { label: "Guatemala", emoji: "🇬🇹" },
       ],
       answer: 0,
-      sayIt: "I am from El Salvador.",
-      sayItEs: "Dilo tú: «Soy de El Salvador.»",
+      sayIt: "Where are you from?",
+      sayItEs: "Ahora pregúntala tú: «¿De dónde eres?»",
     },
   ],
   continuePrompt: {
