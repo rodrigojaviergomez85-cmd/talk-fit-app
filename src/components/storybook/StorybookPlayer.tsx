@@ -289,7 +289,7 @@ function TappableText({
   text: string;
   scene?: StorybookScene;
   episodeGlossary: Map<string, string>;
-  voice: "female" | "male" | undefined;
+  voice: "female" | "male" | "girl" | undefined;
   es: boolean;
   className?: string;
   onLearnWord?: (word: string, meaning: string) => void;
@@ -377,7 +377,7 @@ function SceneSlide({
 }: {
   scene: StorybookScene;
   episodeGlossary: Map<string, string>;
-  voice: "female" | "male" | undefined;
+  voice: "female" | "male" | "girl" | undefined;
   es: boolean;
   flip: boolean;
   onLearnWord: (word: string, meaning: string) => void;
@@ -454,7 +454,7 @@ function QuizSlide({
 }: {
   quiz: StorybookQuiz;
   episodeGlossary: Map<string, string>;
-  voice: "female" | "male" | undefined;
+  voice: "female" | "male" | "girl" | undefined;
   es: boolean;
   done: boolean;
   said: boolean;
@@ -559,7 +559,7 @@ function MindsetSlide({
   onSaid,
 }: {
   mindset: NonNullable<StorybookEpisode["mindsetCard"]>;
-  voice?: "female" | "male" | undefined;
+  voice?: "female" | "male" | "girl" | undefined;
   es: boolean;
   onSaid: () => void;
 }) {
