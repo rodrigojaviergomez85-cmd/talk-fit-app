@@ -1,0 +1,30 @@
+import type { StorybookEpisode } from "./types";
+import cover from "@/assets/storybook/vale-ep12/cover.jpg";
+import s1 from "@/assets/storybook/vale-ep12/s1.jpg"; import s2 from "@/assets/storybook/vale-ep12/s2.jpg"; import s3 from "@/assets/storybook/vale-ep12/s3.jpg"; import s4 from "@/assets/storybook/vale-ep12/s4.jpg"; import s5 from "@/assets/storybook/vale-ep12/s5.jpg"; import s6 from "@/assets/storybook/vale-ep12/s6.jpg"; import s7 from "@/assets/storybook/vale-ep12/s7.jpg"; import s8 from "@/assets/storybook/vale-ep12/s8.jpg"; import s9 from "@/assets/storybook/vale-ep12/s9.jpg"; import s10 from "@/assets/storybook/vale-ep12/s10.jpg";
+
+export const VALE_BEST_FRIEND: StorybookEpisode = {
+  id: "vale-best-friend", moduleId: "basic-zero", week: 3, title: "My best friend", titleEs: "Mi mejor amiga", episodeLabel: { en: "Episode 12", es: "Episodio 12" },
+  previously: [{ en: "Vale introduced her brother Luis.", es: "Vale presentó a su hermano Luis." }, { en: "Luis practiced for his interview.", es: "Luis practicó para su entrevista." }, { en: "A video call with Camila started.", es: "Comenzó una videollamada con Camila." }],
+  reviewWords: [{ word: "friend", es: "amiga" }, { word: "city", es: "ciudad" }, { word: "favorite", es: "favorito" }],
+  blurb: { en: "Meet Camila, a designer who thinks big.", es: "Conoce a Camila, una diseñadora que piensa en grande." }, cover, voice: "female",
+  scenes: [
+    { id: "s1", image: s1, imageAlt: "Camila saluda por videollamada.", text: '"Hi! My name is Camila," she says.', es: "«¡Hola! Me llamo Camila», dice ella.", speaker: "camila", words: [{ word: "name", es: "nombre" }, { word: "Camila", es: "Camila" }] },
+    { id: "s2", image: s2, imageAlt: "Vale presenta a Camila con Luis presente.", text: '"This is Camila. She is Luis\'s best friend," says Vale.', es: "«Esta es Camila. Es la mejor amiga de Luis», dice Vale.", speaker: "vale", words: [{ word: "best", es: "mejor" }, { word: "friend", es: "amiga" }] },
+    { id: "s3", image: s3, imageAlt: "Camila habla desde San Pedro Sula.", text: '"I am from Honduras, and I live in San Pedro Sula," says Camila.', es: "«Soy de Honduras y vivo en San Pedro Sula», dice Camila.", speaker: "camila", words: [{ word: "Honduras", es: "Honduras" }, { word: "live", es: "vivo" }] },
+    { id: "s4", image: s4, imageAlt: "Vale repite la información de Camila.", text: '"She is from Honduras. She lives in San Pedro Sula," says Vale.', es: "«Ella es de Honduras. Vive en San Pedro Sula», dice Vale.", speaker: "vale", words: [{ word: "lives", es: "vive" }, { word: "from", es: "de" }] },
+    { id: "s5", image: s5, imageAlt: "Camila muestra diseños morados.", text: '"My favorite color is purple because it is different," says Camila.', es: "«Mi color favorito es el morado porque es diferente», dice Camila.", speaker: "camila", words: [{ word: "purple", es: "morado" }, { word: "different", es: "diferente" }] },
+    { id: "s6", image: s6, imageAlt: "Vale señala una tarjeta morada.", text: '"Her favorite color is purple," says Vale.', es: "«Su color favorito es el morado», dice Vale.", speaker: "vale", words: [{ word: "favorite", es: "favorito" }, { word: "purple", es: "morado" }] },
+    { id: "s7", image: s7, imageAlt: "Camila muestra sus diseños.", text: "Camila shows her designs. She dreams about her own business.", es: "Camila muestra sus diseños. Sueña con tener su propio negocio.", words: [{ word: "designs", es: "diseños" }, { word: "business", es: "negocio" }] },
+    { id: "s8", image: s8, imageAlt: "Camila trabaja ante un reto.", text: '"Some days are difficult, but I think big," says Camila.', es: "«Algunos días son difíciles, pero pienso en grande», dice Camila.", speaker: "camila", words: [{ word: "difficult", es: "difíciles" }, { word: "big", es: "grande" }] },
+    { id: "s9", image: s9, imageAlt: "Vale y Camila repiten una afirmación.", text: '"I think big. I can build my future," say Vale and Camila.', es: "«Pienso en grande. Puedo construir mi futuro», dicen Vale y Camila.", speaker: "camila", words: [{ word: "build", es: "construir" }, { word: "future", es: "futuro" }] },
+    { id: "s10", image: s10, imageAlt: "Mr. Reyes muestra la sombra de un nuevo supervisor.", text: '"A new supervisor is coming tomorrow," says Mr. Reyes. The screen shows a shadow and a red folder.', es: "«Mañana viene un nuevo supervisor», dice el señor Reyes. La pantalla muestra una sombra y una carpeta roja.", speaker: "boss", words: [{ word: "supervisor", es: "supervisor" }, { word: "shadow", es: "sombra" }] },
+  ],
+  quizzes: [
+    { id: "q1", afterScene: "s3", questionEn: "Is Camila from Honduras?", questionEs: "¿Camila es de Honduras?", options: [{ label: "Yes", emoji: "🇭🇳" }, { label: "No", emoji: "❌" }, { label: "Canada", emoji: "🇨🇦" }], answer: 0, sayIt: "She is from Honduras.", sayItEs: "Repite: «Ella es de Honduras.»" },
+    { id: "q2", afterScene: "s4", questionEn: "Is her city Toronto?", questionEs: "¿Su ciudad es Toronto?", options: [{ label: "No, San Pedro Sula", emoji: "🏙️" }, { label: "Yes", emoji: "🇨🇦" }, { label: "San Salvador", emoji: "🇸🇻" }], answer: 0, sayIt: "He or she lives in…", sayItEs: "Ahora di dónde vive alguien." },
+    { id: "q3", afterScene: "s6", questionEn: "Is her favorite color purple?", questionEs: "¿Su color favorito es morado?", options: [{ label: "Yes", emoji: "💜" }, { label: "No", emoji: "❌" }, { label: "Yellow", emoji: "💛" }], answer: 0, sayIt: "His or her favorite color is…", sayItEs: "Ahora di el color favorito de alguien." },
+  ],
+  mindsetCard: { afterScene: "s9", phrase: "I think big. I can build my future.", es: "Pienso en grande. Puedo construir mi futuro." },
+  continuePrompt: { en: "Introduce a person with country, city and favorite color.", es: "Presenta a una persona con país, ciudad y color favorito." }, continueWith: ["This is…", "He or she is from…", "He or she lives in…", "His or her favorite color is…"],
+  cliffhanger: { en: "Who is the new supervisor, and why is Vale's name in the red folder?", es: "¿Quién es el nuevo supervisor y por qué está el nombre de Vale en la carpeta roja?" },
+};

@@ -1,0 +1,30 @@
+import type { StorybookEpisode } from "./types";
+import cover from "@/assets/storybook/vale-ep11/cover.jpg";
+import s1 from "@/assets/storybook/vale-ep11/s1.jpg"; import s2 from "@/assets/storybook/vale-ep11/s2.jpg"; import s3 from "@/assets/storybook/vale-ep11/s3.jpg"; import s4 from "@/assets/storybook/vale-ep11/s4.jpg"; import s5 from "@/assets/storybook/vale-ep11/s5.jpg"; import s6 from "@/assets/storybook/vale-ep11/s6.jpg"; import s7 from "@/assets/storybook/vale-ep11/s7.jpg"; import s8 from "@/assets/storybook/vale-ep11/s8.jpg"; import s9 from "@/assets/storybook/vale-ep11/s9.jpg"; import s10 from "@/assets/storybook/vale-ep11/s10.jpg";
+
+export const VALE_MEET_LUIS: StorybookEpisode = {
+  id: "vale-meet-luis", moduleId: "basic-zero", week: 3, title: "Meet my brother", titleEs: "Conoce a mi hermano", episodeLabel: { en: "Episode 11", es: "Episodio 11" },
+  previously: [{ en: "Vale finished her presentation.", es: "Vale terminó su presentación." }, { en: "Mr. Reyes asked for someone important.", es: "El señor Reyes pidió a alguien importante." }, { en: "Luis asked Vale for help.", es: "Luis le pidió ayuda a Vale." }],
+  reviewWords: [{ word: "name", es: "nombre" }, { word: "years", es: "años" }, { word: "disciplined", es: "disciplinado" }],
+  blurb: { en: "Luis has a job interview. Vale helps him start again.", es: "Luis tiene una entrevista. Vale lo ayuda a volver a empezar." }, cover, voice: "male",
+  scenes: [
+    { id: "s1", image: s1, imageAlt: "Vale presenta a Luis al equipo.", text: '"Everyone, this is my brother," says Vale.', es: "«Todos, este es mi hermano», dice Vale.", speaker: "vale", words: [{ word: "brother", es: "hermano" }, { word: "everyone", es: "todos" }] },
+    { id: "s2", image: s2, imageAlt: "Vale y Luis conversan.", text: '"His name is Luis. He is thirty years old," says Vale.', es: "«Su nombre es Luis. Tiene treinta años», dice Vale.", speaker: "vale", words: [{ word: "thirty", es: "treinta" }, { word: "years", es: "años" }] },
+    { id: "s3", image: s3, imageAlt: "Luis muestra una hoja de entrevista.", text: '"Hi. I have a job interview, but my English is not perfect," says Luis.', es: "«Hola. Tengo una entrevista, pero mi inglés no es perfecto», dice Luis.", speaker: "luis", words: [{ word: "interview", es: "entrevista" }, { word: "perfect", es: "perfecto" }] },
+    { id: "s4", image: s4, imageAlt: "Vale anima a Luis.", text: '"Your English does not need to be perfect. Start with your name," says Vale.', es: "«Tu inglés no necesita ser perfecto. Empieza con tu nombre», dice Vale.", speaker: "vale", words: [{ word: "need", es: "necesita" }, { word: "start", es: "empieza" }] },
+    { id: "s5", image: s5, imageAlt: "Luis inicia su presentación.", text: '"My name is Luis. I am thirty years old."', es: "«Me llamo Luis. Tengo treinta años.»", speaker: "luis", words: [{ word: "name", es: "nombre" }, { word: "old", es: "años de edad" }] },
+    { id: "s6", image: s6, imageAlt: "Luis comete un error y se detiene.", text: "Luis makes a mistake and stops.", es: "Luis comete un error y se detiene.", words: [{ word: "mistake", es: "error" }, { word: "stops", es: "se detiene" }] },
+    { id: "s7", image: s7, imageAlt: "Vale habla con Luis sobre la resiliencia.", text: '"We do not give up when life is difficult," says Vale.', es: "«No nos rendimos cuando la vida es difícil», dice Vale.", speaker: "vale", words: [{ word: "life", es: "vida" }, { word: "difficult", es: "difícil" }] },
+    { id: "s8", image: s8, imageAlt: "Vale y Luis repiten una afirmación.", text: '"I help others grow. We do not give up," say Vale and Luis.', es: "«Ayudo a otros a crecer. No nos rendimos», dicen Vale y Luis.", speaker: "luis", words: [{ word: "help", es: "ayudo" }, { word: "grow", es: "crecer" }] },
+    { id: "s9", image: s9, imageAlt: "Vale presenta a Luis con orgullo.", text: '"This is my brother. His name is Luis. He is brave and disciplined," says Vale.', es: "«Este es mi hermano. Su nombre es Luis. Es valiente y disciplinado», dice Vale.", speaker: "vale", words: [{ word: "brave", es: "valiente" }, { word: "disciplined", es: "disciplinado" }] },
+    { id: "s10", image: s10, imageAlt: "Luis inicia una videollamada misteriosa.", text: '"Thank you, Vale. Can you introduce my friend Camila too?" A video call starts.', es: "«Gracias, Vale. ¿También puedes presentar a mi amiga Camila?» Comienza una videollamada.", speaker: "luis", words: [{ word: "introduce", es: "presentar" }, { word: "call", es: "llamada" }] },
+  ],
+  quizzes: [
+    { id: "q1", afterScene: "s2", questionEn: "Who is Luis?", questionEs: "¿Quién es Luis?", options: [{ label: "Vale's brother", emoji: "👫" }, { label: "Her boss", emoji: "👔" }, { label: "A client", emoji: "☎️" }], answer: 0, sayIt: "This is her brother.", sayItEs: "Repite: «Este es su hermano.»" },
+    { id: "q2", afterScene: "s5", questionEn: "Is his name Mateo?", questionEs: "¿Se llama Mateo?", options: [{ label: "No, Luis", emoji: "✅" }, { label: "Yes", emoji: "❌" }, { label: "Dylan", emoji: "🤔" }], answer: 0, sayIt: "His name is…", sayItEs: "Ahora di el nombre de un hombre." },
+    { id: "q3", afterScene: "s9", questionEn: "Is Luis thirty years old?", questionEs: "¿Luis tiene treinta años?", options: [{ label: "Yes", emoji: "3️⃣" }, { label: "No", emoji: "❌" }, { label: "Nineteen", emoji: "1️⃣" }], answer: 0, sayIt: "This is my… His or her name is…", sayItEs: "Ahora presenta a alguien." },
+  ],
+  mindsetCard: { afterScene: "s8", phrase: "I help others grow. We do not give up.", es: "Ayudo a otros a crecer. No nos rendimos." },
+  continuePrompt: { en: "Introduce a person: relationship, name and age.", es: "Presenta a una persona: relación, nombre y edad." }, continueWith: ["This is my…", "His or her name is…", "He or she is… years old.", "We do not give up."],
+  cliffhanger: { en: "Camila answers from another city, surrounded by purple designs.", es: "Camila responde desde otra ciudad, rodeada de diseños morados." },
+};

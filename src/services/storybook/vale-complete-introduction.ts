@@ -1,0 +1,30 @@
+import type { StorybookEpisode } from "./types";
+import cover from "@/assets/storybook/vale-ep10/cover.jpg";
+import s1 from "@/assets/storybook/vale-ep10/s1.jpg"; import s2 from "@/assets/storybook/vale-ep10/s2.jpg"; import s3 from "@/assets/storybook/vale-ep10/s3.jpg"; import s4 from "@/assets/storybook/vale-ep10/s4.jpg"; import s5 from "@/assets/storybook/vale-ep10/s5.jpg"; import s6 from "@/assets/storybook/vale-ep10/s6.jpg"; import s7 from "@/assets/storybook/vale-ep10/s7.jpg"; import s8 from "@/assets/storybook/vale-ep10/s8.jpg"; import s9 from "@/assets/storybook/vale-ep10/s9.jpg"; import s10 from "@/assets/storybook/vale-ep10/s10.jpg";
+
+export const VALE_COMPLETE_INTRODUCTION: StorybookEpisode = {
+  id: "vale-complete-introduction", moduleId: "basic-zero", week: 2, title: "Tell me about yourself", titleEs: "Háblame de ti", episodeLabel: { en: "Episode 10", es: "Episodio 10" },
+  previously: [{ en: "Vale made her Talent Day video.", es: "Vale hizo su video del Día de talentos." }, { en: "She spoke about her hobbies.", es: "Habló de sus pasatiempos." }, { en: "Now she has a complete presentation.", es: "Ahora tiene una presentación completa." }],
+  reviewWords: [{ word: "city", es: "ciudad" }, { word: "favorite", es: "favorito" }, { word: "hobbies", es: "pasatiempos" }],
+  blurb: { en: "A timer starts. Can Vale connect everything she knows?", es: "Comienza un cronómetro. ¿Puede Vale conectar todo lo que sabe?" }, cover, voice: "female",
+  scenes: [
+    { id: "s1", image: s1, imageAlt: "Vale frente a una pantalla con cronómetro.", text: "It is presentation day. A timer is on the big screen.", es: "Es el día de la presentación. Hay un cronómetro en la pantalla grande.", words: [{ word: "presentation", es: "presentación" }, { word: "timer", es: "cronómetro" }] },
+    { id: "s2", image: s2, imageAlt: "Mr. Reyes invita a Vale a presentarse.", text: '"Vale, tell us about yourself," says Mr. Reyes.', es: "«Vale, háblanos de ti», dice el señor Reyes.", speaker: "boss", words: [{ word: "yourself", es: "ti misma" }, { word: "tell", es: "contar" }] },
+    { id: "s3", image: s3, imageAlt: "Vale se queda en blanco.", text: "Vale sees the timer. Her mind is blank.", es: "Vale ve el cronómetro. Su mente está en blanco.", words: [{ word: "mind", es: "mente" }, { word: "blank", es: "en blanco" }] },
+    { id: "s4", image: s4, imageAlt: "Mateo le recuerda las partes de la presentación.", text: '"Name, city, favorites, hobbies. You know this," whispers Mateo.', es: "«Nombre, ciudad, favoritos, pasatiempos. Tú sabes esto», susurra Mateo.", speaker: "mateo", words: [{ word: "whispers", es: "susurra" }, { word: "favorites", es: "favoritos" }] },
+    { id: "s5", image: s5, imageAlt: "Vale respira y se prepara.", text: '"I am ready. I can do hard things," says Vale.', es: "«Estoy lista. Puedo hacer cosas difíciles», dice Vale.", speaker: "vale", words: [{ word: "ready", es: "lista" }, { word: "hard", es: "difíciles" }] },
+    { id: "s6", image: s6, imageAlt: "Vale inicia su presentación.", text: '"My name is Vale, and I am nineteen years old."', es: "«Me llamo Vale y tengo diecinueve años.»", speaker: "vale", words: [{ word: "nineteen", es: "diecinueve" }, { word: "years", es: "años" }] },
+    { id: "s7", image: s7, imageAlt: "Vale muestra El Salvador.", text: '"I am from El Salvador, and I live in San Salvador."', es: "«Soy de El Salvador y vivo en San Salvador.»", speaker: "vale", words: [{ word: "live", es: "vivo" }, { word: "Salvador", es: "Salvador" }] },
+    { id: "s8", image: s8, imageAlt: "Vale muestra sus favoritos.", text: '"My favorite color is yellow because it is bright. My favorite food is pupusas because they remind me of my family."', es: "«Mi color favorito es amarillo porque es brillante. Mi comida favorita son las pupusas porque me recuerdan a mi familia.»", speaker: "vale", words: [{ word: "bright", es: "brillante" }, { word: "pupusas", es: "pupusas" }] },
+    { id: "s9", image: s9, imageAlt: "Vale termina con confianza.", text: '"My hobbies are dancing and making videos. I am creative and disciplined."', es: "«Mis pasatiempos son bailar y hacer videos. Soy creativa y disciplinada.»", speaker: "vale", words: [{ word: "creative", es: "creativa" }, { word: "disciplined", es: "disciplinada" }] },
+    { id: "s10", image: s10, imageAlt: "Luis aparece en la puerta.", text: '"Excellent. Tomorrow, introduce someone important," says Mr. Reyes. Luis appears at the door.', es: "«Excelente. Mañana, presenta a alguien importante», dice el señor Reyes. Luis aparece en la puerta.", speaker: "boss", words: [{ word: "excellent", es: "excelente" }, { word: "important", es: "importante" }] },
+  ],
+  quizzes: [
+    { id: "q1", afterScene: "s6", questionEn: "Is Vale nineteen years old?", questionEs: "¿Vale tiene diecinueve años?", options: [{ label: "Yes", emoji: "✅" }, { label: "No", emoji: "❌" }, { label: "Twenty", emoji: "2️⃣" }], answer: 0, sayIt: "I am… years old.", sayItEs: "Ahora di tu edad." },
+    { id: "q2", afterScene: "s7", questionEn: "Is Vale from Canada?", questionEs: "¿Vale es de Canadá?", options: [{ label: "No, El Salvador", emoji: "🇸🇻" }, { label: "Yes", emoji: "🇨🇦" }, { label: "Honduras", emoji: "🇭🇳" }], answer: 0, sayIt: "I am from… and I live in…", sayItEs: "Ahora di tu país y ciudad." },
+    { id: "q3", afterScene: "s9", questionEn: "Is Vale disciplined and creative?", questionEs: "¿Vale es disciplinada y creativa?", options: [{ label: "Yes", emoji: "⭐" }, { label: "No", emoji: "❌" }, { label: "Only nervous", emoji: "😬" }], answer: 0, sayIt: "I am… and…", sayItEs: "Ahora di dos cualidades tuyas." },
+  ],
+  mindsetCard: { afterScene: "s5", phrase: "I am ready. I can do hard things.", es: "Estoy listo / lista. Puedo hacer cosas difíciles." },
+  continuePrompt: { en: "Introduce yourself in about five connected sentences.", es: "Preséntate en unas cinco oraciones conectadas." }, continueWith: ["My name is…", "I am from…", "My favorite… because…", "My hobbies are…", "I am…"],
+  cliffhanger: { en: 'Luis whispers: "Vale, I need your help."', es: "Luis susurra: «Vale, necesito tu ayuda»." },
+};

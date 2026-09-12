@@ -11,7 +11,7 @@ export type StorybookWord = {
 };
 
 /** Who speaks the scene line — drives the per-character TTS voice. */
-export type StorybookSpeaker = "narrator" | "vale" | "boss" | "kat" | "dylan" | "mateo";
+export type StorybookSpeaker = "narrator" | "vale" | "boss" | "kat" | "dylan" | "mateo" | "luis" | "camila";
 
 export type StorybookScene = {
   id: string;

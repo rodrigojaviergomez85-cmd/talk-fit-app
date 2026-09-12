@@ -25,6 +25,20 @@ de abajo. Esto evita que un personaje cambie de edad, pelo o ropa entre escenas.
   camiseta blanca.
 - **Dylan** — 22, cliente canadiense. Pelo castaño corto, pecas, sudadera verde.
 - **Mamá de Vale** — 45, en casa, delantal, no habla inglés.
+- **Luis** — hermano mayor de Vale, salvadoreño de 30 años, piel morena cálida,
+  pelo negro corto, barba ligera, camisa verde oliva y mochila negra. Voz
+  masculina joven-adulta, amable y un poco nerviosa.
+- **Camila** — hondureña de 24 años, piel morena, pelo negro rizado hasta los
+  hombros, blusa morada y aretes dorados. Voz femenina joven, segura y cálida.
+
+## Control obligatorio antes de publicar
+
+- Comparar portada y cada escena con las fichas canónicas.
+- Confirmar identidad, edad, piel, cabello, ropa y accesorios.
+- Confirmar exactamente dos brazos y dos manos por personaje.
+- Confirmar continuidad de objetos, lugar, acción, diálogo y hablante.
+- Mantener una voz estable por personaje; Vale siempre suena joven, dulce y femenina.
+- Regenerar cualquier imagen o audio inconsistente antes de publicar.
 
 ## Molde de episodio
 
