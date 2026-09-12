@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, ChevronLeft, Play, Sparkles, Star, Volume2, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronLeft, Lock, Play, Sparkles, Star, Volume2, X } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { SlowWordPanel } from "@/components/fluency/SlowWordPanel";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
@@ -8,7 +8,10 @@ import { useAppLang } from "@/lib/i18n";
 import { tokenizeWords } from "@/lib/syllables";
 import { AudioService } from "@/services/audio-service";
 import type { ModelVoice } from "@/services/audio-service";
-import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
+import { getNextEpisodeSlot } from "@/services/storybook";
+import type { NextEpisodeInfo, StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
+import { JourneyService } from "@/services/journey-service";
+import type { JourneyState } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type Slide =
