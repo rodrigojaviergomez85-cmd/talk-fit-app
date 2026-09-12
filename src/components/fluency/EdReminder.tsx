@@ -1,29 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Volume2 } from "lucide-react";
 import { AudioService } from "@/services/audio-service";
-import { classifyEdEnding, edPronunciationHint } from "@/lib/ed-endings";
-import { tokenizeWords } from "@/lib/syllables";
+import { classifyEdEnding, edPronunciationHint, extractEdWords } from "@/lib/ed-endings";
 import { useT } from "@/lib/i18n";
 
-/** Unique regular -ed verbs found in a text, in reading order. */
-export function extractEdWords(text: string): string[] {
-  const out: string[] = [];
-  const seen = new Set<string>();
-  for (const token of tokenizeWords(text)) {
-    if (!token.isWord) continue;
-    const clean = token.value.replace(/[^A-Za-z]/g, "");
-    const sound = classifyEdEnding(clean);
-    if (!sound) continue;
-    const key = clean.toLowerCase();
-    if (seen.has(key)) continue;
-    seen.add(key);
-    out.push(clean);
-  }
-  return out;
-}
-
 type Props = {
-  /** Text to scan for -ed verbs. When empty, only the color reminder shows. */
+  /** Text to scan for -ed verbs. Nothing renders when it has none. */
   text?: string;
   voice?: "female" | "male" | undefined;
   /** Step 5 wording ("before you record") instead of the generic reminder. */
@@ -31,12 +13,12 @@ type Props = {
 };
 
 /**
- * Compact -ed reminder used in Steps 4 and 5 of the Simple Past day-2 pilot.
- * Pronunciation aid only: it never touches practice state, quotas or AI.
+ * Compact -ed reminder shown in Steps 4 and 5 whenever the day's text contains
+ * regular past verbs. Pronunciation aid only: never touches state, quotas or AI.
  */
 export function EdReminder({ text, voice, variant = "step4" }: Props) {
   const t = useT();
-  const words = text ? extractEdWords(text) : [];
+  const words = useMemo(() => (text ? extractEdWords(text) : []), [text]);
   const [playing, setPlaying] = useState(false);
   const cancelled = useRef(false);
 
