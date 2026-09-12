@@ -4,7 +4,7 @@
 
 Llevar a estudiantes latinos de 18–24 años desde A1 hasta B2 en 11 meses con práctica diaria adictiva. Cada episodio convierte el idioma del módulo en una historia ilustrada: vocabulario tocable, preguntas TPRS, repetición oral y grabación final. La meta acumulada es manejar activamente 3,500–4,500 palabras y conseguir trabajos bilingües.
 
-Nuevo objetivo permanente: entrenar mentalidad de perseverancia. Que el estudiante no se rinda cuando el inglés se ponga difícil y diga afirmaciones en voz alta.
+Nuevo objetivo permanente: entrenar mentalidad de resiliencia y pensar en grande. Que el estudiante no se rinda cuando la vida se ponga difícil, que se vea como futuro líder, supervisor, gerente o empresario, y que repita afirmaciones en voz alta.
 
 ## Banco de frases motivacionales
 
@@ -13,14 +13,18 @@ Se crea un banco rotativo para que nunca se sienta repetitivo:
 - English is easy.
 - I can do it.
 - I believe in myself.
+- I love challenges.
+- I am disciplined.
 - I am amazing.
 - I am awesome.
 - You are amazing.
 - You are awesome.
 - Mistakes are part of the process.
 - Effort makes progress.
+- I am a future leader.
+- I think big.
 
-Cada episodio usa una frase distinta. Al Episodio 3 le toca **English is easy. I can do it.**
+Cada episodio usa una frase distinta. Al Episodio 3 le toca **English is easy. I love challenges.**
 
 ## Cómo se integra la mentalidad en cada historia
 
@@ -38,7 +42,9 @@ Continúa directamente del final del Episodio 2, cuando Mr. Reyes llama a Vale a
 
 ### Historia
 
-Vale entra nerviosa a la oficina de Mr. Reyes, creyendo que hizo algo mal. En realidad la felicita y le presenta a Mateo, el nuevo agente. Mateo se presenta con frases básicas: nombre, edad, país, ciudad, color favorito y pasatiempos. Vale intenta presentarse otra vez, se traba y se apena. Mateo sonríe y le dice que los errores son parte del proceso; juntos repiten «English is easy. I can do it.» Vale respira, lo intenta de nuevo y le sale perfecto. Kat los ve y sonríe. Al final, Mr. Reyes los pone como pareja de práctica y Vale recibe una notificación extraña en su celular: el gancho del Episodio 4.
+Vale entra nerviosa a la oficina de Mr. Reyes, creyendo que hizo algo mal. En realidad la felicita y le presenta a Mateo, el nuevo agente. Mateo se presenta con frases básicas: nombre, edad, país, ciudad, color favorito y pasatiempos. Vale intenta presentarse otra vez, se traba y se apena; se siente pequeña frente a la situación. Mateo le recuerda que los retos son oportunidades y repiten juntos: «English is easy. I love challenges.» Vale respira, lo intenta de nuevo y le sale perfecto. Kat los ve y sonríe. Al final, Mr. Reyes los pone como pareja de práctica y Vale recibe una notificación extraña en su celular: el gancho del Episodio 4.
+
+La moraleja del episodio conecta con el futuro grande del estudiante: aprender inglés no es solo un examen, es entrenamiento para ser el próximo líder, supervisor o empresario.
 
 ### Alcance de inglés (Basic Zero)
 
@@ -56,7 +62,7 @@ Vale entra nerviosa a la oficina de Mr. Reyes, creyendo que hizo algo mal. En re
 ### Cierre
 
 - Frase motivacional repetida en voz alta.
-- Grabación final de 15 segundos: el estudiante se presenta y termina con «I can do it.»
+- Grabación final de 15 segundos: el estudiante se presenta y termina con la frase del día.
 - Botón «Listen to me», estrellas, cliffhanger y botón al Episodio 4.
 
 ## Cambios técnicos
