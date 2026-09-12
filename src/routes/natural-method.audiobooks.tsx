@@ -175,8 +175,10 @@ function LevelSection({
 /** Season map: one card per day, future days locked until the learner gets there. */
 function SeasonMap({ showEs }: { showEs: boolean }) {
   const [state, setState] = useState<JourneyState | null>(null);
+  const [unlimited, setUnlimited] = useState(false);
 
   useEffect(() => {
+    setUnlimited(hasUnlimitedAccess());
     setState(JourneyService.load());
     void JourneyService.pull().then(setState).catch(() => {});
   }, []);
@@ -184,7 +186,6 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
   return (
     <div className="space-y-3">
       {STORYBOOK_SEASONS.map((season) => {
-        const unlimited = hasUnlimitedAccess();
         const done = state ? completedDaysInModule(state, season.moduleId) : 0;
         const open = unlimited ? Number.MAX_SAFE_INTEGER : unlockedDay(done);
         return (
