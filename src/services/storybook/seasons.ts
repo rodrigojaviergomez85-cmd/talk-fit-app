@@ -93,3 +93,18 @@ export function unlockedWeek(completedDays: number): SeasonWeek {
   const week = Math.floor(Math.max(0, completedDays) / 5) + 1;
   return (week > 4 ? 4 : week) as SeasonWeek;
 }
+
+/** The slot that follows the current episode, including unlock status. */
+export function getNextEpisodeSlot(currentEpisodeId: string, state: JourneyState): NextEpisodeInfo | null {
+  const season = STORYBOOK_SEASONS.find((s) => s.slots.some((slot) => slot.episodeId === currentEpisodeId));
+  if (!season) return null;
+  const idx = season.slots.findIndex((slot) => slot.episodeId === currentEpisodeId);
+  if (idx < 0 || idx === season.slots.length - 1) return null;
+  const next = season.slots[idx + 1]!;
+  return {
+    episodeId: next.episodeId,
+    day: next.day,
+    teaser: next.teaser,
+    unlocked: isDayUnlocked(state, season.moduleId, next.day),
+  };
+}
