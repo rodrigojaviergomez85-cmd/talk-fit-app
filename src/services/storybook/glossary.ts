@@ -136,7 +136,7 @@ export type WordLookup = {
  */
 export function lookupWord(
   word: string,
-  options: { scene?: StorybookScene; episodeGlossary?: Map<string, string> } = {},
+  options: { scene?: StorybookScene | undefined; episodeGlossary?: Map<string, string> | undefined } = {},
 ): WordLookup {
   const key = normalizeWord(word);
   if (!key) return { meaning: null, curated: false };
