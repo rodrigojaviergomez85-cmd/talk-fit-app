@@ -115,6 +115,13 @@ export function TakeBoard({
   /** Per-tier caps: basic 30s / 5+ sentences, intermediate+advanced 45s / 8+ sentences. */
   const takeMax = tier === "higher" ? 45 : 30;
   const sentenceGoal = tier === "higher" ? 8 : goalSentences;
+  /** Authored goalSeconds may exceed the tier cap (e.g. 45–45 in a 30s level).
+   *  Clamp so the "Target …" label and the green threshold stay reachable. */
+  const cappedGoal: [number, number] = [Math.min(goalSeconds[0], takeMax - 10), Math.min(goalSeconds[1], takeMax)];
+  const capTarget = (range: [number, number]): [number, number] => [
+    Math.min(range[0], takeMax - 10),
+    Math.min(range[1], takeMax),
+  ];
 
   useEffect(() => {
     const audio = new Audio();
@@ -175,10 +182,10 @@ export function TakeBoard({
   return (
     <div className="space-y-4">
       {rolePlay ? (
-        <CombinedGoalPanel seconds={combinedSeconds} minSeconds={goalSeconds[0]} maxSeconds={goalSeconds[1]} started={Boolean(latest)} t={t} />
+        <CombinedGoalPanel seconds={combinedSeconds} minSeconds={cappedGoal[0]} maxSeconds={cappedGoal[1]} started={Boolean(latest)} t={t} />
       ) : latest ? (
         /* The goal is stated once above the board; live results appear after the first take. */
-        <GoalPanel latest={latest} minSeconds={goalSeconds[0]} goalSentences={sentenceGoal} t={t} />
+        <GoalPanel latest={latest} minSeconds={cappedGoal[0]} goalSentences={sentenceGoal} t={t} />
       ) : null}
       {rolePlay && !pressure ? (
         <p className="text-center text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
