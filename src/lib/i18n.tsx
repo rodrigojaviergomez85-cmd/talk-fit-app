@@ -242,6 +242,10 @@ const DICT = {
   "rep4.doneSub": ["Ya lo hiciste tuyo.", "You made it yours."],
   "rep4.continueRep5": ["CONTINUAR AL PASO 5", "CONTINUE TO STEP 5"],
   "rep4.help": ["¿Necesitas ayuda?", "Need a hand?"],
+  "rep4.warmupHint": [
+    "Responde en 1–2 oraciones (máx. 15 s) — es tu calentamiento para el Paso 5.",
+    "Answer in 1–2 sentences (max 15s) — this is your warm-up for Step 5.",
+  ],
   "rep5.title": ["TU TURNO", "YOUR TURN"],
   "rep5.instr": ["Habla solo. Conecta 5 ideas o más.", "Speak alone. Connect 5 or more ideas."],
   "rep5.aiDisclaimer": [

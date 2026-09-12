@@ -12,6 +12,8 @@ type VoiceRecorderProps = {
   targetSeconds?: [number, number];
   /** Hard limit: the recording stops by itself when reached. */
   maxSeconds?: number;
+  /** Show remaining time (maxSeconds - elapsed) instead of an ascending count. */
+  countdown?: boolean;
   showTimer?: boolean;
   size?: "sm" | "md" | "lg";
   /** Fired once the microphone is actually capturing. */
@@ -45,6 +47,7 @@ export function VoiceRecorder({
   stopLabel = "STOP",
   targetSeconds,
   maxSeconds,
+  countdown = false,
   showTimer = true,
   size = "lg",
   onStart,
@@ -117,6 +120,7 @@ export function VoiceRecorder({
 
   const nearLimit = !!maxSeconds && recording && seconds >= maxSeconds - 5;
   const inTarget = targetSeconds && seconds >= targetSeconds[0] && seconds <= targetSeconds[1];
+  const displaySeconds = countdown && maxSeconds ? Math.max(0, maxSeconds - seconds) : seconds;
 
   const sizeClasses =
     size === "lg"
@@ -154,7 +158,7 @@ export function VoiceRecorder({
               nearLimit ? "text-destructive" : inTarget ? "text-success" : recording ? "text-foreground" : "text-muted-foreground",
             )}
           >
-            {String(Math.floor(seconds / 60)).padStart(2, "0")}:{String(seconds % 60).padStart(2, "0")}
+            {String(Math.floor(displaySeconds / 60)).padStart(2, "0")}:{String(displaySeconds % 60).padStart(2, "0")}
           </p>
           {targetSeconds ? (
             <p className="mt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
