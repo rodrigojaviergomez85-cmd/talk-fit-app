@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Mic } from "lucide-react";
+import { Hand, Mic } from "lucide-react";
+
 import { AudioPlayer } from "./AudioPlayer";
 import { SlowWordPanel } from "./SlowWordPanel";
 import { AudioService } from "@/services/audio-service";
@@ -204,8 +205,15 @@ export function Rep2Feedback({ result, voice, onTryAgain, onSkip, onNext, nextLa
           {result.diff && openWord ? (
             <SlowWordPanel word={openWord} voice={voice} compact onClose={() => setOpenWord(null)} />
           ) : null}
+          {result.diff && result.diff.target.some((t) => t.changed) ? (
+            <p className="flex items-center gap-1.5 pt-2 text-[11px] leading-snug text-muted-foreground">
+              <Hand className="size-3.5 shrink-0" />
+              {t("rep2.tapHint")}
+            </p>
+          ) : null}
         </div>
       </div>
+
 
       <div className="flex flex-col gap-3">
         <AudioPlayer text={result.target} label={t("rep2.listenAgain")} rate={1} voice={voice} variant="ghost" size="sm" />
