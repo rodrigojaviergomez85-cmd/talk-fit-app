@@ -16,9 +16,8 @@ Objetivo: que los estudiantes hablen concentrado y no rellenen 90 segundos con p
    - El texto de la meta arriba del micrófono y el contador de oraciones usan estos mismos números.
 
 3. **La pregunta siempre visible al grabar**
-   - En cada tarjeta de audio (Audio 1, 2, 3, 4, 5) se muestra la pregunta que se está contestando, en un recuadro compacto arriba del micrófono, con su botón de escuchar.
-   - Así el estudiante ya no pierde el hilo a partir del audio 2.
-   - En los días de role-play cada turno ya muestra su propia línea; se mantiene igual.
+   - En cada tarjeta de audio (Audio 1, 2, 3, 4, 5) se muestra la pregunta que se está contestando, en un recuadro compacto arriba del micrófono, **solo texto, sin botón de escuchar** (la pregunta principal ya tiene su botón arriba).
+   - En los días de role-play, donde la línea de cada turno es distinta de la pregunta principal, se mantiene todo como está: línea propia **con** botón de escuchar.
 
 ## Alcance técnico
 
