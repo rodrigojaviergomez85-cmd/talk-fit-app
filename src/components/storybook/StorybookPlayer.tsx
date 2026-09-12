@@ -169,6 +169,7 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
               es={es}
               stars={stars}
               notebook={notebook}
+              nextEpisode={nextEpisode}
             />
           ) : null}
         </div>
