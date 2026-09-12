@@ -4,14 +4,15 @@ import { useT, type TKey } from "@/lib/i18n";
 
 // HOME = do · REVIEW = reinforce · INTERVIEW = practice · METHOD = support · AI COACH = ask · ACCOUNT = manage.
 // Practice is reached from Home / module CTAs; Progress lives in the Home menu.
-const ITEMS = [
+type NavItem = { to: string; key: TKey; icon: typeof Home; line2?: TKey; aria?: TKey };
+const ITEMS: readonly NavItem[] = [
   { to: "/", key: "nav.home", icon: Home },
   { to: "/review", key: "nav.review", icon: BookOpen },
   { to: "/review/interview-simulators", key: "nav.interview", icon: BriefcaseBusiness, line2: "nav.interviewLine2", aria: "nav.interviewAria" },
   { to: "/natural-method", key: "nav.natural", icon: Headphones },
   { to: "/ai-coach", key: "nav.aiCoach", icon: MessageCircle },
   { to: "/profile", key: "nav.account", icon: User },
-] as const satisfies readonly { to: string; key: TKey; icon: typeof Home; line2?: TKey; aria?: TKey }[];
+];
 
 
 
