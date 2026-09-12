@@ -207,8 +207,8 @@ export const VALE_FIRST_CALL: StorybookEpisode = {
     {
       id: "q3",
       afterScene: "s9",
-      questionEn: "How does Vale feel?",
-      questionEs: "¿Cómo se siente Vale?",
+      questionEn: "How is Vale today?",
+      questionEs: "¿Cómo está Vale hoy?",
       options: [
         { label: "Happy", emoji: "😄" },
         { label: "Tired", emoji: "😴" },
