@@ -66,7 +66,7 @@ describe("storybook seasons", () => {
     }
   });
 
-  it("returns a locked Season 2 teaser after the Season 1 finale", () => {
+  it("returns the Season 2 premiere after the Season 1 finale", () => {
     const state: JourneyState = {
       days: {},
       streakDays: 0,
@@ -77,6 +77,6 @@ describe("storybook seasons", () => {
     const next = getNextEpisodeSlot("vale-graduation", state);
     expect(next).toBeTruthy();
     expect(next!.teaser.en).toBe("She is ready");
-    expect(next!.episodeId).toBeNull();
+    expect(next!.episodeId).toBe("vale-s2-ready");
   });
 });
