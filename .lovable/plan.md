@@ -62,7 +62,7 @@ La moraleja del episodio conecta con el futuro grande del estudiante: aprender i
 ### Cierre
 
 - Frase motivacional repetida en voz alta.
-- Grabación final de 15 segundos: el estudiante se presenta y termina con «I can do it.»
+- Grabación final de 15 segundos: el estudiante se presenta y termina con la frase del día.
 - Botón «Listen to me», estrellas, cliffhanger y botón al Episodio 4.
 
 ## Cambios técnicos
