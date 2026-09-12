@@ -23,7 +23,9 @@ const DICT = {
   "nav.natural": ["MÉTODO", "METHOD"],
   "nav.account": ["MI CUENTA", "ACCOUNT"],
   "nav.aiCoach": ["AI COACH", "AI COACH"],
-  "nav.interview": ["ENTREV", "INTERV"],
+  "nav.interview": ["SIMULADOR", "INTERVIEW"],
+  "nav.interviewLine2": ["ENTREVISTA", "SIMULATOR"],
+  "nav.interviewAria": ["Simulador de entrevistas", "Interview simulator"],
 
 
   // AI Coach (chat)
