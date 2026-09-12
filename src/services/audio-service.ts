@@ -32,9 +32,9 @@ function pickVoice(voice: ModelVoice): SpeechSynthesisVoice | undefined {
   const voices = window.speechSynthesis.getVoices().filter((v) => v.lang.toLowerCase().startsWith("en"));
   if (voices.length === 0) return undefined;
   const preferredNames =
-    voice === "female"
+    voice === "female" || voice === "girl"
       ? ["Samantha", "Google US English", "Karen", "Jenny"]
-      : voice === "male"
+      : voice === "male" || voice === "boss"
         ? ["Daniel", "Alex", "Google UK English Male"]
         : ["Samantha", "Google US English", "Alex", "Daniel"];
   for (const name of preferredNames) {
@@ -136,7 +136,9 @@ export const AudioService = {
 
     void loadModelAudio(
       text,
-      options.voice === "female" || options.voice === "male" ? options.voice : undefined,
+      options.voice === "female" || options.voice === "male" || options.voice === "girl" || options.voice === "boss"
+        ? options.voice
+        : undefined,
       options.tone ?? "coach",
     )
       .then((url) => {
