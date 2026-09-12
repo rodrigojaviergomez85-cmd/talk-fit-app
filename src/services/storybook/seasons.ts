@@ -58,12 +58,33 @@ export const STORYBOOK_SEASONS: Season[] = [
       },
       {
         day: 4,
+        episodeId: "vale-who-is-d",
+        teaser: { en: "Who is D?", es: "¿Quién es D?" },
+      },
+      {
+        day: 5,
+        episodeId: "vale-support-team",
+        teaser: { en: "The support team", es: "El equipo de soporte" },
+      },
+      {
+        day: 6,
+        episodeId: "vale-where-are-you-from",
+        teaser: { en: "Where are you from?", es: "¿De dónde eres?" },
+      },
+      {
+        day: 7,
+        episodeId: "vale-favorite-color",
+        teaser: { en: "My favorite color", es: "Mi color favorito" },
+      },
+      {
+        day: 8,
         episodeId: null,
-        teaser: { en: "The photo on her phone", es: "La foto en el celular" },
+        teaser: { en: "My favorite food", es: "Mi comida favorita" },
       },
     ],
   },
 ];
+
 
 export function getSeason(moduleId: string): Season | undefined {
   return STORYBOOK_SEASONS.find((season) => season.moduleId === moduleId);
