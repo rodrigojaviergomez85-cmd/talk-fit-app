@@ -17,7 +17,7 @@ const NOT_PAST = new Set([
 ]);
 
 /** -ed adjectives always pronounced /ɪd/. */
-const ADJ_ID = new Set(["aged", "blessed", "learned", "dogged", "jagged"]);
+const ADJ_ID = new Set(["aged", "blessed", "dogged", "jagged"]);
 
 /** "th" before -ed is usually unvoiced /t/; these are the voiced /d/ exceptions. */
 const TH_VOICED = new Set([
@@ -41,8 +41,7 @@ function endsWithIgh(stem: string): boolean {
  */
 export function classifyEdEnding(word: string): EdSound | null {
   const w = word.toLowerCase().replace(/[^a-z]/g, "");
-  // Needs at least stem + ed ("played"), and "eed"/"ied" words are handled below.
-  if (w.length < 5 || !w.endsWith("ed")) return null;
+  if (w.length < 4 || !w.endsWith("ed")) return null;
   if (NOT_PAST.has(w)) return null;
   if (ADJ_ID.has(w)) return "id";
   if (w.endsWith("ied")) return "d"; // studied, carried → stem vowel sound
@@ -75,12 +74,8 @@ export function edPronunciationHint(word: string, sound: EdSound): string {
   else base = clean;
 
   if (sound === "id") {
-    // Keep a visible syllable break: wanted → WAN-TED (undouble the stem: hopped → HOP-ED)
-    let stem = base;
-    if (stem.length > 3 && stem[stem.length - 1] === stem[stem.length - 2] && /[^aeiou]/.test(stem[stem.length - 1]!)) {
-      stem = stem.slice(0, -1);
-    }
-    return `${stem.toUpperCase()}-ED`;
+    // Syllable break: wanted → WAN-TED, needed → NEE-DED, hopped → HOP-PED
+    return `${base.slice(0, -1).toUpperCase()}-${base.slice(-1).toUpperCase()}ED`;
   }
   const suffix = sound.toUpperCase(); // "T" or "D"
   return `${base.toUpperCase()}${suffix}`;

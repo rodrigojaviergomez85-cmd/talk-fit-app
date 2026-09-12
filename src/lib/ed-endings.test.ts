@@ -76,7 +76,7 @@ describe("edPronunciationHint", () => {
 
   it("builds /ɪd/ hints with a syllable break", () => {
     expect(edPronunciationHint("wanted", "id")).toBe("WAN-TED");
-    expect(edPronunciationHint("needed", "id")).toBe("NEED-ED");
-    expect(edPronunciationHint("hopped", "id")).toBe("HOP-ED");
+    expect(edPronunciationHint("needed", "id")).toBe("NEE-DED");
+    expect(edPronunciationHint("hopped", "id")).toBe("HOP-PED");
   });
 });
