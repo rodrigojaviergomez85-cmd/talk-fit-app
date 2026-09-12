@@ -55,8 +55,8 @@ export const VALE_S2_FINAL_FLUENCY: StorybookEpisode = {
       id: "s2",
       image: s2,
       imageAlt: "Vale sonríe al público.",
-      text: "\"One year ago I am a student here. Today I am a leader,\" she says.",
-      es: "«Hace un año soy estudiante aquí. Hoy soy una líder», dice ella.",
+      text: "Vale remembers her first day: \"I am nervous.\" Today she says: \"I am a leader.\"",
+      es: "Vale recuerda su primer día: «Estoy nerviosa.» Hoy dice: «Soy una líder.»",
       speaker: "vale",
       words: [
         { word: "student", es: "estudiante" },
