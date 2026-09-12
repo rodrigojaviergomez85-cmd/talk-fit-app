@@ -13,7 +13,12 @@ export function EdLegend({ collapsible = false }: { collapsible?: boolean }) {
   const [open, setOpen] = useState(false);
 
   const legend = (
-    <div className={cn("rounded-2xl border border-border bg-secondary/40 px-3 py-2", collapsible && "mt-1.5")}>
+    <div
+      className={cn(
+        "rounded-2xl border border-border bg-secondary/40 px-3 py-2",
+        collapsible && "mt-1.5",
+      )}
+    >
       <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
         {t("ed.legendTitle")}
       </p>
@@ -39,7 +44,10 @@ export function EdLegend({ collapsible = false }: { collapsible?: boolean }) {
         className="h-auto min-h-[36px] px-0 py-1 text-[11px] font-bold"
       >
         {t("ed.colorHelp")}
-        <ChevronDown className={cn("size-3.5 transition-transform", open && "rotate-180")} aria-hidden />
+        <ChevronDown
+          className={cn("size-3.5 transition-transform", open && "rotate-180")}
+          aria-hidden
+        />
       </Button>
       {open ? legend : null}
     </div>
