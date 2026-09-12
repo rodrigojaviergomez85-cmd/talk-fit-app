@@ -11,6 +11,33 @@ En la app, **Basic 1 corresponde a Simple Future**, no a Simple Present. La temp
 
 La historia no copiará mecánicamente los ejemplos genéricos del módulo. Convertirá cada función comunicativa en una situación real dentro del mundo de Vale, manteniendo el mismo orden y dificultad.
 
+## Meta global A1 → B2 en 11 meses
+
+Esta temporada es el **mes 2 de una ruta de 11 meses**, no una historia aislada. La serie completa apoyará estos hitos funcionales:
+
+- **Meses 1–2 · A1:** identidad, familia, gustos, planes y respuestas breves comprensibles.
+- **Meses 3–5 · A2:** rutinas, pasado, preguntas y conversaciones conectadas sobre vida diaria y trabajo.
+- **Meses 6–8 · B1:** explicar, justificar, comparar, resolver problemas y sostener conversaciones sin guion completo.
+- **Meses 9–11 · B2 funcional:** argumentar, negociar, improvisar, comprender habla más natural y desenvolverse en entrevistas y trabajo bilingüe.
+
+La serie contribuye a esta ruta junto con los cinco pasos diarios, listening, Review, Natural Method, entrevistas y práctica espontánea. No se presentará como certificación oficial de nivel; se medirán comportamientos observables de comprensión y producción.
+
+### Meta léxica acumulada
+
+Para llegar a **3,500 palabras/chunks activos**, 12–15 elementos nuevos por episodio no bastan por sí solos. La meta corregida será progresiva:
+
+| Etapa | Meta nueva por día | Meta aproximada de la etapa |
+|---|---:|---:|
+| Meses 1–2 | 14–16 | 560–640 |
+| Meses 3–5 | 15–17 | 900–1,020 |
+| Meses 6–8 | 17–19 | 1,020–1,140 |
+| Meses 9–11 | 19–21 | 1,140–1,260 |
+| **Total introducido** |  | **3,620–4,060** |
+
+Un elemento contará como **activo** solamente después de aparecer al menos tres veces en contextos separados y ser producido oralmente por el estudiante en dos ocasiones. Se contará una sola vez por significado útil; variantes como `plan/plans/planned` no inflarán artificialmente el total.
+
+Para **Temporada 2**, la meta será introducir **280–320 elementos útiles** (14–16 por día) y reciclar vocabulario de Basic Zero. Cada palabra/chunk prioritario volverá, cuando sea posible, en el episodio siguiente, dentro de la misma semana y en una revisión posterior. El tablero curricular deberá distinguir: introducido, comprendido, producido y consolidado.
+
 ## Concepto narrativo
 
 Ana eligió a Vale para un **reto juvenil de liderazgo en el call center**. Durante un mes, Vale y su equipo deben preparar y presentar una idea para ayudar a jóvenes a conseguir su primer empleo bilingüe.
@@ -58,7 +85,7 @@ No será una temporada encerrada en una oficina. Habrá casa, bus, cancha, café
 - 10–12 escenas con: gancho, dificultad, repetición natural del chunk, giro y cliffhanger.
 - 3 preguntas TPRS con respuesta oral corta.
 - Toda palabra inglesa será tocable, con significado y pronunciación lenta.
-- 12–15 palabras activas nuevas; 3–5 palabras anteriores en repaso espaciado.
+- 14–16 palabras/chunks nuevos; 5–8 anteriores en repaso espaciado. No todos se consideran activos el primer día.
 - Una afirmación hablada y rotativa, conectada con el conflicto; no repetir la misma diariamente.
 - Grabación final de **máximo 15 segundos, unas 5 oraciones**, con `LISTEN TO ME` y opción de repetir.
 - Inglés principal y español bajo demanda.
@@ -76,6 +103,9 @@ Rotar según la historia: `I have a plan`, `I am disciplined`, `I believe in mys
 - Reciclar Basic Zero sin reenseñarlo: identidad, origen, familia, gustos, equipo y afirmaciones.
 - Evitar pasado narrativo no estudiado; recuerdos se presentan con fórmulas simples ya conocidas.
 - Mantener metas del curso: 30–45 segundos en días normales; 45–60 y 6–8 ideas en retos, aunque el cuento conserve su grabación final breve de 15 segundos.
+- Etiquetar cada episodio con su función CEFR observable: planear, describir planes ajenos, decidir, prometer, predecir o combinar formas.
+- Auditar el vocabulario por significado y familia léxica para evitar duplicados y comprobar el avance real hacia 3,500 activos.
+- Reservar la lectura tocable para comprensión; la meta activa se valida únicamente con recuperación y producción oral, no por haber visto una palabra.
 
 ## Continuidad visual y de voces
 
@@ -94,6 +124,7 @@ Rotar según la historia: `I have a plan`, `I am disciplined`, `I believe in mys
 2. Escribir primero los guiones completos de los episodios 1–5, sin generar imágenes.
 3. Revisar alineación, tensión narrativa, repetición y cliffhangers del lote.
 4. Producir e integrar en lotes de cinco: 1–5, 6–10, 11–15 y 16–20.
-5. No publicar un lote hasta superar la triple revisión visual, de voz y curricular.
+5. Antes de ilustrar, crear el inventario de 280–320 elementos de la temporada, marcando nuevos, reciclados y fechas de reaparición.
+6. No publicar un lote hasta superar la triple revisión visual, de voz y curricular, más la auditoría de vocabulario activo.
 
 Así se aprueba la temporada completa una sola vez, pero se mantiene control de calidad en bloques manejables.
