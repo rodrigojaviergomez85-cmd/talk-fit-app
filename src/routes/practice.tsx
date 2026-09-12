@@ -30,7 +30,7 @@ import {
 import { CollapsibleHelp, TextToggle } from "@/components/fluency/CollapsibleHelp";
 import { ReviewGuide } from "@/components/review/ReviewGuide";
 import { supportLevel, prefersChunks, showsFullTextByDefault } from "@/lib/support-level";
-import { rep5Tier, primaryVisual, introTier, introExampleLimit, introImageIsEssential } from "@/lib/rep5-support";
+import { rep5Tier, primaryVisual, introTier, introExampleLimit, introImageIsEssential, practiceImageIsEssential } from "@/lib/rep5-support";
 import { CourseService, DEFAULT_MODULE, isModuleId, type LoadedModule } from "@/services/course-service";
 import { ModuleLoadError } from "@/components/fluency/ModuleLoadState";
 import { useModuleContent } from "@/hooks/use-module-content";
@@ -733,6 +733,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
   }
 
   const title = REP_TITLES[stage] ?? REP_TITLES[0]!;
+  const showPracticeVisuals = practiceImageIsEssential(day);
 
   return (
     <SpanishProvider value={showEs}>
@@ -785,6 +786,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               }}
               onSkip={skipCurrent}
               onNext={goForward}
+               showVisuals={showPracticeVisuals}
             />
           ) : null}
           {stage === 3 ? <Rep3Shadow day={day} onNext={goForward} onSkip={goForward} /> : null}
@@ -800,7 +802,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               }}
               onSkip={skipCurrent}
               onNext={goForward}
-              hideVisuals={moduleId === "past-stories"}
+               hideVisuals={!showPracticeVisuals}
               promptTone={moduleId === "advanced-1" ? "neutral" : "coach"}
             />
 
@@ -869,6 +871,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               day={day}
               takes={takes}
               finalIndex={finalIndex}
+               showVisuals={showPracticeVisuals}
               onRecorded={(index, rec) => {
                 trackSeconds(rec);
                 const pending: Recording = { ...rec, countStatus: "pending", sentenceCount: null };
@@ -1458,6 +1461,7 @@ export function Rep2Copy({
   onRecorded,
   onSkip,
   onNext,
+  showVisuals = true,
 }: {
   moduleId: ModuleId;
   day: CourseDay;
@@ -1468,6 +1472,7 @@ export function Rep2Copy({
   onRecorded: (rec: Recording) => void;
   onSkip: () => void;
   onNext: () => void;
+  showVisuals?: boolean;
 }) {
   const t = useT();
   const correctionEnabled = isRep2CorrectionEnabled(moduleId, day);
@@ -1566,7 +1571,7 @@ export function Rep2Copy({
 
       <PowerChunks chunks={day.powerChunks} voice={day.speakerVoice} />
 
-      {chunkImage ? (
+      {showVisuals && chunkImage ? (
         <figure className="overflow-hidden rounded-3xl border border-border bg-card">
           <img
             src={chunkImage.src}
@@ -1580,9 +1585,9 @@ export function Rep2Copy({
             {showEs ? chunkImage.altEs : chunkImage.alt}
           </figcaption>
         </figure>
-      ) : (
+      ) : showVisuals ? (
         <SceneImage day={day} />
-      )}
+      ) : null}
       <p className="text-center text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
         {t("practice.chunk")} {index + 1} {t("practice.of")} {chunks.length}
       </p>
@@ -1871,6 +1876,7 @@ export function Rep5FinalRep({
   day,
   takes,
   finalIndex,
+  showVisuals = true,
   onRecorded,
   onDelete,
   onSelectFinal,
@@ -1880,6 +1886,7 @@ export function Rep5FinalRep({
   day: CourseDay;
   takes: (Recording | null)[];
   finalIndex: number | null;
+  showVisuals?: boolean;
   onRecorded: (index: number, rec: Recording) => void;
   onDelete: (index: number) => void;
   onSelectFinal: (index: number) => void;
@@ -1896,7 +1903,7 @@ export function Rep5FinalRep({
 
   const hasTurns = Boolean(day.rep5Turns?.length);
   const tier = rep5Tier(moduleId);
-  const visual = primaryVisual(day, tier);
+  const visual = showVisuals ? primaryVisual(day, tier) : null;
   const goalLine = hasTurns
     ? t("rep5.turnsGoal")
         .replace("{turns}", String(day.rep5Turns!.length))
@@ -1960,8 +1967,8 @@ export function Rep5FinalRep({
         <PowerChunks chunks={day.powerChunks} size="mini" />
       )}
       {toolbox}
-      {visual !== "scene" ? <SceneImage day={day} /> : null}
-      {visual !== "story" ? <StoryStrip day={day} showCaptions={false} /> : null}
+      {showVisuals && visual !== "scene" ? <SceneImage day={day} /> : null}
+      {showVisuals && visual !== "story" ? <StoryStrip day={day} showCaptions={false} /> : null}
       {day.rep5Tips ? (
         <TranslatableText es={day.rep5Tips.es} supportOnly>
           <p className="text-[14px] leading-relaxed text-foreground">{day.rep5Tips.en}</p>
@@ -2067,7 +2074,7 @@ export function Rep5FinalRep({
       {chunksAbove ? <PowerChunks chunks={day.powerChunks} size="mini" coreOnly /> : null}
       {visual === "story" ? <StoryStrip day={day} showCaptions={false} /> : null}
       {visual === "scene" ? <SceneImage day={day} /> : null}
-      <VariantPicker day={day} />
+      {showVisuals ? <VariantPicker day={day} /> : null}
 
       {/* SPEAK */}
       {board}
