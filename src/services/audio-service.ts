@@ -100,9 +100,9 @@ function speakWithBrowser(text: string, options: SpeakOptions): () => void {
   const synth = window.speechSynthesis;
   synth.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
-  // "girl" speaks slightly faster with a high, youthful pitch (teenage character).
-  utterance.rate = (options.rate ?? 1) * (options.voice === "girl" ? 1.15 : 1);
-  utterance.pitch = options.voice === "girl" ? 1.5 : 1;
+  // Keep Vale's fallback delivery natural while giving it a gently youthful lift.
+  utterance.rate = options.rate ?? 1;
+  utterance.pitch = options.voice === "girl" ? 1.2 : 1;
   utterance.lang = "en-US";
   const selected = pickVoice(options.voice ?? "neutral");
   if (selected) utterance.voice = selected;
@@ -135,11 +135,6 @@ export const AudioService = {
     let stopFallback: (() => void) | null = null;
     let element: HTMLAudioElement | null = null;
 
-    // "girl" (storybook characters like Vale) plays slightly faster WITHOUT pitch
-    // preservation, so the pitch rises and she sounds like a teenage girl.
-    const girly = options.voice === "girl";
-    const effectiveRate = (options.rate ?? 1) * (girly ? 1.15 : 1);
-
     void loadModelAudio(
       text,
       options.voice === "female" || options.voice === "male" || options.voice === "girl" || options.voice === "boss"
@@ -150,8 +145,8 @@ export const AudioService = {
       .then((url) => {
         if (cancelled) return;
         const audio = new Audio(url);
-        audio.playbackRate = effectiveRate;
-        audio.preservesPitch = !girly;
+        audio.playbackRate = options.rate ?? 1;
+        audio.preservesPitch = true;
         element = audio;
         currentAudio = audio;
         audio.onplay = () => options.onStart?.();
