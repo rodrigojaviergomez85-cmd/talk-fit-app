@@ -1486,8 +1486,8 @@ export function Rep2Copy({
 }) {
   const t = useT();
   const correctionEnabled = isRep2CorrectionEnabled(moduleId, day);
-  /** Pilot: color-code regular -ed verbs only on Simple Past day 2. */
-  const highlightEd = moduleId === "past-stories" && day.day === 2;
+  /** Color-code regular -ed verbs whenever the day's text actually has some. */
+  const highlightEd = useMemo(() => hasEdWords(CourseService.getModelText(day)), [day]);
   const chunks = rep2Chunks(day);
   const chunk = chunks[index] ?? chunks[0]!;
   const [mine, setMine] = useState<Recording | null>(null);
