@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, ChevronDown, PlayCircle } from "lucide-react";
+import { ArrowLeft, ChevronDown, Lock, PlayCircle } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
 import {
@@ -17,8 +17,6 @@ import {
 } from "@/services/storybook";
 import { JourneyService } from "@/services/journey-service";
 import type { JourneyState } from "@/lib/types";
-import { Lock } from "lucide-react";
-import { useEffect } from "react";
 
 const GRAMMAR_LABELS: Record<AudiobookGrammar, { en: string; es: string }> = {
   "simple-present": { en: "Simple Present", es: "Presente simple" },
