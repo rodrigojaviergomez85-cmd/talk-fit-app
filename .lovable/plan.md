@@ -1,7 +1,7 @@
 # Palabras corregidas con pronunciación táctil en Paso 2
 
 ## Objetivo
-En la tarjeta de corrección del Paso 2 ("¡CASI!"), las palabras resaltadas de "Tú dijiste" e "Intenta" se podrán tocar para escucharlas con el mismo menú de pronunciación lenta que ya existe arriba en las oraciones del Paso 2 (0.25x, 0.5x, 0.75x).
+En la tarjeta de corrección del Paso 2 ("¡CASI!"), SOLO las palabras corregidas de la sección "Intenta" serán tocables para escucharlas con el mismo menú de pronunciación lenta que ya existe arriba en las oraciones del Paso 2 (0.25x, 0.5x, 0.75x), en versión compacta optimizada para móvil. Las palabras de "Tú dijiste" NO serán tocables.
 
 ## Cambios
 
