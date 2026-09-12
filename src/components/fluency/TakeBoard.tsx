@@ -268,18 +268,14 @@ export function TakeBoard({
           >
             <div className="flex items-center justify-between gap-2">
               <p className="flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.16em]">
-                {optional ? (
-                  <>
-                    {t("take.extra")} {index + 1 - required}{" "}
+                <>
+                  {t("take.audio")} {index + 1}{" "}
+                  {optional ? (
                     <span className="text-[10px] font-semibold normal-case tracking-normal text-muted-foreground">
                       {t("take.optionalShort")}
                     </span>
-                  </>
-                ) : (
-                  <>
-                    {t("take.audio")} {index + 1}
-                  </>
-                )}
+                  ) : null}
+                </>
                 {take ? <Check className="size-4 text-success" /> : null}
               </p>
               {optional && !take ? (
