@@ -54,7 +54,7 @@ export const STORYBOOK_SEASONS: Season[] = [
       {
         day: 3,
         episodeId: null,
-        teaser: { en: "Who is she?", es: "¿Quién es ella?" },
+        teaser: { en: "Who is he?", es: "¿Quién es él?" },
       },
       {
         day: 4,
