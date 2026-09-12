@@ -4,7 +4,7 @@
 
 Llevar a estudiantes latinos de 18–24 años desde A1 hasta B2 en 11 meses con práctica diaria adictiva. Cada episodio convierte el idioma del módulo en una historia ilustrada: vocabulario tocable, preguntas TPRS, repetición oral y grabación final. La meta acumulada es manejar activamente 3,500–4,500 palabras y conseguir trabajos bilingües.
 
-Nuevo objetivo permanente: entrenar mentalidad de perseverancia. Que el estudiante no se rinda cuando el inglés se ponga difícil y diga afirmaciones en voz alta.
+Nuevo objetivo permanente: entrenar mentalidad de resiliencia y pensar en grande. Que el estudiante no se rinda cuando la vida se ponga difícil, que se vea como futuro líder, supervisor, gerente o empresario, y que repita afirmaciones en voz alta.
 
 ## Banco de frases motivacionales
 
@@ -13,14 +13,18 @@ Se crea un banco rotativo para que nunca se sienta repetitivo:
 - English is easy.
 - I can do it.
 - I believe in myself.
+- I love challenges.
+- I am disciplined.
 - I am amazing.
 - I am awesome.
 - You are amazing.
 - You are awesome.
 - Mistakes are part of the process.
 - Effort makes progress.
+- I am a future leader.
+- I think big.
 
-Cada episodio usa una frase distinta. Al Episodio 3 le toca **English is easy. I can do it.**
+Cada episodio usa una frase distinta. Al Episodio 3 le toca **English is easy. I love challenges.**
 
 ## Cómo se integra la mentalidad en cada historia
 
