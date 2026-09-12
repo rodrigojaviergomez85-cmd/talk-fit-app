@@ -155,6 +155,14 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
               onLearnWord={learnWord}
             />
           ) : null}
+          {slide.kind === "mindset" && episode.mindsetCard ? (
+            <MindsetSlide
+              mindset={episode.mindsetCard}
+              voice={episode.voice}
+              es={es}
+              onSaid={() => setStars((s) => s + 1)}
+            />
+          ) : null}
           {slide.kind === "quiz" ? (
             <QuizSlide
               quiz={slide.quiz}
