@@ -3,6 +3,7 @@ import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, Info, Sparkles } from "lucide-react";
 import { isUnlimitedEmail } from "@/lib/unlimited-access";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
+import { TappableSentence } from "@/components/fluency/TappableSentence";
 import { toneForTurn, type ModelTone } from "@/lib/model-tone";
 import { rep2Chunks, rep4Items, rep2ChunkText, REP4_MAX, isRep2CorrectionEnabled } from "@/lib/rep-structure";
 export { REP4_MAX };
