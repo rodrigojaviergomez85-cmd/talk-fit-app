@@ -10,6 +10,8 @@ type Props = {
   onClose: () => void;
   /** Compact layout for tight spaces (e.g. correction card). */
   compact?: boolean;
+  /** Regular-past -ed hint shown as a header (Simple Past pilot). */
+  edHint?: { sound: "t" | "d" | "id"; hint: string } | undefined;
 };
 
 /**
