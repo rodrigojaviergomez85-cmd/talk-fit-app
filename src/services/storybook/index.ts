@@ -18,6 +18,11 @@ import { VALE_GOOD_NEWS } from "./vale-good-news";
 import { VALE_FIRST_MONTH } from "./vale-first-month";
 import { VALE_CELEBRATION } from "./vale-celebration";
 import { VALE_GRADUATION } from "./vale-graduation";
+import { VALE_S2_READY } from "./vale-s2-ready";
+import { VALE_S2_TOMORROW } from "./vale-s2-tomorrow";
+import { VALE_S2_WEEKEND } from "./vale-s2-weekend";
+import { VALE_S2_BIGGER_DREAM } from "./vale-s2-bigger-dream";
+import { VALE_S2_MY_VOICE } from "./vale-s2-my-voice";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -41,6 +46,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_FIRST_MONTH,
   VALE_CELEBRATION,
   VALE_GRADUATION,
+  VALE_S2_READY,
+  VALE_S2_TOMORROW,
+  VALE_S2_WEEKEND,
+  VALE_S2_BIGGER_DREAM,
+  VALE_S2_MY_VOICE,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {

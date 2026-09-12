@@ -1,15 +1,15 @@
 import type { StorybookEpisode } from "./types";
-import cover from "@/assets/storybook/vale-ep3/cover.jpg";
-import s1 from "@/assets/storybook/vale-ep3/s1.jpg";
-import s2 from "@/assets/storybook/vale-ep3/s2.jpg";
-import s3 from "@/assets/storybook/vale-ep3/s3.jpg";
-import s4 from "@/assets/storybook/vale-ep3/s4.jpg";
-import s5 from "@/assets/storybook/vale-ep3/s5.jpg";
-import s6 from "@/assets/storybook/vale-ep3/s6.jpg";
-import s7 from "@/assets/storybook/vale-ep3/s7.jpg";
-import s8 from "@/assets/storybook/vale-ep3/s8.jpg";
-import s9 from "@/assets/storybook/vale-ep3/s9.jpg";
-import s10 from "@/assets/storybook/vale-ep3/s10.jpg";
+import cover from "@/assets/storybook/vale-s2-ep3/cover.jpg";
+import s1 from "@/assets/storybook/vale-s2-ep3/s1.jpg";
+import s2 from "@/assets/storybook/vale-s2-ep3/s2.jpg";
+import s3 from "@/assets/storybook/vale-s2-ep3/s3.jpg";
+import s4 from "@/assets/storybook/vale-s2-ep3/s4.jpg";
+import s5 from "@/assets/storybook/vale-s2-ep3/s5.jpg";
+import s6 from "@/assets/storybook/vale-s2-ep3/s6.jpg";
+import s7 from "@/assets/storybook/vale-s2-ep3/s7.jpg";
+import s8 from "@/assets/storybook/vale-s2-ep3/s8.jpg";
+import s9 from "@/assets/storybook/vale-s2-ep3/s9.jpg";
+import s10 from "@/assets/storybook/vale-s2-ep3/s10.jpg";
 
 /**
  * Season 2 · Episode 3 — "The weekend plan".
