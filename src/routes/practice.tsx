@@ -5,6 +5,7 @@ import { isUnlimitedEmail } from "@/lib/unlimited-access";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { TappableSentence } from "@/components/fluency/TappableSentence";
 import { EdLegend } from "@/components/fluency/EdLegend";
+import { EdReminder } from "@/components/fluency/EdReminder";
 import { toneForTurn, type ModelTone } from "@/lib/model-tone";
 import { rep2Chunks, rep4Items, rep2ChunkText, REP4_MAX, isRep2CorrectionEnabled } from "@/lib/rep-structure";
 export { REP4_MAX };
@@ -790,7 +791,14 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
                showVisuals={showPracticeVisuals}
             />
           ) : null}
-          {stage === 3 ? <Rep3Shadow day={day} onNext={goForward} onSkip={goForward} /> : null}
+          {stage === 3 ? (
+            <Rep3Shadow
+              day={day}
+              onNext={goForward}
+              onSkip={goForward}
+              highlightEd={moduleId === "past-stories" && day.day === 2}
+            />
+          ) : null}
           {stage === 4 ? (
             <Rep4MakeItYours
               day={day}
@@ -805,6 +813,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               onNext={goForward}
                hideVisuals={!showPracticeVisuals}
               promptTone={moduleId === "advanced-1" ? "neutral" : "coach"}
+              highlightEd={moduleId === "past-stories" && day.day === 2}
             />
 
           ) : null}
@@ -1753,7 +1762,17 @@ function NoAiDisclaimer({ tKey }: { tKey: "rep3.noAi" | "rep4.noAi" }) {
  * Live shadowing only: continuous model audio + chunk highlight, the learner
  * speaks WITH the model. No recording, no images — deliberately unlike Rep 2.
  */
-export function Rep3Shadow({ day, onNext, onSkip }: { day: CourseDay; onNext: () => void; onSkip: () => void }) {
+export function Rep3Shadow({
+  day,
+  onNext,
+  onSkip,
+  highlightEd = false,
+}: {
+  day: CourseDay;
+  onNext: () => void;
+  onSkip: () => void;
+  highlightEd?: boolean;
+}) {
   return (
     <div className="space-y-4">
       <div className="rounded-3xl bg-navy p-5 space-y-2">
@@ -1761,12 +1780,15 @@ export function Rep3Shadow({ day, onNext, onSkip }: { day: CourseDay; onNext: ()
         <NoAiDisclaimer tKey="rep3.noAi" />
       </div>
 
+      {highlightEd ? <EdLegend /> : null}
+
       <ShadowKaraoke
         lines={day.lines}
         text={CourseService.getModelText(day)}
         voice={day.speakerVoice}
         onNext={onNext}
         onSkip={onSkip}
+        highlightEd={highlightEd}
       />
     </div>
   );
@@ -1783,6 +1805,7 @@ export function Rep4MakeItYours({
   onNext,
   hideVisuals = false,
   promptTone = "coach",
+  highlightEd = false,
 }: {
   day: CourseDay;
   index: number;
@@ -1794,6 +1817,7 @@ export function Rep4MakeItYours({
   hideVisuals?: boolean;
   /** Interview questions (ADVANCED) are read in a neutral recruiter tone. */
   promptTone?: ModelTone;
+  highlightEd?: boolean;
 }) {
   const t = useT();
   const items = rep4Items(day);
@@ -1824,6 +1848,8 @@ export function Rep4MakeItYours({
         {t("practice.question")} {index + 1} {t("practice.of")} {items.length}
       </p>
 
+      {highlightEd ? <EdReminder text={item.starter} voice={day.speakerVoice} /> : null}
+
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {item.cue ? (
           <span className="mb-3 inline-flex rounded-full bg-primary/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
@@ -1834,9 +1860,15 @@ export function Rep4MakeItYours({
           <p className="text-[20px] font-extrabold leading-tight tracking-tight">{item.question}</p>
         </TranslatableText>
         <div className="mt-4 rounded-2xl bg-secondary p-4">
-          <TranslatableText es={item.starterEs} supportOnly>
-            <p className="text-[17px] font-bold text-foreground">{item.starter}</p>
-          </TranslatableText>
+          {highlightEd ? (
+            <TranslatableText es={item.starterEs} supportOnly>
+              <TappableSentence text={item.starter} voice={day.speakerVoice} highlightEd className="[&_p]:text-[17px] [&_p]:font-bold" />
+            </TranslatableText>
+          ) : (
+            <TranslatableText es={item.starterEs} supportOnly>
+              <p className="text-[17px] font-bold text-foreground">{item.starter}</p>
+            </TranslatableText>
+          )}
         </div>
       </div>
 
@@ -2089,6 +2121,11 @@ export function Rep5FinalRep({
       {visual === "story" ? <StoryStrip day={day} showCaptions={false} /> : null}
       {visual === "scene" ? <SceneImage day={day} /> : null}
       <VariantPicker day={day} />
+
+      {/* -ed reminder (pilot: Simple Past day 2) — right before the microphone. */}
+      {moduleId === "past-stories" && day.day === 2 ? (
+        <EdReminder text={CourseService.getModelText(day)} voice={day.speakerVoice} variant="step5" />
+      ) : null}
 
       {/* SPEAK */}
       {board}
