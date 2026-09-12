@@ -120,6 +120,7 @@ export function VoiceRecorder({
 
   const nearLimit = !!maxSeconds && recording && seconds >= maxSeconds - 5;
   const inTarget = targetSeconds && seconds >= targetSeconds[0] && seconds <= targetSeconds[1];
+  const displaySeconds = countdown && maxSeconds ? Math.max(0, maxSeconds - seconds) : seconds;
 
   const sizeClasses =
     size === "lg"
