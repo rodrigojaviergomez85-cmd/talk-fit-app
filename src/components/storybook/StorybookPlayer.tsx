@@ -631,12 +631,8 @@ function FinaleSlide({
           }}
         />
         {take?.url ? (
-          <div className="space-y-2 rounded-2xl bg-navy-foreground/10 p-3" style={{ animation: "sb-pop .3s ease-out" }}>
-            <p className="text-[12px] font-bold uppercase tracking-[0.1em] opacity-80">
-              {es ? "Escúchate" : "Listen to yourself"}
-            </p>
-            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-            <audio controls src={take.url} className="w-full" />
+          <div style={{ animation: "sb-pop .3s ease-out" }}>
+            <RecordingPlayback url={take.url} label={es ? "ESCUCHARME" : "LISTEN TO ME"} />
           </div>
         ) : null}
         {recorded ? (
