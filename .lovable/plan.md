@@ -8,6 +8,11 @@ Además, cada episodio debe enseñar mentalidad de perseverancia: no rendirse cu
 
 - **English is easy.**
 - **I can do it.**
+- **I believe in myself.**
+- **I am amazing.**
+- **I am awesome.**
+- **You are amazing.**
+- **You are awesome.**
 - **Mistakes are part of the process.**
 - **Effort makes progress.** / El esfuerzo produce progreso.
 
@@ -34,10 +39,12 @@ Vale se equivoca al presentarse y se pone nerviosa. Mateo le recuerda: **«Mista
 Añadir una capa sencilla y repetible a los cuentos:
 
 1. **Momento difícil:** el personaje falla, duda o siente miedo.
-2. **Frase guía:** aparece una tarjeta visual corta con la frase de mentalidad.
+2. **Frase guía:** aparece una tarjeta visual corta con la frase de mentalidad del día.
 3. **Repetición oral:** el estudiante la dice en voz alta antes de continuar.
 4. **Reintento:** el personaje intenta de nuevo y progresa.
 5. **Refuerzo final:** la grabación del estudiante puede terminar con una afirmación como `I can do it.`
+
+El sistema rotará frases de un banco predefinido para que cada episodio se sienta fresco: a veces la frase es personal (`I believe in myself`), a veces se dirige a un compañero (`You are amazing`), y a veces refuerza el proceso (`Mistakes are part of the process`).
 
 Esto se hará como parte natural de la historia, no como una lección separada aburrida.
 
