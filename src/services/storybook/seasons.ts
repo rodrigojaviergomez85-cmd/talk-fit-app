@@ -17,6 +17,17 @@ export type SeasonEpisodeSlot = {
   teaser: { en: string; es: string };
 };
 
+export type NextEpisodeInfo = {
+  /** Next produced episode id, or null when the slot is still in production. */
+  episodeId: string | null;
+  /** Day of the module that unlocks the next slot. */
+  day: number;
+  /** Preview text for the coming episode. */
+  teaser: { en: string; es: string };
+  /** Whether the learner can open it now. */
+  unlocked: boolean;
+};
+
 export type Season = {
   moduleId: string;
   seasonNumber: number;
