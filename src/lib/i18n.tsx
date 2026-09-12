@@ -201,6 +201,11 @@ const DICT = {
     "La IA comparará tu respuesta y puede cometer errores. Úsala como guía para mejorar.",
     "AI will compare your response and may make mistakes. Use the feedback as a guide to improve.",
   ],
+  "rep2.tapHint": [
+    "Toca la palabra marcada para pronunciación más lenta.",
+    "Tap the marked word for slower pronunciation.",
+  ],
+
   "rep3.title": ["SHADOWING 🎧", "SHADOWING 🎧"],
   "rep3.instr": [
     "Hablá al mismo tiempo que el audio. Dale PLAY, seguí el texto y tratá de copiar el ritmo, la pronunciación y la entonación.",
