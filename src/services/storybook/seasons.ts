@@ -4,6 +4,7 @@
  * Unlocking is derived from the existing journey progress: no new tables.
  */
 import type { JourneyState } from "@/lib/types";
+import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 
 export type SeasonWeek = 1 | 2 | 3 | 4;
 
@@ -72,6 +73,7 @@ export function unlockedDay(completedDays: number): number {
 }
 
 export function isDayUnlocked(state: JourneyState, moduleId: string, day: number): boolean {
+  if (hasUnlimitedAccess()) return true;
   return day <= unlockedDay(completedDaysInModule(state, moduleId));
 }
 
