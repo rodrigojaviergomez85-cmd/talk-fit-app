@@ -39,10 +39,41 @@ type Props = {
   voice?: ModelVoice | undefined;
   onNext: () => void;
   onSkip: () => void;
+  /** Pilot (day 2 of Simple Past): color-code regular -ed verbs by final sound. */
+  highlightEd?: boolean;
 };
 
+const ED_CLASSES: Record<EdSound, string> = {
+  t: "text-ed-t",
+  d: "text-ed-d",
+  id: "text-ed-id",
+};
+
+/** Line text with -ed verbs colored by sound. Display only. */
+function EdLineText({ text }: { text: string }) {
+  return (
+    <>
+      {tokenizeWords(text).map((token, index) => {
+        const sound = token.isWord ? classifyEdEnding(token.value) : null;
+        if (!sound) {
+          return (
+            <span key={`t-${index}`} style={{ whiteSpace: "pre-wrap" }}>
+              {token.value}
+            </span>
+          );
+        }
+        return (
+          <span key={`ed-${index}`} className={cn(ED_CLASSES[sound], "underline decoration-2 underline-offset-4 decoration-current/60")}>
+            {token.value}
+          </span>
+        );
+      })}
+    </>
+  );
+}
+
 /** ShadowKaraoke — continuous model audio + chunk-level highlight; the learner speaks WITH it. */
-export function ShadowKaraoke({ lines, text, voice, onNext, onSkip }: Props) {
+export function ShadowKaraoke({ lines, text, voice, onNext, onSkip, highlightEd = false }: Props) {
   const t = useT();
   const [speed, setSpeed] = useState<number>(1);
   const [status, setStatus] = useState<Status>("idle");
