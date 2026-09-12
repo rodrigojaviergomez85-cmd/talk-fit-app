@@ -43,7 +43,6 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
     {
       id: "s1",
       image: s1,
-      imageAlt: "Escena 1 del episodio.",
       imageAlt: "El equipo habla frente a un mapa en la pared de la oficina.",
       text: "The team talks about the next city.",
       es: "El equipo habla de la siguiente ciudad.",

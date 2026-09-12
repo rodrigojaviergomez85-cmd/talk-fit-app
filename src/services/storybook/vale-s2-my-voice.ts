@@ -43,7 +43,6 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
     {
       id: "s1",
       image: s1,
-      imageAlt: "Escena 1 del episodio.",
       imageAlt: "Vale frente a un espejo, practicando su plan.",
       text: "Vale practices her plan out loud.",
       es: "Vale practica su plan en voz alta.",

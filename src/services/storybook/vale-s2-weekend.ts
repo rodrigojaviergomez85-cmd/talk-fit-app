@@ -43,7 +43,6 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
     {
       id: "s1",
       image: s1,
-      imageAlt: "Escena 1 del episodio.",
       imageAlt: "Vale, Mateo y Kat en un café con papeles en la mesa.",
       text: "The team meets at a cafe on Saturday.",
       es: "El equipo se reúne en un café el sábado.",

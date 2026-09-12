@@ -43,7 +43,6 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
     {
       id: "s1",
       image: s1,
-      imageAlt: "Escena 1 del episodio.",
       imageAlt: "Vale revisa su mochila en la parada del bus.",
       text: "Vale opens her backpack at the bus stop. Her notebook is not there.",
       es: "Vale abre su mochila en la parada del bus. Su cuaderno no está ahí.",
