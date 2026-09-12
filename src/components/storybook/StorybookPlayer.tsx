@@ -41,6 +41,7 @@ function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice {
   if (speaker === "boss") return "boss";
   if (speaker === "kat") return "female";
   if (speaker === "dylan") return "male";
+  if (speaker === "mateo") return "male";
   return "neutral";
 }
 
