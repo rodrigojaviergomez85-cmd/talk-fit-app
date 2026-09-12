@@ -384,7 +384,7 @@ export function TakeBoard({
                   <span className="text-[15px] font-extrabold tabular-nums">{take.durationSeconds} {t("take.seconds")}</span>
                 </div>
 
-                <SentenceLine take={take} goal={goalSentences} t={t} />
+                <SentenceLine take={take} goal={sentenceGoal} t={t} />
 
 
                 <div className="flex items-center gap-2">
@@ -443,6 +443,7 @@ export function TakeBoard({
                       size="md"
                       targetSeconds={turnTarget}
                       maxSeconds={turnMax}
+                      countdown
                       onComplete={(rec) => onRecorded(index, isRetrySlot ? { ...rec, label: `turn:${retryIndex}` } : rec)}
                     />
                     {!turn?.targetSeconds ? (
