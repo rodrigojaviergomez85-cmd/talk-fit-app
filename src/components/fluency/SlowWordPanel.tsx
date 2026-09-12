@@ -6,7 +6,7 @@ const SPEEDS = [0.25, 0.5, 0.75] as const;
 
 type Props = {
   word: string;
-  voice?: "female" | "male" | undefined;
+  voice?: import("@/services/audio-service").ModelVoice | undefined;
   onClose: () => void;
   /** Compact layout for tight spaces (e.g. correction card). */
   compact?: boolean;
