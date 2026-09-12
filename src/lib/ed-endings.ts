@@ -75,9 +75,9 @@ export function edPronunciationHint(word: string, sound: EdSound): string {
   else base = clean;
 
   if (sound === "id") {
-    // Keep a visible syllable break: wanted → WAN-TED (undouble the stem: hopped → HOP)
+    // Keep a visible syllable break: wanted → WAN-TED (undouble the stem: hopped → HOP-ED)
     let stem = base;
-    if (stem.length > 3 && stem.endsWith(stem[stem.length - 1]!) && /[^aeiou]/.test(stem[stem.length - 1]!)) {
+    if (stem.length > 3 && stem[stem.length - 1] === stem[stem.length - 2] && /[^aeiou]/.test(stem[stem.length - 1]!)) {
       stem = stem.slice(0, -1);
     }
     return `${stem.toUpperCase()}-ED`;
