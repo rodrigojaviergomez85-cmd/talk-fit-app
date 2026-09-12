@@ -281,7 +281,7 @@ export function ShadowKaraoke({ lines, text, voice, onNext, onSkip, highlightEd 
                     : "text-[20px] font-bold leading-snug text-foreground",
               )}
             >
-              {line.text}
+              {highlightEd ? <EdLineText text={line.text} /> : line.text}
             </li>
           );
         })}
