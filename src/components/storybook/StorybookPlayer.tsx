@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 type Slide =
   | { kind: "cover" }
   | { kind: "scene"; scene: StorybookScene }
+  | { kind: "mindset" }
   | { kind: "quiz"; quiz: StorybookQuiz }
   | { kind: "finale" };
 
@@ -27,6 +28,9 @@ function buildSlides(episode: StorybookEpisode): Slide[] {
   const slides: Slide[] = [{ kind: "cover" }];
   for (const scene of episode.scenes) {
     slides.push({ kind: "scene", scene });
+    if (episode.mindsetCard?.afterScene === scene.id) {
+      slides.push({ kind: "mindset" });
+    }
     for (const quiz of episode.quizzes.filter((q) => q.afterScene === scene.id)) {
       slides.push({ kind: "quiz", quiz });
     }
@@ -41,6 +45,7 @@ function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice {
   if (speaker === "boss") return "boss";
   if (speaker === "kat") return "female";
   if (speaker === "dylan") return "male";
+  if (speaker === "mateo") return "male";
   return "neutral";
 }
 
@@ -93,6 +98,7 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
     if (slide.kind === "scene")
       AudioService.speak(slide.scene.text, { voice: speakerVoice(slide.scene.speaker), tone: speakerTone(slide.scene.speaker) });
     if (slide.kind === "quiz") AudioService.speak(slide.quiz.questionEn, { voice: episode.voice });
+    if (slide.kind === "mindset" && episode.mindsetCard) AudioService.speak(episode.mindsetCard.phrase, { voice: episode.voice });
     return () => AudioService.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idx]);
@@ -148,6 +154,14 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
               es={es}
               flip={idx % 2 === 0}
               onLearnWord={learnWord}
+            />
+          ) : null}
+          {slide.kind === "mindset" && episode.mindsetCard ? (
+            <MindsetSlide
+              mindset={episode.mindsetCard}
+              voice={episode.voice}
+              es={es}
+              onSaid={() => setStars((s) => s + 1)}
             />
           ) : null}
           {slide.kind === "quiz" ? (
@@ -536,6 +550,65 @@ function QuizSlide({
   );
 }
 
+function MindsetSlide({
+  mindset,
+  voice,
+  es,
+  onSaid,
+}: {
+  mindset: NonNullable<StorybookEpisode["mindsetCard"]>;
+  voice?: "female" | "male" | undefined;
+  es: boolean;
+  onSaid: () => void;
+}) {
+  const [recorded, setRecorded] = useState(false);
+  return (
+    <div className="space-y-4 text-center">
+      <div className="rounded-3xl border border-border bg-card p-5">
+        <p className="text-4xl" aria-hidden="true">
+          🔥
+        </p>
+        <p className="mt-2 text-[13px] font-extrabold uppercase tracking-[0.12em] text-primary">
+          {es ? "Nunca te rindas" : "Never give up"}
+        </p>
+        <h2 className="mt-2 text-2xl font-extrabold leading-tight text-foreground">{mindset.phrase}</h2>
+        <p className="mt-1 text-base font-medium text-muted-foreground">{mindset.es}</p>
+      </div>
+
+      <button
+        type="button"
+        onClick={() => AudioService.speak(mindset.phrase, { voice })}
+        className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-2 text-sm font-bold text-foreground"
+      >
+        <Volume2 className="size-4 text-primary" /> {es ? "Escuchar" : "Listen"}
+      </button>
+
+      <div className="rounded-3xl border border-border bg-card p-5">
+        <p className="mb-3 text-[14px] font-bold text-foreground">
+          {es ? "Repítelo en voz alta:" : "Say it out loud:"}
+        </p>
+        {recorded ? (
+          <p className="flex items-center justify-center gap-2 text-[13px] font-bold text-primary">
+            <Check className="size-4" /> {es ? "¡Lo dijiste! +1 ⭐" : "You said it! +1 ⭐"}
+          </p>
+        ) : (
+          <VoiceRecorder
+            label={es ? "REPETIR" : "REPEAT"}
+            stopLabel={es ? "PARAR" : "STOP"}
+            maxSeconds={15}
+            countdown
+            size="md"
+            onComplete={() => {
+              setRecorded(true);
+              onSaid();
+            }}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
 function FinaleSlide({
   episode,
   es,
@@ -566,7 +639,7 @@ function FinaleSlide({
           🎉
         </p>
         <h2 className="mt-1 text-xl font-extrabold text-foreground">
-          {es ? "¡Terminaste el Episodio 1!" : "You finished Episode 1!"}
+          {es ? `¡Terminaste ${episode.episodeLabel.es}!` : `You finished ${episode.episodeLabel.en}!`}
         </h2>
         <p className="mt-2 flex items-center justify-center gap-1.5 text-[15px] font-extrabold text-amber-500">
           <Star className="size-5 fill-amber-500" /> {stars} {es ? "estrellas" : "stars"}
