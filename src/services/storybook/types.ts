@@ -10,6 +10,9 @@ export type StorybookWord = {
   es: string;
 };
 
+/** Who speaks the scene line — drives the per-character TTS voice. */
+export type StorybookSpeaker = "narrator" | "vale" | "boss";
+
 export type StorybookScene = {
   id: string;
   /** Imported illustration URL. */
@@ -19,6 +22,8 @@ export type StorybookScene = {
   text: string;
   /** Hand-written Spanish translation (small, on demand). */
   es: string;
+  /** Speaker voice for this line. Defaults to "narrator". */
+  speaker?: StorybookSpeaker;
   /** Tappable words with meanings. */
   words: StorybookWord[];
 };

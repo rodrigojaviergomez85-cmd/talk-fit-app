@@ -10,8 +10,8 @@
 import { registerAudioStopper, stopOtherAudio } from "@/lib/audio-bus";
 import type { ModelTone } from "@/lib/model-tone";
 
-export type ModelVoice = "neutral" | "female" | "male";
-type AudioVoice = "female" | "male";
+export type ModelVoice = "neutral" | "female" | "male" | "girl" | "boss";
+type AudioVoice = "female" | "male" | "girl" | "boss";
 
 export type SpeakOptions = {
   rate?: number;
