@@ -26,6 +26,11 @@ type TakeBoardProps = {
   goalSeconds: [number, number];
   /** Minimum complete spoken ideas for this day (default 5). */
   goalSentences?: number;
+  /** Level band: basic caps takes at 30s (goal 5–8 sentences); higher at 45s (goal 8+). */
+  tier?: "basic" | "higher";
+  /** Classic Step 5: the question being answered, shown text-only on every take card. */
+  promptQuestion?: string;
+  promptQuestionEs?: string;
   /** Controlled role play: fixed interlocutor line before take N (N < turns.length). Takes beyond are retries. */
   turns?: RolePlayTurn[] | undefined;
   onRecorded: (index: number, recording: Recording) => void;
