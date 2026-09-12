@@ -1,6 +1,10 @@
+import { useState } from "react";
 import { Mic } from "lucide-react";
 import { AudioPlayer } from "./AudioPlayer";
+import { SlowWordPanel } from "./SlowWordPanel";
+import { AudioService } from "@/services/audio-service";
 import { useT } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 import type { Rep2DisplayDiff, Rep2DisplayToken } from "@/lib/rep2-match";
 
 export type Rep2CorrectionResult = {
