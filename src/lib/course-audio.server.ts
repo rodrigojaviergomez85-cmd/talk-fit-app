@@ -13,7 +13,7 @@
 export type Tone = "coach" | "neutral" | "tense" | "playful";
 export type RequestedVoice = "neutral" | "female" | "male" | "girl" | "boss";
 
-/** Normalised request: `voice` is the provider voice (alloy/nova/onyx/shimmer). */
+/** Normalised request: `voice` is the provider voice selected below. */
 export type ClipSpec = { text: string; voice: string; tone: Tone };
 
 export const BUCKET = "course-audio";
@@ -22,8 +22,8 @@ export const VOICE_MAP: Record<RequestedVoice, string> = {
   neutral: "alloy",
   female: "nova",
   male: "onyx",
-  /** Soft, expressive young female — storybook characters like Vale. */
-  girl: "shimmer",
+  /** Clearly feminine, warm and expressive — storybook characters like Vale. */
+  girl: "marin",
   /** Deep male — authority characters like the boss. */
   boss: "fable",
 };
@@ -37,7 +37,7 @@ const TONE_INSTRUCTIONS: Record<Tone, string> = {
   tense:
     "Speak as a frustrated but controlled customer on a support call. Firm, clipped, impatient and a little tired of repeating yourself — tense and direct, but never shouting or theatrical. Slightly faster pace, short pauses, flat falling intonation. Natural everyday American English accent, realistic and conversational.",
   playful:
-    "Speak as Vale, a sweet and tender 18-year-old girl on her first day at work. Use a light, youthful feminine voice with warm, expressive intonation and a gentle smile. She is naturally shy but playful and curious; let a little nervous excitement show through small, realistic pauses and melodic phrasing. Keep a relaxed, natural conversational pace—not fast, exaggerated, childish, breathy, theatrical, or sing-song. Natural everyday American English pronunciation. Avoid a deep, mature, stern, raspy, or elderly-sounding delivery.",
+    "Speak as Vale, a sweet 18-year-old young woman on her first day at work. The voice must sound unmistakably feminine, soft, tender, youthful, and light—never masculine or low-pitched. Use warm, expressive intonation, a gentle smile, and natural melodic phrasing. She is a little shy, playful, and curious, with subtle nervous excitement and realistic pauses. Keep a natural conversational pace. Do not sound deep, mature, stern, raspy, elderly, childish, breathy, theatrical, or sing-song.",
 };
 
 /** Lease long enough for one TTS generation; a crashed generator frees the clip on expiry. */
