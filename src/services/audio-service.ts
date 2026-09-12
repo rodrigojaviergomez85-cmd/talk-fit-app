@@ -150,8 +150,8 @@ export const AudioService = {
       .then((url) => {
         if (cancelled) return;
         const audio = new Audio(url);
-        audio.playbackRate = options.rate ?? 1;
-        audio.preservesPitch = true;
+        audio.playbackRate = effectiveRate;
+        audio.preservesPitch = !girly;
         element = audio;
         currentAudio = audio;
         audio.onplay = () => options.onStart?.();
