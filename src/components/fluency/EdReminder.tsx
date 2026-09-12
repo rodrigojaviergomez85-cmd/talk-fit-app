@@ -52,6 +52,8 @@ export function EdReminder({ text, voice, variant = "step4" }: Props) {
     next();
   };
 
+  if (!words.length) return null;
+
   return (
     <div className="rounded-2xl border border-border bg-secondary/40 px-3 py-2">
       <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
