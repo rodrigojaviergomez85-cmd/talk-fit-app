@@ -196,13 +196,13 @@ export const VALE_FIRST_CALL: StorybookEpisode = {
       questionEn: "How is Vale's voice?",
       questionEs: "¿Cómo es la voz de Vale?",
       options: [
-        { label: "Slowly and calm", emoji: "😌" },
+        { label: "Calm", emoji: "😌" },
         { label: "Very fast", emoji: "💨" },
         { label: "Angry", emoji: "😠" },
       ],
       answer: 0,
-      sayIt: "I speak English slowly.",
-      sayItEs: "Yo hablo inglés despacio.",
+      sayIt: "My voice is calm.",
+      sayItEs: "Mi voz es tranquila.",
     },
     {
       id: "q3",
