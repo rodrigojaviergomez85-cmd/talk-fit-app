@@ -5,6 +5,11 @@ import { VALE_WHO_IS_D } from "./vale-who-is-d";
 import { VALE_SUPPORT_TEAM } from "./vale-support-team";
 import { VALE_WHERE_ARE_YOU_FROM } from "./vale-where-are-you-from";
 import { VALE_FAVORITE_COLOR } from "./vale-favorite-color";
+import { VALE_FAVORITE_FOOD } from "./vale-favorite-food";
+import { VALE_HOBBIES } from "./vale-hobbies";
+import { VALE_COMPLETE_INTRODUCTION } from "./vale-complete-introduction";
+import { VALE_MEET_LUIS } from "./vale-meet-luis";
+import { VALE_BEST_FRIEND } from "./vale-best-friend";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -15,6 +20,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_SUPPORT_TEAM,
   VALE_WHERE_ARE_YOU_FROM,
   VALE_FAVORITE_COLOR,
+  VALE_FAVORITE_FOOD,
+  VALE_HOBBIES,
+  VALE_COMPLETE_INTRODUCTION,
+  VALE_MEET_LUIS,
+  VALE_BEST_FRIEND,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {

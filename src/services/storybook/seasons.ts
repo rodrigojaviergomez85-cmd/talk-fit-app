@@ -78,8 +78,28 @@ export const STORYBOOK_SEASONS: Season[] = [
       },
       {
         day: 8,
-        episodeId: null,
+        episodeId: "vale-favorite-food",
         teaser: { en: "My favorite food", es: "Mi comida favorita" },
+      },
+      {
+        day: 9,
+        episodeId: "vale-hobbies",
+        teaser: { en: "My hobbies", es: "Mis pasatiempos" },
+      },
+      {
+        day: 10,
+        episodeId: "vale-complete-introduction",
+        teaser: { en: "Tell me about yourself", es: "Háblame de ti" },
+      },
+      {
+        day: 11,
+        episodeId: "vale-meet-luis",
+        teaser: { en: "Meet my brother", es: "Conoce a mi hermano" },
+      },
+      {
+        day: 12,
+        episodeId: "vale-best-friend",
+        teaser: { en: "My best friend", es: "Mi mejor amiga" },
       },
     ],
   },
