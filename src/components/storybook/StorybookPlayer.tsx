@@ -98,6 +98,7 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
     if (slide.kind === "scene")
       AudioService.speak(slide.scene.text, { voice: speakerVoice(slide.scene.speaker), tone: speakerTone(slide.scene.speaker) });
     if (slide.kind === "quiz") AudioService.speak(slide.quiz.questionEn, { voice: episode.voice });
+    if (slide.kind === "mindset" && episode.mindsetCard) AudioService.speak(episode.mindsetCard.phrase, { voice: episode.voice });
     return () => AudioService.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idx]);
