@@ -1839,6 +1839,8 @@ export function Rep4MakeItYours({
         {t("practice.question")} {index + 1} {t("practice.of")} {items.length}
       </p>
 
+      {highlightEd ? <EdReminder text={item.starter} voice={day.speakerVoice} /> : null}
+
       <div className="rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {item.cue ? (
           <span className="mb-3 inline-flex rounded-full bg-primary/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
@@ -1849,9 +1851,15 @@ export function Rep4MakeItYours({
           <p className="text-[20px] font-extrabold leading-tight tracking-tight">{item.question}</p>
         </TranslatableText>
         <div className="mt-4 rounded-2xl bg-secondary p-4">
-          <TranslatableText es={item.starterEs} supportOnly>
-            <p className="text-[17px] font-bold text-foreground">{item.starter}</p>
-          </TranslatableText>
+          {highlightEd ? (
+            <TranslatableText es={item.starterEs} supportOnly>
+              <TappableSentence text={item.starter} voice={day.speakerVoice} highlightEd className="[&_p]:text-[17px] [&_p]:font-bold" />
+            </TranslatableText>
+          ) : (
+            <TranslatableText es={item.starterEs} supportOnly>
+              <p className="text-[17px] font-bold text-foreground">{item.starter}</p>
+            </TranslatableText>
+          )}
         </div>
       </div>
 
