@@ -7,16 +7,23 @@
 
 Sin texto dentro de la imagen (salvo la portada). Una acción clara por viñeta.
 
-## Elenco fijo
+## Personajes canónicos (diseños aprobados)
 
-- **Vale** — 19, salvadoreña. Piel morena clara, pelo negro largo y ondulado con
-  media coleta, camiseta amarillo mostaza. Expresiva, tímida pero jugetona.
-- **Mr. Reyes** — 45, supervisor latino. Camisa gris, corbata azul oscuro, barba
-  corta, gesto serio y difícil de leer.
-- **Kat** — 21, compañera relajada. Pelo corto rizado teñido naranja, chaqueta de
-  mezclilla, camiseta blanca.
-- **Dylan** — 22, cliente canadiense. Pelo castaño corto, pecas, sudadera verde,
-  calle nevada de fondo.
+**REGLA DE ORO:** en cada generación o edición de imagen que incluya alguno de
+estos personajes, pasar la portada del episodio correspondiente
+(`vale-ep<N>/cover.jpg`) como imagen de referencia y describir la ficha exacta
+de abajo. Esto evita que un personaje cambie de edad, pelo o ropa entre escenas.
+
+- **Vale** — mujer joven latina de 19 años, pelo negro LARGO (hasta la espalda),
+  camiseta amarillo mostaza. Nunca pelo corto/castaño, nunca aspecto masculino.
+- **Mateo** — joven de ~20 años, pelo negro corto, chaqueta de mezclilla azul
+  sobre camiseta blanca.
+- **Mr. Reyes** — hombre MAYOR (45+), pelo oscuro con canas, BARBA COMPLETA con
+  canas, camisa gris de vestir con corbata oscura. Nunca joven, nunca sin
+  barba, nunca en mezclilla.
+- **Kat** — joven de 21 años, pelo rizado naranja, chaqueta de mezclilla sobre
+  camiseta blanca.
+- **Dylan** — 22, cliente canadiense. Pelo castaño corto, pecas, sudadera verde.
 - **Mamá de Vale** — 45, en casa, delantal, no habla inglés.
 
 ## Molde de episodio
