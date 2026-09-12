@@ -1781,8 +1781,6 @@ export function Rep3Shadow({
         <NoAiDisclaimer tKey="rep3.noAi" />
       </div>
 
-      {highlightEd ? <EdLegend /> : null}
-
       <ShadowKaraoke
         lines={day.lines}
         text={CourseService.getModelText(day)}
