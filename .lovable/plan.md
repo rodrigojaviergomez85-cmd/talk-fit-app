@@ -15,7 +15,7 @@ La historia no copiará mecánicamente los ejemplos genéricos del módulo. Conv
 
 Esta temporada es el **mes 2 de una ruta de 11 meses**, no una historia aislada. La serie completa apoyará estos hitos funcionales:
 
-- **Meses 1–2 · A1:** identidad, familia, gustos, planes y respuestas breves comprensibles.
+- **Meses 1–2 · A1:** identidad, familia, gustos, planes y respuestas breves comprensibles de máximo 30 segundos.
 - **Meses 3–5 · A2:** rutinas, pasado, preguntas y conversaciones conectadas sobre vida diaria y trabajo.
 - **Meses 6–8 · B1:** explicar, justificar, comparar, resolver problemas y sostener conversaciones sin guion completo.
 - **Meses 9–11 · B2 funcional:** argumentar, negociar, improvisar, comprender habla más natural y desenvolverse en entrevistas y trabajo bilingüe.
@@ -91,9 +91,9 @@ No será una temporada encerrada en una oficina. Habrá casa, bus, cancha, café
 - Inglés principal y español bajo demanda.
 - Un episodio desbloqueado por cada día completado; acceso total para cuentas internas.
 
-## Afirmaciones propuestas
+## Afirmaciones aprobadas
 
-Rotar según la historia: `I have a plan`, `I am disciplined`, `I believe in myself`, `I can adapt`, `I keep my promises`, `I won’t give up`, `I can lead`, `Challenges make me stronger`, `My future is bright`, `I am ready for the next step`.
+Usar solamente esta colección y rotarla según la historia: `I can do it`, `I am a champion`, `I believe in myself`, `Mistakes are part of the process`, `I am amazing`, `I am awesome`.
 
 ## Reglas de alineación
 
@@ -102,7 +102,7 @@ Rotar según la historia: `I have a plan`, `I am disciplined`, `I believe in mys
 - Semana 4: contrastar formas únicamente cuando la situación lo haga evidente.
 - Reciclar Basic Zero sin reenseñarlo: identidad, origen, familia, gustos, equipo y afirmaciones.
 - Evitar pasado narrativo no estudiado; recuerdos se presentan con fórmulas simples ya conocidas.
-- Mantener metas del curso: 30–45 segundos en días normales; 45–60 y 6–8 ideas en retos, aunque el cuento conserve su grabación final breve de 15 segundos.
+- Ninguna respuesta del curso excederá **30 segundos**. Los retos aumentarán la variedad de ideas, no la duración. El cuento conservará su grabación final de máximo 15 segundos y unas 5 oraciones.
 - Etiquetar cada episodio con su función CEFR observable: planear, describir planes ajenos, decidir, prometer, predecir o combinar formas.
 - Auditar el vocabulario por significado y familia léxica para evitar duplicados y comprobar el avance real hacia 3,500 activos.
 - Reservar la lectura tocable para comprensión; la meta activa se valida únicamente con recuperación y producción oral, no por haber visto una palabra.
