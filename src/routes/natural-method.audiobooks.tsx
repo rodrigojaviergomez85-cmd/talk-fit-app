@@ -9,6 +9,7 @@ import {
   type AudiobookGrammar,
   type NaturalMethodAudiobook,
 } from "@/services/natural-method-audiobooks";
+import { INTERACTIVE_STORIES } from "@/services/stories";
 
 const GRAMMAR_LABELS: Record<AudiobookGrammar, { en: string; es: string }> = {
   "simple-present": { en: "Simple Present", es: "Presente simple" },
