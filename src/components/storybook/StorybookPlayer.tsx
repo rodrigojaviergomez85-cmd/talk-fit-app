@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, ChevronLeft, Lock, Play, Sparkles, Star, Volume2, X } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { SlowWordPanel } from "@/components/fluency/SlowWordPanel";
+import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { useAppLang } from "@/lib/i18n";
 import { tokenizeWords } from "@/lib/syllables";
@@ -621,7 +622,7 @@ function FinaleSlide({
           {es ? "Máximo 15 segundos · unas 5 oraciones" : "Max 15 seconds · about 5 sentences"}
         </p>
         <VoiceRecorder
-          label={es ? "GRABAR MI PRESENTACIÓN" : "RECORD MY INTRO"}
+          label={take ? (es ? "GRABAR OTRA VEZ" : "RECORD AGAIN") : es ? "GRABAR MI PRESENTACIÓN" : "RECORD MY INTRO"}
           stopLabel={es ? "PARAR" : "STOP"}
           maxSeconds={15}
           countdown
@@ -631,12 +632,8 @@ function FinaleSlide({
           }}
         />
         {take?.url ? (
-          <div className="space-y-2 rounded-2xl bg-navy-foreground/10 p-3" style={{ animation: "sb-pop .3s ease-out" }}>
-            <p className="text-[12px] font-bold uppercase tracking-[0.1em] opacity-80">
-              {es ? "Escúchate" : "Listen to yourself"}
-            </p>
-            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-            <audio controls src={take.url} className="w-full" />
+          <div style={{ animation: "sb-pop .3s ease-out" }}>
+            <RecordingPlayback url={take.url} label={es ? "ESCUCHARME" : "LISTEN TO ME"} />
           </div>
         ) : null}
         {recorded ? (
