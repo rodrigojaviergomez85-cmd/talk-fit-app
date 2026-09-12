@@ -1,0 +1,30 @@
+import type { StorybookEpisode } from "./types";
+import cover from "@/assets/storybook/vale-ep19/cover.jpg";
+import s1 from "@/assets/storybook/vale-ep19/s1.jpg"; import s2 from "@/assets/storybook/vale-ep19/s2.jpg"; import s3 from "@/assets/storybook/vale-ep19/s3.jpg"; import s4 from "@/assets/storybook/vale-ep19/s4.jpg"; import s5 from "@/assets/storybook/vale-ep19/s5.jpg"; import s6 from "@/assets/storybook/vale-ep19/s6.jpg"; import s7 from "@/assets/storybook/vale-ep19/s7.jpg"; import s8 from "@/assets/storybook/vale-ep19/s8.jpg"; import s9 from "@/assets/storybook/vale-ep19/s9.jpg"; import s10 from "@/assets/storybook/vale-ep19/s10.jpg";
+
+export const VALE_CELEBRATION: StorybookEpisode = {
+  id: "vale-celebration", moduleId: "basic-zero", week: 4, title: "The celebration", titleEs: "La celebración", episodeLabel: { en: "Episode 19", es: "Episodio 19" },
+  previously: [{ en: "Vale is the student of the month. She has a golden star.", es: "Vale es la estudiante del mes. Tiene una estrella dorada." }, { en: "She practices English every day at six.", es: "Practica inglés todos los días a las seis." }, { en: "Now there is a big flyer on the wall: a party!", es: "Ahora hay un gran anuncio en la pared: ¡una fiesta!" }],
+  reviewWords: [{ word: "star", es: "estrella" }, { word: "party", es: "fiesta" }, { word: "team", es: "equipo" }],
+  blurb: { en: "Balloons, pupusas and a surprise for Vale.", es: "Globos, pupusas y una sorpresa para Vale." }, cover, voice: "girl",
+  scenes: [
+    { id: "s1", image: s1, imageAlt: "Mateo y Kat decoran la oficina a escondidas.", text: "Friday. Mateo and Kat decorate the office. Vale does not see anything.", es: "Viernes. Mateo y Kat decoran la oficina. Vale no ve nada.", words: [{ word: "decorate", es: "decoran" }, { word: "anything", es: "nada" }] },
+    { id: "s2", image: s2, imageAlt: "Vale entra y se sorprende.", text: "Vale opens the door and… wow! Balloons! Pupusas! What is this?", es: "Vale abre la puerta y… ¡guau! ¡Globos! ¡Pupusas! ¿Qué es esto?", words: [{ word: "balloons", es: "globos" }, { word: "what", es: "qué" }] },
+    { id: "s3", image: s3, imageAlt: "Todos gritan sorpresa.", text: '"Surprise! This party is for you, Vale!" shouts the team.', es: "«¡Sorpresa! ¡Esta fiesta es para ti, Vale!», grita el equipo.", speaker: "mateo", words: [{ word: "surprise", es: "sorpresa" }, { word: "for you", es: "para ti" }] },
+    { id: "s4", image: s4, imageAlt: "Mateo señala las pupusas orgulloso.", text: '"My mom makes the pupusas. They are the best!" says Mateo.', es: "«Mi mamá hace las pupusas. ¡Son las mejores!», dice Mateo.", speaker: "mateo", words: [{ word: "makes", es: "hace" }, { word: "best", es: "mejores" }] },
+    { id: "s5", image: s5, imageAlt: "Kat ríe con su jugo.", text: '"You are awesome, Vale. Student of the month!" says Kat with a big laugh.', es: "«Eres increíble, Vale. ¡Estudiante del mes!», dice Kat con una gran risa.", speaker: "kat", words: [{ word: "awesome", es: "increíble" }, { word: "laugh", es: "risa" }] },
+    { id: "s6", image: s6, imageAlt: "Ana hace un brindis.", text: '"A toast for Vale. She works hard every single day," says Ana.', es: "«Un brindis por Vale. Trabaja duro todos los días», dice Ana.", speaker: "ana", words: [{ word: "toast", es: "brindis" }, { word: "hard", es: "duro" }] },
+    { id: "s7", image: s7, imageAlt: "Vale come una pupusa feliz.", text: "Vale eats a pupusa. It is hot and delicious. She is so happy.", es: "Vale come una pupusa. Está caliente y deliciosa. Está muy feliz.", words: [{ word: "eats", es: "come" }, { word: "delicious", es: "deliciosa" }] },
+    { id: "s8", image: s8, imageAlt: "El equipo juega con una piñata.", text: "Then, the team plays with a colorful piñata. Mateo cannot see. Everybody laughs.", es: "Luego, el equipo juega con una piñata colorida. Mateo no puede ver. Todos ríen.", words: [{ word: "plays", es: "juega" }, { word: "everybody", es: "todos" }] },
+    { id: "s9", image: s9, imageAlt: "Selfie del equipo.", text: "One photo for the memory. The team is a family now.", es: "Una foto para el recuerdo. El equipo es una familia ahora.", words: [{ word: "photo", es: "foto" }, { word: "family", es: "familia" }] },
+    { id: "s10", image: s10, imageAlt: "Mr. Reyes llama a Vale con un sobre.", text: "At the door, Mr. Reyes raises his hand. On his desk, there is a white envelope with her name.", es: "En la puerta, Mr. Reyes levanta la mano. Sobre su escritorio hay un sobre blanco con su nombre.", words: [{ word: "raises", es: "levanta" }, { word: "envelope", es: "sobre" }] },
+  ],
+  quizzes: [
+    { id: "q1", afterScene: "s3", questionEn: "Who is the party for?", questionEs: "¿Para quién es la fiesta?", options: [{ label: "Vale", emoji: "🎉" }, { label: "Mr. Reyes", emoji: "👔" }, { label: "Dylan", emoji: "🇨🇦" }], answer: 0, sayIt: "This party is for me!", sayItEs: "Repite: «¡Esta fiesta es para mí!»" },
+    { id: "q2", afterScene: "s4", questionEn: "Who makes the pupusas?", questionEs: "¿Quién hace las pupusas?", options: [{ label: "Mateo's mom", emoji: "👩‍🍳" }, { label: "Ana", emoji: "💼" }, { label: "Kat", emoji: "🎈" }], answer: 0, sayIt: "His mom makes the pupusas.", sayItEs: "Repite: «Su mamá hace las pupusas.»" },
+    { id: "q3", afterScene: "s6", questionEn: "Why a toast for Vale?", questionEs: "¿Por qué un brindis por Vale?", options: [{ label: "She works hard every day", emoji: "💪" }, { label: "It is her birthday", emoji: "🎂" }, { label: "She is new", emoji: "🆕" }], answer: 0, sayIt: "I work hard every day.", sayItEs: "Repite: «Trabajo duro todos los días.»" },
+  ],
+  mindsetCard: { afterScene: "s5", phrase: "I am awesome.", es: "Soy increíble." },
+  continuePrompt: { en: "Describe your ideal celebration: food, music, people.", es: "Describe tu celebración ideal: comida, música, gente." }, continueWith: ["My favorite food is…", "My friends are…", "We are a family.", "I am awesome."],
+  cliffhanger: { en: "A white envelope with her name. What is inside?", es: "Un sobre blanco con su nombre. ¿Qué hay adentro?" },
+};

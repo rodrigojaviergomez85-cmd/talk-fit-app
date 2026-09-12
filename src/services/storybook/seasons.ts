@@ -111,6 +111,36 @@ export const STORYBOOK_SEASONS: Season[] = [
         episodeId: "vale-dylan-needs-help",
         teaser: { en: "Dylan needs help", es: "Dylan necesita ayuda" },
       },
+      {
+        day: 15,
+        episodeId: "vale-we-are-a-team",
+        teaser: { en: "We are a team", es: "Somos un equipo" },
+      },
+      {
+        day: 16,
+        episodeId: "vale-luis-big-day",
+        teaser: { en: "Luis's big day", es: "El gran día de Luis" },
+      },
+      {
+        day: 17,
+        episodeId: "vale-good-news",
+        teaser: { en: "Good news!", es: "¡Buenas noticias!" },
+      },
+      {
+        day: 18,
+        episodeId: "vale-first-month",
+        teaser: { en: "My first month", es: "Mi primer mes" },
+      },
+      {
+        day: 19,
+        episodeId: "vale-celebration",
+        teaser: { en: "The celebration", es: "La celebración" },
+      },
+      {
+        day: 20,
+        episodeId: "vale-graduation",
+        teaser: { en: "Graduation day", es: "El día de graduación" },
+      },
     ],
   },
 ];
