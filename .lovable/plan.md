@@ -9,15 +9,14 @@ En la tarjeta de corrección del Paso 2 ("¡CASI!"), SOLO las palabras corregida
 - Extraer el menú de velocidades (0.25x / 0.5x / 0.75x) de `src/components/fluency/TappableSentence.tsx` a un componente compartido pequeño, por ejemplo `SlowWordPanel`, en el mismo archivo o en `src/components/fluency/SlowWordPanel.tsx`.
 - `TappableSentence` sigue funcionando igual; solo cambia que usa el componente compartido internamente.
 
-### 2. Palabras tocables en la tarjeta de corrección
+### 2. Palabras tocables solo en "Intenta"
 En `src/components/fluency/Rep2Feedback.tsx`:
-- Convertir `DiffTokens` para que las palabras `changed` sean botones:
-  - Variante "said" (ámbar): al tocarla, reproduce la palabra dicha a 0.75x y abre el panel con 0.25x / 0.5x / 0.75x.
-  - Variante "target" (color primario): igual comportamiento, reproduciendo la palabra correcta.
-- Las palabras sin cambios siguen siendo texto normal (no tocables), para no distraer.
-- Un solo panel abierto a la vez dentro de la tarjeta; botón X para cerrar; usa la misma voz del día (`voice`).
-- Mantener el resaltado visual actual (ámbar para lo dicho, color primario para la corrección), añadiendo solo un indicador sutil de que es tocable (cursor/feedback táctil `active:scale`, sin cambiar tamaños).
-- Caso sin `diff` (demasiadas diferencias): se mantiene el resaltado actual de `focus` sin hacerlo tocable, para no arriesgar tocar palabras incorrectas.
+- Sección "Tú dijiste": se queda exactamente como está (solo resaltado ámbar, sin toque).
+- Sección "Intenta": las palabras `changed` (resaltadas en color primario) se convierten en botones. Al tocar una, reproduce la palabra correcta a 0.75x y abre el panel compacto con 0.25x / 0.5x / 0.75x.
+- Las palabras sin cambios siguen siendo texto normal (no tocables).
+- Panel compacto para móvil: una sola fila de 3 botones pequeños (min-h ~36px, texto 11px, padding reducido), sin encabezado grande; botón X pequeño para cerrar. Un solo panel abierto a la vez; usa la voz del día (`voice`).
+- Mantener el resaltado visual actual, añadiendo solo feedback táctil sutil (`active:scale`), sin aumentar el tamaño de la tarjeta.
+- Caso sin `diff` (demasiadas diferencias): se mantiene el resaltado actual de `focus` sin hacerlo tocable.
 
 ### 3. Sin cambios de comportamiento
 - No se tocan la corrección, tolerancias, cuotas, botones Try Again / Listen Again / Skip / Next, ni la lógica del servidor.
