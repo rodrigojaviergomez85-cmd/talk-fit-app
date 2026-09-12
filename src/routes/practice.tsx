@@ -2149,21 +2149,21 @@ export function Rep5FinalRep({
       {requiredDone ? (
         <div className="space-y-3">
           <div className="rounded-3xl border border-success/25 bg-success/8 p-4 text-center">
-            <p className="flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-success">
-              <Sparkles className="size-4" />{" "}
-              {lang === "es"
-                ? `${required} ${pressure ? "respuestas obligatorias completas" : "pasos obligatorios completos"} ✓`
-                : `${required} required ${pressure ? "responses" : "steps"} complete ✓`}
+            <p className="flex items-center justify-center gap-2 text-[11px] font-black uppercase tracking-[0.16em] text-success">
+              <Sparkles className="size-4" /> {t("practice.requiredDone")}
+            </p>
+            <p className="mt-2 text-[13px] font-semibold leading-snug text-foreground">
+              {t("practice.requiredCompleteBanner")}
             </p>
             {finalIndex !== null ? (
-              <p className="mt-1 text-[13px] font-semibold">{t("practice.finalSelected")} {finalIndex + 1}</p>
+              <p className="mt-2 text-[13px] font-semibold">{t("practice.finalSelected")} {finalIndex + 1}</p>
             ) : (
-              <p className="mt-1 text-[13px] text-muted-foreground">{t("practice.pickFinal")}</p>
+              <p className="mt-2 text-[13px] text-muted-foreground">{t("practice.pickFinal")}</p>
             )}
           </div>
 
           <PrimaryButton onClick={onFinish} disabled={finalIndex === null}>
-            <Check className="size-5" /> {t("practice.complete")}
+            <Check className="size-5" /> {t("practice.finishNow")}
           </PrimaryButton>
 
           {slotsLeft ? (
