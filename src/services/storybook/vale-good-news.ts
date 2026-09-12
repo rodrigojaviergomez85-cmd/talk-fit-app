@@ -1,0 +1,30 @@
+import type { StorybookEpisode } from "./types";
+import cover from "@/assets/storybook/vale-ep17/cover.jpg";
+import s1 from "@/assets/storybook/vale-ep17/s1.jpg"; import s2 from "@/assets/storybook/vale-ep17/s2.jpg"; import s3 from "@/assets/storybook/vale-ep17/s3.jpg"; import s4 from "@/assets/storybook/vale-ep17/s4.jpg"; import s5 from "@/assets/storybook/vale-ep17/s5.jpg"; import s6 from "@/assets/storybook/vale-ep17/s6.jpg"; import s7 from "@/assets/storybook/vale-ep17/s7.jpg"; import s8 from "@/assets/storybook/vale-ep17/s8.jpg"; import s9 from "@/assets/storybook/vale-ep17/s9.jpg"; import s10 from "@/assets/storybook/vale-ep17/s10.jpg";
+
+export const VALE_GOOD_NEWS: StorybookEpisode = {
+  id: "vale-good-news", moduleId: "basic-zero", week: 4, title: "Good news!", titleEs: "¡Buenas noticias!", episodeLabel: { en: "Episode 17", es: "Episodio 17" },
+  previously: [{ en: "Luis's interview is very good.", es: "La entrevista de Luis es muy buena." }, { en: "He believes in himself.", es: "Él cree en sí mismo." }, { en: "At night, his phone rings…", es: "Por la noche, su teléfono suena…" }],
+  reviewWords: [{ word: "interview", es: "entrevista" }, { word: "believe", es: "creer" }, { word: "smiles", es: "sonríe" }],
+  blurb: { en: "The message says… Luis has the job! Time to celebrate.", es: "El mensaje dice… ¡Luis tiene el trabajo! Es hora de celebrar." }, cover, voice: "girl",
+  scenes: [
+    { id: "s1", image: s1, imageAlt: "Luis lee el mensaje con lágrimas de alegría.", text: "Luis reads the message. His eyes are wet. It is good news!", es: "Luis lee el mensaje. Sus ojos están llorosos. ¡Son buenas noticias!", words: [{ word: "news", es: "noticias" }, { word: "eyes", es: "ojos" }] },
+    { id: "s2", image: s2, imageAlt: "Luis grita la buena noticia en casa.", text: '"I have the job! I have the job!" says Luis.', es: "«¡Tengo el trabajo! ¡Tengo el trabajo!», dice Luis.", speaker: "luis", words: [{ word: "job", es: "trabajo" }, { word: "have", es: "tengo" }] },
+    { id: "s3", image: s3, imageAlt: "Vale abraza a Luis feliz.", text: '"I am so proud of you, brother," says Vale.', es: "«Estoy muy orgullosa de ti, hermano», dice Vale.", speaker: "vale", words: [{ word: "proud", es: "orgullosa" }, { word: "of", es: "de" }] },
+    { id: "s4", image: s4, imageAlt: "Vale cuenta la noticia a Mateo y Kat.", text: "The next day, Vale tells Mateo and Kat. They are so happy!", es: "Al día siguiente, Vale le cuenta a Mateo y a Kat. ¡Están muy felices!", words: [{ word: "tells", es: "cuenta" }, { word: "happy", es: "felices" }] },
+    { id: "s5", image: s5, imageAlt: "Ana felicita a Vale.", text: '"Your brother is amazing. And you are amazing too," says Ana.', es: "«Tu hermano es increíble. Y tú también eres increíble», dice Ana.", speaker: "ana", words: [{ word: "amazing", es: "increíble" }, { word: "too", es: "también" }] },
+    { id: "s6", image: s6, imageAlt: "Luis se prueba su nueva camisa de trabajo.", text: "Luis has a new shirt for his new job. He looks great!", es: "Luis tiene una camisa nueva para su nuevo trabajo. ¡Se ve genial!", words: [{ word: "new", es: "nueva" }, { word: "looks", es: "se ve" }] },
+    { id: "s7", image: s7, imageAlt: "La familia brinda en la cena.", text: '"To Luis! To the family!" They celebrate with pupusas and juice.', es: "«¡Por Luis! ¡Por la familia!» Celebran con pupusas y jugo.", words: [{ word: "celebrate", es: "celebran" }, { word: "family", es: "familia" }] },
+    { id: "s8", image: s8, imageAlt: "Vale y Luis conversan en el porche.", text: '"One year ago, I am nervous every day," says Luis. "Now, I am strong."', es: "«Hace un año, estoy nervioso todos los días», dice Luis. «Ahora, soy fuerte.»", speaker: "luis", words: [{ word: "strong", es: "fuerte" }, { word: "ago", es: "hace" }] },
+    { id: "s9", image: s9, imageAlt: "Luis habla con orgullo en el porche.", text: '"Everything is possible with effort," says Luis. "You are amazing, Vale."', es: "«Todo es posible con esfuerzo», dice Luis. «Eres increíble, Vale.»", speaker: "luis", words: [{ word: "possible", es: "posible" }, { word: "effort", es: "esfuerzo" }] },
+    { id: "s10", image: s10, imageAlt: "Ana llama a Vale a su oficina.", text: 'The next day, Ana calls Vale: "Vale, my office, please. It is important."', es: "Al día siguiente, Ana llama a Vale: «Vale, mi oficina, por favor. Es importante.»", speaker: "ana", words: [{ word: "office", es: "oficina" }, { word: "important", es: "importante" }] },
+  ],
+  quizzes: [
+    { id: "q1", afterScene: "s2", questionEn: "What is the good news?", questionEs: "¿Cuál es la buena noticia?", options: [{ label: "Luis has the job", emoji: "💼" }, { label: "Vale has a cat", emoji: "🐱" }, { label: "It is Friday", emoji: "📅" }], answer: 0, sayIt: "Luis has the job!", sayItEs: "Repite: «¡Luis tiene el trabajo!»" },
+    { id: "q2", afterScene: "s5", questionEn: "Who says 'You are amazing' to Vale?", questionEs: "¿Quién le dice «Eres increíble» a Vale?", options: [{ label: "Ana", emoji: "👩‍💼" }, { label: "Kat", emoji: "👩‍🦰" }, { label: "Dylan", emoji: "🧑" }], answer: 0, sayIt: "You are amazing.", sayItEs: "Repite: «Eres increíble.»" },
+    { id: "q3", afterScene: "s9", questionEn: "What is possible with effort?", questionEs: "¿Qué es posible con esfuerzo?", options: [{ label: "Everything", emoji: "🌟" }, { label: "Nothing", emoji: "🚫" }, { label: "Only lunch", emoji: "🍽️" }], answer: 0, sayIt: "Everything is possible with effort.", sayItEs: "Repite: «Todo es posible con esfuerzo.»" },
+  ],
+  mindsetCard: { afterScene: "s5", phrase: "You are amazing.", es: "Eres increíble." },
+  continuePrompt: { en: "Celebrate someone you love: say why you are proud of them.", es: "Celebra a alguien que quieres: di por qué estás orgulloso/a de esa persona." }, continueWith: ["I am proud of you.", "You are amazing.", "Everything is possible with effort.", "Good news!"],
+  cliffhanger: { en: "Ana wants to talk with Vale. It is important. What is it?", es: "Ana quiere hablar con Vale. Es importante. ¿Qué será?" },
+};
