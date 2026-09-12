@@ -1615,7 +1615,7 @@ export function Rep2Copy({
         <p className="text-[11px] font-semibold text-muted-foreground">
           {t("practice.tapWordHint")}
         </p>
-        {highlightEd ? <EdLegend /> : null}
+        {highlightEd ? <EdLegend collapsible /> : null}
       </div>
 
       {/* Model audio speed: slow options for learners who miss the pronunciation. */}
