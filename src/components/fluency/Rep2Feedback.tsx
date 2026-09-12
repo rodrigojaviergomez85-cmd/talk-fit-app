@@ -149,6 +149,11 @@ export function Rep2Feedback({ result, voice, onTryAgain, onSkip, onNext, nextLa
     AudioService.speak(clean, { rate: 0.75, voice });
   };
 
+  // Close the word panel when a new correction result arrives.
+  useEffect(() => {
+    setOpenWord(null);
+  }, [result]);
+
   if (result.status === "good") {
     return (
       <div className="space-y-4 rounded-3xl border border-success/30 bg-success/10 p-5 text-center">
