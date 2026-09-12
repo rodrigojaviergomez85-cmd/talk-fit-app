@@ -1953,15 +1953,16 @@ export function Rep5FinalRep({
 
   const hasTurns = Boolean(day.rep5Turns?.length);
   const tier = rep5Tier(moduleId);
+  const boardTier: "basic" | "higher" = tier === "basic" ? "basic" : "higher";
   const visual = showVisuals ? primaryVisual(day, tier) : null;
   const goalLine = hasTurns
     ? t("rep5.turnsGoal")
         .replace("{turns}", String(day.rep5Turns!.length))
         .replace("{min}", String(day.goalSeconds[0]))
         .replace("{max}", String(day.goalSeconds[1]))
-    : t("rep5.goalLine")
-        .replace("{sec}", String(day.goalSeconds[0]))
-        .replace("{ideas}", String(day.goalSentences ?? 5));
+    : boardTier === "basic"
+      ? t("rep5.goalBasic")
+      : t("rep5.goalHigher");
 
   // What stays visible above the microphone, per tier. Everything else goes into Help (never deleted).
   const cuesAbove = !hasTurns && tier === "eagles" && !day.powerChunks ? day.cues.slice(0, 3) : [];
@@ -2056,6 +2057,9 @@ export function Rep5FinalRep({
       finalIndex={finalIndex}
       goalSeconds={day.goalSeconds}
       goalSentences={day.goalSentences ?? 5}
+      tier={boardTier}
+      promptQuestion={day.rep5Prompt.question}
+      promptQuestionEs={day.rep5Prompt.questionEs}
       turns={day.rep5Turns}
       onRecorded={onRecorded}
       onDelete={onDelete}
