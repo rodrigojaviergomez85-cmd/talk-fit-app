@@ -5,4 +5,4 @@
 - [x] Redesign the Home streak card without the clickable 66-day calendar
 - [x] Produce and integrate approved Storybook Episodes 8–12 with consistent characters, voices, and daily unlocking
 - [x] Produce and integrate Storybook Episodes 15–20 (Season 1 complete through graduation)
-- [ ] Correct inconsistent past-time sentences in Storybook Episodes 17–18 and validate them
+- [x] Correct inconsistent past-time sentences in Storybook Episodes 17–18 and validate them
