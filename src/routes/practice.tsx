@@ -6,6 +6,7 @@ import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { TappableSentence } from "@/components/fluency/TappableSentence";
 import { EdLegend } from "@/components/fluency/EdLegend";
 import { EdReminder } from "@/components/fluency/EdReminder";
+import { hasEdWords } from "@/lib/ed-endings";
 import { toneForTurn, type ModelTone } from "@/lib/model-tone";
 import { rep2Chunks, rep4Items, rep2ChunkText, REP4_MAX, isRep2CorrectionEnabled } from "@/lib/rep-structure";
 export { REP4_MAX };
@@ -796,7 +797,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               day={day}
               onNext={goForward}
               onSkip={goForward}
-              highlightEd={moduleId === "past-stories" && day.day === 2}
+              highlightEd={hasEdWords(CourseService.getModelText(day))}
             />
           ) : null}
           {stage === 4 ? (
@@ -813,7 +814,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               onNext={goForward}
                hideVisuals={!showPracticeVisuals}
               promptTone={moduleId === "advanced-1" ? "neutral" : "coach"}
-              highlightEd={moduleId === "past-stories" && day.day === 2}
+              highlightEd
             />
 
           ) : null}
@@ -1486,8 +1487,8 @@ export function Rep2Copy({
 }) {
   const t = useT();
   const correctionEnabled = isRep2CorrectionEnabled(moduleId, day);
-  /** Pilot: color-code regular -ed verbs only on Simple Past day 2. */
-  const highlightEd = moduleId === "past-stories" && day.day === 2;
+  /** Color-code regular -ed verbs whenever the day's text actually has some. */
+  const highlightEd = useMemo(() => hasEdWords(CourseService.getModelText(day)), [day]);
   const chunks = rep2Chunks(day);
   const chunk = chunks[index] ?? chunks[0]!;
   const [mine, setMine] = useState<Recording | null>(null);
@@ -2122,10 +2123,8 @@ export function Rep5FinalRep({
       {visual === "scene" ? <SceneImage day={day} /> : null}
       <VariantPicker day={day} />
 
-      {/* -ed reminder (pilot: Simple Past day 2) — right before the microphone. */}
-      {moduleId === "past-stories" && day.day === 2 ? (
-        <EdReminder text={CourseService.getModelText(day)} voice={day.speakerVoice} variant="step5" />
-      ) : null}
+      {/* -ed reminder — right before the microphone; hides itself when the day has no -ed verbs. */}
+      <EdReminder text={CourseService.getModelText(day)} voice={day.speakerVoice} variant="step5" />
 
       {/* SPEAK */}
       {board}

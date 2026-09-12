@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { classifyEdEnding, edPronunciationHint } from "./ed-endings";
+import { classifyEdEnding, edPronunciationHint, extractEdWords, hasEdWords } from "./ed-endings";
 
 describe("classifyEdEnding", () => {
   it("classifies /ɪd/ after t and d", () => {
@@ -78,5 +78,22 @@ describe("edPronunciationHint", () => {
     expect(edPronunciationHint("wanted", "id")).toBe("WAN-TED");
     expect(edPronunciationHint("needed", "id")).toBe("NEE-DED");
     expect(edPronunciationHint("hopped", "id")).toBe("HOP-PED");
+  });
+});
+
+describe("extractEdWords / hasEdWords", () => {
+  it("collects unique regular -ed verbs in reading order", () => {
+    expect(extractEdWords("She started, then talked and started again.")).toEqual([
+      "started",
+      "talked",
+    ]);
+  });
+
+  it("ignores texts without regular past verbs", () => {
+    expect(hasEdWords("I go to work every day and I need a red bed.")).toBe(false);
+  });
+
+  it("detects at least one verb", () => {
+    expect(hasEdWords("He arrived late.")).toBe(true);
   });
 });

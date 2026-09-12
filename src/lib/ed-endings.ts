@@ -5,6 +5,7 @@
  * /t/, /d/ or /ɪd/ so Step 2 can color-code it while the learner reads.
  * Returns null for words that are not regular past participles.
  */
+import { tokenizeWords } from "@/lib/syllables";
 
 export type EdSound = "t" | "d" | "id";
 
@@ -79,4 +80,25 @@ export function edPronunciationHint(word: string, sound: EdSound): string {
   }
   const suffix = sound.toUpperCase(); // "T" or "D"
   return `${base.toUpperCase()}${suffix}`;
+}
+
+/** Unique regular -ed verbs found in a text, in reading order. */
+export function extractEdWords(text: string): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const token of tokenizeWords(text)) {
+    if (!token.isWord) continue;
+    const clean = token.value.replace(/[^A-Za-z]/g, "");
+    if (!classifyEdEnding(clean)) continue;
+    const key = clean.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(clean);
+  }
+  return out;
+}
+
+/** True when the text contains at least one regular -ed verb worth coaching. */
+export function hasEdWords(text: string): boolean {
+  return extractEdWords(text).length > 0;
 }
