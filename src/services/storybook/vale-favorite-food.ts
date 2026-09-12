@@ -15,7 +15,7 @@ export const VALE_FAVORITE_FOOD: StorybookEpisode = {
     { en: "Kat announced food day.", es: "Kat anunció el día de la comida." },
   ],
   reviewWords: [{ word: "favorite", es: "favorito / favorita" }, { word: "because", es: "porque" }, { word: "family", es: "familia" }],
-  blurb: { en: "The team shares food, but Vale's lunch is missing.", es: "El equipo comparte comida, pero el almuerzo de Vale no aparece." }, cover, voice: "female",
+  blurb: { en: "The team shares food, but Vale's lunch is missing.", es: "El equipo comparte comida, pero el almuerzo de Vale no aparece." }, cover, voice: "girl",
   scenes: [
     { id: "s1", image: s1, imageAlt: "El equipo prepara un almuerzo internacional.", text: "It is lunch time. The office smells amazing.", es: "Es la hora del almuerzo. La oficina huele increíble.", words: [{ word: "lunch", es: "almuerzo" }, { word: "smells", es: "huele" }] },
     { id: "s2", image: s2, imageAlt: "Kat celebra el día de comida internacional.", text: '"Today is international food day!" says Kat.', es: "«¡Hoy es el día de la comida internacional!», dice Kat.", speaker: "kat", words: [{ word: "international", es: "internacional" }, { word: "food", es: "comida" }] },

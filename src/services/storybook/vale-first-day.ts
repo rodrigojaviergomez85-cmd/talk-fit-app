@@ -28,7 +28,7 @@ export const VALE_FIRST_DAY: StorybookEpisode = {
     es: "El primer día de Vale en un call center bilingüe… y le toca presentarse en inglés frente a todos.",
   },
   cover,
-  voice: "female",
+  voice: "girl",
   scenes: [
     {
       id: "s1",

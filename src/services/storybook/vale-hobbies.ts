@@ -6,7 +6,7 @@ export const VALE_HOBBIES: StorybookEpisode = {
   id: "vale-hobbies", moduleId: "basic-zero", week: 2, title: "My hobbies", titleEs: "Mis pasatiempos", episodeLabel: { en: "Episode 9", es: "Episodio 9" },
   previously: [{ en: "Vale found her lunch.", es: "Vale encontró su almuerzo." }, { en: "She spoke about her favorite food.", es: "Habló de su comida favorita." }, { en: "A Talent Day invitation appeared.", es: "Apareció una invitación al Día de talentos." }],
   reviewWords: [{ word: "favorite", es: "favorito" }, { word: "music", es: "música" }, { word: "videos", es: "videos" }],
-  blurb: { en: "Talent Day feels like Reels, but Vale is nervous.", es: "El Día de talentos parece Reels, pero Vale está nerviosa." }, cover, voice: "female",
+  blurb: { en: "Talent Day feels like Reels, but Vale is nervous.", es: "El Día de talentos parece Reels, pero Vale está nerviosa." }, cover, voice: "girl",
   scenes: [
     { id: "s1", image: s1, imageAlt: "El equipo prepara videos cortos.", text: "The team records short videos for Talent Day.", es: "El equipo graba videos cortos para el Día de talentos.", words: [{ word: "records", es: "graba" }, { word: "videos", es: "videos" }] },
     { id: "s2", image: s2, imageAlt: "Kat cocina frente a una cámara.", text: '"My hobbies are cooking and taking photos," says Kat.', es: "«Mis pasatiempos son cocinar y tomar fotos», dice Kat.", speaker: "kat", words: [{ word: "hobbies", es: "pasatiempos" }, { word: "cooking", es: "cocinar" }, { word: "photos", es: "fotos" }] },

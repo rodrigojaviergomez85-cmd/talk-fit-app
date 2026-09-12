@@ -47,7 +47,7 @@ export const VALE_WHO_IS_D: StorybookEpisode = {
     es: "El mensaje misterioso tiene un nombre. ¿Podrá Vale descubrir quién es D?",
   },
   cover,
-  voice: "female",
+  voice: "girl",
   scenes: [
     {
       id: "s1",

@@ -66,7 +66,7 @@ export type StorybookEpisode = {
   blurb: { en: string; es: string };
   /** Cover illustration. */
   cover: string;
-  voice?: "female" | "male";
+  voice?: "female" | "male" | "girl";
   scenes: StorybookScene[];
   quizzes: StorybookQuiz[];
   /** Optional resilience / mindset affirmation the learner says out loud. */

@@ -6,7 +6,7 @@ export const VALE_MEET_LUIS: StorybookEpisode = {
   id: "vale-meet-luis", moduleId: "basic-zero", week: 3, title: "Meet my brother", titleEs: "Conoce a mi hermano", episodeLabel: { en: "Episode 11", es: "Episodio 11" },
   previously: [{ en: "Vale finished her presentation.", es: "Vale terminó su presentación." }, { en: "Mr. Reyes asked for someone important.", es: "El señor Reyes pidió a alguien importante." }, { en: "Luis asked Vale for help.", es: "Luis le pidió ayuda a Vale." }],
   reviewWords: [{ word: "name", es: "nombre" }, { word: "years", es: "años" }, { word: "disciplined", es: "disciplinado" }],
-  blurb: { en: "Luis has a job interview. Vale helps him start again.", es: "Luis tiene una entrevista. Vale lo ayuda a volver a empezar." }, cover, voice: "male",
+  blurb: { en: "Luis has a job interview. Vale helps him start again.", es: "Luis tiene una entrevista. Vale lo ayuda a volver a empezar." }, cover, voice: "girl",
   scenes: [
     { id: "s1", image: s1, imageAlt: "Vale presenta a Luis al equipo.", text: '"Everyone, this is my brother," says Vale.', es: "«Todos, este es mi hermano», dice Vale.", speaker: "vale", words: [{ word: "brother", es: "hermano" }, { word: "everyone", es: "todos" }] },
     { id: "s2", image: s2, imageAlt: "Vale y Luis conversan.", text: '"His name is Luis. He is thirty years old," says Vale.', es: "«Su nombre es Luis. Tiene treinta años», dice Vale.", speaker: "vale", words: [{ word: "thirty", es: "treinta" }, { word: "years", es: "años" }] },
