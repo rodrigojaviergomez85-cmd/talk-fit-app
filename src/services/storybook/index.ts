@@ -10,6 +10,8 @@ import { VALE_HOBBIES } from "./vale-hobbies";
 import { VALE_COMPLETE_INTRODUCTION } from "./vale-complete-introduction";
 import { VALE_MEET_LUIS } from "./vale-meet-luis";
 import { VALE_BEST_FRIEND } from "./vale-best-friend";
+import { VALE_NEW_SUPERVISOR } from "./vale-new-supervisor";
+import { VALE_DYLAN_NEEDS_HELP } from "./vale-dylan-needs-help";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -25,6 +27,8 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_COMPLETE_INTRODUCTION,
   VALE_MEET_LUIS,
   VALE_BEST_FRIEND,
+  VALE_NEW_SUPERVISOR,
+  VALE_DYLAN_NEEDS_HELP,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
