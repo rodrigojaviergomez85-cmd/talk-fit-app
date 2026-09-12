@@ -139,6 +139,15 @@ function SkipButton({ label, onClick }: { label: string; onClick: () => void }) 
 export function Rep2Feedback({ result, voice, onTryAgain, onSkip, onNext, nextLabel, canRetry }: Rep2FeedbackProps) {
   const t = useT();
   const es = t("rep2.youSaid") === "Tú dijiste";
+  const [openWord, setOpenWord] = useState<string | null>(null);
+
+  const tapWord = (word: string) => {
+    const clean = word.replace(/[^\p{L}\p{N}'-]/gu, "");
+    if (!clean) return;
+    setOpenWord(clean);
+    AudioService.stop();
+    AudioService.speak(clean, { rate: 0.75, voice });
+  };
 
   if (result.status === "good") {
     return (
