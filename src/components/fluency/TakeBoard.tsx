@@ -272,7 +272,7 @@ export function TakeBoard({
               ) : null}
               {turn?.targetSeconds && !take ? (
                 <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                  {t("take.target")} {turn.targetSeconds[0]}–{turn.targetSeconds[1]}s
+                  {t("take.target")} {turnTarget[0]}–{turnTarget[1]}s
                 </span>
               ) : null}
               {isFinal ? (
