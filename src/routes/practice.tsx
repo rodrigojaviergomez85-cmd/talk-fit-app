@@ -1445,6 +1445,9 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 
 /* -------------------------------- Rep 2 ---------------------------------- */
 
+/** Step 2 model-audio speeds: slow, medium, normal. */
+const REP2_SPEEDS = [0.5, 0.75, 0.9] as const;
+
 export function Rep2Copy({
   moduleId,
   day,
