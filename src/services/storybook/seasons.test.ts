@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
+import type { JourneyState } from "@/lib/types";
 import { STORYBOOK_EPISODES } from "./index";
-import { STORYBOOK_SEASONS, unlockedWeek, unlockedDay } from "./seasons";
+import { STORYBOOK_SEASONS, unlockedWeek, unlockedDay, getNextEpisodeSlot } from "./seasons";
 
 /** Structures the learner has NOT seen yet in Basic Zero weeks 1-2. */
 const OUT_OF_SCOPE = [
@@ -63,5 +64,19 @@ describe("storybook seasons", () => {
         }
       }
     }
+  });
+
+  it("returns a locked Season 2 teaser after the Season 1 finale", () => {
+    const state: JourneyState = {
+      days: {},
+      streakDays: 0,
+      totalRepsCompleted: 0,
+      totalSpeakingSeconds: 0,
+      weekSeconds: {},
+    };
+    const next = getNextEpisodeSlot("vale-graduation", state);
+    expect(next).toBeTruthy();
+    expect(next!.teaser.en).toBe("She is ready");
+    expect(next!.episodeId).toBeNull();
   });
 });

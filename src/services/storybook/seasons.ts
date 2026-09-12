@@ -41,110 +41,56 @@ export const STORYBOOK_SEASONS: Season[] = [
     seasonNumber: 1,
     title: { en: "Season 1 · Vale's world", es: "Temporada 1 · El mundo de Vale" },
     slots: [
-      {
-        day: 1,
-        episodeId: "vale-first-day",
-        teaser: { en: "Vale's first day", es: "El primer día de Vale" },
-      },
-      {
-        day: 2,
-        episodeId: "vale-first-call",
-        teaser: { en: "The first call", es: "La primera llamada" },
-      },
-      {
-        day: 3,
-        episodeId: "vale-who-is-he",
-        teaser: { en: "Who is he?", es: "¿Quién es él?" },
-      },
-      {
-        day: 4,
-        episodeId: "vale-who-is-d",
-        teaser: { en: "Who is D?", es: "¿Quién es D?" },
-      },
-      {
-        day: 5,
-        episodeId: "vale-support-team",
-        teaser: { en: "The support team", es: "El equipo de soporte" },
-      },
-      {
-        day: 6,
-        episodeId: "vale-where-are-you-from",
-        teaser: { en: "Where are you from?", es: "¿De dónde eres?" },
-      },
-      {
-        day: 7,
-        episodeId: "vale-favorite-color",
-        teaser: { en: "My favorite color", es: "Mi color favorito" },
-      },
-      {
-        day: 8,
-        episodeId: "vale-favorite-food",
-        teaser: { en: "My favorite food", es: "Mi comida favorita" },
-      },
-      {
-        day: 9,
-        episodeId: "vale-hobbies",
-        teaser: { en: "My hobbies", es: "Mis pasatiempos" },
-      },
-      {
-        day: 10,
-        episodeId: "vale-complete-introduction",
-        teaser: { en: "Tell me about yourself", es: "Háblame de ti" },
-      },
-      {
-        day: 11,
-        episodeId: "vale-meet-luis",
-        teaser: { en: "Meet my brother", es: "Conoce a mi hermano" },
-      },
-      {
-        day: 12,
-        episodeId: "vale-best-friend",
-        teaser: { en: "My best friend", es: "Mi mejor amiga" },
-      },
-      {
-        day: 13,
-        episodeId: "vale-new-supervisor",
-        teaser: { en: "Who is the new supervisor?", es: "¿Quién es la nueva supervisora?" },
-      },
-      {
-        day: 14,
-        episodeId: "vale-dylan-needs-help",
-        teaser: { en: "Dylan needs help", es: "Dylan necesita ayuda" },
-      },
-      {
-        day: 15,
-        episodeId: "vale-we-are-a-team",
-        teaser: { en: "We are a team", es: "Somos un equipo" },
-      },
-      {
-        day: 16,
-        episodeId: "vale-luis-big-day",
-        teaser: { en: "Luis's big day", es: "El gran día de Luis" },
-      },
-      {
-        day: 17,
-        episodeId: "vale-good-news",
-        teaser: { en: "Good news!", es: "¡Buenas noticias!" },
-      },
-      {
-        day: 18,
-        episodeId: "vale-first-month",
-        teaser: { en: "My first month", es: "Mi primer mes" },
-      },
-      {
-        day: 19,
-        episodeId: "vale-celebration",
-        teaser: { en: "The celebration", es: "La celebración" },
-      },
-      {
-        day: 20,
-        episodeId: "vale-graduation",
-        teaser: { en: "Graduation day", es: "El día de graduación" },
-      },
+      { day: 1, episodeId: "vale-first-day", teaser: { en: "Vale's first day", es: "El primer día de Vale" } },
+      { day: 2, episodeId: "vale-first-call", teaser: { en: "The first call", es: "La primera llamada" } },
+      { day: 3, episodeId: "vale-who-is-he", teaser: { en: "Who is he?", es: "¿Quién es él?" } },
+      { day: 4, episodeId: "vale-who-is-d", teaser: { en: "Who is D?", es: "¿Quién es D?" } },
+      { day: 5, episodeId: "vale-support-team", teaser: { en: "The support team", es: "El equipo de soporte" } },
+      { day: 6, episodeId: "vale-where-are-you-from", teaser: { en: "Where are you from?", es: "¿De dónde eres?" } },
+      { day: 7, episodeId: "vale-favorite-color", teaser: { en: "My favorite color", es: "Mi color favorito" } },
+      { day: 8, episodeId: "vale-favorite-food", teaser: { en: "My favorite food", es: "Mi comida favorita" } },
+      { day: 9, episodeId: "vale-hobbies", teaser: { en: "My hobbies", es: "Mis pasatiempos" } },
+      { day: 10, episodeId: "vale-complete-introduction", teaser: { en: "Tell me about yourself", es: "Háblame de ti" } },
+      { day: 11, episodeId: "vale-meet-luis", teaser: { en: "Meet my brother", es: "Conoce a mi hermano" } },
+      { day: 12, episodeId: "vale-best-friend", teaser: { en: "My best friend", es: "Mi mejor amiga" } },
+      { day: 13, episodeId: "vale-new-supervisor", teaser: { en: "Who is the new supervisor?", es: "¿Quién es la nueva supervisora?" } },
+      { day: 14, episodeId: "vale-dylan-needs-help", teaser: { en: "Dylan needs help", es: "Dylan necesita ayuda" } },
+      { day: 15, episodeId: "vale-we-are-a-team", teaser: { en: "We are a team", es: "Somos un equipo" } },
+      { day: 16, episodeId: "vale-luis-big-day", teaser: { en: "Luis's big day", es: "El gran día de Luis" } },
+      { day: 17, episodeId: "vale-good-news", teaser: { en: "Good news!", es: "¡Buenas noticias!" } },
+      { day: 18, episodeId: "vale-first-month", teaser: { en: "My first month", es: "Mi primer mes" } },
+      { day: 19, episodeId: "vale-celebration", teaser: { en: "The celebration", es: "La celebración" } },
+      { day: 20, episodeId: "vale-graduation", teaser: { en: "Graduation day", es: "El día de graduación" } },
+    ],
+  },
+  {
+    moduleId: "simple-future",
+    seasonNumber: 2,
+    title: { en: "Season 2 · Vale's new challenge", es: "Temporada 2 · El nuevo reto de Vale" },
+    slots: [
+      { day: 1, episodeId: null, teaser: { en: "She is ready", es: "Ella está lista" } },
+      { day: 2, episodeId: null, teaser: { en: "Tomorrow starts now", es: "Mañana empieza ahora" } },
+      { day: 3, episodeId: null, teaser: { en: "The weekend plan", es: "El plan del fin de semana" } },
+      { day: 4, episodeId: null, teaser: { en: "A bigger dream", es: "Un sueño más grande" } },
+      { day: 5, episodeId: null, teaser: { en: "My plan, my voice", es: "Mi plan, mi voz" } },
+      { day: 6, episodeId: null, teaser: { en: "Mateo's big weekend", es: "El gran fin de semana de Mateo" } },
+      { day: 7, episodeId: null, teaser: { en: "What is his mom going to do?", es: "¿Qué va a hacer su mamá?" } },
+      { day: 8, episodeId: null, teaser: { en: "The busiest person", es: "La persona más ocupada" } },
+      { day: 9, episodeId: null, teaser: { en: "Two different plans", es: "Dos planes diferentes" } },
+      { day: 10, episodeId: null, teaser: { en: "Their plans challenge", es: "El reto de sus planes" } },
+      { day: 11, episodeId: null, teaser: { en: "An instant decision", es: "Una decisión instantánea" } },
+      { day: 12, episodeId: null, teaser: { en: "A promise", es: "Una promesa" } },
+      { day: 13, episodeId: null, teaser: { en: "A prediction", es: "Una predicción" } },
+      { day: 14, episodeId: null, teaser: { en: "Their future", es: "Su futuro" } },
+      { day: 15, episodeId: null, teaser: { en: "Will challenge", es: "El reto del will" } },
+      { day: 16, episodeId: null, teaser: { en: "Plan vs decision", es: "Plan vs decisión" } },
+      { day: 17, episodeId: null, teaser: { en: "Weekend changes", es: "Cambios de fin de semana" } },
+      { day: 18, episodeId: null, teaser: { en: "María's future", es: "El futuro de María" } },
+      { day: 19, episodeId: null, teaser: { en: "Visible predictions", es: "Predicciones visibles" } },
+      { day: 20, episodeId: null, teaser: { en: "Final future fluency", es: "Fluidez futura final" } },
     ],
   },
 ];
-
 
 export function getSeason(moduleId: string): Season | undefined {
   return STORYBOOK_SEASONS.find((season) => season.moduleId === moduleId);
@@ -177,15 +123,29 @@ export function unlockedWeek(completedDays: number): SeasonWeek {
 
 /** The slot that follows the current episode, including unlock status. */
 export function getNextEpisodeSlot(currentEpisodeId: string, state: JourneyState): NextEpisodeInfo | null {
-  const season = STORYBOOK_SEASONS.find((s) => s.slots.some((slot) => slot.episodeId === currentEpisodeId));
-  if (!season) return null;
+  const seasonIdx = STORYBOOK_SEASONS.findIndex((s) => s.slots.some((slot) => slot.episodeId === currentEpisodeId));
+  if (seasonIdx < 0) return null;
+  const season = STORYBOOK_SEASONS[seasonIdx]!;
   const idx = season.slots.findIndex((slot) => slot.episodeId === currentEpisodeId);
-  if (idx < 0 || idx === season.slots.length - 1) return null;
-  const next = season.slots[idx + 1]!;
+  if (idx < 0) return null;
+
+  if (idx < season.slots.length - 1) {
+    const next = season.slots[idx + 1]!;
+    return {
+      episodeId: next.episodeId,
+      day: next.day,
+      teaser: next.teaser,
+      unlocked: isDayUnlocked(state, season.moduleId, next.day),
+    };
+  }
+
+  const nextSeason = STORYBOOK_SEASONS[seasonIdx + 1];
+  if (!nextSeason) return null;
+  const first = nextSeason.slots[0]!;
   return {
-    episodeId: next.episodeId,
-    day: next.day,
-    teaser: next.teaser,
-    unlocked: isDayUnlocked(state, season.moduleId, next.day),
+    episodeId: first.episodeId,
+    day: first.day,
+    teaser: first.teaser,
+    unlocked: isDayUnlocked(state, nextSeason.moduleId, first.day),
   };
 }
