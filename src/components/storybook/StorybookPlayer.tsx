@@ -205,13 +205,13 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
 function CoverSlide({ episode, es, onStart }: { episode: StorybookEpisode; es: boolean; onStart: () => void }) {
   return (
     <div className="overflow-hidden rounded-3xl border border-border bg-card">
-      <div className="relative">
+      <div className="relative aspect-square overflow-hidden">
         <img
           src={episode.cover}
           alt={es ? `Portada de ${episode.titleEs}` : `${episode.title} cover`}
           width={1024}
           height={1024}
-          className="aspect-square w-full object-cover"
+          className="h-full w-full object-cover"
           style={{ animation: "sb-kenburns-a 14s ease-in-out infinite alternate" }}
         />
         <span className="absolute right-3 top-3" style={{ animation: "sb-sparkle 2.4s ease-in-out infinite" }}>
@@ -281,7 +281,7 @@ function SceneSlide({
 
   return (
     <div className="overflow-hidden rounded-3xl border border-border bg-card">
-      <div className="relative">
+      <div className="relative aspect-square overflow-hidden">
         <img
           src={scene.image}
           alt={scene.imageAlt}
@@ -289,7 +289,7 @@ function SceneSlide({
           height={1024}
           loading="lazy"
           decoding="async"
-          className="aspect-square w-full object-cover"
+          className="h-full w-full object-cover"
           style={{ animation: `${flip ? "sb-kenburns-a" : "sb-kenburns-b"} 16s ease-in-out infinite alternate` }}
         />
         <span
