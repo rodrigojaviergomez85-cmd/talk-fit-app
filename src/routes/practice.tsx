@@ -3,6 +3,7 @@ import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, Info, Sparkles } from "lucide-react";
 import { isUnlimitedEmail } from "@/lib/unlimited-access";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
+import { TappableSentence } from "@/components/fluency/TappableSentence";
 import { toneForTurn, type ModelTone } from "@/lib/model-tone";
 import { rep2Chunks, rep4Items, rep2ChunkText, REP4_MAX, isRep2CorrectionEnabled } from "@/lib/rep-structure";
 export { REP4_MAX };
@@ -1583,11 +1584,33 @@ export function Rep2Copy({
 
       <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {chunk.lines.map((line) => (
-          <LineCard key={line.id} line={line} chunked={prefersChunks(level)} />
+          <TranslatableText key={line.id} es={line.es}>
+            <TappableSentence text={line.text} voice={day.speakerVoice} />
+          </TranslatableText>
+        ))}
+        <p className="text-[11px] font-semibold text-muted-foreground">
+          {t("practice.tapWordHint")}
+        </p>
+      </div>
+
+      {/* Model audio speed: slow options for learners who miss the pronunciation. */}
+      <div className="flex gap-2" role="group" aria-label="Speed">
+        {REP2_SPEEDS.map((rate) => (
+          <button
+            key={rate}
+            type="button"
+            onClick={() => setSpeed(rate)}
+            className={cn(
+              "min-h-[40px] flex-1 rounded-2xl border px-3 text-[12px] font-bold uppercase tracking-[0.12em] transition-colors",
+              speed === rate ? "border-primary bg-primary/10 text-primary" : "border-border bg-card text-muted-foreground",
+            )}
+          >
+            {rate}x
+          </button>
         ))}
       </div>
 
-      <AudioPlayer text={chunkText} label={t("practice.listen")} rate={0.9} voice={day.speakerVoice} />
+      <AudioPlayer text={chunkText} label={t("practice.listen")} rate={speed} voice={day.speakerVoice} />
 
       {/* Genuine tap on the recorder unlocks Web Audio for iOS/Safari — no prompt, no blocking. */}
       <div onPointerDownCapture={correctionEnabled ? unlockFeedbackAudio : undefined}>
