@@ -485,14 +485,22 @@ function FinaleSlide({
   es,
   stars,
   notebook,
+  nextEpisode,
 }: {
   episode: StorybookEpisode;
   es: boolean;
   stars: number;
   notebook: Record<string, string>;
+  nextEpisode: NextEpisodeInfo | null;
 }) {
   const [recorded, setRecorded] = useState(false);
   const words = Object.entries(notebook);
+
+  const nextLabel = nextEpisode
+    ? es
+      ? `Episodio ${nextEpisode.day}: ${nextEpisode.teaser.es}`
+      : `Episode ${nextEpisode.day}: ${nextEpisode.teaser.en}`
+    : null;
 
   return (
     <div className="space-y-4">
@@ -570,6 +578,22 @@ function FinaleSlide({
       <p className="rounded-2xl border border-dashed border-primary/50 bg-primary/5 p-3 text-center text-[13px] font-bold text-primary">
         {es ? episode.cliffhanger.es : episode.cliffhanger.en}
       </p>
+
+      {nextLabel ? (
+        nextEpisode?.unlocked && nextEpisode.episodeId ? (
+          <Link
+            to="/natural-method/cuento/$storyId"
+            params={{ storyId: nextEpisode.episodeId }}
+            className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 text-[16px] font-extrabold uppercase tracking-[0.1em] text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98]"
+          >
+            {es ? "Siguiente episodio" : "Next episode"} <ArrowRight className="size-5" />
+          </Link>
+        ) : (
+          <div className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-muted-foreground/40 bg-muted/40 px-6 text-[14px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
+            <Lock className="size-4" /> {nextLabel}
+          </div>
+        )
+      ) : null}
     </div>
   );
 }
