@@ -16,13 +16,12 @@ Objetivo: que los estudiantes hablen concentrado y no rellenen 90 segundos con p
    - El texto de la meta arriba del micrófono y el contador de oraciones usan estos mismos números.
 
 3. **La pregunta siempre visible al grabar**
-   - En cada tarjeta de audio (Audio 1, 2, 3, 4, 5) se muestra la pregunta que se está contestando, en un recuadro compacto arriba del micrófono, con su botón de escuchar.
-   - Así el estudiante ya no pierde el hilo a partir del audio 2.
-   - En los días de role-play cada turno ya muestra su propia línea; se mantiene igual.
+   - En cada tarjeta de audio (Audio 1, 2, 3, 4, 5) se muestra la pregunta que se está contestando, en un recuadro compacto arriba del micrófono, **solo texto, sin botón de escuchar** (la pregunta principal ya tiene su botón arriba).
+   - En los días de role-play, donde la línea de cada turno es distinta de la pregunta principal, se mantiene todo como está: línea propia **con** botón de escuchar.
 
 ## Alcance técnico
 
-- `src/components/fluency/TakeBoard.tsx`: nueva prop de nivel (`basic` | `higher`) para derivar máximo de segundos y meta de oraciones; `VoiceRecorder` recibe `countdown` y el nuevo `maxSeconds`; se agrega el recuadro de pregunta por slot (nueva prop `promptQuestion`/`promptQuestionEs`/voz).
+- `src/components/fluency/TakeBoard.tsx`: nueva prop de nivel (`basic` | `higher`) para derivar máximo de segundos y meta de oraciones; `VoiceRecorder` recibe `countdown` y el nuevo `maxSeconds`; se agrega un recuadro de solo texto con la pregunta por slot (nuevas props `promptQuestion`/`promptQuestionEs`), sin botón de escuchar. Los turnos de role-play conservan su línea con botón de escuchar.
 - `src/routes/practice.tsx`: `Rep5FinalRep` pasa el nivel (ya calcula `rep5Tier(moduleId)`) y la pregunta de `day.rep5Prompt`; la línea de meta (`rep5.goalLine`) usa los nuevos valores.
 - Los turnos con tiempo propio (Advanced / Pressure Rounds) mantienen su meta autoral pero su máximo se limita a 45 s.
 - Textos bilingües nuevos en `src/lib/i18n.tsx`.
