@@ -1796,6 +1796,7 @@ export function Rep4MakeItYours({
   onNext,
   hideVisuals = false,
   promptTone = "coach",
+  highlightEd = false,
 }: {
   day: CourseDay;
   index: number;
@@ -1807,6 +1808,7 @@ export function Rep4MakeItYours({
   hideVisuals?: boolean;
   /** Interview questions (ADVANCED) are read in a neutral recruiter tone. */
   promptTone?: ModelTone;
+  highlightEd?: boolean;
 }) {
   const t = useT();
   const items = rep4Items(day);
