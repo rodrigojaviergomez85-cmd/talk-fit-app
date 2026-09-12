@@ -3,6 +3,8 @@ import { ArrowRight, Loader2, Pause, Play, RotateCcw } from "lucide-react";
 import { AudioService, type ModelVoice } from "@/services/audio-service";
 import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { tokenizeWords } from "@/lib/syllables";
+import { classifyEdEnding, type EdSound } from "@/lib/ed-endings";
 import type { ModelLine } from "@/lib/types";
 
 type Status = "idle" | "loading" | "playing" | "paused" | "ended" | "error";
