@@ -21,19 +21,27 @@ export function BottomNav() {
   return (
     <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card/95 backdrop-blur-md">
       <ul className="mx-auto flex w-full max-w-lg items-stretch justify-between px-1 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-1.5">
-        {ITEMS.map(({ to, key, icon: Icon }) => {
+        {ITEMS.map(({ to, key, icon: Icon, line2, aria }) => {
           const label = t(key);
+          const ariaLabel = aria ? t(aria) : label;
           return (
             <li key={to} className="flex-1">
               <Link
                 to={to}
                 activeOptions={{ exact: to === "/" }}
-                className="flex flex-col items-center gap-0.5 rounded-2xl py-1.5 text-[9px] font-semibold leading-none text-muted-foreground transition-colors"
+                className="flex flex-col items-center gap-0.5 rounded-2xl py-1.5 font-semibold leading-none text-muted-foreground transition-colors"
                 activeProps={{ className: "!text-primary" }}
-                aria-label={label}
+                aria-label={ariaLabel}
               >
                 <Icon className="size-5" />
-                <span className="capitalize">{label.toLowerCase()}</span>
+                {line2 ? (
+                  <span className="flex flex-col items-center">
+                    <span className="text-[9px] font-bold uppercase tracking-[0.03em]">{label}</span>
+                    <span className="text-[9px] font-bold uppercase tracking-[0.03em]">{t(line2)}</span>
+                  </span>
+                ) : (
+                  <span className="text-[9px] capitalize">{label.toLowerCase()}</span>
+                )}
               </Link>
             </li>
           );
