@@ -101,6 +101,16 @@ export const STORYBOOK_SEASONS: Season[] = [
         episodeId: "vale-best-friend",
         teaser: { en: "My best friend", es: "Mi mejor amiga" },
       },
+      {
+        day: 13,
+        episodeId: "vale-new-supervisor",
+        teaser: { en: "Who is the new supervisor?", es: "¿Quién es la nueva supervisora?" },
+      },
+      {
+        day: 14,
+        episodeId: "vale-dylan-needs-help",
+        teaser: { en: "Dylan needs help", es: "Dylan necesita ayuda" },
+      },
     ],
   },
 ];

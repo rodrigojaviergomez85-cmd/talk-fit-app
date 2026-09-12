@@ -10,7 +10,7 @@ type AudioPlayerProps = {
   label?: string;
   rate?: number;
   /** Model voice: female or male character voice. */
-  voice?: "female" | "male" | undefined;
+  voice?: import("@/services/audio-service").ModelVoice | undefined;
   /** Delivery tone: coach (default), neutral (recruiter), tense (frustrated customer). */
   tone?: ModelTone | undefined;
   size?: "sm" | "md" | "lg";
