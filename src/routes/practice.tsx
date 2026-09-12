@@ -1477,6 +1477,8 @@ export function Rep2Copy({
   /** True between TRY AGAIN and the next completed recording: NEXT stays hidden, only record or SKIP. */
   const [retryPending, setRetryPending] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  /** Model audio speed for Step 2 — slow options for learners who miss the pronunciation. */
+  const [speed, setSpeed] = useState<number>(0.9);
 
   useEffect(() => {
     setMine(null);
