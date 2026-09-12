@@ -2123,10 +2123,8 @@ export function Rep5FinalRep({
       {visual === "scene" ? <SceneImage day={day} /> : null}
       <VariantPicker day={day} />
 
-      {/* -ed reminder (pilot: Simple Past day 2) — right before the microphone. */}
-      {moduleId === "past-stories" && day.day === 2 ? (
-        <EdReminder text={CourseService.getModelText(day)} voice={day.speakerVoice} variant="step5" />
-      ) : null}
+      {/* -ed reminder — right before the microphone; hides itself when the day has no -ed verbs. */}
+      <EdReminder text={CourseService.getModelText(day)} voice={day.speakerVoice} variant="step5" />
 
       {/* SPEAK */}
       {board}
