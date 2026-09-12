@@ -178,7 +178,7 @@ export function TakeBoard({
         <CombinedGoalPanel seconds={combinedSeconds} minSeconds={goalSeconds[0]} maxSeconds={goalSeconds[1]} started={Boolean(latest)} t={t} />
       ) : latest ? (
         /* The goal is stated once above the board; live results appear after the first take. */
-        <GoalPanel latest={latest} minSeconds={goalSeconds[0]} goalSentences={goalSentences} t={t} />
+        <GoalPanel latest={latest} minSeconds={goalSeconds[0]} goalSentences={sentenceGoal} t={t} />
       ) : null}
       {rolePlay && !pressure ? (
         <p className="text-center text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
