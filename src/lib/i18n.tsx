@@ -213,6 +213,7 @@ const DICT = {
   "ed.remindTitle": ["Recuerda el sonido -ed", "Remember the -ed sound"],
   "ed.remindStep5": ["Antes de grabar: cuida el sonido -ed", "Before you record: mind the -ed sound"],
   "ed.listenVerbs": ["Escuchar los verbos -ed (0.5x)", "Listen to the -ed verbs (0.5x)"],
+  "ed.stopVerbs": ["Detener", "Stop"],
 
   "rep3.title": ["SHADOWING 🎧", "SHADOWING 🎧"],
   "rep3.instr": [

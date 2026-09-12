@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Volume2 } from "lucide-react";
+import { Square, Volume2 } from "lucide-react";
 import { AudioService } from "@/services/audio-service";
 import { classifyEdEnding, edPronunciationHint, extractEdWords } from "@/lib/ed-endings";
 import { useT } from "@/lib/i18n";
@@ -30,8 +30,14 @@ export function EdReminder({ text, voice, variant = "step4" }: Props) {
     [],
   );
 
-  const playAll = () => {
-    if (playing || !words.length) return;
+  const togglePlay = () => {
+    if (!words.length) return;
+    if (playing) {
+      cancelled.current = true;
+      AudioService.stop();
+      setPlaying(false);
+      return;
+    }
     cancelled.current = false;
     setPlaying(true);
     let index = 0;
@@ -69,11 +75,12 @@ export function EdReminder({ text, voice, variant = "step4" }: Props) {
         <>
           <button
             type="button"
-            onClick={playAll}
-            disabled={playing}
-            className="mt-2 inline-flex min-h-[40px] w-full items-center justify-center gap-2 rounded-xl border border-border bg-card px-3 text-[11px] font-bold uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-secondary disabled:opacity-50"
+            onClick={togglePlay}
+            aria-pressed={playing}
+            className="mt-2 inline-flex min-h-[40px] w-full items-center justify-center gap-2 rounded-xl border border-border bg-card px-3 text-[11px] font-bold uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-secondary"
           >
-            <Volume2 className="size-4" /> {t("ed.listenVerbs")}
+            {playing ? <Square className="size-4" /> : <Volume2 className="size-4" />}{" "}
+            {playing ? t("ed.stopVerbs") : t("ed.listenVerbs")}
           </button>
           <div className="mt-1.5 flex flex-wrap gap-x-2 gap-y-0.5 text-[10px] font-semibold text-muted-foreground">
             {words.slice(0, 8).map((word) => {
