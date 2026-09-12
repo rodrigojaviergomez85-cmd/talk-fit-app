@@ -310,8 +310,8 @@ export const BASE_GLOSSARY: Record<string, string> = {
   persistent: "persistente",
   plan: "plan",
   posters: "carteles",
-  project: "proyecto",
   relax: "descansar / relajarse",
+
   review: "repasar",
   saturday: "sábado",
   serious: "serio / seria",
