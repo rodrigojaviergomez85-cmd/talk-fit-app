@@ -9,7 +9,7 @@ import {
   type AudiobookGrammar,
   type NaturalMethodAudiobook,
 } from "@/services/natural-method-audiobooks";
-import { INTERACTIVE_STORIES } from "@/services/stories";
+import { STORYBOOK_EPISODES } from "@/services/storybook";
 
 const GRAMMAR_LABELS: Record<AudiobookGrammar, { en: string; es: string }> = {
   "simple-present": { en: "Simple Present", es: "Presente simple" },
@@ -62,21 +62,35 @@ function AudiobooksPage() {
           </p>
         </header>
 
-        {INTERACTIVE_STORIES.map((story) => (
+        {STORYBOOK_EPISODES.map((episode) => (
           <Link
-            key={story.id}
-            to="/natural-method/story/$storyId"
-            params={{ storyId: story.id }}
-            className="block rounded-3xl border-2 border-primary/40 bg-primary/5 p-4"
+            key={episode.id}
+            to="/natural-method/cuento/$storyId"
+            params={{ storyId: episode.id }}
+            className="flex items-center gap-4 rounded-3xl border-2 border-primary/40 bg-primary/5 p-3"
           >
-            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
-              {showEs ? "Historia interactiva · nueva" : "Interactive story · new"}
-            </p>
-            <p className="mt-1 text-[17px] font-extrabold text-foreground">{story.title}</p>
-            <p className="text-[13px] text-muted-foreground">{showEs ? story.blurb.es : story.blurb.en}</p>
-            <p className="mt-2 text-[12px] font-bold uppercase tracking-[0.12em] text-primary">
-              {showEs ? "Escucha · Entiende · Lee · Habla" : "Listen · Understand · Read · Speak"}
-            </p>
+            <img
+              src={episode.cover}
+              alt={showEs ? `Portada de ${episode.titleEs}` : `${episode.title} cover`}
+              width={1024}
+              height={1024}
+              loading="lazy"
+              decoding="async"
+              className="size-20 shrink-0 rounded-2xl border border-border object-cover"
+            />
+            <span className="min-w-0">
+              <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
+                {showEs ? `Cuento animado · ${episode.episodeLabel.es}` : `Animated story · ${episode.episodeLabel.en}`}
+              </span>
+              <span className="mt-0.5 block text-[17px] font-extrabold text-foreground">
+                {showEs ? episode.titleEs : episode.title}
+              </span>
+              <span className="block text-[12px] text-muted-foreground">
+                {showEs
+                  ? "Pasa la página, toca las palabras y responde en voz alta"
+                  : "Turn the page, tap the words and answer out loud"}
+              </span>
+            </span>
           </Link>
         ))}
 
