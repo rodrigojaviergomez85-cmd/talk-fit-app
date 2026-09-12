@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 type Slide =
   | { kind: "cover" }
   | { kind: "scene"; scene: StorybookScene }
+  | { kind: "mindset" }
   | { kind: "quiz"; quiz: StorybookQuiz }
   | { kind: "finale" };
 
@@ -27,6 +28,9 @@ function buildSlides(episode: StorybookEpisode): Slide[] {
   const slides: Slide[] = [{ kind: "cover" }];
   for (const scene of episode.scenes) {
     slides.push({ kind: "scene", scene });
+    if (episode.mindsetCard?.afterScene === scene.id) {
+      slides.push({ kind: "mindset" });
+    }
     for (const quiz of episode.quizzes.filter((q) => q.afterScene === scene.id)) {
       slides.push({ kind: "quiz", quiz });
     }
