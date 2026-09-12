@@ -13,7 +13,7 @@ import {
   STORYBOOK_SEASONS,
   getStorybookEpisode,
   completedDaysInModule,
-  unlockedWeek,
+  unlockedDay,
 } from "@/services/storybook";
 import { JourneyService } from "@/services/journey-service";
 import type { JourneyState } from "@/lib/types";
