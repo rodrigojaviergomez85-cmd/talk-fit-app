@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Mic } from "lucide-react";
 import { AudioPlayer } from "./AudioPlayer";
 import { SlowWordPanel } from "./SlowWordPanel";
