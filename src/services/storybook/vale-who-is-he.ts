@@ -10,6 +10,7 @@ import s7 from "@/assets/storybook/vale-ep3/s7.jpg";
 import s8 from "@/assets/storybook/vale-ep3/s8.jpg";
 import s9 from "@/assets/storybook/vale-ep3/s9.jpg";
 import s10 from "@/assets/storybook/vale-ep3/s10.jpg";
+import s11 from "@/assets/storybook/vale-ep3/s11.jpg";
 
 /**
  * Episode 3 — "Who is he?" / "¿Quién es él?"
@@ -191,6 +192,21 @@ export const VALE_WHO_IS_HE: StorybookEpisode = {
         { word: "amazing", es: "increíble" },
       ],
     },
+    {
+      id: "s11",
+      image: s11,
+      imageAlt: "Vale recibe un mensaje misterioso firmado solo con «D».",
+      text: 'Vale\'s phone buzzes. A new message: "Hi, Vale. Tomorrow we talk again. — D." "Who is D?" she asks.',
+      es: "El teléfono de Vale vibra. Un mensaje nuevo: «Hola, Vale. Mañana hablamos otra vez. — D.» «¿Quién es D?», pregunta ella.",
+      speaker: "vale",
+      words: [
+        { word: "phone", es: "teléfono" },
+        { word: "message", es: "mensaje" },
+        { word: "tomorrow", es: "mañana" },
+        { word: "again", es: "otra vez / de nuevo" },
+        { word: "asks", es: "pregunta" },
+      ],
+    },
   ],
   quizzes: [
     {
@@ -255,7 +271,7 @@ export const VALE_WHO_IS_HE: StorybookEpisode = {
     "I love challenges.",
   ],
   cliffhanger: {
-    en: "To be continued… Episode 4: Who sent the message?",
-    es: "Continuará… Episodio 4: ¿Quién envió el mensaje?",
+    en: "To be continued… Episode 4: Who is D?",
+    es: "Continuará… Episodio 4: ¿Quién es D?",
   },
 };
