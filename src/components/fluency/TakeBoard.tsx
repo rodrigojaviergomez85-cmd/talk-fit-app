@@ -254,19 +254,36 @@ export function TakeBoard({
               take
                 ? isFinal
                   ? "border-primary bg-accent"
-                  : "border-success/30 bg-success/5"
-                : isActive
-                  ? "border-primary/40 bg-card"
-                  : "border-border bg-card/50 opacity-55",
+                  : optional
+                    ? "border-success/30 border-dashed bg-success/5"
+                    : "border-success/30 bg-success/5"
+                : optional
+                  ? isActive
+                    ? "border-primary/40 border-dashed bg-card"
+                    : "border-border border-dashed bg-card/40 opacity-60"
+                  : isActive
+                    ? "border-primary/40 bg-card"
+                    : "border-border bg-card/50 opacity-55",
             )}
           >
             <div className="flex items-center justify-between gap-2">
               <p className="flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.16em]">
-                {t("take.audio")} {index + 1}
+                {optional ? (
+                  <>
+                    {t("take.extra")} {index + 1 - required}{" "}
+                    <span className="text-[10px] font-semibold normal-case tracking-normal text-muted-foreground">
+                      {t("take.optionalShort")}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    {t("take.audio")} {index + 1}
+                  </>
+                )}
                 {take ? <Check className="size-4 text-success" /> : null}
               </p>
               {optional && !take ? (
-                <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                <span className="rounded-full border border-border bg-card px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.14em] text-muted-foreground">
                   {t("take.optional")}
                 </span>
               ) : null}
@@ -436,13 +453,15 @@ export function TakeBoard({
                   />
                 ) : (
                   <>
-                    <TranslatableText supportOnly es={turn?.prepSeconds ? "¡AHORA HABLA!" : turn ? (recruiter ? "Responde al reclutador" : "Responde al cliente") : "Listo para grabar"} align="center" className="text-center">
+                    <TranslatableText supportOnly es={turn?.prepSeconds ? "¡AHORA HABLA!" : turn ? (recruiter ? "Responde al reclutador" : "Responde al cliente") : optional ? t("take.optionalEmpty") : "Listo para grabar"} align="center" className="text-center">
                       <p className="text-center text-[13px] text-muted-foreground">
                         {turn?.prepSeconds
                           ? "SPEAK NOW!"
                           : turn
                             ? (recruiter ? "Respond to the recruiter" : "Respond to the customer")
-                            : "Ready to record"}
+                            : optional
+                              ? t("take.optionalEmpty")
+                              : "Ready to record"}
                       </p>
                     </TranslatableText>
                     <VoiceRecorder
@@ -462,7 +481,9 @@ export function TakeBoard({
                 )}
               </div>
             ) : (
-              <p className="mt-3 text-[13px] text-muted-foreground">{t("take.ready")}</p>
+              <p className="mt-3 text-[13px] text-muted-foreground">
+                {optional ? t("take.optionalEmpty") : t("take.ready")}
+              </p>
             )}
           </div>
           </div>
