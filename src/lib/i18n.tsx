@@ -259,15 +259,29 @@ const DICT = {
   "practice.shadowTitle": ["SHADOWING", "SHADOW"],
   "practice.needHelp": ["¿Necesitas ayuda?", "Need help?"],
   "practice.complete": ["COMPLETAR LA PRÁCTICA DE HOY", "COMPLETE TODAY'S PRACTICE"],
+  "practice.finishNow": ["TERMINAR PRÁCTICA AHORA", "FINISH PRACTICE NOW"],
   "practice.pickFinal": ["Elige una toma como tu paso final.", "Pick one take as your final step."],
   "practice.finalSelected": ["Paso final elegido ✓ — Toma", "Final step selected ✓ — Take"],
   "practice.requiredDone": ["3 pasos obligatorios completos ✓", "3 required steps complete ✓"],
-  "practice.recordAnother": ["O graba otra toma opcional arriba", "Or record another take above"],
+  "practice.requiredCompleteBanner": [
+    "¡Listo! Ya completaste las 3 tomas obligatorias. Puedes terminar la práctica ahora o grabar 2 tomas extra para practicar más.",
+    "Done! You've completed the 3 required takes. You can finish now or record 2 extra takes for more practice.",
+  ],
+  "practice.recordAnother": [
+    "¿Quieres más práctica? Graba una toma extra arriba.",
+    "Want more practice? Record an extra take above.",
+  ],
 
   // Rep 5 take board
   "take.take": ["TOMA", "TAKE"],
   "take.audio": ["AUDIO", "AUDIO"],
+  "take.extra": ["EXTRA", "EXTRA"],
   "take.optional": ["OPCIONAL", "OPTIONAL"],
+  "take.optionalShort": ["(opcional)", "(optional)"],
+  "take.optionalEmpty": [
+    "Toca grabar solo si quieres más práctica.",
+    "Tap record only if you want more practice.",
+  ],
   "take.ready": ["Listo para grabar", "Ready to record"],
   "take.time": ["TIEMPO", "TIME"],
   "take.sentences": ["ORACIONES", "SENTENCES"],
