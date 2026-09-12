@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { classifyEdEnding, edPronunciationHint } from "./ed-endings";
+import { classifyEdEnding, edPronunciationHint, extractEdWords, hasEdWords } from "./ed-endings";
 
 describe("classifyEdEnding", () => {
   it("classifies /ɪd/ after t and d", () => {
