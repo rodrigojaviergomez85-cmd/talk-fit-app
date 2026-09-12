@@ -23,6 +23,8 @@ const DICT = {
   "nav.natural": ["MÉTODO", "METHOD"],
   "nav.account": ["MI CUENTA", "ACCOUNT"],
   "nav.aiCoach": ["AI COACH", "AI COACH"],
+  "nav.interview": ["ENTREV", "INTERV"],
+
 
   // AI Coach (chat)
   "aiCoach.title": ["AI Coach", "AI Coach"],
