@@ -183,8 +183,9 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
   return (
     <div className="space-y-3">
       {STORYBOOK_SEASONS.map((season) => {
+        const unlimited = hasUnlimitedAccess();
         const done = state ? completedDaysInModule(state, season.moduleId) : 0;
-        const open = unlockedDay(done);
+        const open = unlimited ? Number.MAX_SAFE_INTEGER : unlockedDay(done);
         return (
           <section key={season.moduleId} className="space-y-2">
             <h2 className="text-[12px] font-bold uppercase tracking-[0.16em] text-primary">
