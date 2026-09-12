@@ -93,7 +93,7 @@ No será una temporada encerrada en una oficina. Habrá casa, bus, cancha, café
 
 ## Afirmaciones aprobadas
 
-Usar solamente esta colección y rotarla según la historia: `I can do it`, `I am a champion`, `I believe in myself`, `Mistakes are part of the process`, `I am amazing`, `I am awesome`.
+Usar solamente esta colección y rotarla según la historia: `I can do it`, `I am a champion`, `I believe in myself`, `Mistakes are part of the process`, `I am amazing`, `I am awesome`, `I love challenges`, `I am persistent`.
 
 ## Reglas de alineación
 
