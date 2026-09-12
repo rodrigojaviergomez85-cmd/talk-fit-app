@@ -275,6 +275,15 @@ export function TakeBoard({
               ) : null}
             </div>
 
+            {showPrompt ? (
+              <div className="mt-3 rounded-2xl bg-secondary/70 px-3.5 py-2.5">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted-foreground">{t("take.answering")}</p>
+                <TranslatableText es={promptQuestionEs} esClassName="text-muted-foreground" supportOnly>
+                  <p className="mt-0.5 text-[14px] font-bold leading-snug text-foreground">"{promptQuestion}"</p>
+                </TranslatableText>
+              </div>
+            ) : null}
+
             {isRetrySlot && isActive && !take ? (
               <div className="mt-3 space-y-2">
                 <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted-foreground">{t("take.whichTurn")}</p>
