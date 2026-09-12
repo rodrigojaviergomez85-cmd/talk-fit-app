@@ -115,6 +115,13 @@ export function TakeBoard({
   /** Per-tier caps: basic 30s / 5+ sentences, intermediate+advanced 45s / 8+ sentences. */
   const takeMax = tier === "higher" ? 45 : 30;
   const sentenceGoal = tier === "higher" ? 8 : goalSentences;
+  /** Authored goalSeconds may exceed the tier cap (e.g. 45–45 in a 30s level).
+   *  Clamp so the "Target …" label and the green threshold stay reachable. */
+  const cappedGoal: [number, number] = [Math.min(goalSeconds[0], takeMax - 10), Math.min(goalSeconds[1], takeMax)];
+  const capTarget = (range: [number, number]): [number, number] => [
+    Math.min(range[0], takeMax - 10),
+    Math.min(range[1], takeMax),
+  ];
 
   useEffect(() => {
     const audio = new Audio();
@@ -175,10 +182,10 @@ export function TakeBoard({
   return (
     <div className="space-y-4">
       {rolePlay ? (
-        <CombinedGoalPanel seconds={combinedSeconds} minSeconds={goalSeconds[0]} maxSeconds={goalSeconds[1]} started={Boolean(latest)} t={t} />
+        <CombinedGoalPanel seconds={combinedSeconds} minSeconds={cappedGoal[0]} maxSeconds={cappedGoal[1]} started={Boolean(latest)} t={t} />
       ) : latest ? (
         /* The goal is stated once above the board; live results appear after the first take. */
-        <GoalPanel latest={latest} minSeconds={goalSeconds[0]} goalSentences={sentenceGoal} t={t} />
+        <GoalPanel latest={latest} minSeconds={cappedGoal[0]} goalSentences={sentenceGoal} t={t} />
       ) : null}
       {rolePlay && !pressure ? (
         <p className="text-center text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
@@ -212,11 +219,11 @@ export function TakeBoard({
         const turn = isRetrySlot ? turns![retryIndex!] : turns?.[index];
         // Pressure Round: future rounds stay fully hidden until the learner gets there.
         if (pressure && !take && !isActive) return null;
-        const turnTarget = turn?.targetSeconds ?? goalSeconds;
+        const turnTarget: [number, number] = turn?.targetSeconds ? capTarget(turn.targetSeconds) : cappedGoal;
         // Classic Step 5: hard per-tier cap (30s basic / 45s higher). Turns with
-        // their own authored targetSeconds (Advanced / Pressure Round) keep their
-        // authored goal but are still capped at 45s.
-        const turnMax = turn?.targetSeconds ? Math.min(45, Math.max(90, turn.targetSeconds[1] + 15)) : takeMax;
+        // their own authored targetSeconds (Advanced / Pressure Round) are clamped
+        // to the same cap so the displayed target stays reachable.
+        const turnMax = takeMax;
         // Retry slots always show the question being answered — before, during, and after recording.
         const showTurn = Boolean(turn) && (isActive || Boolean(take) || isRetrySlot);
         // Classic Step 5: every take card shows the question being answered (text only).
@@ -265,7 +272,7 @@ export function TakeBoard({
               ) : null}
               {turn?.targetSeconds && !take ? (
                 <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                  {t("take.target")} {turn.targetSeconds[0]}–{turn.targetSeconds[1]}s
+                  {t("take.target")} {turnTarget[0]}–{turnTarget[1]}s
                 </span>
               ) : null}
               {isFinal ? (
