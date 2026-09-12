@@ -193,22 +193,22 @@ export const VALE_FIRST_CALL: StorybookEpisode = {
     {
       id: "q2",
       afterScene: "s7",
-      questionEn: "How does Vale speak?",
-      questionEs: "¿Cómo habla Vale?",
+      questionEn: "How is Vale's voice?",
+      questionEs: "¿Cómo es la voz de Vale?",
       options: [
-        { label: "Slowly and calm", emoji: "😌" },
+        { label: "Calm", emoji: "😌" },
         { label: "Very fast", emoji: "💨" },
         { label: "Angry", emoji: "😠" },
       ],
       answer: 0,
-      sayIt: "I speak English slowly.",
-      sayItEs: "Yo hablo inglés despacio.",
+      sayIt: "My voice is calm.",
+      sayItEs: "Mi voz es tranquila.",
     },
     {
       id: "q3",
       afterScene: "s9",
-      questionEn: "How does Vale feel?",
-      questionEs: "¿Cómo se siente Vale?",
+      questionEn: "How is Vale today?",
+      questionEs: "¿Cómo está Vale hoy?",
       options: [
         { label: "Happy", emoji: "😄" },
         { label: "Tired", emoji: "😴" },
@@ -231,7 +231,7 @@ export const VALE_FIRST_CALL: StorybookEpisode = {
     "How are you today?",
   ],
   cliffhanger: {
-    en: "Why does Mr. Reyes want to see her? Next week: \"Who is she?\"",
-    es: "¿Por qué Mr. Reyes quiere verla? La próxima semana: «¿Quién es ella?»",
+    en: "Mr. Reyes is serious. Why? Next episode: \"Who is he?\"",
+    es: "Mr. Reyes está serio. ¿Por qué? Próximo episodio: «¿Quién es él?»",
   },
 };
