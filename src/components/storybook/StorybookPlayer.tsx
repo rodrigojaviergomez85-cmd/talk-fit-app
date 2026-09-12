@@ -549,6 +549,7 @@ function FinaleSlide({
   nextEpisode: NextEpisodeInfo | null;
 }) {
   const [recorded, setRecorded] = useState(false);
+  const [take, setTake] = useState<Recording | null>(null);
   const words = Object.entries(notebook);
 
   const nextLabel = nextEpisode
