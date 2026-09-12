@@ -10,7 +10,7 @@
  * so every previously generated clip stays valid.
  */
 
-export type Tone = "coach" | "neutral" | "tense";
+export type Tone = "coach" | "neutral" | "tense" | "playful";
 export type RequestedVoice = "neutral" | "female" | "male" | "girl" | "boss";
 
 /** Normalised request: `voice` is the provider voice (alloy/nova/onyx/shimmer). */
@@ -23,7 +23,7 @@ export const VOICE_MAP: Record<RequestedVoice, string> = {
   female: "nova",
   male: "onyx",
   /** Young, bright female — storybook characters like Vale. */
-  girl: "shimmer",
+  girl: "nova",
   /** Deep male — authority characters like the boss. */
   boss: "fable",
 };
@@ -36,6 +36,8 @@ const TONE_INSTRUCTIONS: Record<Tone, string> = {
     "Speak in a calm, professional, conversational tone — like an experienced recruiter or interviewer in a real job interview. Neutral and composed, moderate pace, natural everyday American English accent, clear but not exaggerated. No excitement, no cheerfulness, no smiling delivery; steady and matter-of-fact, with natural connected speech.",
   tense:
     "Speak as a frustrated but controlled customer on a support call. Firm, clipped, impatient and a little tired of repeating yourself — tense and direct, but never shouting or theatrical. Slightly faster pace, short pauses, flat falling intonation. Natural everyday American English accent, realistic and conversational.",
+  playful:
+    "Speak like a cheerful young woman in her late teens: bright, light, high-pitched feminine voice with playful energy and a sweet touch of shyness — like a girl on her first day at a new job, a little nervous but excited and smiling while speaking. Natural everyday American English accent, clear and conversational, lively youthful intonation. Never deep, never flat, never overly serious.",
 };
 
 /** Lease long enough for one TTS generation; a crashed generator frees the clip on expiry. */

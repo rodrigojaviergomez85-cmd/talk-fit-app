@@ -36,6 +36,11 @@ function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice {
   return "neutral";
 }
 
+/** Vale speaks playful and a little shy; everyone else uses the default coach tone. */
+function speakerTone(speaker: StorybookSpeaker | undefined): "playful" | undefined {
+  return speaker === "vale" ? "playful" : undefined;
+}
+
 /** Keyframes local to the storybook (ken-burns, sparkle, shake). */
 const STORYBOOK_CSS = `
 @keyframes sb-kenburns-a { from { transform: scale(1) translate(0,0); } to { transform: scale(1.12) translate(-2%,-2%); } }
