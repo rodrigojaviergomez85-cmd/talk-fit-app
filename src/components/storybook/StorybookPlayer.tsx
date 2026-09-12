@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, ChevronLeft, Lock, Play, Sparkles, Star, Volume2, X } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { SlowWordPanel } from "@/components/fluency/SlowWordPanel";
+import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { useAppLang } from "@/lib/i18n";
 import { tokenizeWords } from "@/lib/syllables";
@@ -621,7 +622,7 @@ function FinaleSlide({
           {es ? "Máximo 15 segundos · unas 5 oraciones" : "Max 15 seconds · about 5 sentences"}
         </p>
         <VoiceRecorder
-          label={es ? "GRABAR MI PRESENTACIÓN" : "RECORD MY INTRO"}
+          label={take ? (es ? "GRABAR OTRA VEZ" : "RECORD AGAIN") : es ? "GRABAR MI PRESENTACIÓN" : "RECORD MY INTRO"}
           stopLabel={es ? "PARAR" : "STOP"}
           maxSeconds={15}
           countdown
