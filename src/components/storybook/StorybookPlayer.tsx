@@ -65,7 +65,17 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
   const [notebook, setNotebook] = useState<Record<string, string>>({});
   const [saidIt, setSaidIt] = useState<Record<string, boolean>>({});
   const [quizDone, setQuizDone] = useState<Record<string, boolean>>({});
+  const [journey, setJourney] = useState<JourneyState | null>(null);
   const touchX = useRef<number | null>(null);
+
+  const nextEpisode = useMemo(() => {
+    if (!journey) return null;
+    return getNextEpisodeSlot(episode.id, journey);
+  }, [episode.id, journey]);
+
+  useEffect(() => {
+    setJourney(JourneyService.load());
+  }, []);
 
   const slide = slides[idx]!;
   const total = slides.length;
