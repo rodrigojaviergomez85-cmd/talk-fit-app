@@ -67,7 +67,13 @@ describe("storybook seasons", () => {
   });
 
   it("returns a locked Season 2 teaser after the Season 1 finale", () => {
-    const state: JourneyState = { days: {}, currentModule: "basic-zero", currentDay: 20, version: 1 };
+    const state: JourneyState = {
+      days: {},
+      streakDays: 0,
+      totalRepsCompleted: 0,
+      totalSpeakingSeconds: 0,
+      weekSeconds: {},
+    };
     const next = getNextEpisodeSlot("vale-graduation", state);
     expect(next).toBeTruthy();
     expect(next!.teaser.en).toBe("She is ready");
