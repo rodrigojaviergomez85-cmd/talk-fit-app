@@ -53,7 +53,7 @@ export const STORYBOOK_SEASONS: Season[] = [
       },
       {
         day: 3,
-        episodeId: null,
+        episodeId: "vale-who-is-he",
         teaser: { en: "Who is he?", es: "¿Quién es él?" },
       },
       {
