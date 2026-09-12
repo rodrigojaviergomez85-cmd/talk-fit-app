@@ -21,7 +21,7 @@ Objetivo: que los estudiantes hablen concentrado y no rellenen 90 segundos con p
 
 ## Alcance técnico
 
-- `src/components/fluency/TakeBoard.tsx`: nueva prop de nivel (`basic` | `higher`) para derivar máximo de segundos y meta de oraciones; `VoiceRecorder` recibe `countdown` y el nuevo `maxSeconds`; se agrega el recuadro de pregunta por slot (nueva prop `promptQuestion`/`promptQuestionEs`/voz).
+- `src/components/fluency/TakeBoard.tsx`: nueva prop de nivel (`basic` | `higher`) para derivar máximo de segundos y meta de oraciones; `VoiceRecorder` recibe `countdown` y el nuevo `maxSeconds`; se agrega un recuadro de solo texto con la pregunta por slot (nuevas props `promptQuestion`/`promptQuestionEs`), sin botón de escuchar. Los turnos de role-play conservan su línea con botón de escuchar.
 - `src/routes/practice.tsx`: `Rep5FinalRep` pasa el nivel (ya calcula `rep5Tier(moduleId)`) y la pregunta de `day.rep5Prompt`; la línea de meta (`rep5.goalLine`) usa los nuevos valores.
 - Los turnos con tiempo propio (Advanced / Pressure Rounds) mantienen su meta autoral pero su máximo se limita a 45 s.
 - Textos bilingües nuevos en `src/lib/i18n.tsx`.
