@@ -255,29 +255,113 @@ function CoverSlide({ episode, es, onStart }: { episode: StorybookEpisode; es: b
   );
 }
 
+/** Every English word is tappable: curated words are highlighted, the rest are subtle. */
+function TappableText({
+  text,
+  scene,
+  episodeGlossary,
+  voice,
+  es,
+  className,
+  onLearnWord,
+}: {
+  text: string;
+  scene?: StorybookScene;
+  episodeGlossary: Map<string, string>;
+  voice: "female" | "male" | undefined;
+  es: boolean;
+  className?: string;
+  onLearnWord?: (word: string, meaning: string) => void;
+}) {
+  const [open, setOpen] = useState<string | null>(null);
+  const tokens = tokenizeWords(text);
+  const result = open ? lookupWord(open, { scene, episodeGlossary }) : null;
+
+  return (
+    <div className="space-y-3">
+      <p className={className}>
+        {tokens.map((token, i) => {
+          if (!token.isWord) {
+            return (
+              <span key={`sep-${i}`} style={{ whiteSpace: "pre-wrap" }}>
+                {token.value}
+              </span>
+            );
+          }
+          const info = lookupWord(token.value, { scene, episodeGlossary });
+          return (
+            <button
+              key={`w-${i}`}
+              type="button"
+              onClick={() => {
+                if (info.curated && info.meaning) onLearnWord?.(token.value, info.meaning);
+                setOpen(open === token.value ? null : token.value);
+                AudioService.stop();
+                AudioService.speak(token.value, { rate: 0.75, voice });
+              }}
+              aria-label={es ? `Significado de ${token.value}` : `Meaning of ${token.value}`}
+              className={cn(
+                "rounded-md px-0.5 underline decoration-2 underline-offset-4 transition-colors",
+                info.curated ? "decoration-primary/60" : "decoration-border/70 decoration-dotted",
+                open === token.value ? "bg-primary/15 text-primary" : "hover:bg-primary/10",
+              )}
+            >
+              {token.value}
+            </button>
+          );
+        })}
+      </p>
+
+      {open ? (
+        <div className="rounded-2xl border border-primary/30 bg-primary/5 p-3" style={{ animation: "sb-pop .25s ease-out" }}>
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <p className="text-[18px] font-extrabold text-foreground">{open}</p>
+              {result?.meaning ? (
+                <p className="text-[14px] font-semibold text-primary">{result.meaning}</p>
+              ) : (
+                <p className="text-[13px] font-semibold text-muted-foreground">
+                  {es ? "Escúchala despacio para practicarla." : "Listen to it slowly to practice it."}
+                </p>
+              )}
+              {result?.curated ? (
+                <p className="mt-0.5 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+                  {es ? "Guardada en tu cuaderno ⭐" : "Saved to your notebook ⭐"}
+                </p>
+              ) : null}
+            </div>
+            <button
+              type="button"
+              onClick={() => setOpen(null)}
+              aria-label={es ? "Cerrar" : "Close"}
+              className="rounded-full p-1 text-muted-foreground hover:bg-card"
+            >
+              <X className="size-4" />
+            </button>
+          </div>
+          <SlowWordPanel word={open} voice={voice} compact onClose={() => setOpen(null)} />
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 function SceneSlide({
   scene,
+  episodeGlossary,
   voice,
   es,
   flip,
   onLearnWord,
 }: {
   scene: StorybookScene;
+  episodeGlossary: Map<string, string>;
   voice: "female" | "male" | undefined;
   es: boolean;
   flip: boolean;
   onLearnWord: (word: string, meaning: string) => void;
 }) {
-  const [open, setOpen] = useState<string | null>(null);
   const [showEs, setShowEs] = useState(false);
-  const tokens = tokenizeWords(scene.text);
-  const wordMap = useMemo(() => {
-    const map = new Map<string, string>();
-    for (const w of scene.words) map.set(w.word.toLowerCase(), w.es);
-    return map;
-  }, [scene]);
-
-  const meaning = open ? (wordMap.get(open.toLowerCase()) ?? null) : null;
 
   return (
     <div className="overflow-hidden rounded-3xl border border-border bg-card">
@@ -301,39 +385,15 @@ function SceneSlide({
       </div>
 
       <div className="space-y-3 p-4">
-        <p className="text-[21px] font-extrabold leading-snug tracking-tight text-foreground">
-          {tokens.map((token, i) => {
-            if (!token.isWord) {
-              return (
-                <span key={`sep-${i}`} style={{ whiteSpace: "pre-wrap" }}>
-                  {token.value}
-                </span>
-              );
-            }
-            const tappable = wordMap.has(token.value.toLowerCase());
-            if (!tappable) return <span key={`w-${i}`}>{token.value}</span>;
-            return (
-              <button
-                key={`w-${i}`}
-                type="button"
-                onClick={() => {
-                  const meaningEs = wordMap.get(token.value.toLowerCase());
-                  if (meaningEs) onLearnWord(token.value, meaningEs);
-                  setOpen(open === token.value ? null : token.value);
-                  AudioService.stop();
-                  AudioService.speak(token.value, { rate: 0.75, voice });
-                }}
-                aria-label={es ? `Significado de ${token.value}` : `Meaning of ${token.value}`}
-                className={cn(
-                  "rounded-md px-0.5 underline decoration-primary/60 decoration-2 underline-offset-4 transition-colors",
-                  open === token.value ? "bg-primary/15 text-primary" : "hover:bg-primary/10",
-                )}
-              >
-                {token.value}
-              </button>
-            );
-          })}
-        </p>
+        <TappableText
+          text={scene.text}
+          scene={scene}
+          episodeGlossary={episodeGlossary}
+          voice={voice}
+          es={es}
+          onLearnWord={onLearnWord}
+          className="text-[21px] font-extrabold leading-snug tracking-tight text-foreground"
+        />
 
         <div className="flex items-center gap-2">
           <button
@@ -356,29 +416,6 @@ function SceneSlide({
         </div>
 
         {showEs ? <p className="text-[14px] font-semibold text-muted-foreground">{scene.es}</p> : null}
-
-        {open && meaning ? (
-          <div className="rounded-2xl border border-primary/30 bg-primary/5 p-3" style={{ animation: "sb-pop .25s ease-out" }}>
-            <div className="flex items-start justify-between gap-2">
-              <div>
-                <p className="text-[18px] font-extrabold text-foreground">{open}</p>
-                <p className="text-[14px] font-semibold text-primary">{meaning}</p>
-                <p className="mt-0.5 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                  {es ? "Guardada en tu cuaderno ⭐" : "Saved to your notebook ⭐"}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setOpen(null)}
-                aria-label={es ? "Cerrar" : "Close"}
-                className="rounded-full p-1 text-muted-foreground hover:bg-card"
-              >
-                <X className="size-4" />
-              </button>
-            </div>
-            <SlowWordPanel word={open} voice={voice} compact onClose={() => setOpen(null)} />
-          </div>
-        ) : null}
       </div>
     </div>
   );
