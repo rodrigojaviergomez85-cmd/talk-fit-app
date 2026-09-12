@@ -52,6 +52,7 @@ import { Route as ReviewInterviewSimulatorsRouteImport } from './routes/review.i
 import { Route as ReviewPictionaryRouteImport } from './routes/review.pictionary'
 import { Route as SuscripcionCanceladoRouteImport } from './routes/suscripcion.cancelado'
 import { Route as SuscripcionExitoRouteImport } from './routes/suscripcion.exito'
+import { Route as NaturalMethodStoryStoryIdRouteImport } from './routes/natural-method.story.$storyId'
 import { Route as NaturalMethodVerbsIndexRouteImport } from './routes/natural-method.verbs.index'
 import { Route as NaturalMethodVerbsIdiomsRouteImport } from './routes/natural-method.verbs.idioms'
 import { Route as NaturalMethodVerbsListRouteImport } from './routes/natural-method.verbs.list'
@@ -281,6 +282,12 @@ const SuscripcionExitoRoute = SuscripcionExitoRouteImport.update({
   path: '/suscripcion/exito',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NaturalMethodStoryStoryIdRoute =
+  NaturalMethodStoryStoryIdRouteImport.update({
+    id: '/natural-method/story/$storyId',
+    path: '/natural-method/story/$storyId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const NaturalMethodVerbsIndexRoute = NaturalMethodVerbsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -369,6 +376,7 @@ export interface FileRoutesByFullPath {
   '/suscripcion/exito': typeof SuscripcionExitoRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
+  '/natural-method/story/$storyId': typeof NaturalMethodStoryStoryIdRoute
   '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
   '/natural-method/verbs/list': typeof NaturalMethodVerbsListRoute
   '/natural-method/verbs/phrasal': typeof NaturalMethodVerbsPhrasalRoute
@@ -421,6 +429,7 @@ export interface FileRoutesByTo {
   '/suscripcion/exito': typeof SuscripcionExitoRoute
   '/natural-method': typeof NaturalMethodIndexRoute
   '/review': typeof ReviewIndexRoute
+  '/natural-method/story/$storyId': typeof NaturalMethodStoryStoryIdRoute
   '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
   '/natural-method/verbs/list': typeof NaturalMethodVerbsListRoute
   '/natural-method/verbs/phrasal': typeof NaturalMethodVerbsPhrasalRoute
@@ -475,6 +484,7 @@ export interface FileRoutesById {
   '/suscripcion/exito': typeof SuscripcionExitoRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
+  '/natural-method/story/$storyId': typeof NaturalMethodStoryStoryIdRoute
   '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
   '/natural-method/verbs/list': typeof NaturalMethodVerbsListRoute
   '/natural-method/verbs/phrasal': typeof NaturalMethodVerbsPhrasalRoute
@@ -530,6 +540,7 @@ export interface FileRouteTypes {
     | '/suscripcion/exito'
     | '/natural-method/'
     | '/review/'
+    | '/natural-method/story/$storyId'
     | '/natural-method/verbs/idioms'
     | '/natural-method/verbs/list'
     | '/natural-method/verbs/phrasal'
@@ -582,6 +593,7 @@ export interface FileRouteTypes {
     | '/suscripcion/exito'
     | '/natural-method'
     | '/review'
+    | '/natural-method/story/$storyId'
     | '/natural-method/verbs/idioms'
     | '/natural-method/verbs/list'
     | '/natural-method/verbs/phrasal'
@@ -635,6 +647,7 @@ export interface FileRouteTypes {
     | '/suscripcion/exito'
     | '/natural-method/'
     | '/review/'
+    | '/natural-method/story/$storyId'
     | '/natural-method/verbs/idioms'
     | '/natural-method/verbs/list'
     | '/natural-method/verbs/phrasal'
@@ -689,6 +702,7 @@ export interface RootRouteChildren {
   SuscripcionExitoRoute: typeof SuscripcionExitoRoute
   NaturalMethodIndexRoute: typeof NaturalMethodIndexRoute
   ReviewIndexRoute: typeof ReviewIndexRoute
+  NaturalMethodStoryStoryIdRoute: typeof NaturalMethodStoryStoryIdRoute
   ReviewModuleIdPracticeRoute: typeof ReviewModuleIdPracticeRoute
   ReviewModuleIdIndexRoute: typeof ReviewModuleIdIndexRoute
   ApiPublicHooksPurgeAudioRoute: typeof ApiPublicHooksPurgeAudioRoute
@@ -998,6 +1012,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SuscripcionExitoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/natural-method/story/$storyId': {
+      id: '/natural-method/story/$storyId'
+      path: '/natural-method/story/$storyId'
+      fullPath: '/natural-method/story/$storyId'
+      preLoaderRoute: typeof NaturalMethodStoryStoryIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/natural-method/verbs/': {
       id: '/natural-method/verbs/'
       path: '/'
@@ -1118,6 +1139,7 @@ const rootRouteChildren: RootRouteChildren = {
   SuscripcionExitoRoute: SuscripcionExitoRoute,
   NaturalMethodIndexRoute: NaturalMethodIndexRoute,
   ReviewIndexRoute: ReviewIndexRoute,
+  NaturalMethodStoryStoryIdRoute: NaturalMethodStoryStoryIdRoute,
   ReviewModuleIdPracticeRoute: ReviewModuleIdPracticeRoute,
   ReviewModuleIdIndexRoute: ReviewModuleIdIndexRoute,
   ApiPublicHooksPurgeAudioRoute: ApiPublicHooksPurgeAudioRoute,
