@@ -135,6 +135,11 @@ export const AudioService = {
     let stopFallback: (() => void) | null = null;
     let element: HTMLAudioElement | null = null;
 
+    // "girl" (storybook characters like Vale) plays slightly faster WITHOUT pitch
+    // preservation, so the pitch rises and she sounds like a teenage girl.
+    const girly = options.voice === "girl";
+    const effectiveRate = (options.rate ?? 1) * (girly ? 1.15 : 1);
+
     void loadModelAudio(
       text,
       options.voice === "female" || options.voice === "male" || options.voice === "girl" || options.voice === "boss"
