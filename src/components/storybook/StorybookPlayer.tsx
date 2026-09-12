@@ -13,7 +13,7 @@ import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary"
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
 import type { NextEpisodeInfo } from "@/services/storybook";
 import { JourneyService } from "@/services/journey-service";
-import type { JourneyState } from "@/lib/types";
+import type { JourneyState, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type Slide =
@@ -549,6 +549,7 @@ function FinaleSlide({
   nextEpisode: NextEpisodeInfo | null;
 }) {
   const [recorded, setRecorded] = useState(false);
+  const [take, setTake] = useState<Recording | null>(null);
   const words = Object.entries(notebook);
 
   const nextLabel = nextEpisode
@@ -624,8 +625,20 @@ function FinaleSlide({
           stopLabel={es ? "PARAR" : "STOP"}
           maxSeconds={15}
           countdown
-          onComplete={() => setRecorded(true)}
+          onComplete={(rec) => {
+            setTake(rec);
+            setRecorded(true);
+          }}
         />
+        {take?.url ? (
+          <div className="space-y-2 rounded-2xl bg-navy-foreground/10 p-3" style={{ animation: "sb-pop .3s ease-out" }}>
+            <p className="text-[12px] font-bold uppercase tracking-[0.1em] opacity-80">
+              {es ? "Escúchate" : "Listen to yourself"}
+            </p>
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+            <audio controls src={take.url} className="w-full" />
+          </div>
+        ) : null}
         {recorded ? (
           <p className="flex items-center justify-center gap-2 text-[13px] font-bold">
             <Check className="size-4" /> {es ? "¡Excelente! Sonaste como Vale." : "Great job! You sounded like Vale."}
