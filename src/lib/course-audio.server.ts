@@ -27,7 +27,7 @@ export const VOICE_MAP: Record<RequestedVoice, string> = {
   /** Deep male — authority characters like the boss. */
   boss: "fable",
 };
-export const TONES: readonly Tone[] = ["coach", "neutral", "tense"];
+export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful"];
 
 const TONE_INSTRUCTIONS: Record<Tone, string> = {
   coach:

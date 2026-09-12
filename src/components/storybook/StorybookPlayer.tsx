@@ -71,7 +71,8 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
   // Auto-play the slide's audio when it becomes visible.
   useEffect(() => {
     AudioService.stop();
-    if (slide.kind === "scene") AudioService.speak(slide.scene.text, { voice: speakerVoice(slide.scene.speaker) });
+    if (slide.kind === "scene")
+      AudioService.speak(slide.scene.text, { voice: speakerVoice(slide.scene.speaker), tone: speakerTone(slide.scene.speaker) });
     if (slide.kind === "quiz") AudioService.speak(slide.quiz.questionEn, { voice: episode.voice });
     return () => AudioService.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -308,7 +309,7 @@ function SceneSlide({
             type="button"
             onClick={() => {
               AudioService.stop();
-              AudioService.speak(scene.text, { voice: speakerVoice(scene.speaker) });
+              AudioService.speak(scene.text, { voice: speakerVoice(scene.speaker), tone: speakerTone(scene.speaker) });
             }}
             className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border border-border px-3 text-[12px] font-bold uppercase tracking-[0.1em] text-foreground"
           >
