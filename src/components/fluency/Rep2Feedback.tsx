@@ -26,7 +26,7 @@ function DiffTokens({ tokens, variant }: { tokens: Rep2DisplayToken[]; variant: 
                 : "rounded bg-primary/15 px-0.5 font-bold text-primary"
             }
           >
-            {token.text}
+            {token.text}{" "}
           </mark>
         ) : (
           <span key={i}>{token.text} </span>
@@ -148,14 +148,14 @@ export function Rep2Feedback({ result, voice, onTryAgain, onSkip, onNext, nextLa
       <div className="space-y-2">
         <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{t("rep2.youSaid")}</p>
         <p className="rounded-2xl bg-background/60 p-3 text-[15px] font-medium text-foreground">
-          “{result.transcript || (es ? "(no se escuchó)" : "(not heard)")}”
+          “{result.diff ? <DiffTokens tokens={result.diff.said} variant="said" /> : result.transcript || (es ? "(no se escuchó)" : "(not heard)")}”
         </p>
       </div>
 
       <div className="space-y-2">
         <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{t("rep2.try")}</p>
         <p className="rounded-2xl bg-background p-3 text-[17px] font-semibold leading-relaxed text-foreground">
-          “{highlightFocus(result.target, result.focus)}”
+          “{result.diff ? <DiffTokens tokens={result.diff.target} variant="target" /> : highlightFocus(result.target, result.focus)}”
         </p>
       </div>
 
