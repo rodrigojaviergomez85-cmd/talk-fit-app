@@ -557,7 +557,7 @@ function MindsetSlide({
   onSaid,
 }: {
   mindset: NonNullable<StorybookEpisode["mindsetCard"]>;
-  voice?: "female" | "male";
+  voice?: "female" | "male" | undefined;
   es: boolean;
   onSaid: () => void;
 }) {
