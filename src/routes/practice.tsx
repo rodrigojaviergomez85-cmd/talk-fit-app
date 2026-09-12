@@ -1596,12 +1596,13 @@ export function Rep2Copy({
       <div className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
         {chunk.lines.map((line) => (
           <TranslatableText key={line.id} es={line.es}>
-            <TappableSentence text={line.text} voice={day.speakerVoice} />
+            <TappableSentence text={line.text} voice={day.speakerVoice} highlightEd={highlightEd} />
           </TranslatableText>
         ))}
         <p className="text-[11px] font-semibold text-muted-foreground">
           {t("practice.tapWordHint")}
         </p>
+        {highlightEd ? <EdLegend /> : null}
       </div>
 
       {/* Model audio speed: slow options for learners who miss the pronunciation. */}
