@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Volume2 } from "lucide-react";
+import { Square, Volume2 } from "lucide-react";
 import { AudioService } from "@/services/audio-service";
 import { classifyEdEnding, edPronunciationHint, extractEdWords } from "@/lib/ed-endings";
 import { useT } from "@/lib/i18n";
