@@ -11,7 +11,7 @@ export type StorybookWord = {
 };
 
 /** Who speaks the scene line — drives the per-character TTS voice. */
-export type StorybookSpeaker = "narrator" | "vale" | "boss";
+export type StorybookSpeaker = "narrator" | "vale" | "boss" | "kat" | "dylan";
 
 export type StorybookScene = {
   id: string;
@@ -44,9 +44,17 @@ export type StorybookQuiz = {
 
 export type StorybookEpisode = {
   id: string;
+  /** Curriculum module this episode belongs to (a season). */
+  moduleId: string;
+  /** Week inside the module (1-4). Drives unlocking and language scope. */
+  week: 1 | 2 | 3 | 4;
   title: string;
   titleEs: string;
   episodeLabel: { en: string; es: string };
+  /** 3 bullet "Previously…" recap shown on the cover (from episode 2 on). */
+  previously?: { en: string; es: string }[];
+  /** Words from earlier episodes reviewed in the flash review. */
+  reviewWords?: StorybookWord[];
   blurb: { en: string; es: string };
   /** Cover illustration. */
   cover: string;

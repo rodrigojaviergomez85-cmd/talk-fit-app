@@ -18,6 +18,8 @@ import s10 from "@/assets/storybook/vale-ep1/s10.jpg";
  */
 export const VALE_FIRST_DAY: StorybookEpisode = {
   id: "vale-first-day",
+  moduleId: "basic-zero",
+  week: 1,
   title: "Vale's First Day",
   titleEs: "El primer día de Vale",
   episodeLabel: { en: "Episode 1", es: "Episodio 1" },
