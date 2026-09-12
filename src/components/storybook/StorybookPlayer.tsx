@@ -252,7 +252,7 @@ function CoverSlide({ episode, es, onStart }: { episode: StorybookEpisode; es: b
           <Play className="size-5 fill-current" /> {es ? "Empezar" : "Start"}
         </button>
         <p className="text-center text-[12px] text-muted-foreground">
-          {es ? "Desliza o toca para pasar la página · toca las palabras subrayadas" : "Swipe or tap to turn the page · tap the underlined words"}
+          {es ? "Desliza o toca para pasar la página · toca cualquier palabra para ver su significado" : "Swipe or tap to turn the page · tap any word to see its meaning"}
         </p>
       </div>
     </div>
@@ -427,6 +427,7 @@ function SceneSlide({
 
 function QuizSlide({
   quiz,
+  episodeGlossary,
   voice,
   es,
   done,
@@ -435,6 +436,7 @@ function QuizSlide({
   onSaid,
 }: {
   quiz: StorybookQuiz;
+  episodeGlossary: Map<string, string>;
   voice: "female" | "male" | undefined;
   es: boolean;
   done: boolean;
@@ -462,7 +464,13 @@ function QuizSlide({
       <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">
         {es ? "Pregunta rápida" : "Quick question"}
       </p>
-      <p className="text-[20px] font-extrabold leading-snug text-foreground">{quiz.questionEn}</p>
+      <TappableText
+        text={quiz.questionEn}
+        episodeGlossary={episodeGlossary}
+        voice={voice}
+        es={es}
+        className="text-[20px] font-extrabold leading-snug text-foreground"
+      />
       <p className="text-[13px] font-semibold text-muted-foreground">{quiz.questionEs}</p>
       <AudioPlayer text={quiz.questionEn} label={es ? "ESCUCHAR" : "LISTEN"} size="sm" variant="ghost" voice={voice} />
 
@@ -499,7 +507,13 @@ function QuizSlide({
             <Star className="size-4 fill-amber-500 text-amber-500" />
             {es ? "¡Correcto! Ahora dilo tú:" : "Correct! Now you say it:"}
           </p>
-          <p className="text-[16px] font-extrabold text-foreground">{quiz.sayIt}</p>
+          <TappableText
+            text={quiz.sayIt}
+            episodeGlossary={episodeGlossary}
+            voice={voice}
+            es={es}
+            className="text-[16px] font-extrabold text-foreground"
+          />
           <p className="text-[12px] font-semibold text-muted-foreground">{quiz.sayItEs}</p>
           {said ? (
             <p className="flex items-center justify-center gap-2 text-[13px] font-bold text-primary">
