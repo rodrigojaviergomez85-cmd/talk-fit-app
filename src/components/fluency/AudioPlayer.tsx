@@ -18,6 +18,8 @@ type AudioPlayerProps = {
   onEnd?: () => void;
   /** Fired when the learner presses play (not on resume). */
   onStart?: () => void;
+  /** Changing this value starts playback, including when the selected rate did not change. */
+  playRequest?: number;
   className?: string;
 };
 
@@ -41,12 +43,14 @@ export function AudioPlayer({
   variant = "primary",
   onEnd,
   onStart,
+  playRequest,
   className,
 }: AudioPlayerProps) {
   const [status, setStatus] = useState<Status>("idle");
   const [current, setCurrent] = useState(0);
   const [duration, setDuration] = useState(0);
   const stopRef = useRef<(() => void) | null>(null);
+  const initialPlayRequestRef = useRef(playRequest);
   const es = useAppLang().lang === "es";
 
   useEffect(() => () => stopRef.current?.(), []);
@@ -81,6 +85,11 @@ export function AudioPlayer({
       onError: () => setStatus("error"),
     });
   };
+
+  useEffect(() => {
+    if (playRequest === undefined || playRequest === initialPlayRequestRef.current) return;
+    start();
+  }, [playRequest]);
 
   const toggle = () => {
     if (status === "playing") {
