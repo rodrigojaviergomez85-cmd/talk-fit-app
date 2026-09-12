@@ -152,8 +152,8 @@ const DICT = {
   // Practice chrome
   "practice.listen": ["ESCUCHAR", "LISTEN"],
   "practice.tapWordHint": [
-    "Toca cualquier palabra para escucharla sílaba por sílaba.",
-    "Tap any word to hear it syllable by syllable.",
+    "Toca cualquier palabra para practicar la pronunciación lenta.",
+    "Tap any word to practice slow pronunciation.",
   ],
   "practice.listenModel": ["ESCUCHAR EL MODELO", "LISTEN TO THE MODEL"],
   "practice.record": ["GRABAR", "RECORD"],
