@@ -42,7 +42,9 @@ Continúa directamente del final del Episodio 2, cuando Mr. Reyes llama a Vale a
 
 ### Historia
 
-Vale entra nerviosa a la oficina de Mr. Reyes, creyendo que hizo algo mal. En realidad la felicita y le presenta a Mateo, el nuevo agente. Mateo se presenta con frases básicas: nombre, edad, país, ciudad, color favorito y pasatiempos. Vale intenta presentarse otra vez, se traba y se apena. Mateo sonríe y le dice que los errores son parte del proceso; juntos repiten «English is easy. I can do it.» Vale respira, lo intenta de nuevo y le sale perfecto. Kat los ve y sonríe. Al final, Mr. Reyes los pone como pareja de práctica y Vale recibe una notificación extraña en su celular: el gancho del Episodio 4.
+Vale entra nerviosa a la oficina de Mr. Reyes, creyendo que hizo algo mal. En realidad la felicita y le presenta a Mateo, el nuevo agente. Mateo se presenta con frases básicas: nombre, edad, país, ciudad, color favorito y pasatiempos. Vale intenta presentarse otra vez, se traba y se apena; se siente pequeña frente a la situación. Mateo le recuerda que los retos son oportunidades y repiten juntos: «English is easy. I love challenges.» Vale respira, lo intenta de nuevo y le sale perfecto. Kat los ve y sonríe. Al final, Mr. Reyes los pone como pareja de práctica y Vale recibe una notificación extraña en su celular: el gancho del Episodio 4.
+
+La moraleja del episodio conecta con el futuro grande del estudiante: aprender inglés no es solo un examen, es entrenamiento para ser el próximo líder, supervisor o empresario.
 
 ### Alcance de inglés (Basic Zero)
 
