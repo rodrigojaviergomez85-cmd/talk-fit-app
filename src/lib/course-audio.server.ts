@@ -11,14 +11,22 @@
  */
 
 export type Tone = "coach" | "neutral" | "tense";
-export type RequestedVoice = "neutral" | "female" | "male";
+export type RequestedVoice = "neutral" | "female" | "male" | "girl" | "boss";
 
-/** Normalised request: `voice` is the provider voice (alloy/nova/onyx). */
+/** Normalised request: `voice` is the provider voice (alloy/nova/onyx/shimmer). */
 export type ClipSpec = { text: string; voice: string; tone: Tone };
 
 export const BUCKET = "course-audio";
 export const MAX_TEXT = 1500;
-export const VOICE_MAP: Record<RequestedVoice, string> = { neutral: "alloy", female: "nova", male: "onyx" };
+export const VOICE_MAP: Record<RequestedVoice, string> = {
+  neutral: "alloy",
+  female: "nova",
+  male: "onyx",
+  /** Young, bright female — storybook characters like Vale. */
+  girl: "shimmer",
+  /** Deep male — authority characters like the boss. */
+  boss: "fable",
+};
 export const TONES: readonly Tone[] = ["coach", "neutral", "tense"];
 
 const TONE_INSTRUCTIONS: Record<Tone, string> = {

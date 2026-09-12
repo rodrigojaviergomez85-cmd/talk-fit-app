@@ -7,7 +7,8 @@ import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { useAppLang } from "@/lib/i18n";
 import { tokenizeWords } from "@/lib/syllables";
 import { AudioService } from "@/services/audio-service";
-import type { StorybookEpisode, StorybookQuiz, StorybookScene } from "@/services/storybook/types";
+import type { ModelVoice } from "@/services/audio-service";
+import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
 import { cn } from "@/lib/utils";
 
 type Slide =
@@ -26,6 +27,13 @@ function buildSlides(episode: StorybookEpisode): Slide[] {
   }
   slides.push({ kind: "finale" });
   return slides;
+}
+
+/** Per-character model voice; the narrator is the default warm neutral voice. */
+function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice {
+  if (speaker === "vale") return "girl";
+  if (speaker === "boss") return "boss";
+  return "neutral";
 }
 
 /** Keyframes local to the storybook (ken-burns, sparkle, shake). */
@@ -58,7 +66,7 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
   // Auto-play the slide's audio when it becomes visible.
   useEffect(() => {
     AudioService.stop();
-    if (slide.kind === "scene") AudioService.speak(slide.scene.text, { voice: episode.voice });
+    if (slide.kind === "scene") AudioService.speak(slide.scene.text, { voice: speakerVoice(slide.scene.speaker) });
     if (slide.kind === "quiz") AudioService.speak(slide.quiz.questionEn, { voice: episode.voice });
     return () => AudioService.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -295,7 +303,7 @@ function SceneSlide({
             type="button"
             onClick={() => {
               AudioService.stop();
-              AudioService.speak(scene.text, { voice });
+              AudioService.speak(scene.text, { voice: speakerVoice(scene.speaker) });
             }}
             className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border border-border px-3 text-[12px] font-bold uppercase tracking-[0.1em] text-foreground"
           >

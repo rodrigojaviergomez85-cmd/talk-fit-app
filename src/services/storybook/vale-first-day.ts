@@ -60,6 +60,7 @@ export const VALE_FIRST_DAY: StorybookEpisode = {
       imageAlt: "El supervisor le pide a Vale que se presente frente al equipo.",
       text: "\"Introduce yourself,\" says the boss with a smile.",
       es: "«Preséntate», dice el jefe con una sonrisa.",
+      speaker: "boss",
       words: [
         { word: "introduce", es: "presentar" },
         { word: "yourself", es: "a ti misma/o" },
@@ -97,6 +98,7 @@ export const VALE_FIRST_DAY: StorybookEpisode = {
       imageAlt: "Vale se presenta con confianza; su mochila tiene una bandera de El Salvador.",
       text: "\"My name is Vale. I am from El Salvador.\"",
       es: "«Me llamo Vale. Soy de El Salvador.»",
+      speaker: "vale",
       words: [
         { word: "name", es: "nombre" },
         { word: "from", es: "de (origen)" },
@@ -108,6 +110,7 @@ export const VALE_FIRST_DAY: StorybookEpisode = {
       imageAlt: "Vale imagina un plato de pupusas mientras sus compañeros ríen.",
       text: "\"I am nineteen years old, and my favorite food is pupusas.\"",
       es: "«Tengo diecinueve años y mi comida favorita son las pupusas.»",
+      speaker: "vale",
       words: [
         { word: "nineteen", es: "diecinueve" },
         { word: "years", es: "años" },
@@ -122,6 +125,7 @@ export const VALE_FIRST_DAY: StorybookEpisode = {
       imageAlt: "Vale baila con su teléfono mientras el equipo aplaude.",
       text: "\"My hobbies are dancing and making videos.\"",
       es: "«Mis pasatiempos son bailar y hacer videos.»",
+      speaker: "vale",
       words: [
         { word: "hobbies", es: "pasatiempos" },
         { word: "dancing", es: "bailar" },
@@ -145,13 +149,21 @@ export const VALE_FIRST_DAY: StorybookEpisode = {
       id: "s10",
       image: s10,
       imageAlt: "El teléfono suena con fuerza y Vale lo mira con los ojos abiertos.",
-      text: "The phone rings. \"Your first call, Vale!\"",
-      es: "El teléfono suena. «¡Tu primera llamada, Vale!»",
+      text: "The phone rings.",
+      es: "El teléfono suena.",
       words: [
         { word: "phone", es: "teléfono" },
         { word: "rings", es: "suena" },
-        { word: "call", es: "llamada" },
       ],
+    },
+    {
+      id: "s11",
+      image: s10,
+      imageAlt: "El teléfono suena con fuerza y Vale lo mira con los ojos abiertos.",
+      text: "\"Your first call, Vale!\"",
+      es: "«¡Tu primera llamada, Vale!»",
+      speaker: "boss",
+      words: [{ word: "call", es: "llamada" }],
     },
   ],
   quizzes: [
