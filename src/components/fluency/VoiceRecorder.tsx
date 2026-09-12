@@ -158,7 +158,7 @@ export function VoiceRecorder({
               nearLimit ? "text-destructive" : inTarget ? "text-success" : recording ? "text-foreground" : "text-muted-foreground",
             )}
           >
-            {String(Math.floor(seconds / 60)).padStart(2, "0")}:{String(seconds % 60).padStart(2, "0")}
+            {String(Math.floor(displaySeconds / 60)).padStart(2, "0")}:{String(displaySeconds % 60).padStart(2, "0")}
           </p>
           {targetSeconds ? (
             <p className="mt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
