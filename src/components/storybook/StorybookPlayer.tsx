@@ -580,7 +580,7 @@ function FinaleSlide({
           🎉
         </p>
         <h2 className="mt-1 text-xl font-extrabold text-foreground">
-          {es ? "¡Terminaste el Episodio 1!" : "You finished Episode 1!"}
+          {es ? `¡Terminaste ${episode.episodeLabel.es}!` : `You finished ${episode.episodeLabel.en}!`}
         </h2>
         <p className="mt-2 flex items-center justify-center gap-1.5 text-[15px] font-extrabold text-amber-500">
           <Star className="size-5 fill-amber-500" /> {stars} {es ? "estrellas" : "stars"}
