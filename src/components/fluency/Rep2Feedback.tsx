@@ -179,9 +179,18 @@ export function Rep2Feedback({ result, voice, onTryAgain, onSkip, onNext, nextLa
 
       <div className="space-y-2">
         <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{t("rep2.try")}</p>
-        <p className="rounded-2xl bg-background p-3 text-[17px] font-semibold leading-relaxed text-foreground">
-          “{result.diff ? <DiffTokens tokens={result.diff.target} variant="target" /> : highlightFocus(result.target, result.focus)}”
-        </p>
+        <div className="rounded-2xl bg-background p-3">
+          <p className="text-[17px] font-semibold leading-relaxed text-foreground">
+            “{result.diff ? (
+              <DiffTokens tokens={result.diff.target} variant="target" openWord={openWord} onTapWord={tapWord} />
+            ) : (
+              highlightFocus(result.target, result.focus)
+            )}”
+          </p>
+          {result.diff && openWord ? (
+            <SlowWordPanel word={openWord} voice={voice} compact onClose={() => setOpenWord(null)} />
+          ) : null}
+        </div>
       </div>
 
       <div className="flex flex-col gap-3">
