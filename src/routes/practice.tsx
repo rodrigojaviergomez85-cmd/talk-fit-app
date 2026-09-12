@@ -1882,9 +1882,12 @@ export function Rep4MakeItYours({
         </CollapsibleHelp>
       ) : null}
 
+      <p className="text-center text-[12px] font-semibold text-muted-foreground">{t("rep4.warmupHint")}</p>
+
       <VoiceRecorder
         label={mine ? t("practice.reRecord") : t("practice.answer")}
-        maxSeconds={30}
+        maxSeconds={15}
+        countdown
         onComplete={(rec) => {
           setMine(rec);
           onRecorded(rec);
