@@ -22,8 +22,8 @@ export const VOICE_MAP: Record<RequestedVoice, string> = {
   neutral: "alloy",
   female: "nova",
   male: "onyx",
-  /** Young, bright female — storybook characters like Vale. */
-  girl: "nova",
+  /** Young, high-pitched female — storybook characters like Vale. */
+  girl: "coral",
   /** Deep male — authority characters like the boss. */
   boss: "fable",
 };
@@ -37,7 +37,7 @@ const TONE_INSTRUCTIONS: Record<Tone, string> = {
   tense:
     "Speak as a frustrated but controlled customer on a support call. Firm, clipped, impatient and a little tired of repeating yourself — tense and direct, but never shouting or theatrical. Slightly faster pace, short pauses, flat falling intonation. Natural everyday American English accent, realistic and conversational.",
   playful:
-    "Speak like a cheerful young woman in her late teens: bright, light, high-pitched feminine voice with playful energy and a sweet touch of shyness — like a girl on her first day at a new job, a little nervous but excited and smiling while speaking. Natural everyday American English accent, clear and conversational, lively youthful intonation. Never deep, never flat, never overly serious.",
+    "Speak like an 18-year-old girl: a distinctly HIGH-PITCHED, youthful, feminine voice — light and bright, never deep or mature. Playful and giggly energy with a sweet touch of shyness, like a teenage girl on her first day at a new job, a little nervous but excited and smiling while speaking. Slightly fast pace, lively youthful intonation with rising endings. Natural everyday American English accent, clear and conversational. Absolutely avoid any low, serious, or adult-sounding delivery.",
 };
 
 /** Lease long enough for one TTS generation; a crashed generator frees the clip on expiry. */
