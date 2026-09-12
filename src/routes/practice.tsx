@@ -791,7 +791,14 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
                showVisuals={showPracticeVisuals}
             />
           ) : null}
-          {stage === 3 ? <Rep3Shadow day={day} onNext={goForward} onSkip={goForward} /> : null}
+          {stage === 3 ? (
+            <Rep3Shadow
+              day={day}
+              onNext={goForward}
+              onSkip={goForward}
+              highlightEd={moduleId === "past-stories" && day.day === 2}
+            />
+          ) : null}
           {stage === 4 ? (
             <Rep4MakeItYours
               day={day}
@@ -806,6 +813,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               onNext={goForward}
                hideVisuals={!showPracticeVisuals}
               promptTone={moduleId === "advanced-1" ? "neutral" : "coach"}
+              highlightEd={moduleId === "past-stories" && day.day === 2}
             />
 
           ) : null}
