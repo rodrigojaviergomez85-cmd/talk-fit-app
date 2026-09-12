@@ -1446,7 +1446,7 @@ function Rep1Listen({ day, showEs, onNext }: { day: CourseDay; showEs: boolean; 
 /* -------------------------------- Rep 2 ---------------------------------- */
 
 /** Step 2 model-audio speeds: slow, medium, normal. */
-const REP2_SPEEDS = [0.5, 0.75, 0.9] as const;
+const REP2_SPEEDS = [0.5, 0.75, 1] as const;
 
 export function Rep2Copy({
   moduleId,
@@ -1481,7 +1481,7 @@ export function Rep2Copy({
   const [retryPending, setRetryPending] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   /** Model audio speed for Step 2 — slow options for learners who miss the pronunciation. */
-  const [speed, setSpeed] = useState<number>(0.9);
+  const [speed, setSpeed] = useState<number>(1);
 
   useEffect(() => {
     setMine(null);

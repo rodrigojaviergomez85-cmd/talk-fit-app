@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Volume2, X } from "lucide-react";
 import { AudioService } from "@/services/audio-service";
-import { splitSyllables, tokenizeWords } from "@/lib/syllables";
+import { tokenizeWords } from "@/lib/syllables";
 import { useAppLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -12,8 +12,8 @@ type Props = {
 };
 
 /**
- * Sentence where every word can be tapped to hear it, plus a syllable-by-syllable
- * breakdown. Pronunciation aid only — it never changes practice state.
+ * Sentence where every word can be tapped to hear it at slower speeds.
+ * Pronunciation aid only — it never changes practice state.
  */
 export function TappableSentence({ text, voice, className }: Props) {
   const es = useAppLang().lang === "es";
@@ -25,8 +25,6 @@ export function TappableSentence({ text, voice, className }: Props) {
     AudioService.speak(value, { rate, voice });
   };
 
-  const syllables = open ? splitSyllables(open) : [];
-
   return (
     <div className={className}>
       <p className="text-[22px] font-extrabold leading-tight tracking-tight">
@@ -37,7 +35,7 @@ export function TappableSentence({ text, voice, className }: Props) {
               type="button"
               onClick={() => {
                 setOpen(token.value);
-                say(token.value, 0.8);
+                say(token.value, 0.75);
               }}
               className={cn(
                 "rounded-md px-0.5 transition-colors hover:bg-primary/10 active:bg-primary/20",
@@ -59,7 +57,7 @@ export function TappableSentence({ text, voice, className }: Props) {
         <div className="mt-3 rounded-2xl border border-border bg-secondary/50 p-3">
           <div className="flex items-center justify-between gap-2">
             <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              {es ? "Sílaba por sílaba" : "Syllable by syllable"}
+              {es ? "Pronunciación lenta" : "Slow pronunciation"}
             </p>
             <button
               type="button"
@@ -71,33 +69,20 @@ export function TappableSentence({ text, voice, className }: Props) {
             </button>
           </div>
 
-          <div className="mt-2 flex flex-wrap items-center gap-1.5">
-            {syllables.map((syllable, index) => (
-              <button
-                key={`${syllable}-${index}`}
-                type="button"
-                onClick={() => say(syllable, 0.6)}
-                className="min-h-[40px] rounded-xl border border-border bg-card px-3 text-[15px] font-extrabold text-foreground active:scale-[0.97]"
-              >
-                {syllable}
-              </button>
-            ))}
-          </div>
-
           <div className="mt-2 flex gap-2">
             <button
               type="button"
               onClick={() => say(open, 0.5)}
-              className="inline-flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-3 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground"
+              className="inline-flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-3 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground active:scale-[0.97]"
             >
               <Volume2 className="size-4" /> 0.5x
             </button>
             <button
               type="button"
-              onClick={() => say(open, 1)}
-              className="inline-flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-3 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground"
+              onClick={() => say(open, 0.75)}
+              className="inline-flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-border bg-card px-3 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground active:scale-[0.97]"
             >
-              <Volume2 className="size-4" /> 1x
+              <Volume2 className="size-4" /> 0.75x
             </button>
           </div>
         </div>
