@@ -9,7 +9,16 @@ import {
   type AudiobookGrammar,
   type NaturalMethodAudiobook,
 } from "@/services/natural-method-audiobooks";
-import { STORYBOOK_EPISODES } from "@/services/storybook";
+import {
+  STORYBOOK_SEASONS,
+  getStorybookEpisode,
+  completedDaysInModule,
+  unlockedWeek,
+} from "@/services/storybook";
+import { JourneyService } from "@/services/journey-service";
+import type { JourneyState } from "@/lib/types";
+import { Lock } from "lucide-react";
+import { useEffect } from "react";
 
 const GRAMMAR_LABELS: Record<AudiobookGrammar, { en: string; es: string }> = {
   "simple-present": { en: "Simple Present", es: "Presente simple" },
@@ -62,37 +71,9 @@ function AudiobooksPage() {
           </p>
         </header>
 
-        {STORYBOOK_EPISODES.map((episode) => (
-          <Link
-            key={episode.id}
-            to="/natural-method/cuento/$storyId"
-            params={{ storyId: episode.id }}
-            className="flex items-center gap-4 rounded-3xl border-2 border-primary/40 bg-primary/5 p-3"
-          >
-            <img
-              src={episode.cover}
-              alt={showEs ? `Portada de ${episode.titleEs}` : `${episode.title} cover`}
-              width={1024}
-              height={1024}
-              loading="lazy"
-              decoding="async"
-              className="size-20 shrink-0 rounded-2xl border border-border object-cover"
-            />
-            <span className="min-w-0">
-              <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
-                {showEs ? `Cuento animado · ${episode.episodeLabel.es}` : `Animated story · ${episode.episodeLabel.en}`}
-              </span>
-              <span className="mt-0.5 block text-[17px] font-extrabold text-foreground">
-                {showEs ? episode.titleEs : episode.title}
-              </span>
-              <span className="block text-[12px] text-muted-foreground">
-                {showEs
-                  ? "Pasa la página, toca las palabras y responde en voz alta"
-                  : "Turn the page, tap the words and answer out loud"}
-              </span>
-            </span>
-          </Link>
-        ))}
+        <SeasonMap showEs={showEs} />
+
+
 
 
         <LevelSection
