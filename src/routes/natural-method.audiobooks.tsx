@@ -205,7 +205,7 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
               if (!unlocked) {
                 return (
                   <div
-                    key={slot.week}
+                    key={slot.day}
                     className="flex items-center gap-4 rounded-3xl border border-dashed border-border bg-muted/30 p-3 opacity-70"
                   >
                     <div className="flex size-20 shrink-0 items-center justify-center rounded-2xl border border-border bg-muted">
@@ -219,8 +219,8 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
                       <p className="text-[12px] text-muted-foreground">
                         {episode
                           ? showEs
-                            ? "Se abre cuando llegues a esta semana"
-                            : "Unlocks when you reach this week"
+                            ? "Se abre cuando llegues a este día"
+                            : "Unlocks when you reach this day"
                           : showEs
                             ? "Muy pronto"
                             : "Coming soon"}
@@ -232,7 +232,7 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
 
               return (
                 <Link
-                  key={slot.week}
+                  key={slot.day}
                   to="/natural-method/cuento/$storyId"
                   params={{ storyId: episode.id }}
                   className="flex items-center gap-4 rounded-3xl border-2 border-primary/40 bg-primary/5 p-3"
