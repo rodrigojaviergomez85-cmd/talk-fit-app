@@ -44,7 +44,7 @@ export const VALE_WHERE_ARE_YOU_FROM: StorybookEpisode = {
     es: "Una respuesta larga, no corta. Vale aprende a decir por qué con «because».",
   },
   cover,
-  voice: "female",
+  voice: "girl",
   scenes: [
     {
       id: "s1",

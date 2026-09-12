@@ -44,7 +44,7 @@ export const VALE_FAVORITE_COLOR: StorybookEpisode = {
     es: "Un reto de colores en la oficina. Cada respuesta necesita una razón.",
   },
   cover,
-  voice: "female",
+  voice: "girl",
   scenes: [
     {
       id: "s1",

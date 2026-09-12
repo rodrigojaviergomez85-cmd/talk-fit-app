@@ -47,7 +47,7 @@ export const VALE_SUPPORT_TEAM: StorybookEpisode = {
     es: "Todos se presentan. Hoy le toca a Vale — sola.",
   },
   cover,
-  voice: "female",
+  voice: "girl",
   scenes: [
     {
       id: "s1",

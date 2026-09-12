@@ -6,7 +6,7 @@ export const VALE_COMPLETE_INTRODUCTION: StorybookEpisode = {
   id: "vale-complete-introduction", moduleId: "basic-zero", week: 2, title: "Tell me about yourself", titleEs: "Háblame de ti", episodeLabel: { en: "Episode 10", es: "Episodio 10" },
   previously: [{ en: "Vale made her Talent Day video.", es: "Vale hizo su video del Día de talentos." }, { en: "She spoke about her hobbies.", es: "Habló de sus pasatiempos." }, { en: "Now she has a complete presentation.", es: "Ahora tiene una presentación completa." }],
   reviewWords: [{ word: "city", es: "ciudad" }, { word: "favorite", es: "favorito" }, { word: "hobbies", es: "pasatiempos" }],
-  blurb: { en: "A timer starts. Can Vale connect everything she knows?", es: "Comienza un cronómetro. ¿Puede Vale conectar todo lo que sabe?" }, cover, voice: "female",
+  blurb: { en: "A timer starts. Can Vale connect everything she knows?", es: "Comienza un cronómetro. ¿Puede Vale conectar todo lo que sabe?" }, cover, voice: "girl",
   scenes: [
     { id: "s1", image: s1, imageAlt: "Vale frente a una pantalla con cronómetro.", text: "It is presentation day. A timer is on the big screen.", es: "Es el día de la presentación. Hay un cronómetro en la pantalla grande.", words: [{ word: "presentation", es: "presentación" }, { word: "timer", es: "cronómetro" }] },
     { id: "s2", image: s2, imageAlt: "Mr. Reyes invita a Vale a presentarse.", text: '"Vale, tell us about yourself," says Mr. Reyes.', es: "«Vale, háblanos de ti», dice el señor Reyes.", speaker: "boss", words: [{ word: "yourself", es: "ti misma" }, { word: "tell", es: "contar" }] },

@@ -53,7 +53,7 @@ export const VALE_WHO_IS_HE: StorybookEpisode = {
     es: "Llega un nuevo compañero. ¿Podrá Vale presentarse con él?",
   },
   cover,
-  voice: "female",
+  voice: "girl",
   scenes: [
     {
       id: "s1",

@@ -39,7 +39,7 @@ export const VALE_FIRST_CALL: StorybookEpisode = {
     es: "Vale contesta su primera llamada en inglés. Un cliente. Un minuto. Sin guion.",
   },
   cover,
-  voice: "female",
+  voice: "girl",
   scenes: [
     {
       id: "s1",

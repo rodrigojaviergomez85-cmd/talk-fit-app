@@ -6,7 +6,7 @@ export const VALE_BEST_FRIEND: StorybookEpisode = {
   id: "vale-best-friend", moduleId: "basic-zero", week: 3, title: "My best friend", titleEs: "Mi mejor amiga", episodeLabel: { en: "Episode 12", es: "Episodio 12" },
   previously: [{ en: "Vale introduced her brother Luis.", es: "Vale presentó a su hermano Luis." }, { en: "Luis practiced for his interview.", es: "Luis practicó para su entrevista." }, { en: "A video call with Camila started.", es: "Comenzó una videollamada con Camila." }],
   reviewWords: [{ word: "friend", es: "amiga" }, { word: "city", es: "ciudad" }, { word: "favorite", es: "favorito" }],
-  blurb: { en: "Meet Camila, a designer who thinks big.", es: "Conoce a Camila, una diseñadora que piensa en grande." }, cover, voice: "female",
+  blurb: { en: "Meet Camila, a designer who thinks big.", es: "Conoce a Camila, una diseñadora que piensa en grande." }, cover, voice: "girl",
   scenes: [
     { id: "s1", image: s1, imageAlt: "Camila saluda por videollamada.", text: '"Hi! My name is Camila," she says.', es: "«¡Hola! Me llamo Camila», dice ella.", speaker: "camila", words: [{ word: "name", es: "nombre" }, { word: "Camila", es: "Camila" }] },
     { id: "s2", image: s2, imageAlt: "Vale presenta a Camila con Luis presente.", text: '"This is Camila. She is Luis\'s best friend," says Vale.', es: "«Esta es Camila. Es la mejor amiga de Luis», dice Vale.", speaker: "vale", words: [{ word: "best", es: "mejor" }, { word: "friend", es: "amiga" }] },
