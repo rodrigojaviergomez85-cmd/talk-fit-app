@@ -13,6 +13,12 @@ const OUT_OF_SCOPE = [
 ];
 
 describe("storybook seasons", () => {
+  it("unlocks one episode per completed day", () => {
+    expect(unlockedDay(0)).toBe(1);
+    expect(unlockedDay(1)).toBe(2);
+    expect(unlockedDay(7)).toBe(8);
+  });
+
   it("unlocks one week per 5 completed days, capped at week 4", () => {
     expect(unlockedWeek(0)).toBe(1);
     expect(unlockedWeek(4)).toBe(1);
@@ -29,7 +35,7 @@ describe("storybook seasons", () => {
         const episode = STORYBOOK_EPISODES.find((e) => e.id === slot.episodeId);
         expect(episode, `missing episode ${slot.episodeId}`).toBeTruthy();
         expect(episode!.moduleId).toBe(season.moduleId);
-        expect(episode!.week).toBe(slot.week);
+
       }
     }
   });

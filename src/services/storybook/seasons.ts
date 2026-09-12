@@ -10,8 +10,6 @@ export type SeasonWeek = 1 | 2 | 3 | 4;
 export type SeasonEpisodeSlot = {
   /** Day of the module this episode belongs to (1-based). */
   day: number;
-  /** Week the day falls into (language scope). */
-  week: SeasonWeek;
   /** Episode id once produced; null while the episode is still in production. */
   episodeId: string | null;
   /** Shown while the slot has no episode yet. */
@@ -33,25 +31,21 @@ export const STORYBOOK_SEASONS: Season[] = [
     slots: [
       {
         day: 1,
-        week: 1,
         episodeId: "vale-first-day",
         teaser: { en: "Vale's first day", es: "El primer día de Vale" },
       },
       {
         day: 2,
-        week: 1,
         episodeId: "vale-first-call",
         teaser: { en: "The first call", es: "La primera llamada" },
       },
       {
         day: 3,
-        week: 1,
         episodeId: null,
         teaser: { en: "Who is she?", es: "¿Quién es ella?" },
       },
       {
         day: 4,
-        week: 1,
         episodeId: null,
         teaser: { en: "The photo on her phone", es: "La foto en el celular" },
       },
