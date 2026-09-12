@@ -61,6 +61,7 @@ export function ReviewPracticeFlow({ moduleId, practice, guide, showEs: showEsIn
   /** Review ids travel through curriculum-typed props; the server validates them explicitly. */
   const transportId = moduleId as unknown as ModuleId;
   const reviewModule = getReviewModule(moduleId);
+  const showPracticeVisuals = moduleId === "review-present-progressive";
 
   const [showEs, setShowEs] = useState(showEsInitial);
   const [step, setStep] = useState(1);
@@ -242,7 +243,7 @@ export function ReviewPracticeFlow({ moduleId, practice, guide, showEs: showEsIn
         ) : null}
 
         {/* Reference scene: what the learner is describing (3rd person only). */}
-        {practice.sceneImage && step >= 2 && !(step === 2 && practice.rep2ChunkImages?.[subIndex]) ? (
+        {showPracticeVisuals && practice.sceneImage && step >= 2 && !(step === 2 && practice.rep2ChunkImages?.[subIndex]) ? (
           <figure className="overflow-hidden rounded-3xl border border-border bg-card">
             <img
               src={practice.sceneImage.src}
@@ -289,6 +290,7 @@ export function ReviewPracticeFlow({ moduleId, practice, guide, showEs: showEsIn
             }}
             onSkip={goForward}
             onNext={goForward}
+            showVisuals={showPracticeVisuals}
           />
         ) : null}
 
@@ -306,6 +308,7 @@ export function ReviewPracticeFlow({ moduleId, practice, guide, showEs: showEsIn
             }}
             onSkip={goForward}
             onNext={goForward}
+            hideVisuals={!showPracticeVisuals}
           />
         ) : null}
 
@@ -315,6 +318,7 @@ export function ReviewPracticeFlow({ moduleId, practice, guide, showEs: showEsIn
             day={day}
             takes={takes}
             finalIndex={finalIndex}
+            showVisuals={showPracticeVisuals}
             onRecorded={(index, rec) => {
               trackRecording();
               const pending: Recording = { ...rec, countStatus: "pending", sentenceCount: null };

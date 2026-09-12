@@ -66,3 +66,8 @@ export function introImageIsEssential(day: CourseDay, tier: IntroTier): boolean 
   if (tier !== "basic-low" && tier !== "basic-high") return false;
   return /progressive/i.test(`${day.focus} ${day.weekTitle ?? ""}`);
 }
+
+/** Keep practice visuals only when the lesson explicitly teaches Present Progressive. */
+export function practiceImageIsEssential(day: CourseDay): boolean {
+  return /present progressive/i.test(`${day.focus} ${day.weekTitle ?? ""}`);
+}
