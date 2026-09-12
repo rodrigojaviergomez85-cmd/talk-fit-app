@@ -94,6 +94,9 @@ export function TakeBoard({
   finalIndex,
   goalSeconds,
   goalSentences = GOAL_SENTENCES,
+  tier = "basic",
+  promptQuestion,
+  promptQuestionEs,
   turns,
   onRecorded,
   onDelete,
@@ -108,6 +111,10 @@ export function TakeBoard({
   /** Retry takes (classic role play): which turn the learner is repeating per slot. */
   const [retryTurn, setRetryTurn] = useState<Record<number, number>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  /** Per-tier caps: basic 30s / 5+ sentences, intermediate+advanced 45s / 8+ sentences. */
+  const takeMax = tier === "higher" ? 45 : 30;
+  const sentenceGoal = tier === "higher" ? 8 : goalSentences;
 
   useEffect(() => {
     const audio = new Audio();
