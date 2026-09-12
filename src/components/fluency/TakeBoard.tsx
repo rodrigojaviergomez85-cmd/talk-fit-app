@@ -481,7 +481,9 @@ export function TakeBoard({
                 )}
               </div>
             ) : (
-              <p className="mt-3 text-[13px] text-muted-foreground">{t("take.ready")}</p>
+              <p className="mt-3 text-[13px] text-muted-foreground">
+                {optional ? t("take.optionalEmpty") : t("take.ready")}
+              </p>
             )}
           </div>
           </div>
