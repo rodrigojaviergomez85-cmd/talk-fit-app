@@ -1,6 +1,10 @@
+import { useEffect, useState } from "react";
 import { Mic } from "lucide-react";
 import { AudioPlayer } from "./AudioPlayer";
+import { SlowWordPanel } from "./SlowWordPanel";
+import { AudioService } from "@/services/audio-service";
 import { useT } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 import type { Rep2DisplayDiff, Rep2DisplayToken } from "@/lib/rep2-match";
 
 export type Rep2CorrectionResult = {
@@ -13,21 +17,42 @@ export type Rep2CorrectionResult = {
   diff?: Rep2DisplayDiff | null;
 };
 
-function DiffTokens({ tokens, variant }: { tokens: Rep2DisplayToken[]; variant: "said" | "target" }) {
+function DiffTokens({
+  tokens,
+  variant,
+  openWord,
+  onTapWord,
+}: {
+  tokens: Rep2DisplayToken[];
+  variant: "said" | "target";
+  openWord?: string | null;
+  onTapWord?: ((word: string) => void) | undefined;
+}) {
   return (
     <>
       {tokens.map((token, i) =>
         token.changed ? (
-          <mark
-            key={i}
-            className={
-              variant === "said"
-                ? "rounded bg-amber-500/25 px-0.5 font-bold text-amber-700 dark:text-amber-400"
-                : "rounded bg-primary/15 px-0.5 font-bold text-primary"
-            }
-          >
-            {token.text}{" "}
-          </mark>
+          variant === "target" && onTapWord ? (
+            <button
+              key={i}
+              type="button"
+              onClick={() => onTapWord(token.text)}
+              aria-label={`Pronounce ${token.text}`}
+              className={cn(
+                "rounded bg-primary/15 px-0.5 font-bold text-primary transition-transform active:scale-[0.96]",
+                openWord === token.text && "bg-primary/25",
+              )}
+            >
+              {token.text}{" "}
+            </button>
+          ) : (
+            <mark
+              key={i}
+              className="rounded bg-amber-500/25 px-0.5 font-bold text-amber-700 dark:text-amber-400"
+            >
+              {token.text}{" "}
+            </mark>
+          )
         ) : (
           <span key={i}>{token.text} </span>
         ),
@@ -114,6 +139,20 @@ function SkipButton({ label, onClick }: { label: string; onClick: () => void }) 
 export function Rep2Feedback({ result, voice, onTryAgain, onSkip, onNext, nextLabel, canRetry }: Rep2FeedbackProps) {
   const t = useT();
   const es = t("rep2.youSaid") === "Tú dijiste";
+  const [openWord, setOpenWord] = useState<string | null>(null);
+
+  const tapWord = (word: string) => {
+    const clean = word.replace(/[^\p{L}\p{N}'-]/gu, "");
+    if (!clean) return;
+    setOpenWord(clean);
+    AudioService.stop();
+    AudioService.speak(clean, { rate: 0.75, voice });
+  };
+
+  // Close the word panel when a new correction result arrives.
+  useEffect(() => {
+    setOpenWord(null);
+  }, [result]);
 
   if (result.status === "good") {
     return (
@@ -154,9 +193,18 @@ export function Rep2Feedback({ result, voice, onTryAgain, onSkip, onNext, nextLa
 
       <div className="space-y-2">
         <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{t("rep2.try")}</p>
-        <p className="rounded-2xl bg-background p-3 text-[17px] font-semibold leading-relaxed text-foreground">
-          “{result.diff ? <DiffTokens tokens={result.diff.target} variant="target" /> : highlightFocus(result.target, result.focus)}”
-        </p>
+        <div className="rounded-2xl bg-background p-3">
+          <p className="text-[17px] font-semibold leading-relaxed text-foreground">
+            “{result.diff ? (
+              <DiffTokens tokens={result.diff.target} variant="target" openWord={openWord} onTapWord={tapWord} />
+            ) : (
+              highlightFocus(result.target, result.focus)
+            )}”
+          </p>
+          {result.diff && openWord ? (
+            <SlowWordPanel word={openWord} voice={voice} compact onClose={() => setOpenWord(null)} />
+          ) : null}
+        </div>
       </div>
 
       <div className="flex flex-col gap-3">
