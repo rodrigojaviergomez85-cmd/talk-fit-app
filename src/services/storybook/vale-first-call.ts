@@ -231,7 +231,7 @@ export const VALE_FIRST_CALL: StorybookEpisode = {
     "How are you today?",
   ],
   cliffhanger: {
-    en: "Why does Mr. Reyes want to see her? Next week: \"Who is she?\"",
-    es: "¿Por qué Mr. Reyes quiere verla? La próxima semana: «¿Quién es ella?»",
+    en: "Mr. Reyes is serious. Why? Next episode: \"Who is he?\"",
+    es: "Mr. Reyes está serio. ¿Por qué? Próximo episodio: «¿Quién es él?»",
   },
 };
