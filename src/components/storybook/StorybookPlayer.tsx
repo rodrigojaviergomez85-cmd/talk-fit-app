@@ -141,6 +141,7 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
           {slide.kind === "scene" ? (
             <SceneSlide
               scene={slide.scene}
+              episodeGlossary={episodeGlossary}
               voice={episode.voice}
               es={es}
               flip={idx % 2 === 0}
