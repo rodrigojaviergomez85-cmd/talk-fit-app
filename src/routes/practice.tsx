@@ -6,6 +6,7 @@ import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { TappableSentence } from "@/components/fluency/TappableSentence";
 import { EdLegend } from "@/components/fluency/EdLegend";
 import { EdReminder } from "@/components/fluency/EdReminder";
+import { hasEdWords } from "@/lib/ed-endings";
 import { toneForTurn, type ModelTone } from "@/lib/model-tone";
 import { rep2Chunks, rep4Items, rep2ChunkText, REP4_MAX, isRep2CorrectionEnabled } from "@/lib/rep-structure";
 export { REP4_MAX };
@@ -796,7 +797,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               day={day}
               onNext={goForward}
               onSkip={goForward}
-              highlightEd={moduleId === "past-stories" && day.day === 2}
+              highlightEd={hasEdWords(CourseService.getModelText(day))}
             />
           ) : null}
           {stage === 4 ? (
@@ -813,7 +814,7 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
               onNext={goForward}
                hideVisuals={!showPracticeVisuals}
               promptTone={moduleId === "advanced-1" ? "neutral" : "coach"}
-              highlightEd={moduleId === "past-stories" && day.day === 2}
+              highlightEd
             />
 
           ) : null}
