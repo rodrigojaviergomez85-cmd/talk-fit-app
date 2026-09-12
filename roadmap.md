@@ -8,5 +8,6 @@
 - [x] Correct inconsistent past-time sentences in Storybook Episodes 17–18 and validate them
 - [x] Write Season 2 (Basic 1 / Simple Future) Episodes 1–5 scripts aligned to curriculum
 - [ ] Generate webtoon images and register Season 2 Episodes 1–5
-- [ ] Write and produce Season 2 Episodes 6–20
+- [x] Write Season 2 Episodes 6–20 scripts (weeks 2–4: going to others, will, mixed)
+- [ ] Generate webtoon images and register Season 2 Episodes 6–20
 

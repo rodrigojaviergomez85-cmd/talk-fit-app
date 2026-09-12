@@ -85,7 +85,7 @@ export const STORYBOOK_SEASONS: Season[] = [
       { day: 15, episodeId: null, teaser: { en: "Will challenge", es: "El reto del will" } },
       { day: 16, episodeId: null, teaser: { en: "Plan vs decision", es: "Plan vs decisión" } },
       { day: 17, episodeId: null, teaser: { en: "Weekend changes", es: "Cambios de fin de semana" } },
-      { day: 18, episodeId: null, teaser: { en: "María's future", es: "El futuro de María" } },
+      { day: 18, episodeId: null, teaser: { en: "Camila's future", es: "El futuro de Camila" } },
       { day: 19, episodeId: null, teaser: { en: "Visible predictions", es: "Predicciones visibles" } },
       { day: 20, episodeId: null, teaser: { en: "Final future fluency", es: "Fluidez futura final" } },
     ],
