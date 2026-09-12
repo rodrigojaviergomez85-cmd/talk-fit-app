@@ -517,6 +517,74 @@ export function compareRep2(
   };
 }
 
+/**
+ * DISPLAY-ONLY word diff for the "¡CASI!" feedback card. Works on the RAW
+ * target and transcript (original casing/punctuation) so the learner sees
+ * exactly the two texts with the differing words highlighted. It never feeds
+ * the good/correct/uncertain decision — that stays with `compareRep2`.
+ */
+export type Rep2DisplayToken = { text: string; changed: boolean };
+export type Rep2DisplayDiff = { said: Rep2DisplayToken[]; target: Rep2DisplayToken[] };
+
+/**
+ * Above this many changed words the card would turn into a wall of
+ * highlights; the UI then falls back to the single focus word.
+ */
+export const REP2_DISPLAY_DIFF_MAX_CHANGED_WORDS = 8;
+
+export function computeRep2DisplayDiff(target: string, transcript: string): Rep2DisplayDiff | undefined {
+  const targetTokens = target.split(/\s+/).filter(Boolean);
+  const saidTokens = transcript.split(/\s+/).filter(Boolean);
+  if (targetTokens.length === 0 || saidTokens.length === 0) return undefined;
+
+  const key = (w: string) =>
+    w
+      .toLowerCase()
+      .replace(/[‘’ʼ′]/g, "'")
+      .replace(/[^\w'-]/g, "");
+  const keyOf = (tokens: string[]) => tokens.map(key);
+
+  const tKeys = keyOf(targetTokens);
+  const sKeys = keyOf(saidTokens);
+  const m = tKeys.length;
+  const n = sKeys.length;
+
+  const dp: number[][] = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+  for (let i = m - 1; i >= 0; i--) {
+    for (let j = n - 1; j >= 0; j--) {
+      dp[i]![j]! =
+        tKeys[i] === sKeys[j]
+          ? (dp[i + 1]?.[j + 1] ?? 0) + 1
+          : Math.max(dp[i + 1]?.[j] ?? 0, dp[i]?.[j + 1] ?? 0);
+    }
+  }
+
+  const said: Rep2DisplayToken[] = [];
+  const tgt: Rep2DisplayToken[] = [];
+  let changedWords = 0;
+  let i = 0;
+  let j = 0;
+  while (i < m || j < n) {
+    if (i < m && j < n && tKeys[i] === sKeys[j]) {
+      said.push({ text: saidTokens[j]!, changed: false });
+      tgt.push({ text: targetTokens[i]!, changed: false });
+      i++;
+      j++;
+    } else if (j < n && (i >= m || (dp[i]?.[j + 1] ?? 0) >= (dp[i + 1]?.[j] ?? 0))) {
+      said.push({ text: saidTokens[j]!, changed: true });
+      changedWords++;
+      j++;
+    } else if (i < m) {
+      tgt.push({ text: targetTokens[i]!, changed: true });
+      changedWords++;
+      i++;
+    }
+  }
+
+  if (changedWords === 0 || changedWords > REP2_DISPLAY_DIFF_MAX_CHANGED_WORDS) return undefined;
+  return { said, target: tgt };
+}
+
 function isNearMatchGood(mismatches: DiffOp[], targetWords: string[], profile: Rep2CorrectionProfile): boolean {
   const tolerance = profile.maxWordErrorRateForGood ?? 0;
   if (tolerance <= 0) return false;

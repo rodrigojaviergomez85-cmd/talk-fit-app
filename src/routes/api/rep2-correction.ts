@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { compareRep2, toPublicStatus, type Rep2Confidence } from "@/lib/rep2-match";
+import { compareRep2, computeRep2DisplayDiff, toPublicStatus, type Rep2Confidence } from "@/lib/rep2-match";
 import { getRep2CorrectionProfile, hasRep2CorrectionRollout } from "@/lib/rep2-correction-profiles";
 import type { ModuleId } from "@/lib/types";
 
@@ -219,6 +219,9 @@ export const Route = createFileRoute("/api/rep2-correction")({
           target,
           focus: result.focus,
           retryRecommended: result.retryRecommended,
+          // Display-only word highlights for the "¡CASI!" card; null when there
+          // are too many differences and the card falls back to the focus word.
+          diff: status === "correct" ? (computeRep2DisplayDiff(target, transcript) ?? null) : null,
         });
       },
     },
