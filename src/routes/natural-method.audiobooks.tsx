@@ -171,7 +171,7 @@ function LevelSection({
   );
 }
 
-/** Season map: one card per week, future weeks locked until the learner gets there. */
+/** Season map: one card per day, future days locked until the learner gets there. */
 function SeasonMap({ showEs }: { showEs: boolean }) {
   const [state, setState] = useState<JourneyState | null>(null);
 
@@ -184,7 +184,7 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
     <div className="space-y-3">
       {STORYBOOK_SEASONS.map((season) => {
         const done = state ? completedDaysInModule(state, season.moduleId) : 0;
-        const open = unlockedWeek(done);
+        const open = unlockedDay(done);
         return (
           <section key={season.moduleId} className="space-y-2">
             <h2 className="text-[12px] font-bold uppercase tracking-[0.16em] text-primary">
@@ -192,8 +192,8 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
             </h2>
             {season.slots.map((slot) => {
               const episode = slot.episodeId ? getStorybookEpisode(slot.episodeId) : undefined;
-              const unlocked = slot.week <= open && !!episode;
-              const weekLabel = showEs ? `Semana ${slot.week}` : `Week ${slot.week}`;
+              const unlocked = slot.day <= open && !!episode;
+              const weekLabel = showEs ? `Día ${slot.day}` : `Day ${slot.day}`;
               const title = episode
                 ? showEs
                   ? episode.titleEs
