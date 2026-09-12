@@ -61,6 +61,7 @@ const STORYBOOK_CSS = `
 export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
   const es = useAppLang().lang === "es";
   const slides = useMemo(() => buildSlides(episode), [episode]);
+  const episodeGlossary = useMemo(() => buildEpisodeGlossary(episode), [episode]);
   const [idx, setIdx] = useState(0);
   const [stars, setStars] = useState(0);
   const [notebook, setNotebook] = useState<Record<string, string>>({});
