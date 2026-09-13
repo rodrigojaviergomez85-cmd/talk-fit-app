@@ -756,7 +756,11 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
             onCancel={() => setConfirmExit(false)}
             onExit={() => {
               AudioService.stop();
-              void navigate({ to: "/" });
+              PracticeSessionService.clear(moduleId, dayNumber);
+              void navigate({
+                to: "/day/$moduleId/$day",
+                params: { moduleId, day: String(dayNumber) },
+              });
             }}
           />
         ) : null}
