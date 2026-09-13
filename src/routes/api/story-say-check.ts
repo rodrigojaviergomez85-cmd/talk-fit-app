@@ -210,7 +210,7 @@ async function transcribe(
   const segments = body?.segments ?? [];
   if (segments.length > 0) {
     avgLogprob = Math.min(...segments.map((s) => s.avg_logprob ?? 0));
-    noSpeechProb = Math.max(...segments.map((s) => s.noSpeechProb ?? 0));
+    noSpeechProb = Math.max(...segments.map((s) => s.no_speech_prob ?? 0));
   }
   return { ok: true, transcript: text, confidence: { avgLogprob, noSpeechProb } };
 }

@@ -28,6 +28,11 @@ export type StorybookScene = {
   words: StorybookWord[];
 };
 
+export type StorybookSayItCheck = {
+  /** Expected spoken phrase. Use `*` for a learner-supplied slot, e.g. "My name is *". */
+  target: string;
+};
+
 export type StorybookQuiz = {
   id: string;
   /** The quiz slide appears right after this scene id. */
@@ -40,6 +45,8 @@ export type StorybookQuiz = {
   /** Phrase the learner says out loud after answering. */
   sayIt: string;
   sayItEs: string;
+  /** Optional server-side spoken check. When present, the recording is graded. */
+  sayItCheck?: StorybookSayItCheck;
 };
 
 export type StorybookMindsetCard = {
