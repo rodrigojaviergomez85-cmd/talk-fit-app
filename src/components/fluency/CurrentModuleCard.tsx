@@ -57,9 +57,9 @@ export function CurrentModuleCard({ state }: { state: JourneyState }) {
   const completed = JourneyService.completedCount(state, next.moduleId);
   const fresh = completed === 0 && resumeStage === null;
 
-  // Basic Zero Week 1 pilot: one button opens the day hub (story + audios).
-  const useDayHub = module.id === "basic-zero" && day.day <= 5 && resumeStage === null;
-  const cta = useDayHub
+  // One button always opens the day hub (story + audios).
+  const useDayHub = true;
+  const cta = resumeStage === null
     ? t("home.startMyPractice")
     : resumeStage !== null
       ? `${t("home.continueDay")} ${day.day}${resumeStage > 0 ? ` · ${t("home.rep")} ${Math.min(resumeStage, 5)}` : ""}`
