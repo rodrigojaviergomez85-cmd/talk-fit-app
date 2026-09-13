@@ -23,11 +23,12 @@
 - [x] Registro + tests + tsgo + móvil (615 tests verdes, rutas 200, 394px OK)
 
 ## Temporada 4 — Fase C (ep 11-15)
-- [ ] Guiones ep 11-15 (pasado progresivo)
-- [ ] Arte ep 11-15
-- [ ] Registro + QA
+- [x] Guiones ep 11-15 (pasado progresivo, interrupciones)
+- [x] Arte ep 11-15 (cover + s1-s12, <300KB, QA visual)
+- [x] Registro + QA
 
 ## Temporada 4 — Fase D (ep 16-20)
-- [ ] Guiones ep 16-20 (Caperucita, narración, revelación del misterio)
-- [ ] Arte ep 16-20
-- [ ] Registro + QA + tarjeta Método Natural + audiolibros
+- [x] Guiones ep 16-20 (Caperucita, narración, cierre y gancho T5)
+- [x] Arte ep 16-20 (cover + s1-s12, <300KB; fixes de globos de texto y anatomía)
+- [x] Registro + QA: 615 tests, tsgo limpio, rutas 200, móvil 394px
+
