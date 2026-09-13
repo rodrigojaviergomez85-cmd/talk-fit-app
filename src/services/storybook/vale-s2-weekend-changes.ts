@@ -174,9 +174,13 @@ export const VALE_S2_WEEKEND_CHANGES: StorybookEpisode = {
         { label: "Only one hour", emoji: "⏰" },
       ],
       answer: 0,
-      sayIt: "He won't work on Sunday morning.",
-      sayItEs: "Repite: «Él no trabajará el domingo en la mañana.»",
-      sayItCheck: { target: "He won't work on Sunday morning." },
+      sayIt: "I’m going to practice on Sunday.",
+      sayItEs: "Ejemplo: «I’m going to practice on Sunday.»",
+      sayItAskEn: "What day are you going to practice English?",
+      sayItAskEs: "¿Qué día vas a practicar inglés?",
+      sayItCheck: {
+        target: "I’m going to practice *",
+      },
     },
     {
       id: "q3",
@@ -189,9 +193,13 @@ export const VALE_S2_WEEKEND_CHANGES: StorybookEpisode = {
         { label: "Chairs", emoji: "🪑" },
       ],
       answer: 0,
-      sayIt: "Three companies are going to send recruiters.",
-      sayItEs: "Repite: «Tres empresas van a enviar reclutadores.»",
-      sayItCheck: { target: "Three companies are going to send recruiters." },
+      sayIt: "I’m going to send a voice message.",
+      sayItEs: "Ejemplo: «I’m going to send a voice message.»",
+      sayItAskEn: "What are you going to send to your friend today?",
+      sayItAskEs: "¿Qué le vas a enviar hoy a tu amigo?",
+      sayItCheck: {
+        target: "I’m going to send *",
+      },
     },
   ],
   mindsetCard: {

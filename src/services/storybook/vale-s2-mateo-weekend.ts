@@ -190,9 +190,13 @@ export const VALE_S2_MATEO_WEEKEND: StorybookEpisode = {
         { label: "We don’t know", emoji: "❓" },
       ],
       answer: 0,
-      sayIt: "Yes, he is going to invite his friends.",
-      sayItEs: "Repite: «Sí, él va a invitar a sus amigos.»",
-      sayItCheck: { target: "Yes, he is going to invite his friends." },
+      sayIt: "I’m going to invite my friends.",
+      sayItEs: "Ejemplo: «I’m going to invite my friends.»",
+      sayItAskEn: "Who are you going to invite to practice English?",
+      sayItAskEs: "¿A quién vas a invitar a practicar inglés?",
+      sayItCheck: {
+        target: "I’m going to invite *",
+      },
     },
     {
       id: "q3",
@@ -205,9 +209,13 @@ export const VALE_S2_MATEO_WEEKEND: StorybookEpisode = {
         { label: "Only on Monday", emoji: "📅" },
       ],
       answer: 0,
-      sayIt: "He isn’t going to work alone.",
-      sayItEs: "Repite: «Él no va a trabajar solo.»",
-      sayItCheck: { target: "He isn’t going to work alone." },
+      sayIt: "I’m not going to work alone.",
+      sayItEs: "Ejemplo: «I’m not going to work alone.»",
+      sayItAskEn: "What are you not going to do this weekend?",
+      sayItAskEs: "¿Qué no vas a hacer este fin de semana?",
+      sayItCheck: {
+        target: "I’m not going to *",
+      },
     },
   ],
   mindsetCard: {

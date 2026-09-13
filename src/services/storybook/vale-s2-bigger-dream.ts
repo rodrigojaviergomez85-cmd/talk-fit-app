@@ -188,9 +188,13 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
         { label: "A museum", emoji: "🏛️" },
       ],
       answer: 0,
-      sayIt: "We’re going to visit a job fair.",
-      sayItEs: "Repite: «Vamos a visitar una feria de empleo.»",
-      sayItCheck: { target: "We’re going to visit a job fair." },
+      sayIt: "I’m going to visit the beach with my family.",
+      sayItEs: "Ejemplo: «I’m going to visit the beach with my family.»",
+      sayItAskEn: "What place are you going to visit this year?",
+      sayItAskEs: "¿Qué lugar vas a visitar este año?",
+      sayItCheck: {
+        target: "I’m going to visit *",
+      },
     },
     {
       id: "q3",
@@ -203,9 +207,13 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
         { label: "A stranger", emoji: "🧍" },
       ],
       answer: 0,
-      sayIt: "I’m going to present my idea to the director.",
-      sayItEs: "Repite: «Voy a presentar mi idea al director.»",
-      sayItCheck: { target: "I’m going to present my idea to the director." },
+      sayIt: "I’m going to present my English plan.",
+      sayItEs: "Ejemplo: «I’m going to present my English plan.»",
+      sayItAskEn: "What idea are you going to present to your family?",
+      sayItAskEs: "¿Qué idea le vas a presentar a tu familia?",
+      sayItCheck: {
+        target: "I’m going to present *",
+      },
     },
   ],
   mindsetCard: {

@@ -195,9 +195,13 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
         { label: "Cooking", emoji: "🍳" },
       ],
       answer: 0,
-      sayIt: "After lunch, I’m going to study English.",
-      sayItEs: "Repite: «Después del almuerzo voy a estudiar inglés.»",
-      sayItCheck: { target: "After lunch, I’m going to study English." },
+      sayIt: "I’m going to study English tomorrow.",
+      sayItEs: "Ejemplo: «I’m going to study English tomorrow.»",
+      sayItAskEn: "What are you going to study tomorrow?",
+      sayItAskEs: "¿Qué vas a estudiar mañana?",
+      sayItCheck: {
+        target: "I’m going to study *",
+      },
     },
     {
       id: "q3",
@@ -210,9 +214,13 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
         { label: "Never", emoji: "🙅" },
       ],
       answer: 0,
-      sayIt: "The client wants the event this weekend.",
-      sayItEs: "Repite: «El cliente quiere el evento este fin de semana.»",
-      sayItCheck: { target: "The client wants the event this weekend." },
+      sayIt: "I’m going to visit my family.",
+      sayItEs: "Ejemplo: «I’m going to visit my family.»",
+      sayItAskEn: "What are you going to do this weekend?",
+      sayItAskEs: "¿Qué vas a hacer este fin de semana?",
+      sayItCheck: {
+        target: "I’m going to *",
+      },
     },
   ],
   mindsetCard: {

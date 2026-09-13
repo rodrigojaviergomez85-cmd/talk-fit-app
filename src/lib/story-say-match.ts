@@ -126,7 +126,8 @@ export const STORY_SAY_WILDCARD = WILDCARD;
  */
 export function buildSayItHint(target: string, es: boolean): { label: string; hint: string } {
   const cleaned = target.trim().replace(/\s+/g, " ");
-  const hint = cleaned.replace(/\*/g, "...");
+  // Collapse consecutive wildcards into a single ellipsis.
+  const hint = cleaned.replace(/\*(\s*\*)*/g, "...");
   const label = es ? "Dilo así:" : "Try say:";
   return { label, hint };
 }

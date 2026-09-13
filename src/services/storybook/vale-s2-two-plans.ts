@@ -180,9 +180,13 @@ export const VALE_S2_TWO_PLANS: StorybookEpisode = {
         { label: "On Monday", emoji: "📅" },
       ],
       answer: 0,
-      sayIt: "She is going to play music in the morning.",
-      sayItEs: "Repite: «Ella va a poner música en la mañana.»",
-      sayItCheck: { target: "She is going to play music in the morning." },
+      sayIt: "I’m going to play cumbia.",
+      sayItEs: "Ejemplo: «I’m going to play cumbia.»",
+      sayItAskEn: "What music are you going to play at your party?",
+      sayItAskEs: "¿Qué música vas a poner en tu fiesta?",
+      sayItCheck: {
+        target: "I’m going to play *",
+      },
     },
     {
       id: "q3",
@@ -195,9 +199,13 @@ export const VALE_S2_TWO_PLANS: StorybookEpisode = {
         { label: "Only Kat's plan", emoji: "🎧" },
       ],
       answer: 0,
-      sayIt: "Yes, they are going to use both plans.",
-      sayItEs: "Repite: «Sí, van a usar los dos planes.»",
-      sayItCheck: { target: "Yes, they are going to use both plans." },
+      sayIt: "I’m going to prepare an English game.",
+      sayItEs: "Ejemplo: «I’m going to prepare an English game.»",
+      sayItAskEn: "What game are you going to prepare for your friends?",
+      sayItAskEs: "¿Qué juego vas a preparar para tus amigos?",
+      sayItCheck: {
+        target: "I’m going to prepare *",
+      },
     },
   ],
   mindsetCard: {

@@ -203,9 +203,13 @@ export const VALE_S2_READY: StorybookEpisode = {
         { label: "A shopping list", emoji: "🛒" },
       ],
       answer: 0,
-      sayIt: "I’m going to write three ideas.",
-      sayItEs: "Repite: «Voy a escribir tres ideas.»",
-      sayItCheck: { target: "I’m going to write three ideas." },
+      sayIt: "I’m going to write five new words.",
+      sayItEs: "Ejemplo: «I’m going to write five new words.»",
+      sayItAskEn: "What are you going to write in your notebook today?",
+      sayItAskEs: "¿Qué vas a escribir en tu cuaderno hoy?",
+      sayItCheck: {
+        target: "I’m going to write *",
+      },
     },
     {
       id: "q3",
@@ -219,8 +223,12 @@ export const VALE_S2_READY: StorybookEpisode = {
       ],
       answer: 0,
       sayIt: "I’m not going to sleep late.",
-      sayItEs: "Repite: «No voy a dormir tarde.»",
-      sayItCheck: { target: "I’m not going to sleep late." },
+      sayItEs: "Ejemplo: «I’m not going to sleep late.»",
+      sayItAskEn: "What are you not going to do tonight?",
+      sayItAskEs: "¿Qué no vas a hacer esta noche?",
+      sayItCheck: {
+        target: "I’m not going to *",
+      },
     },
   ],
   mindsetCard: {

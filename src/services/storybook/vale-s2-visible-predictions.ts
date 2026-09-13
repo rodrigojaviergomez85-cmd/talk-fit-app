@@ -180,9 +180,13 @@ export const VALE_S2_VISIBLE_PREDICTIONS: StorybookEpisode = {
         { label: "Nobody", emoji: "0️⃣" },
       ],
       answer: 0,
-      sayIt: "More than fifty people are going to come.",
-      sayItEs: "Repite: «Más de cincuenta personas van a venir.»",
-      sayItCheck: { target: "More than fifty people are going to come." },
+      sayIt: "Five people are going to come to my house.",
+      sayItEs: "Ejemplo: «Five people are going to come to my house.»",
+      sayItAskEn: "How many people are going to come to your house this weekend?",
+      sayItAskEs: "¿Cuántas personas van a venir a tu casa este fin de semana?",
+      sayItCheck: {
+        target: "* going to come *",
+      },
     },
     {
       id: "q3",
@@ -195,9 +199,13 @@ export const VALE_S2_VISIBLE_PREDICTIONS: StorybookEpisode = {
         { label: "Play music", emoji: "🎵" },
       ],
       answer: 0,
-      sayIt: "I'm going to do my first interview.",
-      sayItEs: "Repite: «Voy a hacer mi primera entrevista.»",
-      sayItCheck: { target: "I'm going to do my first interview." },
+      sayIt: "I’m going to speak English with confidence.",
+      sayItEs: "Ejemplo: «I’m going to speak English with confidence.»",
+      sayItAskEn: "What are you going to do in your first interview?",
+      sayItAskEs: "¿Qué vas a hacer en tu primera entrevista?",
+      sayItCheck: {
+        target: "I’m going to *",
+      },
     },
   ],
   mindsetCard: {

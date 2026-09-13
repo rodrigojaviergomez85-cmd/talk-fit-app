@@ -183,9 +183,13 @@ export const VALE_S2_HIS_MOM: StorybookEpisode = {
         { label: "She is going to travel", emoji: "✈️" },
       ],
       answer: 0,
-      sayIt: "Yes, she is going to need a table.",
-      sayItEs: "Repite: «Sí, ella va a necesitar una mesa.»",
-      sayItCheck: { target: "Yes, she is going to need a table." },
+      sayIt: "They are going to need more money.",
+      sayItEs: "Ejemplo: «They are going to need more money.»",
+      sayItAskEn: "What is your family going to need this month?",
+      sayItAskEs: "¿Qué va a necesitar tu familia este mes?",
+      sayItCheck: {
+        target: "* going to need *",
+      },
     },
     {
       id: "q3",
@@ -198,9 +202,13 @@ export const VALE_S2_HIS_MOM: StorybookEpisode = {
         { label: "Nothing", emoji: "😶" },
       ],
       answer: 0,
-      sayIt: "We are going to teach her three phrases.",
-      sayItEs: "Repite: «Vamos a enseñarle tres frases.»",
-      sayItCheck: { target: "We are going to teach her three phrases." },
+      sayIt: "I’m going to teach them three phrases.",
+      sayItEs: "Ejemplo: «I’m going to teach them three phrases.»",
+      sayItAskEn: "What are you going to teach your family in English?",
+      sayItAskEs: "¿Qué le vas a enseñar a tu familia en inglés?",
+      sayItCheck: {
+        target: "I’m going to teach *",
+      },
     },
   ],
   mindsetCard: {

@@ -176,9 +176,13 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
         { label: "Cooking", emoji: "🍳" },
       ],
       answer: 0,
-      sayIt: "We’re going to help young people practice English.",
-      sayItEs: "Repite: «Vamos a ayudar a jóvenes a practicar inglés.»",
-      sayItCheck: { target: "We’re going to help young people practice English." },
+      sayIt: "I’m going to practice English with my friends.",
+      sayItEs: "Ejemplo: «I’m going to practice English with my friends.»",
+      sayItAskEn: "What are you going to practice this weekend?",
+      sayItAskEs: "¿Qué vas a practicar este fin de semana?",
+      sayItCheck: {
+        target: "I’m going to practice *",
+      },
     },
     {
       id: "q2",
@@ -192,8 +196,12 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
       ],
       answer: 0,
       sayIt: "I’m going to invite my friends from college.",
-      sayItEs: "Repite: «Voy a invitar a mis amigos de la universidad.»",
-      sayItCheck: { target: "I’m going to invite my friends from college." },
+      sayItEs: "Ejemplo: «I’m going to invite my friends from college.»",
+      sayItAskEn: "Who are you going to invite to study with you?",
+      sayItAskEs: "¿A quién vas a invitar a estudiar contigo?",
+      sayItCheck: {
+        target: "I’m going to invite *",
+      },
     },
     {
       id: "q3",
