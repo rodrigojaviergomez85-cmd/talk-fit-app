@@ -39,8 +39,14 @@ por los módulos, no por los cuentos.
 
 ## Detalles técnicos
 
-- Nuevo campo opcional en `StorybookQuiz`: `sayItCheck` (texto objetivo con hueco, p. ej.
-  `"my name is {name}"`). Sin ese campo, la frase no se califica (retrocompatible).
+- Nuevo campo opcional en `StorybookQuiz`: `sayItCheck` (texto objetivo con huecos).
+  **Cada episodio define los suyos** según su tema — no hay una lista fija:
+  - Ep. 1 (presentaciones): `"my name is {name}"` → "My name is Rodrigo" ✓
+  - Ep. comida favorita: `"my favorite food is {food}"` → "My favorite food is pupusas" ✓
+  - Ep. hobbies: `"i like to {activity}"` → "I like to dance" ✓
+  - Preguntas sin hueco se validan palabra por palabra: `"how old are you"` → debe decir la frase completa.
+  - La estructura fija (fuera de las llaves) es obligatoria; el hueco acepta 1–3 palabras cualesquiera.
+  - Sin ese campo, la frase no se califica (retrocompatible con episodios ya escritos).
 - Nuevo endpoint `src/routes/api/story-say-check.ts`, calcado de `api/rep2-correction.ts`:
   auth con `verifyRequestUser`, validación de subida (mín. 2 KB, máx. ~1 MB / 8 s),
   `consumeQuota(userId, "story-say-check", 40, 3600)` más tope diario vía `sectionDailyLimit`,
