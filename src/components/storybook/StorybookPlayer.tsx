@@ -542,13 +542,22 @@ function SceneSlide({
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => {
-              AudioService.stop();
-              AudioService.speak(scene.text, { voice: speakerVoice(scene.speaker), tone: speakerTone(scene.speaker) });
-            }}
+            onClick={() => play(rate)}
             className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border border-border px-3 text-[12px] font-bold uppercase tracking-[0.1em] text-foreground"
           >
             <Volume2 className="size-4" /> {es ? "Escuchar" : "Listen"}
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowSpeeds((v) => !v)}
+            aria-label={es ? "Cambiar velocidad" : "Change speed"}
+            aria-expanded={showSpeeds}
+            className={cn(
+              "inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground",
+              showSpeeds && "border-primary text-primary",
+            )}
+          >
+            <RotateCcw className="size-4" />
           </button>
           <button
             type="button"
@@ -558,6 +567,32 @@ function SceneSlide({
             {showEs ? "English" : "Español"}
           </button>
         </div>
+
+        {showSpeeds ? (
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
+              {es ? "Velocidad" : "Speed"}
+            </span>
+            {[0.5, 0.75, 1].map((speed) => (
+              <button
+                key={speed}
+                type="button"
+                onClick={() => {
+                  onRateChange(speed);
+                  play(speed);
+                }}
+                className={cn(
+                  "inline-flex min-h-[36px] items-center justify-center rounded-xl border px-3 text-[12px] font-bold tabular-nums",
+                  rate === speed
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border text-muted-foreground",
+                )}
+              >
+                {speed}x
+              </button>
+            ))}
+          </div>
+        ) : null}
 
         {showEs ? <p className="text-[14px] font-semibold text-muted-foreground">{scene.es}</p> : null}
       </div>
