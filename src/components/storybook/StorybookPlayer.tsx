@@ -9,6 +9,7 @@ import { useAppLang } from "@/lib/i18n";
 import { tokenizeWords } from "@/lib/syllables";
 import { AudioService } from "@/services/audio-service";
 import type { ModelVoice } from "@/services/audio-service";
+import type { ModelTone } from "@/lib/model-tone";
 import { getNextEpisodeSlot } from "@/services/storybook";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
