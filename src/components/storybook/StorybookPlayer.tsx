@@ -870,6 +870,16 @@ function QuizSlide({
             </>
           ) : null}
 
+          {!said && checkStatus === "tryAgain" && attempts >= 1 && attempts < 2 ? (
+            <button
+              type="button"
+              onClick={onSkip}
+              className="mx-auto block text-[12px] font-semibold text-muted-foreground underline underline-offset-2"
+            >
+              {es ? "Saltar por ahora" : "Skip for now"}
+            </button>
+          ) : null}
+
           {hasCheck && !said && checkStatus !== "good" ? (
             <p className="text-[11px] leading-snug text-muted-foreground">
               {es
