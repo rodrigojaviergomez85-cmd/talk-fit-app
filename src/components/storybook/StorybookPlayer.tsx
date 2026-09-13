@@ -93,7 +93,7 @@ export function StorybookPlayer({
   const [saidIt, setSaidIt] = useState<Record<string, boolean>>({});
   const [quizDone, setQuizDone] = useState<Record<string, boolean>>({});
   const [showExit, setShowExit] = useState(false);
-  /** Listening speed chosen by the learner; kept for the whole episode. */
+  /** Listening speed chosen by the learner; resets to normal on every new slide. */
   const [sceneRate, setSceneRate] = useState(1);
   const sceneRateRef = useRef(1);
   const setRate = (rate: number) => {
@@ -131,9 +131,12 @@ export function StorybookPlayer({
   useEffect(() => {
     AudioService.stop();
     let alive = true;
+    // Each new slide starts at normal speed; a slow rate only applies where it was chosen.
+    sceneRateRef.current = 1;
+    setSceneRate(1);
     if (slide.kind === "scene")
       AudioService.speak(slide.scene.text, {
-        rate: sceneRateRef.current,
+        rate: 1,
         voice: speakerVoice(slide.scene.speaker),
         tone: speakerTone(slide.scene.speaker),
       });
