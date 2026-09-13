@@ -186,8 +186,8 @@ export const VALE_S4_FIRST_SATURDAY: StorybookEpisode = {
       id: "s11",
       image: s11,
       imageAlt: "Al final, Dani participa y levanta la mano.",
-      text: "At the end, Dani raised his hand. \"Teacher… did you bring that game again next week?\"",
-      es: "Al final, Dani levantó la mano. «Maestra… ¿la próxima semana trajiste ese juego otra vez?»",
+      text: "At the end, Dani raised his hand. \"Teacher… I liked that game. Can we play it again?\"",
+      es: "Al final, Dani levantó la mano. «Maestra… me gustó ese juego. ¿Podemos jugarlo otra vez?»",
       speaker: "dani",
       words: [
         { word: "At the end", es: "al final" },
