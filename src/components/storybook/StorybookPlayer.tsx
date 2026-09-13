@@ -540,6 +540,7 @@ function QuizSlide({
             </p>
           ) : (
             <VoiceRecorder
+              onStart={() => AudioService.stop()}
               label={es ? "DECIRLO" : "SAY IT"}
               stopLabel={es ? "PARAR" : "STOP"}
               maxSeconds={15}
@@ -597,6 +598,7 @@ function MindsetSlide({
           </p>
         ) : (
           <VoiceRecorder
+            onStart={() => AudioService.stop()}
             label={es ? "REPETIR" : "REPEAT"}
             stopLabel={es ? "PARAR" : "STOP"}
             maxSeconds={15}
@@ -699,6 +701,7 @@ function FinaleSlide({
           {es ? "Máximo 15 segundos · unas 5 oraciones" : "Max 15 seconds · about 5 sentences"}
         </p>
         <VoiceRecorder
+          onStart={() => AudioService.stop()}
           label={take ? (es ? "GRABAR OTRA VEZ" : "RECORD AGAIN") : es ? "GRABAR MI PRESENTACIÓN" : "RECORD MY INTRO"}
           stopLabel={es ? "PARAR" : "STOP"}
           maxSeconds={15}
