@@ -9,6 +9,7 @@ import season1Cover from "@/assets/storybook/vale-ep1/cover.jpg";
 import season2Cover from "@/assets/storybook/vale-s2-ep1/cover.jpg";
 import season3Cover from "@/assets/storybook/vale-s3-ep1/cover.jpg";
 import season4Cover from "@/assets/storybook/vale-s4-ep1/cover.jpg";
+import season5Cover from "@/assets/storybook/vale-s5-ep1/cover.jpg";
 
 export type SeasonWeek = 1 | 2 | 3 | 4;
 
@@ -175,6 +176,39 @@ export const STORYBOOK_SEASONS: Season[] = [
       { day: 18, episodeId: "vale-s4-red-riding-hood", teaser: { en: "Little Red Riding Hood", es: "Caperucita Roja" } },
       { day: 19, episodeId: "vale-s4-vale-story", teaser: { en: "Vale tells her story", es: "Vale cuenta su historia" } },
       { day: 20, episodeId: "vale-s4-storyteller", teaser: { en: "The storyteller", es: "La narradora" } },
+    ],
+  },
+  {
+    moduleId: "mixed-tenses",
+    seasonNumber: 5,
+    title: { en: "Season 5 · Vale's school", es: "Temporada 5 · La escuela de Vale" },
+    blurb: {
+      en: "Vale opens her English school. Past, present and future come together.",
+      es: "Vale abre su escuela de inglés. Pasado, presente y futuro se juntan.",
+    },
+    image: season5Cover,
+    imageAlt: { en: "Vale opens her English school", es: "Vale abre su escuela de inglés" },
+    slots: [
+      { day: 1, episodeId: "vale-s5-first-students", teaser: { en: "The first students", es: "Los primeros estudiantes" } },
+      { day: 2, episodeId: "vale-s5-tired-teacher", teaser: { en: "A tired teacher", es: "Una maestra cansada" } },
+      { day: 3, episodeId: "vale-s5-early-morning", teaser: { en: "The early morning", es: "La mañana temprana" } },
+      { day: 4, episodeId: "vale-s5-win-tomorrow", teaser: { en: "Win tomorrow", es: "Ganar mañana" } },
+      { day: 5, episodeId: "vale-s5-healthy-snacks", teaser: { en: "Healthy snacks", es: "Snacks saludables" } },
+      { day: 6, episodeId: "vale-s5-mateo-runs", teaser: { en: "Mateo runs", es: "Mateo corre" } },
+      { day: 7, episodeId: "vale-s5-water-break", teaser: { en: "Water break", es: "Pausa para agua" } },
+      { day: 8, episodeId: "vale-s5-strong-body", teaser: { en: "Strong body, strong mind", es: "Cuerpo fuerte, mente fuerte" } },
+      { day: 9, episodeId: "vale-s5-book-from-mentor", teaser: { en: "A book from a mentor", es: "Un libro de un mentor" } },
+      { day: 10, episodeId: "vale-s5-ask-the-ai", teaser: { en: "Ask the AI", es: "Pregunta a la IA" } },
+      { day: 11, episodeId: "vale-s5-practice-every-day", teaser: { en: "Practice every day", es: "Practica todos los días" } },
+      { day: 12, episodeId: "vale-s5-learn-from-mistakes", teaser: { en: "Learn from mistakes", es: "Aprende de los errores" } },
+      { day: 13, episodeId: "vale-s5-quiet-moment", teaser: { en: "A quiet moment", es: "Un momento de quietud" } },
+      { day: 14, episodeId: "vale-s5-gratitude-list", teaser: { en: "Gratitude list", es: "Lista de gratitud" } },
+      { day: 15, episodeId: "vale-s5-trust-process", teaser: { en: "Trust the process", es: "Confía en el proceso" } },
+      { day: 16, episodeId: "vale-s5-believe-yourself", teaser: { en: "Believe in yourself", es: "Cree en ti mismo" } },
+      { day: 17, episodeId: "vale-s5-hard-day", teaser: { en: "The hard day", es: "El día difícil" } },
+      { day: 18, episodeId: "vale-s5-try-again", teaser: { en: "Try again", es: "Inténtalo de nuevo" } },
+      { day: 19, episodeId: "vale-s5-mistakes-progress", teaser: { en: "Mistakes are progress", es: "Los errores son progreso" } },
+      { day: 20, episodeId: "vale-s5-we-did-it", teaser: { en: "We did it", es: "Lo logramos" } },
     ],
   },
 ];

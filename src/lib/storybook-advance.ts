@@ -1,5 +1,5 @@
 export type StoryAdvanceState = {
-  kind: "cover" | "scene" | "mindset" | "quiz" | "finale";
+  kind: "cover" | "scene" | "mindset" | "habit" | "quiz" | "finale";
   quizId?: string;
   quizDone: Record<string, boolean>;
   saidIt: Record<string, boolean>;

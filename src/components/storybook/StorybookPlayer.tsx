@@ -25,6 +25,7 @@ type Slide =
   | { kind: "cover" }
   | { kind: "scene"; scene: StorybookScene }
   | { kind: "mindset" }
+  | { kind: "habit" }
   | { kind: "quiz"; quiz: StorybookQuiz }
   | { kind: "finale" };
 
@@ -34,6 +35,9 @@ function buildSlides(episode: StorybookEpisode): Slide[] {
     slides.push({ kind: "scene", scene });
     if (episode.mindsetCard?.afterScene === scene.id) {
       slides.push({ kind: "mindset" });
+    }
+    if (episode.habitCard?.afterScene === scene.id) {
+      slides.push({ kind: "habit" });
     }
     for (const quiz of episode.quizzes.filter((q) => q.afterScene === scene.id)) {
       slides.push({ kind: "quiz", quiz });
@@ -158,6 +162,11 @@ export function StorybookPlayer({
       };
     }
     if (slide.kind === "mindset" && episode.mindsetCard) AudioService.speak(episode.mindsetCard.phrase, { voice: episode.voice, tone: speakerTone("vale") });
+    if (slide.kind === "habit" && episode.habitCard)
+      AudioService.speak(episode.habitCard.phrase, {
+        voice: speakerVoice(episode.habitCard.model),
+        tone: speakerTone(episode.habitCard.model),
+      });
     return () => {
       alive = false;
       AudioService.stop();
@@ -270,6 +279,13 @@ export function StorybookPlayer({
             <MindsetSlide
               mindset={episode.mindsetCard}
               voice={episode.voice}
+              es={es}
+              onSaid={() => setStars((s) => s + 1)}
+            />
+          ) : null}
+          {slide.kind === "habit" && episode.habitCard ? (
+            <HabitSlide
+              habit={episode.habitCard}
               es={es}
               onSaid={() => setStars((s) => s + 1)}
             />
@@ -941,6 +957,100 @@ function MindsetSlide({
       <button
         type="button"
         onClick={() => AudioService.speak(mindset.phrase, { voice })}
+        className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-2 text-sm font-bold text-foreground"
+      >
+        <Volume2 className="size-4 text-primary" /> {es ? "Escuchar" : "Listen"}
+      </button>
+
+      <div className="rounded-3xl border border-border bg-card p-5">
+        <p className="mb-3 text-[14px] font-bold text-foreground">
+          {es ? "Repítelo en voz alta:" : "Say it out loud:"}
+        </p>
+        {recorded ? (
+          <p className="flex items-center justify-center gap-2 text-[13px] font-bold text-primary">
+            <Check className="size-4" /> {es ? "¡Lo dijiste! +1 ⭐" : "You said it! +1 ⭐"}
+          </p>
+        ) : (
+          <VoiceRecorder
+            onStart={() => AudioService.stop()}
+            label={es ? "REPETIR" : "REPEAT"}
+            stopLabel={es ? "PARAR" : "STOP"}
+            maxSeconds={15}
+            countdown
+            size="md"
+            onComplete={() => {
+              setRecorded(true);
+              onSaid();
+            }}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function HabitSlide({
+  habit,
+  es,
+  onSaid,
+}: {
+  habit: NonNullable<StorybookEpisode["habitCard"]>;
+  es: boolean;
+  onSaid: () => void;
+}) {
+  const [recorded, setRecorded] = useState(false);
+  const modelName = es ? habit.model : habit.model;
+  const displayName =
+    habit.model === "vale"
+      ? "Vale"
+      : habit.model === "mateo"
+        ? "Mateo"
+        : habit.model === "kat"
+          ? "Kat"
+          : habit.model === "dylan"
+            ? "Dylan"
+            : habit.model === "luis"
+              ? "Luis"
+              : habit.model === "camila"
+                ? "Camila"
+                : habit.model === "ana"
+                  ? "Ana"
+                  : habit.model === "beto"
+                    ? "Beto"
+                    : habit.model === "dani"
+                      ? "Dani"
+                      : habit.model === "mom"
+                        ? es
+                          ? "Mamá de Vale"
+                          : "Vale's mom"
+                        : habit.model === "boss"
+                          ? "Mr. Reyes"
+                          : habit.model === "tito"
+                            ? "Tito"
+                            : habit.model;
+
+  return (
+    <div className="space-y-4 text-center">
+      <div className="rounded-3xl border border-border bg-card p-5">
+        <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-primary">
+          {es ? "Hábito del día" : "Habit of the day"}
+        </p>
+        <p className="mt-2 text-[13px] font-semibold text-muted-foreground">{habit.modelActionEs}</p>
+        <h2 className="mt-3 text-2xl font-extrabold leading-tight text-foreground">{habit.phrase}</h2>
+        <p className="mt-1 text-base font-medium text-muted-foreground">{habit.es}</p>
+        <p className="mt-3 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
+          {es ? "Modelado por" : "Modeled by"}: {displayName}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        onClick={() =>
+          AudioService.speak(habit.phrase, {
+            voice: speakerVoice(habit.model),
+            tone: speakerTone(habit.model),
+          })
+        }
         className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-2 text-sm font-bold text-foreground"
       >
         <Volume2 className="size-4 text-primary" /> {es ? "Escuchar" : "Listen"}

@@ -71,6 +71,18 @@ export type StorybookMindsetCard = {
   es: string;
 };
 
+export type StorybookHabitCard = {
+  /** Scene id after which the habit card appears. */
+  afterScene: string;
+  phrase: string;
+  /** Spanish meaning of the habit phrase. */
+  es: string;
+  /** Character that models the habit in the episode. */
+  model: StorybookSpeaker;
+  /** One-line Spanish description of what the character did. */
+  modelActionEs: string;
+};
+
 export type StorybookEpisode = {
   id: string;
   /** Curriculum module this episode belongs to (a season). */
@@ -92,6 +104,8 @@ export type StorybookEpisode = {
   quizzes: StorybookQuiz[];
   /** Optional resilience / mindset affirmation the learner says out loud. */
   mindsetCard?: StorybookMindsetCard;
+  /** Optional positive-habit micro-lesson modeled by a character. */
+  habitCard?: StorybookHabitCard;
   /** Final "continúa la historia" prompt. */
   continuePrompt: { en: string; es: string };
   /** Week-1 chunks the learner reuses in their own version. */
