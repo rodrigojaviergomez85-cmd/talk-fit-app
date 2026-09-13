@@ -136,6 +136,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_S4_AFTER_WORK,
   VALE_S4_HOW_WAS_YOUR_DAY,
   VALE_S4_YESTERDAY_CHALLENGE,
+  VALE_S4_FIRST_SATURDAY,
+  VALE_S4_KATS_DAY_OFF,
+  VALE_S4_MATEO_FORGOT,
+  VALE_S4_LUIS_QUESTIONS,
+  VALE_S4_WEEK2_CHALLENGE,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
