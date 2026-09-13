@@ -6,9 +6,10 @@ import type { RolePlayTurn } from "@/lib/types";
  *  - neutral: calm, professional conversational American English (recruiters,
  *             interview questions, Test Ready items)
  *  - tense:   frustrated but controlled customer (complaint role plays)
+ *  - story:   natural, human storytelling delivery (storybook narrator and characters)
  *  - playful: bright, playful, slightly shy young woman (storybook characters like Vale)
  */
-export type ModelTone = "coach" | "neutral" | "tense" | "playful";
+export type ModelTone = "coach" | "neutral" | "tense" | "playful" | "story";
 
 const AUTHORITY = /recruiter|reclutador|interviewer|entrevistador|manager|gerente|hiring|hr\b/i;
 const CUSTOMER = /customer|cliente|caller/i;

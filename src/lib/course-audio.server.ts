@@ -10,7 +10,7 @@
  * so every previously generated clip stays valid.
  */
 
-export type Tone = "coach" | "neutral" | "tense" | "playful";
+export type Tone = "coach" | "neutral" | "tense" | "playful" | "story";
 export type RequestedVoice = "neutral" | "female" | "male" | "girl" | "boss";
 
 /** Normalised request: `voice` is the provider voice selected below. */
@@ -27,7 +27,7 @@ export const VOICE_MAP: Record<RequestedVoice, string> = {
   /** Deep male — authority characters like the boss. */
   boss: "fable",
 };
-export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful"];
+export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story"];
 
 const TONE_INSTRUCTIONS: Record<Tone, string> = {
   coach:
@@ -36,6 +36,9 @@ const TONE_INSTRUCTIONS: Record<Tone, string> = {
     "Speak in a calm, professional, conversational tone — like an experienced recruiter or interviewer in a real job interview. Neutral and composed, moderate pace, natural everyday American English accent, clear but not exaggerated. No excitement, no cheerfulness, no smiling delivery; steady and matter-of-fact, with natural connected speech.",
   tense:
     "Speak as a frustrated but controlled customer on a support call. Firm, clipped, impatient and a little tired of repeating yourself — tense and direct, but never shouting or theatrical. Slightly faster pace, short pauses, flat falling intonation. Natural everyday American English accent, realistic and conversational.",
+  playful:
+  story:
+    "Read this line as a character in an animated story for young adults. Speak like a real person talking, with human warmth, relaxed natural rhythm, connected speech and expressive but believable intonation. Vary pitch and pacing naturally, add small natural pauses, and let emotion come through. Natural everyday American English accent. Never robotic, monotone, flat, over-enunciated, announcer-like or artificially hyped.",
   playful:
     "Speak as Vale, a sweet 18-year-old young woman on her first day at work. The voice must sound unmistakably feminine, soft, tender, youthful, and light—never masculine or low-pitched. Use warm, expressive intonation, a gentle smile, and natural melodic phrasing. She is a little shy, playful, and curious, with subtle nervous excitement and realistic pauses. Keep a natural conversational pace. Do not sound deep, mature, stern, raspy, elderly, childish, breathy, theatrical, or sing-song.",
 };

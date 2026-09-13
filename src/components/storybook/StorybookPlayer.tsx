@@ -52,9 +52,9 @@ function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice {
   return "neutral";
 }
 
-/** Vale speaks playful and a little shy; everyone else uses the default coach tone. */
-function speakerTone(speaker: StorybookSpeaker | undefined): "playful" | undefined {
-  return speaker === "vale" ? "playful" : undefined;
+/** Vale speaks playful and a little shy; every other voice uses the natural story tone. */
+function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
+  return speaker === "vale" ? "playful" : "story";
 }
 
 /** Keyframes local to the storybook (ken-burns, sparkle, shake). */
@@ -100,8 +100,8 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
     AudioService.stop();
     if (slide.kind === "scene")
       AudioService.speak(slide.scene.text, { voice: speakerVoice(slide.scene.speaker), tone: speakerTone(slide.scene.speaker) });
-    if (slide.kind === "quiz") AudioService.speak(slide.quiz.questionEn, { voice: episode.voice });
-    if (slide.kind === "mindset" && episode.mindsetCard) AudioService.speak(episode.mindsetCard.phrase, { voice: episode.voice });
+    if (slide.kind === "quiz") AudioService.speak(slide.quiz.questionEn, { voice: episode.voice, tone: speakerTone("vale") });
+    if (slide.kind === "mindset" && episode.mindsetCard) AudioService.speak(episode.mindsetCard.phrase, { voice: episode.voice, tone: speakerTone("vale") });
     return () => AudioService.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idx]);
