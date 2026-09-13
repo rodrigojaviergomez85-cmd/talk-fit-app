@@ -286,6 +286,11 @@ export function StorybookPlayer({
                 setSaidIt((p) => ({ ...p, [slide.kind === "quiz" ? slide.quiz.id : ""]: true }));
                 setStars((s) => s + 1);
               }}
+              onSkip={() => {
+                // Skip unlocks Next without a star or celebration sound.
+                setSaidIt((p) => ({ ...p, [slide.kind === "quiz" ? slide.quiz.id : ""]: true }));
+                go(idx + 1);
+              }}
             />
           ) : null}
           {slide.kind === "finale" ? (
