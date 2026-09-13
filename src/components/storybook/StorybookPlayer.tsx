@@ -787,16 +787,39 @@ function QuizSlide({
         <div className="space-y-3 rounded-2xl bg-secondary/60 p-3" style={{ animation: "sb-pop .3s ease-out" }}>
           <p className="flex items-center gap-2 text-[14px] font-extrabold text-primary">
             <Star className="size-4 fill-amber-500 text-amber-500" />
-            {es ? "¡Correcto! Ahora dilo tú:" : "Correct! Now you say it:"}
+            {quiz.sayItAskEn
+              ? es
+                ? "¡Correcto! Ahora contesta tú:"
+                : "Correct! Now you answer:"
+              : es
+                ? "¡Correcto! Ahora dilo tú:"
+                : "Correct! Now you say it:"}
           </p>
           <TappableText
-            text={quiz.sayIt}
+            text={quiz.sayItAskEn ?? quiz.sayIt}
             episodeGlossary={episodeGlossary}
             voice={voice}
             es={es}
             className="text-[16px] font-extrabold text-foreground"
           />
-          <p className="text-[12px] font-semibold text-muted-foreground">{quiz.sayItEs}</p>
+          <p className="text-[12px] font-semibold text-muted-foreground">
+            {quiz.sayItAskEn ? quiz.sayItAskEs : quiz.sayItEs}
+          </p>
+          {quiz.sayItAskEn ? (
+            <>
+              <AudioPlayer
+                text={quiz.sayItAskEn}
+                label={es ? "ESCUCHAR" : "LISTEN"}
+                size="sm"
+                variant="ghost"
+                voice={voice}
+              />
+              <p className="text-[12px] text-muted-foreground">
+                {es ? "Ejemplo:" : "Example:"}{" "}
+                <span className="font-semibold text-foreground">“{quiz.sayIt}”</span>
+              </p>
+            </>
+          ) : null}
 
           {said || checkStatus === "good" ? successBlock : null}
 
