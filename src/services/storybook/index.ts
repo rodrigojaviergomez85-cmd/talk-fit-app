@@ -86,6 +86,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_S2_CAMILA_FUTURE,
   VALE_S2_VISIBLE_PREDICTIONS,
   VALE_S2_FINAL_FLUENCY,
+  VALE_S3_NEW_SCHEDULE,
+  VALE_S3_KATS_ROUTINE,
+  VALE_S3_TEAM_RULES,
+  VALE_S3_ANGRY_CUSTOMER,
+  VALE_S3_TEAM_CHALLENGE,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
