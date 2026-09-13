@@ -239,9 +239,13 @@ export const VALE_WHO_IS_HE: StorybookEpisode = {
         { label: "Canada", emoji: "🇨🇦" },
       ],
       answer: 0,
-      sayIt: "Where are you from?",
-      sayItEs: "Ahora pregúntale tú: «¿De dónde eres?»",
-      sayItCheck: { target: "Where are you from?" },
+      sayIt: "I am from…",
+      sayItEs: "Ahora contesta tú: «Soy de…» (puedes decir solo el lugar)",
+      sayItCheck: {
+        target: "I am from *",
+        allowShortAnswer: true,
+        altTargets: ["Where are you from?"],
+      },
     },
     {
       id: "q3",
