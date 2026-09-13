@@ -252,7 +252,6 @@ export const VALE_WHO_IS_HE: StorybookEpisode = {
       answer: 0,
       sayIt: "We are amazing.",
       sayItEs: "Ahora repite: «Somos increíbles.»",
-      sayItCheck: { target: "We are amazing." },
     },
   ],
   mindsetCard: {

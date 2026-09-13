@@ -185,7 +185,7 @@ export const VALE_SUPPORT_TEAM: StorybookEpisode = {
       answer: 0,
       sayIt: "My hobbies are…",
       sayItEs: "Ahora di los tuyos: «Mis pasatiempos son…»",
-      sayItCheck: { target: "My hobbies are *" },
+      sayItCheck: { target: "My hobbies are *", allowShortAnswer: true },
     },
     {
       id: "q2",
@@ -200,7 +200,7 @@ export const VALE_SUPPORT_TEAM: StorybookEpisode = {
       answer: 0,
       sayIt: "I am … years old.",
       sayItEs: "Ahora di tu edad: «Tengo … años.»",
-      sayItCheck: { target: "I am * years old" },
+      sayItCheck: { target: "I am * years old", allowShortAnswer: true },
     },
     {
       id: "q3",
@@ -215,7 +215,6 @@ export const VALE_SUPPORT_TEAM: StorybookEpisode = {
       answer: 0,
       sayIt: "I am awesome.",
       sayItEs: "Ahora repite: «Soy increíble.»",
-      sayItCheck: { target: "I am awesome." },
     },
   ],
   mindsetCard: {
