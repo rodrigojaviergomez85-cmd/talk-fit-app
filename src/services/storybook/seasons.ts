@@ -32,6 +32,11 @@ export type Season = {
   moduleId: string;
   seasonNumber: number;
   title: { en: string; es: string };
+  /** One-line pitch shown on the collapsed season card. */
+  blurb: { en: string; es: string };
+  /** Representative cover image (episode 1 art). */
+  image: string;
+  imageAlt: { en: string; es: string };
   slots: SeasonEpisodeSlot[];
 };
 
@@ -40,6 +45,12 @@ export const STORYBOOK_SEASONS: Season[] = [
     moduleId: "basic-zero",
     seasonNumber: 1,
     title: { en: "Season 1 · Vale's world", es: "Temporada 1 · El mundo de Vale" },
+    blurb: {
+      en: "Vale's first job: names, favorite things and new friends.",
+      es: "El primer empleo de Vale: nombres, cosas favoritas y nuevos amigos.",
+    },
+    image: season1Cover,
+    imageAlt: { en: "Vale on her first day at work", es: "Vale en su primer día de trabajo" },
     slots: [
       { day: 1, episodeId: "vale-first-day", teaser: { en: "Vale's first day", es: "El primer día de Vale" } },
       { day: 2, episodeId: "vale-first-call", teaser: { en: "The first call", es: "La primera llamada" } },
