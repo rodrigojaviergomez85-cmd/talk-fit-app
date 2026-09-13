@@ -183,6 +183,7 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
       answer: 0,
       sayIt: "Tonight, I’m going to review my notes.",
       sayItEs: "Repite: «Esta noche voy a repasar mis apuntes.»",
+      sayItCheck: { target: "Tonight, I’m going to review my notes." },
     },
     {
       id: "q2",
@@ -197,6 +198,7 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
       answer: 0,
       sayIt: "Next month, I’m going to lead a workshop.",
       sayItEs: "Repite: «El próximo mes voy a liderar un taller.»",
+      sayItCheck: { target: "Next month, I’m going to lead a workshop." },
     },
     {
       id: "q3",
@@ -211,6 +213,7 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
       answer: 0,
       sayIt: "They want the same grant.",
       sayItEs: "Repite: «Quieren el mismo apoyo.»",
+      sayItCheck: { target: "They want the same grant." },
     },
   ],
   mindsetCard: {

@@ -104,7 +104,11 @@ export function compareStorySay(
       (options?.allowShortAnswer === true &&
         transcriptWords.length <= 2 &&
         !transcriptWords.includes(WILDCARD))
-    : containsContiguous(transcriptWords, targetWords);
+    : containsContiguous(transcriptWords, targetWords) ||
+      // Long story lines (two clauses / sentences) are graded in-order rather
+      // than strictly contiguous, so a small filler slip does not fail a
+      // learner who said the whole line.
+      (targetWords.length >= 6 && matchFrame(transcriptWords, targetWords));
 
   return { status: matched ? "good" : "tryAgain", matched };
 }

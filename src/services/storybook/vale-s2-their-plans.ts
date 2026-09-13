@@ -167,6 +167,7 @@ export const VALE_S2_THEIR_PLANS: StorybookEpisode = {
       answer: 0,
       sayIt: "She is going to sell food at the door.",
       sayItEs: "Repite: «Ella va a vender comida en la puerta.»",
+      sayItCheck: { target: "She is going to sell food at the door." },
     },
     {
       id: "q2",
@@ -181,6 +182,7 @@ export const VALE_S2_THEIR_PLANS: StorybookEpisode = {
       answer: 0,
       sayIt: "Fifty young people are going to come.",
       sayItEs: "Repite: «Cincuenta jóvenes van a venir.»",
+      sayItCheck: { target: "Fifty young people are going to come." },
     },
     {
       id: "q3",
@@ -195,6 +197,7 @@ export const VALE_S2_THEIR_PLANS: StorybookEpisode = {
       answer: 0,
       sayIt: "All of them are going to start.",
       sayItEs: "Repite: «Todos van a empezar.»",
+      sayItCheck: { target: "All of them are going to start." },
     },
   ],
   mindsetCard: {

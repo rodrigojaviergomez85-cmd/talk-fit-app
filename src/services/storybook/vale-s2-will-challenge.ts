@@ -169,6 +169,7 @@ export const VALE_S2_WILL_CHALLENGE: StorybookEpisode = {
       answer: 0,
       sayIt: "I won't use Spanish at work.",
       sayItEs: "Repite: «No usaré español en el trabajo.»",
+      sayItCheck: { target: "I won't use Spanish at work." },
     },
     {
       id: "q2",

@@ -173,6 +173,7 @@ export const VALE_S2_PROMISE: StorybookEpisode = {
       answer: 0,
       sayIt: "I'll help you every week. I promise.",
       sayItEs: "Repite: «Te ayudaré cada semana. Lo prometo.»",
+      sayItCheck: { target: "I'll help you every week. I promise." },
     },
     {
       id: "q2",
@@ -187,6 +188,7 @@ export const VALE_S2_PROMISE: StorybookEpisode = {
       answer: 0,
       sayIt: "I won't leave you alone.",
       sayItEs: "Repite: «No te dejaré solo.»",
+      sayItCheck: { target: "I won't leave you alone." },
     },
     {
       id: "q3",

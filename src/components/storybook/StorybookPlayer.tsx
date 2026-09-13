@@ -529,7 +529,9 @@ function QuizSlide({
     if (said) return;
     // If the episode has no server-side check, accept any recording as before.
     if (!hasCheck) {
+      setCheckStatus("good");
       onSaid();
+      playGoodFeedbackSound();
       return;
     }
     if (attempts >= 2) {

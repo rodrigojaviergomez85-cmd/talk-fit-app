@@ -165,6 +165,7 @@ export const VALE_S2_PLAN_VS_DECISION: StorybookEpisode = {
       answer: 0,
       sayIt: "At two, I’m going to print the posters.",
       sayItEs: "Repite: «A las dos voy a imprimir los carteles.»",
+      sayItCheck: { target: "At two, I’m going to print the posters." },
     },
     {
       id: "q2",
@@ -179,6 +180,7 @@ export const VALE_S2_PLAN_VS_DECISION: StorybookEpisode = {
       answer: 0,
       sayIt: "I'll go for you now.",
       sayItEs: "Repite: «Iré por ti ahora.»",
+      sayItCheck: { target: "I'll go for you now." },
     },
     {
       id: "q3",
@@ -193,6 +195,7 @@ export const VALE_S2_PLAN_VS_DECISION: StorybookEpisode = {
       answer: 0,
       sayIt: "Tomorrow we are going to practice together.",
       sayItEs: "Repite: «Mañana vamos a practicar juntos.»",
+      sayItCheck: { target: "Tomorrow we are going to practice together." },
     },
   ],
   mindsetCard: {

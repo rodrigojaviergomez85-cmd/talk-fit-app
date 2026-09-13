@@ -175,6 +175,7 @@ export const VALE_S2_INSTANT_DECISION: StorybookEpisode = {
       answer: 0,
       sayIt: "I'll call the school right now.",
       sayItEs: "Repite: «Llamaré a la escuela ahora mismo.»",
+      sayItCheck: { target: "I'll call the school right now." },
     },
     {
       id: "q2",
@@ -189,6 +190,7 @@ export const VALE_S2_INSTANT_DECISION: StorybookEpisode = {
       answer: 0,
       sayIt: "Dylan will send the message.",
       sayItEs: "Repite: «Dylan enviará el mensaje.»",
+      sayItCheck: { target: "Dylan will send the message." },
     },
     {
       id: "q3",

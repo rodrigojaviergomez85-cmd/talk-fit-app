@@ -167,6 +167,7 @@ export const VALE_S2_VISIBLE_PREDICTIONS: StorybookEpisode = {
       answer: 0,
       sayIt: "Look at the sky. It's going to rain.",
       sayItEs: "Repite: «Mira el cielo. Va a llover.»",
+      sayItCheck: { target: "Look at the sky. It's going to rain." },
     },
     {
       id: "q2",
@@ -181,6 +182,7 @@ export const VALE_S2_VISIBLE_PREDICTIONS: StorybookEpisode = {
       answer: 0,
       sayIt: "More than fifty people are going to come.",
       sayItEs: "Repite: «Más de cincuenta personas van a venir.»",
+      sayItCheck: { target: "More than fifty people are going to come." },
     },
     {
       id: "q3",
@@ -195,6 +197,7 @@ export const VALE_S2_VISIBLE_PREDICTIONS: StorybookEpisode = {
       answer: 0,
       sayIt: "I'm going to do my first interview.",
       sayItEs: "Repite: «Voy a hacer mi primera entrevista.»",
+      sayItCheck: { target: "I'm going to do my first interview." },
     },
   ],
   mindsetCard: {

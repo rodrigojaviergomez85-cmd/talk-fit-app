@@ -161,6 +161,7 @@ export const VALE_S2_WEEKEND_CHANGES: StorybookEpisode = {
       answer: 0,
       sayIt: "The event is going to be on Sunday.",
       sayItEs: "Repite: «El evento va a ser el domingo.»",
+      sayItCheck: { target: "The event is going to be on Sunday." },
     },
     {
       id: "q2",
@@ -175,6 +176,7 @@ export const VALE_S2_WEEKEND_CHANGES: StorybookEpisode = {
       answer: 0,
       sayIt: "He won't work on Sunday morning.",
       sayItEs: "Repite: «Él no trabajará el domingo en la mañana.»",
+      sayItCheck: { target: "He won't work on Sunday morning." },
     },
     {
       id: "q3",
@@ -189,6 +191,7 @@ export const VALE_S2_WEEKEND_CHANGES: StorybookEpisode = {
       answer: 0,
       sayIt: "Three companies are going to send recruiters.",
       sayItEs: "Repite: «Tres empresas van a enviar reclutadores.»",
+      sayItCheck: { target: "Three companies are going to send recruiters." },
     },
   ],
   mindsetCard: {

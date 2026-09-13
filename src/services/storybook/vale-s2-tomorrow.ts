@@ -182,6 +182,7 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
       answer: 0,
       sayIt: "Tomorrow, I’m going to wake up early.",
       sayItEs: "Repite: «Mañana me voy a despertar temprano.»",
+      sayItCheck: { target: "Tomorrow, I’m going to wake up early." },
     },
     {
       id: "q2",
@@ -196,6 +197,7 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
       answer: 0,
       sayIt: "After lunch, I’m going to study English.",
       sayItEs: "Repite: «Después del almuerzo voy a estudiar inglés.»",
+      sayItCheck: { target: "After lunch, I’m going to study English." },
     },
     {
       id: "q3",
@@ -210,6 +212,7 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
       answer: 0,
       sayIt: "The client wants the event this weekend.",
       sayItEs: "Repite: «El cliente quiere el evento este fin de semana.»",
+      sayItCheck: { target: "The client wants the event this weekend." },
     },
   ],
   mindsetCard: {

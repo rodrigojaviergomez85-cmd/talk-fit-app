@@ -171,6 +171,7 @@ export const VALE_S2_BUSIEST: StorybookEpisode = {
       answer: 0,
       sayIt: "They are going to call the schools.",
       sayItEs: "Repite: «Ellos van a llamar a las escuelas.»",
+      sayItCheck: { target: "They are going to call the schools." },
     },
     {
       id: "q2",
@@ -185,6 +186,7 @@ export const VALE_S2_BUSIEST: StorybookEpisode = {
       answer: 0,
       sayIt: "They aren’t going to do everything today.",
       sayItEs: "Repite: «Ellos no van a hacer todo hoy.»",
+      sayItCheck: { target: "They aren’t going to do everything today." },
     },
     {
       id: "q3",
@@ -199,6 +201,7 @@ export const VALE_S2_BUSIEST: StorybookEpisode = {
       answer: 0,
       sayIt: "We are going to do five tasks today.",
       sayItEs: "Repite: «Vamos a hacer cinco tareas hoy.»",
+      sayItCheck: { target: "We are going to do five tasks today." },
     },
   ],
   mindsetCard: {
