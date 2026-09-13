@@ -47,6 +47,8 @@ function pickVoice(voice: ModelVoice): SpeechSynthesisVoice | undefined {
 /** Session cache of model audio, keyed by tone + voice + text. Persistent storage lives server-side. */
 const audioCache = new Map<string, Promise<string>>();
 let currentAudio: HTMLAudioElement | null = null;
+/** Cancels the latest in-flight speak() (model clip still downloading or playing). */
+let latestSpeakCancel: (() => void) | null = null;
 
 /** Current learner access token, or null when signed out. Never throws. */
 async function currentAccessToken(): Promise<string | null> {
@@ -183,8 +185,9 @@ export const AudioService = {
         }
       });
 
-    return () => {
+    const cancel = () => {
       cancelled = true;
+      if (latestSpeakCancel === cancel) latestSpeakCancel = null;
       stopFallback?.();
       if (element) {
         element.pause();
@@ -192,6 +195,8 @@ export const AudioService = {
         if (currentAudio === element) currentAudio = null;
       }
     };
+    latestSpeakCancel = cancel;
+    return cancel;
   },
 
   /** True while model/TTS audio is actively playing (read-only, never interrupts). */
@@ -233,6 +238,9 @@ export const AudioService = {
 
   stop() {
     if (typeof window === "undefined") return;
+    // Cancel an in-flight speak() so a still-downloading clip never starts later.
+    latestSpeakCancel?.();
+    latestSpeakCancel = null;
     if (currentAudio) {
       currentAudio.pause();
       currentAudio.currentTime = 0;
