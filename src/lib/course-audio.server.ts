@@ -10,7 +10,7 @@
  * so every previously generated clip stays valid.
  */
 
-export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy" | "earnest" | "warm";
+export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy" | "earnest" | "warm" | "pro";
 export type RequestedVoice = "neutral" | "female" | "femaleBright" | "femaleMature" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm" | "shyBoy" | "teenBoy" | "elder";
 
 /** Normalised request: `voice` is the provider voice selected below. */
@@ -41,7 +41,7 @@ export const VOICE_MAP: Record<RequestedVoice, string> = {
   /** Older, kind neighbourhood man — storybook characters like don Tito; distinct from Luis. */
   elder: "ballad",
 };
-export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story", "cheerful", "youthful", "shy", "earnest", "warm"];
+export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story", "cheerful", "youthful", "shy", "earnest", "warm", "pro"];
 
 const TONE_INSTRUCTIONS: Record<Tone, string> = {
   coach:
@@ -62,6 +62,8 @@ const TONE_INSTRUCTIONS: Record<Tone, string> = {
     "Speak as Beto, a shy and gentle 17-year-old boy. The voice must sound unmistakably young, soft and light—never deep, mature, adult, elderly or authoritative. Use a timid, slightly hesitant delivery with a higher, boyish pitch, quiet warmth, small nervous pauses and a gentle rising intonation, like a shy teenager gathering courage to speak. Keep a natural, slightly careful conversational pace. Keep him clearly distinct from Mateo (not energetic or exuberant) and from Dylan (not laid-back or confident): Beto is softer, quieter and more unsure, though he gains a little confidence when encouraged. Do not sound robotic, monotone, flat, raspy, stern, announcer-like or over-enunciated.",
   earnest:
     "Speak as Dani, an earnest, motivated 16-year-old student. The voice must sound unmistakably young and boyish, sincere and a little eager—never deep, mature, adult, elderly or authoritative. Use warm, honest intonation, a slightly careful pace with small thoughtful pauses, and gentle rising energy when he is proud or excited. Keep him clearly distinct from Beto (not timid or unsure), from Mateo (not exuberant) and from Dylan (not laid-back). Do not sound robotic, monotone, flat, raspy, stern, announcer-like or over-enunciated.",
+  pro:
+    "Speak as Morgan, a confident American corporate manager around 38 on a real business call. Sound natural and conversational like a character in an American TV series — friendly but direct, quick responsive pacing, realistic connected speech, small natural pauses and light everyday intonation. Never narrator-like, never announcer-like, never over-enunciated, monotone, theatrical or hyped.",
   warm:
     "Speak as a caring Latina mother around 45 years old. The voice must sound unmistakably feminine, mature, calm and affectionate—never young, girlish, stern or authoritative. Use slow, soothing intonation, gentle warmth, natural pauses and a soft smile, like a mother speaking kindly to her daughter at home. Natural everyday American English accent. Do not sound robotic, monotone, flat, raspy, theatrical or announcer-like.",
 };
