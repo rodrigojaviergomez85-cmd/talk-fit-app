@@ -166,6 +166,19 @@ export function StorybookPlayer({
         <span className="flex shrink-0 items-center gap-1 text-[13px] font-extrabold text-amber-500">
           <Star className="size-4 fill-amber-500" /> {stars}
         </span>
+        <button
+          type="button"
+          aria-label={es ? "Salir del cuento" : "Exit story"}
+          onClick={() => {
+            // Stop any playing/in-flight narration, then leave to the day hub
+            // (Home flow) or the Audiobooks list (Método natural flow).
+            AudioService.stop();
+            coverBack();
+          }}
+          className="inline-flex size-10 shrink-0 items-center justify-center rounded-2xl border border-border text-muted-foreground"
+        >
+          <X className="size-4" />
+        </button>
       </div>
 
       <div
