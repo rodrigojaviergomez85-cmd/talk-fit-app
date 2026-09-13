@@ -551,7 +551,12 @@ function QuizSlide({
       form.append("file", blob, `say-it.${ext}`);
       form.append("storyId", episodeId);
       form.append("quizId", quiz.id);
-      const res = await fetch("/api/story-say-check", { method: "POST", body: form });
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const headers: Record<string, string> = {};
+      if (session?.access_token) headers["Authorization"] = `Bearer ${session.access_token}`;
+      const res = await fetch("/api/story-say-check", { method: "POST", body: form, headers });
       const data = (await res.json().catch(() => ({ error: "network" }))) as {
         status?: string;
         transcript?: string;
