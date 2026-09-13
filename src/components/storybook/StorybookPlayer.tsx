@@ -700,6 +700,7 @@ function QuizSlide({
             </p>
           ) : null}
 
+          {!said && attempts >= 2 ? (
             <div className="space-y-2 rounded-2xl border border-border bg-muted/40 p-3">
               <p className="text-[13px] font-semibold text-muted-foreground">
                 {es ? "No te preocupes, sigue practicando:" : "Don't worry, keep practicing:"}
