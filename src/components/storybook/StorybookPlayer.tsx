@@ -658,12 +658,14 @@ function FinaleSlide({
   stars,
   notebook,
   nextEpisode,
+  practiceDay,
 }: {
   episode: StorybookEpisode;
   es: boolean;
   stars: number;
   notebook: Record<string, string>;
   nextEpisode: NextEpisodeInfo | null;
+  practiceDay: number | null;
 }) {
   const [recorded, setRecorded] = useState(false);
   const [take, setTake] = useState<Recording | null>(null);
