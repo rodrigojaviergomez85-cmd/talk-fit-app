@@ -189,31 +189,37 @@ export function StorybookPlayer({
         </button>
       </div>
 
-      <AlertDialog open={showExit} onOpenChange={setShowExit}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{es ? "¿Salir del cuento?" : "Exit story?"}</AlertDialogTitle>
-            <AlertDialogDescription>
+      {showExit && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+          <div className="w-full max-w-sm rounded-2xl border border-border bg-background p-6 shadow-lg">
+            <h3 className="text-lg font-semibold">{es ? "¿Salir del cuento?" : "Exit story?"}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
               {es
                 ? "Si sales ahora perderás el progreso de esta escena. ¿Quieres continuar?"
                 : "If you leave now you will lose progress on this scene. Do you want to continue?"}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setShowExit(false)}>
-              {es ? "No, seguir leyendo" : "No, keep reading"}
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => {
-                AudioService.stop();
-                coverBack();
-              }}
-            >
-              {es ? "Sí, salir" : "Yes, exit"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+            </p>
+            <div className="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                onClick={() => setShowExit(false)}
+                className="inline-flex min-h-[40px] items-center justify-center rounded-xl border border-border px-4 text-sm font-semibold"
+              >
+                {es ? "No, seguir leyendo" : "No, keep reading"}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  AudioService.stop();
+                  coverBack();
+                }}
+                className="inline-flex min-h-[40px] items-center justify-center rounded-xl bg-primary px-4 text-sm font-bold text-primary-foreground"
+              >
+                {es ? "Sí, salir" : "Yes, exit"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div
         className="mt-3"
