@@ -52,6 +52,7 @@ import { Route as ReviewInterviewSimulatorsRouteImport } from './routes/review.i
 import { Route as ReviewPictionaryRouteImport } from './routes/review.pictionary'
 import { Route as SuscripcionCanceladoRouteImport } from './routes/suscripcion.cancelado'
 import { Route as SuscripcionExitoRouteImport } from './routes/suscripcion.exito'
+import { Route as DayModuleIdDayRouteImport } from './routes/day.$moduleId.$day'
 import { Route as NaturalMethodCuentoStoryIdRouteImport } from './routes/natural-method.cuento.$storyId'
 import { Route as NaturalMethodVerbsIndexRouteImport } from './routes/natural-method.verbs.index'
 import { Route as NaturalMethodVerbsIdiomsRouteImport } from './routes/natural-method.verbs.idioms'
@@ -282,6 +283,11 @@ const SuscripcionExitoRoute = SuscripcionExitoRouteImport.update({
   path: '/suscripcion/exito',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DayModuleIdDayRoute = DayModuleIdDayRouteImport.update({
+  id: '/day/$moduleId/$day',
+  path: '/day/$moduleId/$day',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NaturalMethodCuentoStoryIdRoute =
   NaturalMethodCuentoStoryIdRouteImport.update({
     id: '/natural-method/cuento/$storyId',
@@ -376,6 +382,7 @@ export interface FileRoutesByFullPath {
   '/suscripcion/exito': typeof SuscripcionExitoRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
+  '/day/$moduleId/$day': typeof DayModuleIdDayRoute
   '/natural-method/cuento/$storyId': typeof NaturalMethodCuentoStoryIdRoute
   '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
   '/natural-method/verbs/list': typeof NaturalMethodVerbsListRoute
@@ -429,6 +436,7 @@ export interface FileRoutesByTo {
   '/suscripcion/exito': typeof SuscripcionExitoRoute
   '/natural-method': typeof NaturalMethodIndexRoute
   '/review': typeof ReviewIndexRoute
+  '/day/$moduleId/$day': typeof DayModuleIdDayRoute
   '/natural-method/cuento/$storyId': typeof NaturalMethodCuentoStoryIdRoute
   '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
   '/natural-method/verbs/list': typeof NaturalMethodVerbsListRoute
@@ -484,6 +492,7 @@ export interface FileRoutesById {
   '/suscripcion/exito': typeof SuscripcionExitoRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
+  '/day/$moduleId/$day': typeof DayModuleIdDayRoute
   '/natural-method/cuento/$storyId': typeof NaturalMethodCuentoStoryIdRoute
   '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
   '/natural-method/verbs/list': typeof NaturalMethodVerbsListRoute
@@ -540,6 +549,7 @@ export interface FileRouteTypes {
     | '/suscripcion/exito'
     | '/natural-method/'
     | '/review/'
+    | '/day/$moduleId/$day'
     | '/natural-method/cuento/$storyId'
     | '/natural-method/verbs/idioms'
     | '/natural-method/verbs/list'
@@ -593,6 +603,7 @@ export interface FileRouteTypes {
     | '/suscripcion/exito'
     | '/natural-method'
     | '/review'
+    | '/day/$moduleId/$day'
     | '/natural-method/cuento/$storyId'
     | '/natural-method/verbs/idioms'
     | '/natural-method/verbs/list'
@@ -647,6 +658,7 @@ export interface FileRouteTypes {
     | '/suscripcion/exito'
     | '/natural-method/'
     | '/review/'
+    | '/day/$moduleId/$day'
     | '/natural-method/cuento/$storyId'
     | '/natural-method/verbs/idioms'
     | '/natural-method/verbs/list'
@@ -702,6 +714,7 @@ export interface RootRouteChildren {
   SuscripcionExitoRoute: typeof SuscripcionExitoRoute
   NaturalMethodIndexRoute: typeof NaturalMethodIndexRoute
   ReviewIndexRoute: typeof ReviewIndexRoute
+  DayModuleIdDayRoute: typeof DayModuleIdDayRoute
   NaturalMethodCuentoStoryIdRoute: typeof NaturalMethodCuentoStoryIdRoute
   ReviewModuleIdPracticeRoute: typeof ReviewModuleIdPracticeRoute
   ReviewModuleIdIndexRoute: typeof ReviewModuleIdIndexRoute
@@ -1012,6 +1025,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SuscripcionExitoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/day/$moduleId/$day': {
+      id: '/day/$moduleId/$day'
+      path: '/day/$moduleId/$day'
+      fullPath: '/day/$moduleId/$day'
+      preLoaderRoute: typeof DayModuleIdDayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/natural-method/cuento/$storyId': {
       id: '/natural-method/cuento/$storyId'
       path: '/natural-method/cuento/$storyId'
@@ -1139,6 +1159,7 @@ const rootRouteChildren: RootRouteChildren = {
   SuscripcionExitoRoute: SuscripcionExitoRoute,
   NaturalMethodIndexRoute: NaturalMethodIndexRoute,
   ReviewIndexRoute: ReviewIndexRoute,
+  DayModuleIdDayRoute: DayModuleIdDayRoute,
   NaturalMethodCuentoStoryIdRoute: NaturalMethodCuentoStoryIdRoute,
   ReviewModuleIdPracticeRoute: ReviewModuleIdPracticeRoute,
   ReviewModuleIdIndexRoute: ReviewModuleIdIndexRoute,

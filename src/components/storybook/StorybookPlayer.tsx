@@ -10,12 +10,13 @@ import { tokenizeWords } from "@/lib/syllables";
 import { AudioService } from "@/services/audio-service";
 import type { ModelVoice } from "@/services/audio-service";
 import type { ModelTone } from "@/lib/model-tone";
-import { getNextEpisodeSlot } from "@/services/storybook";
+import { getNextEpisodeSlot, getSeason } from "@/services/storybook";
+import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
 import type { NextEpisodeInfo } from "@/services/storybook";
 import { JourneyService } from "@/services/journey-service";
-import type { JourneyState, Recording } from "@/lib/types";
+import type { JourneyState, ModuleId, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type Slide =
@@ -88,12 +89,24 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
     return getNextEpisodeSlot(episode.id, journey);
   }, [episode.id, journey]);
 
+  /** Module day this episode matches — used for the "record your audios" shortcut. */
+  const practiceDay = useMemo(
+    () => getSeason(episode.moduleId)?.slots.find((s) => s.episodeId === episode.id)?.day ?? null,
+    [episode.id, episode.moduleId],
+  );
+
   useEffect(() => {
     setJourney(JourneyService.load());
   }, []);
 
   const slide = slides[idx]!;
   const total = slides.length;
+
+  // Reaching the finale counts as completing the story (local, optional step).
+  useEffect(() => {
+    if (slide.kind === "finale") markEpisodeSeen(episode.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slide.kind, episode.id]);
 
   const go = (next: number) => {
     setIdx(Math.min(total - 1, Math.max(0, next)));
@@ -215,6 +228,7 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
               stars={stars}
               notebook={notebook}
               nextEpisode={nextEpisode}
+              practiceDay={practiceDay}
             />
           ) : null}
         </div>
@@ -644,12 +658,14 @@ function FinaleSlide({
   stars,
   notebook,
   nextEpisode,
+  practiceDay,
 }: {
   episode: StorybookEpisode;
   es: boolean;
   stars: number;
   notebook: Record<string, string>;
   nextEpisode: NextEpisodeInfo | null;
+  practiceDay: number | null;
 }) {
   const [recorded, setRecorded] = useState(false);
   const [take, setTake] = useState<Recording | null>(null);
@@ -745,6 +761,16 @@ function FinaleSlide({
           </p>
         ) : null}
       </div>
+
+      {practiceDay !== null ? (
+        <Link
+          to="/practice"
+          search={{ day: practiceDay, module: episode.moduleId as ModuleId }}
+          className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 text-[15px] font-extrabold uppercase tracking-[0.1em] text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98]"
+        >
+          {es ? "AHORA GRABA TUS AUDIOS" : "NOW RECORD YOUR AUDIOS"} <ArrowRight className="size-5" />
+        </Link>
+      ) : null}
 
       <p className="rounded-2xl border border-dashed border-primary/50 bg-primary/5 p-3 text-center text-[13px] font-bold text-primary">
         {es ? episode.cliffhanger.es : episode.cliffhanger.en}
