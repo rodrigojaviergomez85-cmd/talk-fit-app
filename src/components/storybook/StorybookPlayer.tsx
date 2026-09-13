@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, ChevronLeft, Loader2, Play, Sparkles, Star, Volume2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronLeft, Loader2, Play, Sparkles, Star, Volume2, X } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
