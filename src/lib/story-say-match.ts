@@ -18,7 +18,8 @@ export type StorySayResult = {
 
 const WILDCARD = "*";
 /** Placeholder word that survives normalizeForCompare's punctuation stripping. */
-const WILDCARD_TOKEN = "STORYWILDCARD";
+const WILDCARD_TOKEN = "storywildcard";
+
 
 
 /**
