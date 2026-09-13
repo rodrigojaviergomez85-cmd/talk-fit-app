@@ -10,8 +10,8 @@
  * so every previously generated clip stays valid.
  */
 
-export type Tone = "coach" | "neutral" | "tense" | "playful" | "story";
-export type RequestedVoice = "neutral" | "female" | "male" | "girl" | "boss";
+export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful";
+export type RequestedVoice = "neutral" | "female" | "male" | "girl" | "boss" | "youngMale";
 
 /** Normalised request: `voice` is the provider voice selected below. */
 export type ClipSpec = { text: string; voice: string; tone: Tone };
@@ -26,8 +26,10 @@ export const VOICE_MAP: Record<RequestedVoice, string> = {
   girl: "marin",
   /** Deep male — authority characters like the boss. */
   boss: "fable",
+  /** Young, light male — storybook characters like Mateo (19). */
+  youngMale: "echo",
 };
-export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story"];
+export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story", "cheerful"];
 
 const TONE_INSTRUCTIONS: Record<Tone, string> = {
   coach:
@@ -40,6 +42,8 @@ const TONE_INSTRUCTIONS: Record<Tone, string> = {
     "Read this line as a character in an animated story for young adults. Speak like a real person talking, with human warmth, relaxed natural rhythm, connected speech and expressive but believable intonation. Vary pitch and pacing naturally, add small natural pauses, and let emotion come through. Natural everyday American English accent. Never robotic, monotone, flat, over-enunciated, announcer-like or artificially hyped.",
   playful:
     "Speak as Vale, a sweet 18-year-old young woman on her first day at work. The voice must sound unmistakably feminine, soft, tender, youthful, and light—never masculine or low-pitched. Use warm, expressive intonation, a gentle smile, and natural melodic phrasing. She is a little shy, playful, and curious, with subtle nervous excitement and realistic pauses. Keep a natural conversational pace. Do not sound deep, mature, stern, raspy, elderly, childish, breathy, theatrical, or sing-song.",
+  cheerful:
+    "Speak as Mateo, a cheerful and friendly 19-year-old young man. The voice must sound unmistakably young, light and energetic—never deep, mature, elderly or authoritative. Use bright, warm intonation, an audible smile, lively natural rhythm and relaxed connected speech, like a happy teenager talking to a friend. Keep a natural conversational pace with realistic small pauses. Do not sound robotic, monotone, flat, over-enunciated, announcer-like, stern, raspy or artificially hyped.",
 };
 
 /** Lease long enough for one TTS generation; a crashed generator frees the clip on expiry. */

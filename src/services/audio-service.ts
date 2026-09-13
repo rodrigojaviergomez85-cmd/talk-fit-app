@@ -10,7 +10,7 @@
 import { registerAudioStopper, stopOtherAudio } from "@/lib/audio-bus";
 import type { ModelTone } from "@/lib/model-tone";
 
-export type ModelVoice = "neutral" | "female" | "male" | "girl" | "boss";
+export type ModelVoice = "neutral" | "female" | "male" | "girl" | "boss" | "youngMale";
 type AudioVoice = "female" | "male" | "girl" | "boss";
 
 export type SpeakOptions = {
@@ -34,7 +34,7 @@ function pickVoice(voice: ModelVoice): SpeechSynthesisVoice | undefined {
   const preferredNames =
     voice === "female" || voice === "girl"
       ? ["Samantha", "Google US English", "Karen", "Jenny"]
-      : voice === "male" || voice === "boss"
+      : voice === "male" || voice === "boss" || voice === "youngMale"
         ? ["Daniel", "Alex", "Google UK English Male"]
         : ["Samantha", "Google US English", "Alex", "Daniel"];
   for (const name of preferredNames) {

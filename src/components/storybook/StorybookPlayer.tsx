@@ -46,7 +46,7 @@ function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice {
   if (speaker === "boss") return "boss";
   if (speaker === "kat") return "female";
   if (speaker === "dylan") return "male";
-  if (speaker === "mateo") return "male";
+  if (speaker === "mateo") return "youngMale";
   if (speaker === "luis") return "male";
   if (speaker === "camila") return "female";
   if (speaker === "ana") return "female";
@@ -55,7 +55,9 @@ function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice {
 
 /** Vale speaks playful and a little shy; every other voice uses the natural story tone. */
 function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
-  return speaker === "vale" ? "playful" : "story";
+  if (speaker === "vale") return "playful";
+  if (speaker === "mateo") return "cheerful";
+  return "story";
 }
 
 /** Keyframes local to the storybook (ken-burns, sparkle, shake). */
