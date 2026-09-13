@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { compareStorySay } from "./story-say-match";
+import { compareStorySay, buildSayItHint } from "./story-say-match";
 
 
 describe("compareStorySay", () => {
@@ -95,6 +95,30 @@ describe("compareStorySay", () => {
       expect(
         compareStorySay("I am * years old", "Twenty", { allowShortAnswer: true }).status,
       ).toBe("good");
+    });
+  });
+
+  describe("buildSayItHint", () => {
+    it("replaces a wildcard with ellipsis", () => {
+      const result = buildSayItHint("My name is *", false);
+      expect(result.label).toBe("Try say:");
+      expect(result.hint).toBe("My name is ...");
+    });
+
+    it("uses the Spanish label", () => {
+      const result = buildSayItHint("My favorite food is *", true);
+      expect(result.label).toBe("Dilo así:");
+      expect(result.hint).toBe("My favorite food is ...");
+    });
+
+    it("shows the full phrase when there is no wildcard", () => {
+      const result = buildSayItHint("I can do it", false);
+      expect(result.hint).toBe("I can do it");
+    });
+
+    it("normalizes extra whitespace", () => {
+      const result = buildSayItHint("  I am  from  *  ", false);
+      expect(result.hint).toBe("I am from ...");
     });
   });
 });
