@@ -1,6 +1,9 @@
 # Temporada 3: "La nueva rutina de Vale" — alineada a Basic 2 (Simple Present)
 
-## Objetivo
+## Decisión de arco maestro (actualizada)
+Vale sigue siendo la protagonista durante todo el recorrido A1→B2. Eagles, Tigers, Sharks y Advanced no cambian de héroe: siguen el mundo de Vale mientras ella crea y crece su propia escuela de inglés. A partir de Basic 4/Eagles el foco cambia a desafíos empresariales: abrir la escuela, dar becas, atender alumnos de paga, contratar y liderar un equipo pequeño, y resolver problemas reales de un emprendimiento bilingüe. Los nuevos personajes entran como empleados cercanos, estudiantes becados o clientes de la escuela, no como reemplazo del protagonista.
+
+## Objetivo inmediato de T3
 20 episodios (1 por día de práctica) que siguen a Vale ya instalada en su trabajo del call center, alineados al módulo **simple-present** (Basic 2): rutinas, he/she, negativos, preguntas do/does, explicar procesos y presente progresivo. Misma mecánica probada de las Temporadas 1 y 2.
 
 ## Estructura por semana (match con el módulo)
@@ -31,7 +34,7 @@
 - Ep 17: En la playa con amigos (escena nueva, energía TikTok).
 - Ep 18: En la oficina — el cliente furioso regresa; todos están trabajando a la vez.
 - Ep 19: En casa — noche tranquila, reflexión: "I am becoming disciplined."
-- Ep 20: Final de temporada — Vale explica su proceso de crecimiento (mezcla rutina + proceso + ahora) y hook a Temporada 4 (Simple Past): "Everything started the day I walked in..."
+- Ep 20: Final de temporada — Vale reflexiona sobre su crecimiento y da el primer paso visible hacia su escuela (preparar una clase demo para amigos). Hook a Temporada 4 (Simple Past): "Everything started the day I walked in..."
 
 ## Reglas de siempre (sin cambios)
 - 10–11 ilustraciones webtoon por episodio, chequeo contra referencias canónicas (identidad, piel, cabello, edad, ropa, anatomía, props, continuidad).
@@ -55,3 +58,6 @@
 
 ## Meta de vocabulario
 T3 aporta ~280–320 ítems útiles nuevos; acumulado con T1+T2 rumbo a 3,500–4,500 palabras activas en 11 meses.
+
+## Nota sobre transición futura hacia Eagles/Tigers/Sharks/Advanced
+Cuando el currículo llegue a niveles B1/B2, Vale ya no será solo empleada de call center: será fundadora de una escuela de inglés. Los desafíos girarán en torno a dar clases, becar jóvenes de la comunidad, negociar con clientes, liderar a un pequeño equipo y medir el impacto del proyecto. Esto mantiene el vínculo parasocial con Vale, añade variedad de contextos y personajes secundarios, y modela exactamente el camino que queremos que los estudiantes vean posible para ellos mismos.
