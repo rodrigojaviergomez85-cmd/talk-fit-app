@@ -538,9 +538,16 @@ function QuizSlide({
     setCheckStatus("checking");
     setErrorMsg("");
     try {
-      const blob = await fetch(recording.url).then((r) => r.blob());
+      const blob = recording.blob ?? (recording.url ? await fetch(recording.url).then((r) => r.blob()) : null);
+      if (!blob) {
+        setErrorMsg(es ? "No se encontró el audio." : "Audio not found.");
+        setCheckStatus("tryAgain");
+        setAttempts((a) => a + 1);
+        return;
+      }
       const form = new FormData();
-      form.append("file", blob, `say-it.${blob.type.includes("mp4") ? "m4a" : "webm"}`);
+      const ext = blob.type.includes("mp4") ? "m4a" : "webm";
+      form.append("file", blob, `say-it.${ext}`);
       form.append("storyId", episodeId);
       form.append("quizId", quiz.id);
       const res = await fetch("/api/story-say-check", { method: "POST", body: form });
