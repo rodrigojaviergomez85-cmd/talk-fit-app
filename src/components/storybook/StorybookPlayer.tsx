@@ -11,10 +11,9 @@ import { tokenizeWords } from "@/lib/syllables";
 import { buildSayItHint } from "@/lib/story-say-match";
 import { isStoryAdvanceLocked } from "@/lib/storybook-advance";
 import { AudioService } from "@/services/audio-service";
-import type { ModelVoice } from "@/services/audio-service";
-import type { ModelTone } from "@/lib/model-tone";
 import { supabase } from "@/integrations/supabase/client";
 import { getSeason } from "@/services/storybook";
+import { speakerVoice, speakerTone } from "@/services/storybook/voices";
 import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
@@ -45,32 +44,6 @@ function buildSlides(episode: StorybookEpisode): Slide[] {
   }
   slides.push({ kind: "finale" });
   return slides;
-}
-
-/** Per-character model voice; the narrator is the default warm neutral voice. */
-function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice {
-  if (speaker === "vale") return "girl";
-  if (speaker === "boss") return "boss";
-  if (speaker === "kat") return "femaleBright";
-  if (speaker === "dylan") return "youngMaleCalm";
-  if (speaker === "mateo") return "youngMale";
-  if (speaker === "luis") return "male";
-  if (speaker === "camila") return "female";
-  if (speaker === "ana") return "femaleMature";
-  if (speaker === "beto") return "shyBoy";
-  if (speaker === "dani") return "shyBoy";
-  if (speaker === "mom") return "female";
-  if (speaker === "tito") return "male";
-  return "neutral";
-}
-
-/** Vale speaks playful and a little shy; every other voice uses the natural story tone. */
-function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
-  if (speaker === "vale") return "playful";
-  if (speaker === "mateo") return "cheerful";
-  if (speaker === "dylan") return "youthful";
-  if (speaker === "beto") return "shy";
-  return "story";
 }
 
 /** Keyframes local to the storybook (ken-burns, sparkle, shake). */
