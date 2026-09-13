@@ -99,6 +99,7 @@ export function StorybookPlayer({
   const [notebook, setNotebook] = useState<Record<string, string>>({});
   const [saidIt, setSaidIt] = useState<Record<string, boolean>>({});
   const [quizDone, setQuizDone] = useState<Record<string, boolean>>({});
+  const [showExit, setShowExit] = useState(false);
   const touchX = useRef<number | null>(null);
 
   /** Module day this episode matches — used for the "record your audios" shortcut. */
