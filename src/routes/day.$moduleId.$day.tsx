@@ -105,6 +105,7 @@ function DayHubPage() {
           <Link
             to="/natural-method/cuento/$storyId"
             params={{ storyId: data.episode.id }}
+            search={{ from: "day" }}
             className="flex items-center gap-3 rounded-2xl border-2 border-primary bg-card p-3 shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
           >
             <img

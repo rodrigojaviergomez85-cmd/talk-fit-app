@@ -1,9 +1,12 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { AppShell } from "@/components/fluency/AppShell";
 import { StorybookPlayer } from "@/components/storybook/StorybookPlayer";
 import { getStorybookEpisode } from "@/services/storybook";
+import { getEpisodeSlot } from "@/services/storybook/seasons";
 
 export const Route = createFileRoute("/natural-method/cuento/$storyId")({
+  validateSearch: (search: Record<string, unknown>) =>
+    (search["from"] === "day" ? { from: "day" as const } : {}) as { from?: "day" },
   loader: ({ params }) => {
     const episode = getStorybookEpisode(params.storyId);
     if (!episode) throw notFound();
@@ -31,10 +34,17 @@ export const Route = createFileRoute("/natural-method/cuento/$storyId")({
 
 function StorybookPage() {
   const { episode } = Route.useLoaderData();
+  const { from } = Route.useSearch();
+  const navigate = useNavigate();
+  const slot = getEpisodeSlot(episode.id);
+  const onCoverBack =
+    from === "day" && slot
+      ? () => navigate({ to: "/day/$moduleId/$day", params: { moduleId: slot.moduleId, day: String(slot.day) } })
+      : undefined;
   return (
     <AppShell>
       <div className="p-4 pb-8">
-        <StorybookPlayer key={episode.id} episode={episode} />
+        <StorybookPlayer key={episode.id} episode={episode} onCoverBack={onCoverBack} />
       </div>
     </AppShell>
   );

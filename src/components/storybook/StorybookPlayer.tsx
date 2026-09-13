@@ -71,10 +71,18 @@ const STORYBOOK_CSS = `
 @keyframes sb-slide-in { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: translateX(0); } }
 `;
 
-export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
+export function StorybookPlayer({
+  episode,
+  onCoverBack,
+}: {
+  episode: StorybookEpisode;
+  /** Where the cover's back button exits to (day hub when opened from Home). */
+  onCoverBack?: (() => void) | undefined;
+}) {
   const es = useAppLang().lang === "es";
   const navigate = useNavigate();
   const slides = useMemo(() => buildSlides(episode), [episode]);
+  const coverBack = onCoverBack ?? (() => navigate({ to: "/natural-method/audiobooks" }));
   const episodeGlossary = useMemo(() => buildEpisodeGlossary(episode), [episode]);
   const [idx, setIdx] = useState(0);
   const [stars, setStars] = useState(0);
@@ -153,7 +161,7 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
           aria-label={es ? "Atrás (escena anterior)" : "Back (previous scene)"}
           onClick={() => {
             if (idx > 0) go(idx - 1);
-            else navigate({ to: "/natural-method/audiobooks" });
+            else coverBack();
           }}
           className="inline-flex size-10 shrink-0 items-center justify-center rounded-2xl border border-border"
         >

@@ -96,6 +96,15 @@ export function getSeason(moduleId: string): Season | undefined {
   return STORYBOOK_SEASONS.find((season) => season.moduleId === moduleId);
 }
 
+/** Find the module/day an episode belongs to (for "back to the day" navigation). */
+export function getEpisodeSlot(episodeId: string): { moduleId: string; day: number } | null {
+  for (const season of STORYBOOK_SEASONS) {
+    const slot = season.slots.find((s) => s.episodeId === episodeId);
+    if (slot) return { moduleId: season.moduleId, day: slot.day };
+  }
+  return null;
+}
+
 /** Days of a module the learner already completed. */
 export function completedDaysInModule(state: JourneyState, moduleId: string): number {
   const prefix = `${moduleId}:`;
