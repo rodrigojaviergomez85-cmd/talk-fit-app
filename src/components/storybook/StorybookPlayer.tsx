@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, ChevronLeft, Lock, Play, Sparkles, Star, Volume2, X } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { SlowWordPanel } from "@/components/fluency/SlowWordPanel";
@@ -117,13 +117,17 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
 
       {/* Progress bar */}
       <div className="flex items-center gap-3">
-        <Link
-          to="/natural-method/audiobooks"
-          aria-label={es ? "Volver a audiolibros" : "Back to audiobooks"}
+        <button
+          type="button"
+          aria-label={es ? "Atrás (escena anterior)" : "Back (previous scene)"}
+          onClick={() => {
+            if (idx > 0) go(idx - 1);
+            else navigate({ to: "/natural-method/audiobooks" });
+          }}
           className="inline-flex size-10 shrink-0 items-center justify-center rounded-2xl border border-border"
         >
           <ArrowLeft className="size-4" />
-        </Link>
+        </button>
         <div className="h-2 flex-1 overflow-hidden rounded-full bg-secondary">
           <div
             className="h-full rounded-full bg-primary transition-[width] duration-300"
