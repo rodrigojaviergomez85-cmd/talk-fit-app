@@ -180,7 +180,6 @@ export function StorybookPlayer({
         <button
           type="button"
           onClick={() => {
-            console.log("Salir clicked", Date.now());
             AudioService.stop();
             setShowExit(true);
           }}
