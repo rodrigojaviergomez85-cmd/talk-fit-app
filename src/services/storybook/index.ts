@@ -78,6 +78,11 @@ import { VALE_S4_FOREST_WOLF } from "./vale-s4-forest-wolf";
 import { VALE_S4_RED_RIDING_HOOD } from "./vale-s4-red-riding-hood";
 import { VALE_S4_VALE_STORY } from "./vale-s4-vale-story";
 import { VALE_S4_STORYTELLER } from "./vale-s4-storyteller";
+import { VALE_S5_FIRST_STUDENTS } from "./vale-s5-first-students";
+import { VALE_S5_TIRED_TEACHER } from "./vale-s5-tired-teacher";
+import { VALE_S5_EARLY_MORNING } from "./vale-s5-early-morning";
+import { VALE_S5_WIN_TOMORROW } from "./vale-s5-win-tomorrow";
+import { VALE_S5_HEALTHY_SNACKS } from "./vale-s5-healthy-snacks";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
