@@ -5,9 +5,8 @@ import { getStorybookEpisode } from "@/services/storybook";
 import { getEpisodeSlot } from "@/services/storybook/seasons";
 
 export const Route = createFileRoute("/natural-method/cuento/$storyId")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    from: search.from === "day" ? ("day" as const) : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>) =>
+    (search["from"] === "day" ? { from: "day" as const } : {}) as { from?: "day" },
   loader: ({ params }) => {
     const episode = getStorybookEpisode(params.storyId);
     if (!episode) throw notFound();
