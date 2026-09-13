@@ -253,6 +253,8 @@ export function StorybookPlayer({
               voice={episode.voice}
               es={es}
               flip={idx % 2 === 0}
+              rate={sceneRate}
+              onRateChange={setRate}
               onLearnWord={learnWord}
             />
           ) : null}
