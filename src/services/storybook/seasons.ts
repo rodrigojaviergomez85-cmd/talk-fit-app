@@ -9,7 +9,7 @@ import season1Cover from "@/assets/storybook/vale-ep1/cover.jpg";
 import season2Cover from "@/assets/storybook/vale-s2-ep1/cover.jpg";
 import season3Cover from "@/assets/storybook/vale-s3-ep1/cover.jpg";
 import season4Cover from "@/assets/storybook/vale-s4-ep1/cover.jpg";
-import season5Cover from "@/assets/storybook/vale-s5-ep1/cover.jpg";
+import season5Cover from "@/assets/storybook/vale-s5-first-students/cover.jpg";
 
 export type SeasonWeek = 1 | 2 | 3 | 4;
 
