@@ -140,7 +140,7 @@ export const VALE_S3_KATS_ROUTINE: StorybookEpisode = {
       id: "s9",
       image: s9,
       imageAlt: "Vale observa a Kat y sonríe.",
-      text: "Vale says: "Kat works hard every day."",
+      text: "Vale says: \"Kat works hard every day.\"",
       es: "Vale dice: «Kat trabaja duro todos los días.»",
       speaker: "vale",
       words: [
