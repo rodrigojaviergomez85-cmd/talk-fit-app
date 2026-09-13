@@ -11,7 +11,23 @@ Todo está en orden y listo para continuar:
 
 ## Qué falta para el 6–20
 
-15 episodios completos: guion, 11 ilustraciones cada uno, registro y control de calidad. Eso son 165 imágenes nuevas.
+15 episodios completos: guion, ilustraciones, registro y control de calidad.
+
+## Vocabulario: dónde estamos y el ajuste que propongo
+
+Conteo real de hoy: 826 palabras distintas en 65 episodios, unas 30 tocables por episodio. A ese ritmo, las historias por sí solas llegarían a unas 2.800 palabras en los 11 meses; las 3.500 solo se alcanzarían sumando el curso de audios y Método Natural.
+
+Ajuste a partir del episodio 6 (y en adelante para todas las temporadas):
+
+- **12 escenas por episodio** en vez de 10 — episodios más largos, con más respiro narrativo.
+- **45–50 palabras tocables** por episodio en vez de 30, agrupadas por campo (la escuela, el mercado, emociones, el trabajo), de modo que el estudiante aprenda familias de palabras y no palabras sueltas.
+- Con eso las historias solas llegan a ~3.800–4.000 palabras distintas en los 11 meses, con margen de sobra.
+
+Para hacerlas más adictivas, sin cambiar el formato que ya funciona:
+
+- **Un misterio que cruza la temporada**: el periodista que entrevista a Vale guarda un motivo oculto que solo se revela en el episodio 20.
+- **Adelanto de 1 línea del próximo episodio** en el cierre, junto al gancho actual.
+- **Un momento fuerte cada 5 episodios**: un episodio más emocional (un fracaso real, una pérdida, una victoria grande) para que la semana tenga clímax.
 
 ## Alineación con el curso (Basic 3)
 
@@ -24,7 +40,7 @@ Cada bloque sigue exactamente el tema del curso de esos días:
 ## Reglas que se mantienen sin cambios
 
 - Un episodio por día, se desbloquea al completar el día anterior.
-- 10 escenas, vocabulario tocable con significado en español, 3 preguntas rápidas con audio automático, variedad de preguntas (qué, quién, cuándo, dónde, por qué).
+- Vocabulario tocable con significado en español, 3 preguntas rápidas con audio automático, variedad de preguntas (qué, quién, cuándo, dónde, por qué).
 - 2 preguntas personales evaluadas por la IA (máximo 2 intentos más "Saltar por ahora"); las frases de motivación y la grabación final nunca se evalúan.
 - Cierre de 15 segundos con un solo botón: "AHORA GRABA TUS AUDIOS", más el gancho para el día siguiente.
 - Personajes y voces oficiales (Vale, Kat, Mateo, Luis, Ana, el jefe) sin cambios; los personajes nuevos de la escuela reciben su propia ficha oficial antes de dibujarlos.
@@ -36,6 +52,6 @@ Tres bloques de cinco episodios (6–10, 11–15, 16–20). En cada bloque: guio
 ## Detalles técnicos
 
 - Un archivo `vale-s4-*.ts` por episodio en `src/services/storybook/`, registrado en `index.ts` y enlazado a su día en `seasons.ts` (hoy con `episodeId: null`).
-- Arte en `src/assets/storybook/vale-s4-epN/` (`cover.jpg` + `s1`–`s10`), JPG optimizado por debajo de 300 KB, generado contra las referencias de `_canon/`.
+- Arte en `src/assets/storybook/vale-s4-epN/` (`cover.jpg` + `s1`–`s12`), JPG optimizado por debajo de 300 KB, generado contra las referencias de `_canon/`.
 - `sayItCheck` por episodio con marcos del bloque correspondiente (`Did you *`, `I was *-ing`, narración con conectores), sin temas que aún no se han visto.
 - QA por bloque: `bunx vitest run`, `bunx tsgo --noEmit`, apertura de rutas y revisión a 394 px.
