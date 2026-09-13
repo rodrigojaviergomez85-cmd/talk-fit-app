@@ -15,4 +15,4 @@
 - [x] Ep 3 arte completo (fix texto de teléfono en s4)
 - [x] Ep 4 arte completo (oficina: Mateo/Kat/boss, noticia de Vale; QA de anatomía y extras)
 - [x] Ep 5 arte completo (llamada a la escuela, reto del jefe, recap del día; QA de identidad y familia)
-- [ ] QA final T4 Fase A: tests completos, tsgo, rutas y móvil 394px
+- [x] QA final T4 Fase A: 615 tests, tsgo, rutas y móvil 394px sin errores
