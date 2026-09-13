@@ -43,3 +43,24 @@ export function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
 export function speakerSound(speaker: StorybookSpeaker | undefined): string {
   return `${speakerVoice(speaker)}::${speakerTone(speaker)}`;
 }
+
+/** Display name shown above a dialogue reply. */
+export function speakerName(speaker: StorybookSpeaker | undefined): string {
+  const names: Record<StorybookSpeaker, string> = {
+    narrator: "Narrator",
+    vale: "Vale",
+    boss: "Boss",
+    kat: "Kat",
+    dylan: "Dylan",
+    mateo: "Mateo",
+    luis: "Luis",
+    camila: "Camila",
+    ana: "Ana",
+    beto: "Beto",
+    mom: "Mom",
+    tito: "Don Tito",
+    dani: "Dani",
+    morgan: "Morgan",
+  };
+  return names[speaker ?? "narrator"];
+}

@@ -13,7 +13,7 @@ import { isStoryAdvanceLocked } from "@/lib/storybook-advance";
 import { AudioService } from "@/services/audio-service";
 import { supabase } from "@/integrations/supabase/client";
 import { getSeason } from "@/services/storybook";
-import { speakerVoice, speakerTone } from "@/services/storybook/voices";
+import { speakerVoice, speakerTone, speakerName } from "@/services/storybook/voices";
 import { speakDialogue } from "@/services/storybook/dialogue-audio";
 import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
@@ -672,7 +672,7 @@ export function SceneSlide({
           </div>
         ) : null}
 
-        {showEs ? <p className="text-[14px] font-semibold text-muted-foreground">{scene.es}</p> : null}
+        {showEs && !dialogue ? <p className="text-[14px] font-semibold text-muted-foreground">{scene.es}</p> : null}
       </div>
     </div>
   );
