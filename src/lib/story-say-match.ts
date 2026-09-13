@@ -79,7 +79,8 @@ function matchFrame(transcriptWords: string[], targetWords: string[]): boolean {
  * - Empty or unrecognizable transcripts always return "tryAgain".
  */
 export function compareStorySay(target: string, transcript: string): StorySayResult {
-  // Protect the wildcard marker because normalizeForCompare strips punctuation.
+  // Protect the wildcard marker because normalizeForCompare strips punctuation
+  // and lowercases everything.
   const normalizedTarget = normalizeForCompare(target.replace(/\*/g, ` ${WILDCARD_TOKEN} `)).replace(
     new RegExp(WILDCARD_TOKEN, "g"),
     WILDCARD,
