@@ -44,7 +44,7 @@ export const VALE_S3_FREE_SATURDAY: StorybookEpisode = {
       imageAlt: "Vale camina hacia un parque con sol.",
       text: "Saturday. No calls, no headset. Vale is walking to the park.",
       es: "Sábado. Sin llamadas, sin diadema. Vale está caminando al parque.",
-      speaker: "kat",
+      speaker: "narrator",
       words: [
         { word: "Saturday", es: "sábado" },
         { word: "walking", es: "caminando" },
@@ -160,7 +160,7 @@ export const VALE_S3_FREE_SATURDAY: StorybookEpisode = {
       imageAlt: "El teléfono de Vale muestra un mensaje de Kat.",
       text: "Vale's phone rings. Kat writes: \"We are going to the beach tomorrow!\"",
       es: "Suena el teléfono de Vale. Kat escribe: «¡Vamos a la playa mañana!»",
-      speaker: "narrator",
+      speaker: "kat",
       words: [
         { word: "phone", es: "teléfono" },
         { word: "writes", es: "escribe" },
