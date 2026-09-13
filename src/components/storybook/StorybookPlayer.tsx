@@ -89,6 +89,12 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
     return getNextEpisodeSlot(episode.id, journey);
   }, [episode.id, journey]);
 
+  /** Module day this episode matches — used for the "record your audios" shortcut. */
+  const practiceDay = useMemo(
+    () => getSeason(episode.moduleId)?.slots.find((s) => s.episodeId === episode.id)?.day ?? null,
+    [episode.id, episode.moduleId],
+  );
+
   useEffect(() => {
     setJourney(JourneyService.load());
   }, []);
@@ -222,6 +228,7 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
               stars={stars}
               notebook={notebook}
               nextEpisode={nextEpisode}
+              practiceDay={practiceDay}
             />
           ) : null}
         </div>
