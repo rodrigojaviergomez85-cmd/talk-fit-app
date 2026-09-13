@@ -44,7 +44,7 @@ function matchFrame(transcriptWords: string[], targetWords: string[]): boolean {
     if (t === targetWords.length) return true;
     if (w >= transcriptWords.length) return false;
 
-    const tok = targetWords[t];
+    const tok = targetWords[t]!;
     if (tok === WILDCARD) {
       const remainingFixed = targetWords.slice(t + 1).filter((x) => x !== WILDCARD).length;
       const maxConsume = transcriptWords.length - w - remainingFixed;
