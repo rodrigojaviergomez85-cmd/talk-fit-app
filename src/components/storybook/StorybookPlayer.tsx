@@ -999,7 +999,6 @@ function HabitSlide({
   onSaid: () => void;
 }) {
   const [recorded, setRecorded] = useState(false);
-  const modelName = es ? habit.model : habit.model;
   const displayName =
     habit.model === "vale"
       ? "Vale"
