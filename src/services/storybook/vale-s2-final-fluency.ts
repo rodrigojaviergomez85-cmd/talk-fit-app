@@ -1,15 +1,15 @@
 import type { StorybookEpisode } from "./types";
-import cover from "@/assets/storybook/vale-ep20/cover.jpg";
-import s1 from "@/assets/storybook/vale-ep20/s1.jpg";
-import s2 from "@/assets/storybook/vale-ep20/s2.jpg";
-import s3 from "@/assets/storybook/vale-ep20/s3.jpg";
-import s4 from "@/assets/storybook/vale-ep20/s4.jpg";
-import s5 from "@/assets/storybook/vale-ep20/s5.jpg";
-import s6 from "@/assets/storybook/vale-ep20/s6.jpg";
-import s7 from "@/assets/storybook/vale-ep20/s7.jpg";
-import s8 from "@/assets/storybook/vale-ep20/s8.jpg";
-import s9 from "@/assets/storybook/vale-ep20/s9.jpg";
-import s10 from "@/assets/storybook/vale-ep20/s10.jpg";
+import cover from "@/assets/storybook/vale-s2-ep20/cover.jpg";
+import s1 from "@/assets/storybook/vale-s2-ep20/s1.jpg";
+import s2 from "@/assets/storybook/vale-s2-ep20/s2.jpg";
+import s3 from "@/assets/storybook/vale-s2-ep20/s3.jpg";
+import s4 from "@/assets/storybook/vale-s2-ep20/s4.jpg";
+import s5 from "@/assets/storybook/vale-s2-ep20/s5.jpg";
+import s6 from "@/assets/storybook/vale-s2-ep20/s6.jpg";
+import s7 from "@/assets/storybook/vale-s2-ep20/s7.jpg";
+import s8 from "@/assets/storybook/vale-s2-ep20/s8.jpg";
+import s9 from "@/assets/storybook/vale-s2-ep20/s9.jpg";
+import s10 from "@/assets/storybook/vale-s2-ep20/s10.jpg";
 
 /**
  * Season 2 · Episode 20 — "Final future fluency".
@@ -59,7 +59,7 @@ export const VALE_S2_FINAL_FLUENCY: StorybookEpisode = {
       es: "Vale recuerda su primer día: «Estoy nerviosa.» Hoy dice: «Soy una líder.»",
       speaker: "vale",
       words: [
-        { word: "student", es: "estudiante" },
+        { word: "nervous", es: "nerviosa" },
         { word: "leader", es: "líder" },
       ],
     },

@@ -23,6 +23,21 @@ import { VALE_S2_TOMORROW } from "./vale-s2-tomorrow";
 import { VALE_S2_WEEKEND } from "./vale-s2-weekend";
 import { VALE_S2_BIGGER_DREAM } from "./vale-s2-bigger-dream";
 import { VALE_S2_MY_VOICE } from "./vale-s2-my-voice";
+import { VALE_S2_MATEO_WEEKEND } from "./vale-s2-mateo-weekend";
+import { VALE_S2_HIS_MOM } from "./vale-s2-his-mom";
+import { VALE_S2_BUSIEST } from "./vale-s2-busiest";
+import { VALE_S2_TWO_PLANS } from "./vale-s2-two-plans";
+import { VALE_S2_THEIR_PLANS } from "./vale-s2-their-plans";
+import { VALE_S2_INSTANT_DECISION } from "./vale-s2-instant-decision";
+import { VALE_S2_PROMISE } from "./vale-s2-promise";
+import { VALE_S2_PREDICTION } from "./vale-s2-prediction";
+import { VALE_S2_THEIR_FUTURE } from "./vale-s2-their-future";
+import { VALE_S2_WILL_CHALLENGE } from "./vale-s2-will-challenge";
+import { VALE_S2_PLAN_VS_DECISION } from "./vale-s2-plan-vs-decision";
+import { VALE_S2_WEEKEND_CHANGES } from "./vale-s2-weekend-changes";
+import { VALE_S2_CAMILA_FUTURE } from "./vale-s2-camila-future";
+import { VALE_S2_VISIBLE_PREDICTIONS } from "./vale-s2-visible-predictions";
+import { VALE_S2_FINAL_FLUENCY } from "./vale-s2-final-fluency";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -51,6 +66,21 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_S2_WEEKEND,
   VALE_S2_BIGGER_DREAM,
   VALE_S2_MY_VOICE,
+  VALE_S2_MATEO_WEEKEND,
+  VALE_S2_HIS_MOM,
+  VALE_S2_BUSIEST,
+  VALE_S2_TWO_PLANS,
+  VALE_S2_THEIR_PLANS,
+  VALE_S2_INSTANT_DECISION,
+  VALE_S2_PROMISE,
+  VALE_S2_PREDICTION,
+  VALE_S2_THEIR_FUTURE,
+  VALE_S2_WILL_CHALLENGE,
+  VALE_S2_PLAN_VS_DECISION,
+  VALE_S2_WEEKEND_CHANGES,
+  VALE_S2_CAMILA_FUTURE,
+  VALE_S2_VISIBLE_PREDICTIONS,
+  VALE_S2_FINAL_FLUENCY,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
