@@ -8,6 +8,7 @@ import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 import season1Cover from "@/assets/storybook/vale-ep1/cover.jpg";
 import season2Cover from "@/assets/storybook/vale-s2-ep1/cover.jpg";
 import season3Cover from "@/assets/storybook/vale-s3-ep1/cover.jpg";
+import season4Cover from "@/assets/storybook/vale-s4-ep1/cover.jpg";
 
 export type SeasonWeek = 1 | 2 | 3 | 4;
 
@@ -141,6 +142,39 @@ export const STORYBOOK_SEASONS: Season[] = [
       { day: 18, episodeId: "vale-s3-office-now", teaser: { en: "Right now at the office", es: "Ahora mismo en la oficina" } },
       { day: 19, episodeId: "vale-s3-home-tonight", teaser: { en: "At home tonight", es: "En casa esta noche" } },
       { day: 20, episodeId: "vale-s3-first-class", teaser: { en: "Vale's first class", es: "La primera clase de Vale" } },
+    ],
+  },
+  {
+    moduleId: "past-stories",
+    seasonNumber: 4,
+    title: { en: "Season 4 · How it all started", es: "Temporada 4 · Cómo empezó todo" },
+    blurb: {
+      en: "Vale, now a Saturday teacher, tells her story in the simple past.",
+      es: "Vale, ya maestra de sábados, cuenta su historia en pasado simple.",
+    },
+    image: season4Cover,
+    imageAlt: { en: "Vale tells Camila how everything started", es: "Vale le cuenta a Camila cómo empezó todo" },
+    slots: [
+      { day: 1, episodeId: "vale-s4-yesterday-morning", teaser: { en: "Yesterday morning", es: "La mañana de ayer" } },
+      { day: 2, episodeId: "vale-s4-work-yesterday", teaser: { en: "At work yesterday", es: "En el trabajo ayer" } },
+      { day: 3, episodeId: "vale-s4-after-work", teaser: { en: "After work", es: "Después del trabajo" } },
+      { day: 4, episodeId: "vale-s4-how-was-your-day", teaser: { en: "How was your day?", es: "¿Cómo estuvo tu día?" } },
+      { day: 5, episodeId: "vale-s4-yesterday-challenge", teaser: { en: "The yesterday challenge", es: "El reto de ayer" } },
+      { day: 6, episodeId: null, teaser: { en: "First Saturday class", es: "La primera clase de sábado" } },
+      { day: 7, episodeId: null, teaser: { en: "What did they do?", es: "¿Qué hicieron ellos?" } },
+      { day: 8, episodeId: null, teaser: { en: "Kat's yesterday", es: "El ayer de Kat" } },
+      { day: 9, episodeId: null, teaser: { en: "Mateo didn't call", es: "Mateo no llamó" } },
+      { day: 10, episodeId: null, teaser: { en: "Did challenge", es: "El reto del did" } },
+      { day: 11, episodeId: null, teaser: { en: "What was happening?", es: "¿Qué estaba pasando?" } },
+      { day: 12, episodeId: null, teaser: { en: "At eight last night", es: "A las ocho anoche" } },
+      { day: 13, episodeId: null, teaser: { en: "While Vale was teaching", es: "Mientras Vale enseñaba" } },
+      { day: 14, episodeId: null, teaser: { en: "The interrupted plan", es: "El plan interrumpido" } },
+      { day: 15, episodeId: null, teaser: { en: "Past progressive challenge", es: "El reto del pasado progresivo" } },
+      { day: 16, episodeId: null, teaser: { en: "Once upon a time", es: "Érase una vez" } },
+      { day: 17, episodeId: null, teaser: { en: "The forest and the wolf", es: "El bosque y el lobo" } },
+      { day: 18, episodeId: null, teaser: { en: "Little Red Riding Hood", es: "Caperucita Roja" } },
+      { day: 19, episodeId: null, teaser: { en: "Vale tells her story", es: "Vale cuenta su historia" } },
+      { day: 20, episodeId: null, teaser: { en: "The storyteller", es: "La narradora" } },
     ],
   },
 ];

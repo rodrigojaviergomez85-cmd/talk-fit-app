@@ -58,6 +58,11 @@ import { VALE_S3_BEACH_DAY } from "./vale-s3-beach-day";
 import { VALE_S3_OFFICE_NOW } from "./vale-s3-office-now";
 import { VALE_S3_HOME_TONIGHT } from "./vale-s3-home-tonight";
 import { VALE_S3_FIRST_CLASS } from "./vale-s3-first-class";
+import { VALE_S4_YESTERDAY_MORNING } from "./vale-s4-yesterday-morning";
+import { VALE_S4_WORK_YESTERDAY } from "./vale-s4-work-yesterday";
+import { VALE_S4_AFTER_WORK } from "./vale-s4-after-work";
+import { VALE_S4_HOW_WAS_YOUR_DAY } from "./vale-s4-how-was-your-day";
+import { VALE_S4_YESTERDAY_CHALLENGE } from "./vale-s4-yesterday-challenge";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -121,6 +126,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_S3_OFFICE_NOW,
   VALE_S3_HOME_TONIGHT,
   VALE_S3_FIRST_CLASS,
+  VALE_S4_YESTERDAY_MORNING,
+  VALE_S4_WORK_YESTERDAY,
+  VALE_S4_AFTER_WORK,
+  VALE_S4_HOW_WAS_YOUR_DAY,
+  VALE_S4_YESTERDAY_CHALLENGE,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
