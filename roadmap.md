@@ -13,6 +13,6 @@
 - [x] Ep 1 arte completo (cover + s1-s10, <300KB)
 - [x] Ep 2 arte completo (incl. fix anatomía s2)
 - [x] Ep 3 arte completo (fix texto de teléfono en s4)
-- [ ] Ep 4 arte (oficina: Mateo/Kat/boss, noticia de Vale)
-- [ ] Ep 5 arte (llamada a la escuela, reto del jefe, recap del día)
-- [ ] QA final T4: tests, tsgo, rutas, móvil 394px
+- [x] Ep 4 arte completo (oficina: Mateo/Kat/boss, noticia de Vale; QA de anatomía y extras)
+- [x] Ep 5 arte completo (llamada a la escuela, reto del jefe, recap del día; QA de identidad y familia)
+- [x] QA final T4 Fase A: 615 tests, tsgo, rutas y móvil 394px sin errores

@@ -162,7 +162,7 @@ export const VALE_S4_YESTERDAY_CHALLENGE: StorybookEpisode = {
       words: [
         { word: "close", es: "cerca" },
         { word: "first", es: "primera" },
-        { word: "class", es: "clase" },
+        { word: "teacher", es: "maestra" },
       ],
     },
   ],
