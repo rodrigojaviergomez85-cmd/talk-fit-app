@@ -186,7 +186,11 @@ export function JourneyDayRow({
   current: boolean;
 }) {
   return (
-    <Link to="/practice" search={{ day: day.day, module: moduleId }} className="block">
+    <Link
+      to="/day/$moduleId/$day"
+      params={{ moduleId, day: String(day.day) }}
+      className="block"
+    >
       <div
         className={cn(
           "flex items-center gap-3 rounded-2xl border p-4 transition-colors",
