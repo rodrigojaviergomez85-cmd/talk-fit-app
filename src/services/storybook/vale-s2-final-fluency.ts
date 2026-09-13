@@ -59,7 +59,7 @@ export const VALE_S2_FINAL_FLUENCY: StorybookEpisode = {
       es: "Vale recuerda su primer día: «Estoy nerviosa.» Hoy dice: «Soy una líder.»",
       speaker: "vale",
       words: [
-        { word: "student", es: "estudiante" },
+        { word: "nervous", es: "nerviosa" },
         { word: "leader", es: "líder" },
       ],
     },
