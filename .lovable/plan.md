@@ -2,8 +2,9 @@
 
 ## Alineación con el currículo
 
-- **Temporada 4 → Basic 3 ("past-stories")**: pasado simple (mi día de ayer), Did/Didn't con otras personas, pasado progresivo (qué estaba pasando), y contar una historia completa. Vale ya trabaja, ahora aprende a **narrar su pasado**: cómo empezó, sus errores, sus primeras victorias.
-- **Temporada 5 → Basic 4 ("mixed-tenses")**: pasado + futuro juntos, presente + pasado, preguntas sí/no y WH en todos los tiempos, conversación real. Aquí ocurre el **mega éxito**: Vale logra su sueño y abre su escuela de inglés (con becas y alumnos de paga), y el arco se prepara para Eagles/Sharks/Tigers.
+- **Temporada 4 → Basic 3 ("past-stories")**: pasado simple (mi día de ayer), Did/Didn't, pasado progresivo (qué estaba pasando), y contar una historia completa. Vale ya trabaja, ahora aprende a **narrar su pasado**: cómo empezó, sus errores, sus primeras victorias.
+- **Temporada 5 → Basic 4 ("mixed-tenses")**: pasado + futuro juntos, presente + pasado, preguntas sí/no y WH en todos los tiempos, conversación real. Aquí ocurre el **primer mega éxito**: Vale abre su pequeña escuela de inglés (con becas y alumnos de paga).
+- **Eagles / Sharks / Tigers → Advanced prep (B1+ / llamadas, ventas, liderazgo)**: la escuela de Vale **crece**. Empresas locales le piden entrenar a sus equipos; ella pasa de ser recepcionista/profesora novata a líder/empresaria. Los módulos Eagles/Sharks/Tigers se convierten en la trama de **escalar su escuela y ganar clientes corporativos**.
 
 ## Temporada 4 — "Cómo empezó todo" (Basic 3, 20 episodios)
 
@@ -17,13 +18,22 @@ Premisa: un blogger/periodista local quiere escribir sobre Vale ("la chica del c
 
 ## Temporada 5 — "El sueño hecho realidad" (Basic 4, 20 episodios)
 
-Premisa: Vale abre **su escuela de inglés** — becas para jóvenes como ella y alumnos de paga. Nuevos personajes: empleados cercanos (un recepcionista, una co-maestra), primeros becarios, primer cliente de paga difícil.
+Premisa: Vale abre **su escuela de inglés pequeña** — becas para jóvenes como ella y sus primeros alumnos de paga. Nuevos personajes: un becario protagonista (Dani, 18 años, nervioso pero decidido), un alumno de paga difícil, y la primera colaboradora (co-maestra/recepcionista).
 
 - Semana 1 (ep 1–5): la gran noticia y los preparativos — pasado + futuro (Yesterday I signed…, tomorrow we're going to open…).
-- Semana 2 (ep 6–10): la vida diaria de la escuela — presente + pasado mezclados, primeros problemas (un becario que quiere rendirse → afirmaciones E4CC).
+- Semana 2 (ep 6–10): la vida diaria de la escuela — presente + pasado mezclados, primeros problemas (Dani quiere rendirse → afirmaciones E4CC).
 - Semana 3 (ep 11–15): entrevistas — Vale entrevista empleados/becarios; preguntas sí/no y WH en todos los tiempos (What did you do before? What are you doing now? What will you do next?).
-- Semana 4 (ep 16–20): conversación real — pasado, presente y futuro juntos; ep 20 = Vale da un discurso de inauguración; puente a Eagles (una empresa grande le pide entrenar a su equipo → desafíos B2).
+- Semana 4 (ep 16–20): conversación real — pasado, presente y futuro juntos; ep 20 = discurso de inauguración de la escuela + **llega la primera llamada de una empresa grande** que quiere contratarla para entrenar a su equipo → puente a Eagles.
 - Tema secundario: repaso de going to/will y simple present integrados.
+
+## Puente hacia Eagles, Sharks y Tigers
+
+- Temporada 5 termina con la **inauguración y la primera oportunidad corporativa**; la escuela existe pero aún es pequeña.
+- Eagles/Sharks/Tigers se ambientan en la **escuela creciendo**:
+  - **Eagles**: primer contrato corporativo — ventas consultivas, negociación básica, presentaciones a empresas.
+  - **Sharks**: escala, equipo, conflictos — liderazgo, manejo de objeciones, entrevistas de trabajo.
+  - **Tigers**: competencia internacional, estándares altos — llamadas avanzadas, inglés para negociación y servicio al cliente exigente.
+- Vale sigue siendo protagonista, pero ahora como **mentora/líder**, y los estudiantes ven su mundo profesional B2 desde adentro.
 
 ## Reglas que se mantienen (sin cambios)
 
