@@ -139,9 +139,7 @@ export const AudioService = {
 
     void loadModelAudio(
       text,
-      options.voice === "female" || options.voice === "male" || options.voice === "girl" || options.voice === "boss"
-        ? options.voice
-        : undefined,
+      options.voice,
       // Vale's voice always carries her sweet youthful delivery, even when no tone is passed.
       options.tone ?? (options.voice === "girl" ? "playful" : "coach"),
     )
