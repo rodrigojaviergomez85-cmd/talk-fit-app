@@ -36,8 +36,10 @@ export const VOICE_MAP: Record<RequestedVoice, string> = {
   youngMaleCalm: "ash",
   /** Soft, shy teenage boy — storybook characters like Beto (17); distinct from Mateo/Dylan. */
   shyBoy: "sage",
+  /** Earnest teenage student — storybook characters like Dani; distinct from Beto/Mateo/Dylan. */
+  teenBoy: "verse",
 };
-export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story", "cheerful", "youthful", "shy"];
+export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story", "cheerful", "youthful", "shy", "earnest", "warm"];
 
 const TONE_INSTRUCTIONS: Record<Tone, string> = {
   coach:
