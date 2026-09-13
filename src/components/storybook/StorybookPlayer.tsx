@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, ChevronLeft, Loader2, Play, Sparkles, Star, Volume2, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronLeft, Loader2, Play, RotateCcw, Sparkles, Star, Volume2, X } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { SlowWordPanel } from "@/components/fluency/SlowWordPanel";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
@@ -93,6 +93,13 @@ export function StorybookPlayer({
   const [saidIt, setSaidIt] = useState<Record<string, boolean>>({});
   const [quizDone, setQuizDone] = useState<Record<string, boolean>>({});
   const [showExit, setShowExit] = useState(false);
+  /** Listening speed chosen by the learner; kept for the whole episode. */
+  const [sceneRate, setSceneRate] = useState(1);
+  const sceneRateRef = useRef(1);
+  const setRate = (rate: number) => {
+    sceneRateRef.current = rate;
+    setSceneRate(rate);
+  };
   const touchX = useRef<number | null>(null);
 
   /** Module day this episode matches — used for the "record your audios" shortcut. */
