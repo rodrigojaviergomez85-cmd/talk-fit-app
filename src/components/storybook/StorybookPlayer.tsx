@@ -480,7 +480,7 @@ function TappableText({
   );
 }
 
-function SceneSlide({
+export function SceneSlide({
   scene,
   episodeGlossary,
   voice,
