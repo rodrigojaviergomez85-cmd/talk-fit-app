@@ -220,9 +220,13 @@ export const VALE_WHO_IS_HE: StorybookEpisode = {
         { label: "Mr. Reyes", emoji: "👔" },
       ],
       answer: 0,
-      sayIt: "What is your name?",
-      sayItEs: "Ahora pregúntale tú: «¿Cómo te llamas?»",
-      sayItCheck: { target: "What is your name?" },
+      sayIt: "My name is…",
+      sayItEs: "Ahora contesta tú: «Me llamo…» (puedes decir solo tu nombre)",
+      sayItCheck: {
+        target: "My name is *",
+        allowShortAnswer: true,
+        altTargets: ["What is your name?"],
+      },
     },
     {
       id: "q2",
