@@ -480,7 +480,7 @@ function TappableText({
   );
 }
 
-function SceneSlide({
+export function SceneSlide({
   scene,
   episodeGlossary,
   voice,
@@ -549,8 +549,12 @@ function SceneSlide({
           </button>
           <button
             type="button"
-            onClick={() => setShowSpeeds((v) => !v)}
-            aria-label={es ? "Cambiar velocidad" : "Change speed"}
+            onClick={() => {
+              onRateChange(1);
+              play(1);
+              setShowSpeeds(true);
+            }}
+            aria-label={es ? "Repetir en velocidad normal" : "Repeat at normal speed"}
             aria-expanded={showSpeeds}
             className={cn(
               "inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground",
