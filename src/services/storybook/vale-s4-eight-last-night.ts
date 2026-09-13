@@ -195,8 +195,8 @@ export const VALE_S4_EIGHT_LAST_NIGHT: StorybookEpisode = {
       es: "La luz volvió a las diez. Pero Mateo ya estaba soñando.",
       words: [
         { word: "came back", es: "volvió" },
-        { word: "already", es: "ya" },
-        { word: "was dreaming", es: "estaba soñando" },
+        { word: "was already dreaming", es: "ya estaba soñando" },
+
       ],
     },
   ],
