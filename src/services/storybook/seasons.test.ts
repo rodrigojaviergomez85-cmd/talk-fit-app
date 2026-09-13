@@ -56,9 +56,12 @@ describe("storybook seasons", () => {
   it("every tappable word actually appears in its scene text", () => {
     for (const episode of STORYBOOK_EPISODES) {
       for (const scene of episode.scenes) {
+        const haystack = [scene.text, ...(scene.lines ?? []).map((l) => l.text)]
+          .join(" ")
+          .toLowerCase();
         for (const word of scene.words) {
           expect(
-            scene.text.toLowerCase().includes(word.word.toLowerCase()),
+            haystack.includes(word.word.toLowerCase()),
             `${episode.id}/${scene.id} missing "${word.word}"`,
           ).toBe(true);
         }
