@@ -30,8 +30,8 @@ export const VALE_S5_HEALTHY_SNACKS: StorybookEpisode = {
     { word: "fruit", es: "fruta" }
   ],
   blurb: {
-    en: "Kat brings apples and nuts. Vale learns that healthy food fuels the brain.",
-    es: "Kat trae manzanas y nueces. Vale aprende que la comida saludable alimenta el cerebro.",
+    en: "Kat brings apples and nuts. Vale sees how healthy food fuels the brain.",
+    es: "Kat trae manzanas y nueces. Vale ve cómo la comida saludable alimenta el cerebro.",
   },
   cover,
   voice: "girl",

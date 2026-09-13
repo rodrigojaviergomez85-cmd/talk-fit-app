@@ -242,7 +242,7 @@ export const VALE_S5_WIN_TOMORROW: StorybookEpisode = {
     "Tonight I am going to ..."
   ],
   cliffhanger: {
-    en: "Episode 5: Kat brings healthy snacks. What will Vale learn?",
-    es: "Episodio 5: Kat trae snacks saludables. ¿Qué aprenderá Vale?",
+    en: "Episode 5: Kat brings healthy snacks. What will she share?",
+    es: "Episodio 5: Kat trae snacks saludables. ¿Qué compartirá?",
   },
 };

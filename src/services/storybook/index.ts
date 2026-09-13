@@ -83,6 +83,21 @@ import { VALE_S5_TIRED_TEACHER } from "./vale-s5-tired-teacher";
 import { VALE_S5_EARLY_MORNING } from "./vale-s5-early-morning";
 import { VALE_S5_WIN_TOMORROW } from "./vale-s5-win-tomorrow";
 import { VALE_S5_HEALTHY_SNACKS } from "./vale-s5-healthy-snacks";
+import { VALE_S5_MATEO_RUNS } from "./vale-s5-mateo-runs";
+import { VALE_S5_WATER_BOTTLE } from "./vale-s5-water-bottle";
+import { VALE_S5_SLEEPY_STUDENT } from "./vale-s5-sleepy-student";
+import { VALE_S5_REAL_LUNCH } from "./vale-s5-real-lunch";
+import { VALE_S5_MENTOR_BOOK } from "./vale-s5-mentor-book";
+import { VALE_S5_AI_HELPER } from "./vale-s5-ai-helper";
+import { VALE_S5_MISSING_STUDENT } from "./vale-s5-missing-student";
+import { VALE_S5_FIVE_QUIET_MINUTES } from "./vale-s5-five-quiet-minutes";
+import { VALE_S5_HARD_MONTH } from "./vale-s5-hard-month";
+import { VALE_S5_KNOCK_ON_THE_DOOR } from "./vale-s5-knock-on-the-door";
+import { VALE_S5_DANIS_INTERVIEW } from "./vale-s5-danis-interview";
+import { VALE_S5_TRY_AGAIN } from "./vale-s5-try-again";
+import { VALE_S5_FIRST_EMPLOYEE } from "./vale-s5-first-employee";
+import { VALE_S5_THE_COMPANY_CALL } from "./vale-s5-the-company-call";
+import { VALE_S5_THE_PROMISE } from "./vale-s5-the-promise";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -171,6 +186,21 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_S5_EARLY_MORNING,
   VALE_S5_WIN_TOMORROW,
   VALE_S5_HEALTHY_SNACKS,
+  VALE_S5_MATEO_RUNS,
+  VALE_S5_WATER_BOTTLE,
+  VALE_S5_SLEEPY_STUDENT,
+  VALE_S5_REAL_LUNCH,
+  VALE_S5_MENTOR_BOOK,
+  VALE_S5_AI_HELPER,
+  VALE_S5_MISSING_STUDENT,
+  VALE_S5_FIVE_QUIET_MINUTES,
+  VALE_S5_HARD_MONTH,
+  VALE_S5_KNOCK_ON_THE_DOOR,
+  VALE_S5_DANIS_INTERVIEW,
+  VALE_S5_TRY_AGAIN,
+  VALE_S5_FIRST_EMPLOYEE,
+  VALE_S5_THE_COMPANY_CALL,
+  VALE_S5_THE_PROMISE,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {

@@ -29,7 +29,11 @@ En la Temporada 5 Vale ya no está aprendiendo inglés: es maestra fluida y due�
    - Generar ilustraciones que muestren a Vale como maestra (salón, pizarrón, estudiantes, escuela), no como estudiante.
    - Mantener voces canónicas: Vale `girl`/playful, Mateo `youngMale`/alegre, Kat `femaleBright`, Dani `shyBoy`, Camila `female`, mamá `female`.
 
-6. **Verificación**
+6. **Semilla para temporadas siguientes (solo continuidad, no se construye aún)**
+   - La Temporada 5 cierra con señales de que la escuela puede crecer: más estudiantes, primer empleado, primera consulta de una empresa.
+   - Eso deja el hilo abierto para Eagles/Sharks/Intermediate: crecimiento a Latam, clientes internacionales, empleados y negociaciones.
+
+7. **Verificación**
    - `npx tsgo --noEmit` limpio.
    - `bunx vitest run` pasa.
    - Rutas `/natural-method/cuento/vale-s5-*` responden 200.
@@ -39,4 +43,4 @@ En la Temporada 5 Vale ya no está aprendiendo inglés: es maestra fluida y due�
 ## Archivos a tocar
 - `src/services/storybook/vale-s5-*.ts` (1–20)
 - `src/assets/storybook/vale-s5-*/` (portadas y escenas, placeholders → ilustraciones finales)
-- `roadmap.md` para reflejar avance por bloques
+- `roadmap.md` para reflejar avance por bloques y anotar el hilo de temporadas futuras
