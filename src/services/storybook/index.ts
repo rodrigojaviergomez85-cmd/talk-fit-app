@@ -33,6 +33,11 @@ import { VALE_S2_PROMISE } from "./vale-s2-promise";
 import { VALE_S2_PREDICTION } from "./vale-s2-prediction";
 import { VALE_S2_THEIR_FUTURE } from "./vale-s2-their-future";
 import { VALE_S2_WILL_CHALLENGE } from "./vale-s2-will-challenge";
+import { VALE_S2_PLAN_VS_DECISION } from "./vale-s2-plan-vs-decision";
+import { VALE_S2_WEEKEND_CHANGES } from "./vale-s2-weekend-changes";
+import { VALE_S2_CAMILA_FUTURE } from "./vale-s2-camila-future";
+import { VALE_S2_VISIBLE_PREDICTIONS } from "./vale-s2-visible-predictions";
+import { VALE_S2_FINAL_FLUENCY } from "./vale-s2-final-fluency";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -71,6 +76,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_S2_PREDICTION,
   VALE_S2_THEIR_FUTURE,
   VALE_S2_WILL_CHALLENGE,
+  VALE_S2_PLAN_VS_DECISION,
+  VALE_S2_WEEKEND_CHANGES,
+  VALE_S2_CAMILA_FUTURE,
+  VALE_S2_VISIBLE_PREDICTIONS,
+  VALE_S2_FINAL_FLUENCY,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
