@@ -26,7 +26,7 @@ function containsContiguous(transcriptWords: string[], targetWords: string[]): b
   if (targetWords.length === 0) return false;
   outer: for (let i = 0; i + targetWords.length <= transcriptWords.length; i++) {
     for (let k = 0; k < targetWords.length; k++) {
-      if (transcriptWords[i + k] !== targetWords[k]) continue outer;
+      if (transcriptWords[i + k]! !== targetWords[k]!) continue outer;
     }
     return true;
   }
