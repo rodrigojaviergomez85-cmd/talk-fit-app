@@ -23,6 +23,7 @@ export function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice 
   if (speaker === "dani") return "teenBoy";
   if (speaker === "mom") return "femaleMature";
   if (speaker === "tito") return "elder";
+  if (speaker === "morgan") return "femaleMature";
   return "neutral";
 }
 
@@ -34,6 +35,7 @@ export function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
   if (speaker === "beto") return "shy";
   if (speaker === "dani") return "earnest";
   if (speaker === "mom") return "warm";
+  if (speaker === "morgan") return "pro";
   return "story";
 }
 
