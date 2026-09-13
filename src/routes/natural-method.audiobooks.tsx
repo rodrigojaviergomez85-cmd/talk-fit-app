@@ -172,10 +172,12 @@ function LevelSection({
   );
 }
 
-/** Season map: one card per day, future days locked until the learner gets there. */
+/** Season map: collapsible season cards; each unfolds into one card per day. */
 function SeasonMap({ showEs }: { showEs: boolean }) {
   const [state, setState] = useState<JourneyState | null>(null);
   const [unlimited, setUnlimited] = useState(false);
+  const [openSeason, setOpenSeason] = useState<string | null>(null);
+  const [touched, setTouched] = useState(false);
 
   useEffect(() => {
     setUnlimited(hasUnlimitedAccess());
@@ -183,16 +185,66 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
     void JourneyService.pull().then(setState).catch(() => {});
   }, []);
 
+  /** Season the learner is currently in (first one not finished). Unlimited accounts get the latest. */
+  const currentSeasonId = (() => {
+    if (unlimited) return STORYBOOK_SEASONS[STORYBOOK_SEASONS.length - 1]?.moduleId ?? null;
+    for (const season of STORYBOOK_SEASONS) {
+      const done = state ? completedDaysInModule(state, season.moduleId) : 0;
+      if (unlockedDay(done) <= season.slots.length) return season.moduleId;
+    }
+    return STORYBOOK_SEASONS[STORYBOOK_SEASONS.length - 1]?.moduleId ?? null;
+  })();
+  const expandedId = touched ? openSeason : currentSeasonId;
+
   return (
     <div className="space-y-3">
       {STORYBOOK_SEASONS.map((season) => {
         const done = state ? completedDaysInModule(state, season.moduleId) : 0;
         const open = unlimited ? Number.MAX_SAFE_INTEGER : unlockedDay(done);
+        const expanded = expandedId === season.moduleId;
         return (
-          <section key={season.moduleId} className="space-y-2">
-            <h2 className="text-[12px] font-bold uppercase tracking-[0.16em] text-primary">
-              {showEs ? season.title.es : season.title.en}
-            </h2>
+          <section
+            key={season.moduleId}
+            className="overflow-hidden rounded-2xl border border-border bg-card"
+            aria-label={showEs ? season.title.es : season.title.en}
+          >
+            <button
+              type="button"
+              onClick={() => {
+                setTouched(true);
+                setOpenSeason(expanded ? null : season.moduleId);
+              }}
+              aria-expanded={expanded}
+              className="flex w-full items-center gap-3 p-3 text-left"
+            >
+              <img
+                src={season.image}
+                alt={showEs ? season.imageAlt.es : season.imageAlt.en}
+                width={512}
+                height={512}
+                loading="lazy"
+                decoding="async"
+                className="size-16 shrink-0 rounded-xl border border-border object-cover"
+              />
+              <span className="min-w-0 flex-1">
+                <span className="block text-[15px] font-extrabold text-foreground">
+                  {showEs ? season.title.es : season.title.en}
+                </span>
+                <span className="block text-[12px] leading-snug text-muted-foreground">
+                  {showEs ? season.blurb.es : season.blurb.en}
+                </span>
+                <span className="mt-0.5 block text-[11px] font-bold uppercase tracking-[0.12em] text-primary">
+                  {season.slots.length} {showEs ? "episodios" : "episodes"}
+                </span>
+              </span>
+              <ChevronDown
+                className={`size-5 shrink-0 text-muted-foreground transition-transform ${expanded ? "rotate-180" : ""}`}
+                aria-hidden="true"
+              />
+            </button>
+
+            {expanded ? (
+              <div className="space-y-2 border-t border-border p-3">
             {season.slots.map((slot) => {
               const episode = slot.episodeId ? getStorybookEpisode(slot.episodeId) : undefined;
               const unlocked = slot.day <= open && !!episode;
