@@ -652,7 +652,7 @@ function QuizSlide({
       setAttempts(0);
       setLastTranscript("");
       setErrorMsg("");
-      AudioService.speak(quiz.sayIt, { voice });
+      AudioService.speak(quiz.sayItAskEn ?? quiz.sayIt, { voice });
     } else {
       setWrong(i);
       setTimeout(() => setWrong(null), 500);
