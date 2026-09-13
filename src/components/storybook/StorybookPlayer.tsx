@@ -75,6 +75,9 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
   const es = useAppLang().lang === "es";
   const navigate = useNavigate();
   const slides = useMemo(() => buildSlides(episode), [episode]);
+  // Where the cover's back button exits to (day hub when opened from Home,
+  // audiobooks otherwise). Passed in by the route.
+  const coverBack: (() => void) | undefined = (props as { onCoverBack?: () => void }).onCoverBack;
   const episodeGlossary = useMemo(() => buildEpisodeGlossary(episode), [episode]);
   const [idx, setIdx] = useState(0);
   const [stars, setStars] = useState(0);
