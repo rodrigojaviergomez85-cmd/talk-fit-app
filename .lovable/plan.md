@@ -52,6 +52,6 @@ Tres bloques de cinco episodios (6–10, 11–15, 16–20). En cada bloque: guio
 ## Detalles técnicos
 
 - Un archivo `vale-s4-*.ts` por episodio en `src/services/storybook/`, registrado en `index.ts` y enlazado a su día en `seasons.ts` (hoy con `episodeId: null`).
-- Arte en `src/assets/storybook/vale-s4-epN/` (`cover.jpg` + `s1`–`s10`), JPG optimizado por debajo de 300 KB, generado contra las referencias de `_canon/`.
+- Arte en `src/assets/storybook/vale-s4-epN/` (`cover.jpg` + `s1`–`s12`), JPG optimizado por debajo de 300 KB, generado contra las referencias de `_canon/`.
 - `sayItCheck` por episodio con marcos del bloque correspondiente (`Did you *`, `I was *-ing`, narración con conectores), sin temas que aún no se han visto.
 - QA por bloque: `bunx vitest run`, `bunx tsgo --noEmit`, apertura de rutas y revisión a 394 px.
