@@ -24,12 +24,24 @@ de abajo. Esto evita que un personaje cambie de edad, pelo o ropa entre escenas.
 - **Kat** — joven de 21 años, pelo rizado naranja, chaqueta de mezclilla sobre
   camiseta blanca.
 - **Dylan** — 22, cliente canadiense. Pelo castaño corto, pecas, sudadera verde.
-- **Mamá de Vale** — 45, en casa, delantal, no habla inglés.
+- **Mamá de Vale** — 45, piel morena, pelo negro recogido con algunas canas,
+  aretes dorados pequeños, blusa coral y delantal beige. En casa, no habla
+  inglés. Voz femenina madura y cálida.
 - **Luis** — hermano mayor de Vale, salvadoreño de 30 años, piel morena cálida,
   pelo negro corto, barba ligera, camisa verde oliva y mochila negra. Voz
   masculina joven-adulta, amable y un poco nerviosa.
 - **Camila** — hondureña de 24 años, piel morena, pelo negro rizado hasta los
   hombros, blusa morada y aretes dorados. Voz femenina joven, segura y cálida.
+- **Dani** — adolescente latino, piel morena media, pelo negro rizado corto,
+  camisa celeste. Co-protagonista desde Temporada 5. Voz juvenil `teenBoy`.
+- **Beto** — adolescente tímido de 17 años, piel clara-media, pelo negro lacio
+  con flequillo, sudadera gris sobre camiseta blanca y mochila.
+- **Don Tito** — vecino de 70 años, pelo y bigote blancos, lentes redondos,
+  guayabera celeste, pantalón café y bastón.
+
+Fichas visuales: `src/assets/storybook/_canon/<personaje>.jpg`
+(vale, mateo, reyes, kat, dylan, luis, camila, dani, ana, mom, beto, tito, group).
+
 
 ## Control obligatorio antes de publicar
 
