@@ -17,6 +17,9 @@ export type StorySayResult = {
 };
 
 const WILDCARD = "*";
+/** Placeholder word that survives normalizeForCompare's punctuation stripping. */
+const WILDCARD_TOKEN = "STORYWILDCARD";
+
 
 /**
  * Check whether `targetWords` occurs as a contiguous token sequence inside
