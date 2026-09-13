@@ -68,6 +68,16 @@ import { VALE_S4_KATS_DAY_OFF } from "./vale-s4-kats-day-off";
 import { VALE_S4_MATEO_FORGOT } from "./vale-s4-mateo-forgot";
 import { VALE_S4_LUIS_QUESTIONS } from "./vale-s4-luis-questions";
 import { VALE_S4_WEEK2_CHALLENGE } from "./vale-s4-week2-challenge";
+import { VALE_S4_WHAT_WAS_HAPPENING } from "./vale-s4-what-was-happening";
+import { VALE_S4_EIGHT_LAST_NIGHT } from "./vale-s4-eight-last-night";
+import { VALE_S4_WHILE_TEACHING } from "./vale-s4-while-teaching";
+import { VALE_S4_INTERRUPTED_PLAN } from "./vale-s4-interrupted-plan";
+import { VALE_S4_PROGRESSIVE_CHALLENGE } from "./vale-s4-progressive-challenge";
+import { VALE_S4_ONCE_UPON_A_TIME } from "./vale-s4-once-upon-a-time";
+import { VALE_S4_FOREST_WOLF } from "./vale-s4-forest-wolf";
+import { VALE_S4_RED_RIDING_HOOD } from "./vale-s4-red-riding-hood";
+import { VALE_S4_VALE_STORY } from "./vale-s4-vale-story";
+import { VALE_S4_STORYTELLER } from "./vale-s4-storyteller";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -141,6 +151,16 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_S4_MATEO_FORGOT,
   VALE_S4_LUIS_QUESTIONS,
   VALE_S4_WEEK2_CHALLENGE,
+  VALE_S4_WHAT_WAS_HAPPENING,
+  VALE_S4_EIGHT_LAST_NIGHT,
+  VALE_S4_WHILE_TEACHING,
+  VALE_S4_INTERRUPTED_PLAN,
+  VALE_S4_PROGRESSIVE_CHALLENGE,
+  VALE_S4_ONCE_UPON_A_TIME,
+  VALE_S4_FOREST_WOLF,
+  VALE_S4_RED_RIDING_HOOD,
+  VALE_S4_VALE_STORY,
+  VALE_S4_STORYTELLER,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
