@@ -194,8 +194,8 @@ export const VALE_S2_HIS_MOM: StorybookEpisode = {
     {
       id: "q3",
       afterScene: "s9",
-      questionEn: "What are they going to teach her?",
-      questionEs: "¿Qué le van a enseñar?",
+      questionEn: "How many phrases are they going to teach her?",
+      questionEs: "¿Cuántas frases le van a enseñar?",
       options: [
         { label: "Three phrases", emoji: "🗣️" },
         { label: "A long song", emoji: "🎵" },
@@ -204,8 +204,8 @@ export const VALE_S2_HIS_MOM: StorybookEpisode = {
       answer: 0,
       sayIt: "I’m going to teach them three phrases.",
       sayItEs: "Ejemplo: «I’m going to teach them three phrases.»",
-      sayItAskEn: "What are you going to teach your family in English?",
-      sayItAskEs: "¿Qué le vas a enseñar a tu familia en inglés?",
+      sayItAskEn: "How many phrases are you going to teach your family in English?",
+      sayItAskEs: "¿Cuántas frases le vas a enseñar a tu familia en inglés?",
       sayItCheck: {
         target: "I’m going to teach *",
       },

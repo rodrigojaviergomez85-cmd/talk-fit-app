@@ -157,12 +157,12 @@ export const VALE_S2_PREDICTION: StorybookEpisode = {
     {
       id: "q1",
       afterScene: "s3",
-      questionEn: "Does Vale think people will come?",
-      questionEs: "¿Vale cree que la gente vendrá?",
+      questionEn: "Will people come to the event?",
+      questionEs: "¿Vendrá la gente al evento?",
       options: [
-        { label: "Yes, she thinks they will come", emoji: "🙌" },
-        { label: "No, she thinks nobody will come", emoji: "🙅" },
-        { label: "She doesn't care", emoji: "🤷" },
+        { label: "Yes, they will", emoji: "🙌" },
+        { label: "No, nobody will come", emoji: "🙅" },
+        { label: "Only Ana will come", emoji: "👩" },
       ],
       answer: 0,
       sayIt: "I think they will come.",

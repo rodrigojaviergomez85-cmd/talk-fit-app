@@ -157,12 +157,12 @@ export const VALE_S2_VISIBLE_PREDICTIONS: StorybookEpisode = {
     {
       id: "q1",
       afterScene: "s2",
-      questionEn: "Why does Vale say it's going to rain?",
-      questionEs: "¿Por qué dice Vale que va a llover?",
+      questionEn: "Why is it going to rain?",
+      questionEs: "¿Por qué va a llover?",
       options: [
-        { label: "She can see black clouds", emoji: "☁️" },
-        { label: "Somebody told her", emoji: "🗣️" },
-        { label: "It's a promise", emoji: "🤞" },
+        { label: "Because there are black clouds", emoji: "☁️" },
+        { label: "Because somebody said it", emoji: "🗣️" },
+        { label: "Because it's a promise", emoji: "🤞" },
       ],
       answer: 0,
       sayIt: "Look at the sky. It's going to rain.",

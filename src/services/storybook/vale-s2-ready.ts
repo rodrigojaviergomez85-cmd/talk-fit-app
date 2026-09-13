@@ -195,8 +195,8 @@ export const VALE_S2_READY: StorybookEpisode = {
     {
       id: "q2",
       afterScene: "s7",
-      questionEn: "What is Vale going to write?",
-      questionEs: "¿Qué va a escribir Vale?",
+      questionEn: "How many ideas is Vale going to write?",
+      questionEs: "¿Cuántas ideas va a escribir Vale?",
       options: [
         { label: "Three ideas", emoji: "📝" },
         { label: "A long letter", emoji: "✉️" },

@@ -179,8 +179,8 @@ export const VALE_S2_WILL_CHALLENGE: StorybookEpisode = {
     {
       id: "q2",
       afterScene: "s6",
-      questionEn: "What does Vale say after the mistake?",
-      questionEs: "¿Qué dice Vale después del error?",
+      questionEn: "What will Vale say after the mistake?",
+      questionEs: "¿Qué dirá Vale después del error?",
       options: [
         { label: "I'll continue", emoji: "🔥" },
         { label: "I'll stop", emoji: "🛑" },

@@ -163,8 +163,8 @@ export const VALE_S2_PROMISE: StorybookEpisode = {
     {
       id: "q1",
       afterScene: "s3",
-      questionEn: "What does Vale promise?",
-      questionEs: "¿Qué promete Vale?",
+      questionEn: "What will Vale do for Beto?",
+      questionEs: "¿Qué hará Vale por Beto?",
       options: [
         { label: "She'll help him every week", emoji: "🤝" },
         { label: "She'll give him money", emoji: "💵" },
@@ -203,8 +203,8 @@ export const VALE_S2_PROMISE: StorybookEpisode = {
     {
       id: "q3",
       afterScene: "s8",
-      questionEn: "What phrase does Beto repeat?",
-      questionEs: "¿Qué frase repite Beto?",
+      questionEn: "Which phrase will Beto repeat every day?",
+      questionEs: "¿Qué frase repetirá Beto cada día?",
       options: [
         { label: "English is easy for me", emoji: "🔥" },
         { label: "English is hard", emoji: "😩" },

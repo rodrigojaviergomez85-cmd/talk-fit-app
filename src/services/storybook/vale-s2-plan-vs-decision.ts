@@ -170,8 +170,8 @@ export const VALE_S2_PLAN_VS_DECISION: StorybookEpisode = {
     {
       id: "q2",
       afterScene: "s5",
-      questionEn: "Beto is lost. What does Vale say?",
-      questionEs: "Beto está perdido. ¿Qué dice Vale?",
+      questionEn: "Beto is lost. What will Vale do?",
+      questionEs: "Beto está perdido. ¿Qué hará Vale?",
       options: [
         { label: "I'll go for you now", emoji: "🏃‍♀️" },
         { label: "I’m going to go next week", emoji: "📅" },

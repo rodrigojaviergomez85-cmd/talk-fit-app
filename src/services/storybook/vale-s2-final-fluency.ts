@@ -162,8 +162,8 @@ export const VALE_S2_FINAL_FLUENCY: StorybookEpisode = {
     {
       id: "q1",
       afterScene: "s4",
-      questionEn: "What does Vale say about the future?",
-      questionEs: "¿Qué dice Vale sobre el futuro?",
+      questionEn: "What will the future be like?",
+      questionEs: "¿Cómo será el futuro?",
       options: [
         { label: "It won't be easy, but they will practice", emoji: "💪" },
         { label: "It will be easy for everybody", emoji: "😌" },
