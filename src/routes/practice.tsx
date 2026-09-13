@@ -756,7 +756,11 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
             onCancel={() => setConfirmExit(false)}
             onExit={() => {
               AudioService.stop();
-              void navigate({ to: "/" });
+              PracticeSessionService.clear(moduleId, dayNumber);
+              void navigate({
+                to: "/day/$moduleId/$day",
+                params: { moduleId, day: String(dayNumber) },
+              });
             }}
           />
         ) : null}
@@ -1356,25 +1360,32 @@ function ExitDialog({ showEs, onCancel, onExit }: { showEs: boolean; onCancel: (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-4 sm:items-center">
       <div className="w-full max-w-sm space-y-4 rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-lift)]">
         <p className="text-[18px] font-extrabold tracking-tight">
-          {showEs ? "¿SALIR DE LA PRÁCTICA?" : "EXIT PRACTICE?"}
+          {showEs ? "¿SEGURO QUE QUIERES SALIR?" : "ARE YOU SURE YOU WANT TO EXIT?"}
         </p>
-        <p className="text-[14px] text-muted-foreground">
-          {showEs ? "Tu avance de hoy se guardará." : "Your progress today will be saved."}
+        <p className="text-[14px] font-semibold text-foreground">
+          {showEs
+            ? "Ya casi terminas. Tus audios son los que te dan la fluidez que quieres."
+            : "You're almost done. Your audios are what give you the fluency you want."}
         </p>
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={onExit}
-            className="flex-1 rounded-2xl border border-border px-4 py-3 text-[13px] font-bold uppercase tracking-[0.12em]"
-          >
-            {showEs ? "SALIR" : "EXIT"}
-          </button>
+        <p className="text-[13px] text-muted-foreground">
+          {showEs
+            ? "Si sales, tu avance de esta práctica se perderá."
+            : "If you exit, your progress in this practice will be lost."}
+        </p>
+        <div className="space-y-2">
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 rounded-2xl bg-primary px-4 py-3 text-[13px] font-bold uppercase tracking-[0.12em] text-primary-foreground"
+            className="w-full rounded-2xl bg-primary px-4 py-4 text-[14px] font-extrabold uppercase tracking-[0.12em] text-primary-foreground"
           >
             {showEs ? "SEGUIR PRACTICANDO" : "KEEP PRACTICING"}
+          </button>
+          <button
+            type="button"
+            onClick={onExit}
+            className="w-full rounded-2xl border border-border px-4 py-3 text-[13px] font-bold uppercase tracking-[0.12em] text-muted-foreground"
+          >
+            {showEs ? "SALIR" : "EXIT"}
           </button>
         </div>
       </div>

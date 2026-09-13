@@ -93,7 +93,8 @@ function DayHubPage() {
 
         <header>
           <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-            {t("home.dayOfTotal")
+            {t("day.weekDay")
+              .replace("{week}", String(Math.ceil(data.day / 5)))
               .replace("{day}", String(data.day))
               .replace("{total}", String(data.total))}
           </p>

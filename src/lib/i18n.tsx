@@ -470,6 +470,18 @@ const DICT = {
     "Your 5 steps: listen, correct, shadowing, questions, and free speaking.",
   ],
   "story.goPractice": ["AHORA GRABA TUS AUDIOS", "NOW RECORD YOUR AUDIOS"],
+  "day.weekDay": ["SEMANA {week} · DÍA {day} DE {total}", "WEEK {week} · DAY {day} OF {total}"],
+  "exit.title": ["¿SEGURO QUE QUIERES SALIR?", "ARE YOU SURE YOU WANT TO EXIT?"],
+  "exit.motivation": [
+    "Ya casi terminas. Tus audios son los que te dan la fluidez que quieres.",
+    "You're almost done. Your audios are what give you the fluency you want.",
+  ],
+  "exit.warning": [
+    "Si sales, tu avance de esta práctica se perderá.",
+    "If you exit, your progress in this practice will be lost.",
+  ],
+  "exit.keep": ["SEGUIR PRACTICANDO", "KEEP PRACTICING"],
+  "exit.leave": ["SALIR", "EXIT"],
   "home.week": ["SEMANA", "WEEK"],
   "home.day": ["DÍA", "DAY"],
   "home.dayOfTotal": ["DÍA {day} DE {total}", "DAY {day} OF {total}"],
