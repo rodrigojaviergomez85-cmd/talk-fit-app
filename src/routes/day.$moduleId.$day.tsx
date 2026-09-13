@@ -82,80 +82,74 @@ function DayHubPage() {
 
   return (
     <AppShell>
-      <div className="space-y-4 p-4 pb-8">
+      <div className="space-y-3 p-4 pb-6">
         <Link
           to="/"
-          className="inline-flex h-10 items-center gap-1.5 rounded-2xl border border-border px-3 text-[12px] font-bold uppercase tracking-[0.12em]"
+          className="inline-flex h-9 items-center gap-1.5 rounded-2xl border border-border px-3 text-[11px] font-bold uppercase tracking-[0.12em]"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
           {t("home.backHome")}
         </Link>
 
         <header>
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
             {t("home.dayOfTotal")
               .replace("{day}", String(data.day))
               .replace("{total}", String(data.total))}
           </p>
-          <h1 className="mt-1 text-2xl font-extrabold leading-tight text-foreground">{data.topic}</h1>
-          <p className="mt-0.5 text-[14px] font-medium text-muted-foreground">{data.topicEs}</p>
+          <h1 className="mt-0.5 text-lg font-extrabold leading-tight text-foreground">{data.topic}</h1>
+          <p className="text-xs font-medium text-muted-foreground">{data.topicEs}</p>
         </header>
 
         {showStory && data.episode ? (
           <Link
             to="/natural-method/cuento/$storyId"
             params={{ storyId: data.episode.id }}
-            className="block overflow-hidden rounded-3xl border-2 border-primary bg-card shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
+            className="flex items-center gap-3 rounded-2xl border-2 border-primary bg-card p-3 shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
           >
-            <div className="relative">
-              <img
-                src={data.episode.cover}
-                alt={es ? data.episode.titleEs : data.episode.title}
-                width={512}
-                height={512}
-                className="aspect-[4/3] w-full object-cover object-top"
-              />
-              <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-primary-foreground">
-                <Star className="size-3.5 fill-primary-foreground" aria-hidden="true" />
+            <img
+              src={data.episode.cover}
+              alt={es ? data.episode.titleEs : data.episode.title}
+              width={512}
+              height={512}
+              loading="lazy"
+              className="size-20 shrink-0 rounded-xl object-cover object-top"
+            />
+            <span className="min-w-0 flex-1">
+              <span className="flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-primary">
+                <Star className="size-3 fill-primary" aria-hidden="true" />
                 {t("day.recommended")} · {t("day.storyMinutes")}
               </span>
-            </div>
-            <div className="flex items-center gap-3 p-4">
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <BookOpen className="size-5" aria-hidden="true" />
+              <span className="mt-0.5 block truncate text-[15px] font-extrabold text-foreground">
+                {es ? data.episode.titleEs : data.episode.title}
               </span>
-              <span className="min-w-0 flex-1">
-                <span className="block text-[16px] font-extrabold text-foreground">
-                  {t("day.naturalTitle")}
-                </span>
-                <span className="mt-0.5 block text-[13px] font-medium leading-snug text-muted-foreground">
-                  {t("day.naturalBody")} · {es ? data.episode.titleEs : data.episode.title}
-                </span>
+              <span className="block text-xs font-medium leading-snug text-muted-foreground">
+                {t("day.naturalTitle")}
                 {seen ? (
-                  <span className="mt-1.5 inline-flex items-center gap-1 text-[12px] font-bold text-primary">
-                    <Check className="size-3.5" aria-hidden="true" /> {t("day.seen")}
+                  <span className="ml-1 inline-flex items-center gap-0.5 font-bold text-primary">
+                    <Check className="size-3" aria-hidden="true" /> {t("day.seen")}
                   </span>
                 ) : null}
               </span>
-              <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
-            </div>
+            </span>
+            <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
           </Link>
         ) : null}
 
         <Link
           to="/practice"
           search={{ day: data.day, module: data.moduleId }}
-          className="flex items-center gap-3 rounded-3xl bg-navy p-5 text-navy-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
+          className="flex items-center gap-3 rounded-2xl bg-navy p-3.5 text-navy-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
         >
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
             <Mic className="size-5" aria-hidden="true" />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="inline-block rounded-full bg-navy-foreground/10 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em]">
+            <span className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-navy-foreground/70">
               {t("day.required")}
             </span>
-            <span className="mt-1.5 block text-[16px] font-extrabold">{t("day.audiosTitle")}</span>
-            <span className="mt-0.5 block text-[13px] font-medium text-navy-foreground/70">
+            <span className="block text-[15px] font-extrabold leading-tight">{t("day.audiosTitle")}</span>
+            <span className="block truncate text-xs font-medium text-navy-foreground/70">
               {t("day.audiosBody")}
             </span>
           </span>
