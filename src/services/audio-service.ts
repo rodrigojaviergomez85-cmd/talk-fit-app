@@ -10,8 +10,8 @@
 import { registerAudioStopper, stopOtherAudio } from "@/lib/audio-bus";
 import type { ModelTone } from "@/lib/model-tone";
 
-export type ModelVoice = "neutral" | "female" | "male" | "girl" | "boss" | "youngMale";
-type AudioVoice = "female" | "male" | "girl" | "boss";
+export type ModelVoice = "neutral" | "female" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm";
+type AudioVoice = ModelVoice;
 
 export type SpeakOptions = {
   rate?: number;
@@ -34,7 +34,7 @@ function pickVoice(voice: ModelVoice): SpeechSynthesisVoice | undefined {
   const preferredNames =
     voice === "female" || voice === "girl"
       ? ["Samantha", "Google US English", "Karen", "Jenny"]
-      : voice === "male" || voice === "boss" || voice === "youngMale"
+      : voice === "male" || voice === "boss" || voice === "youngMale" || voice === "youngMaleCalm"
         ? ["Daniel", "Alex", "Google UK English Male"]
         : ["Samantha", "Google US English", "Alex", "Daniel"];
   for (const name of preferredNames) {
@@ -66,8 +66,8 @@ let noSessionUntil = 0;
 const NO_SESSION_BACKOFF_MS = 30_000;
 
 async function loadModelAudio(text: string, voice?: AudioVoice, tone: ModelTone = "coach"): Promise<string> {
-  // v3: per-speaker tone — never reuse v2 (all-coach) clips.
-  const key = `v3::${tone}::${voice ?? "neutral"}::${text}`;
+  // v4: Dylan has a dedicated youthful voice; never reuse his former deep-male clips.
+  const key = `v4::${tone}::${voice ?? "neutral"}::${text}`;
   const cached = audioCache.get(key);
   if (cached) return cached;
   const promise = (async () => {
@@ -104,7 +104,7 @@ function speakWithBrowser(text: string, options: SpeakOptions): () => void {
   const utterance = new SpeechSynthesisUtterance(text);
   // Keep Vale's fallback delivery natural while giving it a gently youthful lift.
   utterance.rate = options.rate ?? 1;
-  utterance.pitch = options.voice === "girl" ? 1.2 : 1;
+  utterance.pitch = options.voice === "girl" ? 1.2 : options.voice === "youngMaleCalm" ? 1.12 : options.voice === "youngMale" ? 1.08 : 1;
   utterance.lang = "en-US";
   const selected = pickVoice(options.voice ?? "neutral");
   if (selected) utterance.voice = selected;
