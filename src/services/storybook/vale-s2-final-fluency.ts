@@ -104,6 +104,7 @@ export const VALE_S2_FINAL_FLUENCY: StorybookEpisode = {
       imageAlt: "Beto sale sonriendo de la entrevista.",
       text: "Beto runs to Vale. \"I'll start on Monday! I have the job!\"",
       es: "Beto corre hacia Vale. «¡Empiezo el lunes! ¡Tengo el trabajo!»",
+      speaker: "beto",
       words: [
         { word: "Monday", es: "lunes" },
         { word: "job", es: "trabajo" },
