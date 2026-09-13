@@ -33,6 +33,11 @@ export type StorybookSayItCheck = {
   target: string;
   /** When true, a bare 1–2 word answer also passes (e.g. "Rodrigo" for "My name is *"). */
   allowShortAnswer?: boolean;
+  /**
+   * Other accepted phrasings. When the card asks the learner a question, the
+   * natural answer is the main `target` and the question itself lives here.
+   */
+  altTargets?: string[];
 };
 
 export type StorybookQuiz = {
