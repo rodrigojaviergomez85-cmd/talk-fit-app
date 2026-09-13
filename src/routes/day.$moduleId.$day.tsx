@@ -103,12 +103,16 @@ function DayHubPage() {
         </header>
 
         {showStory && data.episode ? (
-          <Link
-            to="/natural-method/cuento/$storyId"
-            params={{ storyId: data.episode.id }}
-            search={{ from: "day" }}
-            className="flex items-center gap-3 rounded-2xl border-2 border-primary bg-card p-3 shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
-          >
+          <>
+            <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+              {t("day.step1Label")}
+            </span>
+            <Link
+              to="/natural-method/cuento/$storyId"
+              params={{ storyId: data.episode.id }}
+              search={{ from: "day" }}
+              className="flex items-center gap-3 rounded-2xl border-2 border-primary bg-card p-3 shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
+            >
             <img
               src={data.episode.cover}
               alt={es ? data.episode.titleEs : data.episode.title}
@@ -136,8 +140,12 @@ function DayHubPage() {
             </span>
             <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
           </Link>
+          </>
         ) : null}
 
+        <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+          {t("day.step2Label")}
+        </span>
         <Link
           to="/practice"
           search={{ day: data.day, module: data.moduleId }}

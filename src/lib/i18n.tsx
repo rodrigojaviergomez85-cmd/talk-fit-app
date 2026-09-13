@@ -469,6 +469,8 @@ const DICT = {
     "Tus 5 pasos: escucha, corrige, shadowing, preguntas y habla libre.",
     "Your 5 steps: listen, correct, shadowing, questions, and free speaking.",
   ],
+  "day.step1Label": ["PASO 1", "STEP 1"],
+  "day.step2Label": ["PASO 2", "STEP 2"],
   "story.goPractice": ["AHORA GRABA TUS AUDIOS", "NOW RECORD YOUR AUDIOS"],
   "day.weekDay": ["SEMANA {week} · DÍA {day} DE {total}", "WEEK {week} · DAY {day} OF {total}"],
   "exit.title": ["¿SEGURO QUE QUIERES SALIR?", "ARE YOU SURE YOU WANT TO EXIT?"],
