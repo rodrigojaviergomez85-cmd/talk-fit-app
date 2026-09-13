@@ -193,7 +193,6 @@ export const VALE_S4_FIRST_SATURDAY: StorybookEpisode = {
         { word: "At the end", es: "al final" },
         { word: "raised his hand", es: "levantó la mano" },
         { word: "again", es: "otra vez" },
-        { word: "next week", es: "la próxima semana" },
       ],
     },
     {
