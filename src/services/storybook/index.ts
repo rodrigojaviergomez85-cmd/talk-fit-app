@@ -38,6 +38,11 @@ import { VALE_S2_WEEKEND_CHANGES } from "./vale-s2-weekend-changes";
 import { VALE_S2_CAMILA_FUTURE } from "./vale-s2-camila-future";
 import { VALE_S2_VISIBLE_PREDICTIONS } from "./vale-s2-visible-predictions";
 import { VALE_S2_FINAL_FLUENCY } from "./vale-s2-final-fluency";
+import { VALE_S3_NEW_SCHEDULE } from "./vale-s3-new-schedule";
+import { VALE_S3_KATS_ROUTINE } from "./vale-s3-kats-routine";
+import { VALE_S3_TEAM_RULES } from "./vale-s3-team-rules";
+import { VALE_S3_ANGRY_CUSTOMER } from "./vale-s3-angry-customer";
+import { VALE_S3_TEAM_CHALLENGE } from "./vale-s3-team-challenge";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
