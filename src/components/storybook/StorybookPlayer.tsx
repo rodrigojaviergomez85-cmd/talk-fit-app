@@ -179,18 +179,41 @@ export function StorybookPlayer({
         </span>
         <button
           type="button"
-          aria-label={es ? "Salir del cuento" : "Exit story"}
           onClick={() => {
-            // Stop any playing/in-flight narration, then leave to the day hub
-            // (Home flow) or the Audiobooks list (Método natural flow).
             AudioService.stop();
-            coverBack();
+            setShowExit(true);
           }}
-          className="inline-flex size-10 shrink-0 items-center justify-center rounded-2xl border border-border text-muted-foreground"
+          className="inline-flex min-h-[40px] shrink-0 items-center justify-center rounded-2xl border border-border px-3 text-[13px] font-extrabold uppercase tracking-[0.06em] text-muted-foreground"
         >
-          <X className="size-4" />
+          {es ? "Salir" : "Exit"}
         </button>
       </div>
+
+      <AlertDialog open={showExit} onOpenChange={setShowExit}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{es ? "¿Salir del cuento?" : "Exit story?"}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {es
+                ? "Si sales ahora perderás el progreso de esta escena. ¿Quieres continuar?"
+                : "If you leave now you will lose progress on this scene. Do you want to continue?"}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowExit(false)}>
+              {es ? "No, seguir leyendo" : "No, keep reading"}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                AudioService.stop();
+                coverBack();
+              }}
+            >
+              {es ? "Sí, salir" : "Yes, exit"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <div
         className="mt-3"
