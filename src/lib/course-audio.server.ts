@@ -10,8 +10,8 @@
  * so every previously generated clip stays valid.
  */
 
-export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful";
-export type RequestedVoice = "neutral" | "female" | "male" | "girl" | "boss" | "youngMale";
+export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful";
+export type RequestedVoice = "neutral" | "female" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm";
 
 /** Normalised request: `voice` is the provider voice selected below. */
 export type ClipSpec = { text: string; voice: string; tone: Tone };
@@ -28,8 +28,10 @@ export const VOICE_MAP: Record<RequestedVoice, string> = {
   boss: "fable",
   /** Young, light male — storybook characters like Mateo (19). */
   youngMale: "echo",
+  /** Young, relaxed male — storybook characters like Dylan; distinct from Mateo. */
+  youngMaleCalm: "ash",
 };
-export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story", "cheerful"];
+export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story", "cheerful", "youthful"];
 
 const TONE_INSTRUCTIONS: Record<Tone, string> = {
   coach:
@@ -44,6 +46,8 @@ const TONE_INSTRUCTIONS: Record<Tone, string> = {
     "Speak as Vale, a sweet 18-year-old young woman on her first day at work. The voice must sound unmistakably feminine, soft, tender, youthful, and light—never masculine or low-pitched. Use warm, expressive intonation, a gentle smile, and natural melodic phrasing. She is a little shy, playful, and curious, with subtle nervous excitement and realistic pauses. Keep a natural conversational pace. Do not sound deep, mature, stern, raspy, elderly, childish, breathy, theatrical, or sing-song.",
   cheerful:
     "Speak as Mateo, a cheerful and friendly 19-year-old young man. The voice must sound unmistakably young, light and energetic—never deep, mature, elderly or authoritative. Use bright, warm intonation, an audible smile, lively natural rhythm and relaxed connected speech, like a happy teenager talking to a friend. Keep a natural conversational pace with realistic small pauses. Do not sound robotic, monotone, flat, over-enunciated, announcer-like, stern, raspy or artificially hyped.",
+  youthful:
+    "Speak as Dylan, a friendly young man around 20 years old. Sound unmistakably youthful, light, relaxed and confident—never deep, mature, elderly or authoritative. Use an easy conversational rhythm, warm natural intonation and a subtle smile, like a young Canadian talking casually with friends on a video call. Keep him clearly distinct from Mateo: calmer and more laid-back, not highly energetic or exuberant. Do not sound robotic, monotone, flat, raspy, stern, announcer-like or over-enunciated.",
 };
 
 /** Lease long enough for one TTS generation; a crashed generator frees the clip on expiry. */
