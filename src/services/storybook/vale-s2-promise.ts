@@ -57,6 +57,7 @@ export const VALE_S2_PROMISE: StorybookEpisode = {
       imageAlt: "Beto mira el suelo.",
       text: "\"My English is bad. I won't find a job,\" he says.",
       es: "«Mi inglés es malo. No encontraré trabajo», dice él.",
+      speaker: "beto",
       words: [
         { word: "bad", es: "malo" },
         { word: "job", es: "trabajo" },
@@ -81,6 +82,7 @@ export const VALE_S2_PROMISE: StorybookEpisode = {
       imageAlt: "Beto levanta la mirada.",
       text: "\"Really? Will you practice with me?\" asks Beto.",
       es: "«¿De verdad? ¿Practicarás conmigo?», pregunta Beto.",
+      speaker: "beto",
       words: [
         { word: "really", es: "de verdad" },
         { word: "practice", es: "practicar" },

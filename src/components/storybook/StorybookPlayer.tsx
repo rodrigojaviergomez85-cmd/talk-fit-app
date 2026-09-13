@@ -53,6 +53,7 @@ function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice {
   if (speaker === "luis") return "male";
   if (speaker === "camila") return "female";
   if (speaker === "ana") return "female";
+  if (speaker === "beto") return "shyBoy";
   return "neutral";
 }
 
@@ -61,6 +62,7 @@ function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
   if (speaker === "vale") return "playful";
   if (speaker === "mateo") return "cheerful";
   if (speaker === "dylan") return "youthful";
+  if (speaker === "beto") return "shy";
   return "story";
 }
 

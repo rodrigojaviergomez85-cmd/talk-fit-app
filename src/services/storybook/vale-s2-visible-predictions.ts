@@ -100,6 +100,7 @@ export const VALE_S2_VISIBLE_PREDICTIONS: StorybookEpisode = {
       imageAlt: "Beto llega con camisa limpia.",
       text: "Beto arrives with a clean shirt. \"I'm going to do my first interview.\"",
       es: "Beto llega con camisa limpia. «Voy a hacer mi primera entrevista.»",
+      speaker: "beto",
       words: [
         { word: "clean", es: "limpia" },
         { word: "shirt", es: "camisa" },

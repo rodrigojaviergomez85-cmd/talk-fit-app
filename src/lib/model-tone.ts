@@ -10,8 +10,9 @@ import type { RolePlayTurn } from "@/lib/types";
  *  - playful: bright, playful, slightly shy young woman (storybook characters like Vale)
  *  - cheerful: cheerful, energetic 19-year-old young man (storybook characters like Mateo)
  *  - youthful: relaxed, confident young man (storybook characters like Dylan)
+ *  - shy:      soft, timid 17-year-old boy (storybook characters like Beto)
  */
-export type ModelTone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful";
+export type ModelTone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy";
 
 const AUTHORITY = /recruiter|reclutador|interviewer|entrevistador|manager|gerente|hiring|hr\b/i;
 const CUSTOMER = /customer|cliente|caller/i;

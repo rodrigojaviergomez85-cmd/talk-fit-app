@@ -137,6 +137,7 @@ export const VALE_S2_PLAN_VS_DECISION: StorybookEpisode = {
       imageAlt: "Beto sonríe con alivio.",
       text: "Beto smiles. \"I am persistent. I won't quit.\"",
       es: "Beto sonríe. «Soy persistente. No me rendiré.»",
+      speaker: "beto",
       words: [{ word: "quit", es: "rendirse" }],
     },
     {

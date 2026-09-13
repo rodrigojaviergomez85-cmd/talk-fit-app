@@ -10,8 +10,8 @@
  * so every previously generated clip stays valid.
  */
 
-export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful";
-export type RequestedVoice = "neutral" | "female" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm";
+export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy";
+export type RequestedVoice = "neutral" | "female" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm" | "shyBoy";
 
 /** Normalised request: `voice` is the provider voice selected below. */
 export type ClipSpec = { text: string; voice: string; tone: Tone };
@@ -30,8 +30,10 @@ export const VOICE_MAP: Record<RequestedVoice, string> = {
   youngMale: "echo",
   /** Young, relaxed male — storybook characters like Dylan; distinct from Mateo. */
   youngMaleCalm: "ash",
+  /** Soft, shy teenage boy — storybook characters like Beto (17); distinct from Mateo/Dylan. */
+  shyBoy: "sage",
 };
-export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story", "cheerful", "youthful"];
+export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story", "cheerful", "youthful", "shy"];
 
 const TONE_INSTRUCTIONS: Record<Tone, string> = {
   coach:
@@ -48,6 +50,8 @@ const TONE_INSTRUCTIONS: Record<Tone, string> = {
     "Speak as Mateo, a cheerful and friendly 19-year-old young man. The voice must sound unmistakably young, light and energetic—never deep, mature, elderly or authoritative. Use bright, warm intonation, an audible smile, lively natural rhythm and relaxed connected speech, like a happy teenager talking to a friend. Keep a natural conversational pace with realistic small pauses. Do not sound robotic, monotone, flat, over-enunciated, announcer-like, stern, raspy or artificially hyped.",
   youthful:
     "Speak as Dylan, a friendly young man around 20 years old. Sound unmistakably youthful, light, relaxed and confident—never deep, mature, elderly or authoritative. Use an easy conversational rhythm, warm natural intonation and a subtle smile, like a young Canadian talking casually with friends on a video call. Keep him clearly distinct from Mateo: calmer and more laid-back, not highly energetic or exuberant. Do not sound robotic, monotone, flat, raspy, stern, announcer-like or over-enunciated.",
+  shy:
+    "Speak as Beto, a shy and gentle 17-year-old boy. The voice must sound unmistakably young, soft and light—never deep, mature, adult, elderly or authoritative. Use a timid, slightly hesitant delivery with a higher, boyish pitch, quiet warmth, small nervous pauses and a gentle rising intonation, like a shy teenager gathering courage to speak. Keep a natural, slightly careful conversational pace. Keep him clearly distinct from Mateo (not energetic or exuberant) and from Dylan (not laid-back or confident): Beto is softer, quieter and more unsure, though he gains a little confidence when encouraged. Do not sound robotic, monotone, flat, raspy, stern, announcer-like or over-enunciated.",
 };
 
 /** Lease long enough for one TTS generation; a crashed generator frees the clip on expiry. */
