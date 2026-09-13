@@ -81,23 +81,13 @@ export function CurrentModuleCard({ state }: { state: JourneyState }) {
       <h3 className="mt-1 text-[27px] font-extrabold leading-[1.1] tracking-tight">{day.topic}</h3>
       <p className="mt-1 text-[14px] font-medium leading-snug text-navy-foreground/70">{day.topicEs}</p>
 
-      {useDayHub ? (
-        <Link
-          to="/day/$moduleId/$day"
-          params={{ moduleId: module.id, day: String(day.day) }}
-          className="mt-6 flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-4 text-[15px] font-bold tracking-wide text-primary-foreground transition-transform active:scale-[0.98]"
-        >
-          {cta} <ArrowRight className="size-4" />
-        </Link>
-      ) : (
-        <Link
-          to="/practice"
-          search={{ day: day.day, module: module.id }}
-          className="mt-6 flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-4 text-[15px] font-bold tracking-wide text-primary-foreground transition-transform active:scale-[0.98]"
-        >
-          {cta} <ArrowRight className="size-4" />
-        </Link>
-      )}
+      <Link
+        to="/day/$moduleId/$day"
+        params={{ moduleId: module.id, day: String(day.day) }}
+        className="mt-6 flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-4 text-[15px] font-bold tracking-wide text-primary-foreground transition-transform active:scale-[0.98]"
+      >
+        {cta} <ArrowRight className="size-4" />
+      </Link>
       <Link
         to="/module/$moduleId"
         params={{ moduleId: module.id }}
