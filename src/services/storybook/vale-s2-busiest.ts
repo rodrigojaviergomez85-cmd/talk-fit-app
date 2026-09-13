@@ -184,9 +184,13 @@ export const VALE_S2_BUSIEST: StorybookEpisode = {
         { label: "Only Ana is", emoji: "👩" },
       ],
       answer: 0,
-      sayIt: "They aren’t going to do everything today.",
-      sayItEs: "Repite: «Ellos no van a hacer todo hoy.»",
-      sayItCheck: { target: "They aren’t going to do everything today." },
+      sayIt: "I’m going to do five tasks today.",
+      sayItEs: "Ejemplo: «I’m going to do five tasks today.»",
+      sayItAskEn: "How many tasks are you going to do today?",
+      sayItAskEs: "¿Cuántas tareas vas a hacer hoy?",
+      sayItCheck: {
+        target: "I’m going to do *",
+      },
     },
     {
       id: "q3",
@@ -199,9 +203,13 @@ export const VALE_S2_BUSIEST: StorybookEpisode = {
         { label: "Zero tasks", emoji: "0️⃣" },
       ],
       answer: 0,
-      sayIt: "We are going to do five tasks today.",
-      sayItEs: "Repite: «Vamos a hacer cinco tareas hoy.»",
-      sayItCheck: { target: "We are going to do five tasks today." },
+      sayIt: "I’m going to study English first.",
+      sayItEs: "Ejemplo: «I’m going to study English first.»",
+      sayItAskEn: "What are you going to do first tomorrow?",
+      sayItAskEs: "¿Qué vas a hacer primero mañana?",
+      sayItCheck: {
+        target: "I’m going to *",
+      },
     },
   ],
   mindsetCard: {

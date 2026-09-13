@@ -196,9 +196,13 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
         { label: "A restaurant", emoji: "🍽️" },
       ],
       answer: 0,
-      sayIt: "Next month, I’m going to lead a workshop.",
-      sayItEs: "Repite: «El próximo mes voy a liderar un taller.»",
-      sayItCheck: { target: "Next month, I’m going to lead a workshop." },
+      sayIt: "Next month, I’m going to lead a study group.",
+      sayItEs: "Ejemplo: «Next month, I’m going to lead a study group.»",
+      sayItAskEn: "What are you going to do next month?",
+      sayItAskEs: "¿Qué vas a hacer el próximo mes?",
+      sayItCheck: {
+        target: "I’m going to *",
+      },
     },
     {
       id: "q3",
@@ -211,9 +215,13 @@ export const VALE_S2_MY_VOICE: StorybookEpisode = {
         { label: "A new phone", emoji: "📱" },
       ],
       answer: 0,
-      sayIt: "They want the same grant.",
-      sayItEs: "Repite: «Quieren el mismo apoyo.»",
-      sayItCheck: { target: "They want the same grant." },
+      sayIt: "I want a bilingual job.",
+      sayItEs: "Ejemplo: «I want a bilingual job.»",
+      sayItAskEn: "What do you want for your future?",
+      sayItAskEs: "¿Qué quieres para tu futuro?",
+      sayItCheck: {
+        target: "I want *",
+      },
     },
   ],
   mindsetCard: {

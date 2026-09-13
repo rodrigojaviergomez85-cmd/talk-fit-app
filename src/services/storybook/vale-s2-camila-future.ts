@@ -182,9 +182,13 @@ export const VALE_S2_CAMILA_FUTURE: StorybookEpisode = {
         { label: "Only in January", emoji: "📅" },
       ],
       answer: 0,
-      sayIt: "She won't be alone. We'll call her every week.",
-      sayItEs: "Repite: «Ella no estará sola. La llamaremos cada semana.»",
-      sayItCheck: { target: "She won't be alone. We'll call her every week." },
+      sayIt: "I’m going to call my mom every week.",
+      sayItEs: "Ejemplo: «I’m going to call my mom every week.»",
+      sayItAskEn: "Who are you going to call every week?",
+      sayItAskEs: "¿A quién vas a llamar cada semana?",
+      sayItCheck: {
+        target: "I’m going to call *",
+      },
     },
     {
       id: "q3",
@@ -197,9 +201,13 @@ export const VALE_S2_CAMILA_FUTURE: StorybookEpisode = {
         { label: "Study art", emoji: "🎨" },
       ],
       answer: 0,
-      sayIt: "She is going to take the job and move to another city.",
-      sayItEs: "Repite: «Ella va a tomar el trabajo y mudarse a otra ciudad.»",
-      sayItCheck: { target: "She is going to take the job and move to another city." },
+      sayIt: "I’m going to take a bilingual job.",
+      sayItEs: "Ejemplo: «I’m going to take a bilingual job.»",
+      sayItAskEn: "What job are you going to take in the future?",
+      sayItAskEs: "¿Qué trabajo vas a tomar en el futuro?",
+      sayItCheck: {
+        target: "I’m going to take *",
+      },
     },
   ],
   mindsetCard: {
