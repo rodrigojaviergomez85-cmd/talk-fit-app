@@ -5,6 +5,8 @@
  */
 import type { JourneyState } from "@/lib/types";
 import { hasUnlimitedAccess } from "@/lib/unlimited-access";
+import season1Cover from "@/assets/storybook/vale-ep1/cover.jpg";
+import season2Cover from "@/assets/storybook/vale-s2-ep1/cover.jpg";
 
 export type SeasonWeek = 1 | 2 | 3 | 4;
 
@@ -32,6 +34,11 @@ export type Season = {
   moduleId: string;
   seasonNumber: number;
   title: { en: string; es: string };
+  /** One-line pitch shown on the collapsed season card. */
+  blurb: { en: string; es: string };
+  /** Representative cover image (episode 1 art). */
+  image: string;
+  imageAlt: { en: string; es: string };
   slots: SeasonEpisodeSlot[];
 };
 
@@ -40,6 +47,12 @@ export const STORYBOOK_SEASONS: Season[] = [
     moduleId: "basic-zero",
     seasonNumber: 1,
     title: { en: "Season 1 · Vale's world", es: "Temporada 1 · El mundo de Vale" },
+    blurb: {
+      en: "Vale's first job: names, favorite things and new friends.",
+      es: "El primer empleo de Vale: nombres, cosas favoritas y nuevos amigos.",
+    },
+    image: season1Cover,
+    imageAlt: { en: "Vale on her first day at work", es: "Vale en su primer día de trabajo" },
     slots: [
       { day: 1, episodeId: "vale-first-day", teaser: { en: "Vale's first day", es: "El primer día de Vale" } },
       { day: 2, episodeId: "vale-first-call", teaser: { en: "The first call", es: "La primera llamada" } },
@@ -67,6 +80,12 @@ export const STORYBOOK_SEASONS: Season[] = [
     moduleId: "simple-future",
     seasonNumber: 2,
     title: { en: "Season 2 · Vale's new challenge", es: "Temporada 2 · El nuevo reto de Vale" },
+    blurb: {
+      en: "New dreams and plans: Vale talks about the future.",
+      es: "Nuevos sueños y planes: Vale habla del futuro.",
+    },
+    image: season2Cover,
+    imageAlt: { en: "Vale ready for her new challenge", es: "Vale lista para su nuevo reto" },
     slots: [
       { day: 1, episodeId: "vale-s2-ready", teaser: { en: "She is ready", es: "Ella está lista" } },
       { day: 2, episodeId: "vale-s2-tomorrow", teaser: { en: "Tomorrow starts now", es: "Mañana empieza ahora" } },
