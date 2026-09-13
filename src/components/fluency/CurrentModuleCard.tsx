@@ -54,18 +54,11 @@ export function CurrentModuleCard({ state }: { state: JourneyState }) {
   const module = CourseService.getModule(next.moduleId);
   const day = CourseService.getDay(next.moduleId, next.day);
   const total = module.days.length;
-  const completed = JourneyService.completedCount(state, next.moduleId);
-  const fresh = completed === 0 && resumeStage === null;
-
   // One button always opens the day hub (story + audios).
-  const useDayHub = true;
-  const cta = resumeStage === null
-    ? t("home.startMyPractice")
-    : resumeStage !== null
+  const cta =
+    resumeStage !== null
       ? `${t("home.continueDay")} ${day.day}${resumeStage > 0 ? ` · ${t("home.rep")} ${Math.min(resumeStage, 5)}` : ""}`
-      : fresh
-        ? `${t("home.startDay")} ${day.day}`
-        : t("action.continuePractice");
+      : t("home.startMyPractice");
 
   return (
     <section className="rounded-3xl bg-navy p-6 text-navy-foreground shadow-[var(--shadow-lift)]">
