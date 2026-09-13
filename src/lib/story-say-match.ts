@@ -83,8 +83,16 @@ function matchFrame(transcriptWords: string[], targetWords: string[]): boolean {
 export function compareStorySay(
   target: string,
   transcript: string,
-  options?: { allowShortAnswer?: boolean },
+  options?: { allowShortAnswer?: boolean; altTargets?: string[] },
 ): StorySayResult {
+  const matched =
+    matchesTarget(target, transcript, options?.allowShortAnswer === true) ||
+    (options?.altTargets ?? []).some((alt) => matchesTarget(alt, transcript, false));
+
+  return { status: matched ? "good" : "tryAgain", matched };
+}
+
+function matchesTarget(target: string, transcript: string, allowShortAnswer: boolean): boolean {
   // Protect the wildcard marker because normalizeForCompare strips punctuation
   // and lowercases everything.
   const normalizedTarget = normalizeForCompare(target.replace(/\*/g, ` ${WILDCARD_TOKEN} `)).replace(
@@ -95,23 +103,20 @@ export function compareStorySay(
   const transcriptWords = normalizeForCompare(transcript).split(/\s+/).filter(Boolean);
 
   if (targetWords.length === 0 || transcriptWords.length === 0) {
-    return { status: "tryAgain", matched: false };
+    return false;
   }
 
   const hasWildcard = targetWords.includes(WILDCARD);
-  const matched = hasWildcard
+  return hasWildcard
     ? matchFrame(transcriptWords, targetWords) ||
-      (options?.allowShortAnswer === true &&
-        transcriptWords.length <= 2 &&
-        !transcriptWords.includes(WILDCARD))
+        (allowShortAnswer && transcriptWords.length <= 2 && !transcriptWords.includes(WILDCARD))
     : containsContiguous(transcriptWords, targetWords) ||
       // Long story lines (two clauses / sentences) are graded in-order rather
       // than strictly contiguous, so a small filler slip does not fail a
       // learner who said the whole line.
       (targetWords.length >= 6 && matchFrame(transcriptWords, targetWords));
-
-  return { status: matched ? "good" : "tryAgain", matched };
 }
+
 
 /** Export for tests / endpoint validation. */
 export const STORY_SAY_WILDCARD = WILDCARD;
