@@ -1860,7 +1860,6 @@ export function Rep4MakeItYours({
   return (
     <div className="space-y-5">
       <RepHeader titleKey="rep4.title" instrKey="rep4.instr" label={item.label} copy={day.repCopy?.rep4} />
-      <NoAiDisclaimer tKey="rep4.noAi" />
 
       {!hideVisuals ? (
         <>
@@ -1918,6 +1917,7 @@ export function Rep4MakeItYours({
           onRecorded(rec);
         }}
       />
+      <NoAiDisclaimer tKey="rep4.noAi" />
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
       {showDone ? (
