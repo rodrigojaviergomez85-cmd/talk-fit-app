@@ -122,8 +122,8 @@ export const VALE_S3_TEAM_RULES: StorybookEpisode = {
       id: "s7",
       image: s7,
       imageAlt: "El equipo se da la mano y sonríe.",
-      text: "The team agrees: \"We don't leave anyone behind.\"",
-      es: "El equipo acuerda: «No dejamos a nadie atrás.»",
+      text: "The team agrees: \"We don't leave behind anyone.\"",
+      es: "El equipo acuerda: «No dejamos atrás a nadie.»",
       words: [
         { word: "agrees", es: "acuerda" },
         { word: "leave behind", es: "dejar atrás" },
