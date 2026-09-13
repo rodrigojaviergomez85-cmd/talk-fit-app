@@ -157,7 +157,7 @@ export const Route = createFileRoute("/api/story-say-check")({
 
         const result = compareStorySay(target, stt.transcript, {
           allowShortAnswer: quiz.sayItCheck.allowShortAnswer === true,
-          altTargets: quiz.sayItCheck.altTargets,
+          altTargets: quiz.sayItCheck.altTargets ?? [],
         });
         if (result.status === "good") metrics.good++;
         else metrics.tryAgain++;
