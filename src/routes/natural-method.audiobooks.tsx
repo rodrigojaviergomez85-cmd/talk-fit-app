@@ -316,6 +316,8 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
                 </Link>
               );
             })}
+              </div>
+            ) : null}
           </section>
         );
       })}
