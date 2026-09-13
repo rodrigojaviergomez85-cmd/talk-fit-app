@@ -1,26 +1,22 @@
-# Evitar que dos audios suenen a la vez en las preguntas rápidas del cuento
+# Corregir el tono de piel de Vale en el Episodio 10
 
 ## Problema
-En las preguntas rápidas del cuento, la pregunta se reproduce automáticamente al aparecer la pantalla. Si el estudiante contesta rápido (antes de que el audio de la pregunta termine de descargarse), suenan dos audios a la vez: la pregunta y la frase de "Ahora dilo tú".
+En el Episodio 10 "Háblame de ti" (`vale-ep10`), Vale aparece con piel más oscura que su diseño oficial (cálido claro-canela) en varias escenas.
 
-## Causa (confirmada en el código)
-`AudioService.stop()` solo pausa el audio que **ya está sonando** (`currentAudio`). Mientras el clip de la pregunta todavía se está generando/descargando, no hay nada que pausar, así que `stop()` no hace nada. Cuando la descarga termina un momento después, ese audio empieza a sonar encima del nuevo.
+## Diagnóstico (confirmado con hoja de contacto)
+Comparé las 11 imágenes del episodio contra la referencia oficial `_canon/vale.jpg`:
 
-La bandera `cancelled` que evitaría esto solo se activa con la función de cancelación que devuelve `speak()`, y el reproductor del cuento no la guarda — llama al `stop()` global.
-
-Esto afecta también a otras partes del cuento (tocar una palabra mientras carga el audio de la escena, cambiar de página rápido, etc.).
+- **s1** (presentación frente al equipo): Vale visiblemente más oscura — el peor caso.
+- **s2** (con Mr. Reyes): piel más oscura que la oficial.
+- **s7** (junto al mapa de El Salvador): piel más oscura que la oficial.
+- **s9** (frente al panel de fotos): piel más oscura que la oficial.
+- Portada, s3, s6, s8 y s10: dentro de lo aceptable, se conservan.
 
 ## Solución
-Hacer que `AudioService.stop()` cancele también las reproducciones que están **en camino**, no solo la que ya suena:
-
-- `src/services/audio-service.ts`:
-  - Guardar a nivel de módulo la función de cancelación de la última llamada a `speak()`.
-  - `stop()` la invoca antes de limpiar, así cualquier descarga pendiente queda marcada como cancelada y nunca llega a sonar.
-  - Al empezar a sonar un clip, limpiar la referencia si era la suya.
-
-Sin cambios en el reproductor del cuento ni en la interfaz: al arreglarlo en el servicio, queda resuelto para preguntas rápidas, escenas, palabras tocables y la tarjeta de mentalidad, en todos los episodios.
+- Regenerar **s1, s2, s7 y s9** con edición sobre la imagen existente, usando `src/assets/storybook/_canon/vale.jpg` como referencia de personaje, para aclarar la piel de Vale al tono oficial sin cambiar composición, ropa (blusa mostaza), cabello negro largo ni fondo.
+- Mantener intactos los demás personajes de cada escena (Mr. Reyes con barba gris y corbata en s2; el mapa con la etiqueta "EL SALVADOR" en s7).
+- Sin cambios de código: se reemplazan solo los 4 archivos de imagen.
 
 ## Verificación
-- Typecheck y pruebas existentes.
-- Prueba en celular: abrir una pregunta rápida y contestar de inmediato — solo debe sonar la frase de "Ahora dilo tú", sin la pregunta encima.
-- Cambiar de escena rápidamente — solo suena el audio de la escena visible.
+- Nueva hoja de contacto del episodio: comparar tono de piel de Vale en las 4 escenas corregidas contra `_canon/vale.jpg`.
+- Abrir el episodio en la vista previa móvil y confirmar que las escenas se ven correctas.
