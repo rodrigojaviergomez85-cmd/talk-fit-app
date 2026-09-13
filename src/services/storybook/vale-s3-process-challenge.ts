@@ -58,6 +58,7 @@ export const VALE_S3_PROCESS_CHALLENGE: StorybookEpisode = {
       imageAlt: "Kat explica cómo empieza su turno.",
       text: "Kat starts: \"First, I open the queue. Then, I check the calls.\"",
       es: "Kat empieza: «Primero, abro la cola. Luego, reviso las llamadas.»",
+      speaker: "kat",
       words: [
         { word: "queue", es: "cola" },
         { word: "calls", es: "llamadas" },

@@ -11,7 +11,7 @@
  */
 
 export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy";
-export type RequestedVoice = "neutral" | "female" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm" | "shyBoy";
+export type RequestedVoice = "neutral" | "female" | "femaleBright" | "femaleMature" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm" | "shyBoy";
 
 /** Normalised request: `voice` is the provider voice selected below. */
 export type ClipSpec = { text: string; voice: string; tone: Tone };
@@ -21,6 +21,10 @@ export const MAX_TEXT = 1500;
 export const VOICE_MAP: Record<RequestedVoice, string> = {
   neutral: "alloy",
   female: "nova",
+  /** Bright young woman — energetic storybook characters like Kat. */
+  femaleBright: "coral",
+  /** Mature composed woman — authority characters like Ana. */
+  femaleMature: "shimmer",
   male: "onyx",
   /** Clearly feminine, warm and expressive — storybook characters like Vale. */
   girl: "marin",

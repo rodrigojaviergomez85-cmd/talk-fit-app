@@ -47,12 +47,12 @@ function buildSlides(episode: StorybookEpisode): Slide[] {
 function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice {
   if (speaker === "vale") return "girl";
   if (speaker === "boss") return "boss";
-  if (speaker === "kat") return "female";
+  if (speaker === "kat") return "femaleBright";
   if (speaker === "dylan") return "youngMaleCalm";
   if (speaker === "mateo") return "youngMale";
   if (speaker === "luis") return "male";
   if (speaker === "camila") return "female";
-  if (speaker === "ana") return "female";
+  if (speaker === "ana") return "femaleMature";
   if (speaker === "beto") return "shyBoy";
   if (speaker === "mom") return "female";
   if (speaker === "tito") return "male";
