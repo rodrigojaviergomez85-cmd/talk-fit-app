@@ -8,6 +8,7 @@ import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { playGoodFeedbackSound } from "@/lib/feedback-sounds";
 import { useAppLang } from "@/lib/i18n";
 import { tokenizeWords } from "@/lib/syllables";
+import { buildSayItHint } from "@/lib/story-say-match";
 import { AudioService } from "@/services/audio-service";
 import type { ModelVoice } from "@/services/audio-service";
 import type { ModelTone } from "@/lib/model-tone";
