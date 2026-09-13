@@ -20,11 +20,11 @@ import type { JourneyState, ModuleId } from "@/lib/types";
  */
 export const Route = createFileRoute("/day/$moduleId/$day")({
   loader: ({ params }) => {
-    const moduleId = params.moduleId;
+      const moduleId = params.moduleId as ModuleId;
     const day = Number(params.day);
     try {
-      const module = CourseService.getModule(moduleId as never);
-      const outline = CourseService.getDay(moduleId as never, day);
+      const module = CourseService.getModule(moduleId);
+      const outline = CourseService.getDay(moduleId, day);
       const season = getSeason(moduleId);
       const slot = season?.slots.find((s) => s.day === day);
       const episode = slot?.episodeId ? getStorybookEpisode(slot.episodeId) : undefined;
