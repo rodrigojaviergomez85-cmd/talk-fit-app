@@ -9,6 +9,7 @@ import { EdReminder } from "@/components/fluency/EdReminder";
 import { hasEdWords } from "@/lib/ed-endings";
 import { toneForTurn, type ModelTone } from "@/lib/model-tone";
 import { rep2Chunks, rep4Items, rep2ChunkText, REP4_MAX, isRep2CorrectionEnabled } from "@/lib/rep-structure";
+import { REP2_MAX_ATTEMPTS, canRep2Attempt } from "@/lib/rep2-attempts";
 export { REP4_MAX };
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { Rep2Feedback, type Rep2CorrectionResult } from "@/components/fluency/Rep2Feedback";
@@ -1506,6 +1507,8 @@ export function Rep2Copy({
   const [correction, setCorrection] = useState<Rep2CorrectionResult | null>(null);
   const [checking, setChecking] = useState(false);
   const [retries, setRetries] = useState(0);
+  /** Total recordings sent for AI correction on this chunk (initial take + retries). */
+  const [attempts, setAttempts] = useState(0);
   /** True between TRY AGAIN and the next completed recording: NEXT stays hidden, only record or SKIP. */
   const [retryPending, setRetryPending] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -1518,6 +1521,7 @@ export function Rep2Copy({
     setCorrection(null);
     setChecking(false);
     setRetries(0);
+    setAttempts(0);
     setRetryPending(false);
     setErrorMsg(null);
   }, [index, moduleId, day.day]);
