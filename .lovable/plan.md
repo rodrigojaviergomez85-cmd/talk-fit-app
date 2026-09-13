@@ -35,3 +35,25 @@ Sí, coincido: en la Temporada 2 (Basic 1) el tema es el futuro, y varias pregun
 ## Fuera de alcance
 
 Solo se tocan las preguntas rápidas y sus respuestas. La narración de las escenas no se modifica en este cambio; si quieres, la reviso después en un paso aparte.
+
+## Variedad de wh-questions
+
+Hoy la Temporada 2 está muy cargada de "What": 31 de 60 preguntas empiezan con What, y solo hay 1 Why, 1 Where, 4 Who, 5 When, 4 How. Eso no entrena la comprensión de las demás preguntas.
+
+Meta de distribución para las 60 preguntas de la temporada (3 por episodio):
+
+- What: 18 (de 31)
+- Who: 9
+- When: 9
+- Where: 8
+- Why: 7
+- How / How many / How long: 6
+- Will / Is ... going to (sí o no): 3
+
+Cómo se aplica:
+- En cada episodio, al menos una de las tres preguntas deja de ser "What" y pasa a Why, Who, Where o How, usando información que ya está en las escenas de ese episodio (no se inventan datos nuevos ni se cambian ilustraciones).
+- Ejemplos: "Where is Vale going to study?", "Who is going to invite the students?", "Why is Vale going to wake up early?", "How many people will come?".
+- Las respuestas habladas siguen en futuro ("going to" / "will") y las preguntas personales conservan la misma wh-word que la pregunta de la historia, para que el estudiante practique contestarla ("Where are you going to study tomorrow?").
+- Cada episodio mantiene 2 de 3 preguntas personales validadas por IA y 1 de repetición guiada.
+
+La prueba automática también verifica la mezcla: falla si un episodio tiene sus tres preguntas empezando con "What".
