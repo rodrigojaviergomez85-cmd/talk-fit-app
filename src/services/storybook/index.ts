@@ -43,6 +43,11 @@ import { VALE_S3_KATS_ROUTINE } from "./vale-s3-kats-routine";
 import { VALE_S3_TEAM_RULES } from "./vale-s3-team-rules";
 import { VALE_S3_ANGRY_CUSTOMER } from "./vale-s3-angry-customer";
 import { VALE_S3_TEAM_CHALLENGE } from "./vale-s3-team-challenge";
+import { VALE_S3_MOMS_ROUTINE } from "./vale-s3-moms-routine";
+import { VALE_S3_MATEO_TRAINS } from "./vale-s3-mateo-trains";
+import { VALE_S3_NEIGHBORHOOD_HERO } from "./vale-s3-neighborhood-hero";
+import { VALE_S3_ANA_REHEARSES } from "./vale-s3-ana-rehearses";
+import { VALE_S3_ROUTINE_CHALLENGE } from "./vale-s3-routine-challenge";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -91,6 +96,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_S3_TEAM_RULES,
   VALE_S3_ANGRY_CUSTOMER,
   VALE_S3_TEAM_CHALLENGE,
+  VALE_S3_MOMS_ROUTINE,
+  VALE_S3_MATEO_TRAINS,
+  VALE_S3_NEIGHBORHOOD_HERO,
+  VALE_S3_ANA_REHEARSES,
+  VALE_S3_ROUTINE_CHALLENGE,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
