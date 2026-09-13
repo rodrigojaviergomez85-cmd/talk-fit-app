@@ -1,15 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, ChevronLeft, Play, Sparkles, Star, Volume2, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronLeft, Loader2, Play, Sparkles, Star, Volume2, X } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { SlowWordPanel } from "@/components/fluency/SlowWordPanel";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
+import { playGoodFeedbackSound } from "@/lib/feedback-sounds";
 import { useAppLang } from "@/lib/i18n";
 import { tokenizeWords } from "@/lib/syllables";
 import { AudioService } from "@/services/audio-service";
 import type { ModelVoice } from "@/services/audio-service";
 import type { ModelTone } from "@/lib/model-tone";
+import { supabase } from "@/integrations/supabase/client";
 import { getSeason } from "@/services/storybook";
 import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
@@ -202,6 +204,7 @@ export function StorybookPlayer({
           {slide.kind === "quiz" ? (
             <QuizSlide
               quiz={slide.quiz}
+              episodeId={episode.id}
               episodeGlossary={episodeGlossary}
               voice={episode.voice}
               es={es}
@@ -477,6 +480,7 @@ function SceneSlide({
 
 function QuizSlide({
   quiz,
+  episodeId,
   episodeGlossary,
   voice,
   es,
@@ -486,6 +490,7 @@ function QuizSlide({
   onSaid,
 }: {
   quiz: StorybookQuiz;
+  episodeId: string;
   episodeGlossary: Map<string, string>;
   voice: "female" | "male" | "girl" | undefined;
   es: boolean;
@@ -496,6 +501,11 @@ function QuizSlide({
 }) {
   const [picked, setPicked] = useState<number | null>(null);
   const [wrong, setWrong] = useState<number | null>(null);
+  const [checkStatus, setCheckStatus] = useState<"idle" | "checking" | "good" | "tryAgain">("idle");
+  const [attempts, setAttempts] = useState(0);
+  const [lastTranscript, setLastTranscript] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const hasCheck = Boolean(quiz.sayItCheck);
 
   const pick = (i: number) => {
     setPicked(i);
@@ -503,12 +513,97 @@ function QuizSlide({
     AudioService.stop();
     if (i === quiz.answer) {
       if (!done) onCorrect();
+      // Reset per-question speaking state when the question is answered.
+      setCheckStatus("idle");
+      setAttempts(0);
+      setLastTranscript("");
+      setErrorMsg("");
       AudioService.speak(quiz.sayIt, { voice });
     } else {
       setWrong(i);
       setTimeout(() => setWrong(null), 500);
     }
   };
+
+  const handleRecording = async (recording: Recording) => {
+    if (said) return;
+    // If the episode has no server-side check, accept any recording as before.
+    if (!hasCheck) {
+      onSaid();
+      return;
+    }
+    if (attempts >= 2) {
+      onSaid();
+      return;
+    }
+    setCheckStatus("checking");
+    setErrorMsg("");
+    try {
+      const blob = recording.blob ?? (recording.url ? await fetch(recording.url).then((r) => r.blob()) : null);
+      if (!blob) {
+        setErrorMsg(es ? "No se encontró el audio." : "Audio not found.");
+        setCheckStatus("tryAgain");
+        setAttempts((a) => a + 1);
+        return;
+      }
+      const form = new FormData();
+      const ext = blob.type.includes("mp4") ? "m4a" : "webm";
+      form.append("file", blob, `say-it.${ext}`);
+      form.append("storyId", episodeId);
+      form.append("quizId", quiz.id);
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const headers: Record<string, string> = {};
+      if (session?.access_token) headers["Authorization"] = `Bearer ${session.access_token}`;
+      const res = await fetch("/api/story-say-check", { method: "POST", body: form, headers });
+      const data = (await res.json().catch(() => ({ error: "network" }))) as {
+        status?: string;
+        transcript?: string;
+        error?: string;
+      };
+      if (!res.ok) {
+        setErrorMsg(data.error || (es ? "No pudimos revisar tu audio." : "We couldn't check your audio."));
+        setCheckStatus("tryAgain");
+        setAttempts((a) => a + 1);
+        return;
+      }
+      if (data.status === "good") {
+        setCheckStatus("good");
+        onSaid();
+        playGoodFeedbackSound();
+      } else {
+        setCheckStatus("tryAgain");
+        setLastTranscript(data.transcript || "");
+        setAttempts((a) => a + 1);
+      }
+    } catch {
+      setErrorMsg(es ? "Error de conexión. Intenta de nuevo." : "Connection error. Try again.");
+      setCheckStatus("tryAgain");
+      setAttempts((a) => a + 1);
+    }
+  };
+
+  const recorder = (
+    <VoiceRecorder
+      onStart={() => AudioService.stop()}
+      label={es ? "DECIRLO" : "SAY IT"}
+      stopLabel={es ? "PARAR" : "STOP"}
+      maxSeconds={15}
+      countdown
+      size="md"
+      onComplete={handleRecording}
+    />
+  );
+
+  const successBlock = (
+    <p className="flex flex-col items-center justify-center gap-1 text-[14px] font-extrabold text-primary" style={{ animation: "sb-pop .25s ease-out" }}>
+      <span className="flex items-center gap-2">
+        <Star className="size-4 fill-amber-500 text-amber-500" />
+        {es ? "¡Great job, champion! +1 ⭐" : "Great job, champion! +1 ⭐"}
+      </span>
+    </p>
+  );
 
   return (
     <div className="space-y-4 rounded-3xl border-2 border-primary/40 bg-card p-4">
@@ -566,21 +661,51 @@ function QuizSlide({
             className="text-[16px] font-extrabold text-foreground"
           />
           <p className="text-[12px] font-semibold text-muted-foreground">{quiz.sayItEs}</p>
-          {said ? (
-            <p className="flex items-center justify-center gap-2 text-[13px] font-bold text-primary">
-              <Check className="size-4" /> {es ? "¡Lo dijiste! +1 ⭐" : "You said it! +1 ⭐"}
-            </p>
-          ) : (
-            <VoiceRecorder
-              onStart={() => AudioService.stop()}
-              label={es ? "DECIRLO" : "SAY IT"}
-              stopLabel={es ? "PARAR" : "STOP"}
-              maxSeconds={15}
-              countdown
-              size="md"
-              onComplete={onSaid}
-            />
-          )}
+
+          {said || checkStatus === "good" ? successBlock : null}
+
+          {checkStatus === "checking" ? (
+            <div className="flex items-center justify-center gap-2 py-2 text-[13px] font-bold text-primary">
+              <Loader2 className="size-4 animate-spin" /> {es ? "Revisando tu audio…" : "Checking your audio…"}
+            </div>
+          ) : null}
+
+          {!said && checkStatus !== "good" && attempts < 2 ? (
+            <>
+              {checkStatus === "tryAgain" ? (
+                <div className="space-y-2 rounded-2xl border border-destructive/30 bg-destructive/10 p-3" style={{ animation: "sb-shake .4s ease" }}>
+                  <p className="flex items-center gap-2 text-[14px] font-extrabold text-destructive">
+                    <X className="size-4" />
+                    {es ? "Inténtalo de nuevo" : "Try again"}
+                  </p>
+                  {lastTranscript ? (
+                    <p className="text-[12px] text-muted-foreground">
+                      {es ? "Escuchamos:" : "We heard:"} <span className="font-semibold text-foreground">“{lastTranscript}”</span>
+                    </p>
+                  ) : null}
+                  {errorMsg ? <p className="text-[12px] text-destructive">{errorMsg}</p> : null}
+                  {recorder}
+                </div>
+              ) : (
+                recorder
+              )}
+            </>
+          ) : null}
+
+          {!said && attempts >= 2 ? (
+            <div className="space-y-2 rounded-2xl border border-border bg-muted/40 p-3">
+              <p className="text-[13px] font-semibold text-muted-foreground">
+                {es ? "No te preocupes, sigue practicando:" : "Don't worry, keep practicing:"}
+              </p>
+              <button
+                type="button"
+                onClick={onSaid}
+                className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-[14px] font-bold uppercase tracking-[0.08em] text-primary-foreground"
+              >
+                {es ? "Continuar" : "Continue"} <ArrowRight className="size-4" />
+              </button>
+            </div>
+          ) : null}
         </div>
       ) : null}
     </div>

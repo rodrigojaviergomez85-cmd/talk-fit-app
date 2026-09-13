@@ -182,6 +182,7 @@ export const VALE_FIRST_DAY: StorybookEpisode = {
       answer: 0,
       sayIt: "What is your name?",
       sayItEs: "Ahora pregúntala tú: «¿Cómo te llamas?»",
+      sayItCheck: { target: "What is your name?" },
     },
     {
       id: "q2",
@@ -196,6 +197,7 @@ export const VALE_FIRST_DAY: StorybookEpisode = {
       answer: 0,
       sayIt: "What is your favorite food?",
       sayItEs: "Ahora pregúntala tú: «¿Cuál es tu comida favorita?»",
+      sayItCheck: { target: "What is your favorite food?" },
     },
     {
       id: "q3",
@@ -210,6 +212,7 @@ export const VALE_FIRST_DAY: StorybookEpisode = {
       answer: 0,
       sayIt: "Where are you from?",
       sayItEs: "Ahora pregúntala tú: «¿De dónde eres?»",
+      sayItCheck: { target: "Where are you from?" },
     },
   ],
   continuePrompt: {

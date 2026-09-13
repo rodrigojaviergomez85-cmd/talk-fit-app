@@ -35,6 +35,7 @@ import { Route as ApiFinalAudioCoachRouteImport } from './routes/api/final-audio
 import { Route as ApiFinalAudioCoachRetakeRouteImport } from './routes/api/final-audio-coach-retake'
 import { Route as ApiRep2CorrectionRouteImport } from './routes/api/rep2-correction'
 import { Route as ApiSentenceCountRouteImport } from './routes/api/sentence-count'
+import { Route as ApiStorySayCheckRouteImport } from './routes/api/story-say-check'
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as ModuleModuleIdRouteImport } from './routes/module.$moduleId'
 import { Route as NaturalMethodIndexRouteImport } from './routes/natural-method.index'
@@ -192,6 +193,11 @@ const ApiRep2CorrectionRoute = ApiRep2CorrectionRouteImport.update({
 const ApiSentenceCountRoute = ApiSentenceCountRouteImport.update({
   id: '/api/sentence-count',
   path: '/api/sentence-count',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStorySayCheckRoute = ApiStorySayCheckRouteImport.update({
+  id: '/api/story-say-check',
+  path: '/api/story-say-check',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiTtsRoute = ApiTtsRouteImport.update({
@@ -365,6 +371,7 @@ export interface FileRoutesByFullPath {
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
   '/api/rep2-correction': typeof ApiRep2CorrectionRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
+  '/api/story-say-check': typeof ApiStorySayCheckRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
   '/natural-method/audiobooks': typeof NaturalMethodAudiobooksRoute
@@ -420,6 +427,7 @@ export interface FileRoutesByTo {
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
   '/api/rep2-correction': typeof ApiRep2CorrectionRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
+  '/api/story-say-check': typeof ApiStorySayCheckRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
   '/natural-method/audiobooks': typeof NaturalMethodAudiobooksRoute
@@ -475,6 +483,7 @@ export interface FileRoutesById {
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
   '/api/rep2-correction': typeof ApiRep2CorrectionRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
+  '/api/story-say-check': typeof ApiStorySayCheckRoute
   '/api/tts': typeof ApiTtsRoute
   '/module/$moduleId': typeof ModuleModuleIdRoute
   '/natural-method/audiobooks': typeof NaturalMethodAudiobooksRoute
@@ -532,6 +541,7 @@ export interface FileRouteTypes {
     | '/api/final-audio-coach-retake'
     | '/api/rep2-correction'
     | '/api/sentence-count'
+    | '/api/story-say-check'
     | '/api/tts'
     | '/module/$moduleId'
     | '/natural-method/audiobooks'
@@ -587,6 +597,7 @@ export interface FileRouteTypes {
     | '/api/final-audio-coach-retake'
     | '/api/rep2-correction'
     | '/api/sentence-count'
+    | '/api/story-say-check'
     | '/api/tts'
     | '/module/$moduleId'
     | '/natural-method/audiobooks'
@@ -641,6 +652,7 @@ export interface FileRouteTypes {
     | '/api/final-audio-coach-retake'
     | '/api/rep2-correction'
     | '/api/sentence-count'
+    | '/api/story-say-check'
     | '/api/tts'
     | '/module/$moduleId'
     | '/natural-method/audiobooks'
@@ -697,6 +709,7 @@ export interface RootRouteChildren {
   ApiFinalAudioCoachRetakeRoute: typeof ApiFinalAudioCoachRetakeRoute
   ApiRep2CorrectionRoute: typeof ApiRep2CorrectionRoute
   ApiSentenceCountRoute: typeof ApiSentenceCountRoute
+  ApiStorySayCheckRoute: typeof ApiStorySayCheckRoute
   ApiTtsRoute: typeof ApiTtsRoute
   ModuleModuleIdRoute: typeof ModuleModuleIdRoute
   NaturalMethodAudiobooksRoute: typeof NaturalMethodAudiobooksRoute
@@ -904,6 +917,13 @@ declare module '@tanstack/react-router' {
       path: '/api/sentence-count'
       fullPath: '/api/sentence-count'
       preLoaderRoute: typeof ApiSentenceCountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/story-say-check': {
+      id: '/api/story-say-check'
+      path: '/api/story-say-check'
+      fullPath: '/api/story-say-check'
+      preLoaderRoute: typeof ApiStorySayCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/tts': {
@@ -1142,6 +1162,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiFinalAudioCoachRetakeRoute: ApiFinalAudioCoachRetakeRoute,
   ApiRep2CorrectionRoute: ApiRep2CorrectionRoute,
   ApiSentenceCountRoute: ApiSentenceCountRoute,
+  ApiStorySayCheckRoute: ApiStorySayCheckRoute,
   ApiTtsRoute: ApiTtsRoute,
   ModuleModuleIdRoute: ModuleModuleIdRoute,
   NaturalMethodAudiobooksRoute: NaturalMethodAudiobooksRoute,

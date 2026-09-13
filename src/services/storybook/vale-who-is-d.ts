@@ -188,6 +188,7 @@ export const VALE_WHO_IS_D: StorybookEpisode = {
       answer: 0,
       sayIt: "He is a client.",
       sayItEs: "Ahora repite: «Él es un cliente.»",
+      sayItCheck: { target: "He is a client." },
     },
     {
       id: "q2",
@@ -202,6 +203,7 @@ export const VALE_WHO_IS_D: StorybookEpisode = {
       answer: 0,
       sayIt: "He is from Canada.",
       sayItEs: "Ahora repite: «Él es de Canadá.»",
+      sayItCheck: { target: "He is from Canada." },
     },
     {
       id: "q3",
@@ -216,6 +218,7 @@ export const VALE_WHO_IS_D: StorybookEpisode = {
       answer: 0,
       sayIt: "His name is Dylan.",
       sayItEs: "Ahora repite: «Su nombre es Dylan.»",
+      sayItCheck: { target: "His name is Dylan." },
     },
   ],
   mindsetCard: {
