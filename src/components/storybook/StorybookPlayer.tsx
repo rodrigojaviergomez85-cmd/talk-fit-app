@@ -692,7 +692,14 @@ function QuizSlide({
             </>
           ) : null}
 
-          {!said && attempts >= 2 ? (
+          {hasCheck && !said && checkStatus !== "good" ? (
+            <p className="text-[11px] leading-snug text-muted-foreground">
+              {es
+                ? "La IA comparará tu respuesta y puede cometer errores. Úsala como guía para mejorar."
+                : "AI will compare your response and may make mistakes. Use the feedback as a guide to improve."}
+            </p>
+          ) : null}
+
             <div className="space-y-2 rounded-2xl border border-border bg-muted/40 p-3">
               <p className="text-[13px] font-semibold text-muted-foreground">
                 {es ? "No te preocupes, sigue practicando:" : "Don't worry, keep practicing:"}
