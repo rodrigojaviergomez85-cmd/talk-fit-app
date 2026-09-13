@@ -34,10 +34,17 @@ export const Route = createFileRoute("/natural-method/cuento/$storyId")({
 
 function StorybookPage() {
   const { episode } = Route.useLoaderData();
+  const { from } = Route.useSearch();
+  const navigate = useNavigate();
+  const slot = getEpisodeSlot(episode.id);
+  const onCoverBack =
+    from === "day" && slot
+      ? () => navigate({ to: "/day/$moduleId/$day", params: { moduleId: slot.moduleId, day: String(slot.day) } })
+      : undefined;
   return (
     <AppShell>
       <div className="p-4 pb-8">
-        <StorybookPlayer key={episode.id} episode={episode} />
+        <StorybookPlayer key={episode.id} episode={episode} onCoverBack={onCoverBack} />
       </div>
     </AppShell>
   );
