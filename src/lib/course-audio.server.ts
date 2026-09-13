@@ -10,8 +10,8 @@
  * so every previously generated clip stays valid.
  */
 
-export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy";
-export type RequestedVoice = "neutral" | "female" | "femaleBright" | "femaleMature" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm" | "shyBoy";
+export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy" | "earnest" | "warm";
+export type RequestedVoice = "neutral" | "female" | "femaleBright" | "femaleMature" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm" | "shyBoy" | "teenBoy" | "elder";
 
 /** Normalised request: `voice` is the provider voice selected below. */
 export type ClipSpec = { text: string; voice: string; tone: Tone };
@@ -36,8 +36,12 @@ export const VOICE_MAP: Record<RequestedVoice, string> = {
   youngMaleCalm: "ash",
   /** Soft, shy teenage boy — storybook characters like Beto (17); distinct from Mateo/Dylan. */
   shyBoy: "sage",
+  /** Earnest teenage student — storybook characters like Dani; distinct from Beto/Mateo/Dylan. */
+  teenBoy: "verse",
+  /** Older, kind neighbourhood man — storybook characters like don Tito; distinct from Luis. */
+  elder: "ballad",
 };
-export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story", "cheerful", "youthful", "shy"];
+export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story", "cheerful", "youthful", "shy", "earnest", "warm"];
 
 const TONE_INSTRUCTIONS: Record<Tone, string> = {
   coach:
@@ -56,6 +60,10 @@ const TONE_INSTRUCTIONS: Record<Tone, string> = {
     "Speak as Dylan, a friendly young man around 20 years old. Sound unmistakably youthful, light, relaxed and confident—never deep, mature, elderly or authoritative. Use an easy conversational rhythm, warm natural intonation and a subtle smile, like a young Canadian talking casually with friends on a video call. Keep him clearly distinct from Mateo: calmer and more laid-back, not highly energetic or exuberant. Do not sound robotic, monotone, flat, raspy, stern, announcer-like or over-enunciated.",
   shy:
     "Speak as Beto, a shy and gentle 17-year-old boy. The voice must sound unmistakably young, soft and light—never deep, mature, adult, elderly or authoritative. Use a timid, slightly hesitant delivery with a higher, boyish pitch, quiet warmth, small nervous pauses and a gentle rising intonation, like a shy teenager gathering courage to speak. Keep a natural, slightly careful conversational pace. Keep him clearly distinct from Mateo (not energetic or exuberant) and from Dylan (not laid-back or confident): Beto is softer, quieter and more unsure, though he gains a little confidence when encouraged. Do not sound robotic, monotone, flat, raspy, stern, announcer-like or over-enunciated.",
+  earnest:
+    "Speak as Dani, an earnest, motivated 16-year-old student. The voice must sound unmistakably young and boyish, sincere and a little eager—never deep, mature, adult, elderly or authoritative. Use warm, honest intonation, a slightly careful pace with small thoughtful pauses, and gentle rising energy when he is proud or excited. Keep him clearly distinct from Beto (not timid or unsure), from Mateo (not exuberant) and from Dylan (not laid-back). Do not sound robotic, monotone, flat, raspy, stern, announcer-like or over-enunciated.",
+  warm:
+    "Speak as a caring Latina mother around 45 years old. The voice must sound unmistakably feminine, mature, calm and affectionate—never young, girlish, stern or authoritative. Use slow, soothing intonation, gentle warmth, natural pauses and a soft smile, like a mother speaking kindly to her daughter at home. Natural everyday American English accent. Do not sound robotic, monotone, flat, raspy, theatrical or announcer-like.",
 };
 
 /** Lease long enough for one TTS generation; a crashed generator frees the clip on expiry. */
