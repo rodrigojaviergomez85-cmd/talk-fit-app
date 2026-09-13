@@ -206,9 +206,12 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
         { label: "To leave", emoji: "🚪" },
       ],
       answer: 0,
-      sayIt: "Can I join the team?",
-      sayItEs: "Repite: «¿Puedo unirme al equipo?»",
-      sayItCheck: { target: "Can I join the team?" },
+      sayIt: "Yes, I can join the team.",
+      sayItEs: "Ahora contesta tú: «Sí, puedo unirme al equipo.»",
+      sayItCheck: {
+        target: "I can join the team",
+        altTargets: ["Can I join the team?", "Yes I can"],
+      },
     },
   ],
   mindsetCard: {

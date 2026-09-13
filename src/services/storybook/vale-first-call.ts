@@ -187,9 +187,13 @@ export const VALE_FIRST_CALL: StorybookEpisode = {
         { label: "Mexico", emoji: "🇲🇽" },
       ],
       answer: 0,
-      sayIt: "Where are you from?",
-      sayItEs: "¿De dónde eres tú?",
-      sayItCheck: { target: "Where are you from?" },
+      sayIt: "I am from…",
+      sayItEs: "Ahora contesta tú: «Soy de…» (puedes decir solo el lugar)",
+      sayItCheck: {
+        target: "I am from *",
+        allowShortAnswer: true,
+        altTargets: ["Where are you from?"],
+      },
     },
     {
       id: "q2",

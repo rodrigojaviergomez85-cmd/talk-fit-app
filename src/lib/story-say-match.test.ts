@@ -122,3 +122,41 @@ describe("compareStorySay", () => {
     });
   });
 });
+
+describe("question cards accept the natural answer", () => {
+  it("accepts an answer for a name prompt", () => {
+    expect(
+      compareStorySay("My name is *", "My name is Rodrigo.", {
+        allowShortAnswer: true,
+        altTargets: ["What is your name?"],
+      }).status,
+    ).toBe("good");
+  });
+
+  it("accepts a bare name", () => {
+    expect(
+      compareStorySay("My name is *", "Rodrigo", {
+        allowShortAnswer: true,
+        altTargets: ["What is your name?"],
+      }).status,
+    ).toBe("good");
+  });
+
+  it("still accepts the question itself", () => {
+    expect(
+      compareStorySay("My name is *", "What is your name?", {
+        allowShortAnswer: true,
+        altTargets: ["What is your name?"],
+      }).status,
+    ).toBe("good");
+  });
+
+  it("rejects an unrelated sentence", () => {
+    expect(
+      compareStorySay("My name is *", "I like pizza very much today", {
+        allowShortAnswer: true,
+        altTargets: ["What is your name?"],
+      }).status,
+    ).toBe("tryAgain");
+  });
+});
