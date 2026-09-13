@@ -113,7 +113,7 @@ function DayHubPage() {
                 alt={es ? data.episode.titleEs : data.episode.title}
                 width={512}
                 height={512}
-                className="aspect-[16/9] w-full object-cover"
+                className="aspect-[4/3] w-full object-cover object-top"
               />
               <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-primary-foreground">
                 <Star className="size-3.5 fill-primary-foreground" aria-hidden="true" />
