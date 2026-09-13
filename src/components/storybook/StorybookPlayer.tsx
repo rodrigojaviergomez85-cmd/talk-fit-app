@@ -14,6 +14,7 @@ import { AudioService } from "@/services/audio-service";
 import { supabase } from "@/integrations/supabase/client";
 import { getSeason } from "@/services/storybook";
 import { speakerVoice, speakerTone } from "@/services/storybook/voices";
+import { speakDialogue } from "@/services/storybook/dialogue-audio";
 import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
