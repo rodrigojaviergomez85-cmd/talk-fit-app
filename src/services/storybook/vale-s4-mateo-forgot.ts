@@ -173,7 +173,7 @@ export const VALE_S4_MATEO_FORGOT: StorybookEpisode = {
       id: "s10",
       image: s10,
       imageAlt: "Ana escucha la disculpa de Mateo y empieza a sonreír.",
-      text: "He said his sorry in English. Ana listened… and then she laughed.",
+      text: "He said sorry in English. Ana listened… and then she laughed.",
       es: "Dijo su disculpa en inglés. Ana escuchó… y luego se rió.",
       speaker: "ana",
       words: [
