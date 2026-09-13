@@ -870,7 +870,7 @@ function QuizSlide({
             </>
           ) : null}
 
-          {!said && checkStatus === "tryAgain" && attempts >= 1 && attempts < 2 ? (
+          {!said && attempts < 2 ? (
             <button
               type="button"
               onClick={onSkip}
