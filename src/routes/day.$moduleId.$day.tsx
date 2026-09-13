@@ -140,8 +140,12 @@ function DayHubPage() {
             </span>
             <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
           </Link>
+          </>
         ) : null}
 
+        <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+          {t("day.step2Label")}
+        </span>
         <Link
           to="/practice"
           search={{ day: data.day, module: data.moduleId }}
