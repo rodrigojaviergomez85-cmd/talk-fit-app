@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { compareStorySay } from "./story-say-match";
 
+
 describe("compareStorySay", () => {
   describe("exact targets", () => {
     it("passes a clean exact phrase", () => {
@@ -58,6 +59,42 @@ describe("compareStorySay", () => {
 
     it("rejects empty targets", () => {
       expect(compareStorySay("", "What is your name").status).toBe("tryAgain");
+    });
+  });
+
+  describe("short answers (allowShortAnswer)", () => {
+    it("accepts a full natural answer", () => {
+      expect(
+        compareStorySay("My name is *", "My name is Rodrigo", { allowShortAnswer: true }).status,
+      ).toBe("good");
+    });
+
+    it("accepts a bare one-word answer", () => {
+      expect(compareStorySay("My name is *", "Rodrigo", { allowShortAnswer: true }).status).toBe(
+        "good",
+      );
+    });
+
+    it("accepts a two-word place name", () => {
+      expect(
+        compareStorySay("I am from *", "El Salvador", { allowShortAnswer: true }).status,
+      ).toBe("good");
+    });
+
+    it("rejects repeating the question", () => {
+      expect(
+        compareStorySay("My name is *", "What is your name?", { allowShortAnswer: true }).status,
+      ).toBe("tryAgain");
+    });
+
+    it("rejects short answers when allowShortAnswer is not set", () => {
+      expect(compareStorySay("My name is *", "Rodrigo").status).toBe("tryAgain");
+    });
+
+    it("accepts a bare age", () => {
+      expect(
+        compareStorySay("I am * years old", "Twenty", { allowShortAnswer: true }).status,
+      ).toBe("good");
     });
   });
 });
