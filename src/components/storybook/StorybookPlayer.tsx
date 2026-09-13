@@ -132,7 +132,11 @@ export function StorybookPlayer({
     AudioService.stop();
     let alive = true;
     if (slide.kind === "scene")
-      AudioService.speak(slide.scene.text, { voice: speakerVoice(slide.scene.speaker), tone: speakerTone(slide.scene.speaker) });
+      AudioService.speak(slide.scene.text, {
+        rate: sceneRateRef.current,
+        voice: speakerVoice(slide.scene.speaker),
+        tone: speakerTone(slide.scene.speaker),
+      });
     if (slide.kind === "quiz") {
       // Guaranteed listening: the question always plays on its own, even if the
       // learner arrives fast. A short delay lets the previous audio fully stop.
