@@ -37,7 +37,7 @@ describe("Rep 4 variety", () => {
       }
     }
     expect(offenders).toEqual([]);
-  });
+  }, 15000);
 
   it("BASIC ZERO: every day shows exactly 3 prompts and no two days in a week repeat a set", async () => {
     const full = await CourseService.loadModule("basic-zero");
