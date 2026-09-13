@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { compareStorySay } from "./story-say-match";
+import { compareStorySay, buildSayItHint } from "./story-say-match";
 
 
 describe("compareStorySay", () => {
