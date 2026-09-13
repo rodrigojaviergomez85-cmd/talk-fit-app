@@ -40,7 +40,7 @@ Cada bloque sigue exactamente el tema del curso de esos días:
 ## Reglas que se mantienen sin cambios
 
 - Un episodio por día, se desbloquea al completar el día anterior.
-- 10 escenas, vocabulario tocable con significado en español, 3 preguntas rápidas con audio automático, variedad de preguntas (qué, quién, cuándo, dónde, por qué).
+- Vocabulario tocable con significado en español, 3 preguntas rápidas con audio automático, variedad de preguntas (qué, quién, cuándo, dónde, por qué).
 - 2 preguntas personales evaluadas por la IA (máximo 2 intentos más "Saltar por ahora"); las frases de motivación y la grabación final nunca se evalúan.
 - Cierre de 15 segundos con un solo botón: "AHORA GRABA TUS AUDIOS", más el gancho para el día siguiente.
 - Personajes y voces oficiales (Vale, Kat, Mateo, Luis, Ana, el jefe) sin cambios; los personajes nuevos de la escuela reciben su propia ficha oficial antes de dibujarlos.
