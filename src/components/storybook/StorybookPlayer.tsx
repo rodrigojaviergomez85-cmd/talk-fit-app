@@ -102,11 +102,26 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
   // Auto-play the slide's audio when it becomes visible.
   useEffect(() => {
     AudioService.stop();
+    let alive = true;
     if (slide.kind === "scene")
       AudioService.speak(slide.scene.text, { voice: speakerVoice(slide.scene.speaker), tone: speakerTone(slide.scene.speaker) });
-    if (slide.kind === "quiz") AudioService.speak(slide.quiz.questionEn, { voice: episode.voice, tone: speakerTone("vale") });
+    if (slide.kind === "quiz") {
+      // Guaranteed listening: the question always plays on its own, even if the
+      // learner arrives fast. A short delay lets the previous audio fully stop.
+      const timer = setTimeout(() => {
+        if (alive) AudioService.speak(slide.quiz.questionEn, { voice: episode.voice, tone: speakerTone("vale") });
+      }, 120);
+      return () => {
+        alive = false;
+        clearTimeout(timer);
+        AudioService.stop();
+      };
+    }
     if (slide.kind === "mindset" && episode.mindsetCard) AudioService.speak(episode.mindsetCard.phrase, { voice: episode.voice, tone: speakerTone("vale") });
-    return () => AudioService.stop();
+    return () => {
+      alive = false;
+      AudioService.stop();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idx]);
 
@@ -475,9 +490,10 @@ function QuizSlide({
 
   const pick = (i: number) => {
     setPicked(i);
+    // Stop any question audio the moment an answer is selected — right or wrong.
+    AudioService.stop();
     if (i === quiz.answer) {
       if (!done) onCorrect();
-      AudioService.stop();
       AudioService.speak(quiz.sayIt, { voice });
     } else {
       setWrong(i);
