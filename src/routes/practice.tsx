@@ -1723,7 +1723,7 @@ export function Rep2Copy({
           onSkip={onSkip}
           onNext={onNext}
           nextLabel={isLast ? t("practice.nextRep") : t("practice.nextChunk")}
-          canRetry={retries < 2}
+          canRetry={canRep2Attempt(attempts)}
         />
       ) : null}
 
