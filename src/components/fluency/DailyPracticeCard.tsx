@@ -138,8 +138,8 @@ export function DailyPracticeCard({ moduleId, day, completed, inProgress, totalD
         </div>
       ) : (
         <Link
-          to="/practice"
-          search={{ day: day.day, module: moduleId }}
+          to="/day/$moduleId/$day"
+          params={{ moduleId, day: String(day.day) }}
           className={cn(
             "mt-5 flex w-full items-center justify-center rounded-2xl px-6 py-4 text-[15px] font-bold tracking-wide transition-transform active:scale-[0.98]",
             completed
