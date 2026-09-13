@@ -627,6 +627,7 @@ function QuizSlide({
   said,
   onCorrect,
   onSaid,
+  onSkip,
 }: {
   quiz: StorybookQuiz;
   episodeId: string;
@@ -637,6 +638,7 @@ function QuizSlide({
   said: boolean;
   onCorrect: () => void;
   onSaid: () => void;
+  onSkip: () => void;
 }) {
   const [picked, setPicked] = useState<number | null>(null);
   const [wrong, setWrong] = useState<number | null>(null);
