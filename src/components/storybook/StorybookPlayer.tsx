@@ -16,7 +16,7 @@ import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary"
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
 import type { NextEpisodeInfo } from "@/services/storybook";
 import { JourneyService } from "@/services/journey-service";
-import type { JourneyState, Recording } from "@/lib/types";
+import type { JourneyState, ModuleId, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type Slide =
@@ -765,7 +765,7 @@ function FinaleSlide({
       {practiceDay !== null ? (
         <Link
           to="/practice"
-          search={{ day: practiceDay, module: episode.moduleId }}
+          search={{ day: practiceDay, module: episode.moduleId as ModuleId }}
           className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 text-[15px] font-extrabold uppercase tracking-[0.1em] text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98]"
         >
           {es ? "AHORA GRABA TUS AUDIOS" : "NOW RECORD YOUR AUDIOS"} <ArrowRight className="size-5" />
