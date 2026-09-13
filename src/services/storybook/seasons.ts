@@ -9,6 +9,7 @@ import season1Cover from "@/assets/storybook/vale-ep1/cover.jpg";
 import season2Cover from "@/assets/storybook/vale-s2-ep1/cover.jpg";
 import season3Cover from "@/assets/storybook/vale-s3-ep1/cover.jpg";
 import season4Cover from "@/assets/storybook/vale-s4-ep1/cover.jpg";
+import season5Cover from "@/assets/storybook/vale-s5-first-students/cover.jpg";
 
 export type SeasonWeek = 1 | 2 | 3 | 4;
 
@@ -175,6 +176,24 @@ export const STORYBOOK_SEASONS: Season[] = [
       { day: 18, episodeId: "vale-s4-red-riding-hood", teaser: { en: "Little Red Riding Hood", es: "Caperucita Roja" } },
       { day: 19, episodeId: "vale-s4-vale-story", teaser: { en: "Vale tells her story", es: "Vale cuenta su historia" } },
       { day: 20, episodeId: "vale-s4-storyteller", teaser: { en: "The storyteller", es: "La narradora" } },
+    ],
+  },
+  {
+    moduleId: "mixed-tenses",
+    seasonNumber: 5,
+    title: { en: "Season 5 · Vale's school", es: "Temporada 5 · La escuela de Vale" },
+    blurb: {
+      en: "Vale opens her English school. Past, present and future come together.",
+      es: "Vale abre su escuela de inglés. Pasado, presente y futuro se juntan.",
+    },
+    image: season5Cover,
+    imageAlt: { en: "Vale opens her English school", es: "Vale abre su escuela de inglés" },
+    slots: [
+      { day: 1, episodeId: "vale-s5-first-students", teaser: { en: "The first students", es: "Los primeros estudiantes" } },
+      { day: 2, episodeId: "vale-s5-tired-teacher", teaser: { en: "A tired teacher", es: "Una maestra cansada" } },
+      { day: 3, episodeId: "vale-s5-early-morning", teaser: { en: "The early morning", es: "La mañana temprana" } },
+      { day: 4, episodeId: "vale-s5-win-tomorrow", teaser: { en: "Win tomorrow", es: "Ganar mañana" } },
+      { day: 5, episodeId: "vale-s5-healthy-snacks", teaser: { en: "Healthy snacks", es: "Snacks saludables" } },
     ],
   },
 ];
