@@ -384,6 +384,11 @@ function CoverSlide({ episode, es, onStart }: { episode: StorybookEpisode; es: b
         <p className="text-center text-[12px] text-muted-foreground">
           {es ? "Desliza o toca para pasar la página · toca cualquier palabra para ver su significado" : "Swipe or tap to turn the page · tap any word to see its meaning"}
         </p>
+        <p className="text-center text-[12px] text-muted-foreground">
+          {es
+            ? "Copia el vocabulario que no te sepas en tu cuaderno con la estructura frase-palabras de E4CC y luego practica repetir en voz alta imitando al audio hasta que te salga similar."
+            : "Copy the vocabulary you don’t know into your notebook using the E4CC sentence-words structure, then practice repeating out loud imitating the audio until it sounds similar."}
+        </p>
       </div>
     </div>
   );
