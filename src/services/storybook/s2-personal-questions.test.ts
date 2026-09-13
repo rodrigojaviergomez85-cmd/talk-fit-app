@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { STORYBOOK_EPISODES } from "./index";
-import { matchStorySayIt } from "@/lib/story-say-match";
+import { compareStorySay } from "@/lib/story-say-match";
 
 const season2 = STORYBOOK_EPISODES.filter((e) => e.id.startsWith("vale-s2-"));
 
@@ -24,10 +24,10 @@ describe("season 2 personal questions", () => {
 
   it("accepts a personal answer and rejects the bare frame or the question", () => {
     const target = "I’m going to study *";
-    expect(matchStorySayIt(target, "I'm going to study math with my sister")).toBe("good");
-    expect(matchStorySayIt(target, "I am going to study English")).toBe("good");
-    expect(matchStorySayIt(target, "I'm going to study")).toBe("tryAgain");
-    expect(matchStorySayIt(target, "What are you going to study tomorrow?")).toBe("tryAgain");
-    expect(matchStorySayIt(target, "")).toBe("tryAgain");
+    expect(compareStorySay(target, "I'm going to study math with my sister").status).toBe("good");
+    expect(compareStorySay(target, "I am going to study English").status).toBe("good");
+    expect(compareStorySay(target, "I'm going to study").status).toBe("tryAgain");
+    expect(compareStorySay(target, "What are you going to study tomorrow?").status).toBe("tryAgain");
+    expect(compareStorySay(target, "").status).toBe("tryAgain");
   });
 });
