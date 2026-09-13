@@ -160,7 +160,7 @@ export const VALE_S3_FREE_SATURDAY: StorybookEpisode = {
       imageAlt: "El teléfono de Vale muestra un mensaje de Kat.",
       text: "Vale's phone rings. Kat writes: \"We are going to the beach tomorrow!\"",
       es: "Suena el teléfono de Vale. Kat escribe: «¡Vamos a la playa mañana!»",
-      speaker: "narrator",
+      speaker: "kat",
       words: [
         { word: "phone", es: "teléfono" },
         { word: "writes", es: "escribe" },
