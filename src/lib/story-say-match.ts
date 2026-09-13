@@ -115,3 +115,13 @@ export function compareStorySay(
 
 /** Export for tests / endpoint validation. */
 export const STORY_SAY_WILDCARD = WILDCARD;
+
+/** Build a learner-facing hint for the expected spoken phrase.
+ * Wildcards become an ellipsis so the learner knows where their own word goes.
+ */
+export function buildSayItHint(target: string, es: boolean): { label: string; hint: string } {
+  const cleaned = target.trim().replace(/\s+/g, " ");
+  const hint = cleaned.replace(/\*/g, "...");
+  const label = es ? "Dilo así:" : "Try say:";
+  return { label, hint };
+}
