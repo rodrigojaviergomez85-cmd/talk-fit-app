@@ -55,8 +55,8 @@ export const VALE_S3_TEAM_RULES: StorybookEpisode = {
       id: "s2",
       image: s2,
       imageAlt: "Ana le muestra las reglas en un pizarrón.",
-      text: "Ana says: \"We don't eat at our desks.\"",
-      es: "Ana dice: «No comemos en nuestros escritorios.»",
+      text: "Ana shows the rules: \"We don't eat at our desks.\"",
+      es: "Ana muestra las reglas: «No comemos en nuestros escritorios.»",
       speaker: "ana",
       words: [
         { word: "rules", es: "reglas" },
