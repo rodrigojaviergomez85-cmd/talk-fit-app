@@ -41,6 +41,7 @@ export const VALE_S5_HEALTHY_SNACKS: StorybookEpisode = {
       image: s1,
       imageAlt: "Es la hora de la merienda en la escuela.",
       text: "It was snack time at the school.",
+      es: "Era la hora de la merienda en la escuela.",
       words: [
         { word: "snack", es: "merienda" },
         { word: "school", es: "escuela" }
@@ -52,6 +53,7 @@ export const VALE_S5_HEALTHY_SNACKS: StorybookEpisode = {
       image: s2,
       imageAlt: "Kat abre su bolsa de almuerzo con manzanas y nueces.",
       text: "Kat opened her lunch bag. Inside there were apples and nuts.",
+      es: "Kat abrió su bolsa de almuerzo. Dentro había manzanas y nueces.",
       speaker: "kat",
       words: [
         { word: "lunch", es: "almuerzo" },
@@ -65,6 +67,7 @@ export const VALE_S5_HEALTHY_SNACKS: StorybookEpisode = {
       image: s3,
       imageAlt: "Kat dice que siempre trae snacks saludables.",
       text: "I always bring healthy snacks, she said.",
+      es: "«Siempre traigo snacks saludables», dijo ella.",
       speaker: "kat",
       words: [
         { word: "bring", es: "traigo" },
@@ -78,6 +81,7 @@ export const VALE_S5_HEALTHY_SNACKS: StorybookEpisode = {
       image: s4,
       imageAlt: "Vale toma una galleta de su escritorio.",
       text: "Vale took a cookie from her desk.",
+      es: "Vale tomó una galleta de su escritorio.",
       speaker: "vale",
       words: [
         { word: "took", es: "tomó" },
@@ -91,6 +95,7 @@ export const VALE_S5_HEALTHY_SNACKS: StorybookEpisode = {
       image: s5,
       imageAlt: "Kat explica que la fruta le da energía.",
       text: "Cookies taste good, but fruit gives me energy, Kat said.",
+      es: "«Las galletas saben rico, pero la fruta me da energía», dijo Kat.",
       speaker: "kat",
       words: [
         { word: "taste", es: "saben" },
@@ -104,6 +109,7 @@ export const VALE_S5_HEALTHY_SNACKS: StorybookEpisode = {
       image: s6,
       imageAlt: "Los estudiantes miran las manzanas de Kat.",
       text: "The students looked at Kat's apples.",
+      es: "Los estudiantes miraron las manzanas de Kat.",
       words: [
         { word: "looked at", es: "miraron" },
         { word: "apples", es: "manzanas" }
@@ -115,6 +121,7 @@ export const VALE_S5_HEALTHY_SNACKS: StorybookEpisode = {
       image: s7,
       imageAlt: "Un estudiante pregunta si puede comer una manzana.",
       text: "One boy asked, Can I have one?",
+      es: "Un chico preguntó: «¿Puedo tener una?».",
       words: [
         { word: "asked", es: "preguntó" }
       ],
@@ -125,6 +132,7 @@ export const VALE_S5_HEALTHY_SNACKS: StorybookEpisode = {
       image: s8,
       imageAlt: "Kat comparte una manzana con él.",
       text: "Kat shared an apple with him.",
+      es: "Kat compartió una manzana con él.",
       speaker: "kat",
       words: [
         { word: "shared", es: "compartió" },
@@ -137,6 +145,7 @@ export const VALE_S5_HEALTHY_SNACKS: StorybookEpisode = {
       image: s9,
       imageAlt: "Vale come una manzana y sonríe.",
       text: "Vale ate an apple too. This is sweet and strong.",
+      es: "Vale también comió una manzana. «Esto es dulce y fuerte».",
       speaker: "vale",
       words: [
         { word: "ate", es: "comió" },
@@ -150,6 +159,7 @@ export const VALE_S5_HEALTHY_SNACKS: StorybookEpisode = {
       image: s10,
       imageAlt: "Vale dice que la comida saludable la ayuda a pensar.",
       text: "Healthy food helps me think, Vale said.",
+      es: "«La comida saludable me ayuda a pensar», dijo Vale.",
       speaker: "vale",
       words: [
         { word: "food", es: "comida" },

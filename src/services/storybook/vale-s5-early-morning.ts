@@ -41,6 +41,7 @@ export const VALE_S5_EARLY_MORNING: StorybookEpisode = {
       image: s1,
       imageAlt: "El sol sale y Vale despierta antes de la alarma.",
       text: "The sun came up. Vale woke up before the alarm.",
+      es: "El sol salió. Vale se despertó antes de la alarma.",
       words: [
         { word: "sun", es: "sol" },
         { word: "came up", es: "salió" },
@@ -54,6 +55,7 @@ export const VALE_S5_EARLY_MORNING: StorybookEpisode = {
       image: s2,
       imageAlt: "Vale se estira en la cama y sonríe.",
       text: "She stretched her arms and smiled.",
+      es: "Ella se estiró los brazos y sonrió.",
       speaker: "vale",
       words: [
         { word: "stretched", es: "estiró" },
@@ -67,6 +69,7 @@ export const VALE_S5_EARLY_MORNING: StorybookEpisode = {
       image: s3,
       imageAlt: "Vale se siente genial tras ocho horas de sueño.",
       text: "I slept eight hours. I feel great! Vale said.",
+      es: "«Dormí ocho horas. ¡Me siento genial!», dijo Vale.",
       speaker: "vale",
       words: [
         { word: "slept", es: "dormí" },
@@ -80,6 +83,7 @@ export const VALE_S5_EARLY_MORNING: StorybookEpisode = {
       image: s4,
       imageAlt: "Vale come fruta y bebe agua.",
       text: "She ate fruit and drank water.",
+      es: "Ella comió fruta y bebió agua.",
       speaker: "vale",
       words: [
         { word: "fruit", es: "fruta" },
@@ -92,6 +96,7 @@ export const VALE_S5_EARLY_MORNING: StorybookEpisode = {
       image: s5,
       imageAlt: "Vale camina a la escuela con energía.",
       text: "Vale walked to school with energy.",
+      es: "Vale caminó a la escuela con energía.",
       speaker: "vale",
       words: [
         { word: "walked", es: "caminó" },
@@ -105,6 +110,7 @@ export const VALE_S5_EARLY_MORNING: StorybookEpisode = {
       image: s6,
       imageAlt: "Los estudiantes esperan en la puerta.",
       text: "The students waited at the door.",
+      es: "Los estudiantes esperaron en la puerta.",
       words: [
         { word: "students", es: "estudiantes" },
         { word: "waited", es: "esperaron" },
@@ -117,6 +123,7 @@ export const VALE_S5_EARLY_MORNING: StorybookEpisode = {
       image: s7,
       imageAlt: "Los estudiantes gritan good morning con alegría.",
       text: "Good morning, teacher! they shouted.",
+      es: "«¡Good morning, teacher!», gritaron.",
       words: [
         { word: "shouted", es: "gritaron" }
       ],
@@ -127,6 +134,7 @@ export const VALE_S5_EARLY_MORNING: StorybookEpisode = {
       image: s8,
       imageAlt: "Vale ríe y dice que ama las mañanas así.",
       text: "Vale laughed. I love mornings like this.",
+      es: "Vale se rió. «Amo las mañanas como esta».",
       speaker: "vale",
       words: [
         { word: "laughed", es: "se rió" },
@@ -141,6 +149,7 @@ export const VALE_S5_EARLY_MORNING: StorybookEpisode = {
       image: s9,
       imageAlt: "La primera clase es increíble.",
       text: "The first class was amazing.",
+      es: "La primera clase fue increíble.",
       words: [
         { word: "first", es: "primera" },
         { word: "class", es: "clase" },
@@ -153,6 +162,7 @@ export const VALE_S5_EARLY_MORNING: StorybookEpisode = {
       image: s10,
       imageAlt: "Vale le dice a Dani que el sueño es su superpoder.",
       text: "After class, Vale told Dani: Sleep is my superpower.",
+      es: "Después de clase, Vale le dijo a Dani: «El sueño es mi superpoder».",
       speaker: "vale",
       words: [
         { word: "told", es: "le dijo a" },

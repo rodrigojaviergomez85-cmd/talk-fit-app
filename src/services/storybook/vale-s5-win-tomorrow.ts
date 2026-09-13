@@ -41,6 +41,7 @@ export const VALE_S5_WIN_TOMORROW: StorybookEpisode = {
       image: s1,
       imageAlt: "El teléfono de Vale suena a las 9:45 p.m.",
       text: "Vale's phone beeped at 9:45 p.m.",
+      es: "El teléfono de Vale pitó a las 9:45 p.m.",
       words: [
         { word: "phone", es: "teléfono" },
         { word: "beeped", es: "pitó" }
@@ -52,6 +53,7 @@ export const VALE_S5_WIN_TOMORROW: StorybookEpisode = {
       image: s2,
       imageAlt: "Mateo envía un mensaje sobre una fiesta.",
       text: "A message from Mateo said: Are you coming to the party?",
+      es: "Un mensaje de Mateo decía: «¿Vas a venir a la fiesta?».",
       speaker: "mateo",
       words: [
         { word: "message", es: "mensaje" },
@@ -64,6 +66,7 @@ export const VALE_S5_WIN_TOMORROW: StorybookEpisode = {
       image: s3,
       imageAlt: "Vale revisa su horario antes de responder.",
       text: "Vale looked at her schedule. Tomorrow I teach early.",
+      es: "Vale miró su horario. «Mañana doy clases temprano».",
       speaker: "vale",
       words: [
         { word: "schedule", es: "horario" },
@@ -77,6 +80,7 @@ export const VALE_S5_WIN_TOMORROW: StorybookEpisode = {
       image: s4,
       imageAlt: "Vale escribe que necesita ganar mañana.",
       text: "She typed: Not tonight. I need to win tomorrow.",
+      es: "Ella escribió: «No esta noche. Necesito ganar mañana».",
       speaker: "vale",
       words: [
         { word: "typed", es: "escribió" },
@@ -89,6 +93,7 @@ export const VALE_S5_WIN_TOMORROW: StorybookEpisode = {
       image: s5,
       imageAlt: "Mateo envía un emoji de pulgar arriba.",
       text: "Mateo sent a thumbs up emoji.",
+      es: "Mateo envió un emoji de pulgar arriba.",
       speaker: "mateo",
       words: [
         { word: "sent", es: "envió" }
@@ -100,6 +105,7 @@ export const VALE_S5_WIN_TOMORROW: StorybookEpisode = {
       image: s6,
       imageAlt: "Vale prepara su mochila y ropa.",
       text: "Vale prepared her backpack and clothes.",
+      es: "Vale preparó su mochila y ropa.",
       speaker: "vale",
       words: [
         { word: "prepared", es: "preparó" },
@@ -113,6 +119,7 @@ export const VALE_S5_WIN_TOMORROW: StorybookEpisode = {
       image: s7,
       imageAlt: "Vale escribe el plan de mañana en su libreta.",
       text: "She wrote tomorrow's plan in a notebook.",
+      es: "Ella escribió el plan de mañana en una libreta.",
       speaker: "vale",
       words: [
         { word: "plan", es: "plan" },
@@ -125,6 +132,7 @@ export const VALE_S5_WIN_TOMORROW: StorybookEpisode = {
       image: s8,
       imageAlt: "A las 10:00 p.m., Vale cierra los ojos.",
       text: "At 10:00, she closed her eyes.",
+      es: "A las 10:00, ella cerró los ojos.",
       speaker: "vale",
       words: [
         { word: "closed", es: "cerró" },
@@ -137,6 +145,7 @@ export const VALE_S5_WIN_TOMORROW: StorybookEpisode = {
       image: s9,
       imageAlt: "Al día siguiente, Vale llega llena de energía.",
       text: "The next day, Vale arrived full of energy.",
+      es: "Al día siguiente, Vale llegó llena de energía.",
       speaker: "vale",
       words: [
         { word: "next day", es: "al día siguiente" },
@@ -150,6 +159,7 @@ export const VALE_S5_WIN_TOMORROW: StorybookEpisode = {
       image: s10,
       imageAlt: "Vale le dice a sus estudiantes que el descanso es su estrategia.",
       text: "Rest is my strategy, she told her students.",
+      es: "«El descanso es mi estrategia», les dijo a sus estudiantes.",
       speaker: "vale",
       words: [
         { word: "rest", es: "descanso" },

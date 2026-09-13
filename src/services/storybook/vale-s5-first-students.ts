@@ -41,6 +41,7 @@ export const VALE_S5_FIRST_STUDENTS: StorybookEpisode = {
       image: s1,
       imageAlt: "Vale frente a un pequeño edificio blanco.",
       text: "Vale stood in front of a small white building.",
+      es: "Vale estaba frente a un pequeño edificio blanco.",
       speaker: "vale",
       words: [
         { word: "stood", es: "estuvo" },
@@ -54,6 +55,7 @@ export const VALE_S5_FIRST_STUDENTS: StorybookEpisode = {
       image: s2,
       imageAlt: "Vale mira un letrero con el nombre de la escuela.",
       text: "She looked at a sign that said Vale's English School.",
+      es: "Ella miró un letrero que decía Escuela de inglés de Vale.",
       speaker: "vale",
       words: [
         { word: "looked", es: "miró" },
@@ -67,6 +69,7 @@ export const VALE_S5_FIRST_STUDENTS: StorybookEpisode = {
       image: s3,
       imageAlt: "Dos adolescentes caminan hacia la puerta.",
       text: "Two teenagers walked toward the door.",
+      es: "Dos adolescentes caminaron hacia la puerta.",
       words: [
         { word: "teenagers", es: "adolescentes" },
         { word: "door", es: "puerta" }
@@ -78,6 +81,7 @@ export const VALE_S5_FIRST_STUDENTS: StorybookEpisode = {
       image: s4,
       imageAlt: "Vale saluda a los estudiantes con una sonrisa.",
       text: "Good morning! Welcome to my school, Vale said.",
+      es: "«¡Good morning! Bienvenidos a mi escuela», dijo Vale.",
       speaker: "vale",
       words: [
         { word: "welcome", es: "bienvenidos" },
@@ -90,6 +94,7 @@ export const VALE_S5_FIRST_STUDENTS: StorybookEpisode = {
       image: s5,
       imageAlt: "Los estudiantes sonríen y saludan a Vale.",
       text: "The students smiled. Good morning, teacher!",
+      es: "Los estudiantes sonrieron. «¡Good morning, teacher!».",
       words: [
         { word: "students", es: "estudiantes" },
         { word: "smiled", es: "sonrieron" },
@@ -102,6 +107,7 @@ export const VALE_S5_FIRST_STUDENTS: StorybookEpisode = {
       image: s6,
       imageAlt: "Vale reparte cuadernos y lápices.",
       text: "Vale gave them notebooks and pencils.",
+      es: "Vale les dio cuadernos y lápices.",
       speaker: "vale",
       words: [
         { word: "gave", es: "les dio" },
@@ -115,6 +121,7 @@ export const VALE_S5_FIRST_STUDENTS: StorybookEpisode = {
       image: s7,
       imageAlt: "Vale escribe la primera lección en el pizarrón.",
       text: "She wrote the first lesson on the board.",
+      es: "Ella escribió la primera lección en el pizarrón.",
       speaker: "vale",
       words: [
         { word: "wrote", es: "escribió" },
@@ -129,6 +136,7 @@ export const VALE_S5_FIRST_STUDENTS: StorybookEpisode = {
       image: s8,
       imageAlt: "Los estudiantes copian cada palabra.",
       text: "The students copied every word.",
+      es: "Los estudiantes copiaron cada palabra.",
       words: [
         { word: "copied", es: "copiaron" },
         { word: "every", es: "cada" }
@@ -140,6 +148,7 @@ export const VALE_S5_FIRST_STUDENTS: StorybookEpisode = {
       image: s9,
       imageAlt: "Vale se siente feliz pero cansada al final de la clase.",
       text: "At the end of class, Vale felt happy but tired.",
+      es: "Al final de la clase, Vale se sintió feliz pero cansada.",
       speaker: "vale",
       words: [
         { word: "end", es: "final" },
@@ -153,6 +162,7 @@ export const VALE_S5_FIRST_STUDENTS: StorybookEpisode = {
       image: s10,
       imageAlt: "Vale mira el reloj y decide dormir temprano.",
       text: "She looked at the clock. I need to sleep early tonight.",
+      es: "Ella miró el reloj. «Necesito dormir temprano esta noche».",
       speaker: "vale",
       words: [
         { word: "clock", es: "reloj" },

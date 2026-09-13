@@ -41,6 +41,7 @@ export const VALE_S5_TIRED_TEACHER: StorybookEpisode = {
       image: s1,
       imageAlt: "La alarma suena a las seis de la mañana.",
       text: "The alarm rang at six in the morning.",
+      es: "La alarma sonó a las seis de la mañana.",
       words: [
         { word: "alarm", es: "alarma" },
         { word: "rang", es: "sonó" },
@@ -53,6 +54,7 @@ export const VALE_S5_TIRED_TEACHER: StorybookEpisode = {
       image: s2,
       imageAlt: "Vale abre los ojos y se siente cansada.",
       text: "Vale opened her eyes. I am so tired.",
+      es: "Vale abrió los ojos. «Estoy tan cansada».",
       speaker: "vale",
       words: [
         { word: "eyes", es: "ojos" },
@@ -65,6 +67,7 @@ export const VALE_S5_TIRED_TEACHER: StorybookEpisode = {
       image: s3,
       imageAlt: "Vale bebe café y se lava la cara.",
       text: "She drank coffee and washed her face.",
+      es: "Ella bebió café y se lavó la cara.",
       speaker: "vale",
       words: [
         { word: "coffee", es: "café" },
@@ -78,6 +81,7 @@ export const VALE_S5_TIRED_TEACHER: StorybookEpisode = {
       image: s4,
       imageAlt: "Dani llega temprano y ve a Vale.",
       text: "Dani arrived early. Teacher, are you okay?",
+      es: "Dani llegó temprano. «Teacher, ¿estás bien?».",
       speaker: "dani",
       words: [
         { word: "arrived", es: "llegó" },
@@ -91,6 +95,7 @@ export const VALE_S5_TIRED_TEACHER: StorybookEpisode = {
       image: s5,
       imageAlt: "Vale sonríe y admite que no durmió ocho horas.",
       text: "Vale smiled. I didn't sleep eight hours last night.",
+      es: "Vale sonrió. «No dormí ocho horas anoche».",
       speaker: "vale",
       words: [
         { word: "smiled", es: "sonrió" },
@@ -104,6 +109,7 @@ export const VALE_S5_TIRED_TEACHER: StorybookEpisode = {
       image: s6,
       imageAlt: "Dani abre su cuaderno y comparte su hábito.",
       text: "Dani opened his notebook. I slept eight hours.",
+      es: "Dani abrió su cuaderno. «Dormí ocho horas».",
       speaker: "dani",
       words: [
         { word: "notebook", es: "cuaderno" },
@@ -116,6 +122,7 @@ export const VALE_S5_TIRED_TEACHER: StorybookEpisode = {
       image: s7,
       imageAlt: "Dani explica que el sueño es combustible.",
       text: "That's my habit, Dani said. Sleep is fuel.",
+      es: "«Ese es mi hábito», dijo Dani. «El sueño es combustible».",
       speaker: "dani",
       words: [
         { word: "habit", es: "hábito" },
@@ -128,6 +135,7 @@ export const VALE_S5_TIRED_TEACHER: StorybookEpisode = {
       image: s8,
       imageAlt: "Vale asiente y decide acostarse temprano.",
       text: "Vale nodded. Tonight I am going to bed early.",
+      es: "Vale asintió. «Esta noche me voy a acostar temprano».",
       speaker: "vale",
       words: [
         { word: "nodded", es: "asintió" },
@@ -140,6 +148,7 @@ export const VALE_S5_TIRED_TEACHER: StorybookEpisode = {
       image: s9,
       imageAlt: "La clase empieza y todos escuchan.",
       text: "The class started. Everyone listened.",
+      es: "La clase empezó. Todos escucharon.",
       words: [
         { word: "started", es: "empezó" },
         { word: "listened", es: "escucharon" }
@@ -151,6 +160,7 @@ export const VALE_S5_TIRED_TEACHER: StorybookEpisode = {
       image: s10,
       imageAlt: "En el receso, Vale bebe agua y respira profundo.",
       text: "At break time, Vale drank water and breathed.",
+      es: "En el receso, Vale bebió agua y respiró.",
       speaker: "vale",
       words: [
         { word: "break", es: "receso" },
