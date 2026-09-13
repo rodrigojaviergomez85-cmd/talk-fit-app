@@ -11,7 +11,7 @@
  */
 
 export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy" | "earnest" | "warm";
-export type RequestedVoice = "neutral" | "female" | "femaleBright" | "femaleMature" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm" | "shyBoy" | "teenBoy";
+export type RequestedVoice = "neutral" | "female" | "femaleBright" | "femaleMature" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm" | "shyBoy" | "teenBoy" | "elder";
 
 /** Normalised request: `voice` is the provider voice selected below. */
 export type ClipSpec = { text: string; voice: string; tone: Tone };
@@ -38,6 +38,8 @@ export const VOICE_MAP: Record<RequestedVoice, string> = {
   shyBoy: "sage",
   /** Earnest teenage student — storybook characters like Dani; distinct from Beto/Mateo/Dylan. */
   teenBoy: "verse",
+  /** Older, kind neighbourhood man — storybook characters like don Tito; distinct from Luis. */
+  elder: "ballad",
 };
 export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story", "cheerful", "youthful", "shy", "earnest", "warm"];
 
