@@ -76,9 +76,15 @@ function matchFrame(transcriptWords: string[], targetWords: string[]): boolean {
  *   are ignored at the start/end).
  * - One or more `*` → the fixed frame must appear in order; each `*` covers at
  *   least one spoken word in that slot.
+ * - With `options.allowShortAnswer` and a wildcard target, a bare 1–2 word
+ *   answer also passes (e.g. "Rodrigo" for "My name is *").
  * - Empty or unrecognizable transcripts always return "tryAgain".
  */
-export function compareStorySay(target: string, transcript: string): StorySayResult {
+export function compareStorySay(
+  target: string,
+  transcript: string,
+  options?: { allowShortAnswer?: boolean },
+): StorySayResult {
   // Protect the wildcard marker because normalizeForCompare strips punctuation
   // and lowercases everything.
   const normalizedTarget = normalizeForCompare(target.replace(/\*/g, ` ${WILDCARD_TOKEN} `)).replace(
@@ -94,7 +100,10 @@ export function compareStorySay(target: string, transcript: string): StorySayRes
 
   const hasWildcard = targetWords.includes(WILDCARD);
   const matched = hasWildcard
-    ? matchFrame(transcriptWords, targetWords)
+    ? matchFrame(transcriptWords, targetWords) ||
+      (options?.allowShortAnswer === true &&
+        transcriptWords.length <= 2 &&
+        !transcriptWords.includes(WILDCARD))
     : containsContiguous(transcriptWords, targetWords);
 
   return { status: matched ? "good" : "tryAgain", matched };

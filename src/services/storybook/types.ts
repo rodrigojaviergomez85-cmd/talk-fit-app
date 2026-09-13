@@ -31,6 +31,8 @@ export type StorybookScene = {
 export type StorybookSayItCheck = {
   /** Expected spoken phrase. Use `*` for a learner-supplied slot, e.g. "My name is *". */
   target: string;
+  /** When true, a bare 1–2 word answer also passes (e.g. "Rodrigo" for "My name is *"). */
+  allowShortAnswer?: boolean;
 };
 
 export type StorybookQuiz = {
