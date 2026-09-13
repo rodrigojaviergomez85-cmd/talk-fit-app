@@ -16,3 +16,18 @@
 - [x] Ep 4 arte completo (oficina: Mateo/Kat/boss, noticia de Vale; QA de anatomía y extras)
 - [x] Ep 5 arte completo (llamada a la escuela, reto del jefe, recap del día; QA de identidad y familia)
 - [x] QA final T4 Fase A: 615 tests, tsgo, rutas y móvil 394px sin errores
+
+## Temporada 4 — Fase B (ep 6-10)
+- [ ] Guiones ep 6-10 (Did/Didn't, 12 escenas, 45-50 palabras, misterio del periodista)
+- [ ] Arte ep 6-10 (cover + s1-s12, <300KB, QA visual)
+- [ ] Registro + tests + tsgo + móvil
+
+## Temporada 4 — Fase C (ep 11-15)
+- [ ] Guiones ep 11-15 (pasado progresivo)
+- [ ] Arte ep 11-15
+- [ ] Registro + QA
+
+## Temporada 4 — Fase D (ep 16-20)
+- [ ] Guiones ep 16-20 (Caperucita, narración, revelación del misterio)
+- [ ] Arte ep 16-20
+- [ ] Registro + QA + tarjeta Método Natural + audiolibros
