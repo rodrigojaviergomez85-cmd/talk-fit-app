@@ -11,7 +11,7 @@ import {
   isDayUnlocked,
 } from "@/services/storybook";
 import { isEpisodeSeen } from "@/services/storybook/storybook-progress";
-import type { JourneyState } from "@/lib/types";
+import type { JourneyState, ModuleId } from "@/lib/types";
 
 /**
  * Day hub: one place, two choices. The optional story (natural method)
