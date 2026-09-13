@@ -53,6 +53,7 @@ Nueva ruta `/day/$moduleId/$day` con dos tarjetas grandes:
 - **Opción 2 (audios):** etiqueta "OBLIGATORIO", abre la práctica normal (`/practice?module=…&day=…`).
 - Si ya vio el episodio, la tarjeta 1 muestra un check discreto ("Ya lo viste · Ver otra vez") y baja de protagonismo, pero sigue accesible.
 - Si ese día aún no tiene episodio producido, o el módulo no tiene temporada, solo aparece la opción de audios (sin tarjeta vacía).
+- Alcance de la prueba: la pantalla de opciones aparece únicamente para `basic-zero` días 1–5. Fuera de ese rango, el botón de Inicio conserva el comportamiento actual (directo a `/practice`).
 - Textos en inglés/español según el idioma elegido.
 
 ### 3. Al terminar la historia
