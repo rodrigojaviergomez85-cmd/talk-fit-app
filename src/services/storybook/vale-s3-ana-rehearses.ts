@@ -70,7 +70,7 @@ export const VALE_S3_ANA_REHEARSES: StorybookEpisode = {
       imageAlt: "Ana cuenta con los dedos.",
       text: "Ana answers: \"I practice three times a week.\"",
       es: "Ana responde: «Practico tres veces por semana.»",
-      speaker: "female",
+      speaker: "ana",
       words: [
         { word: "three times", es: "tres veces" },
         { word: "a week", es: "por semana" },
@@ -106,7 +106,7 @@ export const VALE_S3_ANA_REHEARSES: StorybookEpisode = {
       imageAlt: "Ana se pone nerviosa y respira.",
       text: "Ana says: \"I get nervous, but I believe in myself.\"",
       es: "Ana dice: «Me pongo nerviosa, pero creo en mí misma.»",
-      speaker: "female",
+      speaker: "ana",
       words: [
         { word: "nervous", es: "nerviosa" },
         { word: "believe", es: "creer" },
@@ -119,7 +119,7 @@ export const VALE_S3_ANA_REHEARSES: StorybookEpisode = {
       imageAlt: "Ana muestra el volante del casting.",
       text: "\"Next Friday I am going to sing at a casting,\" she says.",
       es: "«El próximo viernes voy a cantar en un casting», dice.",
-      speaker: "female",
+      speaker: "ana",
       words: [
         { word: "Next Friday", es: "el próximo viernes" },
         { word: "going to", es: "voy a" },
@@ -145,7 +145,7 @@ export const VALE_S3_ANA_REHEARSES: StorybookEpisode = {
       imageAlt: "Ana y Vale chocan las manos.",
       text: "Ana smiles: \"You will be a great teacher one day.\"",
       es: "Ana sonríe: «Un día vas a ser una gran maestra.»",
-      speaker: "female",
+      speaker: "ana",
       words: [
         { word: "smiles", es: "sonríe" },
         { word: "great", es: "grande / genial" },

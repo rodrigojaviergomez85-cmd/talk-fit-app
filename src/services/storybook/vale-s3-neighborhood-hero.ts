@@ -118,7 +118,7 @@ export const VALE_S3_NEIGHBORHOOD_HERO: StorybookEpisode = {
       imageAlt: "Don Tito muestra su teléfono con una app.",
       text: "He answers: \"I study on my phone. English is easy with practice.\"",
       es: "Él responde: «Estudio en mi teléfono. El inglés es fácil con práctica.»",
-      speaker: "male",
+      speaker: "tito",
       words: [
         { word: "phone", es: "teléfono" },
         { word: "easy", es: "fácil" },
@@ -131,7 +131,7 @@ export const VALE_S3_NEIGHBORHOOD_HERO: StorybookEpisode = {
       imageAlt: "Don Tito habla de su sueño.",
       text: "\"One day I will speak with tourists,\" he says.",
       es: "«Un día voy a hablar con turistas», dice.",
-      speaker: "male",
+      speaker: "tito",
       words: [
         { word: "One day", es: "un día" },
         { word: "will", es: "voy a / futuro" },

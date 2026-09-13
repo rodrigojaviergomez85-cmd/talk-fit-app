@@ -108,7 +108,7 @@ export const VALE_S3_ROUTINE_CHALLENGE: StorybookEpisode = {
       imageAlt: "Ana describe a Vale con cariño.",
       text: "Ana says: \"She studies English every night. She never gives up.\"",
       es: "Ana dice: «Ella estudia inglés todas las noches. Nunca se rinde.»",
-      speaker: "female",
+      speaker: "ana",
       words: [
         { word: "studies", es: "estudia" },
         { word: "never", es: "nunca" },
@@ -156,7 +156,7 @@ export const VALE_S3_ROUTINE_CHALLENGE: StorybookEpisode = {
       imageAlt: "Ana invita a Vale al casting con un volante.",
       text: "Then Ana looks at Vale: \"Come with me to the casting. I need you.\"",
       es: "Luego Ana mira a Vale: «Ven conmigo al casting. Te necesito.»",
-      speaker: "female",
+      speaker: "ana",
       words: [
         { word: "Come with me", es: "ven conmigo" },
         { word: "need", es: "necesitar" },

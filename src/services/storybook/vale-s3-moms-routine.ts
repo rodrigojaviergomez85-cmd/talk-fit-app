@@ -118,7 +118,7 @@ export const VALE_S3_MOMS_ROUTINE: StorybookEpisode = {
       imageAlt: "La mamá responde con orgullo.",
       text: "Her mom answers: \"Because I love my family.\"",
       es: "Su mamá responde: «Porque amo a mi familia.»",
-      speaker: "female",
+      speaker: "mom",
       words: [
         { word: "answers", es: "responde" },
         { word: "Because", es: "porque" },
