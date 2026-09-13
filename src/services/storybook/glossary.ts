@@ -161,6 +161,7 @@ export const BASE_GLOSSARY: Record<string, string> = {
   dancing: "bailar",
   disciplined: "disciplinada / disciplinado",
   dylan: "Dylan",
+  dani: "Dani",
   everybody: "todos",
   everywhere: "por todas partes",
   every: "cada / todos los",

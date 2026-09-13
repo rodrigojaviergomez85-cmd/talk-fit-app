@@ -63,6 +63,11 @@ import { VALE_S4_WORK_YESTERDAY } from "./vale-s4-work-yesterday";
 import { VALE_S4_AFTER_WORK } from "./vale-s4-after-work";
 import { VALE_S4_HOW_WAS_YOUR_DAY } from "./vale-s4-how-was-your-day";
 import { VALE_S4_YESTERDAY_CHALLENGE } from "./vale-s4-yesterday-challenge";
+import { VALE_S4_FIRST_SATURDAY } from "./vale-s4-first-saturday";
+import { VALE_S4_KATS_DAY_OFF } from "./vale-s4-kats-day-off";
+import { VALE_S4_MATEO_FORGOT } from "./vale-s4-mateo-forgot";
+import { VALE_S4_LUIS_QUESTIONS } from "./vale-s4-luis-questions";
+import { VALE_S4_WEEK2_CHALLENGE } from "./vale-s4-week2-challenge";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -131,6 +136,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_S4_AFTER_WORK,
   VALE_S4_HOW_WAS_YOUR_DAY,
   VALE_S4_YESTERDAY_CHALLENGE,
+  VALE_S4_FIRST_SATURDAY,
+  VALE_S4_KATS_DAY_OFF,
+  VALE_S4_MATEO_FORGOT,
+  VALE_S4_LUIS_QUESTIONS,
+  VALE_S4_WEEK2_CHALLENGE,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
