@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, ChevronLeft, Loader2, Play, Sparkles, Star, Volume2, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronLeft, Loader2, Play, RotateCcw, Sparkles, Star, Volume2, X } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { SlowWordPanel } from "@/components/fluency/SlowWordPanel";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
@@ -93,6 +93,13 @@ export function StorybookPlayer({
   const [saidIt, setSaidIt] = useState<Record<string, boolean>>({});
   const [quizDone, setQuizDone] = useState<Record<string, boolean>>({});
   const [showExit, setShowExit] = useState(false);
+  /** Listening speed chosen by the learner; kept for the whole episode. */
+  const [sceneRate, setSceneRate] = useState(1);
+  const sceneRateRef = useRef(1);
+  const setRate = (rate: number) => {
+    sceneRateRef.current = rate;
+    setSceneRate(rate);
+  };
   const touchX = useRef<number | null>(null);
 
   /** Module day this episode matches — used for the "record your audios" shortcut. */
@@ -125,7 +132,11 @@ export function StorybookPlayer({
     AudioService.stop();
     let alive = true;
     if (slide.kind === "scene")
-      AudioService.speak(slide.scene.text, { voice: speakerVoice(slide.scene.speaker), tone: speakerTone(slide.scene.speaker) });
+      AudioService.speak(slide.scene.text, {
+        rate: sceneRateRef.current,
+        voice: speakerVoice(slide.scene.speaker),
+        tone: speakerTone(slide.scene.speaker),
+      });
     if (slide.kind === "quiz") {
       // Guaranteed listening: the question always plays on its own, even if the
       // learner arrives fast. A short delay lets the previous audio fully stop.
@@ -242,6 +253,8 @@ export function StorybookPlayer({
               voice={episode.voice}
               es={es}
               flip={idx % 2 === 0}
+              rate={sceneRate}
+              onRateChange={setRate}
               onLearnWord={learnWord}
             />
           ) : null}
@@ -473,6 +486,8 @@ function SceneSlide({
   voice,
   es,
   flip,
+  rate,
+  onRateChange,
   onLearnWord,
 }: {
   scene: StorybookScene;
@@ -480,9 +495,17 @@ function SceneSlide({
   voice: "female" | "male" | "girl" | undefined;
   es: boolean;
   flip: boolean;
+  rate: number;
+  onRateChange: (rate: number) => void;
   onLearnWord: (word: string, meaning: string) => void;
 }) {
   const [showEs, setShowEs] = useState(false);
+  const [showSpeeds, setShowSpeeds] = useState(false);
+
+  const play = (speed: number) => {
+    AudioService.stop();
+    AudioService.speak(scene.text, { rate: speed, voice: speakerVoice(scene.speaker), tone: speakerTone(scene.speaker) });
+  };
 
   return (
     <div className="overflow-hidden rounded-3xl border border-border bg-card">
@@ -519,13 +542,22 @@ function SceneSlide({
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => {
-              AudioService.stop();
-              AudioService.speak(scene.text, { voice: speakerVoice(scene.speaker), tone: speakerTone(scene.speaker) });
-            }}
+            onClick={() => play(rate)}
             className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border border-border px-3 text-[12px] font-bold uppercase tracking-[0.1em] text-foreground"
           >
             <Volume2 className="size-4" /> {es ? "Escuchar" : "Listen"}
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowSpeeds((v) => !v)}
+            aria-label={es ? "Cambiar velocidad" : "Change speed"}
+            aria-expanded={showSpeeds}
+            className={cn(
+              "inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground",
+              showSpeeds && "border-primary text-primary",
+            )}
+          >
+            <RotateCcw className="size-4" />
           </button>
           <button
             type="button"
@@ -535,6 +567,32 @@ function SceneSlide({
             {showEs ? "English" : "Español"}
           </button>
         </div>
+
+        {showSpeeds ? (
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
+              {es ? "Velocidad" : "Speed"}
+            </span>
+            {[0.5, 0.75, 1].map((speed) => (
+              <button
+                key={speed}
+                type="button"
+                onClick={() => {
+                  onRateChange(speed);
+                  play(speed);
+                }}
+                className={cn(
+                  "inline-flex min-h-[36px] items-center justify-center rounded-xl border px-3 text-[12px] font-bold tabular-nums",
+                  rate === speed
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border text-muted-foreground",
+                )}
+              >
+                {speed}x
+              </button>
+            ))}
+          </div>
+        ) : null}
 
         {showEs ? <p className="text-[14px] font-semibold text-muted-foreground">{scene.es}</p> : null}
       </div>
