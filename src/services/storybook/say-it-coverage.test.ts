@@ -15,6 +15,12 @@ const UNGRADED_AFFIRMATIONS = new Set([
   "Mistakes are part of the process. I'll continue.",
   "We won the challenge. We are champions.",
   "A problem is not the end. I love challenges.",
+  "You are amazing.",
+  "Everything is possible with effort.",
+  "I am nervous, but I can try.",
+  "I am calm. I can do it.",
+  // Fully open prompt with no fixed frame to grade against.
+  "I am… and…",
 ]);
 
 describe("storybook say-it validation coverage", () => {
