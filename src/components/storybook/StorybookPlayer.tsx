@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, ChevronLeft, Lock, Play, Sparkles, Star, Volume2, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronLeft, Play, Sparkles, Star, Volume2, X } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { SlowWordPanel } from "@/components/fluency/SlowWordPanel";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
@@ -10,13 +10,11 @@ import { tokenizeWords } from "@/lib/syllables";
 import { AudioService } from "@/services/audio-service";
 import type { ModelVoice } from "@/services/audio-service";
 import type { ModelTone } from "@/lib/model-tone";
-import { getNextEpisodeSlot, getSeason } from "@/services/storybook";
+import { getSeason } from "@/services/storybook";
 import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
-import type { NextEpisodeInfo } from "@/services/storybook";
-import { JourneyService } from "@/services/journey-service";
-import type { JourneyState, ModuleId, Recording } from "@/lib/types";
+import type { ModuleId, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type Slide =
@@ -89,23 +87,13 @@ export function StorybookPlayer({
   const [notebook, setNotebook] = useState<Record<string, string>>({});
   const [saidIt, setSaidIt] = useState<Record<string, boolean>>({});
   const [quizDone, setQuizDone] = useState<Record<string, boolean>>({});
-  const [journey, setJourney] = useState<JourneyState | null>(null);
   const touchX = useRef<number | null>(null);
-
-  const nextEpisode = useMemo(() => {
-    if (!journey) return null;
-    return getNextEpisodeSlot(episode.id, journey);
-  }, [episode.id, journey]);
 
   /** Module day this episode matches — used for the "record your audios" shortcut. */
   const practiceDay = useMemo(
     () => getSeason(episode.moduleId)?.slots.find((s) => s.episodeId === episode.id)?.day ?? null,
     [episode.id, episode.moduleId],
   );
-
-  useEffect(() => {
-    setJourney(JourneyService.load());
-  }, []);
 
   const slide = slides[idx]!;
   const total = slides.length;
@@ -235,7 +223,6 @@ export function StorybookPlayer({
               es={es}
               stars={stars}
               notebook={notebook}
-              nextEpisode={nextEpisode}
               practiceDay={practiceDay}
             />
           ) : null}
@@ -665,25 +652,17 @@ function FinaleSlide({
   es,
   stars,
   notebook,
-  nextEpisode,
   practiceDay,
 }: {
   episode: StorybookEpisode;
   es: boolean;
   stars: number;
   notebook: Record<string, string>;
-  nextEpisode: NextEpisodeInfo | null;
   practiceDay: number | null;
 }) {
   const [recorded, setRecorded] = useState(false);
   const [take, setTake] = useState<Recording | null>(null);
   const words = Object.entries(notebook);
-
-  const nextLabel = nextEpisode
-    ? es
-      ? `Episodio ${nextEpisode.day}: ${nextEpisode.teaser.es}`
-      : `Episode ${nextEpisode.day}: ${nextEpisode.teaser.en}`
-    : null;
 
   return (
     <div className="space-y-4">
@@ -781,24 +760,9 @@ function FinaleSlide({
       ) : null}
 
       <p className="rounded-2xl border border-dashed border-primary/50 bg-primary/5 p-3 text-center text-[13px] font-bold text-primary">
-        {es ? episode.cliffhanger.es : episode.cliffhanger.en}
+        {es ? episode.cliffhanger.es : episode.cliffhanger.en}{" "}
+        {es ? "Lo ves en el siguiente día." : "See you the next day."}
       </p>
-
-      {nextLabel ? (
-        nextEpisode?.unlocked && nextEpisode.episodeId ? (
-          <Link
-            to="/natural-method/cuento/$storyId"
-            params={{ storyId: nextEpisode.episodeId }}
-            className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 text-[16px] font-extrabold uppercase tracking-[0.1em] text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98]"
-          >
-            {es ? "Siguiente episodio" : "Next episode"} <ArrowRight className="size-5" />
-          </Link>
-        ) : (
-          <div className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-muted-foreground/40 bg-muted/40 px-6 text-[14px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
-            <Lock className="size-4" /> {nextLabel}
-          </div>
-        )
-      ) : null}
     </div>
   );
 }
