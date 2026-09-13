@@ -729,6 +729,18 @@ function QuizSlide({
                       {es ? "Escuchamos:" : "We heard:"} <span className="font-semibold text-foreground">“{lastTranscript}”</span>
                     </p>
                   ) : null}
+                  {quiz.sayItCheck?.target ? (
+                    <p className="text-[12px] font-semibold text-primary">
+                      {(() => {
+                        const { label, hint } = buildSayItHint(quiz.sayItCheck.target, es);
+                        return (
+                          <>
+                            {label} <span className="font-bold text-foreground">“{hint}”</span>
+                          </>
+                        );
+                      })()}
+                    </p>
+                  ) : null}
                   {errorMsg ? <p className="text-[12px] text-destructive">{errorMsg}</p> : null}
                   {recorder}
                 </div>
