@@ -5,6 +5,8 @@
  */
 import type { JourneyState } from "@/lib/types";
 import { hasUnlimitedAccess } from "@/lib/unlimited-access";
+import season1Cover from "@/assets/storybook/vale-ep1/cover.jpg";
+import season2Cover from "@/assets/storybook/vale-s2-ep1/cover.jpg";
 
 export type SeasonWeek = 1 | 2 | 3 | 4;
 
@@ -78,6 +80,12 @@ export const STORYBOOK_SEASONS: Season[] = [
     moduleId: "simple-future",
     seasonNumber: 2,
     title: { en: "Season 2 · Vale's new challenge", es: "Temporada 2 · El nuevo reto de Vale" },
+    blurb: {
+      en: "New dreams and plans: Vale talks about the future.",
+      es: "Nuevos sueños y planes: Vale habla del futuro.",
+    },
+    image: season2Cover,
+    imageAlt: { en: "Vale ready for her new challenge", es: "Vale lista para su nuevo reto" },
     slots: [
       { day: 1, episodeId: "vale-s2-ready", teaser: { en: "She is ready", es: "Ella está lista" } },
       { day: 2, episodeId: "vale-s2-tomorrow", teaser: { en: "Tomorrow starts now", es: "Mañana empieza ahora" } },
