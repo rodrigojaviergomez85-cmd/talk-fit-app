@@ -1917,6 +1917,7 @@ export function Rep4MakeItYours({
           onRecorded(rec);
         }}
       />
+      <NoAiDisclaimer tKey="rep4.noAi" />
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
       {showDone ? (
