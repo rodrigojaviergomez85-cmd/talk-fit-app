@@ -1662,23 +1662,35 @@ export function Rep2Copy({
       />
 
       {/* Genuine tap on the recorder unlocks Web Audio for iOS/Safari — no prompt, no blocking. */}
-      <div onPointerDownCapture={correctionEnabled ? unlockFeedbackAudio : undefined}>
-        <VoiceRecorder
-          key={retries}
-          label={mine ? t("practice.repeat") : t("practice.record")}
-          maxSeconds={recordSeconds}
-          showTimer
-          onComplete={(rec) => {
-            setMine(rec);
-            setRetryPending(false);
-            onRecorded(rec);
-            if (correctionEnabled && rec.blob) {
-              void checkCorrection(rec.blob);
-            }
-          }}
-        />
-        <Rep2AiDisclaimer />
-      </div>
+      {correctionEnabled && !canRep2Attempt(attempts) ? (
+        <p className="rounded-2xl bg-muted px-4 py-3 text-center text-[13px] font-semibold text-muted-foreground">
+          {t("rep2.attemptsDone")}
+        </p>
+      ) : (
+        <div onPointerDownCapture={correctionEnabled ? unlockFeedbackAudio : undefined}>
+          <VoiceRecorder
+            key={retries}
+            label={mine ? t("practice.repeat") : t("practice.record")}
+            maxSeconds={recordSeconds}
+            showTimer
+            onComplete={(rec) => {
+              setMine(rec);
+              setRetryPending(false);
+              onRecorded(rec);
+              if (correctionEnabled && rec.blob) {
+                setAttempts((a) => a + 1);
+                void checkCorrection(rec.blob);
+              }
+            }}
+          />
+          {correctionEnabled ? (
+            <p className="text-center text-[11px] font-semibold text-muted-foreground">
+              {t("rep2.attemptOf").replace("{n}", String(Math.min(attempts + 1, REP2_MAX_ATTEMPTS)))}
+            </p>
+          ) : null}
+          <Rep2AiDisclaimer />
+        </div>
+      )}
 
       {mine ? <RecordingPlayback url={mine.url} label={t("practice.listenToMe")} /> : null}
 
