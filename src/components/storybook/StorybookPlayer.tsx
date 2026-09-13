@@ -486,6 +486,8 @@ function SceneSlide({
   voice,
   es,
   flip,
+  rate,
+  onRateChange,
   onLearnWord,
 }: {
   scene: StorybookScene;
@@ -493,9 +495,17 @@ function SceneSlide({
   voice: "female" | "male" | "girl" | undefined;
   es: boolean;
   flip: boolean;
+  rate: number;
+  onRateChange: (rate: number) => void;
   onLearnWord: (word: string, meaning: string) => void;
 }) {
   const [showEs, setShowEs] = useState(false);
+  const [showSpeeds, setShowSpeeds] = useState(false);
+
+  const play = (speed: number) => {
+    AudioService.stop();
+    AudioService.speak(scene.text, { rate: speed, voice: speakerVoice(scene.speaker), tone: speakerTone(scene.speaker) });
+  };
 
   return (
     <div className="overflow-hidden rounded-3xl border border-border bg-card">
