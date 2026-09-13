@@ -6,7 +6,7 @@
   1. seleccione la respuesta correcta; y
   2. grabe la respuesta oral solicitada.
 - Si la respuesta oral lleva revisión, habilitarlo después de **“Great job, champion!”** o después de completar los dos intentos y elegir continuar.
-- En las tarjetas de afirmación, mantener **SIGUIENTE** deshabilitado hasta grabar la frase; estas afirmaciones seguirán sin calificación de IA.
+- En las tarjetas de afirmación, mantener **SIGUIENTE** habilitado aunque el estudiante no grabe; estas afirmaciones seguirán opcionales y sin calificación de IA.
 - Conservar el estado completado si el estudiante regresa a una pantalla anterior.
 
 ## Presentación
@@ -15,7 +15,7 @@
 - Añadir una indicación breve debajo según lo pendiente: responder primero o grabar para continuar.
 
 ## Validación
-- Probar preguntas con y sin revisión de voz, respuesta incorrecta, dos intentos y afirmaciones.
+- Probar preguntas con y sin revisión de voz, respuesta incorrecta y dos intentos; confirmar que las afirmaciones permiten avanzar sin grabar.
 - Verificar el flujo completo en celular para confirmar que ninguna práctica requerida se pueda saltar.
 
 ## Archivos principales
