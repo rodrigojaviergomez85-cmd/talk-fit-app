@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, ChevronLeft, Lock, Play, Sparkles, Star, Volume2, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronLeft, Play, Sparkles, Star, Volume2, X } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { SlowWordPanel } from "@/components/fluency/SlowWordPanel";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
@@ -10,13 +10,11 @@ import { tokenizeWords } from "@/lib/syllables";
 import { AudioService } from "@/services/audio-service";
 import type { ModelVoice } from "@/services/audio-service";
 import type { ModelTone } from "@/lib/model-tone";
-import { getNextEpisodeSlot, getSeason } from "@/services/storybook";
+import { getSeason } from "@/services/storybook";
 import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
-import type { NextEpisodeInfo } from "@/services/storybook";
-import { JourneyService } from "@/services/journey-service";
-import type { JourneyState, ModuleId, Recording } from "@/lib/types";
+import type { ModuleId, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type Slide =
@@ -89,23 +87,13 @@ export function StorybookPlayer({
   const [notebook, setNotebook] = useState<Record<string, string>>({});
   const [saidIt, setSaidIt] = useState<Record<string, boolean>>({});
   const [quizDone, setQuizDone] = useState<Record<string, boolean>>({});
-  const [journey, setJourney] = useState<JourneyState | null>(null);
   const touchX = useRef<number | null>(null);
-
-  const nextEpisode = useMemo(() => {
-    if (!journey) return null;
-    return getNextEpisodeSlot(episode.id, journey);
-  }, [episode.id, journey]);
 
   /** Module day this episode matches — used for the "record your audios" shortcut. */
   const practiceDay = useMemo(
     () => getSeason(episode.moduleId)?.slots.find((s) => s.episodeId === episode.id)?.day ?? null,
     [episode.id, episode.moduleId],
   );
-
-  useEffect(() => {
-    setJourney(JourneyService.load());
-  }, []);
 
   const slide = slides[idx]!;
   const total = slides.length;
