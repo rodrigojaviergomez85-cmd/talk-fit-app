@@ -206,8 +206,8 @@ export const VALE_S2_TOMORROW: StorybookEpisode = {
     {
       id: "q3",
       afterScene: "s10",
-      questionEn: "When does the client want the event?",
-      questionEs: "¿Cuándo quiere el cliente el evento?",
+      questionEn: "When is the client going to have the event?",
+      questionEs: "¿Cuándo va a tener el cliente el evento?",
       options: [
         { label: "This weekend", emoji: "📅" },
         { label: "Next year", emoji: "🎆" },

@@ -205,8 +205,8 @@ export const VALE_S2_INSTANT_DECISION: StorybookEpisode = {
     {
       id: "q3",
       afterScene: "s8",
-      questionEn: "What does Vale say about problems?",
-      questionEs: "¿Qué dice Vale sobre los problemas?",
+      questionEn: "What will Vale say about problems?",
+      questionEs: "¿Qué dirá Vale sobre los problemas?",
       options: [
         { label: "A problem is not the end", emoji: "💪" },
         { label: "A problem is the end", emoji: "😢" },
