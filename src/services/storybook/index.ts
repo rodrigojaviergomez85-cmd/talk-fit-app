@@ -53,6 +53,11 @@ import { VALE_S3_PIZZA_DAY } from "./vale-s3-pizza-day";
 import { VALE_S3_ORDER_FOOD } from "./vale-s3-order-food";
 import { VALE_S3_MATEOS_SANDWICH } from "./vale-s3-mateos-sandwich";
 import { VALE_S3_PROCESS_CHALLENGE } from "./vale-s3-process-challenge";
+import { VALE_S3_FREE_SATURDAY } from "./vale-s3-free-saturday";
+import { VALE_S3_BEACH_DAY } from "./vale-s3-beach-day";
+import { VALE_S3_OFFICE_NOW } from "./vale-s3-office-now";
+import { VALE_S3_HOME_TONIGHT } from "./vale-s3-home-tonight";
+import { VALE_S3_FIRST_CLASS } from "./vale-s3-first-class";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -111,6 +116,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_S3_ORDER_FOOD,
   VALE_S3_MATEOS_SANDWICH,
   VALE_S3_PROCESS_CHALLENGE,
+  VALE_S3_FREE_SATURDAY,
+  VALE_S3_BEACH_DAY,
+  VALE_S3_OFFICE_NOW,
+  VALE_S3_HOME_TONIGHT,
+  VALE_S3_FIRST_CLASS,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
