@@ -37,7 +37,8 @@
 - 10–11 ilustraciones webtoon por episodio, chequeo contra referencias canónicas (identidad, piel, cabello, edad, ropa, anatomía, props, continuidad).
 - Voces estables con validación TTS real: Vale marin/playful, Mateo echo joven alegre, Dylan ash juvenil, Beto sage tímido, narrador alloy, boss fable, female nova, male onyx.
 - Cada episodio: ~10 escenas, 3 preguntas rápidas = **2 personales validadas por IA + 1 repetición guiada**.
-- Variedad WH obligatoria: What / Who / When / Where / Why / How, al menos una no-What por episodio, todo en presente simple y progresivo — **sin pasado ni futuro** (ya vistos, se reciclan solo como vocabulario, no como forma nueva).
+- Variedad WH obligatoria: What / Who / When / Where / Why / How, al menos una no-What por episodio, gramática nueva solo en presente simple y progresivo — sin pasado.
+- **Repaso de futuro (will / going to) integrado, aprobado:** cada episodio incluye 2–3 menciones naturales en diálogo (planes, predicciones), y **1 escena de "planes" por semana** (típicamente el episodio 5/10/15/20 o el previo al reto) donde los personajes hablan de sus planes con going to y predicciones con will. El vocabulario de temporadas anteriores también se recicla (5–8 ítems por episodio).
 - Afirmaciones motivacionales rotadas SIN validación de IA: I can do it, I am a champion, I believe in myself, I am amazing, I am awesome, I love challenges, I am persistent, I am disciplined, English is easy, mistakes are part of the process.
 - Grabación final máx 15 segundos, botón LISTEN TO ME, un solo CTA "AHORA GRABA TUS AUDIOS", cliffhanger con "Lo ves en el siguiente día".
 - Vocabulario: 80–100 palabras tappeables por episodio, 12–15 practicadas activas, 5–8 recicladas de temporadas anteriores. Todo tappeable con glosario en español.
