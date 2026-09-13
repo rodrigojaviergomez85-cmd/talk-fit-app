@@ -286,6 +286,11 @@ export function StorybookPlayer({
                 setSaidIt((p) => ({ ...p, [slide.kind === "quiz" ? slide.quiz.id : ""]: true }));
                 setStars((s) => s + 1);
               }}
+              onSkip={() => {
+                // Skip unlocks Next without a star or celebration sound.
+                setSaidIt((p) => ({ ...p, [slide.kind === "quiz" ? slide.quiz.id : ""]: true }));
+                go(idx + 1);
+              }}
             />
           ) : null}
           {slide.kind === "finale" ? (
@@ -622,6 +627,7 @@ function QuizSlide({
   said,
   onCorrect,
   onSaid,
+  onSkip,
 }: {
   quiz: StorybookQuiz;
   episodeId: string;
@@ -632,6 +638,7 @@ function QuizSlide({
   said: boolean;
   onCorrect: () => void;
   onSaid: () => void;
+  onSkip: () => void;
 }) {
   const [picked, setPicked] = useState<number | null>(null);
   const [wrong, setWrong] = useState<number | null>(null);
@@ -861,6 +868,16 @@ function QuizSlide({
                 recorder
               )}
             </>
+          ) : null}
+
+          {!said && checkStatus === "tryAgain" && attempts >= 1 && attempts < 2 ? (
+            <button
+              type="button"
+              onClick={onSkip}
+              className="mx-auto block text-[12px] font-semibold text-muted-foreground underline underline-offset-2"
+            >
+              {es ? "Saltar por ahora" : "Skip for now"}
+            </button>
           ) : null}
 
           {hasCheck && !said && checkStatus !== "good" ? (
