@@ -201,6 +201,11 @@ const DICT = {
   "rep2.checking": ["Verificando…", "Checking…"],
   "rep2.listenAgain": ["ESCUCHAR OTRA VEZ", "LISTEN AGAIN"],
   "rep2.tryAgain": ["INTENTAR OTRA VEZ", "TRY AGAIN"],
+  "rep2.attemptOf": ["Intento {n} de 3", "Attempt {n} of 3"],
+  "rep2.attemptsDone": [
+    "Ya hiciste 3 intentos — buen trabajo. Sigue adelante.",
+    "You've tried 3 times — good job. Keep going.",
+  ],
   "rep2.aiDisclaimer": [
     "La IA comparará tu respuesta y puede cometer errores. Úsala como guía para mejorar.",
     "AI will compare your response and may make mistakes. Use the feedback as a guide to improve.",
