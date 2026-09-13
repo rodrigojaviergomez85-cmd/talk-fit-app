@@ -5,7 +5,7 @@ describe("storybook next-button gate", () => {
   const state = (kind: "scene" | "mindset" | "quiz", answered: boolean, recorded: boolean) =>
     isStoryAdvanceLocked({
       kind,
-      quizId: kind === "quiz" ? "q1" : undefined,
+      ...(kind === "quiz" ? { quizId: "q1" } : {}),
       quizDone: answered ? { q1: true } : {},
       saidIt: recorded ? { q1: true } : {},
     });
