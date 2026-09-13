@@ -1,5 +1,7 @@
 # Un solo botón en Inicio → elegir: mundo de Vale o audios del día
 
+**Prueba limitada:** por ahora esto se activa solo en Basic Zero, semana 1 (días 1 a 5). En cualquier otro módulo o día, el botón de Inicio sigue llevando directo a los audios, como hoy. Si funciona bien, se extiende al resto.
+
 ## Qué verá el estudiante
 
 ### 1. Inicio
@@ -51,6 +53,7 @@ Nueva ruta `/day/$moduleId/$day` con dos tarjetas grandes:
 - **Opción 2 (audios):** etiqueta "OBLIGATORIO", abre la práctica normal (`/practice?module=…&day=…`).
 - Si ya vio el episodio, la tarjeta 1 muestra un check discreto ("Ya lo viste · Ver otra vez") y baja de protagonismo, pero sigue accesible.
 - Si ese día aún no tiene episodio producido, o el módulo no tiene temporada, solo aparece la opción de audios (sin tarjeta vacía).
+- Alcance de la prueba: la pantalla de opciones aparece únicamente para `basic-zero` días 1–5. Fuera de ese rango, el botón de Inicio conserva el comportamiento actual (directo a `/practice`).
 - Textos en inglés/español según el idioma elegido.
 
 ### 3. Al terminar la historia
@@ -59,7 +62,7 @@ Al final del episodio, además del botón de siguiente episodio, se agrega "Ahor
 
 ## Detalles técnicos
 
-- `src/components/fluency/CurrentModuleCard.tsx`: el CTA pasa a enlazar a `/day/$moduleId/$day` con el módulo y día actuales (usando `JourneyService.nextPractice(state)` ya existente); el texto "Continuar día X · Paso N" se conserva.
+- `src/components/fluency/CurrentModuleCard.tsx`: cuando el módulo/día actual es Basic Zero 1–5, el CTA enlaza a `/day/$moduleId/$day` con el módulo y día actuales (usando `JourneyService.nextPractice(state)` ya existente); el texto "Continuar día X · Paso N" se conserva. En cualquier otro caso, el CTA sigue yendo directo a `/practice` como hoy.
 - Nueva ruta `src/routes/day.$moduleId.$day.tsx` con `createFileRoute("/day/$moduleId/$day")`: resuelve el episodio con `getSeason(moduleId)` + slot cuyo `day` coincide, verifica `isDayUnlocked`, importa la portada del episodio (el mismo asset que usa `natural-method.audiobooks.tsx`) y enlaza a las dos rutas existentes. `head()` propio con título/descripción.
 - Progreso de episodios vistos (hoy no existe): nuevo `src/services/storybook/storybook-progress.ts` con almacenamiento local (`markEpisodeSeen`, `isEpisodeSeen`). `StorybookPlayer` marca el episodio al llegar a la diapositiva final. Solo local, sin cambios de base de datos.
 - En `StorybookPlayer` (`FinaleSlide`), se añade el enlace a `/practice?module=<moduleId>&day=<day>` usando el slot del episodio actual.
