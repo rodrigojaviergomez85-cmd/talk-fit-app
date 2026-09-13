@@ -52,6 +52,13 @@ export type StorybookQuiz = {
   /** Phrase the learner says out loud after answering. */
   sayIt: string;
   sayItEs: string;
+  /**
+   * When present, the card asks the learner a personal question instead of
+   * asking them to repeat the story sentence. `sayIt` then works as the
+   * example answer and `sayItCheck.target` carries a wildcard slot.
+   */
+  sayItAskEn?: string;
+  sayItAskEs?: string;
   /** Optional server-side spoken check. When present, the recording is graded. */
   sayItCheck?: StorybookSayItCheck;
 };
