@@ -18,9 +18,9 @@
 - [x] QA final T4 Fase A: 615 tests, tsgo, rutas y móvil 394px sin errores
 
 ## Temporada 4 — Fase B (ep 6-10)
-- [ ] Guiones ep 6-10 (Did/Didn't, 12 escenas, 45-50 palabras, misterio del periodista)
-- [ ] Arte ep 6-10 (cover + s1-s12, <300KB, QA visual)
-- [ ] Registro + tests + tsgo + móvil
+- [x] Guiones ep 6-10 (Did/Didn't, 12 escenas, 45-50 palabras, misterio del periodista)
+- [x] Arte ep 6-10 (cover + s1-s12, <300KB, QA visual; fixes: textos s11 ep6, "his sorry" ep8, lágrimas/texto/anatomía)
+- [x] Registro + tests + tsgo + móvil (615 tests verdes, rutas 200, 394px OK)
 
 ## Temporada 4 — Fase C (ep 11-15)
 - [ ] Guiones ep 11-15 (pasado progresivo)
