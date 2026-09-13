@@ -62,7 +62,7 @@ Al final del episodio, además del botón de siguiente episodio, se agrega "Ahor
 
 ## Detalles técnicos
 
-- `src/components/fluency/CurrentModuleCard.tsx`: el CTA pasa a enlazar a `/day/$moduleId/$day` con el módulo y día actuales (usando `JourneyService.nextPractice(state)` ya existente); el texto "Continuar día X · Paso N" se conserva.
+- `src/components/fluency/CurrentModuleCard.tsx`: cuando el módulo/día actual es Basic Zero 1–5, el CTA enlaza a `/day/$moduleId/$day` con el módulo y día actuales (usando `JourneyService.nextPractice(state)` ya existente); el texto "Continuar día X · Paso N" se conserva. En cualquier otro caso, el CTA sigue yendo directo a `/practice` como hoy.
 - Nueva ruta `src/routes/day.$moduleId.$day.tsx` con `createFileRoute("/day/$moduleId/$day")`: resuelve el episodio con `getSeason(moduleId)` + slot cuyo `day` coincide, verifica `isDayUnlocked`, importa la portada del episodio (el mismo asset que usa `natural-method.audiobooks.tsx`) y enlaza a las dos rutas existentes. `head()` propio con título/descripción.
 - Progreso de episodios vistos (hoy no existe): nuevo `src/services/storybook/storybook-progress.ts` con almacenamiento local (`markEpisodeSeen`, `isEpisodeSeen`). `StorybookPlayer` marca el episodio al llegar a la diapositiva final. Solo local, sin cambios de base de datos.
 - En `StorybookPlayer` (`FinaleSlide`), se añade el enlace a `/practice?module=<moduleId>&day=<day>` usando el slot del episodio actual.
