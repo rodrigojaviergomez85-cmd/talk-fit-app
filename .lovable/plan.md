@@ -1,5 +1,7 @@
 # Un solo botón en Inicio → elegir: mundo de Vale o audios del día
 
+**Prueba limitada:** por ahora esto se activa solo en Basic Zero, semana 1 (días 1 a 5). En cualquier otro módulo o día, el botón de Inicio sigue llevando directo a los audios, como hoy. Si funciona bien, se extiende al resto.
+
 ## Qué verá el estudiante
 
 ### 1. Inicio
