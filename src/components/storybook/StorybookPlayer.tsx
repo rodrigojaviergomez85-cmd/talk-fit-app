@@ -77,7 +77,7 @@ export function StorybookPlayer({
 }: {
   episode: StorybookEpisode;
   /** Where the cover's back button exits to (day hub when opened from Home). */
-  onCoverBack?: () => void;
+  onCoverBack?: (() => void) | undefined;
 }) {
   const es = useAppLang().lang === "es";
   const navigate = useNavigate();
