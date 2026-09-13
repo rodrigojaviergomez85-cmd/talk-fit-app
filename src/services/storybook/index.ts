@@ -166,6 +166,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_S4_RED_RIDING_HOOD,
   VALE_S4_VALE_STORY,
   VALE_S4_STORYTELLER,
+  VALE_S5_FIRST_STUDENTS,
+  VALE_S5_TIRED_TEACHER,
+  VALE_S5_EARLY_MORNING,
+  VALE_S5_WIN_TOMORROW,
+  VALE_S5_HEALTHY_SNACKS,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
