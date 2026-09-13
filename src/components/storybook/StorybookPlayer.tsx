@@ -10,7 +10,8 @@ import { tokenizeWords } from "@/lib/syllables";
 import { AudioService } from "@/services/audio-service";
 import type { ModelVoice } from "@/services/audio-service";
 import type { ModelTone } from "@/lib/model-tone";
-import { getNextEpisodeSlot } from "@/services/storybook";
+import { getNextEpisodeSlot, getSeason } from "@/services/storybook";
+import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
 import type { NextEpisodeInfo } from "@/services/storybook";
@@ -94,6 +95,12 @@ export function StorybookPlayer({ episode }: { episode: StorybookEpisode }) {
 
   const slide = slides[idx]!;
   const total = slides.length;
+
+  // Reaching the finale counts as completing the story (local, optional step).
+  useEffect(() => {
+    if (slide.kind === "finale") markEpisodeSeen(episode.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slide.kind, episode.id]);
 
   const go = (next: number) => {
     setIdx(Math.min(total - 1, Math.max(0, next)));
