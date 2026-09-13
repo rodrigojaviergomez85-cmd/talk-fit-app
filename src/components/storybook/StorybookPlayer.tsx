@@ -203,6 +203,7 @@ export function StorybookPlayer({
           {slide.kind === "quiz" ? (
             <QuizSlide
               quiz={slide.quiz}
+              episodeId={episode.id}
               episodeGlossary={episodeGlossary}
               voice={episode.voice}
               es={es}
