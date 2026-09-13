@@ -142,7 +142,7 @@ export function StorybookPlayer({
   };
 
   return (
-    <div className="select-none" data-showexit={showExit ? "1" : "0"}>
+    <div className="select-none">
       <style>{STORYBOOK_CSS}</style>
 
       {/* Progress bar */}
