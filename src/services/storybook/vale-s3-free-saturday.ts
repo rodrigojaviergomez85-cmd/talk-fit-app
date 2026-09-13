@@ -44,7 +44,7 @@ export const VALE_S3_FREE_SATURDAY: StorybookEpisode = {
       imageAlt: "Vale camina hacia un parque con sol.",
       text: "Saturday. No calls, no headset. Vale is walking to the park.",
       es: "Sábado. Sin llamadas, sin diadema. Vale está caminando al parque.",
-      speaker: "narrator",
+      speaker: "kat",
       words: [
         { word: "Saturday", es: "sábado" },
         { word: "walking", es: "caminando" },
