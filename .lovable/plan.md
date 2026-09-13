@@ -1,22 +1,18 @@
-# Corregir el tono de piel de Vale en el Episodio 10
+# Dos correcciones pendientes: audio duplicado + piel de Vale en Episodio 10
 
-## Problema
-En el Episodio 10 "Háblame de ti" (`vale-ep10`), Vale aparece con piel más oscura que su diseño oficial (cálido claro-canela) en varias escenas.
+## 1. Audio duplicado en preguntas rápidas (plan ya aprobado, pendiente de aplicar)
 
-## Diagnóstico (confirmado con hoja de contacto)
-Comparé las 11 imágenes del episodio contra la referencia oficial `_canon/vale.jpg`:
+**Causa confirmada:** `AudioService.stop()` solo pausa el audio que ya suena. Si el estudiante contesta antes de que el clip de la pregunta termine de descargarse, esa descarga completa después y suena encima del audio de "Ahora dilo tú".
 
-- **s1** (presentación frente al equipo): Vale visiblemente más oscura — el peor caso.
-- **s2** (con Mr. Reyes): piel más oscura que la oficial.
-- **s7** (junto al mapa de El Salvador): piel más oscura que la oficial.
-- **s9** (frente al panel de fotos): piel más oscura que la oficial.
-- Portada, s3, s6, s8 y s10: dentro de lo aceptable, se conservan.
+**Solución:** en `src/services/audio-service.ts`, guardar la función de cancelación de la última llamada a `speak()` y hacer que `stop()` la invoque, cancelando también las descargas en camino. Sin cambios de interfaz; queda resuelto para preguntas, escenas, palabras tocables y tarjeta de mentalidad en todos los episodios.
 
-## Solución
-- Regenerar **s1, s2, s7 y s9** con edición sobre la imagen existente, usando `src/assets/storybook/_canon/vale.jpg` como referencia de personaje, para aclarar la piel de Vale al tono oficial sin cambiar composición, ropa (blusa mostaza), cabello negro largo ni fondo.
-- Mantener intactos los demás personajes de cada escena (Mr. Reyes con barba gris y corbata en s2; el mapa con la etiqueta "EL SALVADOR" en s7).
-- Sin cambios de código: se reemplazan solo los 4 archivos de imagen.
+## 2. Vale más morena en el Episodio 10 ("Háblame de ti")
+
+**Diagnóstico:** comparé las 11 imágenes de `vale-ep10` contra la referencia oficial `_canon/vale.jpg`. Las escenas **s1, s2, s7 y s9** la muestran con piel más oscura que el diseño aprobado.
+
+**Solución:** regenerar solo esas 4 escenas con edición sobre la imagen existente y la referencia oficial de Vale, aclarando su piel al tono oficial sin cambiar composición, ropa ni fondo. Portada, s3, s6, s8 y s10 se conservan.
 
 ## Verificación
-- Nueva hoja de contacto del episodio: comparar tono de piel de Vale en las 4 escenas corregidas contra `_canon/vale.jpg`.
-- Abrir el episodio en la vista previa móvil y confirmar que las escenas se ven correctas.
+- Typecheck y pruebas.
+- Celular: contestar una pregunta rápida de inmediato — solo suena "Ahora dilo tú"; cambiar de escena rápido — solo suena la escena visible.
+- Hoja de contacto del Episodio 10 y vista móvil: Vale con tono oficial en las 4 escenas corregidas.
