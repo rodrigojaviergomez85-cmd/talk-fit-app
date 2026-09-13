@@ -62,6 +62,7 @@ function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
   if (speaker === "vale") return "playful";
   if (speaker === "mateo") return "cheerful";
   if (speaker === "dylan") return "youthful";
+  if (speaker === "beto") return "shy";
   return "story";
 }
 
