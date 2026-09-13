@@ -116,12 +116,22 @@ export function StorybookPlayer({
     // Each new slide starts at normal speed; a slow rate only applies where it was chosen.
     sceneRateRef.current = 1;
     setSceneRate(1);
-    if (slide.kind === "scene")
+    if (slide.kind === "scene") {
+      const lines = slide.scene.lines;
+      if (lines?.length) {
+        const cancel = speakDialogue(lines, { rate: 1 });
+        return () => {
+          alive = false;
+          cancel();
+          AudioService.stop();
+        };
+      }
       AudioService.speak(slide.scene.text, {
         rate: 1,
         voice: speakerVoice(slide.scene.speaker),
         tone: speakerTone(slide.scene.speaker),
       });
+    }
     if (slide.kind === "quiz") {
       // Guaranteed listening: the question always plays on its own, even if the
       // learner arrives fast. A short delay lets the previous audio fully stop.
