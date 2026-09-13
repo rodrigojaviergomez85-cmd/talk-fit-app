@@ -762,6 +762,16 @@ function FinaleSlide({
         ) : null}
       </div>
 
+      {practiceDay !== null ? (
+        <Link
+          to="/practice"
+          search={{ day: practiceDay, module: episode.moduleId }}
+          className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-6 text-[15px] font-extrabold uppercase tracking-[0.1em] text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98]"
+        >
+          {es ? "AHORA GRABA TUS AUDIOS" : "NOW RECORD YOUR AUDIOS"} <ArrowRight className="size-5" />
+        </Link>
+      ) : null}
+
       <p className="rounded-2xl border border-dashed border-primary/50 bg-primary/5 p-3 text-center text-[13px] font-bold text-primary">
         {es ? episode.cliffhanger.es : episode.cliffhanger.en}
       </p>
