@@ -161,7 +161,7 @@ export function StorybookPlayer({
           aria-label={es ? "Atrás (escena anterior)" : "Back (previous scene)"}
           onClick={() => {
             if (idx > 0) go(idx - 1);
-            else navigate({ to: "/natural-method/audiobooks" });
+            else coverBack();
           }}
           className="inline-flex size-10 shrink-0 items-center justify-center rounded-2xl border border-border"
         >

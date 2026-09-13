@@ -1,9 +1,13 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { AppShell } from "@/components/fluency/AppShell";
 import { StorybookPlayer } from "@/components/storybook/StorybookPlayer";
 import { getStorybookEpisode } from "@/services/storybook";
+import { getEpisodeSlot } from "@/services/storybook/seasons";
 
 export const Route = createFileRoute("/natural-method/cuento/$storyId")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    from: search.from === "day" ? ("day" as const) : undefined,
+  }),
   loader: ({ params }) => {
     const episode = getStorybookEpisode(params.storyId);
     if (!episode) throw notFound();
