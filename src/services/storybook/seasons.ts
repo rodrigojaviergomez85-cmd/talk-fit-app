@@ -10,6 +10,7 @@ import season2Cover from "@/assets/storybook/vale-s2-ep1/cover.jpg";
 import season3Cover from "@/assets/storybook/vale-s3-ep1/cover.jpg";
 import season4Cover from "@/assets/storybook/vale-s4-ep1/cover.jpg";
 import season5Cover from "@/assets/storybook/vale-s5-first-students/cover.jpg";
+import season6Cover from "@/assets/storybook/eagles-ep1-the-offer/cover.jpg";
 
 export type SeasonWeek = 1 | 2 | 3 | 4;
 
@@ -211,6 +212,24 @@ export const STORYBOOK_SEASONS: Season[] = [
       { day: 20, episodeId: "vale-s5-the-promise", teaser: { en: "The promise", es: "La promesa" } },
     ],
 
+  },
+  {
+    moduleId: "eagles-week-1",
+    seasonNumber: 6,
+    title: { en: "Season 6 · Eagles", es: "Temporada 6 · Eagles" },
+    blurb: {
+      en: "Real conversations: Vale's school goes after its first international contract.",
+      es: "Conversaciones reales: la escuela de Vale va por su primer contrato internacional.",
+    },
+    image: season6Cover,
+    imageAlt: { en: "Vale takes a call from a US company", es: "Vale atiende la llamada de una empresa de Estados Unidos" },
+    slots: [
+      { day: 1, episodeId: "eagles-ep1-the-offer", teaser: { en: "The offer", es: "La oferta" } },
+      { day: 2, episodeId: null, teaser: { en: "The proposal", es: "La propuesta" } },
+      { day: 3, episodeId: null, teaser: { en: "The competitor", es: "El competidor" } },
+      { day: 4, episodeId: null, teaser: { en: "The objection", es: "La objeción" } },
+      { day: 5, episodeId: null, teaser: { en: "The signature", es: "La firma" } },
+    ],
   },
 ];
 

@@ -23,6 +23,7 @@ export function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice 
   if (speaker === "dani") return "teenBoy";
   if (speaker === "mom") return "femaleMature";
   if (speaker === "tito") return "elder";
+  if (speaker === "morgan") return "femaleMature";
   return "neutral";
 }
 
@@ -34,10 +35,32 @@ export function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
   if (speaker === "beto") return "shy";
   if (speaker === "dani") return "earnest";
   if (speaker === "mom") return "warm";
+  if (speaker === "morgan") return "pro";
   return "story";
 }
 
 /** Voice identity used for uniqueness checks: same voice + same tone = same sound. */
 export function speakerSound(speaker: StorybookSpeaker | undefined): string {
   return `${speakerVoice(speaker)}::${speakerTone(speaker)}`;
+}
+
+/** Display name shown above a dialogue reply. */
+export function speakerName(speaker: StorybookSpeaker | undefined): string {
+  const names: Record<StorybookSpeaker, string> = {
+    narrator: "Narrator",
+    vale: "Vale",
+    boss: "Boss",
+    kat: "Kat",
+    dylan: "Dylan",
+    mateo: "Mateo",
+    luis: "Luis",
+    camila: "Camila",
+    ana: "Ana",
+    beto: "Beto",
+    mom: "Mom",
+    tito: "Don Tito",
+    dani: "Dani",
+    morgan: "Morgan",
+  };
+  return names[speaker ?? "narrator"];
 }

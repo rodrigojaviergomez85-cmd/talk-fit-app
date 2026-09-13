@@ -11,7 +11,17 @@ export type StorybookWord = {
 };
 
 /** Who speaks the scene line — drives the per-character TTS voice. */
-export type StorybookSpeaker = "narrator" | "vale" | "boss" | "kat" | "dylan" | "mateo" | "luis" | "camila" | "ana" | "beto" | "mom" | "tito" | "dani";
+export type StorybookSpeaker = "narrator" | "vale" | "boss" | "kat" | "dylan" | "mateo" | "luis" | "camila" | "ana" | "beto" | "mom" | "tito" | "dani" | "morgan";
+
+/**
+ * One conversational reply inside a scene (sitcom-style dialogue, B1→B2 seasons).
+ * Scenes that use `lines` play each reply in sequence with its own character voice.
+ */
+export type StorybookLine = {
+  speaker: StorybookSpeaker;
+  text: string;
+  es: string;
+};
 
 export type StorybookScene = {
   id: string;
@@ -24,6 +34,11 @@ export type StorybookScene = {
   es: string;
   /** Speaker voice for this line. Defaults to "narrator". */
   speaker?: StorybookSpeaker;
+  /**
+   * Optional multi-reply dialogue. When present it replaces the single line in
+   * the reader; `text`/`es` stay as the plain-text fallback for older code.
+   */
+  lines?: StorybookLine[];
   /** Tappable words with meanings. */
   words: StorybookWord[];
 };

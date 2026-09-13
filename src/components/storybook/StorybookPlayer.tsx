@@ -13,7 +13,8 @@ import { isStoryAdvanceLocked } from "@/lib/storybook-advance";
 import { AudioService } from "@/services/audio-service";
 import { supabase } from "@/integrations/supabase/client";
 import { getSeason } from "@/services/storybook";
-import { speakerVoice, speakerTone } from "@/services/storybook/voices";
+import { speakerVoice, speakerTone, speakerName } from "@/services/storybook/voices";
+import { speakDialogue } from "@/services/storybook/dialogue-audio";
 import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
@@ -116,12 +117,22 @@ export function StorybookPlayer({
     // Each new slide starts at normal speed; a slow rate only applies where it was chosen.
     sceneRateRef.current = 1;
     setSceneRate(1);
-    if (slide.kind === "scene")
+    if (slide.kind === "scene") {
+      const lines = slide.scene.lines;
+      if (lines?.length) {
+        const cancel = speakDialogue(lines, { rate: 1 });
+        return () => {
+          alive = false;
+          cancel();
+          AudioService.stop();
+        };
+      }
       AudioService.speak(slide.scene.text, {
         rate: 1,
         voice: speakerVoice(slide.scene.speaker),
         tone: speakerTone(slide.scene.speaker),
       });
+    }
     if (slide.kind === "quiz") {
       // Guaranteed listening: the question always plays on its own, even if the
       // learner arrives fast. A short delay lets the previous audio fully stop.
@@ -508,9 +519,15 @@ export function SceneSlide({
 }) {
   const [showEs, setShowEs] = useState(false);
   const [showSpeeds, setShowSpeeds] = useState(false);
+  const [activeLine, setActiveLine] = useState<number | null>(null);
+  const dialogue = scene.lines?.length ? scene.lines : null;
 
   const play = (speed: number) => {
     AudioService.stop();
+    if (dialogue) {
+      speakDialogue(dialogue, { rate: speed, onLine: setActiveLine });
+      return;
+    }
     AudioService.speak(scene.text, { rate: speed, voice: speakerVoice(scene.speaker), tone: speakerTone(scene.speaker) });
   };
 
@@ -536,15 +553,65 @@ export function SceneSlide({
       </div>
 
       <div className="space-y-3 p-4">
-        <TappableText
-          text={scene.text}
-          scene={scene}
-          episodeGlossary={episodeGlossary}
-          voice={voice}
-          es={es}
-          onLearnWord={onLearnWord}
-          className="text-[21px] font-extrabold leading-snug tracking-tight text-foreground"
-        />
+        {dialogue ? (
+          <div className="space-y-2.5">
+            {dialogue.map((line, i) => (
+              <div
+                key={`${scene.id}-l${i}`}
+                className={cn(
+                  "rounded-2xl border p-3 transition-colors",
+                  activeLine === i ? "border-primary bg-primary/10" : "border-border bg-background",
+                )}
+              >
+                <div className="mb-1 flex items-center gap-2">
+                  <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-primary">
+                    {speakerName(line.speaker)}
+                  </span>
+                  <button
+                    type="button"
+                    aria-label={es ? `Escuchar a ${speakerName(line.speaker)}` : `Listen to ${speakerName(line.speaker)}`}
+                    onClick={() => {
+                      AudioService.stop();
+                      setActiveLine(i);
+                      AudioService.speak(line.text, {
+                        rate,
+                        voice: speakerVoice(line.speaker),
+                        tone: speakerTone(line.speaker),
+                        onEnd: () => setActiveLine(null),
+                      });
+                    }}
+                    className="inline-flex size-7 items-center justify-center rounded-full border border-border text-muted-foreground"
+                  >
+                    <Volume2 className="size-3.5" />
+                  </button>
+                </div>
+                <TappableText
+                  text={line.text}
+                  scene={scene}
+                  episodeGlossary={episodeGlossary}
+                  voice={voice}
+                  es={es}
+                  onLearnWord={onLearnWord}
+                  className="text-[18px] font-extrabold leading-snug tracking-tight text-foreground"
+                />
+                {showEs ? (
+                  <p className="mt-1 text-[13px] font-semibold text-muted-foreground">{line.es}</p>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <TappableText
+            text={scene.text}
+            scene={scene}
+            episodeGlossary={episodeGlossary}
+            voice={voice}
+            es={es}
+            onLearnWord={onLearnWord}
+            className="text-[21px] font-extrabold leading-snug tracking-tight text-foreground"
+          />
+        )}
+
 
         <div className="flex items-center gap-2">
           <button
@@ -605,7 +672,7 @@ export function SceneSlide({
           </div>
         ) : null}
 
-        {showEs ? <p className="text-[14px] font-semibold text-muted-foreground">{scene.es}</p> : null}
+        {showEs && !dialogue ? <p className="text-[14px] font-semibold text-muted-foreground">{scene.es}</p> : null}
       </div>
     </div>
   );

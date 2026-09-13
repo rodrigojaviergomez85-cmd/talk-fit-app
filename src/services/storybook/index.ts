@@ -98,6 +98,7 @@ import { VALE_S5_TRY_AGAIN } from "./vale-s5-try-again";
 import { VALE_S5_FIRST_EMPLOYEE } from "./vale-s5-first-employee";
 import { VALE_S5_THE_COMPANY_CALL } from "./vale-s5-the-company-call";
 import { VALE_S5_THE_PROMISE } from "./vale-s5-the-promise";
+import { EAGLES_EP1_THE_OFFER } from "./eagles-ep1-the-offer";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -201,6 +202,7 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_S5_FIRST_EMPLOYEE,
   VALE_S5_THE_COMPANY_CALL,
   VALE_S5_THE_PROMISE,
+  EAGLES_EP1_THE_OFFER,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
