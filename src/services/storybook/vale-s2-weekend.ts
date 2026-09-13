@@ -178,6 +178,7 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
       answer: 0,
       sayIt: "We’re going to help young people practice English.",
       sayItEs: "Repite: «Vamos a ayudar a jóvenes a practicar inglés.»",
+      sayItCheck: { target: "We’re going to help young people practice English." },
     },
     {
       id: "q2",
@@ -192,6 +193,7 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
       answer: 0,
       sayIt: "I’m going to invite my friends from college.",
       sayItEs: "Repite: «Voy a invitar a mis amigos de la universidad.»",
+      sayItCheck: { target: "I’m going to invite my friends from college." },
     },
     {
       id: "q3",
@@ -206,6 +208,7 @@ export const VALE_S2_WEEKEND: StorybookEpisode = {
       answer: 0,
       sayIt: "Can I join the team?",
       sayItEs: "Repite: «¿Puedo unirme al equipo?»",
+      sayItCheck: { target: "Can I join the team?" },
     },
   ],
   mindsetCard: {

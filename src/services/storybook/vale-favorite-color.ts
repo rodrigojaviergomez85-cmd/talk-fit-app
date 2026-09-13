@@ -183,6 +183,7 @@ export const VALE_FAVORITE_COLOR: StorybookEpisode = {
       answer: 0,
       sayIt: "Her favorite color is orange.",
       sayItEs: "Ahora repite: «Su color favorito es el naranja.»",
+      sayItCheck: { target: "Her favorite color is orange." },
     },
     {
       id: "q2",
@@ -197,6 +198,7 @@ export const VALE_FAVORITE_COLOR: StorybookEpisode = {
       answer: 0,
       sayIt: "My favorite color is … because…",
       sayItEs: "Ahora di el tuyo: «Mi color favorito es… porque…»",
+      sayItCheck: { target: "My favorite color is *", allowShortAnswer: true },
     },
     {
       id: "q3",

@@ -169,6 +169,7 @@ export const VALE_S2_CAMILA_FUTURE: StorybookEpisode = {
       answer: 0,
       sayIt: "A company is going to offer her a bilingual job.",
       sayItEs: "Repite: «Una empresa va a ofrecerle un trabajo bilingüe.»",
+      sayItCheck: { target: "A company is going to offer her a bilingual job." },
     },
     {
       id: "q2",
@@ -183,6 +184,7 @@ export const VALE_S2_CAMILA_FUTURE: StorybookEpisode = {
       answer: 0,
       sayIt: "She won't be alone. We'll call her every week.",
       sayItEs: "Repite: «Ella no estará sola. La llamaremos cada semana.»",
+      sayItCheck: { target: "She won't be alone. We'll call her every week." },
     },
     {
       id: "q3",
@@ -197,6 +199,7 @@ export const VALE_S2_CAMILA_FUTURE: StorybookEpisode = {
       answer: 0,
       sayIt: "She is going to take the job and move to another city.",
       sayItEs: "Repite: «Ella va a tomar el trabajo y mudarse a otra ciudad.»",
+      sayItCheck: { target: "She is going to take the job and move to another city." },
     },
   ],
   mindsetCard: {

@@ -190,6 +190,7 @@ export const VALE_S2_READY: StorybookEpisode = {
       answer: 0,
       sayIt: "We are going to help young people find a bilingual job.",
       sayItEs: "Repite: «Vamos a ayudar a jóvenes a conseguir su primer empleo bilingüe.»",
+      sayItCheck: { target: "We are going to help young people find a bilingual job." },
     },
     {
       id: "q2",
@@ -204,6 +205,7 @@ export const VALE_S2_READY: StorybookEpisode = {
       answer: 0,
       sayIt: "I’m going to write three ideas.",
       sayItEs: "Repite: «Voy a escribir tres ideas.»",
+      sayItCheck: { target: "I’m going to write three ideas." },
     },
     {
       id: "q3",
@@ -218,6 +220,7 @@ export const VALE_S2_READY: StorybookEpisode = {
       answer: 0,
       sayIt: "I’m not going to sleep late.",
       sayItEs: "Repite: «No voy a dormir tarde.»",
+      sayItCheck: { target: "I’m not going to sleep late." },
     },
   ],
   mindsetCard: {

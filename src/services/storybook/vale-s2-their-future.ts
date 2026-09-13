@@ -167,6 +167,7 @@ export const VALE_S2_THEIR_FUTURE: StorybookEpisode = {
       answer: 0,
       sayIt: "She will open her own company.",
       sayItEs: "Repite: «Ella abrirá su propia empresa.»",
+      sayItCheck: { target: "She will open her own company." },
     },
     {
       id: "q2",
@@ -181,6 +182,7 @@ export const VALE_S2_THEIR_FUTURE: StorybookEpisode = {
       answer: 0,
       sayIt: "He will travel and work with international clients.",
       sayItEs: "Repite: «Él viajará y trabajará con clientes internacionales.»",
+      sayItCheck: { target: "He will travel and work with international clients." },
     },
     {
       id: "q3",
@@ -195,6 +197,7 @@ export const VALE_S2_THEIR_FUTURE: StorybookEpisode = {
       answer: 0,
       sayIt: "I'll open a free English school in my neighborhood.",
       sayItEs: "Repite: «Abriré una escuela de inglés gratis en mi colonia.»",
+      sayItCheck: { target: "I'll open a free English school in my neighborhood." },
     },
   ],
   mindsetCard: {

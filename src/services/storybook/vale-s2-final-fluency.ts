@@ -172,6 +172,7 @@ export const VALE_S2_FINAL_FLUENCY: StorybookEpisode = {
       answer: 0,
       sayIt: "It won't be easy. But I will practice every day.",
       sayItEs: "Repite: «No será fácil. Pero practicaré todos los días.»",
+      sayItCheck: { target: "It won't be easy. But I will practice every day." },
     },
     {
       id: "q2",
@@ -186,6 +187,7 @@ export const VALE_S2_FINAL_FLUENCY: StorybookEpisode = {
       answer: 0,
       sayIt: "He will start on Monday.",
       sayItEs: "Repite: «Él empezará el lunes.»",
+      sayItCheck: { target: "He will start on Monday." },
     },
     {
       id: "q3",
@@ -200,6 +202,7 @@ export const VALE_S2_FINAL_FLUENCY: StorybookEpisode = {
       answer: 0,
       sayIt: "I'll be the coordinator of the new program.",
       sayItEs: "Repite: «Seré la coordinadora del nuevo programa.»",
+      sayItCheck: { target: "I'll be the coordinator of the new program." },
     },
   ],
   mindsetCard: {

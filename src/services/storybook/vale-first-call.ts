@@ -204,6 +204,7 @@ export const VALE_FIRST_CALL: StorybookEpisode = {
       answer: 0,
       sayIt: "My voice is calm.",
       sayItEs: "Mi voz es tranquila.",
+      sayItCheck: { target: "My voice is calm." },
     },
     {
       id: "q3",
@@ -218,6 +219,7 @@ export const VALE_FIRST_CALL: StorybookEpisode = {
       answer: 0,
       sayIt: "I am happy today.",
       sayItEs: "Yo estoy feliz hoy.",
+      sayItCheck: { target: "I am happy today." },
     },
   ],
   continuePrompt: {

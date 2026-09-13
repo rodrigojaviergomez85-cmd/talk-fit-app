@@ -170,6 +170,7 @@ export const VALE_S2_HIS_MOM: StorybookEpisode = {
       answer: 0,
       sayIt: "She is going to open a small food shop.",
       sayItEs: "Repite: «Ella va a abrir una pequeña tienda de comida.»",
+      sayItCheck: { target: "She is going to open a small food shop." },
     },
     {
       id: "q2",
@@ -184,6 +185,7 @@ export const VALE_S2_HIS_MOM: StorybookEpisode = {
       answer: 0,
       sayIt: "Yes, she is going to need a table.",
       sayItEs: "Repite: «Sí, ella va a necesitar una mesa.»",
+      sayItCheck: { target: "Yes, she is going to need a table." },
     },
     {
       id: "q3",
@@ -198,6 +200,7 @@ export const VALE_S2_HIS_MOM: StorybookEpisode = {
       answer: 0,
       sayIt: "We are going to teach her three phrases.",
       sayItEs: "Repite: «Vamos a enseñarle tres frases.»",
+      sayItCheck: { target: "We are going to teach her three phrases." },
     },
   ],
   mindsetCard: {

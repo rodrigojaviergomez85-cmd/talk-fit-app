@@ -175,6 +175,7 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
       answer: 0,
       sayIt: "We’re going to travel to Santa Ana.",
       sayItEs: "Repite: «Vamos a viajar a Santa Ana.»",
+      sayItCheck: { target: "We’re going to travel to Santa Ana." },
     },
     {
       id: "q2",
@@ -189,6 +190,7 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
       answer: 0,
       sayIt: "We’re going to visit a job fair.",
       sayItEs: "Repite: «Vamos a visitar una feria de empleo.»",
+      sayItCheck: { target: "We’re going to visit a job fair." },
     },
     {
       id: "q3",
@@ -203,6 +205,7 @@ export const VALE_S2_BIGGER_DREAM: StorybookEpisode = {
       answer: 0,
       sayIt: "I’m going to present my idea to the director.",
       sayItEs: "Repite: «Voy a presentar mi idea al director.»",
+      sayItCheck: { target: "I’m going to present my idea to the director." },
     },
   ],
   mindsetCard: {

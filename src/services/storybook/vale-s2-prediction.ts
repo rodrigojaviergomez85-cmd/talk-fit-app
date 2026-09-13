@@ -167,6 +167,7 @@ export const VALE_S2_PREDICTION: StorybookEpisode = {
       answer: 0,
       sayIt: "I think they will come.",
       sayItEs: "Repite: «Creo que vendrán.»",
+      sayItCheck: { target: "I think they will come." },
     },
     {
       id: "q2",
@@ -181,6 +182,7 @@ export const VALE_S2_PREDICTION: StorybookEpisode = {
       answer: 0,
       sayIt: "The event won't stop.",
       sayItEs: "Repite: «El evento no se detendrá.»",
+      sayItCheck: { target: "The event won't stop." },
     },
     {
       id: "q3",
@@ -195,6 +197,7 @@ export const VALE_S2_PREDICTION: StorybookEpisode = {
       answer: 0,
       sayIt: "Ten people will get an interview.",
       sayItEs: "Repite: «Diez personas tendrán una entrevista.»",
+      sayItCheck: { target: "Ten people will get an interview." },
     },
   ],
   mindsetCard: {

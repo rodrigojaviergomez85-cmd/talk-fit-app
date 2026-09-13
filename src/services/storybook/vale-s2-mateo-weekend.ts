@@ -177,6 +177,7 @@ export const VALE_S2_MATEO_WEEKEND: StorybookEpisode = {
       answer: 0,
       sayIt: "He is going to bring the posters.",
       sayItEs: "Repite: «Él va a traer los carteles.»",
+      sayItCheck: { target: "He is going to bring the posters." },
     },
     {
       id: "q2",
@@ -191,6 +192,7 @@ export const VALE_S2_MATEO_WEEKEND: StorybookEpisode = {
       answer: 0,
       sayIt: "Yes, he is going to invite his friends.",
       sayItEs: "Repite: «Sí, él va a invitar a sus amigos.»",
+      sayItCheck: { target: "Yes, he is going to invite his friends." },
     },
     {
       id: "q3",
@@ -205,6 +207,7 @@ export const VALE_S2_MATEO_WEEKEND: StorybookEpisode = {
       answer: 0,
       sayIt: "He isn’t going to work alone.",
       sayItEs: "Repite: «Él no va a trabajar solo.»",
+      sayItCheck: { target: "He isn’t going to work alone." },
     },
   ],
   mindsetCard: {

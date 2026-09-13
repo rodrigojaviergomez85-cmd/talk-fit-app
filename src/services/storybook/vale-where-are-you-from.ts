@@ -188,6 +188,7 @@ export const VALE_WHERE_ARE_YOU_FROM: StorybookEpisode = {
       answer: 0,
       sayIt: "I love my city because the people are warm.",
       sayItEs: "Ahora repite: «Amo mi ciudad porque la gente es cálida.»",
+      sayItCheck: { target: "I love my city because the people are warm." },
     },
     {
       id: "q2",
@@ -202,6 +203,7 @@ export const VALE_WHERE_ARE_YOU_FROM: StorybookEpisode = {
       answer: 0,
       sayIt: "I live in…, and I love my city because…",
       sayItEs: "Ahora di el tuyo: «Vivo en…, y amo mi ciudad porque…»",
+      sayItCheck: { target: "I live in *", allowShortAnswer: true },
     },
     {
       id: "q3",

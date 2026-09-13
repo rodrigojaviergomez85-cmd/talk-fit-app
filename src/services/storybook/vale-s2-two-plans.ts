@@ -167,6 +167,7 @@ export const VALE_S2_TWO_PLANS: StorybookEpisode = {
       answer: 0,
       sayIt: "He is going to prepare English games.",
       sayItEs: "Repite: «Él va a preparar juegos en inglés.»",
+      sayItCheck: { target: "He is going to prepare English games." },
     },
     {
       id: "q2",
@@ -181,6 +182,7 @@ export const VALE_S2_TWO_PLANS: StorybookEpisode = {
       answer: 0,
       sayIt: "She is going to play music in the morning.",
       sayItEs: "Repite: «Ella va a poner música en la mañana.»",
+      sayItCheck: { target: "She is going to play music in the morning." },
     },
     {
       id: "q3",
@@ -195,6 +197,7 @@ export const VALE_S2_TWO_PLANS: StorybookEpisode = {
       answer: 0,
       sayIt: "Yes, they are going to use both plans.",
       sayItEs: "Repite: «Sí, van a usar los dos planes.»",
+      sayItCheck: { target: "Yes, they are going to use both plans." },
     },
   ],
   mindsetCard: {
