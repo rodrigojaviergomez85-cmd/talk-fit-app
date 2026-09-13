@@ -10,6 +10,7 @@
 - [ ] Generate webtoon images and register Season 2 Episodes 1–5
 - [x] Write Season 2 Episodes 6–20 scripts (weeks 2–4: going to others, will, mixed)
 - [ ] Generate webtoon images and register Season 2 Episodes 6–20
+- [x] Block Storybook quick-question advancement until the correct answer and required recording are complete
 
 
 ## Temporada 2 — estado

@@ -9,6 +9,7 @@ import { playGoodFeedbackSound } from "@/lib/feedback-sounds";
 import { useAppLang } from "@/lib/i18n";
 import { tokenizeWords } from "@/lib/syllables";
 import { buildSayItHint } from "@/lib/story-say-match";
+import { isStoryAdvanceLocked } from "@/lib/storybook-advance";
 import { AudioService } from "@/services/audio-service";
 import type { ModelVoice } from "@/services/audio-service";
 import type { ModelTone } from "@/lib/model-tone";
@@ -101,6 +102,12 @@ export function StorybookPlayer({
 
   const slide = slides[idx]!;
   const total = slides.length;
+  const advanceLocked = isStoryAdvanceLocked({
+    kind: slide.kind,
+    ...(slide.kind === "quiz" ? { quizId: slide.quiz.id } : {}),
+    quizDone,
+    saidIt,
+  });
 
   // Reaching the finale counts as completing the story (local, optional step).
   useEffect(() => {
@@ -221,7 +228,7 @@ export function StorybookPlayer({
           if (touchX.current === null) return;
           const delta = (e.changedTouches[0]?.clientX ?? 0) - touchX.current;
           touchX.current = null;
-          if (delta < -48) go(idx + 1);
+           if (delta < -48 && !advanceLocked) go(idx + 1);
           else if (delta > 48) go(idx - 1);
         }}
       >
@@ -288,13 +295,25 @@ export function StorybookPlayer({
             {slide.kind !== "finale" ? (
               <button
                 type="button"
+                disabled={advanceLocked}
                 onClick={() => go(idx + 1)}
-                className="inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-[14px] font-bold uppercase tracking-[0.1em] text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98]"
+                className="inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-[14px] font-bold uppercase tracking-[0.1em] text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none disabled:active:scale-100"
               >
                 {es ? "Siguiente" : "Next"} <ArrowRight className="size-4" />
               </button>
             ) : null}
           </div>
+        ) : null}
+        {slide.kind === "quiz" && advanceLocked ? (
+          <p className="mt-3 text-center text-[12px] font-semibold text-muted-foreground">
+            {!quizDone[slide.quiz.id]
+              ? es
+                ? "Responde correctamente para continuar."
+                : "Answer correctly to continue."
+              : es
+                ? "Graba tu respuesta para continuar."
+                : "Record your answer to continue."}
+          </p>
         ) : null}
       </div>
     </div>
