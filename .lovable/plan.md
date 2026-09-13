@@ -1,7 +1,8 @@
 # Calificar el "Ahora dilo tú" del cuento (good job / try again)
 
 Objetivo: que cuando el estudiante graba "My name is Rodrigo" el cuento le diga
-**¡Muy bien!** o **Intenta otra vez**, igual que el Paso 2 de los módulos, gastando lo mínimo posible.
+**¡Great job, champion!** o **Intenta otra vez**, igual que el Paso 2 de los módulos,
+gastando lo mínimo posible.
 
 ## Cómo funciona (decidido)
 
@@ -11,14 +12,15 @@ Objetivo: que cuando el estudiante graba "My name is Rodrigo" el cuento le diga
 - **2 intentos** por frase. Después del segundo, siempre puede seguir adelante (nunca se traba).
 - La grabación final de 15 segundos y la frase de motivación **no** se califican (igual que hoy).
 
-## Lo que ve el estudiante
+## Lo que ve y escucha el estudiante
 
 1. Graba y suelta.
 2. Aparece "Revisando…" (1–2 segundos).
 3. Resultado:
-   - Correcto: "¡Muy bien! +1 ⭐" y puede seguir.
+   - Correcto: **"Great job, champion! +1 ⭐"** con el **sonido de felicitación** (el mismo que
+     ya suena en el Paso 2 de los módulos) y puede seguir.
    - Casi: "Intenta otra vez" con la frase correcta resaltada y el botón de escuchar.
-   - Si no se entendió el audio (ruido, muy corto): mensaje neutral y no se cuenta el intento.
+   - Si no se entendió el audio (ruido, muy corto): mensaje neutral y **no** se cuenta el intento.
 4. Segundo intento: se califica igual, pero el botón SIGUIENTE queda siempre disponible.
 
 ## Por qué es barato
@@ -48,8 +50,10 @@ por los módulos, no por los cuentos.
   el hueco `{name}` acepta 1–3 palabras cualesquiera. Se reutiliza la tolerancia existente de
   `rep2-match` para diferencias mínimas.
 - `StorybookPlayer.tsx`: el bloque "Ahora dilo tú" pasa a tener estados
-  idle → checking → good/retry, con contador local de intentos (no persistido) y
-  `AudioService.stop()` al empezar a grabar (ya existe).
+  idle → checking → good/retry, con contador local de intentos (no persistido),
+  `AudioService.stop()` al empezar a grabar (ya existe), y al resultado "good" se muestra
+  "Great job, champion!" y se reproduce `playGoodFeedbackSound()` (respetando el interruptor
+  de sonidos y sin pisar el audio de aprendizaje, igual que en el Paso 2).
 - Pruebas: casos de coincidencia con hueco ("my name is rodrigo", "my name rodrigo",
   "rodrigo" solo → try again), tope de intentos y retrocompatibilidad de episodios sin `sayItCheck`.
 - Piloto: activarlo primero en los episodios 1–5 de Basic Zero; el resto sigue igual hasta validar costo.
