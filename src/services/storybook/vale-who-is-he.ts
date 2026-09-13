@@ -222,6 +222,7 @@ export const VALE_WHO_IS_HE: StorybookEpisode = {
       answer: 0,
       sayIt: "What is your name?",
       sayItEs: "Ahora pregúntale tú: «¿Cómo te llamas?»",
+      sayItCheck: { target: "What is your name?" },
     },
     {
       id: "q2",
@@ -236,6 +237,7 @@ export const VALE_WHO_IS_HE: StorybookEpisode = {
       answer: 0,
       sayIt: "Where are you from?",
       sayItEs: "Ahora pregúntale tú: «¿De dónde eres?»",
+      sayItCheck: { target: "Where are you from?" },
     },
     {
       id: "q3",
@@ -250,6 +252,7 @@ export const VALE_WHO_IS_HE: StorybookEpisode = {
       answer: 0,
       sayIt: "We are amazing.",
       sayItEs: "Ahora repite: «Somos increíbles.»",
+      sayItCheck: { target: "We are amazing." },
     },
   ],
   mindsetCard: {
