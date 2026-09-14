@@ -189,19 +189,22 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
   const currentSeasonId = (() => {
     if (unlimited) return STORYBOOK_SEASONS[STORYBOOK_SEASONS.length - 1]?.moduleId ?? null;
     for (const season of STORYBOOK_SEASONS) {
-      const done = state ? completedDaysInModule(state, season.moduleId) : 0;
+      if (!state) return season.moduleId;
+      if (!isSeasonUnlocked(state, season.moduleId)) break;
+      const done = completedDaysInModule(state, season.moduleId);
       if (unlockedDay(done) <= season.slots.length) return season.moduleId;
     }
-    return STORYBOOK_SEASONS[STORYBOOK_SEASONS.length - 1]?.moduleId ?? null;
+    return STORYBOOK_SEASONS[0]?.moduleId ?? null;
   })();
   const expandedId = touched ? openSeason : currentSeasonId;
 
   return (
     <div className="space-y-3">
       {STORYBOOK_SEASONS.map((season) => {
-        const done = state ? completedDaysInModule(state, season.moduleId) : 0;
-        const open = unlimited ? Number.MAX_SAFE_INTEGER : unlockedDay(done);
-        const expanded = expandedId === season.moduleId;
+        const seasonOpen = unlimited || !state || isSeasonUnlocked(state, season.moduleId);
+        const open = unlimited || !state ? Number.MAX_SAFE_INTEGER : unlockedDayInModule(state, season.moduleId);
+        const expanded = expandedId === season.moduleId && seasonOpen;
+
         return (
           <section
             key={season.moduleId}
