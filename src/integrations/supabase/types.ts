@@ -134,6 +134,7 @@ export type Database = {
           id: string
           limits_enabled: boolean
           pro_multiplier: number
+          tts_allowlist_enforce: boolean
           updated_at: string
           updated_by: string | null
         }
@@ -142,6 +143,7 @@ export type Database = {
           id?: string
           limits_enabled?: boolean
           pro_multiplier?: number
+          tts_allowlist_enforce?: boolean
           updated_at?: string
           updated_by?: string | null
         }
@@ -150,6 +152,7 @@ export type Database = {
           id?: string
           limits_enabled?: boolean
           pro_multiplier?: number
+          tts_allowlist_enforce?: boolean
           updated_at?: string
           updated_by?: string | null
         }
@@ -1024,6 +1027,39 @@ export type Database = {
           locked_until?: string
           owner_token?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      tts_generation_log: {
+        Row: {
+          characters: number
+          clip_key: string
+          created_at: string
+          enforced: boolean
+          id: string
+          in_allowlist: boolean
+          text_preview: string | null
+          user_id: string
+        }
+        Insert: {
+          characters: number
+          clip_key: string
+          created_at?: string
+          enforced: boolean
+          id?: string
+          in_allowlist: boolean
+          text_preview?: string | null
+          user_id: string
+        }
+        Update: {
+          characters?: number
+          clip_key?: string
+          created_at?: string
+          enforced?: boolean
+          id?: string
+          in_allowlist?: boolean
+          text_preview?: string | null
+          user_id?: string
         }
         Relationships: []
       }
