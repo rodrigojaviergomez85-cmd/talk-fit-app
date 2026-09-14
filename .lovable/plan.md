@@ -5,7 +5,7 @@ Preparar el backend para una carga mucho mayor antes de lanzar a 17,000 estudian
 
 ## Qué se va a hacer
 
-1. Abrir el selector de tamaño de servidor de Lovable Cloud para que elijas entre Large o XL.
+1. Abrir el selector de tamaño de servidor de Lovable Cloud para mostrar el precio exacto en créditos y que elijas entre Large o XL.
    - XL es la opción más segura para 17k usuarios con picos de uso entre 6 y 8pm.
    - Los costos se muestran en créditos antes de confirmar.
 2. Abrir el selector de disco para aumentar a 200–500 GB.
@@ -22,7 +22,8 @@ Preparar el backend para una carga mucho mayor antes de lanzar a 17,000 estudian
 
 - Lovable Cloud consume créditos del saldo del workspace; no es un cargo automático en tarjeta.
 - El costo mensual depende del tamaño elegido y del tráfico real (consultas, grabaciones, TTS, AI).
-- El selector muestra el precio en créditos antes de aplicar.
+- Hoy Tiny gasta ~0.6 créditos/día en Cloud. XL costará varias veces eso. Con 745 créditos restantes en este ciclo, lo más probable es que necesites un top-up mensual para sostener 17k estudiantes.
+- El selector muestra el precio exacto en créditos antes de aplicar.
 
 ## Cómo se verificará
 
