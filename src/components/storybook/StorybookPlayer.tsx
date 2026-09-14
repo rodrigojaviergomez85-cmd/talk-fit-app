@@ -1068,12 +1068,13 @@ function QuizSlide({
   const [lastTranscript, setLastTranscript] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const hasCheck = Boolean(quiz.sayItCheck);
+  const shuffled = useMemo(() => shuffleQuizOptions(episodeId, quiz), [episodeId, quiz]);
 
   const pick = (i: number) => {
     setPicked(i);
     // Stop any question audio the moment an answer is selected — right or wrong.
     AudioService.stop();
-    if (i === quiz.answer) {
+    if (i === shuffled.answer) {
       if (!done) onCorrect();
       // Reset per-question speaking state when the question is answered.
       setCheckStatus("idle");
