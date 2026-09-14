@@ -203,7 +203,10 @@ export const PracticeAttempts = {
       started_at: attempt.startedAt,
       first_recording_at: attempt.firstRecordingAt,
     });
-    if (error) console.error("[practice] attempt insert failed", error.message);
+    if (error) {
+      notifyIfClockMismatch(error.message);
+      console.error("[practice] attempt insert failed", error.message);
+    }
   },
 
   async pushUpdate(attempt: PracticeAttempt): Promise<void> {
