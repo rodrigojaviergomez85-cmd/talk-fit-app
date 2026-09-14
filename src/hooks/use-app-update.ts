@@ -46,6 +46,7 @@ export function useAppUpdate(): { updateReady: boolean; applyUpdate: () => void 
   useEffect(() => {
     if (typeof window === "undefined") return;
     let alive = true;
+    console.log("[update-watcher] armed");
 
     const applyIfFree = () => {
       if (!ready.current || busyNow()) return;
