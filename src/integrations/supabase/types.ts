@@ -177,6 +177,7 @@ export type Database = {
           module_id: string
           practice_seconds: number
           recording_path: string | null
+          recording_purged_at: string | null
           recordings_count: number
           rep_durations: Json | null
           self_assessment: string | null
@@ -193,6 +194,7 @@ export type Database = {
           module_id?: string
           practice_seconds?: number
           recording_path?: string | null
+          recording_purged_at?: string | null
           recordings_count?: number
           rep_durations?: Json | null
           self_assessment?: string | null
@@ -209,6 +211,7 @@ export type Database = {
           module_id?: string
           practice_seconds?: number
           recording_path?: string | null
+          recording_purged_at?: string | null
           recordings_count?: number
           rep_durations?: Json | null
           self_assessment?: string | null
