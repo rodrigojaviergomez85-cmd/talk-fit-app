@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { STORYBOOK_EPISODES } from "./index";
 import { shuffleQuizOptions } from "./shuffle-options";
-import { SEASONS } from "./seasons";
+import { STORYBOOK_SEASONS } from "./seasons";
 import type { StorybookQuiz } from "./types";
 
 const quiz = (id: string): StorybookQuiz =>
