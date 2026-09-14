@@ -217,7 +217,10 @@ export {
   unlockedWeek,
   unlockedDay,
   isDayUnlocked,
+  isSeasonUnlocked,
+  unlockedDayInModule,
   getNextEpisodeSlot,
+
   type Season,
   type SeasonEpisodeSlot,
   type SeasonWeek,
