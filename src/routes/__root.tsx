@@ -14,6 +14,7 @@ import { AppLangProvider } from "../lib/i18n";
 import { AuthProvider } from "../lib/auth";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "../components/ui/sonner";
+import { AppUpdateWatcher } from "../components/fluency/AppUpdateWatcher";
 
 function NotFoundComponent() {
   return (
@@ -141,6 +142,7 @@ function RootComponent() {
         <AuthProvider>
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
+          <AppUpdateWatcher />
           <Toaster position="top-center" />
         </AuthProvider>
       </AppLangProvider>

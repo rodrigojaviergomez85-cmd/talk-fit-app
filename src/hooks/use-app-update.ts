@@ -5,6 +5,12 @@ import { isActivityBusy, subscribeActivity } from "@/lib/activity-lock";
 
 const CHECK_MS = 120_000;
 const RELOAD_FLAG = "app-update-reloaded";
+/** Screens where a refresh would interrupt listening, recording or answering. */
+const BUSY_PATHS = /^\/(day\/|practice|review\/[^/]+\/|ai-coach|coach-check|simulador|interview|natural-method\/cuento\/|onboarding)/;
+
+function busyNow(): boolean {
+  return isActivityBusy() || BUSY_PATHS.test(window.location.pathname);
+}
 
 async function fetchBuild(): Promise<string | null> {
   try {
@@ -42,7 +48,7 @@ export function useAppUpdate(): { updateReady: boolean; applyUpdate: () => void 
     let alive = true;
 
     const applyIfFree = () => {
-      if (!ready.current || isActivityBusy()) return;
+      if (!ready.current || busyNow()) return;
       window.location.reload();
     };
 
@@ -56,7 +62,10 @@ export function useAppUpdate(): { updateReady: boolean; applyUpdate: () => void 
     };
 
     void check();
-    const timer = window.setInterval(() => void check(), CHECK_MS);
+    const timer = window.setInterval(() => {
+      void check();
+      applyIfFree();
+    }, CHECK_MS);
     const onWake = () => {
       if (document.visibilityState === "visible") void check();
       applyIfFree();
