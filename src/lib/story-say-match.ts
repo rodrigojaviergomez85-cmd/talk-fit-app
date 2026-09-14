@@ -354,8 +354,16 @@ export function buildSayItStartHint(
 
   if (questionEn) {
     const fromQuestion = answerStartFromQuestion(questionEn);
-    if (fromQuestion && (!cleanTarget || hintHonorsTarget(fromQuestion, cleanTarget))) {
-      return { label, hint: `${capitalize(fromQuestion)}…` };
+    if (fromQuestion) {
+      if (!cleanTarget || hintHonorsTarget(fromQuestion, cleanTarget)) {
+        return { label, hint: `${capitalize(fromQuestion)}…` };
+      }
+      // Short grading frames like "at *" or "my *" only add a closing word:
+      // append them so the hint both reads well and passes grading.
+      const fixed = fixedTargetWords(cleanTarget);
+      if (fixed.length > 0 && fixed.length <= 2) {
+        return { label, hint: `${capitalize(fromQuestion)} ${fixed.join(" ")}…` };
+      }
     }
   }
 
