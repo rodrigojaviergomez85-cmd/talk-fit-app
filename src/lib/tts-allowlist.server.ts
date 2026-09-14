@@ -1,0 +1,126 @@
+/**
+ * TTS ALLOWLIST (report-only by default).
+ *
+ * Every text a learner can send to /api/tts comes from authored content, so a
+ * text outside that set is by definition not a learner need. Because the
+ * authored set is wide, this ships in report mode: /api/tts logs whether a
+ * generation was inside the set and only enforces when
+ * app_settings.tts_allowlist_enforce is flipped to true.
+ *
+ * Matching is on TEXT ONLY (voice and tone are already closed enums validated
+ * by normalizeSpec, and text is the cost driver). Normalisation: trim, collapse
+ * internal whitespace, lowercase.
+ *
+ * SOURCES INCLUDED (every call site of AudioService.speak / loadModelAudio that
+ * reads from an importable data module):
+ *  - buildInventory over all curriculum modules + the past-verb bank:
+ *    Rep 1 / Rep 3 model text, Rep 2 chunks and Power Chunks, Rep 4 questions,
+ *    Rep 5 model examples, role-play turns (TakeBoard), Test-Ready passages,
+ *    and the verb cards (base / past / participle).
+ *  - Storybook episodes (all seasons): scene text, every dialogue line,
+ *    quiz questions, say-it phrases and personal-question prompts, mindset
+ *    affirmations and habit-card phrases — StorybookPlayer's call sites.
+ *  - Natural Method idioms (phrase + example) — NaturalMethodPager SpeakButton.
+ *  - Review Pictionary words and Call Center phrases — same SpeakButton.
+ *  - Every individual word token of all of the above, produced by the same
+ *    tokenizeWords that TappableSentence uses, because tap-a-word
+ *    pronunciation sends single words (also covers SlowWordPanel, EdReminder
+ *    and the storybook word popover).
+ *
+ * NOT COVERED YET (deliberate — this is exactly what report mode is for):
+ *  - The three interview simulators (review.interview*.tsx) keep their prompt
+ *    lists private inside the route files, which are client modules; importing
+ *    them here would pull video assets into the server bundle. Their lines will
+ *    show up in tts_generation_log as not-in-allowlist. Add them (by moving the
+ *    prompt data into a plain data module) before enforcement is turned on.
+ *  - Rep2Feedback speaks the corrected chunk, which is normally an inventory
+ *    chunk but may differ after a correction.
+ */
+
+import { buildInventory } from "@/lib/course-audio-inventory";
+import { tokenizeWords } from "@/lib/syllables";
+
+function normalize(text: string): string {
+  return text.trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+export { normalize as normalizeTtsText };
+
+async function collectTexts(): Promise<string[]> {
+  const texts: string[] = [];
+
+  // 1) Curriculum + verb bank, exactly as the pre-generation inventory sees it.
+  const { CourseService } = await import("@/services/course-service");
+  const { PAST_VERBS } = await import("@/services/verb-bank");
+  const modules = await Promise.all(CourseService.modules().map((m) => CourseService.loadModule(m.id)));
+  for (const spec of buildInventory(modules, PAST_VERBS).unique) texts.push(spec.text);
+
+  // 2) Storybook episodes (all seasons).
+  const { STORYBOOK_EPISODES } = await import("@/services/storybook");
+  for (const episode of STORYBOOK_EPISODES) {
+    for (const scene of episode.scenes) {
+      texts.push(scene.text);
+      for (const line of scene.lines ?? []) texts.push(line.text);
+      for (const word of scene.words ?? []) texts.push(word.word);
+    }
+    for (const quiz of episode.quizzes ?? []) {
+      texts.push(quiz.questionEn, quiz.sayIt);
+      if (quiz.sayItAskEn) texts.push(quiz.sayItAskEn);
+    }
+    if (episode.mindsetCard) texts.push(episode.mindsetCard.phrase);
+    if (episode.habitCard) texts.push(episode.habitCard.phrase);
+  }
+
+  // 3) Natural Method idioms.
+  const { IDIOMS } = await import("@/services/natural-method-idioms");
+  for (const idiom of IDIOMS) texts.push(idiom.phrase, idiom.example);
+
+  // 4) Review word banks.
+  const { PICTIONARY_CATEGORIES } = await import("@/services/review/pictionary");
+  for (const category of PICTIONARY_CATEGORIES) for (const word of category.words) texts.push(word.en);
+  const { CALL_CENTER_CATEGORIES } = await import("@/services/review/call-center-phrases");
+  for (const category of CALL_CENTER_CATEGORIES) for (const phrase of category.phrases) texts.push(phrase.en);
+
+  return texts;
+}
+
+async function build(): Promise<Set<string>> {
+  const set = new Set<string>();
+  for (const raw of await collectTexts()) {
+    if (typeof raw !== "string") continue;
+    const text = normalize(raw);
+    if (!text) continue;
+    set.add(text);
+    // SpeakButton strips the " / " separator before speaking.
+    if (raw.includes(" / ")) set.add(normalize(raw.replace(" / ", ", ")));
+    // Tap-a-word pronunciation sends single words.
+    for (const token of tokenizeWords(raw)) {
+      if (token.isWord) set.add(normalize(token.value));
+    }
+  }
+  return set;
+}
+
+let cached: Promise<Set<string>> | null = null;
+
+/** Memoized per server process; the curriculum is static at runtime. */
+export function ttsAllowlist(): Promise<Set<string>> {
+  cached ??= build().catch((error) => {
+    console.error(`[tts-allowlist] build failed: ${String(error)}`);
+    cached = null;
+    // Fail open: report mode must never block a learner.
+    return new Set<string>();
+  });
+  return cached;
+}
+
+export async function isAllowedTtsText(text: string): Promise<boolean> {
+  const key = normalize(text ?? "");
+  if (!key) return false;
+  return (await ttsAllowlist()).has(key);
+}
+
+/** Test-only: forget the memoized set. */
+export function resetTtsAllowlistForTests(): void {
+  cached = null;
+}
