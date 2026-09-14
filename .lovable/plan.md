@@ -6,7 +6,7 @@ Respuesta corta: la app funciona, pero **hoy no está lista** para 17,000 usuari
 
 - 835 cuentas registradas, 6,742 grabaciones, base de datos en 49 MB.
 - Audio guardado: 1.07 GB de grabaciones de estudiantes + 316 MB de audio del curso.
-- **Los límites de uso están apagados** (limits_enabled = false) y el cobro también. Hoy cualquier estudiante puede usar la corrección de voz y el coach de IA sin tope.
+- **El interruptor global de límites está apagado**, y el cobro también. Los topes que definimos siguen guardados y correctos (5 prácticas al día, 2 entrevistas, 5 usos del coach de IA al día y 60 al mes), pero mientras ese interruptor esté apagado el sistema los reemplaza por "ilimitado". Es decir: hoy nadie tiene tope real.
 - El servidor de datos está en el tamaño más pequeño disponible.
 - La limpieza automática de audios viejos corre cada día a las 7:00 UTC, pero borra máximo 5,000 archivos por corrida.
 
@@ -14,8 +14,8 @@ Proyección lineal a 17,000 estudiantes (20x): ~21 GB de audio de estudiantes y 
 
 ## Cambios propuestos antes del lanzamiento
 
-### 1. Encender los límites de uso (crítico, costo)
-Activar los topes por sección y el multiplicador Pro que ya están construidos, y revisar los números por sección (práctica diaria, corrección de voz, coach de IA, entrevistas). Sin esto, el costo de IA con 17,000 usuarios no tiene techo.
+### 1. Encender el interruptor de límites (crítico, costo)
+El tope de 5 prácticas por día sí existe y está bien construido: hay una verificación en la base de datos que bloquea la sexta sesión del día, con protección contra trampas y contra intentos simultáneos. Solo está desactivada por el interruptor global. Propongo encenderlo, confirmar los números por sección y probar con una cuenta normal que la sexta práctica del día quede bloqueada y que las cuentas internas sigan sin tope. Sin esto, el gasto de IA con 17,000 usuarios no tiene techo.
 
 ### 2. Subir el tamaño del servidor de datos
 Pasar de Tiny a un tamaño acorde a miles de sesiones concurrentes. Es un cambio de configuración; implica un costo mensual mayor y un reinicio breve.
