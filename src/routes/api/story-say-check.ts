@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { compareStorySay } from "@/lib/story-say-match";
 import type { Rep2Confidence } from "@/lib/rep2-match";
 import { getStorybookEpisode } from "@/services/storybook";
+import { logGroqCall } from "@/lib/groq-call-log.server";
+import type { AiLogMeta } from "@/lib/ai-call-log.server";
 
 /** Only the audio formats the app itself records/uploads. */
 const AUDIO_EXT: Record<string, string> = {
@@ -136,7 +138,7 @@ export const Route = createFileRoute("/api/story-say-check")({
           return json({ error: "Speaking check is not configured." }, 500);
         }
 
-        const stt = await transcribe(apiKey, file, ext);
+        const stt = await transcribe(apiKey, file, ext, { userId });
         if (!stt.ok) {
           const detail = await stt.res.text().catch(() => "");
           console.error(`Groq ${MODEL_TURBO} failed [${stt.res.status}]: ${detail}`);
@@ -187,6 +189,7 @@ async function transcribe(
   apiKey: string,
   file: File,
   ext: string,
+  meta: AiLogMeta,
 ): Promise<{ ok: true; transcript: string; confidence: Rep2Confidence } | { ok: false; res: Response }> {
   const form = new FormData();
   form.append("model", MODEL_TURBO);
@@ -194,6 +197,7 @@ async function transcribe(
   form.append("language", "en");
   form.append("prompt", NEUTRAL_PROMPT);
   form.append("response_format", "json");
+  const startedAt = Date.now();
 
   const res = await fetch(GROQ_URL, {
     method: "POST",
@@ -201,7 +205,11 @@ async function transcribe(
     body: form,
   });
 
-  if (!res.ok) return { ok: false, res };
+  if (!res.ok) {
+    logGroqCall(meta, "story-say-check", MODEL_TURBO, null, false, String(res.status), Date.now() - startedAt);
+    return { ok: false, res };
+  }
+  logGroqCall(meta, "story-say-check", MODEL_TURBO, null, true, null, Date.now() - startedAt);
 
   const body = (await res.json().catch(() => null)) as {
     text?: unknown;

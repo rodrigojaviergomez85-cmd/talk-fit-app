@@ -71,6 +71,7 @@ export const Route = createFileRoute("/api/tts")({
         const key = await audio.clipKey(spec);
         const result = await audio.resolveClip(spec, key, {
           waitForOther: true,
+          meta: { userId },
           beforeGenerate: async () => {
             // a) Authored-content allowlist. Report-only until an admin flips
             //    app_settings.tts_allowlist_enforce in the SQL editor.
@@ -112,8 +113,22 @@ export const Route = createFileRoute("/api/tts")({
         });
 
         switch (result.status) {
-          case "hit":
+          case "hit": {
+            // Cache hits cost nothing: rollup-only increment so the hit rate is visible.
+            void import("@/lib/ai-call-log.server")
+              .then(({ logAiCall }) =>
+                logAiCall({
+                  user_id: userId,
+                  endpoint: "tts",
+                  provider: "none",
+                  characters: spec.text.length,
+                  ok: true,
+                  cacheHit: true,
+                }),
+              )
+              .catch(() => {});
             return audioResponse(result.audio, "store");
+          }
           case "generated":
             return audioResponse(result.audio, "generated", { "x-audio-stored": result.stored ? "yes" : "no" });
           case "storage-error":

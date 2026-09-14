@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import type { AiLogMeta } from "@/lib/ai-call-log.server";
 import type { ModuleId } from "@/lib/types";
 import type { CoachDeps, CoachRubric, FeedbackRow, RecordingRow } from "@/lib/final-audio-coach.server";
 
@@ -151,8 +152,14 @@ export const Route = createFileRoute("/api/final-audio-coach")({
             const limit = await sectionDailyLimit(uid, "final_coach", engine.COACH_QUOTA_LIMIT);
             return (await consumeQuota(uid, engine.COACH_QUOTA_ENDPOINT, limit, engine.COACH_QUOTA_WINDOW_SECONDS)).allowed;
           },
-          stt: async (audio, mime) => (await import("@/lib/final-coach-providers.server")).transcribeFinalAudio(audio, mime),
-          llm: (rubric, transcript, ideas, seconds) => evaluate(rubric, transcript, ideas, seconds ?? null),
+          stt: async (audio, mime) =>
+            (await import("@/lib/final-coach-providers.server")).transcribeFinalAudio(audio, mime, "final-audio-coach", {
+              userId,
+              moduleId,
+              day,
+            }),
+          llm: (rubric, transcript, ideas, seconds) =>
+            evaluate(rubric, transcript, ideas, seconds ?? null, { userId, moduleId, day }),
           log: (entry) => console.info("[final-audio-coach]", entry),
         };
 
@@ -163,11 +170,17 @@ export const Route = createFileRoute("/api/final-audio-coach")({
   },
 });
 
-async function evaluate(rubric: CoachRubric, transcript: string, ideas: number | null, seconds: number | null): Promise<unknown | null> {
+async function evaluate(
+  rubric: CoachRubric,
+  transcript: string,
+  ideas: number | null,
+  seconds: number | null,
+  meta: AiLogMeta,
+): Promise<unknown | null> {
   const { buildCoachMessages, coachJsonSchemaFor } = await import("@/lib/final-audio-coach.server");
   const { coachChatJson } = await import("@/lib/final-coach-providers.server");
   // Same single call; pilot days (multi-correction) just get the wider schema.
-  return coachChatJson(buildCoachMessages(rubric, transcript, ideas, seconds), coachJsonSchemaFor(rubric));
+  return coachChatJson(buildCoachMessages(rubric, transcript, ideas, seconds), coachJsonSchemaFor(rubric), "final-audio-coach", meta);
 }
 
 function json(body: unknown, status = 200) {

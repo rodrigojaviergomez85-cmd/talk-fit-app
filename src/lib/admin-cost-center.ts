@@ -1,14 +1,30 @@
 /**
- * Admin cost center: types + client-side cost estimation.
- * Raw usage numbers come from the admin_cost_center() database function;
- * unit prices live here so they are easy to adjust when provider pricing changes.
+ * Admin cost center: types + presentation of REAL measured AI cost.
+ *
+ * AI dollars are no longer guessed from request counts: every paid call writes
+ * its units and an estimated cost at write time into `ai_daily_rollup`, and
+ * admin_cost_center() returns those rows. Only the Cloud storage line remains
+ * an estimate, because it is not an AI cost.
  */
 
 export interface CostEndpoint {
   endpoint: string;
+  model: string;
   requests_30d: number;
   requests_total: number;
   users_30d: number;
+  failures_30d: number;
+  denials_30d: number;
+  cache_hits_30d: number;
+  audio_seconds_30d: number;
+  input_tokens_30d: number;
+  output_tokens_30d: number;
+  characters_30d: number;
+  est_cost_usd_30d: number;
+  est_cost_usd_total: number;
+  cache_hits_total: number;
+  denials_total: number;
+  failures_total: number;
 }
 
 export interface AdminCostCenter {
@@ -28,71 +44,82 @@ export interface AdminCostCenter {
 
 export interface CostLine {
   key: string;
+  label: string;
   requests: number;
+  denials: number;
   unitLabel: string;
   usd: number;
   provider: "groq" | "lovable-ai" | "cloud";
 }
 
-/** Groq Whisper turbo: $0.04 per audio hour. */
-const WHISPER_USD_PER_MINUTE = 0.04 / 60;
-/** Average STT audio length per request type (seconds), estimated from product behavior. */
-const STT_SECONDS_PER_REQUEST: Record<string, number> = {
-  "rep2-correction": 8,
-  "sentence-count": 30,
-  "final-audio-coach": 45,
-  "final-audio-coach-retake": 45,
-};
-/** Lovable AI text model per Final Coach analysis (small prompt + JSON out). */
-const COACH_USD_PER_ANALYSIS = 0.0015;
-/** Lovable AI TTS per generation (~short phrase). Requests are cached/shared. */
-const TTS_USD_PER_GENERATION = 0.01;
+/** Whisper models are billed by Groq; everything else goes through Lovable AI. */
+function providerFor(model: string): "groq" | "lovable-ai" {
+  return model.startsWith("whisper") ? "groq" : "lovable-ai";
+}
 
-export function estimateCosts(data: AdminCostCenter): { lines: CostLine[]; totalUsd: number; groqUsd: number; lovableUsd: number } {
+function num(value: unknown): number {
+  const n = typeof value === "number" ? value : Number(value ?? 0);
+  return Number.isFinite(n) ? n : 0;
+}
+
+export function estimateCosts(data: AdminCostCenter): {
+  lines: CostLine[];
+  totalUsd: number;
+  groqUsd: number;
+  lovableUsd: number;
+  ttsCacheHitRate: number | null;
+} {
   const lines: CostLine[] = [];
-  const byEndpoint = new Map(data.endpoints.map((e) => [e.endpoint, e.requests_30d]));
 
-  let sttMinutes = 0;
-  let sttRequests = 0;
-  for (const [endpoint, seconds] of Object.entries(STT_SECONDS_PER_REQUEST)) {
-    const req = byEndpoint.get(endpoint) ?? 0;
-    sttRequests += req;
-    sttMinutes += (req * seconds) / 60;
+  for (const e of data.endpoints ?? []) {
+    const model = e.model ?? "";
+    const provider = providerFor(model);
+    const usd = num(e.est_cost_usd_30d);
+    const units =
+      num(e.audio_seconds_30d) > 0
+        ? `${Math.round(num(e.audio_seconds_30d) / 60)} min`
+        : num(e.characters_30d) > 0
+          ? `${Math.round(num(e.characters_30d) / 1000)}k chars`
+          : num(e.input_tokens_30d) + num(e.output_tokens_30d) > 0
+            ? `${Math.round((num(e.input_tokens_30d) + num(e.output_tokens_30d)) / 1000)}k tokens`
+            : "—";
+    lines.push({
+      key: `${e.endpoint}|${model}`,
+      label: model ? `${e.endpoint} · ${model}` : e.endpoint,
+      requests: num(e.requests_30d),
+      denials: num(e.denials_30d),
+      unitLabel: units,
+      usd,
+      provider,
+    });
   }
+  lines.sort((a, b) => b.usd - a.usd);
+
+  // Lovable Cloud runtime (DB + storage + bandwidth): still an estimate, not an AI cost.
+  const cloudUsd = Math.max(0.1, data.recordings.minutes_30d * 0.0005); // ~$0.50 per 1000 min stored/served
   lines.push({
-    key: "stt",
-    requests: sttRequests,
-    unitLabel: `${Math.round(sttMinutes)} min`,
-    usd: sttMinutes * WHISPER_USD_PER_MINUTE,
-    provider: "groq",
+    key: "cloud",
+    label: "cloud",
+    requests: data.attempts.sessions_30d,
+    denials: 0,
+    unitLabel: "estimado",
+    usd: cloudUsd,
+    provider: "cloud",
   });
 
-  const coachRequests = (byEndpoint.get("final-audio-coach") ?? 0) + (byEndpoint.get("final-audio-coach-retake") ?? 0);
-  lines.push({
-    key: "coach",
-    requests: coachRequests,
-    unitLabel: `$${COACH_USD_PER_ANALYSIS}/analysis`,
-    usd: coachRequests * COACH_USD_PER_ANALYSIS,
-    provider: "lovable-ai",
-  });
-
-  const ttsGen = byEndpoint.get("tts-generate") ?? 0;
-  lines.push({
-    key: "tts",
-    requests: ttsGen,
-    unitLabel: `$${TTS_USD_PER_GENERATION}/voice`,
-    usd: ttsGen * TTS_USD_PER_GENERATION,
-    provider: "lovable-ai",
-  });
-
-  // Lovable Cloud runtime (DB + storage + bandwidth): small flat estimate per GB-month of audio.
-  const cloudUsd = Math.max(0.1, (data.recordings.minutes_30d * 0.0005)); // ~$0.50 per 1000 min stored/served
-  lines.push({ key: "cloud", requests: data.attempts.sessions_30d, unitLabel: "estimado", usd: cloudUsd, provider: "cloud" });
+  let ttsHits = 0;
+  let ttsCalls = 0;
+  for (const e of data.endpoints ?? []) {
+    if (e.endpoint !== "tts") continue;
+    ttsHits += num(e.cache_hits_30d);
+    ttsCalls += num(e.requests_30d);
+  }
+  const ttsCacheHitRate = ttsHits + ttsCalls > 0 ? ttsHits / (ttsHits + ttsCalls) : null;
 
   const totalUsd = lines.reduce((s, l) => s + l.usd, 0);
   const groqUsd = lines.filter((l) => l.provider === "groq").reduce((s, l) => s + l.usd, 0);
   const lovableUsd = totalUsd - groqUsd;
-  return { lines, totalUsd, groqUsd, lovableUsd };
+  return { lines, totalUsd, groqUsd, lovableUsd, ttsCacheHitRate };
 }
 
 export function fmtUsd(n: number): string {

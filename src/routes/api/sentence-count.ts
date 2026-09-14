@@ -103,7 +103,7 @@ export const Route = createFileRoute("/api/sentence-count")({
         // 1) Transcribe (server-side only; transcript never leaves this handler).
         const { transcribeFinalAudio } = await import("@/lib/final-coach-providers.server");
         const bytes = new Uint8Array(await file.arrayBuffer());
-        const stt = await transcribeFinalAudio(bytes, mime, "sentence-count");
+        const stt = await transcribeFinalAudio(bytes, mime, "sentence-count", { userId });
         if (!stt.ok) {
           return json({ error: "Could not analyze the recording." }, 502);
         }
@@ -128,6 +128,7 @@ export const Route = createFileRoute("/api/sentence-count")({
         }
 
         // Count complete spoken ideas — punctuation-independent.
+        const chatStartedAt = Date.now();
         const chat = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
           method: "POST",
           headers: {
@@ -169,12 +170,24 @@ export const Route = createFileRoute("/api/sentence-count")({
         if (!chat.ok) {
           const detail = await chat.text().catch(() => "");
           console.error(`Sentence count failed [${chat.status}]: ${detail}`);
+          logIdeaCall(userId, null, null, false, String(chat.status), Date.now() - chatStartedAt);
           return json({ error: "Could not analyze the recording." }, gatewayStatus(chat.status));
         }
 
         const chatBody = (await chat.json().catch(() => null)) as
-          | { choices?: Array<{ message?: { content?: unknown } }> }
+          | {
+              choices?: Array<{ message?: { content?: unknown } }>;
+              usage?: { prompt_tokens?: unknown; completion_tokens?: unknown };
+            }
           | null;
+        logIdeaCall(
+          userId,
+          typeof chatBody?.usage?.prompt_tokens === "number" ? chatBody.usage.prompt_tokens : null,
+          typeof chatBody?.usage?.completion_tokens === "number" ? chatBody.usage.completion_tokens : null,
+          true,
+          null,
+          Date.now() - chatStartedAt,
+        );
         const content = chatBody?.choices?.[0]?.message?.content;
         let sentences: number | null = null;
         if (typeof content === "string") {
@@ -209,4 +222,30 @@ function json(body: unknown, status = 200) {
 /** Pass through terminal/retryable gateway statuses; everything else is 502. */
 function gatewayStatus(status: number) {
   return status === 429 || status === 402 || status === 403 ? status : 502;
+}
+
+/** Fire-and-forget cost log for the idea-counting call. Never affects the response. */
+function logIdeaCall(
+  userId: string,
+  inputTokens: number | null,
+  outputTokens: number | null,
+  ok: boolean,
+  errorCode: string | null,
+  latencyMs: number,
+): void {
+  void import("@/lib/ai-call-log.server")
+    .then(({ logAiCall }) =>
+      logAiCall({
+        user_id: userId,
+        endpoint: "sentence-count",
+        provider: "lovable-gateway",
+        model: "google/gemini-3.7-flash",
+        input_tokens: inputTokens,
+        output_tokens: outputTokens,
+        ok,
+        error_code: errorCode,
+        latency_ms: latencyMs,
+      }),
+    )
+    .catch(() => {});
 }

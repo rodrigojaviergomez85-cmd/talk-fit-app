@@ -9,6 +9,7 @@
  * in the private "course-audio" bucket. Unchanged from the original /api/tts,
  * so every previously generated clip stays valid.
  */
+import type { AiLogMeta } from "./ai-call-log.server";
 
 export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy" | "earnest" | "warm" | "pro";
 export type RequestedVoice = "neutral" | "female" | "femaleBright" | "femaleMature" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm" | "shyBoy" | "teenBoy" | "elder";
@@ -248,7 +249,8 @@ export type GenerateResult = { ok: true; audio: ArrayBuffer } | { ok: false; sta
 export const PASSTHROUGH_STATUSES: ReadonlySet<number> = new Set([402, 403, 429]);
 
 /** One paid TTS call. Model / instructions / format are fixed server-side. */
-export async function generateClip(spec: ClipSpec, apiKey: string): Promise<GenerateResult> {
+export async function generateClip(spec: ClipSpec, apiKey: string, meta?: AiLogMeta): Promise<GenerateResult> {
+  const startedAt = Date.now();
   try {
     const upstream = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
       method: "POST",
@@ -266,18 +268,41 @@ export async function generateClip(spec: ClipSpec, apiKey: string): Promise<Gene
       console.error(`[course-audio] AI FAILURE [${upstream.status}]: ${detail.slice(0, 200)}`);
       // Billing (402), policy (403) and rate limit (429) pass through unchanged so
       // callers can stop instead of retrying; anything else is an opaque 502.
+      logTts(meta, spec.text.length, false, String(upstream.status), Date.now() - startedAt);
       return { ok: false, status: PASSTHROUGH_STATUSES.has(upstream.status) ? upstream.status : 502 };
     }
     const audio = await upstream.arrayBuffer();
     if (audio.byteLength === 0) {
       console.error("[course-audio] AI FAILURE: empty audio");
+      logTts(meta, spec.text.length, false, "empty", Date.now() - startedAt);
       return { ok: false, status: 502 };
     }
+    logTts(meta, spec.text.length, true, null, Date.now() - startedAt);
     return { ok: true, audio };
   } catch (error) {
     console.error(`[course-audio] AI FAILURE (thrown): ${error instanceof Error ? error.message : "unknown"}`);
+    logTts(meta, spec.text.length, false, "network", Date.now() - startedAt);
     return { ok: false, status: 502 };
   }
+}
+
+/** Fire-and-forget cost log for one paid speech generation. */
+function logTts(meta: AiLogMeta | undefined, characters: number, ok: boolean, errorCode: string | null, latencyMs: number): void {
+  if (!meta) return;
+  void import("./ai-call-log.server")
+    .then(({ logAiCall, TTS_MODEL }) =>
+      logAiCall({
+        user_id: meta.userId,
+        endpoint: "tts",
+        provider: "lovable-gateway",
+        model: TTS_MODEL,
+        characters,
+        ok,
+        error_code: errorCode,
+        latency_ms: latencyMs,
+      }),
+    )
+    .catch(() => {});
 }
 
 /* ------------------------------------------------------------------ */
@@ -304,6 +329,8 @@ export type ResolveOptions = {
   waitForOther?: boolean | undefined;
   /** Skip the first lookup when the caller has just confirmed a miss (warm-up). */
   assumeMiss?: boolean | undefined;
+  /** Who to attribute the paid generation to in the AI cost log. */
+  meta?: AiLogMeta | undefined;
 };
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -363,7 +390,7 @@ export async function resolveClip(spec: ClipSpec, key: string, options: ResolveO
 
     if (options.beforeGenerate && !(await options.beforeGenerate())) return { status: "not-eligible" };
 
-    const generated = await generateClip(spec, apiKey);
+    const generated = await generateClip(spec, apiKey, options.meta);
     if (!generated.ok) return { status: "ai-error", httpStatus: generated.status };
 
     const stored = await persistClip(key, generated.audio);

@@ -44,6 +44,63 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_call_log: {
+        Row: {
+          audio_seconds: number | null
+          characters: number | null
+          created_at: string
+          day: number | null
+          endpoint: string
+          error_code: string | null
+          est_cost_usd: number
+          id: string
+          input_tokens: number | null
+          latency_ms: number | null
+          model: string | null
+          module_id: string | null
+          ok: boolean
+          output_tokens: number | null
+          provider: string
+          user_id: string
+        }
+        Insert: {
+          audio_seconds?: number | null
+          characters?: number | null
+          created_at?: string
+          day?: number | null
+          endpoint: string
+          error_code?: string | null
+          est_cost_usd?: number
+          id?: string
+          input_tokens?: number | null
+          latency_ms?: number | null
+          model?: string | null
+          module_id?: string | null
+          ok: boolean
+          output_tokens?: number | null
+          provider: string
+          user_id: string
+        }
+        Update: {
+          audio_seconds?: number | null
+          characters?: number | null
+          created_at?: string
+          day?: number | null
+          endpoint?: string
+          error_code?: string | null
+          est_cost_usd?: number
+          id?: string
+          input_tokens?: number | null
+          latency_ms?: number | null
+          model?: string | null
+          module_id?: string | null
+          ok?: boolean
+          output_tokens?: number | null
+          provider?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_coach_usage: {
         Row: {
           created_at: string
@@ -68,6 +125,54 @@ export type Database = {
           updated_at?: string
           used?: number
           user_id?: string
+        }
+        Relationships: []
+      }
+      ai_daily_rollup: {
+        Row: {
+          audio_seconds: number
+          cache_hits: number
+          calls: number
+          characters: number
+          day: string
+          denials: number
+          endpoint: string
+          est_cost_usd: number
+          failures: number
+          input_tokens: number
+          model: string
+          output_tokens: number
+          updated_at: string
+        }
+        Insert: {
+          audio_seconds?: number
+          cache_hits?: number
+          calls?: number
+          characters?: number
+          day: string
+          denials?: number
+          endpoint: string
+          est_cost_usd?: number
+          failures?: number
+          input_tokens?: number
+          model?: string
+          output_tokens?: number
+          updated_at?: string
+        }
+        Update: {
+          audio_seconds?: number
+          cache_hits?: number
+          calls?: number
+          characters?: number
+          day?: string
+          denials?: number
+          endpoint?: string
+          est_cost_usd?: number
+          failures?: number
+          input_tokens?: number
+          model?: string
+          output_tokens?: number
+          updated_at?: string
         }
         Relationships: []
       }
@@ -1194,6 +1299,22 @@ export type Database = {
         }
         Returns: undefined
       }
+      bump_ai_rollup: {
+        Args: {
+          _audio_seconds: number
+          _cache_hits: number
+          _calls: number
+          _characters: number
+          _denials: number
+          _endpoint: string
+          _est_cost_usd: number
+          _failures: number
+          _input_tokens: number
+          _model: string
+          _output_tokens: number
+        }
+        Returns: undefined
+      }
       consume_ai_coach_quota: {
         Args: { _user_id: string }
         Returns: {
@@ -1277,6 +1398,7 @@ export type Database = {
       is_unlimited_test_user: { Args: { _user_id: string }; Returns: boolean }
       limits_enabled: { Args: never; Returns: boolean }
       plan_multiplier: { Args: { _user_id: string }; Returns: number }
+      prune_ai_call_log: { Args: { _keep_days: number }; Returns: number }
       purge_backlog: {
         Args: {
           _final_retention_days: number

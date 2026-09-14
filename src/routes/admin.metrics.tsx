@@ -326,9 +326,6 @@ function MetricsPage() {
                 {(() => {
                   const est = estimateCosts(costs);
                   const labels: Record<string, string> = {
-                    stt: es ? "Transcripción de voz (Groq Whisper)" : "Speech transcription (Groq Whisper)",
-                    coach: es ? "Coach IA (análisis de audio final)" : "AI Coach (final audio analysis)",
-                    tts: es ? "Voces generadas (TTS)" : "Generated voices (TTS)",
                     cloud: es ? "Nube (base de datos + audios)" : "Cloud (database + audio storage)",
                   };
                   const active = costs.users.active_30d || 1;
@@ -359,13 +356,26 @@ function MetricsPage() {
                       <div className="space-y-2">
                         {est.lines.map((l) => (
                           <div key={l.key} className="flex items-baseline justify-between gap-2 text-[12px] font-semibold">
-                            <span>{labels[l.key]}</span>
+                            <span>{labels[l.key] ?? l.label}</span>
                             <span className="text-muted-foreground">
-                              {fmtNum(l.requests)} {es ? "llamadas" : "calls"} · {l.unitLabel} · {fmtUsd(l.usd)}
+                              {fmtNum(l.requests)} {es ? "llamadas" : "calls"}
+                              {l.denials > 0 ? ` · ${fmtNum(l.denials)} ${es ? "bloqueos" : "denials"}` : ""} · {l.unitLabel} ·{" "}
+                              {fmtUsd(l.usd)}
                             </span>
                           </div>
                         ))}
                       </div>
+                      {est.ttsCacheHitRate !== null ? (
+                        <p className="mt-2 text-[11px] font-semibold text-muted-foreground">
+                          {es ? "Voces servidas desde caché: " : "Voices served from cache: "}
+                          {Math.round(est.ttsCacheHitRate * 100)}%
+                        </p>
+                      ) : null}
+                      <p className="mt-1 text-[11px] text-muted-foreground">
+                        {es
+                          ? "Los costos de IA son reales y medidos por llamada. No hay datos anteriores al 14 de septiembre de 2026, cuando se activó el registro."
+                          : "AI costs are real, measured per call. Data before September 14, 2026, when logging was enabled, is not available."}
+                      </p>
                       <div className="mt-3 grid grid-cols-2 gap-2">
                         <Stat
                           label={es ? "Minutos de audio grabados" : "Minutes of audio recorded"}
