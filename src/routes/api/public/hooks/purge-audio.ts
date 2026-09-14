@@ -27,8 +27,38 @@ async function jobTokenAccepted(request: Request): Promise<boolean> {
   return timingSafeEqual(Buffer.from(provided), Buffer.from(expected));
 }
 
+/** A run that crashed without stamping `finished_at` stops blocking after this. */
+export const ACTIVE_RUN_WINDOW_MS = 30 * 60_000;
+
+type RunLookup = {
+  from: (table: string) => {
+    select: (cols: string) => {
+      eq: (col: string, value: unknown) => {
+        is: (col: string, value: unknown) => {
+          gte: (col: string, value: unknown) => {
+            limit: (n: number) => Promise<{ data: { id: string }[] | null }>;
+          };
+        };
+      };
+    };
+  };
+};
+
+/** Exported for tests: is another purge run still in flight? */
+export async function hasActiveRun(admin: RunLookup, nowMs = Date.now()): Promise<boolean> {
+  const cutoff = new Date(nowMs - ACTIVE_RUN_WINDOW_MS).toISOString();
+  const { data } = await admin
+    .from("job_runs")
+    .select("id")
+    .eq("job_name", "purge-audio")
+    .is("finished_at", null)
+    .gte("started_at", cutoff)
+    .limit(1);
+  return (data?.length ?? 0) > 0;
+}
+
 /**
- * Daily audio retention job (called by pg_cron).
+ * Hourly audio retention job (called by pg_cron).
  *
  * Every run is bounded (see `storage-purge.server.ts`) and recorded in
  * `job_runs`, so a failure is visible on the admin Alerts screen instead of
