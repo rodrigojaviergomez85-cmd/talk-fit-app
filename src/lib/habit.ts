@@ -1,4 +1,3 @@
-import { hasPlayableAudio } from "@/lib/recordings";
 import type { JourneyState, ModuleId } from "@/lib/types";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, habitDatesOf } from "@/services/journey-service";
@@ -193,7 +192,7 @@ export function journeyMetrics(state: JourneyState) {
     days: habitDays(state),
     reps: records.length * 5,
     minutes: JourneyService.totalSpeakingMinutes(state),
-    finalReps: records.filter((r) => hasPlayableAudio(r)).length,
+    finalReps: records.filter((r) => Boolean(r.recordingPath || r.finalUrl)).length,
     modules: CourseService.modules().filter((m) => JourneyService.moduleComplete(state, m.id)).length,
   };
 }

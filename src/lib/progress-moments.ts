@@ -112,7 +112,9 @@ export function journeyMetrics(state: JourneyState) {
     /** Only claim the full rep count when every journey day is actually complete. */
     reps: records.length >= totalDays ? totalDays * 5 : null,
     minutes: Math.round(seconds / 60),
-    finalReps: records.filter((r) => hasPlayableAudio(r)).length,
+    // Counted from saved history, not from the file: deleting audio never
+    // rewrites how much the learner actually did.
+    finalReps: records.filter((r) => r.recordingPath || r.finalUrl).length,
   };
 }
 
@@ -166,7 +168,9 @@ export function moduleMetrics(state: JourneyState, moduleId: ModuleId) {
     days: records.length,
     reps: records.length * 5,
     minutes: Math.round(seconds / 60),
-    finalReps: records.filter((r) => hasPlayableAudio(r)).length,
+    // Counted from saved history, not from the file: deleting audio never
+    // rewrites how much the learner actually did.
+    finalReps: records.filter((r) => r.recordingPath || r.finalUrl).length,
   };
 }
 
