@@ -228,6 +228,27 @@ export const EAGLES_EP1_THE_OFFER: StorybookEpisode = {
         { word: "proposal", es: "propuesta" },
       ],
     },
+    {
+      id: "s11",
+      image: s11,
+      imageAlt: "Vale le cuenta a Dani, paso a paso, cómo estuvo la llamada.",
+      text: "Vale tells the whole story again, in the past, step by step.",
+      es: "Vale cuenta toda la historia otra vez, en pasado, paso a paso.",
+      speaker: "vale",
+      lines: [
+        { speaker: "dani", text: "Okay, tell me everything. What happened?", es: "«Bueno, cuéntame todo. ¿Qué pasó?»" },
+        { speaker: "vale", text: "Morgan called at nine, and I answered in English because I promised myself I would.", es: "«Morgan llamó a las nueve y contesté en inglés porque me lo prometí»." },
+        { speaker: "vale", text: "First, I asked two questions. After that, I recommended option B.", es: "«Primero hice dos preguntas. Después de eso, recomendé la opción B»." },
+        { speaker: "vale", text: "He said it was expensive, but I explained the numbers and he listened.", es: "«Dijo que era caro, pero expliqué los números y me escuchó»." },
+        { speaker: "vale", text: "Overall, it was the best call of my life.", es: "«En general, fue la mejor llamada de mi vida»." },
+      ],
+      words: [
+        { word: "happened", es: "pasó" },
+        { word: "asked", es: "pregunté" },
+        { word: "explained", es: "expliqué" },
+        { word: "overall", es: "en general" },
+      ],
+    },
   ],
   quizzes: [
     {
