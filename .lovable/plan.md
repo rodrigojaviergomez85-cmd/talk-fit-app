@@ -14,8 +14,8 @@ Proyección lineal a 17,000 estudiantes (20x): ~21 GB de audio de estudiantes y 
 
 ## Cambios propuestos antes del lanzamiento
 
-### 1. Encender los límites de uso (crítico, costo)
-Activar los topes por sección y el multiplicador Pro que ya están construidos, y revisar los números por sección (práctica diaria, corrección de voz, coach de IA, entrevistas). Sin esto, el costo de IA con 17,000 usuarios no tiene techo.
+### 1. Encender el interruptor de límites (crítico, costo)
+El tope de 5 prácticas por día sí existe y está bien construido: hay una verificación en la base de datos que bloquea la sexta sesión del día, con protección contra trampas y contra intentos simultáneos. Solo está desactivada por el interruptor global. Propongo encenderlo, confirmar los números por sección y probar con una cuenta normal que la sexta práctica del día quede bloqueada y que las cuentas internas sigan sin tope. Sin esto, el gasto de IA con 17,000 usuarios no tiene techo.
 
 ### 2. Subir el tamaño del servidor de datos
 Pasar de Tiny a un tamaño acorde a miles de sesiones concurrentes. Es un cambio de configuración; implica un costo mensual mayor y un reinicio breve.
