@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { buildEpisodeGlossary, lookupWord, normalizeWord } from "./glossary";
 import { VALE_FIRST_DAY } from "./vale-first-day";
+import { STORYBOOK_EPISODES } from "./index";
+
 
 describe("storybook glossary", () => {
   const glossary = buildEpisodeGlossary(VALE_FIRST_DAY);
