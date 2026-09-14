@@ -151,7 +151,7 @@ export function milestones(state: JourneyState): Milestone[] {
     const last = days[days.length - 1];
     if (!last) continue;
     const record = JourneyService.getRecord(state, module.id, last.day);
-    if (hasPlayableAudio(record)) {
+    if (record && hasPlayableAudio(record)) {
       push(`end:${module.id}`, { es: `FIN ${module.label}`, en: `${module.label} END` }, record);
     }
   }
