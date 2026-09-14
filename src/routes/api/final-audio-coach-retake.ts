@@ -215,8 +215,15 @@ export const Route = createFileRoute("/api/final-audio-coach-retake")({
             const limit = await sectionDailyLimit(uid, "coach_retake", engine.RETAKE_QUOTA_LIMIT);
             return (await consumeQuota(uid, engine.RETAKE_QUOTA_ENDPOINT, limit, engine.RETAKE_QUOTA_WINDOW_SECONDS)).allowed;
           },
-          stt: (bytes, m) => providers.transcribeFinalAudio(bytes, m, "final-audio-coach-retake"),
-          llm: (ctx, transcript) => providers.coachChatJson(engine.buildRetakeMessages(ctx, transcript), engine.RETAKE_JSON_SCHEMA, "final-audio-coach-retake"),
+          stt: (bytes, m) =>
+            providers.transcribeFinalAudio(bytes, m, "final-audio-coach-retake", { userId, moduleId, day }),
+          llm: (ctx, transcript) =>
+            providers.coachChatJson(
+              engine.buildRetakeMessages(ctx, transcript),
+              engine.RETAKE_JSON_SCHEMA,
+              "final-audio-coach-retake",
+              { userId, moduleId, day },
+            ),
           log: (entry) => console.info("[final-audio-coach-retake]", entry),
           };
 
