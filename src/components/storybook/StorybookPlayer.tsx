@@ -513,7 +513,8 @@ function TappableText({
             <button
               key={`w-${i}`}
               type="button"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 if (open === token.value) {
                   close();
                   AudioService.stop();
@@ -539,7 +540,12 @@ function TappableText({
       </p>
 
       {open ? (
-        <div className="rounded-2xl border border-primary/30 bg-primary/5 p-3" style={{ animation: "sb-pop .25s ease-out" }}>
+        <div
+          className="rounded-2xl border border-primary/30 bg-primary/5 p-3"
+          style={{ animation: "sb-pop .25s ease-out" }}
+          onClick={(e) => e.stopPropagation()}
+          onKeyDown={(e) => e.stopPropagation()}
+        >
           <div className="flex items-start justify-between gap-2">
             <div>
               <p className="text-[18px] font-extrabold text-foreground">{open}</p>
@@ -607,7 +613,8 @@ function DialogueScene({
 
   const play = (from?: number, speed?: number) => {
     controller.current?.cancel();
-    const startAt = from ?? activeRef.current;
+    // Past the last line means "the learner finished": start the scene over.
+    const startAt = Math.min(from ?? activeRef.current, Math.max(0, lines.length - 1));
     activeRef.current = startAt;
     setActiveLine(startAt);
     setFollow(true);
@@ -629,6 +636,30 @@ function DialogueScene({
     controller.current = null;
     AudioService.stop();
     setPlaying(false);
+  };
+
+  /** Tap a line to hear just that line; "Escena" then continues from the next one. */
+  const playSingle = (i: number, speed?: number) => {
+    const line = lines[i];
+    if (!line) return;
+    controller.current?.cancel();
+    activeRef.current = i;
+    setActiveLine(i);
+    setFollow(true);
+    setPlaying(true);
+    controller.current = startDialogue([line], {
+      rate: speed ?? rate,
+      startAt: 0,
+      onLine: (idx) => {
+        if (idx === null) return;
+        activeRef.current = i;
+        setActiveLine(i);
+      },
+      onDone: () => {
+        activeRef.current = i + 1;
+        setPlaying(false);
+      },
+    });
   };
 
   // Auto-start the conversation whenever the scene appears.
@@ -699,8 +730,18 @@ function DialogueScene({
             ref={(el) => {
               lineEls.current[i] = el;
             }}
+            role="button"
+            tabIndex={0}
+            aria-label={es ? `Repetir la frase de ${speakerName(line.speaker)}` : `Replay ${speakerName(line.speaker)}'s line`}
+            onClick={() => playSingle(i)}
+            onKeyDown={(e) => {
+              if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
+                e.preventDefault();
+                playSingle(i);
+              }
+            }}
             className={cn(
-              "rounded-2xl border px-3 py-2 transition-colors",
+              "cursor-pointer rounded-2xl border px-3 py-2 transition-colors",
               activeLine === i && playing ? "border-primary bg-primary/10" : "border-transparent bg-muted/40",
             )}
           >
@@ -716,7 +757,10 @@ function DialogueScene({
               <button
                 type="button"
                 aria-label={es ? `Escuchar a ${speakerName(line.speaker)}` : `Listen to ${speakerName(line.speaker)}`}
-                onClick={() => play(i)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  playSingle(i);
+                }}
                 className="inline-flex size-6 items-center justify-center rounded-full border border-border text-muted-foreground"
               >
                 <Volume2 className="size-3" />
@@ -762,8 +806,8 @@ function DialogueScene({
           </button>
           <button
             type="button"
-            onClick={() => play(activeRef.current)}
-            aria-label={es ? "Repetir frase" : "Repeat line"}
+            onClick={() => play(0)}
+            aria-label={es ? "Repetir la escena completa" : "Replay the full scene"}
             className="inline-flex size-11 shrink-0 items-center justify-center rounded-2xl border border-border text-muted-foreground"
           >
             <RotateCcw className="size-4" />
