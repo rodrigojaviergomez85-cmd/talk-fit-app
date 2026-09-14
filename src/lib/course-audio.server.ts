@@ -9,6 +9,7 @@
  * in the private "course-audio" bucket. Unchanged from the original /api/tts,
  * so every previously generated clip stays valid.
  */
+import type { AiLogMeta } from "./ai-call-log.server";
 
 export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy" | "earnest" | "warm" | "pro";
 export type RequestedVoice = "neutral" | "female" | "femaleBright" | "femaleMature" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm" | "shyBoy" | "teenBoy" | "elder";
