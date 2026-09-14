@@ -116,6 +116,11 @@ type Admin = {
   };
 };
 
+/** A storage path always begins with its owner's user id and a slash. */
+function pathBelongsTo(userId: string, path: string | null | undefined): boolean {
+  return typeof path === "string" && typeof userId === "string" && userId.length > 0 && path.startsWith(`${userId}/`);
+}
+
 const RPC_ARGS = {
   _take_min_age_hours: TAKE_MIN_AGE_HOURS,
   _final_retention_days: FINAL_RETENTION_DAYS,
