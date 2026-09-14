@@ -516,14 +516,14 @@ function TappableText({
             </div>
             <button
               type="button"
-              onClick={() => setOpen(null)}
+              onClick={close}
               aria-label={es ? "Cerrar" : "Close"}
               className="rounded-full p-1 text-muted-foreground hover:bg-card"
             >
               <X className="size-4" />
             </button>
           </div>
-          <SlowWordPanel word={open} voice={voice} compact onClose={() => setOpen(null)} />
+          <SlowWordPanel word={open} voice={voice} compact onClose={close} />
         </div>
       ) : null}
     </div>
