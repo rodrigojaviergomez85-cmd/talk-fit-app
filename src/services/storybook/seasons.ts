@@ -5,6 +5,9 @@
  */
 import type { JourneyState } from "@/lib/types";
 import { hasUnlimitedAccess } from "@/lib/unlimited-access";
+import { JourneyService } from "@/services/journey-service";
+import { isModuleId } from "@/services/course-service";
+
 import season1Cover from "@/assets/storybook/vale-ep1/cover.jpg";
 import season2Cover from "@/assets/storybook/vale-s2-ep1/cover.jpg";
 import season3Cover from "@/assets/storybook/vale-s3-ep1/cover.jpg";
