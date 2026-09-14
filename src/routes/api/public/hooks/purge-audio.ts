@@ -74,6 +74,15 @@ export const Route = createFileRoute("/api/public/hooks/purge-audio")({
         }
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+        // Overlap guard: never let two runs process the same rows.
+        if (await hasActiveRun(supabaseAdmin as unknown as RunLookup)) {
+          return new Response(JSON.stringify({ skipped: true, reason: "already running" }), {
+            status: 409,
+            headers: { "content-type": "application/json" },
+          });
+        }
+
         const { data: run } = await supabaseAdmin
           .from("job_runs")
           .insert({ job_name: "purge-audio" })
