@@ -83,10 +83,12 @@ export const Route = createFileRoute("/api/ai-coach")({
         const quota = await consumeQuota(userId);
         if (!quota) return json({ error: "quota" }, 503);
         if (quota.blocked !== "none") {
+          logCoachCall(userId, null, null, false, "quota", 0, "none");
           return json({ error: quota.blocked === "monthly" ? "monthly_limit" : "daily_limit", quota }, 429);
         }
 
         let res: Response;
+        const startedAt = Date.now();
         try {
           res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
             method: "POST",
@@ -114,6 +116,7 @@ export const Route = createFileRoute("/api/ai-coach")({
           // Conservative: the slot stays consumed, we cannot know whether the
           // provider processed the call.
           console.error("[ai-coach] gateway request failed", error);
+          logCoachCall(userId, null, null, false, "network", Date.now() - startedAt);
           return json({ error: "provider_busy", quota }, 502);
         }
 
@@ -121,6 +124,7 @@ export const Route = createFileRoute("/api/ai-coach")({
           const detail = await res.text().catch(() => "");
           console.error(`[ai-coach] gateway error [${res.status}]: ${detail}`);
           // A provider 429/5xx is NOT a personal quota problem.
+          logCoachCall(userId, null, null, false, String(res.status), Date.now() - startedAt);
           const transient = res.status === 429 || res.status >= 500;
           return json(
             { error: transient ? "provider_busy" : "gateway", quota },
@@ -130,7 +134,16 @@ export const Route = createFileRoute("/api/ai-coach")({
 
         const payload = (await res.json().catch(() => null)) as {
           choices?: Array<{ message?: { content?: unknown } }>;
+          usage?: { prompt_tokens?: unknown; completion_tokens?: unknown };
         } | null;
+        logCoachCall(
+          userId,
+          typeof payload?.usage?.prompt_tokens === "number" ? payload.usage.prompt_tokens : null,
+          typeof payload?.usage?.completion_tokens === "number" ? payload.usage.completion_tokens : null,
+          true,
+          null,
+          Date.now() - startedAt,
+        );
         const raw = payload?.choices?.[0]?.message?.content;
         const answer = stripMarkdown(typeof raw === "string" ? raw : "");
         if (!answer) return json({ error: "gateway", quota }, 502);
@@ -200,4 +213,31 @@ function json(body: unknown, status = 200) {
 
 function gatewayStatus(status: number) {
   return status === 402 || status === 403 ? status : 502;
+}
+
+/** Fire-and-forget cost log. Never throws, never changes the learner response. */
+function logCoachCall(
+  userId: string,
+  inputTokens: number | null,
+  outputTokens: number | null,
+  ok: boolean,
+  errorCode: string | null,
+  latencyMs: number,
+  provider: "lovable-gateway" | "none" = "lovable-gateway",
+): void {
+  void import("@/lib/ai-call-log.server")
+    .then(({ logAiCall }) =>
+      logAiCall({
+        user_id: userId,
+        endpoint: "ai-coach",
+        provider,
+        model: provider === "none" ? null : "google/gemini-3.1-flash-lite",
+        input_tokens: inputTokens,
+        output_tokens: outputTokens,
+        ok,
+        error_code: errorCode,
+        latency_ms: latencyMs,
+      }),
+    )
+    .catch(() => {});
 }
