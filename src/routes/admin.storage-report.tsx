@@ -142,10 +142,19 @@ function StorageReportPage() {
               <Stat label={es ? "Estudiantes afectados" : "Learners affected"} value={String(report.candidates.learners)} />
               <Stat label={es ? "Más antiguo" : "Oldest"} value={fmt(report.candidates.oldest)} />
               <Stat label={es ? "Más reciente" : "Newest"} value={fmt(report.candidates.newest)} />
+              <Stat
+                label={es ? "Finales de día (day_progress)" : "Journey finals (day_progress)"}
+                value={String(report.dayFinals.candidates)}
+              />
               <p className="pt-2 text-[11px] text-muted-foreground">
                 {es
-                  ? `MB estimados a partir de la duración (32 kbps). Regla de edad: ${report.minAgeDays} días.`
-                  : `MB estimated from duration (32 kbps). Age rule: ${report.minAgeDays} days.`}
+                  ? `MB estimados a partir de la duración (24 kbps). Tomas: ${report.takeMinAgeHours} h. Finales: ${report.finalRetentionDays} días (día 1 y día 20 se conservan siempre).`
+                  : `MB estimated from duration (24 kbps). Takes: ${report.takeMinAgeHours} h. Finals: ${report.finalRetentionDays} days (day 1 and day 20 kept forever).`}
+              </p>
+              <p className="text-[11px] text-muted-foreground">
+                {es
+                  ? "Solo se borra el archivo de audio. Progreso, evaluaciones, rachas, contadores de uso e historial de costos nunca se tocan."
+                  : "Only the audio file is deleted. Progress, evaluations, streaks, usage counters and cost history are never touched."}
               </p>
             </Card>
 
