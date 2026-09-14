@@ -172,6 +172,19 @@ export const AudioService = {
     return Math.round((words / (150 * rate)) * 10) / 10;
   },
 
+  /**
+   * Downloads a clip ahead of time so it plays with no gap. Never throws and
+   * never interrupts what is currently playing.
+   */
+  async prefetch(text: string, voice?: ModelVoice, tone: ModelTone = "coach"): Promise<void> {
+    if (typeof window === "undefined" || !text.trim()) return;
+    try {
+      await loadModelAudio(text, voice, tone);
+    } catch {
+      // Prefetch is best-effort; playback will retry when the line is reached.
+    }
+  },
+
   speak(text: string, options: SpeakOptions = {}): () => void {
     if (typeof window === "undefined") return () => undefined;
 
