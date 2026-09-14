@@ -36,7 +36,7 @@
 ## Escalamiento a 17k estudiantes
 - [x] Paso 1: Habilitar límites diarios y ventana de episodios de Vale (3 anteriores + actual)
 - [x] Paso 2: Redimensionar instancia a X-Large y disco a 500 GB
-- [ ] Paso 3: Revisar política de retención de grabaciones finales y audio TTS
-- [ ] Paso 4: Agregar alertas de costo/health visibles para el equipo
+- [x] Paso 3: Retención (tomas 48 h, finales 90 días, día 1 y 20 permanentes)
+- [x] Paso 4: Alertas de gasto y salud en /admin/alertas + aviso en pantallas admin
 - [ ] Paso 5: Pruebas de carga escalonadas (2k → 8k → 17k)
 

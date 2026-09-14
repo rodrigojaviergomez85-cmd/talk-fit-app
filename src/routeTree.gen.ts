@@ -25,6 +25,7 @@ import { Route as ReportRouteImport } from './routes/report'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
+import { Route as AdminAlertasRouteImport } from './routes/admin.alertas'
 import { Route as AdminBugReportsRouteImport } from './routes/admin.bug-reports'
 import { Route as AdminCourseAudioRouteImport } from './routes/admin.course-audio'
 import { Route as AdminLimitesRouteImport } from './routes/admin.limites'
@@ -143,6 +144,11 @@ const SprintRoute = SprintRouteImport.update({
 const VerbBankRoute = VerbBankRouteImport.update({
   id: '/verb-bank',
   path: '/verb-bank',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAlertasRoute = AdminAlertasRouteImport.update({
+  id: '/admin/alertas',
+  path: '/admin/alertas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminBugReportsRoute = AdminBugReportsRouteImport.update({
@@ -367,6 +373,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
+  '/admin/alertas': typeof AdminAlertasRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/limites': typeof AdminLimitesRoute
@@ -424,6 +431,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
+  '/admin/alertas': typeof AdminAlertasRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/limites': typeof AdminLimitesRoute
@@ -481,6 +489,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/sprint': typeof SprintRoute
   '/verb-bank': typeof VerbBankRoute
+  '/admin/alertas': typeof AdminAlertasRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/limites': typeof AdminLimitesRoute
@@ -540,6 +549,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sprint'
     | '/verb-bank'
+    | '/admin/alertas'
     | '/admin/bug-reports'
     | '/admin/course-audio'
     | '/admin/limites'
@@ -597,6 +607,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sprint'
     | '/verb-bank'
+    | '/admin/alertas'
     | '/admin/bug-reports'
     | '/admin/course-audio'
     | '/admin/limites'
@@ -653,6 +664,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sprint'
     | '/verb-bank'
+    | '/admin/alertas'
     | '/admin/bug-reports'
     | '/admin/course-audio'
     | '/admin/limites'
@@ -711,6 +723,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SprintRoute: typeof SprintRoute
   VerbBankRoute: typeof VerbBankRoute
+  AdminAlertasRoute: typeof AdminAlertasRoute
   AdminBugReportsRoute: typeof AdminBugReportsRoute
   AdminCourseAudioRoute: typeof AdminCourseAudioRoute
   AdminLimitesRoute: typeof AdminLimitesRoute
@@ -860,6 +873,13 @@ declare module '@tanstack/react-router' {
       path: '/verb-bank'
       fullPath: '/verb-bank'
       preLoaderRoute: typeof VerbBankRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/alertas': {
+      id: '/admin/alertas'
+      path: '/admin/alertas'
+      fullPath: '/admin/alertas'
+      preLoaderRoute: typeof AdminAlertasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/bug-reports': {
@@ -1172,6 +1192,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SprintRoute: SprintRoute,
   VerbBankRoute: VerbBankRoute,
+  AdminAlertasRoute: AdminAlertasRoute,
   AdminBugReportsRoute: AdminBugReportsRoute,
   AdminCourseAudioRoute: AdminCourseAudioRoute,
   AdminLimitesRoute: AdminLimitesRoute,
