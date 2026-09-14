@@ -3,6 +3,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Database, ShieldCheck } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { AdminAlertsBanner } from "@/components/fluency/AdminAlertsBanner";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { useAuth } from "@/lib/auth";
 import { useAppLang } from "@/lib/i18n";
@@ -109,6 +110,7 @@ function StorageReportPage() {
 
   return (
     <AppShell title={title}>
+      <AdminAlertsBanner />
       <div className="space-y-5">
         <section className="rounded-3xl bg-navy p-5 text-navy-foreground">
           <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary">

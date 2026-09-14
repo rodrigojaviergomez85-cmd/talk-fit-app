@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { Loader2, ShieldCheck } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { AdminAlertsBanner } from "@/components/fluency/AdminAlertsBanner";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
@@ -108,6 +109,7 @@ function AdminLimitsPage() {
 
   return (
     <AppShell title="Administración">
+      <AdminAlertsBanner />
       <div className="space-y-4">
         <section className="space-y-3 rounded-3xl border border-border bg-card p-4 shadow-[var(--shadow-card)]">
           <div className="flex items-center gap-2 text-[13px] font-extrabold">
