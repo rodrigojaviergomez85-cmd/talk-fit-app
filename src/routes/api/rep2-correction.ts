@@ -13,10 +13,14 @@ const AUDIO_EXT: Record<string, string> = {
   "audio/wave": "wav",
   "audio/ogg": "ogg",
 };
-const MAX_BYTES = 3 * 1024 * 1024;
+// The client caps this step at 45 seconds; at the worst case iOS bitrate of
+// about 128 kbps that is roughly 720 KB, so 1 MB is the ceiling with margin.
+const MAX_BYTES = 1 * 1024 * 1024;
 const MIN_BYTES = 2048;
 const RATE_LIMIT = 30; // requests per user per hour
 const RATE_WINDOW_SECONDS = 60 * 60;
+const DAILY_SECTION_KEY = "rep2_correction";
+const DAILY_LIMIT_FALLBACK = 60;
 
 const GROQ_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
 const MODEL_TURBO = "whisper-large-v3-turbo";
@@ -64,7 +68,9 @@ export const Route = createFileRoute("/api/rep2-correction")({
         metrics.total++;
 
         // 0) Authentication.
-        const { verifyRequestUser, consumeQuota } = await import("@/lib/route-auth.server");
+        const { verifyRequestUser, consumeQuota, sectionDailyLimit } = await import(
+          "@/lib/route-auth.server"
+        );
         const userId = await verifyRequestUser(request);
         if (!userId) {
           log({ outcome: "401", duration: Date.now() - startedAt });
@@ -118,6 +124,19 @@ export const Route = createFileRoute("/api/rep2-correction")({
         const ext = AUDIO_EXT[mime];
         if (!ext) {
           return json({ error: "Unsupported audio format." }, 415);
+        }
+
+        // Daily ceiling (section_limits: Pro multiplier + admin screen), before the hourly one.
+        const dailyLimit = await sectionDailyLimit(userId, DAILY_SECTION_KEY, DAILY_LIMIT_FALLBACK);
+        const dailyQuota = await consumeQuota(
+          userId,
+          `${DAILY_SECTION_KEY}-daily`,
+          dailyLimit,
+          24 * 60 * 60,
+        );
+        if (!dailyQuota.allowed) {
+          log({ outcome: "429-daily", duration: Date.now() - startedAt });
+          return json({ error: "Daily correction limit reached. Continue tomorrow." }, 429);
         }
 
         // Quota before any external API call.
