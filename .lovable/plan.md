@@ -1,43 +1,28 @@
-# Audio entrecortado en el mundo de Vale: qué pasó y cómo arreglarlo
+# Arreglar el "Ejemplo" en las preguntas personales de la historia
 
-## Lo que revisé (datos reales de ayer 6-8pm)
+## El problema
 
-- Generación de voz: 220 audios en esa franja, **todos exitosos**, ~1 segundo cada uno. Cero errores.
-- Límites por persona: el máximo fue 59 reproducciones y 24 generaciones por usuario, muy debajo de los topes (300 y 30 por hora). **Nadie tocó el límite.**
-- No hubo caída ni saturación del servicio de voz.
+Cuando el estudiante contesta con su propia voz, la tarjeta muestra un "Ejemplo" que en realidad es la frase de la historia sobre Vale:
 
-O sea: no fue "hora pico" del servidor. El corte se produjo en el celular, al reproducir.
+- Pregunta: "Where did you go yesterday?" → Ejemplo: "She walked fast to the bus stop."
+- Pregunta: "What did you buy this week?" → Ejemplo: "They bought mangoes."
 
-## Por qué se oye entrecortado (y por qué se arregla al reiniciar)
+El ejemplo habla de otra persona y en otra forma verbal, así que no ayuda: confunde. Pasa en las 205 preguntas personales de todas las temporadas.
 
-Hoy la app pide cada frase **justo cuando le toca sonar**, una por una:
+## Qué cambia
 
-- En las escenas con conversación, cada réplica se descarga cuando termina la anterior. En red lenta eso deja silencios de 1 a 3 segundos entre líneas, y se percibe como que el audio "se corta y vuelve".
-- Cuando una descarga tarda demasiado o falla, la app salta a la voz del navegador, que suena distinta y a veces se corta a media frase: se oye como si el audio se rompiera.
-- Cualquier otro elemento que reproduzca sonido detiene el actual (regla de "un solo audio"), y con la descarga en camino eso produce arranques y cortes.
-
-Que **cerrar y abrir la app lo arreglara** encaja con esto: al reiniciar se limpia todo lo acumulado en la sesión (reproductores viejos, audios a medio descargar, la voz del navegador trabada) y se empieza de cero. Es una señal clara de que el problema vive en la app del celular, no en el servidor.
-
-
-## Qué propongo cambiar
-
-1. **Descargar antes de sonar.** Al abrir una escena, bajar todas las réplicas de esa escena en paralelo y empezar a hablar solo cuando la primera está lista; las demás ya estarán listas cuando les toque, sin huecos.
-2. **Adelantar la siguiente escena.** Mientras el estudiante escucha o lee, ir bajando en segundo plano el audio de la escena siguiente.
-3. **Reintento silencioso.** Si una descarga falla, reintentar una vez antes de recurrir a la voz del navegador, así deja de sonar entrecortado por un fallo pasajero.
-4. **Guardar los audios en el teléfono.** Conservarlos en el almacenamiento del navegador para que al repetir el episodio suenen al instante y sin red.
-5. **Limpiar lo acumulado sin reiniciar.** Liberar los reproductores y audios viejos al cambiar de escena o salir, y reiniciar la voz del navegador al volver de segundo plano, para que ya no haga falta cerrar y abrir la app.
-6. **Aviso claro si aun así falla.** En vez de un salto raro de voz, un mensaje corto con botón "Tocar para escuchar".
+1. **Se quita el "Ejemplo" con la frase de la historia** de esa tarjeta. La tarjeta queda limpia: la pregunta personal, su traducción, el botón ESCUCHAR y el micrófono.
+2. **Se muestra una pista de inicio coherente**, siempre derivada de lo que el sistema espera escuchar: "Empieza así: I bought…" / "Start like this: I went to…". Nunca puede contradecir la pregunta porque sale de la misma regla que califica la respuesta.
+3. Cuando la pregunta no es personal (solo repetir la frase de la historia), todo sigue igual: ahí el ejemplo sí corresponde y se mantiene.
+4. Sin cambios en las preguntas, las voces, la calificación, los intentos ni el botón "Saltar por ahora".
 
 ## Detalle técnico
 
-- `src/services/audio-service.ts`: exponer `prefetch(text, voice, tone)` que reutiliza `loadModelAudio` (la caché en memoria ya deduplica); añadir un reintento en el fetch de `/api/tts`; respaldar la caché en Cache Storage (`caches.open("tts-v7")`) con la misma clave `tone::voice::text`; en `stop()` limpiar handlers del `<audio>` y revocar los blob URLs huérfanos; en `visibilitychange` volver a estado limpio (`speechSynthesis.cancel()`, reset del backoff `noSessionUntil`).
-- `src/services/storybook/dialogue-audio.ts`: precargar todas las líneas con `Promise.all` de `prefetch` antes de `playFrom(0)`, y encadenar sin esperas de red; propagar `onError`.
-- `src/components/storybook/StorybookPlayer.tsx`: al montar cada slide, disparar el prefetch de la escena siguiente (líneas o texto único); usar `onError` para el aviso con botón de reintento.
-- Sin cambios en `/api/tts`, cuotas, contenido ni voces de los episodios.
-
+- `src/components/storybook/StorybookPlayer.tsx`: en el bloque de `quiz.sayItAskEn`, eliminar el párrafo "Ejemplo: «{quiz.sayIt}»" y dejar únicamente la pista generada por `buildSayItHint(quiz.sayItCheck.target, es)`, subiéndola justo debajo del botón de escuchar para que se vea antes de grabar.
+- `src/lib/story-say-match.ts`: revisar `buildSayItHint` para que limpie el comodín `*` y devuelva una pista legible en los formatos existentes ("I bought *", "with *", "I *"); para marcos demasiado genéricos como "I *" mostrar la pista corta "I…" en vez de un texto raro.
+- Sin cambios en los archivos de episodios, en los datos ni en el servidor.
 
 ## Verificación
 
-- Pruebas y typecheck.
-- En celular con red limitada (throttling): abrir un episodio con diálogo y confirmar que las réplicas suenan seguidas, sin silencios ni cambio de voz.
-- Repetir el mismo episodio y confirmar reproducción instantánea desde la caché.
+- Pruebas de storybook y typecheck.
+- Revisar en 393px un episodio de temporada 4 (`/natural-method/cuento/vale-s4-after-work`) y el piloto Eagles: confirmar que cada pregunta personal muestra una pista que concuerda y que ya no aparece la frase sobre Vale.
