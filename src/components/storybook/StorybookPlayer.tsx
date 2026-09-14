@@ -75,7 +75,8 @@ export function StorybookPlayer({
   const [idx, setIdx] = useState(() => {
     if (typeof window === "undefined") return 0;
     const saved = Number(window.localStorage.getItem(posKey) ?? "0");
-    return Number.isFinite(saved) && saved > 0 ? saved : 0;
+    if (!Number.isFinite(saved) || saved <= 0) return 0;
+    return Math.min(saved, buildSlides(episode).length - 1);
   });
   useEffect(() => {
     if (typeof window === "undefined") return;
