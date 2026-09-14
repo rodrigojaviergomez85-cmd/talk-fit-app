@@ -304,9 +304,12 @@ function globalEpisodeIndex(moduleId: string, day: number): number | null {
 /** Highest episode position the learner has reached across every season. */
 export function currentEpisodeIndex(state: JourneyState): number {
   let top = 1;
+  const active = JourneyService.currentModule(state);
   for (const season of STORYBOOK_SEASONS) {
     if (!isModuleId(season.moduleId)) continue;
     if (!JourneyService.isModuleUnlocked(state, season.moduleId)) continue;
+    const started = completedDaysInModule(state, season.moduleId) > 0 || season.moduleId === active;
+    if (!started && !JourneyService.moduleComplete(state, season.moduleId)) continue;
     const offset = seasonOffset(season.moduleId) ?? 0;
     const reached = JourneyService.moduleComplete(state, season.moduleId)
       ? season.slots.length
