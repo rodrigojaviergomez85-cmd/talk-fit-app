@@ -309,3 +309,15 @@ export const AudioService = {
 if (typeof window !== "undefined") {
   registerAudioStopper("model", () => AudioService.stop());
 }
+
+if (typeof document !== "undefined") {
+  // Coming back from the background can leave a stuck speech-synthesis queue,
+  // which is what made audio sound broken until the app was closed and reopened.
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState !== "visible") return;
+    noSessionUntil = 0;
+    if (typeof window !== "undefined" && "speechSynthesis" in window && !AudioService.isPlaying()) {
+      window.speechSynthesis.cancel();
+    }
+  });
+}
