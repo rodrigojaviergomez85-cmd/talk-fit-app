@@ -8,6 +8,7 @@ import {
   type PracticeCapResult,
 } from "@/lib/practice-cap";
 import { isModuleId } from "./course-service";
+import { notifyIfClockMismatch } from "@/lib/clock-mismatch";
 import type { ModuleId } from "@/lib/types";
 
 /**
