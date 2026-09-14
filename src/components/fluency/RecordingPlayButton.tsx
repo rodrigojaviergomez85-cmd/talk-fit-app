@@ -23,7 +23,7 @@ export function RecordingPlayButton({
 }) {
   const id = JourneyService.recordKey(record.moduleId, record.day);
   const { playing, loading, toggle } = useRecordingPlayback(id);
-  const lang = useAppLang();
+  const { lang } = useAppLang();
   const available = hasPlayableAudio(record);
 
   // The retention policy removed the file: the day and its progress are still
