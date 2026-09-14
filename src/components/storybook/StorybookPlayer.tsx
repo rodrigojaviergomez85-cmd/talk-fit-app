@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, ChevronLeft, Loader2, Play, RotateCcw, Sparkles, Star, Volume2, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronDown, ChevronLeft, ChevronUp, Loader2, Pause, Play, RotateCcw, Sparkles, Star, Volume2, X } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { SlowWordPanel } from "@/components/fluency/SlowWordPanel";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
