@@ -260,10 +260,34 @@ export function unlockedDay(completedDays: number): number {
   return Math.max(0, completedDays) + 1;
 }
 
+/**
+ * A season only exists for the learner once the matching module is open on the
+ * official route. Future modules keep every episode locked.
+ */
+export function isSeasonUnlocked(state: JourneyState, moduleId: string): boolean {
+  if (hasUnlimitedAccess()) return true;
+  if (!isModuleId(moduleId)) return false;
+  return JourneyService.isModuleUnlocked(state, moduleId);
+}
+
+/**
+ * Highest episode day open inside one season, following the official route:
+ * future modules are closed, finished modules are fully open for review, and
+ * the current module opens up to the day the learner has already reached.
+ */
+export function unlockedDayInModule(state: JourneyState, moduleId: string): number {
+  if (hasUnlimitedAccess()) return Number.MAX_SAFE_INTEGER;
+  if (!isModuleId(moduleId) || !isSeasonUnlocked(state, moduleId)) return 0;
+  if (JourneyService.moduleComplete(state, moduleId)) return Number.MAX_SAFE_INTEGER;
+  const completed = completedDaysInModule(state, moduleId);
+  return Math.max(JourneyService.currentDay(state, moduleId), unlockedDay(completed));
+}
+
 export function isDayUnlocked(state: JourneyState, moduleId: string, day: number): boolean {
   if (hasUnlimitedAccess()) return true;
-  return day <= unlockedDay(completedDaysInModule(state, moduleId));
+  return day <= unlockedDayInModule(state, moduleId);
 }
+
 
 /** Week the learner has reached (kept for language-scope checks). */
 export function unlockedWeek(completedDays: number): SeasonWeek {
