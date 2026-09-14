@@ -192,12 +192,20 @@ export function StorybookPlayer({
     setNotebook((prev) => (prev[word] ? prev : { ...prev, [word]: meaning }));
   };
 
+  /** Dialogue scenes get a dedicated full-screen reading view. */
+  const immersive = slide.kind === "scene" && Boolean(slide.scene.lines?.length);
+
   return (
-    <div className="select-none">
+    <div className={cn("select-none", immersive && "fixed inset-0 z-40 flex flex-col bg-background")}>
       <style>{STORYBOOK_CSS}</style>
 
       {/* Progress bar */}
-      <div className="flex items-center gap-3">
+      <div
+        className={cn(
+          "flex items-center gap-3",
+          immersive && "shrink-0 px-3 pb-2 pt-[max(0.5rem,env(safe-area-inset-top))]",
+        )}
+      >
         <button
           type="button"
           aria-label={es ? "Atrás (escena anterior)" : "Back (previous scene)"}
