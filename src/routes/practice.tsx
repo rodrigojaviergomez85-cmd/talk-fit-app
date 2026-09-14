@@ -66,6 +66,7 @@ import { useAppLang, useT, tPair, type TKey } from "@/lib/i18n";
 import { setPreferencesScope, loadPreferences } from "@/services/preferences";
 import { playGoodFeedbackSound, playCorrectFeedbackSound, unlockFeedbackAudio } from "@/lib/feedback-sounds";
 import { VerbBank, setVerbBankScope } from "@/services/verb-bank";
+import { getFreshSession } from "@/lib/session-keeper";
 
 export const Route = createFileRoute("/practice")({
   validateSearch: (search: Record<string, unknown>) => {
@@ -113,7 +114,7 @@ const SENTENCE_COUNT_MAX_BYTES = 3 * 1024 * 1024;
 async function countSentences(blob: Blob | null): Promise<number | null> {
   if (!blob || blob.size < 2048 || blob.size > SENTENCE_COUNT_MAX_BYTES) return null;
   try {
-    const { data } = await supabase.auth.getSession();
+    const { data } = await getFreshSession();
     const token = data.session?.access_token;
     if (!token) return null;
     const form = new FormData();
@@ -1551,7 +1552,7 @@ export function Rep2Copy({
     setChecking(true);
     setErrorMsg(null);
     try {
-      const { data } = await supabase.auth.getSession();
+      const { data } = await getFreshSession();
       const token = data.session?.access_token;
       if (!token) {
         setErrorMsg("Correction unavailable.");

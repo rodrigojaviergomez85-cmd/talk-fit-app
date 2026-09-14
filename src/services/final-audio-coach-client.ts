@@ -21,6 +21,7 @@ import {
   type FinalCoachState,
 } from "@/lib/final-audio-coach";
 import type { CourseDay, ModuleId, Recording } from "@/lib/types";
+import { getFreshSession } from "@/lib/session-keeper";
 
 export type CoachRequest = { moduleId: ModuleId; day: number; takeNumber: number };
 
@@ -52,7 +53,7 @@ export const NOT_READY_RETRY_DELAY_MS = 1000;
 
 async function currentAccessToken(): Promise<string | null> {
   try {
-    const { data } = await supabase.auth.getSession();
+    const { data } = await getFreshSession();
     return data.session?.access_token ?? null;
   } catch {
     return null;

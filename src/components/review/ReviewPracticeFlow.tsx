@@ -20,6 +20,7 @@ import { PracticeAttempts } from "@/services/practice-attempts";
 import { runReviewCoach, runReviewRetake, uploadReviewTake } from "@/services/review/review-coach-client";
 import { ReviewProgress } from "@/services/review/review-progress";
 import { AudioService } from "@/services/audio-service";
+import { getFreshSession } from "@/lib/session-keeper";
 
 const SENTENCE_COUNT_MAX_BYTES = 3 * 1024 * 1024;
 
@@ -27,7 +28,7 @@ const SENTENCE_COUNT_MAX_BYTES = 3 * 1024 * 1024;
 async function countSentences(blob: Blob | null): Promise<number | null> {
   if (!blob || blob.size < 2048 || blob.size > SENTENCE_COUNT_MAX_BYTES) return null;
   try {
-    const { data } = await supabase.auth.getSession();
+    const { data } = await getFreshSession();
     const token = data.session?.access_token;
     if (!token) return null;
     const form = new FormData();
