@@ -1186,8 +1186,8 @@ function QuizSlide({
       <AudioPlayer text={quiz.questionEn} label={es ? "ESCUCHAR" : "LISTEN"} size="sm" variant="ghost" voice={voice} />
 
       <div className="grid gap-2">
-        {quiz.options.map((option, i) => {
-          const isRight = done && i === quiz.answer;
+        {shuffled.options.map((option, i) => {
+          const isRight = done && i === shuffled.answer;
           const isWrong = wrong === i;
           return (
             <button
