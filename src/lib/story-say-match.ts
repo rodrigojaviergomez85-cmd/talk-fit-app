@@ -192,6 +192,11 @@ function normalizeQuestion(questionEn: string): string {
 
 const WH = "(?:what|who|whom|where|when|why|how)";
 
+/** Keep only the first option of "X, or Y" style double questions. */
+function cutAtOr(text: string): string {
+  return text.split(/,?\s+or\s+/)[0]!.trim().replace(/,$/, "");
+}
+
 /**
  * Turn a personal question into the start of the learner's own answer.
  * "What good news did you receive this year?" → "I received…"
