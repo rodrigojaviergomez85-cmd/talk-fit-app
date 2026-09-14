@@ -70,7 +70,21 @@ export function StorybookPlayer({
   const slides = useMemo(() => buildSlides(episode), [episode]);
   const coverBack = onCoverBack ?? (() => navigate({ to: "/natural-method/audiobooks" }));
   const episodeGlossary = useMemo(() => buildEpisodeGlossary(episode), [episode]);
-  const [idx, setIdx] = useState(0);
+  // Leaving the episode keeps the scene the learner was on.
+  const posKey = `sb-pos-${episode.id}`;
+  const [idx, setIdx] = useState(() => {
+    if (typeof window === "undefined") return 0;
+    const saved = Number(window.localStorage.getItem(posKey) ?? "0");
+    return Number.isFinite(saved) && saved > 0 ? saved : 0;
+  });
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(posKey, String(idx));
+    } catch {
+      /* storage full or blocked — position is a convenience only */
+    }
+  }, [idx, posKey]);
   const [stars, setStars] = useState(0);
   const [notebook, setNotebook] = useState<Record<string, string>>({});
   const [saidIt, setSaidIt] = useState<Record<string, boolean>>({});
