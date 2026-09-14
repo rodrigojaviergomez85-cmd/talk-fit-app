@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { hasPlayableAudio } from "@/lib/recordings";
 import type { DayRecord, JourneyState, ModuleId, RepDurations, SelfAssessment } from "@/lib/types";
 import { CourseService, DEFAULT_MODULE, isModuleId } from "./course-service";
 import { loadPreferences } from "./preferences";
@@ -332,7 +333,7 @@ export const JourneyService = {
 
   /** Saved final reps that actually have audio behind them. */
   playableRecords(state: JourneyState): DayRecord[] {
-    return JourneyService.recordsByDate(state).filter((r) => Boolean(r.recordingPath || r.finalUrl));
+    return JourneyService.recordsByDate(state).filter((r) => hasPlayableAudio(r));
   },
 
   /** Earliest and latest saved final rep — null unless there are at least two. */
