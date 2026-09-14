@@ -334,20 +334,39 @@ export function isSeasonUnlocked(state: JourneyState, moduleId: string): boolean
 
 /**
  * Highest episode day open inside one season, following the official route:
- * future modules are closed, finished modules are fully open for review, and
- * the current module opens up to the day the learner has already reached.
+ * future modules are closed, and the learner never gets past the episode of
+ * the day they have reached. The window is capped at the back by
+ * `earliestUnlockedDayInModule`.
  */
 export function unlockedDayInModule(state: JourneyState, moduleId: string): number {
   if (hasUnlimitedAccess()) return Number.MAX_SAFE_INTEGER;
   if (!isModuleId(moduleId) || !isSeasonUnlocked(state, moduleId)) return 0;
-  if (JourneyService.moduleComplete(state, moduleId)) return Number.MAX_SAFE_INTEGER;
-  const completed = completedDaysInModule(state, moduleId);
-  return Math.max(JourneyService.currentDay(state, moduleId), unlockedDay(completed));
+  const offset = seasonOffset(moduleId);
+  if (offset === null) return 0;
+  const season = getSeason(moduleId);
+  const top = currentEpisodeIndex(state) - offset;
+  if (top <= 0) return 0;
+  return Math.min(top, season?.slots.length ?? top);
+}
+
+/**
+ * Oldest episode day still open in this season. Everything before it closes
+ * again: the learner keeps today's episode plus `EPISODE_LOOKBACK` older ones.
+ */
+export function earliestUnlockedDayInModule(state: JourneyState, moduleId: string): number {
+  if (hasUnlimitedAccess()) return 1;
+  const offset = seasonOffset(moduleId);
+  if (offset === null) return 1;
+  return Math.max(1, currentEpisodeIndex(state) - EPISODE_LOOKBACK - offset);
 }
 
 export function isDayUnlocked(state: JourneyState, moduleId: string, day: number): boolean {
   if (hasUnlimitedAccess()) return true;
-  return day <= unlockedDayInModule(state, moduleId);
+  if (!isModuleId(moduleId) || !isSeasonUnlocked(state, moduleId)) return false;
+  const index = globalEpisodeIndex(moduleId, day);
+  if (index === null) return false;
+  const top = currentEpisodeIndex(state);
+  return index <= top && index > top - 1 - EPISODE_LOOKBACK;
 }
 
 
