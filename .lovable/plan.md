@@ -8,13 +8,16 @@
 
 O sea: no fue "hora pico" del servidor. El corte se produjo en el celular, al reproducir.
 
-## Por qué se oye entrecortado
+## Por qué se oye entrecortado (y por qué se arregla al reiniciar)
 
 Hoy la app pide cada frase **justo cuando le toca sonar**, una por una:
 
 - En las escenas con conversación, cada réplica se descarga cuando termina la anterior. En red lenta eso deja silencios de 1 a 3 segundos entre líneas, y se percibe como que el audio "se corta y vuelve".
 - Cuando una descarga tarda demasiado o falla, la app salta a la voz del navegador, que suena distinta y a veces se corta a media frase: se oye como si el audio se rompiera.
 - Cualquier otro elemento que reproduzca sonido detiene el actual (regla de "un solo audio"), y con la descarga en camino eso produce arranques y cortes.
+
+Que **cerrar y abrir la app lo arreglara** encaja con esto: al reiniciar se limpia todo lo acumulado en la sesión (reproductores viejos, audios a medio descargar, la voz del navegador trabada) y se empieza de cero. Es una señal clara de que el problema vive en la app del celular, no en el servidor.
+
 
 ## Qué propongo cambiar
 
