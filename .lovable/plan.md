@@ -1,36 +1,43 @@
-# Audio del mundo de Vale: qué pasó anoche y cómo evitarlo
+# Audio entrecortado en el mundo de Vale: qué pasó y cómo arreglarlo
 
-## Lo que revisé (datos reales de 6-8pm de ayer)
+## Lo que revisé (datos reales de ayer 6-8pm)
 
-- Generación de voz: 220 peticiones en esa franja, **todas exitosas**, ~1 segundo cada una. Cero errores.
-- Límites de uso por persona: el máximo de anoche fue 59 reproducciones y 24 generaciones por usuario, muy por debajo de los topes (300 y 30 por hora). **Nadie tocó el límite.**
-- No hubo caída del servicio de voz ni saturación por "hora pico".
+- Generación de voz: 220 audios en esa franja, **todos exitosos**, ~1 segundo cada uno. Cero errores.
+- Límites por persona: el máximo fue 59 reproducciones y 24 generaciones por usuario, muy debajo de los topes (300 y 30 por hora). **Nadie tocó el límite.**
+- No hubo caída ni saturación del servicio de voz.
 
-Conclusión: el problema no estuvo en el servidor. Ocurrió en la app del celular, y el síntoma (se arregla cerrando y abriendo) apunta a la sesión del usuario.
+O sea: no fue "hora pico" del servidor. El corte se produjo en el celular, al reproducir.
 
-## Causa más probable
+## Por qué se oye entrecortado (y por qué se arregla al reiniciar)
 
-Cuando la app pide un audio, primero busca la sesión iniciada del estudiante. Si en ese momento la sesión no está lista —típico cuando el teléfono estuvo en segundo plano o la red se cortó un momento— la app **deja de pedir audios durante 30 segundos** y no avisa nada. Si vuelve a fallar, se repite. Por eso se siente como "no suena nada" hasta que uno cierra y vuelve a abrir la app, que es justo lo que renueva la sesión.
+Hoy la app pide cada frase **justo cuando le toca sonar**, una por una:
 
-Un segundo factor posible en celular: tras volver de segundo plano, el reproductor queda bloqueado y el sonido no arranca hasta que el usuario toca la pantalla otra vez.
+- En las escenas con conversación, cada réplica se descarga cuando termina la anterior. En red lenta eso deja silencios de 1 a 3 segundos entre líneas, y se percibe como que el audio "se corta y vuelve".
+- Cuando una descarga tarda demasiado o falla, la app salta a la voz del navegador, que suena distinta y a veces se corta a media frase: se oye como si el audio se rompiera.
+- Cualquier otro elemento que reproduzca sonido detiene el actual (regla de "un solo audio"), y con la descarga en camino eso produce arranques y cortes.
+
+Que **cerrar y abrir la app lo arreglara** encaja con esto: al reiniciar se limpia todo lo acumulado en la sesión (reproductores viejos, audios a medio descargar, la voz del navegador trabada) y se empieza de cero. Es una señal clara de que el problema vive en la app del celular, no en el servidor.
+
 
 ## Qué propongo cambiar
 
-1. **Renovar la sesión en vez de rendirse.** Si no hay sesión al pedir un audio, intentar refrescarla una vez y reintentar; solo si eso falla se aplica una pausa corta (5 segundos en vez de 30).
-2. **Reanudar al volver a la app.** Al regresar de segundo plano, limpiar esa pausa para que el siguiente audio se pida de inmediato.
-3. **Aviso visible en vez de silencio.** Si aun así no hay audio, mostrar un mensaje corto con botón "Tocar para escuchar", para que el estudiante no crea que la app se trabó.
-4. **Registro de fallas de audio.** Guardar un registro liviano cuando un audio no se pueda reproducir (motivo y momento), para poder confirmar la causa la próxima vez con datos, no con suposiciones.
+1. **Descargar antes de sonar.** Al abrir una escena, bajar todas las réplicas de esa escena en paralelo y empezar a hablar solo cuando la primera está lista; las demás ya estarán listas cuando les toque, sin huecos.
+2. **Adelantar la siguiente escena.** Mientras el estudiante escucha o lee, ir bajando en segundo plano el audio de la escena siguiente.
+3. **Reintento silencioso.** Si una descarga falla, reintentar una vez antes de recurrir a la voz del navegador, así deja de sonar entrecortado por un fallo pasajero.
+4. **Guardar los audios en el teléfono.** Conservarlos en el almacenamiento del navegador para que al repetir el episodio suenen al instante y sin red.
+5. **Limpiar lo acumulado sin reiniciar.** Liberar los reproductores y audios viejos al cambiar de escena o salir, y reiniciar la voz del navegador al volver de segundo plano, para que ya no haga falta cerrar y abrir la app.
+6. **Aviso claro si aun así falla.** En vez de un salto raro de voz, un mensaje corto con botón "Tocar para escuchar".
 
 ## Detalle técnico
 
-- `src/services/audio-service.ts`: en `loadModelAudio`, si `currentAccessToken()` devuelve null, llamar `supabase.auth.refreshSession()` una vez antes de rendirse; bajar `NO_SESSION_BACKOFF_MS` a 5000; exportar un `resetBackoff()` y llamarlo desde un listener de `visibilitychange`/`focus`.
-- `src/components/storybook/StorybookPlayer.tsx`: usar el `onError` que ya acepta `SpeakOptions` para mostrar el aviso con botón de reintento en escenas y diálogos (`speakDialogue` debe propagar el error de la línea actual).
-- `src/services/storybook/dialogue-audio.ts`: pasar `onError` y detener la secuencia en vez de seguir en silencio.
-- `src/lib/error-capture.ts`: reportar el fallo de audio con motivo (`no-session`, `http-###`, `play-blocked`).
-- Sin cambios en `/api/tts`, cuotas ni contenido de los episodios.
+- `src/services/audio-service.ts`: exponer `prefetch(text, voice, tone)` que reutiliza `loadModelAudio` (la caché en memoria ya deduplica); añadir un reintento en el fetch de `/api/tts`; respaldar la caché en Cache Storage (`caches.open("tts-v7")`) con la misma clave `tone::voice::text`; en `stop()` limpiar handlers del `<audio>` y revocar los blob URLs huérfanos; en `visibilitychange` volver a estado limpio (`speechSynthesis.cancel()`, reset del backoff `noSessionUntil`).
+- `src/services/storybook/dialogue-audio.ts`: precargar todas las líneas con `Promise.all` de `prefetch` antes de `playFrom(0)`, y encadenar sin esperas de red; propagar `onError`.
+- `src/components/storybook/StorybookPlayer.tsx`: al montar cada slide, disparar el prefetch de la escena siguiente (líneas o texto único); usar `onError` para el aviso con botón de reintento.
+- Sin cambios en `/api/tts`, cuotas, contenido ni voces de los episodios.
+
 
 ## Verificación
 
 - Pruebas y typecheck.
-- En celular: abrir un episodio, mandar la app a segundo plano un minuto, volver y comprobar que el audio suena sin reiniciar.
-- Simular sesión vencida y confirmar que aparece el botón de reintento y que al tocarlo suena.
+- En celular con red limitada (throttling): abrir un episodio con diálogo y confirmar que las réplicas suenan seguidas, sin silencios ni cambio de voz.
+- Repetir el mismo episodio y confirmar reproducción instantánea desde la caché.
