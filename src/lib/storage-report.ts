@@ -121,6 +121,44 @@ export function classifyDayFinal(row: DayFinalRow, now: Date): Classification {
   return { kind: "candidate" };
 }
 
+export type StorageReport = {
+  generatedAt: string;
+  takeMinAgeHours: number;
+  finalRetentionDays: number;
+  candidates: {
+    files: number;
+    estimatedMb: number;
+    learners: number;
+    oldest: string | null;
+    newest: string | null;
+    byModule: { moduleId: string; files: number; estimatedMb: number }[];
+    samplePaths: string[];
+  };
+  excluded: Record<ExclusionReason, number>;
+  /** Journey final audio (`day_progress.recording_path`), which has no recordings row. */
+  dayFinals: {
+    candidates: number;
+    excluded: Record<ExclusionReason, number>;
+  };
+  totals: {
+    recordings: number;
+    dayProgressWithPath: number;
+    /** Finals that both sources of truth agree on (same storage object). */
+    protectedByBoth: number;
+    /**
+     * How many day_progress.recording_path values point at an object that also
+     * has a recordings row. When this is 0 the Final Rep audio used by the
+     * progress comparison lives in SEPARATE storage objects, reached by the
+     * dedicated day_progress pass.
+     */
+    dayProgressPathsMatchingRecordings: number;
+  };
+};
+
+function emptyExcluded(): Record<ExclusionReason, number> {
+  return { alreadyPurged: 0, milestoneFinal: 0, finalWithinRetention: 0, tooRecent: 0 };
+}
+
 function toMb(bytes: number): number {
   return Math.round((bytes / 1_048_576) * 100) / 100;
 }
@@ -129,15 +167,10 @@ export function classifyRecordings(
   recordings: RecordingRow[],
   progress: DayProgressRow[],
   now: Date = new Date(),
+  dayFinals: DayFinalRow[] = [],
 ): StorageReport {
   const lookups = buildLookups(progress);
-  const excluded: Record<ExclusionReason, number> = {
-    alreadyPurged: 0,
-    finalByFlag: 0,
-    finalByDayProgress: 0,
-    tooRecent: 0,
-    dayNotCompleted: 0,
-  };
+  const excluded = emptyExcluded();
   const candidates: RecordingRow[] = [];
   let protectedByBoth = 0;
   const recordingPaths = new Set(recordings.map((r) => r.storage_path));
@@ -149,6 +182,14 @@ export function classifyRecordings(
     const result = classifyRecording(rec, lookups, now);
     if (result.kind === "candidate") candidates.push(rec);
     else excluded[result.reason] += 1;
+  }
+
+  const dayExcluded = emptyExcluded();
+  let dayCandidates = 0;
+  for (const row of dayFinals) {
+    const result = classifyDayFinal(row, now);
+    if (result.kind === "candidate") dayCandidates += 1;
+    else dayExcluded[result.reason] += 1;
   }
 
   const byModuleMap = new Map<string, { files: number; bytes: number }>();
@@ -170,7 +211,8 @@ export function classifyRecordings(
 
   return {
     generatedAt: now.toISOString(),
-    minAgeDays: PURGE_MIN_AGE_DAYS,
+    takeMinAgeHours: TAKE_MIN_AGE_HOURS,
+    finalRetentionDays: FINAL_RETENTION_DAYS,
     candidates: {
       files: candidates.length,
       estimatedMb: toMb(bytes),
@@ -186,6 +228,7 @@ export function classifyRecordings(
         .map((r) => r.storage_path),
     },
     excluded,
+    dayFinals: { candidates: dayCandidates, excluded: dayExcluded },
     totals: {
       recordings: recordings.length,
       dayProgressWithPath: lookups.finalPaths.size,
