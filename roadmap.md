@@ -33,3 +33,10 @@
 - [x] Verificar pruebas y páginas representativas de la temporada
 - [x] Corregir proporciones e identidad de Vale y Mateo en el Episodio 6
 
+## Escalamiento a 17k estudiantes
+- [x] Paso 1: Habilitar límites diarios y ventana de episodios de Vale (3 anteriores + actual)
+- [x] Paso 2: Redimensionar instancia a X-Large y disco a 500 GB
+- [ ] Paso 3: Revisar política de retención de grabaciones finales y audio TTS
+- [ ] Paso 4: Agregar alertas de costo/health visibles para el equipo
+- [ ] Paso 5: Pruebas de carga escalonadas (2k → 8k → 17k)
+
