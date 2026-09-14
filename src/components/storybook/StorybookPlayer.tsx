@@ -899,10 +899,18 @@ function QuizSlide({
                 variant="ghost"
                 voice={voice}
               />
-              <p className="text-[12px] text-muted-foreground">
-                {es ? "Ejemplo:" : "Example:"}{" "}
-                <span className="font-semibold text-foreground">“{quiz.sayIt}”</span>
-              </p>
+              {quiz.sayItCheck?.target ? (
+                <p className="text-[12px] text-muted-foreground">
+                  {(() => {
+                    const { label, hint } = buildSayItStartHint(quiz.sayItCheck.target, es);
+                    return (
+                      <>
+                        {label} <span className="font-semibold text-foreground">“{hint}”</span>
+                      </>
+                    );
+                  })()}
+                </p>
+              ) : null}
             </>
           ) : null}
 
