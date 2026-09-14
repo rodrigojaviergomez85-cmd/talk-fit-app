@@ -99,7 +99,9 @@ describe("evaluateAlerts", () => {
     const groups = evaluateAlerts(
       snapshot({
         ai: {
-          by_day: [{ day_key: today, endpoint: "final-audio-coach", requests: 60000 }],
+          by_day: [
+            { day_key: today, endpoint: "final-audio-coach", model: "google/gemini-3.7-flash", requests: 60000, est_cost_usd: 90 },
+          ],
           coach_today: 60000,
         },
       }),
