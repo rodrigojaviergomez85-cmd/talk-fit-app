@@ -1,12 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const speakMock = vi.fn(() => () => undefined);
-const prefetchMock = vi.fn(() => Promise.resolve());
+type SpeakOptions = { onEnd?: () => void };
+type SpeakCall = [text: string, options: SpeakOptions];
+
+const speakMock = vi.fn<(text: string, options: SpeakOptions) => () => void>(() => () => undefined);
+const prefetchMock = vi.fn<(text: string, voice?: unknown, tone?: unknown) => Promise<void>>(() => Promise.resolve());
 
 vi.mock("@/services/audio-service", () => ({
   AudioService: {
-    speak: (...args: unknown[]) => speakMock(...args),
-    prefetch: (...args: unknown[]) => prefetchMock(...args),
+    speak: (text: string, options: SpeakOptions) => speakMock(text, options),
+    prefetch: (text: string, voice?: unknown, tone?: unknown) => prefetchMock(text, voice, tone),
     stop: vi.fn(),
   },
 }));
@@ -20,10 +23,12 @@ const lines: StorybookLine[] = [
   { speaker: "narrator", text: "Line three.", es: "Tres." },
 ];
 
+function spokenText(index: number): string {
+  return (speakMock.mock.calls[index] as SpeakCall)[0];
+}
+
 function finishLine(index: number) {
-  const call = speakMock.mock.calls[index];
-  const options = call?.[1] as { onEnd?: () => void };
-  options?.onEnd?.();
+  (speakMock.mock.calls[index] as SpeakCall)[1].onEnd?.();
 }
 
 describe("startDialogue single-line playback", () => {
@@ -38,7 +43,7 @@ describe("startDialogue single-line playback", () => {
     startDialogue([lines[0]!], { startAt: 0, onDone: done });
     await vi.runAllTimersAsync();
     expect(speakMock).toHaveBeenCalledTimes(1);
-    expect((speakMock.mock.calls[0]?.[0] as string)).toBe("Line one.");
+    expect(spokenText(0)).toBe("Line one.");
     finishLine(0);
     await vi.runAllTimersAsync();
     expect(speakMock).toHaveBeenCalledTimes(1);
@@ -65,7 +70,7 @@ describe("startDialogue single-line playback", () => {
   it("resumes from startAt", async () => {
     startDialogue(lines, { startAt: 1 });
     await vi.runAllTimersAsync();
-    expect((speakMock.mock.calls[0]?.[0] as string)).toBe("Line two.");
+    expect(spokenText(0)).toBe("Line two.");
     vi.useRealTimers();
   });
 
