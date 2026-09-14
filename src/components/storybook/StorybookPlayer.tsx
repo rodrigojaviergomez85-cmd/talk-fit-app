@@ -271,7 +271,7 @@ export function StorybookPlayer({
       )}
 
       <div
-        className="mt-3"
+        className={cn("mt-3", immersive && "mt-0 flex min-h-0 flex-1 flex-col")}
         onTouchStart={(e) => {
           touchX.current = e.touches[0]?.clientX ?? null;
         }}
@@ -283,9 +283,24 @@ export function StorybookPlayer({
           else if (delta > 48) go(idx - 1);
         }}
       >
-        <div key={idx} style={{ animation: "sb-slide-in .35s ease-out" }}>
+        <div
+          key={idx}
+          className={cn(immersive && "flex min-h-0 flex-1 flex-col")}
+          style={immersive ? undefined : { animation: "sb-slide-in .35s ease-out" }}
+        >
           {slide.kind === "cover" ? <CoverSlide episode={episode} es={es} onStart={() => go(1)} /> : null}
-          {slide.kind === "scene" ? (
+          {slide.kind === "scene" && immersive ? (
+            <DialogueScene
+              scene={slide.scene}
+              episodeGlossary={episodeGlossary}
+              voice={episode.voice}
+              es={es}
+              rate={sceneRate}
+              onRateChange={setRate}
+              onLearnWord={learnWord}
+            />
+          ) : null}
+          {slide.kind === "scene" && !immersive ? (
             <SceneSlide
               scene={slide.scene}
               episodeGlossary={episodeGlossary}
