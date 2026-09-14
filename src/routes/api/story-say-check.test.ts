@@ -52,7 +52,7 @@ beforeEach(() => {
 
 describe("story-say-check transcription duration", () => {
   it("asks Groq for verbose_json and logs the returned duration", async () => {
-    const fetchMock = vi.fn(async () =>
+    const fetchMock = vi.fn(async (_url: unknown, init: unknown) =>
       new Response(
         JSON.stringify({
           text: "My name is Vale",
