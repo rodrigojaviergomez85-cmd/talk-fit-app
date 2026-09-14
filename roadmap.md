@@ -26,3 +26,9 @@
 - [x] Revisar y corregir anatomía e identidad de los personajes en los episodios 19 y 20
 - [x] Validar imágenes móviles y pruebas de las historias
 
+## Temporada 2 — consistencia visual de Vale
+- [x] Auditar los 20 episodios contra la referencia oficial de Vale
+- [x] Corregir las variaciones más claras de rostro, piel, edad y anatomía
+- [x] Optimizar y validar los 220 dibujos para celular
+- [x] Verificar pruebas y páginas representativas de la temporada
+
