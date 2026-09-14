@@ -35,7 +35,18 @@ export function speakDialogue(
     });
   };
 
-  playFrom(0);
+  // Download every reply up front so the conversation never stalls mid-scene.
+  const first = lines[0];
+  if (first) {
+    void AudioService.prefetch(first.text, speakerVoice(first.speaker), speakerTone(first.speaker)).then(() => {
+      if (!cancelled) playFrom(0);
+    });
+    for (const line of lines.slice(1)) {
+      void AudioService.prefetch(line.text, speakerVoice(line.speaker), speakerTone(line.speaker));
+    }
+  } else {
+    playFrom(0);
+  }
 
   return () => {
     cancelled = true;

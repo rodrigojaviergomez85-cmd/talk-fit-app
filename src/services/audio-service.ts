@@ -65,26 +65,71 @@ async function currentAccessToken(): Promise<string | null> {
 let noSessionUntil = 0;
 const NO_SESSION_BACKOFF_MS = 30_000;
 
+/**
+ * Browser Cache Storage bucket for generated clips. This is the temporary cache
+ * the browser evicts on its own when it needs space — nothing is stored forever.
+ */
+const TTS_CACHE = "tts-v7";
+
+function cacheRequestUrl(key: string): string {
+  return `https://tts.cache.local/${encodeURIComponent(key)}`;
+}
+
+async function readCachedBlob(key: string): Promise<Blob | null> {
+  try {
+    if (typeof caches === "undefined") return null;
+    const cache = await caches.open(TTS_CACHE);
+    const hit = await cache.match(cacheRequestUrl(key));
+    return hit ? await hit.blob() : null;
+  } catch {
+    return null;
+  }
+}
+
+async function writeCachedBlob(key: string, blob: Blob): Promise<void> {
+  try {
+    if (typeof caches === "undefined") return;
+    const cache = await caches.open(TTS_CACHE);
+    await cache.put(cacheRequestUrl(key), new Response(blob, { headers: { "Content-Type": blob.type || "audio/mpeg" } }));
+  } catch {
+    // Quota or private-mode failures are harmless: playback still works from network.
+  }
+}
+
+async function fetchClip(text: string, voice: AudioVoice | undefined, tone: ModelTone, token: string): Promise<Blob> {
+  const response = await fetch("/api/tts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ text, voice: voice ?? "neutral", tone }),
+  });
+  if (response.status === 401) noSessionUntil = Date.now() + NO_SESSION_BACKOFF_MS;
+  if (!response.ok) throw new Error(`TTS ${response.status}`);
+  return response.blob();
+}
+
 async function loadModelAudio(text: string, voice?: AudioVoice, tone: ModelTone = "coach"): Promise<string> {
   // v7: Dani and Vale's mother have their own voices; never reuse older shared-voice clips.
   const key = `v7::${tone}::${voice ?? "neutral"}::${text}`;
   const cached = audioCache.get(key);
   if (cached) return cached;
   const promise = (async () => {
+    const stored = await readCachedBlob(key);
+    if (stored && stored.size > 0) return URL.createObjectURL(stored);
     if (Date.now() < noSessionUntil) throw new Error("TTS no session");
     const token = await currentAccessToken();
     if (!token) {
       noSessionUntil = Date.now() + NO_SESSION_BACKOFF_MS;
       throw new Error("TTS no session");
     }
-    const response = await fetch("/api/tts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ text, voice: voice ?? "neutral", tone }),
-    });
-    if (response.status === 401) noSessionUntil = Date.now() + NO_SESSION_BACKOFF_MS;
-    if (!response.ok) throw new Error(`TTS ${response.status}`);
-    const blob = await response.blob();
+    let blob: Blob;
+    try {
+      blob = await fetchClip(text, voice, tone, token);
+    } catch (error) {
+      // One silent retry: a single flaky mobile request should not break the voice.
+      if (Date.now() < noSessionUntil) throw error;
+      blob = await fetchClip(text, voice, tone, token);
+    }
+    void writeCachedBlob(key, blob);
     return URL.createObjectURL(blob);
   })();
   audioCache.set(key, promise);
@@ -125,6 +170,19 @@ export const AudioService = {
   estimateSeconds(text: string, rate = 1): number {
     const words = text.trim().split(/\s+/).filter(Boolean).length;
     return Math.round((words / (150 * rate)) * 10) / 10;
+  },
+
+  /**
+   * Downloads a clip ahead of time so it plays with no gap. Never throws and
+   * never interrupts what is currently playing.
+   */
+  async prefetch(text: string, voice?: ModelVoice, tone: ModelTone = "coach"): Promise<void> {
+    if (typeof window === "undefined" || !text.trim()) return;
+    try {
+      await loadModelAudio(text, voice, tone);
+    } catch {
+      // Prefetch is best-effort; playback will retry when the line is reached.
+    }
   },
 
   speak(text: string, options: SpeakOptions = {}): () => void {
@@ -250,4 +308,16 @@ export const AudioService = {
 
 if (typeof window !== "undefined") {
   registerAudioStopper("model", () => AudioService.stop());
+}
+
+if (typeof document !== "undefined") {
+  // Coming back from the background can leave a stuck speech-synthesis queue,
+  // which is what made audio sound broken until the app was closed and reopened.
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState !== "visible") return;
+    noSessionUntil = 0;
+    if (typeof window !== "undefined" && "speechSynthesis" in window && !AudioService.isPlaying()) {
+      window.speechSynthesis.cancel();
+    }
+  });
 }
