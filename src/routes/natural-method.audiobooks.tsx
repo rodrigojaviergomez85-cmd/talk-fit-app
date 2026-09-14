@@ -216,12 +216,13 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
           >
             <button
               type="button"
+              disabled={!seasonOpen}
               onClick={() => {
                 setTouched(true);
                 setOpenSeason(expanded ? null : season.moduleId);
               }}
               aria-expanded={expanded}
-              className="flex w-full items-center gap-3 p-3 text-left"
+              className={`flex w-full items-center gap-3 p-3 text-left ${seasonOpen ? "" : "opacity-60"}`}
             >
               <img
                 src={season.image}
@@ -230,7 +231,7 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
                 height={512}
                 loading="lazy"
                 decoding="async"
-                className="size-16 shrink-0 rounded-xl border border-border object-cover"
+                className={`size-16 shrink-0 rounded-xl border border-border object-cover ${seasonOpen ? "" : "grayscale"}`}
               />
               <span className="min-w-0 flex-1">
                 <span className="block text-[15px] font-extrabold text-foreground">
@@ -240,14 +241,23 @@ function SeasonMap({ showEs }: { showEs: boolean }) {
                   {showEs ? season.blurb.es : season.blurb.en}
                 </span>
                 <span className="mt-0.5 block text-[11px] font-bold uppercase tracking-[0.12em] text-primary">
-                  {season.slots.length} {showEs ? "episodios" : "episodes"}
+                  {seasonOpen
+                    ? `${season.slots.length} ${showEs ? "episodios" : "episodes"}`
+                    : showEs
+                      ? "Se abre cuando llegues a este módulo en tu ruta"
+                      : "Unlocks when you reach this module on your route"}
                 </span>
               </span>
-              <ChevronDown
-                className={`size-5 shrink-0 text-muted-foreground transition-transform ${expanded ? "rotate-180" : ""}`}
-                aria-hidden="true"
-              />
+              {seasonOpen ? (
+                <ChevronDown
+                  className={`size-5 shrink-0 text-muted-foreground transition-transform ${expanded ? "rotate-180" : ""}`}
+                  aria-hidden="true"
+                />
+              ) : (
+                <Lock className="size-5 shrink-0 text-muted-foreground" aria-hidden="true" />
+              )}
             </button>
+
 
             {expanded ? (
               <div className="space-y-2 border-t border-border p-3">
