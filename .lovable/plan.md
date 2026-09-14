@@ -25,14 +25,16 @@ Que **cerrar y abrir la app lo arreglara** encaja con esto: al reiniciar se limp
 2. **Adelantar la siguiente escena.** Mientras el estudiante escucha o lee, ir bajando en segundo plano el audio de la escena siguiente.
 3. **Reintento silencioso.** Si una descarga falla, reintentar una vez antes de recurrir a la voz del navegador, así deja de sonar entrecortado por un fallo pasajero.
 4. **Guardar los audios en el teléfono.** Conservarlos en el almacenamiento del navegador para que al repetir el episodio suenen al instante y sin red.
-5. **Aviso claro si aun así falla.** En vez de un salto raro de voz, un mensaje corto con botón "Tocar para escuchar".
+5. **Limpiar lo acumulado sin reiniciar.** Liberar los reproductores y audios viejos al cambiar de escena o salir, y reiniciar la voz del navegador al volver de segundo plano, para que ya no haga falta cerrar y abrir la app.
+6. **Aviso claro si aun así falla.** En vez de un salto raro de voz, un mensaje corto con botón "Tocar para escuchar".
 
 ## Detalle técnico
 
-- `src/services/audio-service.ts`: exponer `prefetch(text, voice, tone)` que reutiliza `loadModelAudio` (la caché en memoria ya deduplica); añadir un reintento en el fetch de `/api/tts`; respaldar la caché en Cache Storage (`caches.open("tts-v7")`) con la misma clave `tone::voice::text`.
+- `src/services/audio-service.ts`: exponer `prefetch(text, voice, tone)` que reutiliza `loadModelAudio` (la caché en memoria ya deduplica); añadir un reintento en el fetch de `/api/tts`; respaldar la caché en Cache Storage (`caches.open("tts-v7")`) con la misma clave `tone::voice::text`; en `stop()` limpiar handlers del `<audio>` y revocar los blob URLs huérfanos; en `visibilitychange` volver a estado limpio (`speechSynthesis.cancel()`, reset del backoff `noSessionUntil`).
 - `src/services/storybook/dialogue-audio.ts`: precargar todas las líneas con `Promise.all` de `prefetch` antes de `playFrom(0)`, y encadenar sin esperas de red; propagar `onError`.
 - `src/components/storybook/StorybookPlayer.tsx`: al montar cada slide, disparar el prefetch de la escena siguiente (líneas o texto único); usar `onError` para el aviso con botón de reintento.
 - Sin cambios en `/api/tts`, cuotas, contenido ni voces de los episodios.
+
 
 ## Verificación
 
