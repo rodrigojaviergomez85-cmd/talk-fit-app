@@ -158,6 +158,23 @@ export function StorybookPlayer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idx]);
 
+  // While the learner reads, quietly download the next slide's audio.
+  useEffect(() => {
+    const next = slides[idx + 1];
+    if (!next) return;
+    if (next.kind === "scene") {
+      const lines = next.scene.lines;
+      if (lines?.length) {
+        for (const line of lines) void AudioService.prefetch(line.text, speakerVoice(line.speaker), speakerTone(line.speaker));
+        return;
+      }
+      void AudioService.prefetch(next.scene.text, speakerVoice(next.scene.speaker), speakerTone(next.scene.speaker));
+      return;
+    }
+    if (next.kind === "quiz") void AudioService.prefetch(next.quiz.questionEn, episode.voice, speakerTone("vale"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idx]);
+
   const learnWord = (word: string, meaning: string) => {
     setNotebook((prev) => (prev[word] ? prev : { ...prev, [word]: meaning }));
   };
