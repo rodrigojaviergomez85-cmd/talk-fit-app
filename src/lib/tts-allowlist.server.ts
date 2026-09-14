@@ -17,28 +17,30 @@
  *    Rep 1 / Rep 3 model text, Rep 2 chunks and Power Chunks, Rep 4 questions,
  *    Rep 5 model examples, role-play turns (TakeBoard), Test-Ready passages,
  *    and the verb cards (base / past / participle).
+ *  - The 20 Review modules: every practice is converted with
+ *    reviewPracticeToCourseDay and run through the same daySpecs the course
+ *    uses, so lines, chunks, Power Chunks and Rep 4 items match exactly.
+ *  - The three interview simulators, from the plain data module
+ *    src/services/interview-prompts.ts (the routes keep only the video map).
  *  - Storybook episodes (all seasons): scene text, every dialogue line,
  *    quiz questions, say-it phrases and personal-question prompts, mindset
  *    affirmations and habit-card phrases — StorybookPlayer's call sites.
- *  - Natural Method idioms (phrase + example) — NaturalMethodPager SpeakButton.
+ *  - Natural Method idioms (phrase + example), including the ", " variant
+ *    NaturalMethodPager speaks in place of " / ".
  *  - Review Pictionary words and Call Center phrases — same SpeakButton.
- *  - Every individual word token of all of the above, produced by the same
- *    tokenizeWords that TappableSentence uses, because tap-a-word
- *    pronunciation sends single words (also covers SlowWordPanel, EdReminder
- *    and the storybook word popover).
+ *  - Every individual word token of all of the above, produced both by the
+ *    tokenizeWords TappableSentence uses and by the simpler strip rule
+ *    Rep2Feedback uses, because tap-a-word pronunciation sends single words
+ *    (also covers SlowWordPanel, EdReminder and the storybook word popover).
  *
- * NOT COVERED YET (deliberate — this is exactly what report mode is for):
- *  - The three interview simulators (review.interview*.tsx) keep their prompt
- *    lists private inside the route files, which are client modules; importing
- *    them here would pull video assets into the server bundle. Their lines will
- *    show up in tts_generation_log as not-in-allowlist. Add them (by moving the
- *    prompt data into a plain data module) before enforcement is turned on.
- *  - Rep2Feedback speaks the corrected chunk, which is normally an inventory
- *    chunk but may differ after a correction.
+ * NOT COVERED YET: nothing known. Every screen that can reach /api/tts reads
+ * from one of the sources above. Report mode stays on until the log confirms
+ * it (select in_allowlist, count(*) from tts_generation_log ...).
  */
 
 import { buildInventory } from "@/lib/course-audio-inventory";
 import { tokenizeWords } from "@/lib/syllables";
+import type { ModuleId } from "@/lib/types";
 
 function normalize(text: string): string {
   return text.trim().replace(/\s+/g, " ").toLowerCase();
@@ -81,7 +83,37 @@ async function collectTexts(): Promise<string[]> {
   const { CALL_CENTER_CATEGORIES } = await import("@/services/review/call-center-phrases");
   for (const category of CALL_CENTER_CATEGORIES) for (const phrase of category.phrases) texts.push(phrase.en);
 
+  // 5) Review modules: ReviewPracticeFlow plays them with the same components
+  // as the course, so run every practice through the very same daySpecs rules.
+  const { listReviewModules, reviewPracticeToCourseDay } = await import("@/services/review/review-registry");
+  const { daySpecs } = await import("@/lib/course-audio-inventory");
+  for (const module of listReviewModules()) {
+    for (const practice of module.practices) {
+      // Cast is safe: daySpecs uses the id only for the source tag and prompt
+      // tone, and this allowlist matches on text only.
+      for (const spec of daySpecs(module.id as unknown as ModuleId, reviewPracticeToCourseDay(practice))) {
+        texts.push(spec.text);
+      }
+    }
+  }
+
+  // 6) Interview simulators (text-only data module; the routes keep the clips).
+  const { BASIC_INTERVIEW_PROMPTS, INTERMEDIATE_INTERVIEW_PROMPTS, ADVANCED_INTERVIEW_PROMPTS } = await import(
+    "@/services/interview-prompts"
+  );
+  for (const prompt of [...BASIC_INTERVIEW_PROMPTS, ...INTERMEDIATE_INTERVIEW_PROMPTS, ...ADVANCED_INTERVIEW_PROMPTS]) {
+    texts.push(prompt.en);
+  }
+
   return texts;
+}
+
+/** Rep2Feedback's single-word cleanup: keep letters, digits, apostrophes, hyphens. */
+function rep2FeedbackTokens(raw: string): string[] {
+  return raw
+    .split(/\s+/)
+    .map((word) => word.replace(/^[^\p{L}\p{N}'-]+/gu, "").replace(/[^\p{L}\p{N}'-]+$/gu, ""))
+    .filter(Boolean);
 }
 
 async function build(): Promise<Set<string>> {
@@ -92,10 +124,15 @@ async function build(): Promise<Set<string>> {
     if (!text) continue;
     set.add(text);
     // SpeakButton strips the " / " separator before speaking.
-    if (raw.includes(" / ")) set.add(normalize(raw.replace(" / ", ", ")));
+    if (raw.includes(" / ")) set.add(normalize(raw.replaceAll(" / ", ", ")));
     // Tap-a-word pronunciation sends single words.
     for (const token of tokenizeWords(raw)) {
       if (token.isWord) set.add(normalize(token.value));
+    }
+    // Rep2Feedback cleans single words with a slightly different rule.
+    for (const token of rep2FeedbackTokens(raw)) {
+      const word = normalize(token);
+      if (word) set.add(word);
     }
   }
   return set;

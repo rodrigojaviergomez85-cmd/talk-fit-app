@@ -11,6 +11,11 @@ import { InterviewCapCounter, InterviewCapReached } from "@/components/interview
 import { supabase } from "@/integrations/supabase/client";
 import type { Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import {
+  INTERMEDIATE_INTERVIEW_PROMPTS,
+  type IntermediateInterviewPrompt,
+  type IntermediateSkill,
+} from "@/services/interview-prompts";
 import welcomeClip from "@/assets/interview/mike-welcome.mp4.asset.json";
 import waitingClip from "@/assets/interview/mike-waiting.mp4.asset.json";
 import tellMeMoreClip from "@/assets/interview/mike-tell-me-more.mp4.asset.json";
@@ -90,212 +95,40 @@ async function countSentences(blob: Blob | null, attemptId: string | null): Prom
   }
 }
 
-type Skill =
-  | "present"
-  | "present-continuous"
-  | "third-person"
-  | "comparatives"
-  | "superlatives"
-  | "past"
-  | "past-continuous"
-  | "present-perfect"
-  | "modals"
-  | "conditional"
-  | "future"
-  | "pronunciation"
-  | "opinion"
-  | null;
+type Skill = IntermediateSkill;
 
-type Prompt = {
-  id: string;
-  en: string;
-  es: string;
+type Prompt = IntermediateInterviewPrompt & {
   /** Pre-produced Mike clip; absent prompts play the app voice over the waiting loop. */
   video?: { src: string; speechEnd: number };
-  seconds: number;
-  followUp: boolean;
-  skill: Skill;
-  /** Text the student reads out loud (no sentence goal). */
-  reading?: string;
 };
 
-const ED_TEXT =
-  "Yesterday I worked from home. I helped a customer, I asked for her order number, and I thanked her for waiting. Then I called my manager, I explained the problem, I listened to his advice, and I answered two more emails. At the end of the day, I decided to rest.";
+/** Clips stay in the route so the shared prompt data module imports no assets. */
+const VIDEO_BY_ID: Record<string, { src: string; speechEnd: number }> = {
+  welcome: { src: welcomeClip.url, speechEnd: 6.4 },
+  "happy-moment": { src: happyMomentClip.url, speechEnd: 5.4 },
+  "why-happy": { src: whyHappyClip.url, speechEnd: 3.2 },
+  "improve-english": { src: improveEnglishClip.url, speechEnd: 7.7 },
+  "third-person": { src: thirdPersonClip.url, speechEnd: 4.8 },
+  "compare-parents": { src: compareParentsClip.url, speechEnd: 8 },
+  "best-worst": { src: bestWorstClip.url, speechEnd: 4.8 },
+  "last-weekend": { src: lastWeekendClip.url, speechEnd: 7.4 },
+  "more-details-past": { src: tellMeMoreClip.url, speechEnd: 2.6 },
+  "past-progressive": { src: pastProgressiveClip.url, speechEnd: 2.5 },
+  "how-long": { src: howLongClip.url, speechEnd: 3.6 },
+  "ever-difficult": { src: everDifficultClip.url, speechEnd: 8 },
+  modals: { src: modalsClip.url, speechEnd: 4.9 },
+  "free-week": { src: freeWeekClip.url, speechEnd: 2.9 },
+  "next-weekend": { src: nextWeekendClip.url, speechEnd: 3 },
+  "read-ed": { src: readEdClip.url, speechEnd: 4.6 },
+  "work-home": { src: workHomeClip.url, speechEnd: 6.6 },
+  "opinion-more": { src: opinionClip.url, speechEnd: 4.1 },
+  goodbye: { src: goodbyeClip.url, speechEnd: 8 },
+};
 
-const PROMPTS: Prompt[] = [
-  {
-    id: "welcome",
-    en: "Hi! Welcome to the interview. I'm Mike, your recruiter today. How's it going?",
-    es: "¡Hola! Bienvenido a la entrevista. Soy Mike, tu reclutador de hoy. ¿Cómo vas?",
-    video: { src: welcomeClip.url, speechEnd: 6.4 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "present",
-  },
-  {
-    id: "happy-moment",
-    en: "Tell me about a happy moment. When was it, who was there, and what happened?",
-    es: "Cuéntame sobre un momento feliz. ¿Cuándo fue, quién estaba ahí y qué pasó?",
-    video: { src: happyMomentClip.url, speechEnd: 5.4 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "past",
-  },
-  {
-    id: "why-happy",
-    en: "Why was it a happy moment for you?",
-    es: "¿Por qué fue un momento feliz para ti?",
-    video: { src: whyHappyClip.url, speechEnd: 3.2 },
-    seconds: FOLLOWUP_SECONDS,
-    followUp: true,
-    skill: "past",
-  },
-  {
-    id: "improve-english",
-    en: "What are you doing these days to improve your English?",
-    es: "¿Qué estás haciendo estos días para mejorar tu inglés?",
-    video: { src: improveEnglishClip.url, speechEnd: 7.7 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "present-continuous",
-  },
-  {
-    id: "third-person",
-    en: "Tell me about someone you live with. What does he or she do every day?",
-    es: "Háblame de alguien con quien vives. ¿Qué hace él o ella todos los días?",
-    video: { src: thirdPersonClip.url, speechEnd: 4.8 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "third-person",
-  },
-  {
-    id: "compare-parents",
-    en: "Compare your mom and dad. Who is taller, and who is more patient?",
-    es: "Compara a tu mamá y a tu papá. ¿Quién es más alto y quién es más paciente?",
-    video: { src: compareParentsClip.url, speechEnd: 8 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "comparatives",
-  },
-  {
-    id: "best-worst",
-    en: "What is the best day you have had this year, and the worst one?",
-    es: "¿Cuál es el mejor día que has tenido este año y cuál el peor?",
-    video: { src: bestWorstClip.url, speechEnd: 4.8 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "superlatives",
-  },
-  {
-    id: "last-weekend",
-    en: "Tell me about your last weekend. What did you do?",
-    es: "Háblame de tu último fin de semana. ¿Qué hiciste?",
-    video: { src: lastWeekendClip.url, speechEnd: 7.4 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "past",
-  },
-  {
-    id: "more-details-past",
-    en: "Give me more details, please.",
-    es: "Dame más detalles, por favor.",
-    video: { src: tellMeMoreClip.url, speechEnd: 2.6 },
-    seconds: FOLLOWUP_SECONDS,
-    followUp: true,
-    skill: "past",
-  },
-  {
-    id: "past-progressive",
-    en: "What were you doing at 1 p.m. yesterday?",
-    es: "¿Qué estabas haciendo ayer a la 1 p.m.?",
-    video: { src: pastProgressiveClip.url, speechEnd: 2.5 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "past-continuous",
-  },
-  {
-    id: "how-long",
-    en: "How long have you studied English, and what have you learned so far?",
-    es: "¿Cuánto tiempo has estudiado inglés y qué has aprendido hasta ahora?",
-    video: { src: howLongClip.url, speechEnd: 3.6 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "present-perfect",
-  },
-  {
-    id: "ever-difficult",
-    en: "Have you ever had a difficult customer or a difficult classmate? Tell me what happened.",
-    es: "¿Alguna vez has tenido un cliente difícil o un compañero difícil? Cuéntame qué pasó.",
-    video: { src: everDifficultClip.url, speechEnd: 8 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "present-perfect",
-  },
-  {
-    id: "modals",
-    en: "Your friend is always late. What should he do, and what can you do to help?",
-    es: "Tu amigo siempre llega tarde. ¿Qué debería hacer él y qué puedes hacer tú para ayudar?",
-    video: { src: modalsClip.url, speechEnd: 4.9 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "modals",
-  },
-  {
-    id: "free-week",
-    en: "If you had one free week, what would you do?",
-    es: "Si tuvieras una semana libre, ¿qué harías?",
-    video: { src: freeWeekClip.url, speechEnd: 2.9 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "conditional",
-  },
-  {
-    id: "next-weekend",
-    en: "What are you going to do next weekend?",
-    es: "¿Qué vas a hacer el próximo fin de semana?",
-    video: { src: nextWeekendClip.url, speechEnd: 3 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "future",
-  },
-  {
-    id: "read-ed",
-    en: "Now, please read this short text out loud. Take your time with the -ed endings.",
-    es: "Ahora, por favor lee este texto en voz alta. Cuida las terminaciones -ed.",
-    video: { src: readEdClip.url, speechEnd: 4.6 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "pronunciation",
-    reading: ED_TEXT,
-  },
-  {
-    id: "work-home",
-    en: "Do you think it is better to work from home or at the office? Why?",
-    es: "¿Crees que es mejor trabajar desde casa o en la oficina? ¿Por qué?",
-    video: { src: workHomeClip.url, speechEnd: 6.6 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "opinion",
-  },
-  {
-    id: "opinion-more",
-    en: "What do you think about that? Would you recommend it?",
-    es: "¿Qué opinas de eso? ¿Lo recomendarías?",
-    video: { src: opinionClip.url, speechEnd: 4.1 },
-    seconds: FOLLOWUP_SECONDS,
-    followUp: true,
-    skill: "opinion",
-  },
-  {
-    id: "goodbye",
-    en: "Thank you for applying. It was a pleasure talking with you today. We'll be in touch soon. I wish you the best in the real interview. You can do it, champion!",
-    es: "Gracias por aplicar. Fue un placer hablar contigo hoy. Estaremos en contacto pronto. Te deseo lo mejor en la entrevista real. You can do it, champion!",
-    video: { src: goodbyeClip.url, speechEnd: 8 },
-    seconds: 0,
-    followUp: false,
-    skill: null,
-  },
-];
+export const PROMPTS: Prompt[] = INTERMEDIATE_INTERVIEW_PROMPTS.map((p) => {
+  const video = VIDEO_BY_ID[p.id];
+  return video ? { ...p, video } : { ...p };
+});
 
 const SKILL_LABEL: Record<Exclude<Skill, null>, { en: string; es: string }> = {
   present: { en: "Simple present", es: "Presente simple" },
