@@ -831,6 +831,8 @@ export const IRREGULAR_PAST: Record<string, [string, string]> = {
   done: ["hecho", "do"],
   seen: ["visto", "see"],
   spent: ["gastó / pasó (tiempo)", "spend"],
+  hung: ["colgó", "hang"],
+
 };
 
 /** Lowercase and strip quotes/punctuation so "Says," matches "says". */
@@ -908,11 +910,20 @@ export function lookupWord(
   const key = normalizeWord(word);
   if (!key) return { meaning: null, curated: false };
 
+  // Numbers and single letters ("option B", "8:57") get a plain explanation.
+  if (/^\d+([:.]\d+)?$/.test(key)) {
+    return { meaning: key.includes(":") ? `la hora ${key}` : `el número ${key}`, curated: false };
+  }
+  if (key.length === 1 && /[a-z]/.test(key)) {
+    return { meaning: `la letra "${key.toUpperCase()}"`, curated: false };
+  }
+
   const sceneWord = options.scene?.words.find((w) => normalizeWord(w.word) === key);
   if (sceneWord) return { meaning: sceneWord.es, curated: true };
 
   const fromEpisode = options.episodeGlossary?.get(key);
   if (fromEpisode) return { meaning: fromEpisode, curated: false };
+
 
   const direct =
     BASE_GLOSSARY[key] ??
