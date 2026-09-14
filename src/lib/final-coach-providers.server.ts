@@ -5,6 +5,7 @@
  * Server-only: keys are read inside the functions, never at module scope.
  */
 import type { SttConfidence, SttResult } from "./final-audio-coach.server";
+import type { AiLogMeta } from "./ai-call-log.server";
 
 const GROQ_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
 const GROQ_MODEL = "whisper-large-v3-turbo";
@@ -21,7 +22,12 @@ export const AUDIO_EXT: Record<string, string> = {
   "audio/ogg": "ogg",
 };
 
-export async function transcribeFinalAudio(audio: Uint8Array, mime: string | null, tag = "final-audio-coach"): Promise<SttResult> {
+export async function transcribeFinalAudio(
+  audio: Uint8Array,
+  mime: string | null,
+  tag = "final-audio-coach",
+  meta?: AiLogMeta,
+): Promise<SttResult> {
   const apiKey = process.env["GROQ_API_KEY"];
   if (!apiKey) {
     console.error(`[${tag}] GROQ_API_KEY missing`);
@@ -34,22 +40,54 @@ export async function transcribeFinalAudio(audio: Uint8Array, mime: string | nul
   form.append("file", new Blob([audio as BlobPart], { type: base }), `final.${ext}`);
   form.append("language", "en");
   form.append("response_format", "verbose_json");
+  const startedAt = Date.now();
   try {
     const res = await fetch(GROQ_URL, { method: "POST", headers: { Authorization: `Bearer ${apiKey}` }, body: form });
     if (!res.ok) {
       console.error(`[${tag}] STT failed [${res.status}]`);
+      logStt(meta, tag, null, false, String(res.status), Date.now() - startedAt);
       return { ok: false };
     }
     const data = (await res.json().catch(() => null)) as {
       text?: unknown;
+      duration?: unknown;
       segments?: Array<{ avg_logprob?: unknown; no_speech_prob?: unknown }>;
     } | null;
     const text = typeof data?.text === "string" ? data.text : "";
+    const seconds = typeof data?.duration === "number" && Number.isFinite(data.duration) ? data.duration : null;
+    logStt(meta, tag, seconds, true, null, Date.now() - startedAt);
     return { ok: true, text, confidence: segmentConfidence(data?.segments) };
   } catch (err) {
     console.error(`[${tag}] STT error`, err instanceof Error ? err.message : err);
+    logStt(meta, tag, null, false, "network", Date.now() - startedAt);
     return { ok: false };
   }
+}
+
+/** Fire-and-forget cost log; never affects the caller. */
+function logStt(
+  meta: AiLogMeta | undefined,
+  tag: string,
+  seconds: number | null,
+  ok: boolean,
+  errorCode: string | null,
+  latencyMs: number,
+): void {
+  if (!meta) return;
+  void import("./ai-call-log.server").then(({ logAiCall }) =>
+    logAiCall({
+      user_id: meta.userId,
+      endpoint: tag,
+      provider: "groq",
+      model: GROQ_MODEL,
+      module_id: meta.moduleId ?? null,
+      day: meta.day ?? null,
+      audio_seconds: seconds,
+      ok,
+      error_code: errorCode,
+      latency_ms: latencyMs,
+    }),
+  ).catch(() => {});
 }
 
 /** Conservative aggregate: min avg_logprob, max no_speech_prob. Null when metadata is absent — never throws. */
@@ -80,12 +118,18 @@ export function segmentConfidence(segments: unknown): SttConfidence | null {
 type ChatMessage = { role: "system" | "user"; content: string };
 
 /** One small text-model call with a strict JSON schema. Null on any failure (caller decides). */
-export async function coachChatJson(messages: ChatMessage[], jsonSchema: unknown, tag = "final-audio-coach"): Promise<unknown | null> {
+export async function coachChatJson(
+  messages: ChatMessage[],
+  jsonSchema: unknown,
+  tag = "final-audio-coach",
+  meta?: AiLogMeta,
+): Promise<unknown | null> {
   const apiKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey) {
     console.error(`[${tag}] LOVABLE_API_KEY missing`);
     return null;
   }
+  const startedAt = Date.now();
   const res = await fetch(GATEWAY_CHAT, {
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
@@ -97,9 +141,22 @@ export async function coachChatJson(messages: ChatMessage[], jsonSchema: unknown
   });
   if (!res.ok) {
     console.error(`[${tag}] coach model failed [${res.status}]`);
+    logChat(meta, tag, null, null, false, String(res.status), Date.now() - startedAt);
     return null;
   }
-  const body = (await res.json().catch(() => null)) as { choices?: Array<{ message?: { content?: unknown } }> } | null;
+  const body = (await res.json().catch(() => null)) as {
+    choices?: Array<{ message?: { content?: unknown } }>;
+    usage?: { prompt_tokens?: unknown; completion_tokens?: unknown };
+  } | null;
+  logChat(
+    meta,
+    tag,
+    typeof body?.usage?.prompt_tokens === "number" ? body.usage.prompt_tokens : null,
+    typeof body?.usage?.completion_tokens === "number" ? body.usage.completion_tokens : null,
+    true,
+    null,
+    Date.now() - startedAt,
+  );
   const content = body?.choices?.[0]?.message?.content;
   if (typeof content !== "string") return null;
   try {
@@ -107,4 +164,32 @@ export async function coachChatJson(messages: ChatMessage[], jsonSchema: unknown
   } catch {
     return null;
   }
+}
+
+/** Fire-and-forget cost log for the coach text call. */
+function logChat(
+  meta: AiLogMeta | undefined,
+  tag: string,
+  inputTokens: number | null,
+  outputTokens: number | null,
+  ok: boolean,
+  errorCode: string | null,
+  latencyMs: number,
+): void {
+  if (!meta) return;
+  void import("./ai-call-log.server").then(({ logAiCall }) =>
+    logAiCall({
+      user_id: meta.userId,
+      endpoint: tag,
+      provider: "lovable-gateway",
+      model: COACH_TEXT_MODEL,
+      module_id: meta.moduleId ?? null,
+      day: meta.day ?? null,
+      input_tokens: inputTokens,
+      output_tokens: outputTokens,
+      ok,
+      error_code: errorCode,
+      latency_ms: latencyMs,
+    }),
+  ).catch(() => {});
 }
