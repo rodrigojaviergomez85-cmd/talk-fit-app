@@ -84,3 +84,9 @@ export async function getFreshAccessToken(): Promise<string | null> {
   const { data } = await supabase.auth.getSession();
   return data?.session?.access_token ?? null;
 }
+
+/** Current session, refreshed first when the access token is stale. */
+export async function getFreshSession() {
+  await ensureFreshSession();
+  return supabase.auth.getSession();
+}

@@ -53,8 +53,8 @@ let latestSpeakCancel: (() => void) | null = null;
 /** Current learner access token, or null when signed out. Never throws. */
 async function currentAccessToken(): Promise<string | null> {
   try {
-    const { supabase } = await import("@/integrations/supabase/client");
-    const { data } = await supabase.auth.getSession();
+    const { getFreshSession } = await import("@/lib/session-keeper");
+    const { data } = await getFreshSession();
     return data.session?.access_token ?? null;
   } catch {
     return null;
