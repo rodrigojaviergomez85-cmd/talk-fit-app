@@ -35,7 +35,11 @@ describe("shuffleQuizOptions", () => {
   });
 
   it("does not leave every season 1 answer in first position", () => {
-    const season1Ids = new Set((SEASONS[0]?.episodes ?? []).map((e) => e.episodeId));
+    const season1Ids = new Set(
+      (STORYBOOK_SEASONS[0]?.slots ?? [])
+        .map((s) => s.episodeId)
+        .filter((id): id is string => Boolean(id)),
+    );
     const episodes = STORYBOOK_EPISODES.filter((e) => season1Ids.has(e.id));
     expect(episodes.length).toBeGreaterThan(0);
     const positions = episodes.flatMap((e) =>
