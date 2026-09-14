@@ -119,12 +119,10 @@ export function StorybookPlayer({
     setSceneRate(1);
     if (slide.kind === "scene") {
       const lines = slide.scene.lines;
+      // Dialogue scenes own their playback (play/pause bar, resume after a word card).
       if (lines?.length) {
-        const cancel = speakDialogue(lines, { rate: 1 });
         return () => {
           alive = false;
-          cancel();
-          AudioService.stop();
         };
       }
       AudioService.speak(slide.scene.text, {
