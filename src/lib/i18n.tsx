@@ -923,6 +923,11 @@ const DICT = {
   "tr.saveFailed": ["No se pudo guardar. Inténtalo otra vez.", "Couldn't save. Try again."],
   "tr.dailyLabel": ["PRÁCTICA DIARIA", "DAILY PRACTICE"],
   "module.start": ["EMPEZAR", "START"],
+  "clock.mismatch.title": ["La fecha de tu teléfono no coincide", "Your phone's date doesn't match"],
+  "clock.mismatch.body": [
+    "Activá la fecha y hora automáticas en tu teléfono y volvé a intentar.",
+    "Turn on automatic date and time on your phone and try again.",
+  ],
 } as const;
 
 export type TKey = keyof typeof DICT;
