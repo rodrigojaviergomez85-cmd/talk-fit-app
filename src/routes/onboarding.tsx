@@ -6,7 +6,7 @@ import { useAuth } from "@/lib/auth";
 import { useIsInstalledPwa } from "@/lib/pwa";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { PlacementPicker } from "@/components/fluency/PlacementPicker";
-import { getPendingPlacement, setPendingPlacement, weekStartDay } from "@/services/preferences";
+import { getPendingPlacement, setPendingPlacement } from "@/services/preferences";
 import type { ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import slide1Asset from "@/assets/onboarding/slide-40.png.asset.json";
@@ -139,23 +139,12 @@ function OnboardingPage() {
   }, [screen, user, placement, week]);
 
 
-  const finish = (to: "practice" | "home", moduleId?: ModuleId, chosenWeek?: number) => {
+  // After placement + sign-in the learner lands on Home, already positioned in
+  // the chosen level and week (saved by applyPendingPlacement). From there they
+  // start the day's audios with the continue button.
+  const finish = () => {
     setPrefs({ onboardingCompleted: true });
-    if (to === "home") {
-      void navigate({ to: "/" });
-      return;
-    }
-    const target = moduleId ?? placement;
-    // Existing learners (already placed) go back to Home, which points to their saved position.
-    if (!target && prefs.currentModuleId) {
-      void navigate({ to: "/" });
-      return;
-    }
-    const first = CourseService.modules()[0];
-    void navigate({
-      to: "/practice",
-      search: { day: weekStartDay(chosenWeek ?? week), module: target ?? first?.id ?? "basic-zero" },
-    });
+    void navigate({ to: "/" });
   };
 
   const primaryBtn =
