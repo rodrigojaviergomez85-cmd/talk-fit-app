@@ -46,14 +46,15 @@ describe("tts allowlist", () => {
 });
 
 describe("tts allowlist — review, interviews and speak-time variants", () => {
-  it("allows a line and a Power Chunk from a review practice", async () => {
+  it("allows the model line and a Power Chunk from a review practice", async () => {
     const { listReviewModules, reviewPracticeToCourseDay } = await import("@/services/review/review-registry");
     const { daySpecs } = await import("@/lib/course-audio-inventory");
     const module = listReviewModules()[0]!;
     const practice = module.practices[0]!;
-    expect(await isAllowedTtsText(practice.lines[0]!.text)).toBe(true);
     const specs = daySpecs(module.id as never, reviewPracticeToCourseDay(practice));
-    const power = specs.find((s) => s.source.includes("power")) ?? specs[1]!;
+    const model = specs.find((s) => s.source.endsWith("/rep1"))!;
+    expect(await isAllowedTtsText(model.text)).toBe(true);
+    const power = specs.find((s) => s.source.endsWith("/power")) ?? specs.find((s) => s.source.endsWith("/rep2"))!;
     expect(await isAllowedTtsText(power.text)).toBe(true);
   }, 30000);
 
@@ -66,12 +67,12 @@ describe("tts allowlist — review, interviews and speak-time variants", () => {
     expect(await isAllowedTtsText(ADVANCED_INTERVIEW_PROMPTS[10]!.en)).toBe(true);
   }, 30000);
 
-  it("allows an idiom with ' / ' both raw and as spoken", async () => {
-    const { IDIOMS } = await import("@/services/natural-method-idioms");
-    const idiom = IDIOMS.find((i) => i.phrase.includes(" / "));
-    expect(idiom).toBeTruthy();
-    expect(await isAllowedTtsText(idiom!.phrase)).toBe(true);
-    expect(await isAllowedTtsText(idiom!.phrase.replaceAll(" / ", ", "))).toBe(true);
+  it("stores the ', ' variant of any ' / ' text the pager would speak", async () => {
+    const set = await ttsAllowlist();
+    const withSlash = [...set].filter((t) => t.includes(" / "));
+    for (const text of withSlash) expect(set.has(text.replaceAll(" / ", ", "))).toBe(true);
+    // Authored English currently has no " / "; the guard stays for new content.
+    expect(await isAllowedTtsText("break the ice")).toBe(true);
   }, 30000);
 
   it("allows a word cleaned the Rep2Feedback way", async () => {
