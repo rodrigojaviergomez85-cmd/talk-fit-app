@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { STORYBOOK_EPISODES } from "./index";
+import { VALE_WHERE_ARE_YOU_FROM } from "./vale-where-are-you-from";
 
 /**
  * Motivational affirmations are practiced out loud but never graded by AI —
@@ -24,6 +25,16 @@ const UNGRADED_AFFIRMATIONS = new Set([
 ]);
 
 describe("storybook say-it validation coverage", () => {
+  it("ties Episode 6's because question directly to Kat's instruction", () => {
+    const katInstruction = VALE_WHERE_ARE_YOU_FROM.scenes.find((scene) => scene.id === "s5");
+    const becauseQuestion = VALE_WHERE_ARE_YOU_FROM.quizzes?.find((quiz) => quiz.id === "q1");
+
+    expect(katInstruction?.text).toContain("Use because.");
+    expect(becauseQuestion?.questionEn).toBe("What word does Kat tell Vale to use?");
+    expect(becauseQuestion?.questionEs).toBe("¿Qué palabra le dice Kat a Vale que use?");
+    expect(becauseQuestion?.options[becauseQuestion.answer]?.label).toBe("Because");
+  });
+
   it("every story prompt has a check target, affirmations have none", () => {
     const missing: string[] = [];
     const unexpected: string[] = [];
