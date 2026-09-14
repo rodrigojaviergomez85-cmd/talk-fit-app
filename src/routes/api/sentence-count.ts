@@ -27,7 +27,9 @@ export const Route = createFileRoute("/api/sentence-count")({
     handlers: {
       POST: async ({ request }) => {
         // 0) Authentication — no session, no work.
-        const { verifyRequestUser, consumeQuota } = await import("@/lib/route-auth.server");
+        const { verifyRequestUser, consumeQuota, sectionDailyLimit } = await import(
+          "@/lib/route-auth.server"
+        );
         const userId = await verifyRequestUser(request);
         if (!userId) return json({ error: "Sign in to count sentences." }, 401);
 
