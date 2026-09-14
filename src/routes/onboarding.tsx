@@ -6,7 +6,7 @@ import { useAuth } from "@/lib/auth";
 import { useIsInstalledPwa } from "@/lib/pwa";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { PlacementPicker } from "@/components/fluency/PlacementPicker";
-import { getPendingPlacement, setPendingPlacement, weekStartDay } from "@/services/preferences";
+import { getPendingPlacement, setPendingPlacement } from "@/services/preferences";
 import type { ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import slide1Asset from "@/assets/onboarding/slide-40.png.asset.json";
@@ -98,7 +98,7 @@ function OnboardingPage() {
       setSaveError(true);
       return;
     }
-    finish("practice", placement, chosenWeek);
+    finish();
   };
 
   /** Retry after a failed save (used by the banner on the week/auth screens). */
@@ -113,7 +113,7 @@ function OnboardingPage() {
       setSaveError(true);
       return;
     }
-    finish("practice", placement, week);
+    finish();
   };
 
   // Account just created (or returning from the Google redirect) after choosing
@@ -133,29 +133,18 @@ function OnboardingPage() {
         setScreen(AUTH_SCREEN);
         return;
       }
-      finish("practice", placement, week);
+      finish();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screen, user, placement, week]);
 
 
-  const finish = (to: "practice" | "home", moduleId?: ModuleId, chosenWeek?: number) => {
+  // After placement + sign-in the learner lands on Home, already positioned in
+  // the chosen level and week (saved by applyPendingPlacement). From there they
+  // start the day's audios with the continue button.
+  const finish = () => {
     setPrefs({ onboardingCompleted: true });
-    if (to === "home") {
-      void navigate({ to: "/" });
-      return;
-    }
-    const target = moduleId ?? placement;
-    // Existing learners (already placed) go back to Home, which points to their saved position.
-    if (!target && prefs.currentModuleId) {
-      void navigate({ to: "/" });
-      return;
-    }
-    const first = CourseService.modules()[0];
-    void navigate({
-      to: "/practice",
-      search: { day: weekStartDay(chosenWeek ?? week), module: target ?? first?.id ?? "basic-zero" },
-    });
+    void navigate({ to: "/" });
   };
 
   const primaryBtn =
@@ -284,7 +273,7 @@ function OnboardingPage() {
               type="button"
               onClick={() => {
                 if (screen === SLIDE_COUNT - 1) {
-                  if (user && prefs.currentModuleId) finish("home");
+                  if (user && prefs.currentModuleId) finish();
                   else setScreen(PLACEMENT_SCREEN);
                 } else {
                   setScreen((s) => s + 1);
@@ -306,7 +295,7 @@ function OnboardingPage() {
             </button>
           ) : null}
           {screen === AUTH_SCREEN && user ? (
-            <button type="button" onClick={() => finish("home")} className={primaryBtn}>
+            <button type="button" onClick={() => finish()} className={primaryBtn}>
               {t("action.startPractice")}
             </button>
           ) : null}
