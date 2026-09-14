@@ -2,7 +2,13 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
-import { classifyRecordings, type DayProgressRow, type RecordingRow, type StorageReport } from "./storage-report";
+import {
+  classifyRecordings,
+  type DayFinalRow,
+  type DayProgressRow,
+  type RecordingRow,
+  type StorageReport,
+} from "./storage-report";
 
 /**
  * Admin-only, READ-ONLY storage cleanup report.
