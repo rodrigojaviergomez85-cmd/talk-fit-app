@@ -178,8 +178,8 @@ export const VALE_WHERE_ARE_YOU_FROM: StorybookEpisode = {
     {
       id: "q1",
       afterScene: "s5",
-      questionEn: "What word says why?",
-      questionEs: "¿Qué palabra dice por qué?",
+      questionEn: "What word does Kat tell Vale to use?",
+      questionEs: "¿Qué palabra le dice Kat a Vale que use?",
       options: [
         { label: "Because", emoji: "💡" },
         { label: "Hello", emoji: "👋" },
