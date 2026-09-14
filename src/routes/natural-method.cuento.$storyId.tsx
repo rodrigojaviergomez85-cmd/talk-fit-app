@@ -92,8 +92,8 @@ function StorybookPage() {
   }
 
   return (
-    <AppShell>
-      <div className="p-4 pb-8">
+    <AppShell hideNav hideHeader hideSync>
+      <div className="pb-2">
         <StorybookPlayer key={episode.id} episode={episode} onCoverBack={onCoverBack} />
       </div>
     </AppShell>
