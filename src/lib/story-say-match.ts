@@ -263,6 +263,23 @@ function answerStartFromQuestion(questionEn: string): string | null {
     return hint;
   }
 
+  // (WH …) did <other subject> <verb> … → They <past verb> … for me
+  m = q.match(new RegExp(`^(?:${WH}\\b.*?\\s+)?did\\s+([a-z]+)\\s+(.+)$`));
+  if (m) {
+    const subject = m[1]!;
+    const words = stripTails(cutAtOr(m[2]!)).split(" ").filter(Boolean);
+    if (words.length > 0) {
+      const verb = toPast(words[0]!);
+      const tail = words
+        .slice(1)
+        .join(" ")
+        .replace(/\byou\b/g, "me")
+        .replace(/\byour\b/g, "my");
+      return `${capitalize(subject)} ${verb}${tail ? ` ${tail}` : ""}`;
+    }
+  }
+
+
   // (WH …) are/were you …
   m = q.match(new RegExp(`^(?:${WH}\\b.*?\\s+)?are\\s+you\\s+going\\s+to\\s+(.+)$`));
   if (m) {
