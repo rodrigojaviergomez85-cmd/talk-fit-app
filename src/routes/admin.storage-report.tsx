@@ -29,10 +29,9 @@ export const Route = createFileRoute("/admin/storage-report")({
 });
 
 const REASONS: { key: ExclusionReason; es: string; en: string }[] = [
-  { key: "finalByFlag", es: "Final Rep (is_final_rep)", en: "Final Rep (is_final_rep)" },
-  { key: "finalByDayProgress", es: "Final Rep (day_progress.recording_path)", en: "Final Rep (day_progress.recording_path)" },
-  { key: "tooRecent", es: "Menos de 7 días", en: "Newer than 7 days" },
-  { key: "dayNotCompleted", es: "Día no completado", en: "Day not completed" },
+  { key: "milestoneFinal", es: "Final de hito (día 1 / día 20)", en: "Milestone final (day 1 / day 20)" },
+  { key: "finalWithinRetention", es: "Final dentro de los 90 días", en: "Final within 90 days" },
+  { key: "tooRecent", es: "Toma con menos de 48 h", en: "Take newer than 48 h" },
   { key: "alreadyPurged", es: "Ya purgado", en: "Already purged" },
 ];
 
