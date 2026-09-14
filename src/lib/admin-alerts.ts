@@ -6,7 +6,6 @@
  * from the admin screen without a code change. Everything here is read-only:
  * nothing in this file affects learners, limits or billing.
  */
-import { estimateCosts, type AdminCostCenter } from "./admin-cost-center";
 
 export type AlertLevel = "ok" | "warn" | "critical";
 
@@ -22,7 +21,7 @@ export type Threshold = {
 export type HealthSnapshot = {
   generated_at: string;
   ai: {
-    by_day: { day_key: string; endpoint: string; requests: number }[];
+    by_day: { day_key: string; endpoint: string; model?: string; requests: number; est_cost_usd?: number | string }[];
     coach_today: number;
   };
   storage: {
@@ -90,27 +89,15 @@ function dayKey(offsetDays: number, now: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
-/** Estimated USD for one day of AI usage, reusing the cost-center unit prices. */
+/** REAL measured USD for one day of AI usage, summed from the daily rollup. */
 export function aiCostForDay(snapshot: HealthSnapshot, key: string): number {
-  const endpoints = new Map<string, number>();
+  let total = 0;
   for (const row of snapshot.ai.by_day) {
     if (row.day_key !== key) continue;
-    endpoints.set(row.endpoint, (endpoints.get(row.endpoint) ?? 0) + row.requests);
+    const value = typeof row.est_cost_usd === "number" ? row.est_cost_usd : Number(row.est_cost_usd ?? 0);
+    if (Number.isFinite(value)) total += value;
   }
-  const asCostCenter: AdminCostCenter = {
-    generated_at: snapshot.generated_at,
-    endpoints: [...endpoints.entries()].map(([endpoint, requests]) => ({
-      endpoint,
-      requests_30d: requests,
-      requests_total: requests,
-      users_30d: 0,
-    })),
-    recordings: { count_30d: 0, count_total: 0, minutes_30d: 0, minutes_total: 0, avg_seconds: null },
-    coach: { analyses_30d: 0, analyses_total: 0 },
-    attempts: { sessions_30d: 0, sessions_total: 0 },
-    users: { total: 0, active_30d: 0 },
-  };
-  return estimateCosts(asCostCenter).totalUsd;
+  return total;
 }
 
 function round(value: number, decimals = 1): number {
