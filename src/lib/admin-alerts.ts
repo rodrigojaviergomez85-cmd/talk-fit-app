@@ -32,6 +32,13 @@ export type HealthSnapshot = {
     purged_total: number;
     disk_gb: number;
   };
+  purge?: {
+    last_ok_at: string | null;
+    hours_since_ok: number | null;
+    backlog_files: number;
+    backlog_capped: boolean;
+    last_run: { started_at: string; finished_at: string | null; ok: boolean; deleted_files: number; marked_rows: number; error: string | null } | null;
+  };
   activity: {
     by_day: { day_key: string; users: number }[];
     by_hour: { hour_key: string; sessions: number }[];
@@ -53,7 +60,7 @@ export type Signal = {
 };
 
 export type AlertGroup = {
-  key: "ai" | "storage" | "activity" | "database";
+  key: "ai" | "storage" | "purge" | "activity" | "database";
   title: { es: string; en: string };
   level: AlertLevel;
   signals: Signal[];
@@ -262,9 +269,56 @@ export function evaluateAlerts(snapshot: HealthSnapshot, now: Date = new Date())
     },
   ];
 
+  // --- Audio cleanup job --------------------------------------------------
+  const purge = snapshot.purge;
+  const hoursT = threshold(t, "purge_hours_since_ok");
+  const backlogT = threshold(t, "purge_backlog_files");
+  // Never having run is treated as "very stale", not as healthy.
+  const hoursSinceOk = purge?.hours_since_ok ?? (purge ? hoursT.critical : 0);
+  const backlog = purge?.backlog_files ?? 0;
+  const lastRun = purge?.last_run ?? null;
+
+  const purgeSignals: Signal[] = [
+    {
+      key: "purge_hours_since_ok",
+      label: { es: "Horas sin limpieza exitosa", en: "Hours since a clean run" },
+      value: round(hoursSinceOk),
+      display: `${round(hoursSinceOk)} h`,
+      level: levelFor(hoursSinceOk, hoursT.warn, hoursT.critical),
+      warn: hoursT.warn,
+      critical: hoursT.critical,
+      hint: {
+        es: lastRun?.error
+          ? `Última corrida con error: ${lastRun.error}`
+          : purge?.last_ok_at
+            ? `Última limpieza: ${purge.last_ok_at}`
+            : "Todavía no hay una limpieza registrada",
+        en: lastRun?.error
+          ? `Last run failed: ${lastRun.error}`
+          : purge?.last_ok_at
+            ? `Last cleanup: ${purge.last_ok_at}`
+            : "No cleanup run recorded yet",
+      },
+    },
+    {
+      key: "purge_backlog_files",
+      label: { es: "Archivos pendientes de borrar", en: "Files waiting to be deleted" },
+      value: backlog,
+      display: `${backlog}${purge?.backlog_capped ? "+" : ""}`,
+      level: levelFor(backlog, backlogT.warn, backlogT.critical),
+      warn: backlogT.warn,
+      critical: backlogT.critical,
+      hint: {
+        es: lastRun ? `Última corrida borró ${lastRun.deleted_files} archivos` : "Sin corridas registradas",
+        en: lastRun ? `Last run deleted ${lastRun.deleted_files} files` : "No runs recorded",
+      },
+    },
+  ];
+
   const groups: AlertGroup[] = [
     { key: "ai", title: { es: "Gasto diario de IA", en: "Daily AI spend" }, level: "ok", signals: aiSignals },
     { key: "storage", title: { es: "Crecimiento de archivos", en: "File growth" }, level: "ok", signals: storageSignals },
+    { key: "purge", title: { es: "Limpieza de audio", en: "Audio cleanup" }, level: "ok", signals: purgeSignals },
     { key: "activity", title: { es: "Estudiantes y picos", en: "Learners and peaks" }, level: "ok", signals: activitySignals },
     { key: "database", title: { es: "Salud de la base", en: "Database health" }, level: "ok", signals: dbSignals },
   ];

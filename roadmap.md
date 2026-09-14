@@ -46,3 +46,10 @@
 - [ ] Etapa 2: 8.000 estudiantes
 - [ ] Etapa 3: 17.000 estudiantes
 
+
+## Limpieza de audio a escala
+- [x] Selección de candidatos dentro de la base (sin cargar tablas enteras)
+- [x] Corridas acotadas por cantidad y por tiempo
+- [x] Registro de cada corrida en `job_runs`
+- [x] Bloque "Limpieza de audio" en /admin/alertas
+- [x] Trabajo programado cada 4 horas

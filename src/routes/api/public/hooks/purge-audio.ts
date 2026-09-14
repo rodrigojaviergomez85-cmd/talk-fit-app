@@ -20,9 +20,11 @@ async function jobTokenAccepted(request: Request): Promise<boolean> {
 }
 
 /**
- * Daily audio retention job (called by pg_cron with the cron secret).
- * Deletes non-final practice takes older than 7 days on completed days.
- * Final Rep audio is never touched.
+ * Daily audio retention job (called by pg_cron).
+ *
+ * Every run is bounded (see `storage-purge.server.ts`) and recorded in
+ * `job_runs`, so a failure is visible on the admin Alerts screen instead of
+ * disappearing with the HTTP response.
  */
 export const Route = createFileRoute("/api/public/hooks/purge-audio")({
   server: {
@@ -33,13 +35,40 @@ export const Route = createFileRoute("/api/public/hooks/purge-audio")({
           if (unauthorized) return unauthorized;
         }
 
+        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+        const { data: run } = await supabaseAdmin
+          .from("job_runs")
+          .insert({ job_name: "purge-audio" })
+          .select("id")
+          .maybeSingle();
+        const runId = run?.id;
+
         try {
           const result = await purgeExpiredTakes();
+          if (runId) {
+            await supabaseAdmin
+              .from("job_runs")
+              .update({
+                finished_at: new Date().toISOString(),
+                ok: result.errors.length === 0,
+                deleted_files: result.deletedFiles + result.dayFinalDeletedFiles,
+                marked_rows: result.markedRows + result.dayFinalMarkedRows,
+                error: result.errors.length ? result.errors.join(" | ").slice(0, 2000) : null,
+                detail: JSON.parse(JSON.stringify(result)),
+              })
+              .eq("id", runId);
+          }
           return new Response(JSON.stringify(result), {
             headers: { "content-type": "application/json" },
           });
         } catch (err) {
           const message = err instanceof Error ? err.message : "purge failed";
+          if (runId) {
+            await supabaseAdmin
+              .from("job_runs")
+              .update({ finished_at: new Date().toISOString(), ok: false, error: message.slice(0, 2000) })
+              .eq("id", runId);
+          }
           return new Response(JSON.stringify({ error: message }), {
             status: 500,
             headers: { "content-type": "application/json" },
