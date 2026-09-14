@@ -28,7 +28,7 @@ describe("tts allowlist", () => {
   it("covers the storybook and idiom sources", async () => {
     expect(await isAllowedTtsText("break the ice")).toBe(true);
     // A storybook affirmation every season repeats out loud.
-    expect(await isAllowedTtsText("I can do it")).toBe(true);
+    expect(await isAllowedTtsText("I can do it.")).toBe(true);
   }, 30000);
 
   it("rejects a text nobody authored", async () => {
