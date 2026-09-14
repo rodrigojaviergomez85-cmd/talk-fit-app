@@ -17,6 +17,7 @@ import { speakerVoice, speakerTone, speakerName } from "@/services/storybook/voi
 import { speakDialogue, startDialogue, type DialogueController } from "@/services/storybook/dialogue-audio";
 import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
+import { shuffleQuizOptions } from "@/services/storybook/shuffle-options";
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
 import type { ModuleId, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -1067,12 +1068,13 @@ function QuizSlide({
   const [lastTranscript, setLastTranscript] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const hasCheck = Boolean(quiz.sayItCheck);
+  const shuffled = useMemo(() => shuffleQuizOptions(episodeId, quiz), [episodeId, quiz]);
 
   const pick = (i: number) => {
     setPicked(i);
     // Stop any question audio the moment an answer is selected — right or wrong.
     AudioService.stop();
-    if (i === quiz.answer) {
+    if (i === shuffled.answer) {
       if (!done) onCorrect();
       // Reset per-question speaking state when the question is answered.
       setCheckStatus("idle");
@@ -1184,8 +1186,8 @@ function QuizSlide({
       <AudioPlayer text={quiz.questionEn} label={es ? "ESCUCHAR" : "LISTEN"} size="sm" variant="ghost" voice={voice} />
 
       <div className="grid gap-2">
-        {quiz.options.map((option, i) => {
-          const isRight = done && i === quiz.answer;
+        {shuffled.options.map((option, i) => {
+          const isRight = done && i === shuffled.answer;
           const isWrong = wrong === i;
           return (
             <button
