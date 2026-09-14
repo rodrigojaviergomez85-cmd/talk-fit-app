@@ -642,7 +642,7 @@ export const JourneyService = {
     const { data: rows } = await supabase
       .from("day_progress")
       .select(
-        "day, module_id, completed_at, local_day_key, final_seconds, practice_seconds, recordings_count, sentence_count, recording_path, self_assessment",
+        "day, module_id, completed_at, local_day_key, final_seconds, practice_seconds, recordings_count, sentence_count, recording_path, recording_purged_at, self_assessment",
       )
       .order("day");
     if (!rows) return local;
@@ -670,6 +670,7 @@ export const JourneyService = {
         finalUrl: localRecord?.finalUrl ?? null,
         firstUrl: localRecord?.firstUrl ?? null,
         recordingPath: row.recording_path,
+        recordingPurgedAt: row.recording_purged_at ?? null,
         ...(row.self_assessment ? { selfAssessment: row.self_assessment as SelfAssessment } : {}),
       };
       if (!localRecord) totalSeconds += row.practice_seconds;
