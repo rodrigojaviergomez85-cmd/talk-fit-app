@@ -8,7 +8,7 @@ import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { playGoodFeedbackSound } from "@/lib/feedback-sounds";
 import { useAppLang } from "@/lib/i18n";
 import { tokenizeWords } from "@/lib/syllables";
-import { buildSayItHint } from "@/lib/story-say-match";
+import { buildSayItHint, buildSayItStartHint } from "@/lib/story-say-match";
 import { isStoryAdvanceLocked } from "@/lib/storybook-advance";
 import { AudioService } from "@/services/audio-service";
 import { supabase } from "@/integrations/supabase/client";
