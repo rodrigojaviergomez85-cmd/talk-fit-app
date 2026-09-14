@@ -94,8 +94,9 @@ export const RecordingService = {
     }
 
     const mimeType = pickMimeType();
-    // Speech-appropriate bitrate keeps uploads small on mobile networks.
-    const options: MediaRecorderOptions = { audioBitsPerSecond: 32000 };
+    // Speech-appropriate bitrate keeps uploads small on mobile networks and
+    // storage affordable at scale; 24 kbps mono stays clean for transcription.
+    const options: MediaRecorderOptions = { audioBitsPerSecond: 24000 };
     let recorder: MediaRecorder;
     try {
       recorder = mimeType
