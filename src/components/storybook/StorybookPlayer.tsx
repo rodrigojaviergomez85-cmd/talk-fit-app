@@ -433,6 +433,8 @@ function TappableText({
   es,
   className,
   onLearnWord,
+  onOpenWord,
+  onCloseWord,
 }: {
   text: string;
   scene?: StorybookScene;
@@ -441,10 +443,17 @@ function TappableText({
   es: boolean;
   className?: string;
   onLearnWord?: (word: string, meaning: string) => void;
+  /** Dialogue scenes pause the conversation while a word card is open. */
+  onOpenWord?: () => void;
+  onCloseWord?: () => void;
 }) {
   const [open, setOpen] = useState<string | null>(null);
   const tokens = tokenizeWords(text);
   const result = open ? lookupWord(open, { scene, episodeGlossary }) : null;
+  const close = () => {
+    setOpen(null);
+    onCloseWord?.();
+  };
 
   return (
     <div className="space-y-3">
@@ -463,8 +472,14 @@ function TappableText({
               key={`w-${i}`}
               type="button"
               onClick={() => {
+                if (open === token.value) {
+                  close();
+                  AudioService.stop();
+                  return;
+                }
                 if (info.curated && info.meaning) onLearnWord?.(token.value, info.meaning);
-                setOpen(open === token.value ? null : token.value);
+                setOpen(token.value);
+                onOpenWord?.();
                 AudioService.stop();
                 AudioService.speak(token.value, { rate: 0.75, voice });
               }}
