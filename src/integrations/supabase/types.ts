@@ -98,6 +98,36 @@ export type Database = {
         }
         Relationships: []
       }
+      alert_thresholds: {
+        Row: {
+          critical: number
+          key: string
+          label: string
+          sort_order: number
+          unit: string
+          updated_at: string
+          warn: number
+        }
+        Insert: {
+          critical: number
+          key: string
+          label: string
+          sort_order?: number
+          unit: string
+          updated_at?: string
+          warn: number
+        }
+        Update: {
+          critical?: number
+          key?: string
+          label?: string
+          sort_order?: number
+          unit?: string
+          updated_at?: string
+          warn?: number
+        }
+        Relationships: []
+      }
       app_settings: {
         Row: {
           billing_enabled: boolean
@@ -1074,6 +1104,7 @@ export type Database = {
       }
       admin_cost_center: { Args: never; Returns: Json }
       admin_engagement_metrics: { Args: never; Returns: Json }
+      admin_health_snapshot: { Args: never; Returns: Json }
       apply_admin_settings: {
         Args: {
           _admin_email: string
