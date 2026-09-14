@@ -9,6 +9,7 @@ import { InterviewAttempts, setInterviewAttemptScope } from "@/services/intervie
 import { setPreferencesScope } from "@/services/preferences";
 import { setVerbBankScope, VerbBank } from "@/services/verb-bank";
 import { setUnlimitedAccess } from "@/lib/unlimited-access";
+import { ensureFreshSession, isSessionInvalidError } from "@/lib/session-keeper";
 
 /**
  * One auth listener for the whole app. It scopes local caches to the signed-in
