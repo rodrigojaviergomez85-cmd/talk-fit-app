@@ -46,10 +46,10 @@ describe("story unlocking follows the official route", () => {
   });
 
   it("lets the review window cross back into the finished season", () => {
-    const state = makeState({ "basic-zero": 20, "simple-present": 2 });
-    expect(isDayUnlocked(state, "simple-present", 3)).toBe(true);
-    expect(isDayUnlocked(state, "simple-present", 4)).toBe(false);
-    expect(isSeasonUnlocked(state, "simple-present")).toBe(true);
+    const state = makeState({ "basic-zero": 20, "simple-future": 2 });
+    expect(isDayUnlocked(state, "simple-future", 3)).toBe(true);
+    expect(isDayUnlocked(state, "simple-future", 4)).toBe(false);
+    expect(isSeasonUnlocked(state, "simple-future")).toBe(true);
     expect(isDayUnlocked(state, "basic-zero", 20)).toBe(true);
     expect(isDayUnlocked(state, "basic-zero", 16)).toBe(false);
   });
