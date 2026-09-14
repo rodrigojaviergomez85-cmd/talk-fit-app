@@ -76,7 +76,11 @@ export const Route = createFileRoute("/api/tts")({
             //    app_settings.tts_allowlist_enforce in the SQL editor.
             const { isAllowedTtsText, normalizeTtsText } = await import("@/lib/tts-allowlist.server");
             const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-            const allowed = await isAllowedTtsText(spec.text).catch(() => true);
+            const allowed = await isAllowedTtsText(spec.text).catch((error: unknown) => {
+              // Fail open, but never silently: a broken builder must be visible.
+              console.error(`[tts-allowlist] builder failed: ${error instanceof Error ? error.message : String(error)}`);
+              return true;
+            });
             const { data: settings } = await supabaseAdmin
               .from("app_settings")
               .select("tts_allowlist_enforce")
