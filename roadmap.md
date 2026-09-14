@@ -38,5 +38,11 @@
 - [x] Paso 2: Redimensionar instancia a X-Large y disco a 500 GB
 - [x] Paso 3: Retención (tomas 48 h, finales 90 días, día 1 y 20 permanentes)
 - [x] Paso 4: Alertas de gasto y salud en /admin/alertas + aviso en pantallas admin
-- [x] Paso 5: Prueba de carga 20/80/170 rps OK (p95 ≤ 94 ms), índices de crecimiento agregados; falta lanzamiento escalonado real 2k → 8k → 17k
+- [x] Paso 5: Prueba de carga 20/80/170 rps OK (p95 ≤ 94 ms), índices de crecimiento agregados
+
+## Lanzamiento escalonado
+- [x] Etapa 1 (14 sep): abrir a ~5.000 estudiantes — límites activos, instancia X-Large, disco 500 GB, retención y alertas listas
+- [ ] Revisar /admin/alertas a diario durante la primera semana
+- [ ] Etapa 2: 8.000 estudiantes
+- [ ] Etapa 3: 17.000 estudiantes
 
