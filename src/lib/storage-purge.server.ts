@@ -186,7 +186,14 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
     // candidate. Finals matched through `day_progress.recording_path` are the
     // database's job, so the in-memory pass runs with empty lookups.
     const noLookups = buildLookups([]);
-    const batch = rows.filter((rec) => classifyRecording(rec, noLookups, now).kind === "candidate");
+    const classified = rows.filter((rec) => classifyRecording(rec, noLookups, now).kind === "candidate");
+    // Independent ownership check: never hand storage a path that does not
+    // belong to the row it came from, even if the database allowed it.
+    const batch = classified.filter((rec) => {
+      if (pathBelongsTo(rec.user_id, rec.storage_path)) return true;
+      errors.push(`OWNERSHIP MISMATCH: recording ${rec.id} path does not belong to user ${rec.user_id}`);
+      return false;
+    });
     result.candidates += batch.length;
     if (dryRun || batch.length === 0) {
       takesHandled += rows.length;
