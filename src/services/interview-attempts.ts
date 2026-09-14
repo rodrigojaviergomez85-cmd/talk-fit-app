@@ -177,6 +177,7 @@ export const InterviewAttempts = {
       first_recording_at: counted.firstRecordingAt,
     });
     if (error) {
+      notifyIfClockMismatch(error.message);
       await InterviewAttempts.refresh();
       // Only the cap trigger means "no interviews left today"; anything else is
       // a transient write failure and must not lock the simulator.
