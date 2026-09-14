@@ -238,10 +238,17 @@ function answerStartFromQuestion(questionEn: string): string | null {
   }
 
 
+  // What was the best thing you did …? → The best thing I did was …
+  m = q.match(/^what\s+was\s+(the\s+.+?)\s+you\s+([a-z]+)\b(.*)$/);
+  if (m) {
+    const np = stripTails(m[1]!).replace(/\byour\b/g, "my");
+    return `${capitalize(np)} I ${m[2]!} was`;
+  }
+
   // (WH …) did you <verb> …
   m = q.match(new RegExp(`^(?:${WH}\\b.*?\\s+)?did\\s+you\\s+(.+)$`));
   if (m) {
-    const rest = stripTails(m[1]!);
+    const rest = stripTails(cutAtOr(m[1]!));
     const words = rest.split(" ").filter(Boolean);
     if (words.length === 0) return null;
     const verb = toPast(words[0]!);
