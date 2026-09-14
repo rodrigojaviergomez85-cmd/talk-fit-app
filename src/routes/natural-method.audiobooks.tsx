@@ -14,7 +14,10 @@ import {
   getStorybookEpisode,
   completedDaysInModule,
   unlockedDay,
+  isSeasonUnlocked,
+  unlockedDayInModule,
 } from "@/services/storybook";
+
 import { JourneyService } from "@/services/journey-service";
 import type { JourneyState } from "@/lib/types";
 import { hasUnlimitedAccess } from "@/lib/unlimited-access";
