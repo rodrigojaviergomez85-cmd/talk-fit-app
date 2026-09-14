@@ -84,3 +84,34 @@ export function tokenizeWords(text: string): Array<{ value: string; isWord: bool
     .filter((part) => part !== "")
     .map((part) => ({ value: part, isWord: /[A-Za-z]/.test(part) }));
 }
+
+export type DisplayWordToken = {
+  value: string;
+  isWord: boolean;
+  /** Closing punctuation rendered beside the word so it cannot wrap alone. */
+  suffix?: string;
+};
+
+/** Keep closing punctuation attached to its preceding tappable word. */
+export function tokenizeWordsForDisplay(text: string): DisplayWordToken[] {
+  const tokens = tokenizeWords(text);
+  const display: DisplayWordToken[] = [];
+
+  for (let i = 0; i < tokens.length; i += 1) {
+    const token = tokens[i];
+    if (!token) continue;
+
+    if (token.isWord) {
+      const next = tokens[i + 1];
+      if (next && !next.isWord && /^[.,!?;:)"”’»]+$/.test(next.value)) {
+        display.push({ ...token, suffix: next.value });
+        i += 1;
+        continue;
+      }
+    }
+
+    display.push(token);
+  }
+
+  return display;
+}
