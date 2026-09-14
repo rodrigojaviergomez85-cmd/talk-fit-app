@@ -196,7 +196,9 @@ async function transcribe(
   form.append("file", file, `take.${ext}`);
   form.append("language", "en");
   form.append("prompt", NEUTRAL_PROMPT);
-  form.append("response_format", "json");
+  // verbose_json is the only format that returns the clip duration, which the
+  // cost log needs to price the transcription (plain json would log it as 0).
+  form.append("response_format", "verbose_json");
   const startedAt = Date.now();
 
   const res = await fetch(GROQ_URL, {
@@ -209,12 +211,21 @@ async function transcribe(
     logGroqCall(meta, "story-say-check", MODEL_TURBO, null, false, String(res.status), Date.now() - startedAt);
     return { ok: false, res };
   }
-  logGroqCall(meta, "story-say-check", MODEL_TURBO, null, true, null, Date.now() - startedAt);
 
   const body = (await res.json().catch(() => null)) as {
     text?: unknown;
+    duration?: unknown;
     segments?: Array<{ avg_logprob?: number; no_speech_prob?: number }>;
   } | null;
+  logGroqCall(
+    meta,
+    "story-say-check",
+    MODEL_TURBO,
+    typeof body?.duration === "number" && Number.isFinite(body.duration) ? body.duration : null,
+    true,
+    null,
+    Date.now() - startedAt,
+  );
   const text = typeof body?.text === "string" ? body.text.trim() : "";
   let avgLogprob = 0;
   let noSpeechProb = 0;
