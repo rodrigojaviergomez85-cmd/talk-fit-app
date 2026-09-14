@@ -289,6 +289,12 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
       }
       const base = row.recording_path!;
       const latest = base.replace(/\.([a-z0-9]+)$/i, "-latest.$1");
+      if (!pathBelongsTo(row.user_id, base) || !pathBelongsTo(row.user_id, latest)) {
+        errors.push(
+          `OWNERSHIP MISMATCH: day final ${row.module_id} day ${row.day} path does not belong to user ${row.user_id}`,
+        );
+        continue;
+      }
       try {
         const { error: removeError } = await timed(admin.storage.from(BUCKET).remove([base, latest]), "storage.remove");
         if (removeError) throw new Error(removeError.message);
