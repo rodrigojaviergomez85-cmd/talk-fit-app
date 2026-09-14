@@ -10,6 +10,7 @@ import s7 from "@/assets/storybook/eagles-ep1-the-offer/s7.jpg";
 import s8 from "@/assets/storybook/eagles-ep1-the-offer/s8.jpg";
 import s9 from "@/assets/storybook/eagles-ep1-the-offer/s9.jpg";
 import s10 from "@/assets/storybook/eagles-ep1-the-offer/s10.jpg";
+import s11 from "@/assets/storybook/eagles-ep1-the-offer/s11.jpg";
 
 /**
  * Season 6 (Eagles) Episode 1 — "The offer".
