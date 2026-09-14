@@ -9,6 +9,7 @@ export function AppShell({
   subtitle,
   hideHeader,
   hideSync,
+  hideNav,
 }: {
   children: ReactNode;
   title?: string;
@@ -18,9 +19,11 @@ export function AppShell({
   hideHeader?: boolean;
   /** Hide the sync status banner (used by Home to keep the top clean). */
   hideSync?: boolean;
+  /** Hide the bottom menu (storybook episodes use a dedicated full-screen view). */
+  hideNav?: boolean;
 }) {
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className={cn("min-h-screen bg-background", hideNav ? "pb-0" : "pb-24")}>
       {!hideHeader ? (
         <header className="bg-navy px-5 pb-6 pt-[max(1.25rem,env(safe-area-inset-top))] text-navy-foreground">
           <div className="mx-auto w-full max-w-lg">
@@ -39,7 +42,7 @@ export function AppShell({
         {!hideSync ? <SyncBanner /> : null}
         {children}
       </main>
-      <BottomNav />
+      {!hideNav ? <BottomNav /> : null}
     </div>
   );
 }

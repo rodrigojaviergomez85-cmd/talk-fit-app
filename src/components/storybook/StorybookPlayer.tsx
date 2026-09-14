@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, ChevronLeft, Loader2, Play, RotateCcw, Sparkles, Star, Volume2, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronDown, ChevronLeft, ChevronUp, Loader2, Pause, Play, RotateCcw, Sparkles, Star, Volume2, X } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { SlowWordPanel } from "@/components/fluency/SlowWordPanel";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
@@ -14,7 +14,7 @@ import { AudioService } from "@/services/audio-service";
 import { supabase } from "@/integrations/supabase/client";
 import { getSeason } from "@/services/storybook";
 import { speakerVoice, speakerTone, speakerName } from "@/services/storybook/voices";
-import { speakDialogue } from "@/services/storybook/dialogue-audio";
+import { speakDialogue, startDialogue, type DialogueController } from "@/services/storybook/dialogue-audio";
 import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
@@ -70,7 +70,22 @@ export function StorybookPlayer({
   const slides = useMemo(() => buildSlides(episode), [episode]);
   const coverBack = onCoverBack ?? (() => navigate({ to: "/natural-method/audiobooks" }));
   const episodeGlossary = useMemo(() => buildEpisodeGlossary(episode), [episode]);
-  const [idx, setIdx] = useState(0);
+  // Leaving the episode keeps the scene the learner was on.
+  const posKey = `sb-pos-${episode.id}`;
+  const [idx, setIdx] = useState(() => {
+    if (typeof window === "undefined") return 0;
+    const saved = Number(window.localStorage.getItem(posKey) ?? "0");
+    if (!Number.isFinite(saved) || saved <= 0) return 0;
+    return Math.min(saved, buildSlides(episode).length - 1);
+  });
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(posKey, String(idx));
+    } catch {
+      /* storage full or blocked — position is a convenience only */
+    }
+  }, [idx, posKey]);
   const [stars, setStars] = useState(0);
   const [notebook, setNotebook] = useState<Record<string, string>>({});
   const [saidIt, setSaidIt] = useState<Record<string, boolean>>({});
@@ -119,12 +134,10 @@ export function StorybookPlayer({
     setSceneRate(1);
     if (slide.kind === "scene") {
       const lines = slide.scene.lines;
+      // Dialogue scenes own their playback (play/pause bar, resume after a word card).
       if (lines?.length) {
-        const cancel = speakDialogue(lines, { rate: 1 });
         return () => {
           alive = false;
-          cancel();
-          AudioService.stop();
         };
       }
       AudioService.speak(slide.scene.text, {
@@ -179,12 +192,20 @@ export function StorybookPlayer({
     setNotebook((prev) => (prev[word] ? prev : { ...prev, [word]: meaning }));
   };
 
+  /** Dialogue scenes get a dedicated full-screen reading view. */
+  const immersive = slide.kind === "scene" && Boolean(slide.scene.lines?.length);
+
   return (
-    <div className="select-none">
+    <div className={cn("select-none", immersive && "fixed inset-0 z-40 flex flex-col bg-background")}>
       <style>{STORYBOOK_CSS}</style>
 
       {/* Progress bar */}
-      <div className="flex items-center gap-3">
+      <div
+        className={cn(
+          "flex items-center gap-3",
+          immersive && "shrink-0 px-3 pb-2 pt-[max(0.5rem,env(safe-area-inset-top))]",
+        )}
+      >
         <button
           type="button"
           aria-label={es ? "Atrás (escena anterior)" : "Back (previous scene)"}
@@ -250,7 +271,7 @@ export function StorybookPlayer({
       )}
 
       <div
-        className="mt-3"
+        className={cn("mt-3", immersive && "mt-0 flex min-h-0 flex-1 flex-col")}
         onTouchStart={(e) => {
           touchX.current = e.touches[0]?.clientX ?? null;
         }}
@@ -262,9 +283,24 @@ export function StorybookPlayer({
           else if (delta > 48) go(idx - 1);
         }}
       >
-        <div key={idx} style={{ animation: "sb-slide-in .35s ease-out" }}>
+        <div
+          key={idx}
+          className={cn(immersive && "flex min-h-0 flex-1 flex-col")}
+          style={immersive ? undefined : { animation: "sb-slide-in .35s ease-out" }}
+        >
           {slide.kind === "cover" ? <CoverSlide episode={episode} es={es} onStart={() => go(1)} /> : null}
-          {slide.kind === "scene" ? (
+          {slide.kind === "scene" && immersive ? (
+            <DialogueScene
+              scene={slide.scene}
+              episodeGlossary={episodeGlossary}
+              voice={episode.voice}
+              es={es}
+              rate={sceneRate}
+              onRateChange={setRate}
+              onLearnWord={learnWord}
+            />
+          ) : null}
+          {slide.kind === "scene" && !immersive ? (
             <SceneSlide
               scene={slide.scene}
               episodeGlossary={episodeGlossary}
@@ -328,7 +364,13 @@ export function StorybookPlayer({
 
         {/* Prev / next */}
         {slide.kind !== "cover" ? (
-          <div className="mt-4 flex gap-2">
+          <div
+            className={cn(
+              "mt-4 flex gap-2",
+              immersive &&
+                "mt-0 shrink-0 border-t border-border px-3 pb-[max(0.6rem,env(safe-area-inset-bottom))] pt-2",
+            )}
+          >
             <button
               type="button"
               onClick={() => go(idx - 1)}
@@ -433,6 +475,8 @@ function TappableText({
   es,
   className,
   onLearnWord,
+  onOpenWord,
+  onCloseWord,
 }: {
   text: string;
   scene?: StorybookScene;
@@ -441,10 +485,17 @@ function TappableText({
   es: boolean;
   className?: string;
   onLearnWord?: (word: string, meaning: string) => void;
+  /** Dialogue scenes pause the conversation while a word card is open. */
+  onOpenWord?: () => void;
+  onCloseWord?: () => void;
 }) {
   const [open, setOpen] = useState<string | null>(null);
   const tokens = tokenizeWords(text);
   const result = open ? lookupWord(open, { scene, episodeGlossary }) : null;
+  const close = () => {
+    setOpen(null);
+    onCloseWord?.();
+  };
 
   return (
     <div className="space-y-3">
@@ -463,8 +514,14 @@ function TappableText({
               key={`w-${i}`}
               type="button"
               onClick={() => {
+                if (open === token.value) {
+                  close();
+                  AudioService.stop();
+                  return;
+                }
                 if (info.curated && info.meaning) onLearnWord?.(token.value, info.meaning);
-                setOpen(open === token.value ? null : token.value);
+                setOpen(token.value);
+                onOpenWord?.();
                 AudioService.stop();
                 AudioService.speak(token.value, { rate: 0.75, voice });
               }}
@@ -501,19 +558,260 @@ function TappableText({
             </div>
             <button
               type="button"
-              onClick={() => setOpen(null)}
+              onClick={close}
               aria-label={es ? "Cerrar" : "Close"}
               className="rounded-full p-1 text-muted-foreground hover:bg-card"
             >
               <X className="size-4" />
             </button>
           </div>
-          <SlowWordPanel word={open} voice={voice} compact onClose={() => setOpen(null)} />
+          <SlowWordPanel word={open} voice={voice} compact onClose={close} />
         </div>
       ) : null}
     </div>
   );
 }
+
+/**
+ * Immersive dialogue scene (sitcom seasons): the illustration stays pinned at the
+ * top, only the conversation scrolls, and every audio control lives in one fixed
+ * bar so "Next" is never covered.
+ */
+function DialogueScene({
+  scene,
+  episodeGlossary,
+  voice,
+  es,
+  rate,
+  onRateChange,
+  onLearnWord,
+}: {
+  scene: StorybookScene;
+  episodeGlossary: Map<string, string>;
+  voice: "female" | "male" | "girl" | undefined;
+  es: boolean;
+  rate: number;
+  onRateChange: (rate: number) => void;
+  onLearnWord: (word: string, meaning: string) => void;
+}) {
+  const lines = useMemo(() => scene.lines ?? [], [scene]);
+  const [activeLine, setActiveLine] = useState<number>(0);
+  const [playing, setPlaying] = useState(false);
+  const [follow, setFollow] = useState(true);
+  const [showEs, setShowEs] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [zoom, setZoom] = useState(false);
+  const controller = useRef<DialogueController | null>(null);
+  const activeRef = useRef(0);
+  const lineEls = useRef<Array<HTMLDivElement | null>>([]);
+
+  const play = (from?: number, speed?: number) => {
+    controller.current?.cancel();
+    const startAt = from ?? activeRef.current;
+    activeRef.current = startAt;
+    setActiveLine(startAt);
+    setFollow(true);
+    setPlaying(true);
+    controller.current = startDialogue(lines, {
+      rate: speed ?? rate,
+      startAt,
+      onLine: (i) => {
+        if (i === null) return;
+        activeRef.current = i;
+        setActiveLine(i);
+      },
+      onDone: () => setPlaying(false),
+    });
+  };
+
+  const stop = () => {
+    controller.current?.cancel();
+    controller.current = null;
+    AudioService.stop();
+    setPlaying(false);
+  };
+
+  // Auto-start the conversation whenever the scene appears.
+  useEffect(() => {
+    activeRef.current = 0;
+    setActiveLine(0);
+    play(0, 1);
+    return () => {
+      controller.current?.cancel();
+      controller.current = null;
+      AudioService.stop();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scene.id]);
+
+  // The text follows the audio until the learner scrolls back to re-read.
+  useEffect(() => {
+    if (!follow) return;
+    lineEls.current[activeLine]?.scrollIntoView({ block: "center", behavior: "smooth" });
+  }, [activeLine, follow]);
+
+  const imageHeight = collapsed ? 0 : "clamp(104px, 30dvh, 260px)";
+
+  return (
+    <div className="flex min-h-0 flex-1 flex-col">
+      {/* Pinned illustration — about a third of the screen, tap to enlarge. */}
+      <div className="shrink-0 px-3">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-card" style={{ height: imageHeight }}>
+          {!collapsed ? (
+            <button
+              type="button"
+              onClick={() => setZoom(true)}
+              aria-label={es ? "Ampliar la imagen" : "Enlarge the image"}
+              className="block h-full w-full"
+            >
+              <img
+                src={scene.image}
+                alt={scene.imageAlt}
+                width={1024}
+                height={1024}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover object-[50%_28%]"
+              />
+            </button>
+          ) : null}
+        </div>
+        <button
+          type="button"
+          onClick={() => setCollapsed((v) => !v)}
+          aria-label={es ? (collapsed ? "Mostrar la imagen" : "Ocultar la imagen") : collapsed ? "Show image" : "Hide image"}
+          className="mx-auto mt-1 flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground"
+        >
+          {collapsed ? <ChevronDown className="size-3.5" /> : <ChevronUp className="size-3.5" />}
+          {collapsed ? (es ? "Ver imagen" : "Show image") : es ? "Más espacio para leer" : "More reading space"}
+        </button>
+      </div>
+
+      {/* Conversation */}
+      <div
+        className="min-h-0 flex-1 space-y-1.5 overflow-y-auto px-3 pb-2"
+        onWheel={() => setFollow(false)}
+        onTouchMove={() => setFollow(false)}
+      >
+        {lines.map((line, i) => (
+          <div
+            key={`${scene.id}-l${i}`}
+            ref={(el) => {
+              lineEls.current[i] = el;
+            }}
+            className={cn(
+              "rounded-2xl border px-3 py-2 transition-colors",
+              activeLine === i && playing ? "border-primary bg-primary/10" : "border-transparent bg-muted/40",
+            )}
+          >
+            <div className="mb-0.5 flex items-center gap-2">
+              <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-primary">
+                {speakerName(line.speaker)}
+              </span>
+              {activeLine === i && playing ? (
+                <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+                  · {es ? "Hablando" : "Speaking"}
+                </span>
+              ) : null}
+              <button
+                type="button"
+                aria-label={es ? `Escuchar a ${speakerName(line.speaker)}` : `Listen to ${speakerName(line.speaker)}`}
+                onClick={() => play(i)}
+                className="inline-flex size-6 items-center justify-center rounded-full border border-border text-muted-foreground"
+              >
+                <Volume2 className="size-3" />
+              </button>
+            </div>
+            <TappableText
+              text={line.text}
+              scene={scene}
+              episodeGlossary={episodeGlossary}
+              voice={voice}
+              es={es}
+              onLearnWord={onLearnWord}
+              onOpenWord={stop}
+              onCloseWord={() => play(i)}
+              className="text-[17px] font-normal leading-relaxed text-foreground"
+            />
+            {showEs ? <p className="mt-1 text-[13px] text-muted-foreground">{line.es}</p> : null}
+          </div>
+        ))}
+      </div>
+
+      {!follow ? (
+        <button
+          type="button"
+          onClick={() => setFollow(true)}
+          className="mx-auto mb-1 shrink-0 rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-[12px] font-bold text-primary"
+        >
+          {es ? "Seguir audio" : "Follow audio"}
+        </button>
+      ) : null}
+
+      {/* Fixed audio bar */}
+      <div className="shrink-0 border-t border-border bg-background px-3 py-2">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => (playing ? stop() : play())}
+            aria-label={playing ? (es ? "Pausar escena" : "Pause scene") : es ? "Reproducir escena" : "Play scene"}
+            className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-3 text-[13px] font-bold uppercase tracking-[0.08em] text-primary-foreground"
+          >
+            {playing ? <Pause className="size-4 fill-current" /> : <Play className="size-4 fill-current" />}
+            {playing ? (es ? "Pausa" : "Pause") : es ? "Escena" : "Scene"}
+          </button>
+          <button
+            type="button"
+            onClick={() => play(activeRef.current)}
+            aria-label={es ? "Repetir frase" : "Repeat line"}
+            className="inline-flex size-11 shrink-0 items-center justify-center rounded-2xl border border-border text-muted-foreground"
+          >
+            <RotateCcw className="size-4" />
+          </button>
+          {[0.75, 1].map((speed) => (
+            <button
+              key={speed}
+              type="button"
+              onClick={() => {
+                onRateChange(speed);
+                play(activeRef.current, speed);
+              }}
+              className={cn(
+                "inline-flex h-11 shrink-0 items-center justify-center rounded-2xl border px-2.5 text-[12px] font-bold tabular-nums",
+                rate === speed ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground",
+              )}
+            >
+              {speed}x
+            </button>
+          ))}
+          <button
+            type="button"
+            onClick={() => setShowEs((v) => !v)}
+            className={cn(
+              "inline-flex h-11 shrink-0 items-center justify-center rounded-2xl border px-2.5 text-[11px] font-bold uppercase tracking-[0.06em]",
+              showEs ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground",
+            )}
+          >
+            {showEs ? "EN" : "ES"}
+          </button>
+        </div>
+      </div>
+
+      {zoom ? (
+        <button
+          type="button"
+          onClick={() => setZoom(false)}
+          aria-label={es ? "Cerrar imagen" : "Close image"}
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 p-3"
+        >
+          <img src={scene.image} alt={scene.imageAlt} className="max-h-full w-full rounded-2xl object-contain" />
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
+
 
 export function SceneSlide({
   scene,
