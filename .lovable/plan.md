@@ -6,9 +6,8 @@ Hoy, en los episodios con diálogo, solo se puede repetir la última frase que s
 
 - Tocar cualquier frase del diálogo la reproduce **solo a ella** y se detiene al terminar.
 - Si la escena está sonando, al tocar una frase se detiene lo que suena y se escucha únicamente la frase tocada.
-- La frase tocada se resalta mientras suena, igual que ahora.
+- La frase tocada se resalta mientras suena, igual que ahora, y queda **marcada como posición actual**: al presionar de nuevo "ESCENA", el audio continúa desde la frase siguiente (es decir, sigue justo donde el estudiante se quedó, no desde el inicio). Para escuchar todo desde cero, el botón de la flecha circular ("repetir") siempre reinicia la escena completa.
 - Tocar una palabra dentro de la frase sigue abriendo su significado (no se pierde esa función).
-- El botón grande "ESCENA" sigue leyendo toda la conversación en orden desde el inicio.
 - El botoncito de bocina junto al nombre del personaje repite también solo esa frase, para que todo sea consistente.
 - Nada cambia en los episodios narrados de las temporadas 1 a 5, ni en preguntas, grabaciones, voces o límites.
 
