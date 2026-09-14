@@ -1,3 +1,11 @@
+/**
+ * INTENDED SCHEDULE: HOURLY (configured in the Cloud panel, not in this repo).
+ *
+ * At 17,000 learners roughly 30,000 take files expire every day, which is more
+ * than a single daily run's ceiling (4,000 takes + 1,000 finals). Running once
+ * an hour gives ~120,000 files of capacity per day, so the backlog shrinks
+ * instead of growing. Overlapping invocations are rejected by the guard below.
+ */
 import { createFileRoute } from "@tanstack/react-router";
 import { authenticateCronRequest } from "@/integrations/supabase/cron-auth";
 import { purgeExpiredTakes } from "@/lib/storage-purge.server";
