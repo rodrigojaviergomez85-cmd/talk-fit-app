@@ -36,10 +36,27 @@ describe("story unlocking follows the official route", () => {
     expect(isDayUnlocked(state, "basic-zero", 5)).toBe(false);
   });
 
-  it("opens a finished season completely for review", () => {
+  it("keeps only the last three episodes open for review", () => {
+    const state = makeState({ "basic-zero": 10 });
+    expect(isDayUnlocked(state, "basic-zero", 11)).toBe(true);
+    expect(isDayUnlocked(state, "basic-zero", 10)).toBe(true);
+    expect(isDayUnlocked(state, "basic-zero", 8)).toBe(true);
+    expect(isDayUnlocked(state, "basic-zero", 7)).toBe(false);
+    expect(isDayUnlocked(state, "basic-zero", 1)).toBe(false);
+  });
+
+  it("lets the review window cross back into the finished season", () => {
     const state = makeState({ "basic-zero": 20, "simple-present": 2 });
-    expect(isDayUnlocked(state, "basic-zero", 20)).toBe(true);
-    expect(isSeasonUnlocked(state, "simple-present")).toBe(true);
+    expect(isDayUnlocked(state, "simple-present", 3)).toBe(true);
     expect(isDayUnlocked(state, "simple-present", 4)).toBe(false);
+    expect(isSeasonUnlocked(state, "simple-present")).toBe(true);
+    expect(isDayUnlocked(state, "basic-zero", 20)).toBe(true);
+    expect(isDayUnlocked(state, "basic-zero", 16)).toBe(false);
+  });
+
+  it("opens only the first episode for a brand new learner", () => {
+    const state = makeState({});
+    expect(isDayUnlocked(state, "basic-zero", 1)).toBe(true);
+    expect(isDayUnlocked(state, "basic-zero", 2)).toBe(false);
   });
 });
