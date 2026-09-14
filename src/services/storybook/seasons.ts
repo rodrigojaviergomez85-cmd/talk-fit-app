@@ -279,6 +279,53 @@ export function unlockedDay(completedDays: number): number {
 }
 
 /**
+ * How many already-seen episodes stay open for review behind the current one.
+ * The learner sees today's episode plus this many older ones; anything older
+ * closes again so the story stays tied to the official route.
+ */
+export const EPISODE_LOOKBACK = 3;
+
+/** Episodes in every season before this one (global episode numbering). */
+function seasonOffset(moduleId: string): number | null {
+  let offset = 0;
+  for (const season of STORYBOOK_SEASONS) {
+    if (season.moduleId === moduleId) return offset;
+    offset += season.slots.length;
+  }
+  return null;
+}
+
+/** Position of one episode in the whole route, 1-based. */
+function globalEpisodeIndex(moduleId: string, day: number): number | null {
+  const offset = seasonOffset(moduleId);
+  return offset === null ? null : offset + day;
+}
+
+/** Highest episode position the learner has reached across every season. */
+export function currentEpisodeIndex(state: JourneyState): number {
+  let top = 1;
+  const active = JourneyService.currentModule(state);
+  for (const season of STORYBOOK_SEASONS) {
+    if (!isModuleId(season.moduleId)) continue;
+    if (!JourneyService.isModuleUnlocked(state, season.moduleId)) continue;
+    const started = completedDaysInModule(state, season.moduleId) > 0 || season.moduleId === active;
+    if (!started && !JourneyService.moduleComplete(state, season.moduleId)) continue;
+    const offset = seasonOffset(season.moduleId) ?? 0;
+    const reached = JourneyService.moduleComplete(state, season.moduleId)
+      ? season.slots.length
+      : Math.min(
+          season.slots.length,
+          Math.max(
+            JourneyService.currentDay(state, season.moduleId),
+            unlockedDay(completedDaysInModule(state, season.moduleId)),
+          ),
+        );
+    top = Math.max(top, offset + reached);
+  }
+  return top;
+}
+
+/**
  * A season only exists for the learner once the matching module is open on the
  * official route. Future modules keep every episode locked.
  */
@@ -290,20 +337,39 @@ export function isSeasonUnlocked(state: JourneyState, moduleId: string): boolean
 
 /**
  * Highest episode day open inside one season, following the official route:
- * future modules are closed, finished modules are fully open for review, and
- * the current module opens up to the day the learner has already reached.
+ * future modules are closed, and the learner never gets past the episode of
+ * the day they have reached. The window is capped at the back by
+ * `earliestUnlockedDayInModule`.
  */
 export function unlockedDayInModule(state: JourneyState, moduleId: string): number {
   if (hasUnlimitedAccess()) return Number.MAX_SAFE_INTEGER;
   if (!isModuleId(moduleId) || !isSeasonUnlocked(state, moduleId)) return 0;
-  if (JourneyService.moduleComplete(state, moduleId)) return Number.MAX_SAFE_INTEGER;
-  const completed = completedDaysInModule(state, moduleId);
-  return Math.max(JourneyService.currentDay(state, moduleId), unlockedDay(completed));
+  const offset = seasonOffset(moduleId);
+  if (offset === null) return 0;
+  const season = getSeason(moduleId);
+  const top = currentEpisodeIndex(state) - offset;
+  if (top <= 0) return 0;
+  return Math.min(top, season?.slots.length ?? top);
+}
+
+/**
+ * Oldest episode day still open in this season. Everything before it closes
+ * again: the learner keeps today's episode plus `EPISODE_LOOKBACK` older ones.
+ */
+export function earliestUnlockedDayInModule(state: JourneyState, moduleId: string): number {
+  if (hasUnlimitedAccess()) return 1;
+  const offset = seasonOffset(moduleId);
+  if (offset === null) return 1;
+  return Math.max(1, currentEpisodeIndex(state) - EPISODE_LOOKBACK - offset);
 }
 
 export function isDayUnlocked(state: JourneyState, moduleId: string, day: number): boolean {
   if (hasUnlimitedAccess()) return true;
-  return day <= unlockedDayInModule(state, moduleId);
+  if (!isModuleId(moduleId) || !isSeasonUnlocked(state, moduleId)) return false;
+  const index = globalEpisodeIndex(moduleId, day);
+  if (index === null) return false;
+  const top = currentEpisodeIndex(state);
+  return index <= top && index > top - 1 - EPISODE_LOOKBACK;
 }
 
 
