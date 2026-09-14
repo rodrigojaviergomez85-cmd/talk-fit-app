@@ -279,6 +279,50 @@ export function unlockedDay(completedDays: number): number {
 }
 
 /**
+ * How many already-seen episodes stay open for review behind the current one.
+ * The learner sees today's episode plus this many older ones; anything older
+ * closes again so the story stays tied to the official route.
+ */
+export const EPISODE_LOOKBACK = 3;
+
+/** Episodes in every season before this one (global episode numbering). */
+function seasonOffset(moduleId: string): number | null {
+  let offset = 0;
+  for (const season of STORYBOOK_SEASONS) {
+    if (season.moduleId === moduleId) return offset;
+    offset += season.slots.length;
+  }
+  return null;
+}
+
+/** Position of one episode in the whole route, 1-based. */
+function globalEpisodeIndex(moduleId: string, day: number): number | null {
+  const offset = seasonOffset(moduleId);
+  return offset === null ? null : offset + day;
+}
+
+/** Highest episode position the learner has reached across every season. */
+export function currentEpisodeIndex(state: JourneyState): number {
+  let top = 1;
+  for (const season of STORYBOOK_SEASONS) {
+    if (!isModuleId(season.moduleId)) continue;
+    if (!JourneyService.isModuleUnlocked(state, season.moduleId)) continue;
+    const offset = seasonOffset(season.moduleId) ?? 0;
+    const reached = JourneyService.moduleComplete(state, season.moduleId)
+      ? season.slots.length
+      : Math.min(
+          season.slots.length,
+          Math.max(
+            JourneyService.currentDay(state, season.moduleId),
+            unlockedDay(completedDaysInModule(state, season.moduleId)),
+          ),
+        );
+    top = Math.max(top, offset + reached);
+  }
+  return top;
+}
+
+/**
  * A season only exists for the learner once the matching module is open on the
  * official route. Future modules keep every episode locked.
  */
