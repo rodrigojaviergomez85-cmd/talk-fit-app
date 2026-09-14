@@ -899,18 +899,19 @@ function QuizSlide({
                 variant="ghost"
                 voice={voice}
               />
-              {quiz.sayItCheck?.target ? (
-                <p className="text-[12px] text-muted-foreground">
-                  {(() => {
-                    const { label, hint } = buildSayItStartHint(quiz.sayItCheck.target, es);
-                    return (
-                      <>
-                        {label} <span className="font-semibold text-foreground">“{hint}”</span>
-                      </>
-                    );
-                  })()}
-                </p>
-              ) : null}
+              {(() => {
+                const { label, hint } = buildSayItStartHint(
+                  quiz.sayItCheck?.target ?? "",
+                  es,
+                  quiz.sayItAskEn,
+                );
+                if (!hint) return null;
+                return (
+                  <p className="text-[12px] text-muted-foreground">
+                    {label} <span className="font-semibold text-foreground">“{hint}”</span>
+                  </p>
+                );
+              })()}
             </>
           ) : null}
 
