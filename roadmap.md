@@ -22,7 +22,7 @@
 - [ ] Ep 16-20 (creer en sí mismo, días difíciles, reintentar, celebración)
 
 ## Temporada 1 — correcciones actuales
-- [ ] Corregir la frase incoherente “Today... every day” en la escena mostrada
-- [ ] Revisar y corregir anatomía e identidad de los personajes en los episodios 19 y 20
-- [ ] Validar imágenes móviles y pruebas de las historias
+- [x] Corregir la frase incoherente “Today... every day” en la escena mostrada
+- [x] Revisar y corregir anatomía e identidad de los personajes en los episodios 19 y 20
+- [x] Validar imágenes móviles y pruebas de las historias
 
