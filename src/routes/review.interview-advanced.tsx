@@ -92,238 +92,43 @@ async function countSentences(blob: Blob | null, attemptId: string | null): Prom
   }
 }
 
-type Skill =
-  | "present"
-  | "past"
-  | "future"
-  | "comparatives"
-  | "present-perfect"
-  | "conditional"
-  | "hypothetical"
-  | "pronunciation"
-  | "customer-service"
-  | "sales"
-  | "persuasion"
-  | "opinion"
-  | null;
+type Skill = AdvancedSkill;
 
-type Prompt = {
-  id: string;
-  en: string;
-  es: string;
+type Prompt = AdvancedInterviewPrompt & {
   /** Pre-produced Mike clip; absent prompts play the app voice over the waiting loop. */
   video?: { src: string; speechEnd: number };
-  seconds: number;
-  followUp: boolean;
-  skill: Skill;
-  /** Text the student reads out loud (no sentence goal). */
-  reading?: string;
 };
 
-const ED_TEXT =
-  "Last month our team launched a new service. We planned the schedule, we prepared the scripts, and we tested the system twice. A client called and complained because the app crashed, so I apologized, I checked her account, and I promised a solution. We fixed the issue, we updated the report, and the manager thanked us for the effort.";
+/** Clips stay in the route so the shared prompt data module imports no assets. */
+const VIDEO_BY_ID: Record<string, { src: string; speechEnd: number }> = {
+  welcome: { src: welcomeClip.url, speechEnd: 6.4 },
+  "tell-me-about-yourself": { src: questionClip.url, speechEnd: 3.7 },
+  "why-english": { src: whyEnglishClip.url, speechEnd: 5.6 },
+  "routine-compare": { src: routineCompareClip.url, speechEnd: 5.2 },
+  achievement: { src: achievementClip.url, speechEnd: 6.5 },
+  differently: { src: differentlyClip.url, speechEnd: 3.8 },
+  "compare-apps": { src: compareAppsClip.url, speechEnd: 6.5 },
+  "six-months": { src: sixMonthsClip.url, speechEnd: 6.1 },
+  "move-city": { src: moveCityClip.url, speechEnd: 4 },
+  "read-ed": { src: readEdClip.url, speechEnd: 4.6 },
+  aliens: { src: aliensClip.url, speechEnd: 6.9 },
+  dinner: { src: dinnerClip.url, speechEnd: 7.5 },
+  tiktok: { src: tiktokClip.url, speechEnd: 7 },
+  "time-travel": { src: timeTravelClip.url, speechEnd: 5.9 },
+  "angry-customer": { src: angryCustomerClip.url, speechEnd: 4.3 },
+  "sell-pen": { src: sellPenClip.url, speechEnd: 2.9 },
+  objection: { src: objectionClip.url, speechEnd: 5.1 },
+  hire: { src: hireClip.url, speechEnd: 4.7 },
+  availability: { src: availabilityClip.url, speechEnd: 6.1 },
+  "work-home": { src: workHomeClip.url, speechEnd: 6.6 },
+  convince: { src: convinceClip.url, speechEnd: 5.7 },
+  goodbye: { src: goodbyeClip.url, speechEnd: 8 },
+};
 
-const PROMPTS: Prompt[] = [
-  {
-    id: "welcome",
-    en: "Hi! Welcome to the interview. I'm Mike, your recruiter today. How's it going?",
-    es: "¡Hola! Bienvenido a la entrevista. Soy Mike, tu reclutador de hoy. ¿Cómo vas?",
-    video: { src: welcomeClip.url, speechEnd: 6.4 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "present",
-  },
-  {
-    id: "tell-me-about-yourself",
-    en: "Let's get started. Tell me about yourself.",
-    es: "Empecemos. Háblame de ti.",
-    video: { src: questionClip.url, speechEnd: 3.7 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "present",
-  },
-  {
-    id: "why-english",
-    en: "What made you choose to study English instead of another language or skill?",
-    es: "¿Qué te hizo elegir estudiar inglés en lugar de otro idioma u otra habilidad?",
-    video: { src: whyEnglishClip.url, speechEnd: 5.6 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "past",
-  },
-  {
-    id: "routine-compare",
-    en: "Describe your daily routine and compare it with someone you live or work with.",
-    es: "Describe tu rutina diaria y compárala con la de alguien con quien vives o trabajas.",
-    video: { src: routineCompareClip.url, speechEnd: 5.2 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "comparatives",
-  },
-  {
-    id: "achievement",
-    en: "Tell me about a difficult goal you achieved. What did you have to do?",
-    es: "Cuéntame sobre una meta difícil que lograste. ¿Qué tuviste que hacer?",
-    video: { src: achievementClip.url, speechEnd: 6.5 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "past",
-  },
-  {
-    id: "differently",
-    en: "Looking back, what would you do differently?",
-    es: "Mirando atrás, ¿qué harías diferente?",
-    video: { src: differentlyClip.url, speechEnd: 3.8 },
-    seconds: FOLLOWUP_SECONDS,
-    followUp: true,
-    skill: "conditional",
-  },
-  {
-    id: "compare-apps",
-    en: "Compare two apps or services you use. Which one is better, and why?",
-    es: "Compara dos apps o servicios que usas. ¿Cuál es mejor y por qué?",
-    video: { src: compareAppsClip.url, speechEnd: 6.5 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "comparatives",
-  },
-  {
-    id: "six-months",
-    en: "What will you have achieved with your English in six months?",
-    es: "¿Qué habrás logrado con tu inglés en seis meses?",
-    video: { src: sixMonthsClip.url, speechEnd: 6.1 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "future",
-  },
-  {
-    id: "move-city",
-    en: "If you had to move to another city tomorrow, how would you handle it?",
-    es: "Si tuvieras que mudarte a otra ciudad mañana, ¿cómo lo manejarías?",
-    video: { src: moveCityClip.url, speechEnd: 4 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "hypothetical",
-  },
-  {
-    id: "read-ed",
-    en: "Now, please read this short text out loud. Take your time with the -ed endings.",
-    es: "Ahora, por favor lee este texto en voz alta. Cuida las terminaciones -ed.",
-    video: { src: readEdClip.url, speechEnd: 4.6 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "pronunciation",
-    reading: ED_TEXT,
-  },
-  {
-    id: "aliens",
-    en: "Here's a fun one. If aliens came to Earth, how would you explain to them what alcohol does to your body?",
-    es: "Una divertida. Si los aliens llegaran a la Tierra, ¿cómo les explicarías qué le hace el alcohol al cuerpo?",
-    video: { src: aliensClip.url, speechEnd: 6.9 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "hypothetical",
-  },
-  {
-    id: "dinner",
-    en: "If you could have dinner with any historical figure, who would it be, and what would you ask?",
-    es: "Si pudieras cenar con cualquier figura histórica, ¿quién sería y qué le preguntarías?",
-    video: { src: dinnerClip.url, speechEnd: 7.5 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "hypothetical",
-  },
-  {
-    id: "tiktok",
-    en: "If you had to explain TikTok to someone from the 1800s, how would you do it?",
-    es: "Si tuvieras que explicarle TikTok a alguien de 1800, ¿cómo lo harías?",
-    video: { src: tiktokClip.url, speechEnd: 7 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "hypothetical",
-  },
-  {
-    id: "time-travel",
-    en: "If you could travel to the past or the future, which would you choose, and why?",
-    es: "Si pudieras viajar al pasado o al futuro, ¿cuál elegirías y por qué?",
-    video: { src: timeTravelClip.url, speechEnd: 5.9 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "hypothetical",
-  },
-  {
-    id: "angry-customer",
-    en: "How would you calm down an angry customer on the phone?",
-    es: "¿Cómo calmarías a un cliente enojado por teléfono?",
-    video: { src: angryCustomerClip.url, speechEnd: 4.3 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "customer-service",
-  },
-  {
-    id: "sell-pen",
-    en: "Okay, sell this pen to me.",
-    es: "Bien, véndeme este bolígrafo.",
-    video: { src: sellPenClip.url, speechEnd: 2.9 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "sales",
-  },
-  {
-    id: "objection",
-    en: "Hmm, but I already have a pen. Why should I buy yours?",
-    es: "Mmm, pero ya tengo un bolígrafo. ¿Por qué debería comprar el tuyo?",
-    video: { src: objectionClip.url, speechEnd: 5.1 },
-    seconds: FOLLOWUP_SECONDS,
-    followUp: true,
-    skill: "sales",
-  },
-  {
-    id: "hire",
-    en: "Why should I hire you instead of another candidate?",
-    es: "¿Por qué debería contratarte a ti y no a otro candidato?",
-    video: { src: hireClip.url, speechEnd: 4.7 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "persuasion",
-  },
-  {
-    id: "availability",
-    en: "What is your schedule availability? Can you work weekends or night shifts?",
-    es: "¿Cuál es tu disponibilidad de horario? ¿Puedes trabajar fines de semana o turnos de noche?",
-    video: { src: availabilityClip.url, speechEnd: 6.1 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "present",
-  },
-  {
-    id: "work-home",
-    en: "Do you think it is better to work from home or at the office? Why?",
-    es: "¿Crees que es mejor trabajar desde casa o en la oficina? ¿Por qué?",
-    video: { src: workHomeClip.url, speechEnd: 6.6 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    skill: "opinion",
-  },
-  {
-    id: "convince",
-    en: "Convince me. Give me one strong reason.",
-    es: "Convénceme. Dame una razón fuerte.",
-    video: { src: convinceClip.url, speechEnd: 5.7 },
-    seconds: FOLLOWUP_SECONDS,
-    followUp: true,
-    skill: "persuasion",
-  },
-  {
-    id: "goodbye",
-    en: "Thank you for applying. It was a pleasure talking with you today. We'll be in touch soon. I wish you the best in the real interview. You can do it, champion!",
-    es: "Gracias por aplicar. Fue un placer hablar contigo hoy. Estaremos en contacto pronto. Te deseo lo mejor en la entrevista real. You can do it, champion!",
-    video: { src: goodbyeClip.url, speechEnd: 8 },
-    seconds: 0,
-    followUp: false,
-    skill: null,
-  },
-];
+export const PROMPTS: Prompt[] = ADVANCED_INTERVIEW_PROMPTS.map((p) => {
+  const video = VIDEO_BY_ID[p.id];
+  return video ? { ...p, video } : { ...p };
+});
 
 const SKILL_LABEL: Record<Exclude<Skill, null>, { en: string; es: string }> = {
   present: { en: "Simple present", es: "Presente simple" },
