@@ -50,12 +50,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [syncNonce, setSyncNonce] = useState(0);
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
-      const next = session?.user ?? null;
+    let hydrated: User | null = null;
+    let disposed = false;
+
+    const apply = (next: User | null) => {
+      hydrated = next;
       setUser(next);
-      setLoading(false);
       scopeTo(next?.id ?? null);
       setUnlimitedAccess(next?.email ?? null);
+    };
+
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      const next = session?.user ?? null;
+      // A missing session on INITIAL_SESSION (or a transient token refresh
+      // failure) must never log out a learner who has a stored session.
+      if (!next && hydrated && event !== "SIGNED_OUT" && event !== "USER_UPDATED") {
+        setLoading(false);
+        return;
+      }
+      apply(next);
+      setLoading(false);
       if (event === "SIGNED_OUT") {
         JourneyService.clearLocalCache();
         PracticeSessionService.clearAll();
@@ -65,16 +79,59 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSync("idle");
       }
     });
+
+    // 1. Trust the session stored on the device first, so a slow or offline
+    //    network never shows the sign-in screen to a signed-in learner.
     void supabase.auth
-      .getUser()
+      .getSession()
       .then(({ data }) => {
-        setUser(data.user ?? null);
-        scopeTo(data.user?.id ?? null);
-        setUnlimitedAccess(data.user?.email ?? null);
+        if (disposed) return;
+        if (data.session?.user) apply(data.session.user);
       })
       .catch(() => undefined)
-      .finally(() => setLoading(false));
-    return () => sub.subscription.unsubscribe();
+      .finally(() => {
+        if (!disposed) setLoading(false);
+      });
+
+    // 2. Validate in the background. Only an explicit "this session is not
+    //    valid" answer signs the learner out; network errors keep them in.
+    void (async () => {
+      const { data, error } = await supabase.auth.getUser().catch(() => ({
+        data: { user: null },
+        error: { message: "network" } as { message: string },
+      }));
+      if (disposed) return;
+      if (data?.user) {
+        apply(data.user);
+        return;
+      }
+      if (error && isSessionInvalidError(error)) apply(null);
+    })();
+
+    return () => {
+      disposed = true;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
+
+  // Keep the access token fresh when the app comes back from the background
+  // or regains connectivity, before any request can fail with a 401.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const keepAlive = () => {
+      if (typeof document !== "undefined" && document.visibilityState === "hidden") return;
+      void ensureFreshSession();
+    };
+    window.addEventListener("visibilitychange", keepAlive);
+    document.addEventListener("visibilitychange", keepAlive);
+    window.addEventListener("online", keepAlive);
+    window.addEventListener("focus", keepAlive);
+    return () => {
+      window.removeEventListener("visibilitychange", keepAlive);
+      document.removeEventListener("visibilitychange", keepAlive);
+      window.removeEventListener("online", keepAlive);
+      window.removeEventListener("focus", keepAlive);
+    };
   }, []);
 
   // Restore the account's data from the backend once, per sign-in.
