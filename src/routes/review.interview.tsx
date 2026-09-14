@@ -27,6 +27,7 @@ import twoYearsClip from "@/assets/interview/mike-two-years.mp4.asset.json";
 import afterCourseClip from "@/assets/interview/mike-after-course.mp4.asset.json";
 import goodbyeClip from "@/assets/interview/mike-goodbye.mp4.asset.json";
 import mikeCartoon from "@/assets/interview/mike-cartoon.jpg";
+import { getFreshSession } from "@/lib/session-keeper";
 
 export const Route = createFileRoute("/review/interview")({
   head: () => ({
@@ -65,7 +66,7 @@ const SENTENCE_COUNT_MAX_BYTES = 3 * 1024 * 1024;
 async function countSentences(blob: Blob | null, attemptId: string | null): Promise<number | null> {
   if (!blob || blob.size < 2048 || blob.size > SENTENCE_COUNT_MAX_BYTES) return null;
   try {
-    const { data } = await supabase.auth.getSession();
+    const { data } = await getFreshSession();
     const token = data.session?.access_token;
     if (!token) return null;
     const form = new FormData();

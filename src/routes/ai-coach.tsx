@@ -4,6 +4,7 @@ import { Loader2, MessageCircle, Send } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
+import { getFreshSession } from "@/lib/session-keeper";
 
 export const Route = createFileRoute("/ai-coach")({
   head: () => ({
@@ -39,7 +40,7 @@ type Quota = {
 };
 
 async function authHeaders(): Promise<Record<string, string> | null> {
-  const { data } = await supabase.auth.getSession();
+  const { data } = await getFreshSession();
   const token = data.session?.access_token;
   if (!token) return null;
   return { "content-type": "application/json", Authorization: `Bearer ${token}` };

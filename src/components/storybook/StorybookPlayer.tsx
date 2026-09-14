@@ -21,6 +21,7 @@ import { shuffleQuizOptions } from "@/services/storybook/shuffle-options";
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
 import type { ModuleId, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { getFreshSession } from "@/lib/session-keeper";
 
 type Slide =
   | { kind: "cover" }
@@ -1120,7 +1121,7 @@ function QuizSlide({
       form.append("quizId", quiz.id);
       const {
         data: { session },
-      } = await supabase.auth.getSession();
+      } = await getFreshSession();
       const headers: Record<string, string> = {};
       if (session?.access_token) headers["Authorization"] = `Bearer ${session.access_token}`;
       const res = await fetch("/api/story-say-check", { method: "POST", body: form, headers });
