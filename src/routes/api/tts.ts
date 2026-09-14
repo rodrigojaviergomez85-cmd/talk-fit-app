@@ -45,7 +45,9 @@ export const Route = createFileRoute("/api/tts")({
     handlers: {
       POST: async ({ request }) => {
         // 0) Authentication — no session, no work.
-        const { verifyRequestUser, consumeQuota } = await import("@/lib/route-auth.server");
+        const { verifyRequestUser, consumeQuota, sectionDailyLimit } = await import(
+          "@/lib/route-auth.server"
+        );
         const userId = await verifyRequestUser(request);
         if (!userId) return json({ error: "Sign in to use the model voice." }, 401);
 
@@ -70,6 +72,36 @@ export const Route = createFileRoute("/api/tts")({
         const result = await audio.resolveClip(spec, key, {
           waitForOther: true,
           beforeGenerate: async () => {
+            // a) Authored-content allowlist. Report-only until an admin flips
+            //    app_settings.tts_allowlist_enforce in the SQL editor.
+            const { isAllowedTtsText, normalizeTtsText } = await import("@/lib/tts-allowlist.server");
+            const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+            const allowed = await isAllowedTtsText(spec.text).catch(() => true);
+            const { data: settings } = await supabaseAdmin
+              .from("app_settings")
+              .select("tts_allowlist_enforce")
+              .eq("id", "global")
+              .maybeSingle();
+            const enforce = settings?.tts_allowlist_enforce === true;
+            void supabaseAdmin
+              .from("tts_generation_log")
+              .insert({
+                user_id: userId,
+                clip_key: key,
+                in_allowlist: allowed,
+                enforced: enforce,
+                characters: spec.text.length,
+                text_preview: allowed ? null : normalizeTtsText(spec.text).slice(0, 60),
+              })
+              .then(undefined, () => {});
+            if (enforce && !allowed) return false;
+
+            // b) Daily ceiling (section_limits: Pro multiplier + admin screen).
+            const dailyLimit = await sectionDailyLimit(userId, "tts_generate", 60);
+            const daily = await consumeQuota(userId, "tts_generate-daily", dailyLimit, 24 * 60 * 60);
+            if (!daily.allowed) return false;
+
+            // c) Existing hourly generation quota.
             const gen = await consumeQuota(userId, "tts-generate", GENERATE_LIMIT, WINDOW_SECONDS);
             return gen.allowed;
           },
