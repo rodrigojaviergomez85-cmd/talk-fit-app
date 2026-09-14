@@ -650,6 +650,7 @@ export const BASE_GLOSSARY: Record<string, string> = {
   enough: "suficiente",
   magic: "magia / mágico",
   poor: "pobre",
+  terrified: "aterrado / con mucho miedo",
   pick: "recoger / escoger",
   party: "fiesta",
   down: "abajo",
