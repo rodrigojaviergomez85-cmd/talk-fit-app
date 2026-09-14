@@ -474,6 +474,8 @@ export const BASE_GLOSSARY: Record<string, string> = {
   play: "jugar / tocar",
   game: "juego / partido",
   floor: "piso",
+  better: "mejor (comparativo)",
+  father: "padre",
   mother: "madre",
   sister: "hermana",
   son: "hijo",
