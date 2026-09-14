@@ -17,6 +17,7 @@ import { speakerVoice, speakerTone, speakerName } from "@/services/storybook/voi
 import { speakDialogue, startDialogue, type DialogueController } from "@/services/storybook/dialogue-audio";
 import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
+import { shuffleQuizOptions } from "@/services/storybook/shuffle-options";
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
 import type { ModuleId, Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
