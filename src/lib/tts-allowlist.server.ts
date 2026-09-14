@@ -82,7 +82,37 @@ async function collectTexts(): Promise<string[]> {
   const { CALL_CENTER_CATEGORIES } = await import("@/services/review/call-center-phrases");
   for (const category of CALL_CENTER_CATEGORIES) for (const phrase of category.phrases) texts.push(phrase.en);
 
+  // 5) Review modules: ReviewPracticeFlow plays them with the same components
+  // as the course, so run every practice through the very same daySpecs rules.
+  const { listReviewModules, reviewPracticeToCourseDay } = await import("@/services/review/review-registry");
+  const { daySpecs } = await import("@/lib/course-audio-inventory");
+  for (const module of listReviewModules()) {
+    for (const practice of module.practices) {
+      // Cast is safe: daySpecs uses the id only for the source tag and prompt
+      // tone, and this allowlist matches on text only.
+      for (const spec of daySpecs(module.id as unknown as ModuleId, reviewPracticeToCourseDay(practice))) {
+        texts.push(spec.text);
+      }
+    }
+  }
+
+  // 6) Interview simulators (text-only data module; the routes keep the clips).
+  const { BASIC_INTERVIEW_PROMPTS, INTERMEDIATE_INTERVIEW_PROMPTS, ADVANCED_INTERVIEW_PROMPTS } = await import(
+    "@/services/interview-prompts"
+  );
+  for (const prompt of [...BASIC_INTERVIEW_PROMPTS, ...INTERMEDIATE_INTERVIEW_PROMPTS, ...ADVANCED_INTERVIEW_PROMPTS]) {
+    texts.push(prompt.en);
+  }
+
   return texts;
+}
+
+/** Rep2Feedback's single-word cleanup: keep letters, digits, apostrophes, hyphens. */
+function rep2FeedbackTokens(raw: string): string[] {
+  return raw
+    .split(/\s+/)
+    .map((word) => word.replace(/^[^\p{L}\p{N}'-]+/gu, "").replace(/[^\p{L}\p{N}'-]+$/gu, ""))
+    .filter(Boolean);
 }
 
 async function build(): Promise<Set<string>> {
@@ -93,10 +123,15 @@ async function build(): Promise<Set<string>> {
     if (!text) continue;
     set.add(text);
     // SpeakButton strips the " / " separator before speaking.
-    if (raw.includes(" / ")) set.add(normalize(raw.replace(" / ", ", ")));
+    if (raw.includes(" / ")) set.add(normalize(raw.replaceAll(" / ", ", ")));
     // Tap-a-word pronunciation sends single words.
     for (const token of tokenizeWords(raw)) {
       if (token.isWord) set.add(normalize(token.value));
+    }
+    // Rep2Feedback cleans single words with a slightly different rule.
+    for (const token of rep2FeedbackTokens(raw)) {
+      const word = normalize(token);
+      if (word) set.add(word);
     }
   }
   return set;
