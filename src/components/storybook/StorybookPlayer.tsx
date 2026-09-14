@@ -364,7 +364,13 @@ export function StorybookPlayer({
 
         {/* Prev / next */}
         {slide.kind !== "cover" ? (
-          <div className="mt-4 flex gap-2">
+          <div
+            className={cn(
+              "mt-4 flex gap-2",
+              immersive &&
+                "mt-0 shrink-0 border-t border-border px-3 pb-[max(0.6rem,env(safe-area-inset-bottom))] pt-2",
+            )}
+          >
             <button
               type="button"
               onClick={() => go(idx - 1)}
