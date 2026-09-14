@@ -131,3 +131,18 @@ export function buildSayItHint(target: string, es: boolean): { label: string; hi
   const label = es ? "Dilo así:" : "Try say:";
   return { label, hint };
 }
+
+/**
+ * Opening words the learner can start their own answer with, taken from the
+ * same frame that grades the answer, so it can never contradict the question.
+ * "I bought *" → "I bought…", "with *" → "with…", "I *" → "I…".
+ */
+export function buildSayItStartHint(target: string, es: boolean): { label: string; hint: string } {
+  const cleaned = target.trim().replace(/\s+/g, " ");
+  const hint = cleaned
+    .replace(/\s*\*(\s*\*)*\s*$/, "…")
+    .replace(/\*(\s*\*)*/g, "…")
+    .trim();
+  const label = es ? "Empieza así:" : "Start like this:";
+  return { label, hint };
+}
