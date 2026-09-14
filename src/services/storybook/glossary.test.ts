@@ -33,4 +33,41 @@ describe("storybook glossary", () => {
   it("returns null for unknown words", () => {
     expect(lookupWord("zzzz", { scene, episodeGlossary: glossary }).meaning).toBeNull();
   });
+
+  it("explains contractions, names, irregular pasts and derived forms", () => {
+    expect(lookupWord("didn't").meaning).toBeTruthy();
+    expect(lookupWord("I'm").meaning).toBeTruthy();
+    expect(lookupWord("Vale").meaning).toContain("Vale");
+    expect(lookupWord("said").meaning).toContain("dijo");
+    expect(lookupWord("sounded").meaning).toBeTruthy();
+    expect(lookupWord("terrified").meaning).toBeTruthy();
+    expect(lookupWord("8:57").meaning).toBeTruthy();
+    expect(lookupWord("B").meaning).toBeTruthy();
+  });
 });
+
+describe("every word of every episode has a Spanish meaning", () => {
+  it("covers all seasons", () => {
+    const missing = new Map<string, string>();
+    for (const episode of STORYBOOK_EPISODES) {
+      const episodeGlossary = buildEpisodeGlossary(episode);
+      for (const s of episode.scenes) {
+        const texts = [s.text, ...(s.lines ?? []).map((l) => l.text)].filter(Boolean) as string[];
+        for (const text of texts) {
+          for (const raw of text.split(/\s+/)) {
+            const key = normalizeWord(raw);
+            if (!key) continue;
+            if (!lookupWord(raw, { scene: s, episodeGlossary }).meaning) {
+              missing.set(key, `${episode.id}/${s.id}`);
+            }
+          }
+        }
+      }
+    }
+    expect(
+      [...missing.entries()].map(([w, where]) => `${w} (${where})`),
+      "estas palabras necesitan traducción en glossary.ts",
+    ).toEqual([]);
+  });
+});
+
