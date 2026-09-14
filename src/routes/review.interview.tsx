@@ -84,139 +84,35 @@ async function countSentences(blob: Blob | null, attemptId: string | null): Prom
   }
 }
 
-type Tense = "present" | "past" | "future" | null;
+type Tense = BasicTense;
 
-type Prompt = {
-  id: string;
-  en: string;
-  es: string;
+type Prompt = BasicInterviewPrompt & {
   /** Pre-produced Mike clip; absent prompts play the app voice over the waiting loop. */
   video?: { src: string; speechEnd: number };
-  seconds: number;
-  followUp: boolean;
-  tense: Tense;
 };
 
-const PROMPTS: Prompt[] = [
-  {
-    id: "welcome",
-    en: "Hi! Welcome to the interview. I'm Mike, your recruiter today. How's it going?",
-    es: "¡Hola! Bienvenido a la entrevista. Soy Mike, tu reclutador de hoy. ¿Cómo vas?",
-    // Mike's voice ends ~6.4s in; stop before the clip's glitchy tail.
-    video: { src: welcomeClip.url, speechEnd: 6.4 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    tense: "present",
-  },
-  {
-    id: "tell-me",
-    en: "Let's get started. Tell me about yourself.",
-    es: "Empecemos. Háblame de ti.",
-    video: { src: questionClip.url, speechEnd: 3.7 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    tense: "present",
-  },
-  {
-    id: "tell-me-more",
-    en: "Give me more details, please.",
-    es: "Dame más detalles, por favor.",
-    video: { src: tellMeMoreClip.url, speechEnd: 2.6 },
-    seconds: FOLLOWUP_SECONDS,
-    followUp: true,
-    tense: "present",
-  },
-  {
-    id: "routine",
-    en: "What do you do every day at work or at school?",
-    es: "¿Qué haces todos los días en el trabajo o en la escuela?",
-    video: { src: routineClip.url, speechEnd: 3.5 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    tense: "present",
-  },
-  {
-    id: "present-progressive",
-    en: "What is your mom doing right now?",
-    es: "¿Qué está haciendo tu mamá ahora mismo?",
-    video: { src: presentProgressiveClip.url, speechEnd: 2.7 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    tense: "present",
-  },
-  {
-    id: "last-job",
-    en: "Tell me about your last job or your last vacation. What happened?",
-    es: "Háblame de tu último trabajo o de tus últimas vacaciones. ¿Qué pasó?",
-    video: { src: lastJobClip.url, speechEnd: 5.3 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    tense: "past",
-  },
-  {
-    id: "explain-why",
-    en: "Explain why. Why was that important for you?",
-    es: "Explícame por qué. ¿Por qué fue importante para ti?",
-    video: { src: explainWhyClip.url, speechEnd: 3.8 },
-    seconds: FOLLOWUP_SECONDS,
-    followUp: true,
-    tense: "past",
-  },
-  {
-    id: "favorite-movie",
-    en: "Tell me about your favorite movie or book. What was it about?",
-    es: "Háblame de tu película o libro favorito. ¿De qué trataba?",
-    video: { src: favoriteMovieClip.url, speechEnd: 5.4 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    tense: "past",
-  },
-  {
-    id: "opinion",
-    en: "What do you think about that? Would you recommend it?",
-    es: "¿Qué opinas de eso? ¿Lo recomendarías?",
-    video: { src: opinionClip.url, speechEnd: 4.1 },
-    seconds: FOLLOWUP_SECONDS,
-    followUp: true,
-    tense: "past",
-  },
-  {
-    id: "past-progressive",
-    en: "What were you doing at 1 p.m. yesterday?",
-    es: "¿Qué estabas haciendo ayer a la 1 p.m.?",
-    video: { src: pastProgressiveClip.url, speechEnd: 2.5 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    tense: "past",
-  },
-  {
-    id: "two-years",
-    en: "Where do you see yourself in two years?",
-    es: "¿Dónde te ves en dos años?",
-    video: { src: twoYearsClip.url, speechEnd: 3.2 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    tense: "future",
-  },
-  {
-    id: "after-course",
-    en: "What are you going to do after this course?",
-    es: "¿Qué vas a hacer después de este curso?",
-    video: { src: afterCourseClip.url, speechEnd: 2.7 },
-    seconds: MAIN_SECONDS,
-    followUp: false,
-    tense: "future",
-  },
-  {
-    id: "goodbye",
-    en: "Thank you for applying. It was a pleasure talking with you today. We'll be in touch soon. I wish you the best in the real interview. You can do it, champion!",
-    es: "Gracias por aplicar. Fue un placer hablar contigo hoy. Estaremos en contacto pronto. Te deseo lo mejor en la entrevista real. You can do it, champion!",
-    video: { src: goodbyeClip.url, speechEnd: 8 },
-    seconds: 0,
-    followUp: false,
-    tense: null,
-  },
-];
+/** Clips stay in the route so the shared prompt data module imports no assets. */
+const VIDEO_BY_ID: Record<string, { src: string; speechEnd: number }> = {
+  // Mike's voice ends ~6.4s in; stop before the clip's glitchy tail.
+  welcome: { src: welcomeClip.url, speechEnd: 6.4 },
+  "tell-me": { src: questionClip.url, speechEnd: 3.7 },
+  "tell-me-more": { src: tellMeMoreClip.url, speechEnd: 2.6 },
+  routine: { src: routineClip.url, speechEnd: 3.5 },
+  "present-progressive": { src: presentProgressiveClip.url, speechEnd: 2.7 },
+  "last-job": { src: lastJobClip.url, speechEnd: 5.3 },
+  "explain-why": { src: explainWhyClip.url, speechEnd: 3.8 },
+  "favorite-movie": { src: favoriteMovieClip.url, speechEnd: 5.4 },
+  opinion: { src: opinionClip.url, speechEnd: 4.1 },
+  "past-progressive": { src: pastProgressiveClip.url, speechEnd: 2.5 },
+  "two-years": { src: twoYearsClip.url, speechEnd: 3.2 },
+  "after-course": { src: afterCourseClip.url, speechEnd: 2.7 },
+  goodbye: { src: goodbyeClip.url, speechEnd: 8 },
+};
+
+export const PROMPTS: Prompt[] = BASIC_INTERVIEW_PROMPTS.map((p) => {
+  const video = VIDEO_BY_ID[p.id];
+  return video ? { ...p, video } : { ...p };
+});
 
 const TENSE_LABEL: Record<Exclude<Tense, null>, { en: string; es: string }> = {
   present: { en: "Present", es: "Presente" },
