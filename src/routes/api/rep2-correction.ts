@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { compareRep2, computeRep2DisplayDiff, toPublicStatus, type Rep2Confidence } from "@/lib/rep2-match";
 import { getRep2CorrectionProfile, hasRep2CorrectionRollout } from "@/lib/rep2-correction-profiles";
 import type { ModuleId } from "@/lib/types";
+import { logGroqCall } from "@/lib/groq-call-log.server";
+import type { AiLogMeta } from "@/lib/ai-call-log.server";
 
 /** Only the audio formats the app itself records/uploads. */
 const AUDIO_EXT: Record<string, string> = {
@@ -181,7 +183,7 @@ export const Route = createFileRoute("/api/rep2-correction")({
 
         // Primary STT. The target is NEVER sent to the provider — only a neutral
         // context prompt — so real learner mistakes are not normalised away.
-        const turbo = await transcribe(apiKey, file, ext, MODEL_TURBO);
+        const turbo = await transcribe(apiKey, file, ext, MODEL_TURBO, { userId, moduleId, day });
         if (!turbo.ok) {
           const detail = await turbo.res.text().catch(() => "");
           console.error(`Groq ${MODEL_TURBO} failed [${turbo.res.status}]: ${detail}`);
@@ -201,7 +203,7 @@ export const Route = createFileRoute("/api/rep2-correction")({
           model = MODEL_FALLBACK;
           metrics.fallback++;
           bump(moduleId, day, "fallback");
-          const fallback = await transcribe(apiKey, file, ext, MODEL_FALLBACK);
+          const fallback = await transcribe(apiKey, file, ext, MODEL_FALLBACK, { userId, moduleId, day });
           if (!fallback.ok) bump(moduleId, day, "providerErrors");
           if (fallback.ok) {
             transcript = fallback.transcript;
@@ -252,7 +254,9 @@ async function transcribe(
   file: File,
   ext: string,
   model: string,
+  meta: AiLogMeta,
 ): Promise<{ ok: true; transcript: string; confidence: Rep2Confidence } | { ok: false; res: Response }> {
+  const startedAt = Date.now();
   const form = new FormData();
   form.append("model", model);
   form.append("file", file, `take.${ext}`);
@@ -266,12 +270,25 @@ async function transcribe(
     body: form,
   });
 
-  if (!res.ok) return { ok: false, res };
+  if (!res.ok) {
+    logGroqCall(meta, "rep2-correction", model, null, false, String(res.status), Date.now() - startedAt);
+    return { ok: false, res };
+  }
 
   const body = (await res.json().catch(() => null)) as {
     text?: unknown;
+    duration?: unknown;
     segments?: Array<{ avg_logprob?: number; no_speech_prob?: number }>;
   } | null;
+  logGroqCall(
+    meta,
+    "rep2-correction",
+    model,
+    typeof body?.duration === "number" && Number.isFinite(body.duration) ? body.duration : null,
+    true,
+    null,
+    Date.now() - startedAt,
+  );
   const text = typeof body?.text === "string" ? body.text.trim() : "";
   let avgLogprob = 0;
   let noSpeechProb = 0;
