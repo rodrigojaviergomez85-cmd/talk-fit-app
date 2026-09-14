@@ -167,7 +167,8 @@ describe("runPurge", () => {
     const result = await runPurge(admin as never, { now: NOW });
 
     expect(result.deletedFiles).toBe(4000);
-    expect(result.dayFinalMarkedRows).toBe(50);
+    // Day 20 is a module milestone and is never purged.
+    expect(result.dayFinalMarkedRows).toBe(49);
   });
 
   it("still processes finals when the takes ceiling was hit", async () => {
