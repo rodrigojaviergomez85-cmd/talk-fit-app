@@ -325,10 +325,10 @@ export const EAGLES_EP1_THE_OFFER: StorybookEpisode = {
     modelActionEs: "Vale pregunta por horas y resultados antes de ofrecer un plan.",
   },
   continuePrompt: {
-    en: "Tell us about your own offer. What problem can you solve? What do you recommend? Why is it worth it?",
-    es: "Cuéntanos de tu propia oferta. ¿Qué problema puedes resolver? ¿Qué recomiendas? ¿Por qué vale la pena?",
+    en: "Tell us about an interesting day. What happened? What did you do after that? How was it overall?",
+    es: "Cuéntanos de un día interesante. ¿Qué pasó? ¿Qué hiciste después de eso? ¿Cómo fue en general?",
   },
-  continueWith: ["The problem is ...", "I recommend ...", "It's worth it because ..."],
+  continueWith: ["Yesterday I ...", "After that, I ...", "Overall, it was ..."],
   cliffhanger: {
     en: "Episode 2: Four days, one proposal — and a competitor calls Morgan first.",
     es: "Episodio 2: Cuatro días, una propuesta… y un competidor llama a Morgan primero.",
