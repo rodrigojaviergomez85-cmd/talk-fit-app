@@ -136,7 +136,7 @@ export const warmCourseAudio = createServerFn({ method: "POST" })
       while (cursor < batch.length && haltedOn === null) {
         const item = batch[cursor++]!;
         // Per-clip confirmation right before work (list may be stale). Storage error → skip, no AI.
-        const result = await audio.resolveClip(item.clip, item.key, { waitForOther: false });
+        const result = await audio.resolveClip(item.clip, item.key, { waitForOther: false, meta: { userId: context.userId } });
         switch (result.status) {
           case "hit":
             skipped += 1;
