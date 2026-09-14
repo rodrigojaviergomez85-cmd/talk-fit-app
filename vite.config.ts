@@ -6,10 +6,18 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+// Stamped once per build so the running app can tell when a new version shipped.
+const buildId = Date.now().toString(36);
+
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+  },
+  vite: {
+    define: {
+      __APP_BUILD_ID__: JSON.stringify(buildId),
+    },
   },
 });

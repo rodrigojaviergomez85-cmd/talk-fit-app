@@ -53,6 +53,7 @@ import { Route as ReviewInterviewSimulatorsRouteImport } from './routes/review.i
 import { Route as ReviewPictionaryRouteImport } from './routes/review.pictionary'
 import { Route as SuscripcionCanceladoRouteImport } from './routes/suscripcion.cancelado'
 import { Route as SuscripcionExitoRouteImport } from './routes/suscripcion.exito'
+import { Route as ApiPublicVersionRouteImport } from './routes/api/public/version'
 import { Route as DayModuleIdDayRouteImport } from './routes/day.$moduleId.$day'
 import { Route as NaturalMethodCuentoStoryIdRouteImport } from './routes/natural-method.cuento.$storyId'
 import { Route as NaturalMethodVerbsIndexRouteImport } from './routes/natural-method.verbs.index'
@@ -289,6 +290,11 @@ const SuscripcionExitoRoute = SuscripcionExitoRouteImport.update({
   path: '/suscripcion/exito',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicVersionRoute = ApiPublicVersionRouteImport.update({
+  id: '/api/public/version',
+  path: '/api/public/version',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DayModuleIdDayRoute = DayModuleIdDayRouteImport.update({
   id: '/day/$moduleId/$day',
   path: '/day/$moduleId/$day',
@@ -389,6 +395,7 @@ export interface FileRoutesByFullPath {
   '/suscripcion/exito': typeof SuscripcionExitoRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
+  '/api/public/version': typeof ApiPublicVersionRoute
   '/day/$moduleId/$day': typeof DayModuleIdDayRoute
   '/natural-method/cuento/$storyId': typeof NaturalMethodCuentoStoryIdRoute
   '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
@@ -444,6 +451,7 @@ export interface FileRoutesByTo {
   '/suscripcion/exito': typeof SuscripcionExitoRoute
   '/natural-method': typeof NaturalMethodIndexRoute
   '/review': typeof ReviewIndexRoute
+  '/api/public/version': typeof ApiPublicVersionRoute
   '/day/$moduleId/$day': typeof DayModuleIdDayRoute
   '/natural-method/cuento/$storyId': typeof NaturalMethodCuentoStoryIdRoute
   '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
@@ -501,6 +509,7 @@ export interface FileRoutesById {
   '/suscripcion/exito': typeof SuscripcionExitoRoute
   '/natural-method/': typeof NaturalMethodIndexRoute
   '/review/': typeof ReviewIndexRoute
+  '/api/public/version': typeof ApiPublicVersionRoute
   '/day/$moduleId/$day': typeof DayModuleIdDayRoute
   '/natural-method/cuento/$storyId': typeof NaturalMethodCuentoStoryIdRoute
   '/natural-method/verbs/idioms': typeof NaturalMethodVerbsIdiomsRoute
@@ -559,6 +568,7 @@ export interface FileRouteTypes {
     | '/suscripcion/exito'
     | '/natural-method/'
     | '/review/'
+    | '/api/public/version'
     | '/day/$moduleId/$day'
     | '/natural-method/cuento/$storyId'
     | '/natural-method/verbs/idioms'
@@ -614,6 +624,7 @@ export interface FileRouteTypes {
     | '/suscripcion/exito'
     | '/natural-method'
     | '/review'
+    | '/api/public/version'
     | '/day/$moduleId/$day'
     | '/natural-method/cuento/$storyId'
     | '/natural-method/verbs/idioms'
@@ -670,6 +681,7 @@ export interface FileRouteTypes {
     | '/suscripcion/exito'
     | '/natural-method/'
     | '/review/'
+    | '/api/public/version'
     | '/day/$moduleId/$day'
     | '/natural-method/cuento/$storyId'
     | '/natural-method/verbs/idioms'
@@ -727,6 +739,7 @@ export interface RootRouteChildren {
   SuscripcionExitoRoute: typeof SuscripcionExitoRoute
   NaturalMethodIndexRoute: typeof NaturalMethodIndexRoute
   ReviewIndexRoute: typeof ReviewIndexRoute
+  ApiPublicVersionRoute: typeof ApiPublicVersionRoute
   DayModuleIdDayRoute: typeof DayModuleIdDayRoute
   NaturalMethodCuentoStoryIdRoute: typeof NaturalMethodCuentoStoryIdRoute
   ReviewModuleIdPracticeRoute: typeof ReviewModuleIdPracticeRoute
@@ -1045,6 +1058,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SuscripcionExitoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/version': {
+      id: '/api/public/version'
+      path: '/api/public/version'
+      fullPath: '/api/public/version'
+      preLoaderRoute: typeof ApiPublicVersionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/day/$moduleId/$day': {
       id: '/day/$moduleId/$day'
       path: '/day/$moduleId/$day'
@@ -1180,6 +1200,7 @@ const rootRouteChildren: RootRouteChildren = {
   SuscripcionExitoRoute: SuscripcionExitoRoute,
   NaturalMethodIndexRoute: NaturalMethodIndexRoute,
   ReviewIndexRoute: ReviewIndexRoute,
+  ApiPublicVersionRoute: ApiPublicVersionRoute,
   DayModuleIdDayRoute: DayModuleIdDayRoute,
   NaturalMethodCuentoStoryIdRoute: NaturalMethodCuentoStoryIdRoute,
   ReviewModuleIdPracticeRoute: ReviewModuleIdPracticeRoute,
