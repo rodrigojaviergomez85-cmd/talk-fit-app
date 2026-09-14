@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { hasPlayableAudio } from "@/lib/recordings";
 import type { DayRecord, JourneyState, ModuleId, RepDurations, SelfAssessment } from "@/lib/types";
 import { CourseService, DEFAULT_MODULE, isModuleId } from "./course-service";
 import { loadPreferences } from "./preferences";
@@ -332,7 +333,7 @@ export const JourneyService = {
 
   /** Saved final reps that actually have audio behind them. */
   playableRecords(state: JourneyState): DayRecord[] {
-    return JourneyService.recordsByDate(state).filter((r) => Boolean(r.recordingPath || r.finalUrl));
+    return JourneyService.recordsByDate(state).filter((r) => hasPlayableAudio(r));
   },
 
   /** Earliest and latest saved final rep — null unless there are at least two. */
@@ -642,7 +643,7 @@ export const JourneyService = {
     const { data: rows } = await supabase
       .from("day_progress")
       .select(
-        "day, module_id, completed_at, local_day_key, final_seconds, practice_seconds, recordings_count, sentence_count, recording_path, self_assessment",
+        "day, module_id, completed_at, local_day_key, final_seconds, practice_seconds, recordings_count, sentence_count, recording_path, recording_purged_at, self_assessment",
       )
       .order("day");
     if (!rows) return local;
@@ -670,6 +671,7 @@ export const JourneyService = {
         finalUrl: localRecord?.finalUrl ?? null,
         firstUrl: localRecord?.firstUrl ?? null,
         recordingPath: row.recording_path,
+        recordingPurgedAt: row.recording_purged_at ?? null,
         ...(row.self_assessment ? { selfAssessment: row.self_assessment as SelfAssessment } : {}),
       };
       if (!localRecord) totalSeconds += row.practice_seconds;

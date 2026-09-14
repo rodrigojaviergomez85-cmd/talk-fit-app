@@ -1,3 +1,4 @@
+import { hasPlayableAudio } from "@/lib/recordings";
 import type { DayRecord, JourneyState, ModuleId } from "@/lib/types";
 import { CourseService, UPCOMING_LEVELS, type LearningModule } from "@/services/course-service";
 import { JourneyService } from "@/services/journey-service";
@@ -33,7 +34,7 @@ export type Comparison = {
 
 function side(state: JourneyState, moduleId: ModuleId, day: number): ComparisonSide {
   const record = JourneyService.getRecord(state, moduleId, day) ?? null;
-  return { day, record, playable: Boolean(record && (record.finalUrl || record.recordingPath)) };
+  return { day, record, playable: hasPlayableAudio(record) };
 }
 
 /** Week day 1 vs week day 5 — by position inside the week, never calendar. */
@@ -87,7 +88,7 @@ export function journeyComparison(state: JourneyState): Comparison | null {
   const end = side(state, finalModule, last.day);
   const startRecord =
     INTERMEDIATE_JOURNEY.flatMap((m) => JourneyService.moduleRecords(state, m))
-      .filter((r) => r.recordingPath || r.finalUrl)
+      .filter((r) => hasPlayableAudio(r))
       .sort((a, b) => a.completedAt.localeCompare(b.completedAt))[0] ?? null;
   // The start must be a different recording than the end, or there is nothing to hear.
   if (!startRecord || (startRecord.moduleId === finalModule && startRecord.day === last.day)) return null;
@@ -111,6 +112,8 @@ export function journeyMetrics(state: JourneyState) {
     /** Only claim the full rep count when every journey day is actually complete. */
     reps: records.length >= totalDays ? totalDays * 5 : null,
     minutes: Math.round(seconds / 60),
+    // Counted from saved history, not from the file: deleting audio never
+    // rewrites how much the learner actually did.
     finalReps: records.filter((r) => r.recordingPath || r.finalUrl).length,
   };
 }
@@ -148,7 +151,7 @@ export function milestones(state: JourneyState): Milestone[] {
     const last = days[days.length - 1];
     if (!last) continue;
     const record = JourneyService.getRecord(state, module.id, last.day);
-    if (record && (record.finalUrl || record.recordingPath)) {
+    if (record && hasPlayableAudio(record)) {
       push(`end:${module.id}`, { es: `FIN ${module.label}`, en: `${module.label} END` }, record);
     }
   }
@@ -165,6 +168,8 @@ export function moduleMetrics(state: JourneyState, moduleId: ModuleId) {
     days: records.length,
     reps: records.length * 5,
     minutes: Math.round(seconds / 60),
+    // Counted from saved history, not from the file: deleting audio never
+    // rewrites how much the learner actually did.
     finalReps: records.filter((r) => r.recordingPath || r.finalUrl).length,
   };
 }

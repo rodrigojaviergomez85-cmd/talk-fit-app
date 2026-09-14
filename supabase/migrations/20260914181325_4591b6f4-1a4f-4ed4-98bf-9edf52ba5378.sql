@@ -1,0 +1,1 @@
+ALTER TABLE public.day_progress ADD COLUMN IF NOT EXISTS recording_purged_at TIMESTAMPTZ;

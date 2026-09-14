@@ -1,6 +1,8 @@
 import { Loader2, Play, Square } from "lucide-react";
 import { useRecordingPlayback } from "@/hooks/use-recording-playback";
 import { JourneyService } from "@/services/journey-service";
+import { audioUnavailableText, hasPlayableAudio } from "@/lib/recordings";
+import { useAppLang } from "@/lib/i18n";
 import type { DayRecord } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -21,7 +23,18 @@ export function RecordingPlayButton({
 }) {
   const id = JourneyService.recordKey(record.moduleId, record.day);
   const { playing, loading, toggle } = useRecordingPlayback(id);
-  const available = Boolean(record.finalUrl || record.recordingPath);
+  const { lang } = useAppLang();
+  const available = hasPlayableAudio(record);
+
+  // The retention policy removed the file: the day and its progress are still
+  // here, so we say so plainly instead of showing a player that cannot load.
+  if (!available && record.recordingPurgedAt) {
+    return (
+      <p className={cn("text-[12px] font-semibold leading-snug text-muted-foreground", className)}>
+        {audioUnavailableText(lang === "es")}
+      </p>
+    );
+  }
 
   const resolve = async () => {
     if (record.finalUrl) return record.finalUrl;

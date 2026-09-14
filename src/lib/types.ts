@@ -323,6 +323,12 @@ export type DayRecord = {
   firstUrl?: string | null | undefined;
   /** Cloud storage path of the final recording, when signed in. */
   recordingPath?: string | null | undefined;
+  /**
+   * Set when the audio file was removed by the retention policy. The day, its
+   * progress and its evaluation stay intact; only the file is gone, so the UI
+   * shows "audio no longer available" instead of a player that cannot load.
+   */
+  recordingPurgedAt?: string | null | undefined;
   selfAssessment?: SelfAssessment | undefined;
   /** Seconds spent per rep (pilot analytics). */
   repDurations?: RepDurations | null | undefined;

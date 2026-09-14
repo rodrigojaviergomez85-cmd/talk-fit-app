@@ -2,7 +2,13 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
-import { classifyRecordings, type DayProgressRow, type RecordingRow, type StorageReport } from "./storage-report";
+import {
+  classifyRecordings,
+  type DayFinalRow,
+  type DayProgressRow,
+  type RecordingRow,
+  type StorageReport,
+} from "./storage-report";
 
 /**
  * Admin-only, READ-ONLY storage cleanup report.
@@ -44,16 +50,18 @@ export const runStorageReport = createServerFn({ method: "POST" })
       if (!data || data.length < PAGE) break;
     }
 
+    const dayFinals: DayFinalRow[] = [];
     for (let from = 0; ; from += PAGE) {
       const { data, error } = await supabaseAdmin
         .from("day_progress")
-        .select("user_id, module_id, day, recording_path")
+        .select("user_id, module_id, day, completed_at, recording_path, recording_purged_at")
         .order("completed_at", { ascending: true })
         .range(from, from + PAGE - 1);
       if (error) throw new Error("Could not read day progress");
       progress.push(...(data ?? []));
+      dayFinals.push(...((data ?? []) as DayFinalRow[]));
       if (!data || data.length < PAGE) break;
     }
 
-    return classifyRecordings(recordings, progress, new Date());
+    return classifyRecordings(recordings, progress, new Date(), dayFinals);
   });
