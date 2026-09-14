@@ -65,26 +65,71 @@ async function currentAccessToken(): Promise<string | null> {
 let noSessionUntil = 0;
 const NO_SESSION_BACKOFF_MS = 30_000;
 
+/**
+ * Browser Cache Storage bucket for generated clips. This is the temporary cache
+ * the browser evicts on its own when it needs space — nothing is stored forever.
+ */
+const TTS_CACHE = "tts-v7";
+
+function cacheRequestUrl(key: string): string {
+  return `https://tts.cache.local/${encodeURIComponent(key)}`;
+}
+
+async function readCachedBlob(key: string): Promise<Blob | null> {
+  try {
+    if (typeof caches === "undefined") return null;
+    const cache = await caches.open(TTS_CACHE);
+    const hit = await cache.match(cacheRequestUrl(key));
+    return hit ? await hit.blob() : null;
+  } catch {
+    return null;
+  }
+}
+
+async function writeCachedBlob(key: string, blob: Blob): Promise<void> {
+  try {
+    if (typeof caches === "undefined") return;
+    const cache = await caches.open(TTS_CACHE);
+    await cache.put(cacheRequestUrl(key), new Response(blob, { headers: { "Content-Type": blob.type || "audio/mpeg" } }));
+  } catch {
+    // Quota or private-mode failures are harmless: playback still works from network.
+  }
+}
+
+async function fetchClip(text: string, voice: AudioVoice | undefined, tone: ModelTone, token: string): Promise<Blob> {
+  const response = await fetch("/api/tts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ text, voice: voice ?? "neutral", tone }),
+  });
+  if (response.status === 401) noSessionUntil = Date.now() + NO_SESSION_BACKOFF_MS;
+  if (!response.ok) throw new Error(`TTS ${response.status}`);
+  return response.blob();
+}
+
 async function loadModelAudio(text: string, voice?: AudioVoice, tone: ModelTone = "coach"): Promise<string> {
   // v7: Dani and Vale's mother have their own voices; never reuse older shared-voice clips.
   const key = `v7::${tone}::${voice ?? "neutral"}::${text}`;
   const cached = audioCache.get(key);
   if (cached) return cached;
   const promise = (async () => {
+    const stored = await readCachedBlob(key);
+    if (stored && stored.size > 0) return URL.createObjectURL(stored);
     if (Date.now() < noSessionUntil) throw new Error("TTS no session");
     const token = await currentAccessToken();
     if (!token) {
       noSessionUntil = Date.now() + NO_SESSION_BACKOFF_MS;
       throw new Error("TTS no session");
     }
-    const response = await fetch("/api/tts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ text, voice: voice ?? "neutral", tone }),
-    });
-    if (response.status === 401) noSessionUntil = Date.now() + NO_SESSION_BACKOFF_MS;
-    if (!response.ok) throw new Error(`TTS ${response.status}`);
-    const blob = await response.blob();
+    let blob: Blob;
+    try {
+      blob = await fetchClip(text, voice, tone, token);
+    } catch (error) {
+      // One silent retry: a single flaky mobile request should not break the voice.
+      if (Date.now() < noSessionUntil) throw error;
+      blob = await fetchClip(text, voice, tone, token);
+    }
+    void writeCachedBlob(key, blob);
     return URL.createObjectURL(blob);
   })();
   audioCache.set(key, promise);
