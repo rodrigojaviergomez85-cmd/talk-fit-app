@@ -180,8 +180,34 @@ export const JourneyService = {
     return true;
   },
 
+  /**
+   * The first day this learner was expected to practice in a module:
+   * the placement start day when they self-placed into this module at week
+   * 2–4, otherwise their first recorded day, otherwise day 1. Days before
+   * this point were never assigned to them, so they must not block module
+   * completion (otherwise a learner placed in SHARKS week 4 could finish
+   * days 16–20 and never unlock Advanced).
+   */
+  startDay(state: JourneyState, moduleId: ModuleId): number {
+    const records = JourneyService.moduleRecords(state, moduleId);
+    if (records.length > 0) return records[0]!.day;
+    const prefs = loadPreferences();
+    const placementModule = prefs.initialPlacementModuleId ?? prefs.currentModuleId;
+    if (placementModule === moduleId && prefs.startWeek > 1) {
+      return (
+        CourseService.getDays(moduleId).find((d) => d.week === prefs.startWeek)?.day ??
+        (prefs.startWeek - 1) * 5 + 1
+      );
+    }
+    return 1;
+  },
+
   moduleComplete(state: JourneyState, moduleId: ModuleId): boolean {
-    return JourneyService.completedCount(state, moduleId) >= CourseService.totalDays(moduleId);
+    const total = CourseService.totalDays(moduleId);
+    for (let day = JourneyService.startDay(state, moduleId); day <= total; day += 1) {
+      if (!state.days[recordKey(moduleId, day)]) return false;
+    }
+    return true;
   },
 
   /**
