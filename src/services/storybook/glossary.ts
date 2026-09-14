@@ -351,16 +351,499 @@ export const BASE_GLOSSARY: Record<string, string> = {
   casting: "audición",
   queue: "cola / fila",
   shouts: "grita / gritan",
+  // --- Cobertura general de todas las temporadas ---
+  will: "va a (futuro)",
+  first: "primero / primera",
+  second: "segundo / segunda",
+  next: "siguiente / próximo",
+  last: "último / pasado",
+  class: "clase",
+  about: "sobre / acerca de",
+  night: "noche",
+  afternoon: "tarde",
+  name: "nombre",
+  school: "escuela",
+  call: "llamada / llamar",
+  him: "él / lo / le",
+  after: "después de",
+  before: "antes de",
+  student: "estudiante",
+  job: "trabajo / empleo",
+  little: "pequeño / poquito",
+  all: "todo / todos",
+  teacher: "maestra / maestro",
+  need: "necesitar",
+  smile: "sonrisa / sonreír",
+  red: "rojo / roja",
+  white: "blanco / blanca",
+  black: "negro / negra",
+  gold: "oro / dorado",
+  golden: "dorado / dorada",
+  home: "casa / hogar",
+  house: "casa",
+  door: "puerta",
+  el: "El (parte de «El Salvador»)",
+  start: "empezar",
+  front: "frente",
+  want: "querer",
+  story: "historia / cuento",
+  stories: "historias",
+  our: "nuestro / nuestra",
+  hand: "mano",
+  week: "semana",
+  than: "que (en comparaciones)",
+  book: "libro",
+  walk: "caminar",
+  fifty: "cincuenta",
+  forty: "cuarenta",
+  twelve: "doce",
+  eleven: "once",
+  fourteen: "catorce",
+  hundred: "cien",
+  open: "abrir / abierto",
+  boss: "jefe / jefa",
+  lot: "montón (a lot = mucho)",
+  minute: "minuto",
+  option: "opción",
+  old: "viejo / mayor",
+  older: "mayor / más grande",
+  under: "debajo de",
+  over: "sobre / encima",
+  video: "video",
+  into: "hacia dentro de",
+  okay: "está bien",
+  alright: "muy bien / de acuerdo",
+  real: "real / de verdad",
+  nobody: "nadie",
+  somebody: "alguien",
+  someone: "alguien",
+  something: "algo",
+  anything: "algo / nada (en preguntas)",
+  everything: "todo",
+  right: "correcto / derecha",
+  eat: "comer",
+  drink: "beber / tomar",
+  coffee: "café",
+  year: "año",
+  finally: "por fin / finalmente",
+  grandma: "abuela",
+  ago: "hace (tiempo)",
+  myself: "yo mismo / a mí mismo",
+  herself: "ella misma",
+  himself: "él mismo",
+  thing: "cosa",
+  give: "dar",
+  some: "algunos / un poco",
+  think: "pensar",
+  friday: "viernes",
+  monday: "lunes",
+  tuesday: "martes",
+  wednesday: "miércoles",
+  thursday: "jueves",
+  see: "ver",
+  table: "mesa",
+  boy: "niño / muchacho",
+  sandwich: "sándwich",
+  explain: "explicar",
+  tell: "decir / contar",
+  quiet: "callado / tranquilo",
+  talk: "hablar",
+  while: "mientras",
+  arrive: "llegar",
+  sales: "ventas",
+  course: "curso (of course = claro)",
+  support: "apoyo / apoyar",
+  other: "otro / otra",
+  others: "otros / otras",
+  stop: "parar / detener",
+  person: "persona",
+  app: "aplicación",
+  problem: "problema",
+  bus: "autobús / camioneta",
+  same: "mismo / igual",
+  send: "enviar / mandar",
+  much: "mucho",
+  many: "muchos / muchas",
+  most: "la mayoría / el más",
+  half: "mitad",
+  check: "revisar / checar",
+  sit: "sentarse",
+  breakfast: "desayuno",
+  dinner: "cena",
+  yesterday: "ayer",
+  play: "jugar / tocar",
+  game: "juego / partido",
+  floor: "piso",
+  better: "mejor (comparativo)",
+  father: "padre",
+  mother: "madre",
+  sister: "hermana",
+  son: "hijo",
+  daughter: "hija",
+  kitchen: "cocina",
+  shake: "temblar / sacudir",
+  teach: "enseñar",
+  listen: "escuchar",
+  hear: "oír / escuchar",
+  once: "una vez",
+  upon: "sobre (once upon a time = había una vez)",
+  hour: "hora",
+  question: "pregunta",
+  by: "por / junto a",
+  already: "ya",
+  also: "también",
+  pedro: "Pedro (nombre)",
+  sula: "Sula (parte de «San Pedro Sula»)",
+  wet: "mojado / mojada",
+  cannot: "no puede",
+  star: "estrella",
+  easy: "fácil",
+  bad: "malo / mala",
+  suddenly: "de repente",
+  together: "juntos / juntas",
+  outside: "afuera",
+  inside: "adentro",
+  order: "orden / pedir",
+  enter: "entrar",
+  piece: "pedazo / pieza",
+  customer: "cliente",
+  water: "agua",
+  close: "cerrar / cerca",
+  demo: "demostración",
+  way: "manera / camino",
+  laugh: "reír",
+  computer: "computadora",
+  finish: "terminar",
+  egg: "huevo",
+  end: "final / terminar",
+  raise: "levantar / subir",
+  late: "tarde",
+  free: "gratis / libre",
+  pm: "p. m. (de la tarde/noche)",
+  am_time: "a. m. (de la mañana)",
+  past: "pasado",
+  breathe: "respirar",
+  deeply: "profundamente",
+  deep: "profundo",
+  breath: "respiración",
+  light: "luz",
+  street: "calle",
+  hide: "esconderse",
+  wait: "esperar",
+  place: "lugar",
+  energy: "energía",
+  simple: "simple / sencillo",
+  ai: "IA (inteligencia artificial)",
+  board: "pizarra / tablero",
+  quick: "rápido",
+  spring: "primavera",
+  honestly: "honestamente / la verdad",
+  buzz: "vibrar / zumbar",
+  use: "usar",
+  low: "bajo / baja",
+  amarillo: "amarillo (palabra en español)",
+  oh: "oh (expresión)",
+  ah: "ah (expresión)",
+  wow: "wow / ¡guau!",
+  introduce: "presentar(se)",
+  appear: "aparecer",
+  folder: "carpeta",
+  mexico: "México",
+  candidate: "candidato / candidata",
+  program: "programa",
+  button: "botón",
+  each: "cada",
+  interviewer: "entrevistador / entrevistadora",
+  shirt: "camisa",
+  juice: "jugo",
+  strong: "fuerte",
+  stronger: "más fuerte",
+  tight: "apretado / fuerte",
+  flyer: "volante / folleto",
+  single: "solo / único",
+  pupusa: "pupusa (comida salvadoreña)",
+  hot: "caliente",
+  colorful: "colorido / lleno de color",
+  "piñata": "piñata",
+  memory: "recuerdo / memoria",
+  desk: "escritorio",
+  level: "nivel",
+  shine: "brillar",
+  top: "arriba / lo más alto",
+  anymore: "ya no",
+  cry: "llorar",
+  window: "ventana",
+  add: "agregar / añadir",
+  santa: "Santa (parte de un nombre)",
+  cheer: "animar / echar porras",
+  prepare: "preparar",
+  sell: "vender",
+  must: "deber (obligación)",
+  find: "encontrar",
+  phrase: "frase",
+  whisper: "susurrar",
+  watch: "mirar / ver",
+  international: "internacional",
+  face: "cara",
+  park: "parque",
+  change: "cambiar",
+  sky: "cielo",
+  few: "pocos / unos pocos",
+  remember: "recordar",
+  run: "correr",
+  dressed: "vestido / vestida",
+  shift: "turno (de trabajo)",
+  leave: "salir / dejar",
+  behind: "detrás",
+  calm: "calmado / calmar",
+  soda: "gaseosa / refresco",
+  don: "Don (título de respeto)",
+  bag: "bolsa",
+  sing: "cantar",
+  routine: "rutina",
+  understand: "entender",
+  manual: "manual",
+  luck: "suerte",
+  chat: "chat / platicar",
+  later: "después / más tarde",
+  headset: "diadema con micrófono",
+  stand: "estar de pie / pararse",
+  priority: "prioridad",
+  sir: "señor",
+  alive: "vivo / viva",
+  bean: "frijol",
+  tv: "tele / televisión",
+  sentence: "oración / frase",
+  united: "unidos",
+  state: "estado",
+  cook: "cocinar",
+  mine: "mío / mía",
+  hang: "colgar",
+  mango: "mango",
+  market: "mercado",
+  hug: "abrazar",
+  as: "como / mientras",
+  arm: "brazo",
+  worry: "preocuparse",
+  just: "solo / apenas",
+  ice: "hielo",
+  cream: "crema (ice cream = helado)",
+  off: "apagado / fuera",
+  bathroom: "baño",
+  corner: "esquina",
+  store: "tienda",
+  break: "romper / descanso",
+  sick: "enfermo / enferma",
+  away: "lejos / fuera",
+  share: "compartir",
+  shout: "gritar",
+  becoming: "convirtiéndose en",
+  follow: "seguir",
+  photo: "foto",
+  paper: "papel",
+  sad: "triste",
+  sweet: "dulce",
+  count: "contar (números)",
+  wash: "lavar",
+  feel: "sentir",
+  center: "centro",
+  enough: "suficiente",
+  magic: "magia / mágico",
+  poor: "pobre",
+  terrified: "aterrado / con mucho miedo",
+  pick: "recoger / escoger",
+  party: "fiesta",
+  down: "abajo",
+  shorter: "más corto",
+  road: "carretera / camino",
+  lying: "acostado / mintiendo",
+  strange: "extraño / raro",
+  stupid: "tonto / tonta",
+  wolf: "lobo",
+  through: "a través de",
+  forest: "bosque",
+  fine: "bien",
+  bread: "pan",
+  save: "salvar / ahorrar",
+  recording: "grabación",
+  beginning: "principio / comienzo",
+  choose: "elegir / escoger",
+  imagine: "imaginar",
+  storyteller: "narrador / cuentacuentos",
+  toward: "hacia",
+  alarm: "alarma",
+  win: "ganar",
+  thumb: "pulgar (thumbs up = pulgar arriba)",
+  emoji: "emoji",
+  never: "nunca",
+  keep: "mantener / seguir",
+  god: "Dios",
+  clean: "limpiar / limpio",
+  without: "sin",
+  latin: "latino / latina",
+  america: "América",
+  grammar: "gramática",
+  ahead: "adelante",
+  protect: "proteger",
+  which: "cuál / que",
+  general: "general",
+  situation: "situación",
+  show: "mostrar / enseñar",
+  side: "lado",
+  point: "punto",
+  if: "si (condición)",
+  "six-month": "de seis meses",
+  explode: "explotar",
+  celebration: "celebración",
+  ceo: "director general (CEO)",
+  smooth: "suave / sin problemas",
+  professional: "profesional",
+  life: "vida",
+  tiktok: "TikTok",
+  repeat: "repetir",
+  lose: "perder",
+  started: "empezó",
+  spend: "pasar (tiempo) / gastar",
 };
 
 
+/** Character, place and language names used across the seasons. */
+export const PROPER_NOUNS: Record<string, string> = {
+  vale: "Vale (nombre de persona)",
+  "vale's": "de Vale",
+  dani: "Dani (nombre de persona)",
+  "dani's": "de Dani",
+  kat: "Kat (nombre de persona)",
+  ana: "Ana (nombre de persona)",
+  luis: "Luis (nombre de persona)",
+  mateo: "Mateo (nombre de persona)",
+  camila: "Camila (nombre de persona)",
+  beto: "Beto (nombre de persona)",
+  tito: "Tito (nombre de persona)",
+  dylan: "Dylan (nombre de persona)",
+  morgan: "Morgan (nombre de persona)",
+  reyes: "Reyes (apellido)",
+  mr: "Sr. (señor)",
+  mrs: "Sra. (señora)",
+  ms: "Srta. / Sra.",
+  miss: "señorita",
+  salvador: "Salvador (parte de «El Salvador»)",
+  guatemala: "Guatemala (país)",
+  antigua: "Antigua (ciudad de Guatemala)",
+  london: "Londres",
+  northline: "Northline (nombre de la empresa)",
+  english: "inglés (el idioma)",
+  spanish: "español (el idioma)",
+};
+
+/** Contractions keep their apostrophe after normalizeWord. */
+export const CONTRACTIONS: Record<string, string> = {
+  "i'm": "yo soy / yo estoy",
+  "i'll": "yo voy a / yo (futuro)",
+  "i'd": "yo (condicional: yo would)",
+  "i've": "yo he (ya hice)",
+  "you're": "tú eres / tú estás",
+  "you'll": "tú vas a",
+  "you've": "tú has (ya hiciste)",
+  "he's": "él es / él está",
+  "she's": "ella es / ella está",
+  "it's": "es / está",
+  "that's": "eso es",
+  "there's": "hay",
+  "here's": "aquí está",
+  "we're": "nosotros somos / estamos",
+  "we'll": "nosotros vamos a",
+  "we've": "nosotros hemos",
+  "they're": "ellos son / están",
+  "they'll": "ellos van a",
+  "they've": "ellos han",
+  "let's": "vamos a (hagamos)",
+  "don't": "no (negación con do)",
+  "doesn't": "no (negación con does)",
+  "didn't": "no (negación en pasado)",
+  "isn't": "no es / no está",
+  "aren't": "no son / no están",
+  "wasn't": "no era / no estaba",
+  "weren't": "no eran / no estaban",
+  "won't": "no va a (futuro negativo)",
+  "can't": "no puede / no puedo",
+  "couldn't": "no pudo / no podía",
+  "shouldn't": "no debería",
+  "wouldn't": "no lo haría",
+  "haven't": "no he / no han",
+  "hasn't": "no ha",
+  "doesnt": "no (negación con does)",
+};
+
+/** Frequent irregular past forms: [Spanish meaning, base form]. */
+export const IRREGULAR_PAST: Record<string, [string, string]> = {
+  said: ["dijo / dije", "say"],
+  went: ["fue / fui", "go"],
+  came: ["vino / vine", "come"],
+  took: ["tomó / tomé", "take"],
+  got: ["consiguió / recibió", "get"],
+  saw: ["vio / vi", "see"],
+  made: ["hizo / hice", "make"],
+  gave: ["dio / di", "give"],
+  knew: ["sabía / conocía", "know"],
+  felt: ["sintió / sentí", "feel"],
+  told: ["le dijo / le dije", "tell"],
+  found: ["encontró / encontré", "find"],
+  thought: ["pensó / pensé", "think"],
+  heard: ["escuchó / escuché", "hear"],
+  left: ["se fue / dejó", "leave"],
+  kept: ["mantuvo / guardó", "keep"],
+  sent: ["envió / envié", "send"],
+  spoke: ["habló / hablé", "speak"],
+  wrote: ["escribió / escribí", "write"],
+  read: ["leer / leyó", "read"],
+  ran: ["corrió / corrí", "run"],
+  won: ["ganó / gané", "win"],
+  lost: ["perdió / perdí", "lose"],
+  brought: ["trajo / traje", "bring"],
+  bought: ["compró / compré", "buy"],
+  paid: ["pagó / pagué", "pay"],
+  put: ["puso / puse", "put"],
+  met: ["conoció / se reunió con", "meet"],
+  held: ["sostuvo / tuvo", "hold"],
+  stood: ["se paró / estaba de pie", "stand"],
+  sat: ["se sentó", "sit"],
+  ate: ["comió / comí", "eat"],
+  drank: ["bebió / bebí", "drink"],
+  slept: ["durmió / dormí", "sleep"],
+  woke: ["despertó / desperté", "wake"],
+  began: ["empezó / empecé", "begin"],
+  became: ["se convirtió en", "become"],
+  chose: ["eligió / elegí", "choose"],
+  taught: ["enseñó / enseñé", "teach"],
+  understood: ["entendió / entendí", "understand"],
+  grew: ["creció / crecí", "grow"],
+  built: ["construyó / construí", "build"],
+  broke: ["rompió / rompí", "break"],
+  drove: ["manejó / manejé", "drive"],
+  flew: ["voló / volé", "fly"],
+  sold: ["vendió / vendí", "sell"],
+  did: ["hizo / hice", "do"],
+  had: ["tenía / tuvo", "have"],
+  was: ["era / estaba / fue", "be"],
+  were: ["eran / estaban / fueron", "be"],
+  been: ["sido / estado", "be"],
+  gone: ["ido", "go"],
+  done: ["hecho", "do"],
+  seen: ["visto", "see"],
+  spent: ["gastó / pasó (tiempo)", "spend"],
+  hung: ["colgó", "hang"],
+
+};
 
 /** Lowercase and strip quotes/punctuation so "Says," matches "says". */
 export function normalizeWord(word: string): string {
   return word
     .toLowerCase()
-    .replace(/[“”"'‘’.,!?;:()¿¡…]/g, "")
-    .trim();
+    .replace(/[’‘]/g, "'")
+    .replace(/[“”".,!?;:()¿¡…—–]/g, "")
+    .trim()
+    .replace(/^'+|'+$/g, "");
 }
 
 /** All curated words of an episode (every scene + review words), lowercased. */
@@ -380,8 +863,46 @@ export type WordLookup = {
   curated: boolean;
 };
 
+/** Candidate base forms for a possibly inflected word. */
+function baseForms(key: string): string[] {
+  const out: string[] = [];
+  const push = (w: string) => {
+    if (w.length >= 2 && !out.includes(w)) out.push(w);
+  };
+  const doubled = /(.)\1$/.test(key.slice(0, -2));
+
+  if (key.endsWith("ies")) push(key.slice(0, -3) + "y");
+  if (key.endsWith("es")) push(key.slice(0, -2));
+  if (key.endsWith("s") && !key.endsWith("ss")) push(key.slice(0, -1));
+  if (key.endsWith("ied")) push(key.slice(0, -3) + "y");
+  if (key.endsWith("ed")) {
+    push(key.slice(0, -1)); // liked -> like
+    push(key.slice(0, -2)); // asked -> ask
+    if (doubled) push(key.slice(0, -3)); // stopped -> stop
+  }
+  if (key.endsWith("ing")) {
+    push(key.slice(0, -3)); // asking -> ask
+    push(key.slice(0, -3) + "e"); // making -> make
+    if (/(.)\1$/.test(key.slice(0, -3))) push(key.slice(0, -4)); // running -> run
+  }
+  if (key.endsWith("ly")) push(key.slice(0, -2));
+  if (key.endsWith("'s")) push(key.slice(0, -2));
+  return out;
+}
+
+/** Label a derived form so the learner sees the base word too. */
+function describeForm(key: string, base: string, baseMeaning: string): string {
+  if (key.endsWith("ing")) return `${baseMeaning} — forma -ing de "${base}"`;
+  if (key.endsWith("ed") || key.endsWith("ied")) return `${baseMeaning} — pasado de "${base}"`;
+  if (key.endsWith("ly")) return `${baseMeaning} — de forma "${base}"`;
+  if (key.endsWith("'s")) return `de ${base} (posesivo)`;
+  if (key.endsWith("s")) return `${baseMeaning} — forma de "${base}"`;
+  return baseMeaning;
+}
+
 /**
- * Resolve a tapped word: current scene → rest of the episode → base glossary.
+ * Resolve a tapped word: current scene → rest of the episode → base glossary →
+ * proper nouns / contractions / irregular past → derived form of a known word.
  */
 export function lookupWord(
   word: string,
@@ -390,11 +911,37 @@ export function lookupWord(
   const key = normalizeWord(word);
   if (!key) return { meaning: null, curated: false };
 
+  // Numbers and single letters ("option B", "8:57") get a plain explanation.
+  if (/^\d+([:.]\d+)?$/.test(key)) {
+    return { meaning: key.includes(":") ? `la hora ${key}` : `el número ${key}`, curated: false };
+  }
+  if (key.length === 1 && /[a-z]/.test(key)) {
+    return { meaning: `la letra "${key.toUpperCase()}"`, curated: false };
+  }
+
   const sceneWord = options.scene?.words.find((w) => normalizeWord(w.word) === key);
   if (sceneWord) return { meaning: sceneWord.es, curated: true };
 
   const fromEpisode = options.episodeGlossary?.get(key);
   if (fromEpisode) return { meaning: fromEpisode, curated: false };
 
-  return { meaning: BASE_GLOSSARY[key] ?? null, curated: false };
+
+  const direct =
+    BASE_GLOSSARY[key] ??
+    PROPER_NOUNS[key] ??
+    CONTRACTIONS[key] ??
+    (IRREGULAR_PAST[key] ? `${IRREGULAR_PAST[key]![0]} (pasado de "${IRREGULAR_PAST[key]![1]}")` : undefined);
+  if (direct) return { meaning: direct, curated: false };
+
+  for (const base of baseForms(key)) {
+    const baseMeaning =
+      options.episodeGlossary?.get(base) ??
+      BASE_GLOSSARY[base] ??
+      PROPER_NOUNS[base] ??
+      (IRREGULAR_PAST[base] ? IRREGULAR_PAST[base]![0] : undefined);
+    if (baseMeaning) return { meaning: describeForm(key, base, baseMeaning), curated: false };
+  }
+
+  return { meaning: null, curated: false };
 }
+
