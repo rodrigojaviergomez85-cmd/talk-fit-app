@@ -1,48 +1,35 @@
-# Preparación para 17,000 estudiantes
+# Paso 1: Encender los topes de uso
 
-Respuesta corta: la app funciona, pero **hoy no está lista** para 17,000 usuarios. Hay tres riesgos reales de costo y estabilidad que conviene cerrar antes del lanzamiento.
+## Situación actual
 
-## Qué encontré (datos reales de hoy)
+Los topes que definimos siguen guardados y correctos:
 
-- 835 cuentas registradas, 6,742 grabaciones, base de datos en 49 MB.
-- Audio guardado: 1.07 GB de grabaciones de estudiantes + 316 MB de audio del curso.
-- **El interruptor global de límites está apagado**, y el cobro también. Los topes que definimos siguen guardados y correctos (5 prácticas al día, 2 entrevistas, 5 usos del coach de IA al día y 60 al mes), pero mientras ese interruptor esté apagado el sistema los reemplaza por "ilimitado". Es decir: hoy nadie tiene tope real.
-- El servidor de datos está en el tamaño más pequeño disponible.
-- La limpieza automática de audios viejos corre cada día a las 7:00 UTC, pero borra máximo 5,000 archivos por corrida.
+| Sección | Tope diario | Tope mensual |
+|---|---|---|
+| Práctica (5 audios) | 5 | — |
+| Simulador de entrevista | 2 | — |
+| Coach de IA | 5 | 60 |
+| Coach del audio final | 5 | — |
+| Repetición del coach | 5 | — |
 
-Proyección lineal a 17,000 estudiantes (20x): ~21 GB de audio de estudiantes y ~135,000 grabaciones nuevas por ciclo, con consumo de IA sin tope.
+El bloqueo del sexto intento está construido en la base de datos, con protección contra intentos simultáneos y exención para cuentas internas. **Pero el interruptor global de límites está apagado**, y mientras lo esté, el sistema reemplaza cada tope por "ilimitado". Hoy nadie tiene tope real.
 
-## Cambios propuestos antes del lanzamiento
+## Qué haré
 
-### 1. Encender el interruptor de límites (crítico, costo)
-El tope de 5 prácticas por día sí existe y está bien construido: hay una verificación en la base de datos que bloquea la sexta sesión del día, con protección contra trampas y contra intentos simultáneos. Solo está desactivada por el interruptor global. Propongo encenderlo, confirmar los números por sección y probar con una cuenta normal que la sexta práctica del día quede bloqueada y que las cuentas internas sigan sin tope. Sin esto, el gasto de IA con 17,000 usuarios no tiene techo.
+1. Encender el interruptor global de límites (queda activo tanto en la vista previa como en la app publicada, porque comparten la misma base).
+2. Dejar el cobro apagado, como está hoy. Los topes aplican a todos por igual hasta que decidas activar Pro.
+3. Verificar con consultas que cada sección devuelve su tope real (5, 2, 5/60) y ya no un número ilimitado.
+4. Verificar que las cuentas internas y de prueba sigan sin límite.
+5. Revisar que la pantalla de "Mi cuenta" muestre el uso y el tope correctos al estudiante, y que el mensaje al alcanzar el límite se vea bien en celular y en español.
 
-### 2. Subir el tamaño del servidor de datos
-Pasar de Tiny a un tamaño acorde a miles de sesiones concurrentes. Es un cambio de configuración; implica un costo mensual mayor y un reinicio breve.
+## Decisión que necesito de ti
 
-### 3. Retención de audio sostenible
-- Aumentar la capacidad diaria de limpieza (de 5,000 a un volumen acorde) y correrla más de una vez al día.
-- Definir una política para las grabaciones finales, que hoy se guardan para siempre: propongo conservar la última grabación final por día/módulo y borrar el archivo de las anteriores después de 90 días, manteniendo el historial de progreso intacto.
-
-### 4. Alertas de gasto y salud
-Configurar alertas de créditos y un chequeo semanal del panel de costos que ya existe, para detectar consumo anómalo en los primeros días.
-
-### 5. Prueba de carga ligera
-Simular la jornada de un estudiante (historia con audio, 5 pasos de práctica, subida de grabación) en paralelo para confirmar tiempos de respuesta antes de abrir el registro masivo.
+Los topes actuales son 5 prácticas y 2 entrevistas por día. Si quieres otros números para el lanzamiento a 17,000 estudiantes, dímelos y los ajusto en el mismo paso.
 
 ## Detalles técnicos
 
-- `app_settings.limits_enabled` y `billing_enabled` en `false`; `section_limits` ya tiene topes definidos por sección listos para usarse.
-- Compute Tiny; subir vía redimensionamiento de instancia. Revisar también tamaño de disco.
-- `purgeExpiredTakes` en `src/lib/storage-purge.server.ts` con `limit = 5000`; cron `purge-old-practice-audio` a las `0 7 * * *` llamando `/api/public/hooks/purge-audio`.
-- Las grabaciones finales (`is_final_rep = true` y las referenciadas por `day_progress.recording_path`) están excluidas del borrado por diseño; la nueva política requiere ampliar el clasificador en `storage-report.ts` y sus pruebas.
-- Los índices de las tablas calientes se están usando correctamente; no veo escaneos completos problemáticos.
-- El audio del curso (`course-audio`) se comparte entre todos los estudiantes y no crece con el número de usuarios.
-
-## Orden sugerido
-
-1. Encender límites y validar topes.
-2. Subir tamaño del servidor y disco.
-3. Ajustar limpieza de audio y política de grabaciones finales.
-4. Alertas de gasto.
-5. Prueba de carga y lanzamiento por etapas (por ejemplo 2,000 → 8,000 → 17,000).
+- `app_settings.limits_enabled` pasa de `false` a `true` en la fila `global`, mediante la función existente `apply_admin_settings` (deja registro en `settings_audit_log`).
+- `get_daily_limit` / `get_monthly_limit` devuelven `1000000000` cuando `limits_enabled()` es falso; al encenderlo devuelven `free_limit * plan_multiplier`.
+- El trigger `enforce_daily_practice_cap` (y su equivalente de entrevistas) ya usa `pg_advisory_xact_lock` y `is_unlimited_test_user`; no requiere cambios.
+- `billing_enabled` se mantiene en `false` y `pro_multiplier` en 4 para cuando se active Pro.
+- No hay cambios de esquema ni migraciones nuevas.
