@@ -8,7 +8,7 @@ import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { playGoodFeedbackSound } from "@/lib/feedback-sounds";
 import { useAppLang } from "@/lib/i18n";
 import { tokenizeWords } from "@/lib/syllables";
-import { buildSayItHint } from "@/lib/story-say-match";
+import { buildSayItHint, buildSayItStartHint } from "@/lib/story-say-match";
 import { isStoryAdvanceLocked } from "@/lib/storybook-advance";
 import { AudioService } from "@/services/audio-service";
 import { supabase } from "@/integrations/supabase/client";
@@ -899,10 +899,18 @@ function QuizSlide({
                 variant="ghost"
                 voice={voice}
               />
-              <p className="text-[12px] text-muted-foreground">
-                {es ? "Ejemplo:" : "Example:"}{" "}
-                <span className="font-semibold text-foreground">“{quiz.sayIt}”</span>
-              </p>
+              {quiz.sayItCheck?.target ? (
+                <p className="text-[12px] text-muted-foreground">
+                  {(() => {
+                    const { label, hint } = buildSayItStartHint(quiz.sayItCheck.target, es);
+                    return (
+                      <>
+                        {label} <span className="font-semibold text-foreground">“{hint}”</span>
+                      </>
+                    );
+                  })()}
+                </p>
+              ) : null}
             </>
           ) : null}
 
