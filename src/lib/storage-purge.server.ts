@@ -125,10 +125,13 @@ const RPC_ARGS = {
 /** Exported for tests: one bounded pass over the candidates the database picked. */
 export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promise<PurgeResult> {
   const dryRun = options.dryRun === true;
-  const maxFiles = options.maxFiles ?? DEFAULT_MAX_FILES;
+  const maxTakes = options.maxTakes ?? DEFAULT_MAX_TAKES;
+  const maxFinals = options.maxFinals ?? DEFAULT_MAX_FINALS;
   const budgetMs = options.budgetMs ?? DEFAULT_BUDGET_MS;
+  const callTimeoutMs = options.callTimeoutMs ?? DEFAULT_CALL_TIMEOUT_MS;
+  const clock = options.monotonic ?? (() => Date.now());
   const now = options.now ?? new Date();
-  const startedAt = Date.now();
+  const startedAt = clock();
   const errors: string[] = [];
 
   const result: PurgeResult = {
@@ -141,22 +144,40 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
     dayFinalCandidates: 0,
     dayFinalDeletedFiles: 0,
     dayFinalMarkedRows: 0,
-    truncated: false,
+    takesTruncated: false,
+    finalsTruncated: false,
     errors,
   };
 
-  const outOfBudget = () => Date.now() - startedAt >= budgetMs;
-  let handled = 0;
+  const outOfBudget = () => clock() - startedAt >= budgetMs;
+  const timed = <T>(promise: Promise<T>, label: string) => withTimeout(promise, callTimeoutMs, label);
+  const message = (err: unknown) => (err instanceof Error ? err.message : String(err));
 
   // --- recordings ---------------------------------------------------------
-  while (handled < maxFiles) {
+  let takesHandled = 0;
+  while (takesHandled < maxTakes) {
     if (outOfBudget()) {
-      result.truncated = true;
+      result.takesTruncated = true;
       break;
     }
-    const batchSize = Math.min(DELETE_BATCH, maxFiles - handled);
-    const { data, error } = await admin.rpc("purge_candidates", { _limit: batchSize, ...RPC_ARGS });
-    if (error) throw new Error(`Could not read purge candidates: ${error.message}`);
+    const batchSize = Math.min(DELETE_BATCH, maxTakes - takesHandled);
+    let data: unknown;
+    try {
+      const res = await timed(
+        admin.rpc("purge_candidates", { _limit: batchSize, ...RPC_ARGS }),
+        "purge_candidates",
+      );
+      if (res.error) throw new Error(`Could not read purge candidates: ${res.error.message}`);
+      data = res.data;
+    } catch (err) {
+      const msg = message(err);
+      // A timeout on the candidates lookup only ends this queue; a real
+      // database error still fails the run as before.
+      if (!msg.startsWith("TIMEOUT")) throw err instanceof Error ? err : new Error(msg);
+      errors.push(msg);
+      result.takesTruncated = true;
+      break;
+    }
     const rows = (data ?? []) as RecordingRow[];
     if (rows.length === 0) break;
 
@@ -168,50 +189,81 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
     const batch = rows.filter((rec) => classifyRecording(rec, noLookups, now).kind === "candidate");
     result.candidates += batch.length;
     if (dryRun || batch.length === 0) {
-      handled += rows.length;
+      takesHandled += rows.length;
       if (dryRun) break;
       continue;
     }
 
+    if (outOfBudget()) {
+      result.takesTruncated = true;
+      break;
+    }
     const paths = batch.map((r) => r.storage_path);
-    const { error: removeError } = await admin.storage.from(BUCKET).remove(paths);
-    if (removeError) {
+    try {
+      const { error: removeError } = await timed(admin.storage.from(BUCKET).remove(paths), "storage.remove");
+      if (removeError) throw new Error(removeError.message);
+    } catch (err) {
       // A missing object is fine (already gone); anything else is reported and
       // the rows stay unmarked so the next run retries them.
-      errors.push(`storage remove failed: ${removeError.message}`);
+      errors.push(`storage remove failed: ${message(err)}`);
       break;
     }
     result.deletedFiles += paths.length;
 
-    const { error: markError } = await admin
-      .from("recordings")
-      .update({ audio_purged_at: now.toISOString() })
-      .in(
-        "id",
-        batch.map((r) => r.id),
+    if (outOfBudget()) {
+      result.takesTruncated = true;
+      break;
+    }
+    try {
+      const { error: markError } = await timed(
+        admin
+          .from("recordings")
+          .update({ audio_purged_at: now.toISOString() })
+          .in(
+            "id",
+            batch.map((r) => r.id),
+          ),
+        "recordings.update",
       );
-    if (markError) {
-      errors.push(`mark failed: ${markError.message}`);
+      if (markError) throw new Error(markError.message);
+    } catch (err) {
+      errors.push(`mark failed: ${message(err)}`);
       break;
     }
     result.markedRows += batch.length;
-    handled += rows.length;
+    takesHandled += rows.length;
     if (rows.length < batchSize) break;
   }
+  if (takesHandled >= maxTakes) result.takesTruncated = true;
 
   // --- journey final audio (`uid/module-day-N.webm`, no recordings row) ----
-  while (handled < maxFiles) {
+  // Runs on its own ceiling, so a full takes queue never starves it.
+  let finalsHandled = 0;
+  finals: while (finalsHandled < maxFinals) {
     if (outOfBudget()) {
-      result.truncated = true;
+      result.finalsTruncated = true;
       break;
     }
-    const batchSize = Math.min(DELETE_BATCH, maxFiles - handled);
-    const { data, error } = await admin.rpc("purge_day_final_candidates", {
-      _limit: batchSize,
-      _final_retention_days: FINAL_RETENTION_DAYS,
-      _module_last_day: MODULE_LAST_DAY,
-    });
-    if (error) throw new Error(`Could not read day-final candidates: ${error.message}`);
+    const batchSize = Math.min(DELETE_BATCH, maxFinals - finalsHandled);
+    let data: unknown;
+    try {
+      const res = await timed(
+        admin.rpc("purge_day_final_candidates", {
+          _limit: batchSize,
+          _final_retention_days: FINAL_RETENTION_DAYS,
+          _module_last_day: MODULE_LAST_DAY,
+        }),
+        "purge_day_final_candidates",
+      );
+      if (res.error) throw new Error(`Could not read day-final candidates: ${res.error.message}`);
+      data = res.data;
+    } catch (err) {
+      const msg = message(err);
+      if (!msg.startsWith("TIMEOUT")) throw err instanceof Error ? err : new Error(msg);
+      errors.push(msg);
+      result.finalsTruncated = true;
+      break;
+    }
     const rows = ((data ?? []) as DayFinalRow[]).filter((row) => classifyDayFinal(row, now).kind === "candidate");
     if (rows.length === 0) break;
     result.dayFinalCandidates += rows.length;
@@ -219,35 +271,50 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
 
     let progressed = false;
     for (const row of rows) {
+      if (outOfBudget()) {
+        result.finalsTruncated = true;
+        break finals;
+      }
       const base = row.recording_path!;
       const latest = base.replace(/\.([a-z0-9]+)$/i, "-latest.$1");
-      const { error: removeError } = await admin.storage.from(BUCKET).remove([base, latest]);
-      if (removeError) {
-        errors.push(`day final remove failed: ${removeError.message}`);
+      try {
+        const { error: removeError } = await timed(admin.storage.from(BUCKET).remove([base, latest]), "storage.remove");
+        if (removeError) throw new Error(removeError.message);
+      } catch (err) {
+        errors.push(`day final remove failed: ${message(err)}`);
         continue;
       }
       result.dayFinalDeletedFiles += 1;
 
-      const { error: markError } = await admin
-        .from("day_progress")
-        .update({ recording_purged_at: now.toISOString() })
-        .eq("user_id", row.user_id)
-        .eq("module_id", row.module_id)
-        .eq("day", row.day);
-      if (markError) {
-        errors.push(`day final mark failed: ${markError.message}`);
+      if (outOfBudget()) {
+        result.finalsTruncated = true;
+        break finals;
+      }
+      try {
+        const { error: markError } = await timed(
+          admin
+            .from("day_progress")
+            .update({ recording_purged_at: now.toISOString() })
+            .eq("user_id", row.user_id)
+            .eq("module_id", row.module_id)
+            .eq("day", row.day),
+          "day_progress.update",
+        );
+        if (markError) throw new Error(markError.message);
+      } catch (err) {
+        errors.push(`day final mark failed: ${message(err)}`);
         continue;
       }
       result.dayFinalMarkedRows += 1;
       progressed = true;
-      handled += 1;
+      finalsHandled += 1;
     }
     // Nothing could be marked: stop instead of asking for the same rows again.
     if (!progressed) break;
     if (rows.length < batchSize) break;
   }
+  if (finalsHandled >= maxFinals) result.finalsTruncated = true;
 
-  if (handled >= maxFiles) result.truncated = true;
   return result;
 }
 
