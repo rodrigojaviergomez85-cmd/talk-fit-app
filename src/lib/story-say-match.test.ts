@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { compareStorySay, buildSayItHint } from "./story-say-match";
+import { compareStorySay, buildSayItHint, buildSayItStartHint } from "./story-say-match";
 
 
 describe("compareStorySay", () => {
@@ -158,5 +158,34 @@ describe("question cards accept the natural answer", () => {
         altTargets: ["What is your name?"],
       }).status,
     ).toBe("tryAgain");
+  });
+});
+
+describe("buildSayItStartHint", () => {
+  const cases: Array<[string, string, string]> = [
+    ["I *", "What good news did you receive this year?", "I received…"],
+    ["with *", "Who did you spend time with yesterday?", "I spent time with…"],
+    ["I bought *", "What did you buy this week?", "I bought…"],
+    ["I *", "Where did you go yesterday?", "I went to…"],
+    ["I am going to *", "What are you going to study?", "I am going to study…"],
+    ["Because *", "Why do you study English?", "Because I study English…"],
+    ["my *", "Who did YOU take care of, or who took care of you?", "I took care of my…"],
+  ];
+  it.each(cases)("target %s + question %s", (target, question, expected) => {
+    expect(buildSayItStartHint(target, true, question).hint).toBe(expected);
+  });
+
+  it("never contradicts the grading frame", () => {
+    // "My day was…" would fail a frame that requires "I", so fall back.
+    expect(buildSayItStartHint("I *", true, "How was your day yesterday?").hint).toBe("I…");
+  });
+
+  it("falls back to the grading frame without a question", () => {
+    expect(buildSayItStartHint("I bought *", true).hint).toBe("I bought…");
+  });
+
+  it("uses a Spanish label in Spanish mode", () => {
+    expect(buildSayItStartHint("I *", true, "What did you buy?").label).toBe("Empieza así:");
+    expect(buildSayItStartHint("I *", false, "What did you buy?").label).toBe("Start like this:");
   });
 });

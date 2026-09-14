@@ -132,17 +132,260 @@ export function buildSayItHint(target: string, es: boolean): { label: string; hi
   return { label, hint };
 }
 
+const IRREGULAR_PAST: Record<string, string> = {
+  go: "went", buy: "bought", do: "did", eat: "ate", see: "saw", give: "gave",
+  get: "got", spend: "spent", meet: "met", feel: "felt", tell: "told",
+  say: "said", make: "made", take: "took", come: "came", have: "had",
+  write: "wrote", drive: "drove", find: "found", win: "won", sleep: "slept",
+  teach: "taught", speak: "spoke", leave: "left", begin: "began", read: "read",
+  run: "ran", sing: "sang", sit: "sat", stand: "stood", think: "thought",
+  wake: "woke", wear: "wore", hear: "heard", keep: "kept", send: "sent",
+  pay: "paid", bring: "brought", build: "built", choose: "chose", lose: "lost",
+  put: "put", cut: "cut", let: "let", hold: "held", learn: "learned",
+  fight: "fought", catch: "caught", grow: "grew", know: "knew", ride: "rode",
+  swim: "swam", fly: "flew", forget: "forgot", break: "broke", draw: "drew",
+};
+
+function toPast(verb: string): string {
+  const v = verb.toLowerCase();
+  if (IRREGULAR_PAST[v]) return IRREGULAR_PAST[v]!;
+  if (/e$/.test(v)) return `${v}d`;
+  if (/[^aeiou]y$/.test(v)) return `${v.slice(0, -1)}ied`;
+  if (/^[a-z]{2,4}$/.test(v) && /[aeiou][bdgklmnprt]$/.test(v) && !/[aeiou]{2}[bdgklmnprt]$/.test(v)) {
+    return `${v}${v.slice(-1)}ed`;
+  }
+  return `${v}ed`;
+}
+
+/** Time / context tails that belong to the question, not to the answer start. */
+const TIME_TAILS = [
+  "yesterday", "today", "tonight", "this year", "this week", "this month",
+  "this morning", "this weekend", "last night", "last week", "last weekend",
+  "last year", "last month", "at work or school", "at work", "at school",
+  "in your life", "recently", "first", "today?",
+];
+
+function stripTails(rest: string): string {
+  let out = rest.trim();
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const tail of TIME_TAILS) {
+      const re = new RegExp(`\\s+${tail}$`, "i");
+      if (re.test(out)) {
+        out = out.replace(re, "").trim();
+        changed = true;
+      }
+    }
+  }
+  return out;
+}
+
+function normalizeQuestion(questionEn: string): string {
+  return questionEn
+    .split("?")[0]!
+    .trim()
+    .replace(/\s+/g, " ")
+    .replace(/[.,!]+$/, "")
+    .toLowerCase();
+}
+
+const WH = "(?:what|who|whom|where|when|why|how)";
+
+/** Keep only the first option of "X, or Y" style double questions. */
+function cutAtOr(text: string): string {
+  return text.split(/,?\s+or\s+/)[0]!.trim().replace(/,$/, "");
+}
+
 /**
- * Opening words the learner can start their own answer with, taken from the
- * same frame that grades the answer, so it can never contradict the question.
- * "I bought *" → "I bought…", "with *" → "with…", "I *" → "I…".
+ * Turn a personal question into the start of the learner's own answer.
+ * "What good news did you receive this year?" → "I received…"
+ * "Who did you spend time with yesterday?" → "I spent time with…"
  */
-export function buildSayItStartHint(target: string, es: boolean): { label: string; hint: string } {
-  const cleaned = target.trim().replace(/\s+/g, " ");
-  const hint = cleaned
+function answerStartFromQuestion(questionEn: string): string | null {
+  const q = normalizeQuestion(questionEn);
+  if (!q) return null;
+
+  let m: RegExpMatchArray | null;
+
+  // How/What was your X …? → My X was …
+  m = q.match(new RegExp(`^${WH}(?:'s)?\\s+(?:was|were)\\s+your\\s+(.+)$`));
+  if (m) {
+    const subject = stripTails(m[1]!);
+    return subject ? `My ${subject} was` : null;
+  }
+  m = q.match(new RegExp(`^${WH}(?:'s| is| are)\\s+your\\s+(.+)$`));
+  if (m) {
+    const subject = stripTails(m[1]!);
+    return subject ? `My ${subject} is` : null;
+  }
+
+  // Why did/do you …? → Because I …
+  m = q.match(/^why\s+did\s+you\s+(.+)$/);
+  if (m) {
+    const words = stripTails(m[1]!).split(" ").filter(Boolean);
+    if (words.length > 0) {
+      const tail = words.slice(1).join(" ").replace(/\byour\b/g, "my");
+      return `Because I ${toPast(words[0]!)}${tail ? ` ${tail}` : ""}`;
+    }
+  }
+  m = q.match(/^why\s+do\s+you\s+(.+)$/);
+  if (m) {
+    const rest = stripTails(m[1]!).replace(/\byour\b/g, "my");
+    if (rest) return `Because I ${rest}`;
+  }
+
+  // Who <verb>s …? (subject question) → My ___ <verb>s …
+  m = q.match(/^who\s+([a-z]+(?:s|es)\b.*)$/);
+  if (m && !/^(is|are|was|were|did|do|does|will|can)\b/.test(m[1]!)) {
+    const rest = stripTails(m[1]!).replace(/\byour\b/g, "my");
+    if (rest) return `My ___ ${rest}`;
+  }
+
+
+  // What was the best thing you did …? → The best thing I did was …
+  m = q.match(/^what\s+was\s+(the\s+.+?)\s+you\s+([a-z]+)\b(.*)$/);
+  if (m) {
+    const np = stripTails(m[1]!).replace(/\byour\b/g, "my");
+    return `${capitalize(np)} I ${m[2]!} was`;
+  }
+
+  // (WH …) did you <verb> …
+  m = q.match(new RegExp(`^(?:${WH}\\b.*?\\s+)?did\\s+you\\s+(.+)$`));
+  if (m) {
+    const rest = stripTails(cutAtOr(m[1]!));
+    const words = rest.split(" ").filter(Boolean);
+    if (words.length === 0) return null;
+    const verb = toPast(words[0]!);
+    const tail = words.slice(1).join(" ");
+    let hint = `I ${verb}${tail ? ` ${tail}` : ""}`;
+    if (verb === "went" && !tail) hint = "I went to";
+    return hint;
+  }
+
+  // (WH …) did <other subject> <verb> … → They <past verb> … for me
+  m = q.match(new RegExp(`^(?:${WH}\\b.*?\\s+)?did\\s+([a-z]+)\\s+(.+)$`));
+  if (m) {
+    const subject = m[1]!;
+    const words = stripTails(cutAtOr(m[2]!)).split(" ").filter(Boolean);
+    if (words.length > 0) {
+      const verb = toPast(words[0]!);
+      const tail = words
+        .slice(1)
+        .join(" ")
+        .replace(/\byou\b/g, "me")
+        .replace(/\byour\b/g, "my");
+      return `${capitalize(subject)} ${verb}${tail ? ` ${tail}` : ""}`;
+    }
+  }
+
+
+  // (WH …) are/were you …
+  m = q.match(new RegExp(`^(?:${WH}\\b.*?\\s+)?are\\s+you\\s+going\\s+to\\s+(.+)$`));
+  if (m) {
+    const rest = stripTails(m[1]!);
+    return rest ? `I am going to ${rest}` : "I am going to";
+  }
+  m = q.match(new RegExp(`^(?:${WH}\\b.*?\\s+)?will\\s+you\\s+(.+)$`));
+  if (m) {
+    const rest = stripTails(m[1]!);
+    return rest ? `I will ${rest}` : "I will";
+  }
+  m = q.match(new RegExp(`^(?:${WH}\\b.*?\\s+)?were\\s+you\\s+(.+)$`));
+  if (m) {
+    const rest = stripTails(m[1]!);
+    return rest ? `I was ${rest}` : "I was";
+  }
+  m = q.match(new RegExp(`^(?:${WH}\\b.*?\\s+)?are\\s+you\\s+(.+)$`));
+  if (m) {
+    const rest = stripTails(m[1]!);
+    return rest ? `I am ${rest}` : "I am";
+  }
+
+  // (WH …) do/does you …
+  m = q.match(new RegExp(`^(?:${WH}\\b.*?\\s+)?do\\s+you\\s+(.+)$`));
+  if (m) {
+    const rest = stripTails(m[1]!);
+    return rest ? `I ${rest}` : null;
+  }
+
+  return null;
+}
+
+function capitalize(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+/** Fixed (non-wildcard) words of a grading target, in order. */
+function fixedTargetWords(target: string): string[] {
+  return target
+    .toLowerCase()
+    .replace(/[^a-z' *]/g, " ")
+    .split(/\s+/)
+    .filter((w) => w && w !== WILDCARD);
+}
+
+/** Whether `hint` contains every fixed target word, in order. */
+function hintHonorsTarget(hint: string, target: string): boolean {
+  const fixed = fixedTargetWords(target);
+  if (fixed.length === 0) return true;
+  const words = hint.toLowerCase().replace(/[^a-z' ]/g, " ").split(/\s+/).filter(Boolean);
+  let i = 0;
+  for (const w of words) {
+    if (w === fixed[i]) i++;
+    if (i === fixed.length) return true;
+  }
+  return false;
+}
+
+/** Restore the original casing of words (English, Spanish, names) from the question. */
+function restoreCase(hint: string, questionEn: string): string {
+  const originals = new Map<string, string>();
+  for (const w of questionEn.split(/[^A-Za-z']+/)) {
+    if (w && /[A-Z]/.test(w.slice(1)) === false && /^[A-Z]/.test(w) && w !== "I") {
+      originals.set(w.toLowerCase(), w);
+    }
+  }
+  return hint
+    .split(" ")
+    .map((w, idx) => (idx === 0 ? w : (originals.get(w.toLowerCase()) ?? w)))
+    .join(" ");
+}
+
+
+/**
+ * Opening sentence the learner can start their own answer with. Built from the
+ * personal question so it always matches it, and cross-checked against the
+ * grading frame. Falls back to the grading frame when the question can't be
+ * transformed.
+ */
+export function buildSayItStartHint(
+  target: string,
+  es: boolean,
+  questionEn?: string,
+): { label: string; hint: string } {
+  const label = es ? "Empieza así:" : "Start like this:";
+  const cleanTarget = (target ?? "").trim().replace(/\s+/g, " ");
+
+  if (questionEn) {
+    const fromQuestion = answerStartFromQuestion(questionEn);
+    if (fromQuestion) {
+      if (!cleanTarget || hintHonorsTarget(fromQuestion, cleanTarget)) {
+        return { label, hint: `${capitalize(restoreCase(fromQuestion, questionEn))}…` };
+      }
+      // Short grading frames like "at *" or "with *" only add a closing word:
+      // append them so the hint both reads well and passes grading.
+      const fixed = fixedTargetWords(cleanTarget);
+      if (fixed.length > 0 && fixed.length <= 2 && !fixed.includes("i")) {
+        const joined = `${restoreCase(fromQuestion, questionEn)} ${fixed.join(" ")}`;
+        return { label, hint: `${capitalize(joined)}…` };
+      }
+    }
+  }
+
+  const hint = cleanTarget
     .replace(/\s*\*(\s*\*)*\s*$/, "…")
     .replace(/\*(\s*\*)*/g, "…")
     .trim();
-  const label = es ? "Empieza así:" : "Start like this:";
   return { label, hint };
 }
