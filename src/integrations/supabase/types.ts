@@ -475,6 +475,48 @@ export type Database = {
         }
         Relationships: []
       }
+      job_runs: {
+        Row: {
+          created_at: string
+          deleted_files: number
+          detail: Json | null
+          error: string | null
+          finished_at: string | null
+          id: string
+          job_name: string
+          marked_rows: number
+          ok: boolean
+          started_at: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          deleted_files?: number
+          detail?: Json | null
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          job_name: string
+          marked_rows?: number
+          ok?: boolean
+          started_at?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          deleted_files?: number
+          detail?: Json | null
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          job_name?: string
+          marked_rows?: number
+          ok?: boolean
+          started_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       job_tokens: {
         Row: {
           created_at: string
@@ -1199,6 +1241,50 @@ export type Database = {
       is_unlimited_test_user: { Args: { _user_id: string }; Returns: boolean }
       limits_enabled: { Args: never; Returns: boolean }
       plan_multiplier: { Args: { _user_id: string }; Returns: number }
+      purge_backlog: {
+        Args: {
+          _final_retention_days: number
+          _module_last_day: number
+          _take_min_age_hours: number
+        }
+        Returns: number
+      }
+      purge_candidates: {
+        Args: {
+          _final_retention_days: number
+          _limit: number
+          _module_last_day: number
+          _take_min_age_hours: number
+        }
+        Returns: {
+          audio_purged_at: string
+          created_at: string
+          day: number
+          duration_seconds: number
+          id: string
+          is_final_rep: boolean
+          mime_type: string
+          module_id: string
+          storage_path: string
+          take_number: number
+          user_id: string
+        }[]
+      }
+      purge_day_final_candidates: {
+        Args: {
+          _final_retention_days: number
+          _limit: number
+          _module_last_day: number
+        }
+        Returns: {
+          completed_at: string
+          day: number
+          module_id: string
+          recording_path: string
+          recording_purged_at: string
+          user_id: string
+        }[]
+      }
       release_tts_lock: {
         Args: { _clip_key: string; _owner: string }
         Returns: boolean
