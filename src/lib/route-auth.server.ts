@@ -78,7 +78,16 @@ export async function consumeQuota(
     return { allowed: false, requestCount: 0 };
   }
   const row = Array.isArray(data) ? data[0] : data;
-  return { allowed: Boolean(row?.allowed), requestCount: Number(row?.used_count ?? 0) };
+  const allowed = Boolean(row?.allowed);
+  if (!allowed) {
+    // Denials are part of the cost picture: one rollup counter, never a learner-visible change.
+    void import("./ai-call-log.server")
+      .then(({ logAiCall }) =>
+        logAiCall({ user_id: userId, endpoint, provider: "none", ok: false, error_code: "quota" }),
+      )
+      .catch(() => {});
+  }
+  return { allowed, requestCount: Number(row?.used_count ?? 0) };
 }
 
 /**
