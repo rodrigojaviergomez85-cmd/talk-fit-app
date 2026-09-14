@@ -231,7 +231,10 @@ export const PracticeAttempts = {
       },
       { onConflict: "id" },
     );
-    if (error) console.error("[practice] attempt update failed", error.message);
+    if (error) {
+      notifyIfClockMismatch(error.message);
+      console.error("[practice] attempt update failed", error.message);
+    }
   },
 
   /**
