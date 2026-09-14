@@ -215,6 +215,29 @@ function answerStartFromQuestion(questionEn: string): string | null {
     return subject ? `My ${subject} is` : null;
   }
 
+  // Why did/do you …? → Because I …
+  m = q.match(/^why\s+did\s+you\s+(.+)$/);
+  if (m) {
+    const words = stripTails(m[1]!).split(" ").filter(Boolean);
+    if (words.length > 0) {
+      const tail = words.slice(1).join(" ").replace(/\byour\b/g, "my");
+      return `Because I ${toPast(words[0]!)}${tail ? ` ${tail}` : ""}`;
+    }
+  }
+  m = q.match(/^why\s+do\s+you\s+(.+)$/);
+  if (m) {
+    const rest = stripTails(m[1]!).replace(/\byour\b/g, "my");
+    if (rest) return `Because I ${rest}`;
+  }
+
+  // Who <verb>s …? (subject question) → My ___ <verb>s …
+  m = q.match(/^who\s+([a-z]+(?:s|es)\b.*)$/);
+  if (m && !/^(is|are|was|were|did|do|does|will|can)\b/.test(m[1]!)) {
+    const rest = stripTails(m[1]!).replace(/\byour\b/g, "my");
+    if (rest) return `My ___ ${rest}`;
+  }
+
+
   // (WH …) did you <verb> …
   m = q.match(new RegExp(`^(?:${WH}\\b.*?\\s+)?did\\s+you\\s+(.+)$`));
   if (m) {
