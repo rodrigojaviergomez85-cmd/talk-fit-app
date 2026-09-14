@@ -40,6 +40,7 @@
 
 import { buildInventory } from "@/lib/course-audio-inventory";
 import { tokenizeWords } from "@/lib/syllables";
+import type { ModuleId } from "@/lib/types";
 
 function normalize(text: string): string {
   return text.trim().replace(/\s+/g, " ").toLowerCase();
