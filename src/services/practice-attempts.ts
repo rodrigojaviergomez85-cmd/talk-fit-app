@@ -8,6 +8,7 @@ import {
   type PracticeCapResult,
 } from "@/lib/practice-cap";
 import { isModuleId } from "./course-service";
+import { notifyIfClockMismatch } from "@/lib/clock-mismatch";
 import type { ModuleId } from "@/lib/types";
 
 /**
@@ -203,7 +204,10 @@ export const PracticeAttempts = {
       started_at: attempt.startedAt,
       first_recording_at: attempt.firstRecordingAt,
     });
-    if (error) console.error("[practice] attempt insert failed", error.message);
+    if (error) {
+      notifyIfClockMismatch(error.message);
+      console.error("[practice] attempt insert failed", error.message);
+    }
   },
 
   async pushUpdate(attempt: PracticeAttempt): Promise<void> {
@@ -227,7 +231,10 @@ export const PracticeAttempts = {
       },
       { onConflict: "id" },
     );
-    if (error) console.error("[practice] attempt update failed", error.message);
+    if (error) {
+      notifyIfClockMismatch(error.message);
+      console.error("[practice] attempt update failed", error.message);
+    }
   },
 
   /**

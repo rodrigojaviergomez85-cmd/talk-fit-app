@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { localDayKey } from "./practice-attempts";
 import { isUnlimitedEmail } from "@/lib/unlimited-access";
+import { notifyIfClockMismatch } from "@/lib/clock-mismatch";
 
 /**
  * InterviewAttempts — DAILY INTERVIEW CAP: max 2 interview simulations per
@@ -177,6 +178,7 @@ export const InterviewAttempts = {
       first_recording_at: counted.firstRecordingAt,
     });
     if (error) {
+      notifyIfClockMismatch(error.message);
       await InterviewAttempts.refresh();
       // Only the cap trigger means "no interviews left today"; anything else is
       // a transient write failure and must not lock the simulator.
