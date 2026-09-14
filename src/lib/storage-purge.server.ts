@@ -32,10 +32,38 @@ import {
 
 const BUCKET = "recordings";
 const DELETE_BATCH = 100;
-/** Hard ceiling per run; the rest is picked up by the next run. */
-const DEFAULT_MAX_FILES = 5000;
-/** Stop asking for more work when the run has been going this long. */
-const DEFAULT_BUDGET_MS = 60_000;
+/**
+ * Independent ceilings per queue. They must NOT share one counter: a large
+ * backlog of practice takes would otherwise starve the journey-finals queue
+ * forever, so expired finals would never be deleted.
+ */
+const DEFAULT_MAX_TAKES = 4000;
+const DEFAULT_MAX_FINALS = 1000;
+/**
+ * Wall-clock budget for one run. Kept well under the platform's request
+ * timeout so the run always finishes and can stamp its `job_runs` row instead
+ * of being killed mid-flight.
+ */
+const DEFAULT_BUDGET_MS = 45_000;
+/** No single storage/database call may hang the whole run. */
+const DEFAULT_CALL_TIMEOUT_MS = 10_000;
+
+/** Races a call against a timer; rejects with a `TIMEOUT …` error. */
+export function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(`TIMEOUT ${label} after ${ms}ms`)), ms);
+    promise.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      (err) => {
+        clearTimeout(timer);
+        reject(err);
+      },
+    );
+  });
+}
 
 export type PurgeResult = {
   ranAt: string;
@@ -48,19 +76,27 @@ export type PurgeResult = {
   dayFinalCandidates: number;
   dayFinalDeletedFiles: number;
   dayFinalMarkedRows: number;
-  /** True when the run stopped on its own limits and work remains. */
-  truncated: boolean;
+  /** True when the takes queue stopped on its own limits and work remains. */
+  takesTruncated: boolean;
+  /** True when the finals queue stopped on its own limits and work remains. */
+  finalsTruncated: boolean;
   errors: string[];
 };
 
 export type PurgeOptions = {
   dryRun?: boolean;
-  /** Maximum files touched in this run (recordings + day finals). */
-  maxFiles?: number;
+  /** Maximum practice-take files touched in this run. */
+  maxTakes?: number;
+  /** Maximum journey-final files touched in this run. */
+  maxFinals?: number;
   /** Wall-clock budget in milliseconds. */
   budgetMs?: number;
+  /** Per-call timeout in milliseconds. */
+  callTimeoutMs?: number;
   /** Injectable clock, used by tests. */
   now?: Date;
+  /** Injectable monotonic clock (milliseconds), used by tests. */
+  monotonic?: () => number;
 };
 
 type Admin = {
