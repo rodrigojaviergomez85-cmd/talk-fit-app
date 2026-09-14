@@ -7,7 +7,7 @@ import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
 import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
 import { playGoodFeedbackSound } from "@/lib/feedback-sounds";
 import { useAppLang } from "@/lib/i18n";
-import { tokenizeWords } from "@/lib/syllables";
+import { tokenizeWordsForDisplay } from "@/lib/syllables";
 import { buildSayItHint, buildSayItStartHint } from "@/lib/story-say-match";
 import { isStoryAdvanceLocked } from "@/lib/storybook-advance";
 import { AudioService } from "@/services/audio-service";
@@ -491,7 +491,7 @@ function TappableText({
   onCloseWord?: () => void;
 }) {
   const [open, setOpen] = useState<string | null>(null);
-  const tokens = tokenizeWords(text);
+  const tokens = tokenizeWordsForDisplay(text);
   const result = open ? lookupWord(open, { scene, episodeGlossary }) : null;
   const close = () => {
     setOpen(null);
@@ -511,31 +511,33 @@ function TappableText({
           }
           const info = lookupWord(token.value, { scene, episodeGlossary });
           return (
-            <button
-              key={`w-${i}`}
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (open === token.value) {
-                  close();
+            <span key={`w-${i}`} className="whitespace-nowrap">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (open === token.value) {
+                    close();
+                    AudioService.stop();
+                    return;
+                  }
+                  if (info.curated && info.meaning) onLearnWord?.(token.value, info.meaning);
+                  setOpen(token.value);
+                  onOpenWord?.();
                   AudioService.stop();
-                  return;
-                }
-                if (info.curated && info.meaning) onLearnWord?.(token.value, info.meaning);
-                setOpen(token.value);
-                onOpenWord?.();
-                AudioService.stop();
-                AudioService.speak(token.value, { rate: 0.75, voice });
-              }}
-              aria-label={es ? `Significado de ${token.value}` : `Meaning of ${token.value}`}
-              className={cn(
-                "rounded-md px-0.5 underline decoration-2 underline-offset-4 transition-colors",
-                info.curated ? "decoration-primary/60" : "decoration-border/70 decoration-dotted",
-                open === token.value ? "bg-primary/15 text-primary" : "hover:bg-primary/10",
-              )}
-            >
-              {token.value}
-            </button>
+                  AudioService.speak(token.value, { rate: 0.75, voice });
+                }}
+                aria-label={es ? `Significado de ${token.value}` : `Meaning of ${token.value}`}
+                className={cn(
+                  "rounded-md px-0.5 underline decoration-2 underline-offset-4 transition-colors",
+                  info.curated ? "decoration-primary/60" : "decoration-border/70 decoration-dotted",
+                  open === token.value ? "bg-primary/15 text-primary" : "hover:bg-primary/10",
+                )}
+              >
+                {token.value}
+              </button>
+              {token.suffix}
+            </span>
           );
         })}
       </p>
