@@ -649,7 +649,6 @@ export const BASE_GLOSSARY: Record<string, string> = {
   magic: "magia / mágico",
   poor: "pobre",
   shorter: "más corto",
-  short: "corto / bajo",
   road: "carretera / camino",
   lying: "acostado / mintiendo",
   strange: "extraño / raro",
