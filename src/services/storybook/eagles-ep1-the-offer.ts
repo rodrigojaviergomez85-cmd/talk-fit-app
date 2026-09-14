@@ -237,9 +237,9 @@ export const EAGLES_EP1_THE_OFFER: StorybookEpisode = {
       speaker: "vale",
       lines: [
         { speaker: "dani", text: "Okay, tell me everything. What happened?", es: "«Bueno, cuéntame todo. ¿Qué pasó?»" },
-        { speaker: "vale", text: "Morgan called at nine, and I answered in English because I promised myself I would.", es: "«Morgan llamó a las nueve y contesté en inglés porque me lo prometí»." },
+        { speaker: "vale", text: "Morgan called at nine, and the whole meeting was in English — smooth and professional.", es: "«Morgan llamó a las nueve y toda la reunión fue en inglés: fluida y profesional»." },
         { speaker: "vale", text: "First, I asked two questions. After that, I recommended option B.", es: "«Primero hice dos preguntas. Después de eso, recomendé la opción B»." },
-        { speaker: "vale", text: "He said it was expensive, but I explained the numbers and he listened.", es: "«Dijo que era caro, pero expliqué los números y me escuchó»." },
+        { speaker: "vale", text: "She said it was expensive, but I explained the numbers and she listened.", es: "«Dijo que era caro, pero expliqué los números y me escuchó»." },
         { speaker: "vale", text: "Overall, it was the best call of my life.", es: "«En general, fue la mejor llamada de mi vida»." },
       ],
       words: [
@@ -254,7 +254,7 @@ export const EAGLES_EP1_THE_OFFER: StorybookEpisode = {
     {
       id: "q1",
       afterScene: "s3",
-      questionEn: "What did Morgan say about his team?",
+      questionEn: "What did Morgan say about her team?",
       questionEs: "¿Qué dijo Morgan sobre su equipo?",
       options: [
         { label: "Half of them froze on calls in English", emoji: "😰" },
@@ -302,8 +302,8 @@ export const EAGLES_EP1_THE_OFFER: StorybookEpisode = {
         { label: "Thirty new laptops", emoji: "💼" },
       ],
       answer: 0,
-      sayIt: "He asked for a proposal by Friday.",
-      sayItEs: "Ejemplo: «He asked for a proposal by Friday.»",
+      sayIt: "She asked for a proposal by Friday.",
+      sayItEs: "Ejemplo: «She asked for a proposal by Friday.»",
       sayItAskEn: "What did you do after that? Tell me the next thing that happened.",
       sayItAskEs: "¿Qué hiciste después de eso? Cuéntame lo que pasó después.",
       sayItCheck: {
