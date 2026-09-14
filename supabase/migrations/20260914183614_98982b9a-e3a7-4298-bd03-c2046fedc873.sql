@@ -1,0 +1,2 @@
+CREATE INDEX IF NOT EXISTS recordings_created_at_idx ON public.recordings (created_at);
+CREATE INDEX IF NOT EXISTS practice_attempts_first_recording_idx ON public.practice_attempts (first_recording_at);
