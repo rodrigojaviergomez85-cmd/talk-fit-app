@@ -14,6 +14,8 @@ const MAX_BYTES = 3 * 1024 * 1024;
 const MIN_BYTES = 2048;
 const RATE_LIMIT = 20; // requests per user
 const RATE_WINDOW_SECONDS = 60 * 60; // per hour
+const DAILY_SECTION_KEY = "sentence_count";
+const DAILY_LIMIT_FALLBACK = 30;
 
 /**
  * Estimates how many COMPLETE SPOKEN IDEAS (sentences) a learner produced.
@@ -27,7 +29,9 @@ export const Route = createFileRoute("/api/sentence-count")({
     handlers: {
       POST: async ({ request }) => {
         // 0) Authentication — no session, no work.
-        const { verifyRequestUser, consumeQuota } = await import("@/lib/route-auth.server");
+        const { verifyRequestUser, consumeQuota, sectionDailyLimit } = await import(
+          "@/lib/route-auth.server"
+        );
         const userId = await verifyRequestUser(request);
         if (!userId) return json({ error: "Sign in to count sentences." }, 401);
 
@@ -75,6 +79,19 @@ export const Route = createFileRoute("/api/sentence-count")({
         const mime = (file.type || "audio/webm").split(";")[0]?.trim().toLowerCase() ?? "audio/webm";
         if (!(mime in AUDIO_EXT)) {
           return json({ error: "Unsupported audio format." }, 415);
+        }
+
+        // Daily ceiling (section_limits: Pro multiplier + admin screen), before the hourly one.
+        const dailyLimit = await sectionDailyLimit(userId, DAILY_SECTION_KEY, DAILY_LIMIT_FALLBACK);
+        const dailyQuota = await consumeQuota(
+          userId,
+          `${DAILY_SECTION_KEY}-daily`,
+          dailyLimit,
+          24 * 60 * 60,
+        );
+        if (!dailyQuota.allowed) {
+          console.info("[sentence-count] outcome=429-daily");
+          return json({ error: "Daily limit reached. Continue tomorrow." }, 429);
         }
 
         // Durable per-user limit (shared across server instances). Counted only for valid uploads.
