@@ -11,6 +11,11 @@ import { InterviewCapCounter, InterviewCapReached } from "@/components/interview
 import { supabase } from "@/integrations/supabase/client";
 import type { Recording } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import {
+  INTERMEDIATE_INTERVIEW_PROMPTS,
+  type IntermediateInterviewPrompt,
+  type IntermediateSkill,
+} from "@/services/interview-prompts";
 import welcomeClip from "@/assets/interview/mike-welcome.mp4.asset.json";
 import waitingClip from "@/assets/interview/mike-waiting.mp4.asset.json";
 import tellMeMoreClip from "@/assets/interview/mike-tell-me-more.mp4.asset.json";
