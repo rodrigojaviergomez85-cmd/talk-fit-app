@@ -52,4 +52,22 @@ describe("Season 6 follows the official Eagles route", () => {
       }
     }
   });
+
+  it("Morgan is always she/her — never he/his", () => {
+    const ep1 = STORYBOOK_EPISODES.find((e) => e.id === "eagles-ep1-the-offer");
+    expect(ep1).toBeDefined();
+    const allText = [
+      ...(ep1!.scenes ?? []).flatMap((s) => [
+        s.text,
+        ...(s.lines ?? []).map((l) => l.text),
+      ]),
+      ...(ep1!.quizzes ?? []).flatMap((q) => [
+        q.questionEn,
+        q.sayIt,
+        q.sayItAskEn,
+        ...(q.options ?? []).map((o) => o.label),
+      ]),
+    ].join(" ");
+    expect(allText).not.toMatch(/\b(he|his|him)\b/i);
+  });
 });
