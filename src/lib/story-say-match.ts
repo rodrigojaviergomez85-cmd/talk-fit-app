@@ -338,6 +338,21 @@ function hintHonorsTarget(hint: string, target: string): boolean {
   return false;
 }
 
+/** Restore the original casing of words (English, Spanish, names) from the question. */
+function restoreCase(hint: string, questionEn: string): string {
+  const originals = new Map<string, string>();
+  for (const w of questionEn.split(/[^A-Za-z']+/)) {
+    if (w && /[A-Z]/.test(w.slice(1)) === false && /^[A-Z]/.test(w) && w !== "I") {
+      originals.set(w.toLowerCase(), w);
+    }
+  }
+  return hint
+    .split(" ")
+    .map((w, idx) => (idx === 0 ? w : (originals.get(w.toLowerCase()) ?? w)))
+    .join(" ");
+}
+
+
 /**
  * Opening sentence the learner can start their own answer with. Built from the
  * personal question so it always matches it, and cross-checked against the
