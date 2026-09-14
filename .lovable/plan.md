@@ -6,7 +6,7 @@ Respuesta corta: la app funciona, pero **hoy no está lista** para 17,000 usuari
 
 - 835 cuentas registradas, 6,742 grabaciones, base de datos en 49 MB.
 - Audio guardado: 1.07 GB de grabaciones de estudiantes + 316 MB de audio del curso.
-- **Los límites de uso están apagados** (limits_enabled = false) y el cobro también. Hoy cualquier estudiante puede usar la corrección de voz y el coach de IA sin tope.
+- **El interruptor global de límites está apagado**, y el cobro también. Los topes que definimos siguen guardados y correctos (5 prácticas al día, 2 entrevistas, 5 usos del coach de IA al día y 60 al mes), pero mientras ese interruptor esté apagado el sistema los reemplaza por "ilimitado". Es decir: hoy nadie tiene tope real.
 - El servidor de datos está en el tamaño más pequeño disponible.
 - La limpieza automática de audios viejos corre cada día a las 7:00 UTC, pero borra máximo 5,000 archivos por corrida.
 
