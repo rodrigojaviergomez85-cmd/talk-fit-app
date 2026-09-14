@@ -98,7 +98,7 @@ function OnboardingPage() {
       setSaveError(true);
       return;
     }
-    finish("practice", placement, chosenWeek);
+    finish();
   };
 
   /** Retry after a failed save (used by the banner on the week/auth screens). */
@@ -113,7 +113,7 @@ function OnboardingPage() {
       setSaveError(true);
       return;
     }
-    finish("practice", placement, week);
+    finish();
   };
 
   // Account just created (or returning from the Google redirect) after choosing
@@ -133,7 +133,7 @@ function OnboardingPage() {
         setScreen(AUTH_SCREEN);
         return;
       }
-      finish("practice", placement, week);
+      finish();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screen, user, placement, week]);
@@ -284,7 +284,7 @@ function OnboardingPage() {
               type="button"
               onClick={() => {
                 if (screen === SLIDE_COUNT - 1) {
-                  if (user && prefs.currentModuleId) finish("home");
+                  if (user && prefs.currentModuleId) finish();
                   else setScreen(PLACEMENT_SCREEN);
                 } else {
                   setScreen((s) => s + 1);
@@ -306,7 +306,7 @@ function OnboardingPage() {
             </button>
           ) : null}
           {screen === AUTH_SCREEN && user ? (
-            <button type="button" onClick={() => finish("home")} className={primaryBtn}>
+            <button type="button" onClick={() => finish()} className={primaryBtn}>
               {t("action.startPractice")}
             </button>
           ) : null}
