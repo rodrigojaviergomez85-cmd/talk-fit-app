@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { localDayKey } from "./practice-attempts";
 import { isUnlimitedEmail } from "@/lib/unlimited-access";
+import { notifyIfClockMismatch } from "@/lib/clock-mismatch";
 
 /**
  * InterviewAttempts — DAILY INTERVIEW CAP: max 2 interview simulations per
