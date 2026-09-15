@@ -389,10 +389,13 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
     },
     {
       "phrase": "straighten out",
+      "variants": [
+        "straighten this out"
+      ],
       "es": "aclarar y resolver",
       "kind": "phrasal",
-      "example": "Your contract says Mexico is exclusive. I will not pay for a surprise.",
-      "exampleEs": "Su contrato dice que México es exclusivo. No pagaré una sorpresa."
+      "example": "Let us straighten this out: no exclusivity fee, and no hidden condition.",
+      "exampleEs": "Aclaremos esto: sin tarifa de exclusividad y sin condición oculta."
     },
     {
       "phrase": "on the same page",
