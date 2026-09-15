@@ -419,6 +419,16 @@ export function StorybookPlayer({
             ) : null}
           </div>
         ) : null}
+        {slide.kind === "finale" && hasEarlierEpisodes ? (
+          <button
+            type="button"
+            onClick={() => navigate({ to: "/natural-method/audiobooks" })}
+            className="mt-3 inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground"
+          >
+            <History className="size-4" />
+            {es ? "Ponerme al día con episodios anteriores" : "Catch up on earlier episodes"}
+          </button>
+        ) : null}
         {slide.kind === "finale" && catchUpPlan?.active && catchUpPlan.todayRemaining === 0 ? (
           <p className="mt-3 text-center text-[12px] font-semibold text-primary">
             {es
