@@ -103,7 +103,7 @@ export const SHARKS_EP16_A_TEAM_IN_THREE_COUNTRIES: StorybookEpisode = {
       ],
       "words": [
         { "word": "policy", "es": "política" },
-        { "word": "delegate", "es": "delegar" },
+        { "word": "delegating", "es": "delegar" },
         { "word": "leader", "es": "líder" }
       ]
     },
