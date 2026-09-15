@@ -150,3 +150,38 @@ describe("Tigers — Mr. Herrera", () => {
     expect(problems).toEqual([]);
   });
 });
+
+/**
+ * Dani canon: young adult Salvadoran man (19-20), short curly black hair,
+ * medium-brown skin, light blue shirt. Never a child.
+ */
+describe("Tigers — Dani", () => {
+  const withDani = STORYBOOK_EPISODES.filter(
+    (episode) =>
+      episode.id.startsWith("tigers-") &&
+      episode.scenes.some(
+        (scene) => scene.speaker === "dani" || (scene.lines ?? []).some((l) => l.speaker === "dani"),
+      ),
+  );
+
+  it("appears in several Tigers episodes", () => {
+    expect(withDani.length).toBeGreaterThan(5);
+  });
+
+  it("is never described as a child", () => {
+    const problems: string[] = [];
+    const childWords = ["niño", "nino", "niñito", "chiquito", "child", "kid"];
+    for (const episode of withDani) {
+      for (const scene of episode.scenes) {
+        const alt = (scene.imageAlt ?? "").toLowerCase();
+        const isDaniScene =
+          scene.speaker === "dani" || (scene.lines ?? []).some((l) => l.speaker === "dani");
+        if (!isDaniScene) continue;
+        if (childWords.some((w) => alt.includes(w))) {
+          problems.push(`${episode.id}/${scene.id}: ${scene.imageAlt}`);
+        }
+      }
+    }
+    expect(problems).toEqual([]);
+  });
+});
