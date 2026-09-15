@@ -949,6 +949,7 @@ export const BASE_GLOSSARY: Record<string, string> = {
   career: "carrera",
   carefully: "con cuidado",
   case: "caso",
+  chain: "cadena",
   chains: "cadenas",
   chicken: "pollo",
   circle: "círculo",
