@@ -234,3 +234,25 @@ describe("Tigers 19 — cast", () => {
     expect(text).toContain("Dani");
   });
 });
+
+/**
+ * Tigers 20 (season finale): only the established cast appears — Vale, Bryan,
+ * Camila, Dani, Morgan and Don Tito. No new or unnamed characters.
+ */
+describe("Tigers 20 — cast", () => {
+  const ep = STORYBOOK_EPISODES.find((e) => e.id === "tigers-ep20-defend-your-decision");
+  const allowed = new Set(["vale", "bryan", "camila", "dani", "morgan", "tito", "narrator"]);
+
+  it("exists", () => {
+    expect(ep).toBeTruthy();
+  });
+
+  it("uses only canonical characters", () => {
+    const speakers = new Set<string>();
+    for (const scene of ep?.scenes ?? []) {
+      if (scene.speaker) speakers.add(scene.speaker);
+      for (const line of scene.lines ?? []) speakers.add(line.speaker);
+    }
+    expect([...speakers].filter((s) => !allowed.has(s))).toEqual([]);
+  });
+});
