@@ -1,6 +1,12 @@
 import { describe, it, expect } from "vitest";
 import type { JourneyState, ModuleId } from "@/lib/types";
-import { isDayUnlocked, isSeasonUnlocked, unlockedDayInModule } from "./seasons";
+import {
+  isDayUnlocked,
+  isSeasonUnlocked,
+  unlockedDayInModule,
+  getNextProducedEpisodeId,
+  STORYBOOK_SEASONS,
+} from "./seasons";
 
 function makeState(completed: Partial<Record<ModuleId, number>>): JourneyState {
   const days: JourneyState["days"] = {};
