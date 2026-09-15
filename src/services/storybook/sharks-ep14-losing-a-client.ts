@@ -225,13 +225,13 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
         },
         {
           "speaker": "reed",
-          "text": "You would teach for free for a month? That is either confidence or madness.",
-          "es": "¿Enseñaría gratis por un mes? Eso es confianza o locura."
+          "text": "You would teach for free for a whole month? That is either great confidence or complete madness.",
+          "es": "¿Enseñaría gratis durante un mes completo? Eso es o gran confianza o completa locura."
         },
         {
           "speaker": "vale",
-          "text": "It is satisfaction insurance, Mr. Reed. If they are not happier, we leave quietly.",
-          "es": "Es un seguro de satisfacción, señor Reed. Si no están más contentos, nos vamos en silencio."
+          "text": "It is satisfaction insurance, Mr. Reed. If your people are not happier, we leave quietly and you lose nothing.",
+          "es": "Es un seguro de satisfacción, señor Reed. Si su gente no está más contenta, nos vamos en silencio y usted no pierde nada."
         }
       ],
       "words": [
