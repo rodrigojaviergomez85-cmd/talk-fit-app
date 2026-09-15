@@ -1200,7 +1200,7 @@ export const PROPER_NOUNS: Record<string, string> = {
   dallas: "Dallas (ciudad de Texas)",
   florida: "Florida (estado de EE. UU.)",
   bigtalk: "BigTalk (la academia competidora)",
-  "bigtalk"s": "de BigTalk",
+  "bigtalk's": "de BigTalk",
   bryan: "Bryan (personaje)",
   gabi: "Gabi (personaje)",
   herrera: "Mr. Herrera (personaje)",
