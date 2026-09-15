@@ -394,6 +394,9 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
     },
     {
       "phrase": "keep up",
+      "variants": [
+        "keeping up"
+      ],
       "es": "mantener el ritmo",
       "kind": "phrasal",
       "example": "Have you ever trained three offices at the same time?",
