@@ -242,7 +242,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "And if Houston changes the paper again?",
+          text: "And if Houston changes the paper again without telling anyone?",
           es: "¿Y si Houston cambia el papel otra vez?"
         },
         {

@@ -123,7 +123,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "Five dollars before rent and platform. That is the real margin problem we have to solve this quarter.",
+          text: "Five dollars per class before rent and platform. That is the real margin problem we have to solve this quarter.",
           es: "Cinco dólares antes de alquiler y plataforma. Ese es el verdadero problema de margen que debemos resolver este trimestre."
         }
       ],

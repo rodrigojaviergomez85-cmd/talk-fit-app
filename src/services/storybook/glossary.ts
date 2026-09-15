@@ -7,6 +7,16 @@ import { globalExpressionMap } from "./expressions";
  * Spanish meaning. Hand-written: no runtime translation API.
  */
 export const BASE_GLOSSARY: Record<string, string> = {
+  'monterrey': 'Monterrey',
+  'confession': 'confesión',
+  'letter': 'carta',
+  'debts': 'deudas',
+  'outage': 'corte / interrupción',
+  'froze': 'se congeló',
+  'double': 'el doble',
+  'ads': 'anuncios',
+  'april': 'abril',
+  'clicks': 'clics',
   'builders': 'quienes construyen',
   'loyal': 'leales',
   'scare': 'asustan',
