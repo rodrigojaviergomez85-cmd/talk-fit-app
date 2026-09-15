@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, ChevronDown, ChevronLeft, ChevronUp, Loader2, Pause, Play, RotateCcw, Sparkles, Star, Volume2, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronDown, ChevronLeft, ChevronUp, Library, Loader2, Pause, Play, RotateCcw, Sparkles, Star, Volume2, X } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { SlowWordPanel } from "@/components/fluency/SlowWordPanel";
 import { RecordingPlayback } from "@/components/fluency/RecordingPlayback";
@@ -12,7 +12,7 @@ import { buildSayItHint, buildSayItStartHint } from "@/lib/story-say-match";
 import { isStoryAdvanceLocked } from "@/lib/storybook-advance";
 import { AudioService } from "@/services/audio-service";
 import { supabase } from "@/integrations/supabase/client";
-import { getSeason, getNextProducedEpisodeId } from "@/services/storybook";
+import { getSeason, getNextProducedEpisodeId, getProducedEpisodeIds } from "@/services/storybook";
 import { speakerVoice, speakerTone, speakerName } from "@/services/storybook/voices";
 import { speakDialogue, startDialogue, type DialogueController } from "@/services/storybook/dialogue-audio";
 import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
@@ -73,6 +73,11 @@ export function StorybookPlayer({
   const slides = useMemo(() => buildSlides(episode), [episode]);
   const coverBack = onCoverBack ?? (() => navigate({ to: "/natural-method/audiobooks" }));
   const nextEpisodeId = useMemo(() => getNextProducedEpisodeId(episode.id), [episode.id]);
+  // Only offer catch-up when published episodes exist before this one.
+  const hasEarlierEpisodes = useMemo(
+    () => getProducedEpisodeIds().indexOf(episode.id) > 0,
+    [episode.id],
+  );
   const [catchUpPlan, setCatchUpPlan] = useState<CatchUpPlan | null>(null);
   const episodeGlossary = useMemo(() => buildEpisodeGlossary(episode), [episode]);
   // Leaving the episode keeps the scene the learner was on.
@@ -418,6 +423,16 @@ export function StorybookPlayer({
               </button>
             ) : null}
           </div>
+        ) : null}
+        {slide.kind === "finale" && hasEarlierEpisodes ? (
+          <button
+            type="button"
+            onClick={() => navigate({ to: "/natural-method/audiobooks" })}
+            className="mt-3 inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground"
+          >
+            <Library className="size-4" />
+            {es ? "Ponerme al día con episodios anteriores" : "Catch up on earlier episodes"}
+          </button>
         ) : null}
         {slide.kind === "finale" && catchUpPlan?.active && catchUpPlan.todayRemaining === 0 ? (
           <p className="mt-3 text-center text-[12px] font-semibold text-primary">
