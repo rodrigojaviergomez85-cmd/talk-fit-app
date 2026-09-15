@@ -114,3 +114,39 @@ describe("Season 7 (Tigers) consistency", () => {
     expect(missing).toEqual([]);
   });
 });
+
+/**
+ * Mr. Herrera canon: older man, grey beard and mustache, dark grey suit.
+ * Scene descriptions must never present him as a young man in a white shirt.
+ */
+describe("Tigers — Mr. Herrera", () => {
+  const withHerrera = STORYBOOK_EPISODES.filter((episode) =>
+    episode.scenes.some(
+      (scene) => scene.speaker === "herrera" || (scene.lines ?? []).some((l) => l.speaker === "herrera"),
+    ),
+  );
+
+  it("appears in the expected Tigers episodes", () => {
+    expect(withHerrera.map((e) => e.id).sort()).toEqual([
+      "tigers-ep13-the-best-of-the-city",
+      "tigers-ep17-the-visit",
+      "tigers-ep7-your-experience",
+    ]);
+  });
+
+  it("is never described as a young man in a white shirt", () => {
+    const problems: string[] = [];
+    for (const episode of withHerrera) {
+      for (const scene of episode.scenes) {
+        const alt = (scene.imageAlt ?? "").toLowerCase();
+        const isHerreraScene =
+          scene.speaker === "herrera" || (scene.lines ?? []).some((l) => l.speaker === "herrera");
+        if (!isHerreraScene) continue;
+        if (alt.includes("camisa blanca") || alt.includes("hombre joven")) {
+          problems.push(`${episode.id}/${scene.id}: ${scene.imageAlt}`);
+        }
+      }
+    }
+    expect(problems).toEqual([]);
+  });
+});
