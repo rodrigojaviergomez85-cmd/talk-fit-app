@@ -168,7 +168,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       id: "s5",
       image: s5,
       imageAlt: "Vale explains how to present the numbers clearly.",
-      text: "Good. In a proposal, the numbers speak for themselves if we present them clearly and honestly.",
+      text: "Good. In a proposal, the numbers speak for themselves if we present them clearly, honestly, and in the right order.",
       es: "Bien. En una propuesta, los números hablan por sí solos si los presentamos con claridad.",
       speaker: "vale",
       cast: ["vale", "camila"],
