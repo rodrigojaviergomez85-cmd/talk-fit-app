@@ -56,7 +56,7 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Two hours in the middle of the morning. That is the worst possible window.",
+          text: "Two hours in the middle of the morning. That is the worst possible window for our students.",
           es: "Dos horas en plena mañana. Es la peor ventana posible."
         },
         {
@@ -87,7 +87,7 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "Give me ten minutes with the server logs.",
+          text: "Give me ten minutes with the server logs and the error reports.",
           es: "Dame diez minutos con los registros del servidor."
         },
         {
@@ -118,7 +118,7 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "So our first message to clients was wrong too. We have to correct it.",
+          text: "So our first message to clients was wrong too. We have to correct it before they notice.",
           es: "Entonces nuestro primer mensaje a los clientes también fue incorrecto. Tenemos que corregirlo."
         },
         {
@@ -149,7 +149,7 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Northline is our biggest contract. Who is talking to their director?",
+          text: "Northline is our biggest contract. Who is talking to their director right now?",
           es: "Northline es nuestro contrato más grande. ¿Quién está hablando con su director?"
         },
         {
@@ -180,7 +180,7 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "Even with the extra thirty minutes? That makes us look worse.",
+          text: "Even with the extra thirty minutes? That makes us look worse than we are.",
           es: "¿Incluso con los treinta minutos extra? Eso nos hace ver peor."
         },
         {
@@ -304,7 +304,7 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "Are you sure? A manager could take that call for you.",
+          text: "Are you sure? A manager could take that difficult call for you.",
           es: "¿Estás segura? Una gerente podría tomar esa llamada por ti."
         },
         {
@@ -335,7 +335,7 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "They want my checklist? The one from my mistake?",
+          text: "They want my checklist? The one that came from my own mistake?",
           es: "¿Quieren mi lista de verificación? ¿La de mi error?"
         },
         {

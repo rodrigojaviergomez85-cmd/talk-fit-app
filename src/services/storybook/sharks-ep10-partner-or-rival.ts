@@ -56,7 +56,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Renata, you are right to call us. Let me look at the document with you.",
+          text: "Renata, you are right to call us. Let me look at the document with you before anyone signs or pays anything.",
           es: "Renata, hace bien en llamarnos. Déjeme revisar el documento con usted."
         },
         {
@@ -92,7 +92,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Good. We compare line by line before anyone promises anything to anyone on this call.",
+          text: "Good. We compare line by line before anyone promises anything to anyone, on this call or in any email after it.",
           es: "Bien. Comparamos línea por línea antes de que alguien prometa algo a alguien en esta llamada."
         }
       ],
@@ -106,7 +106,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       id: "s3",
       image: s3,
       imageAlt: "Dani compares two versions of the contract on his laptop.",
-      text: "I compared both files. Houston added the clause after our call.",
+      text: "I compared both files twice. Houston added the clause after our call, and nobody told us.",
       es: "Comparé ambos archivos. Houston agregó la cláusula después de nuestra llamada.",
       speaker: "dani",
       cast: ["dani", "vale"],
@@ -118,7 +118,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "So Renata received a version we never approved. No wonder she is upset.",
+          text: "So Renata received a version we never approved. No wonder she is upset. I would be upset too.",
           es: "Entonces Renata recibió una versión que nunca aprobamos. Con razón está molesta."
         },
         {
@@ -154,7 +154,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "It does, and it should not. We will fix it today.",
+          text: "It does, and it should not. We will fix it today, together.",
           es: "Así es, y no debería. Lo corregiremos hoy."
         }
       ],
@@ -180,7 +180,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Thank you for saying it on the call, Mr. Reed. Renata deserves to hear it from you.",
+          text: "Thank you for saying it on the call, Mr. Reed. Renata deserves to hear it from you, not from a letter.",
           es: "Gracias por decirlo en la llamada, señor Reed. Renata merece escucharlo de usted."
         },
         {
@@ -199,7 +199,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       id: "s6",
       image: s6,
       imageAlt: "Camila prepares a corrected invoice at her desk during the call.",
-      text: "I will follow up with a corrected invoice today.",
+      text: "I will follow up with a corrected invoice today, before the end of business.",
       es: "Daré seguimiento con una factura corregida hoy.",
       speaker: "camila",
       cast: ["camila", "dani"],
@@ -211,7 +211,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "I can send the clean contract too, with the date of our original call on top.",
+          text: "I can send the clean contract too, with the date of our original call on top, so everyone sees which version came first.",
           es: "También puedo enviar el contrato limpio, con la fecha de nuestra llamada original arriba."
         },
         {
@@ -261,7 +261,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       id: "s8",
       image: s8,
       imageAlt: "Renata smiles for the first time and offers a smaller next step.",
-      text: "Now we are on the same page. I can discuss a pilot, not a takeover.",
+      text: "Now we are finally on the same page. I can discuss a pilot, not a takeover of my schools.",
       es: "Ahora estamos en la misma sintonía. Puedo discutir un piloto, no una adquisición.",
       speaker: "renata",
       cast: ["renata", "camila"],
@@ -309,7 +309,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "And if they do not, we walk away with respect. That is the deal.",
+          text: "And if they do not, we walk away with respect and no debts. That is the deal.",
           es: "Y si no, nos retiramos con respeto. Ese es el trato."
         }
       ],
@@ -323,7 +323,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       id: "s10",
       image: s10,
       imageAlt: "Renata raises the stakes with a challenge between schools.",
-      text: "Then prove it. My best school will compete against your Guatemala office.",
+      text: "Then prove it. My best school will compete against your Guatemala office in a real speaking exam.",
       es: "Entonces demuéstrelo. Mi mejor escuela competirá contra su oficina de Guatemala.",
       speaker: "renata",
       cast: ["renata", "vale"],
@@ -340,7 +340,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "Friendly but serious. My students do not like to lose, and neither do their parents.",
+          text: "Friendly but serious. My students do not like to lose, and neither do their parents, and neither do I.",
           es: "Amistosa pero seria. A mis estudiantes no les gusta perder, y a sus padres tampoco."
         }
       ],

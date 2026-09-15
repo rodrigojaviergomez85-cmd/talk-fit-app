@@ -56,7 +56,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Eleven percent up is good news. A flat margin is the question.",
+          text: "Eleven percent up is good news. A flat margin is the question we have to answer today.",
           es: "Once por ciento arriba es buena noticia. El margen plano es la pregunta."
         },
         {
@@ -75,7 +75,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       id: "s2",
       image: s2,
       imageAlt: "Vale asks the team to review the costs before celebrating.",
-      text: "Then let us break down the costs line by line before we celebrate.",
+      text: "Then let us break down the costs line by line before we celebrate anything.",
       es: "Entonces desglosemos los costos línea por línea antes de celebrar.",
       speaker: "vale",
       cast: ["vale", "dani"],
@@ -118,7 +118,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "And the average student pays fourteen, so each class leaves five.",
+          text: "And the average student pays fourteen, so each class leaves only five for us.",
           es: "Y el estudiante promedio paga catorce, así que cada clase deja cinco."
         },
         {
@@ -149,7 +149,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Ninety-four percent means students stay because they speak. That is our best number.",
+          text: "Ninety-four percent means students stay because they speak. That is our best number of all.",
           es: "Noventa y cuatro por ciento significa que los estudiantes se quedan porque hablan. Es nuestro mejor número."
         },
         {
@@ -168,7 +168,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       id: "s5",
       image: s5,
       imageAlt: "Vale explains how to present the numbers clearly.",
-      text: "Good. In a proposal, the numbers speak for themselves if we present them clearly.",
+      text: "Good. In a proposal, the numbers speak for themselves if we present them clearly and honestly.",
       es: "Bien. En una propuesta, los números hablan por sí solos si los presentamos con claridad.",
       speaker: "vale",
       cast: ["vale", "camila"],
@@ -185,7 +185,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Exactly. Nobody remembers twenty numbers. Everyone remembers three.",
+          text: "Exactly. Nobody remembers twenty numbers. Everyone remembers three good ones.",
           es: "Exacto. Nadie recuerda veinte números. Todos recuerdan tres."
         }
       ],
@@ -273,7 +273,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "How late are we talking about?",
+          text: "How late are we talking about? Days or weeks?",
           es: "¿De qué tan atrasadas hablamos?"
         },
         {
@@ -309,7 +309,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Friendly first. Firm second. Legal, never, I hope.",
+          text: "Friendly first. Firm second. Legal, never, I hope, because lawyers are expensive.",
           es: "Amable primero. Firme después. Legal, nunca, espero."
         }
       ],
@@ -335,7 +335,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "And the story behind them: we grow, students stay, and each class pays for itself.",
+          text: "And the story behind them is simple: we grow, students stay, and each class pays for itself.",
           es: "Y la historia detrás de ellos: crecemos, los estudiantes se quedan, y cada clase se paga sola."
         },
         {
