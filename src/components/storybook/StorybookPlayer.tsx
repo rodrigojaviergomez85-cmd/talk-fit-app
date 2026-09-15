@@ -71,6 +71,7 @@ export function StorybookPlayer({
   const navigate = useNavigate();
   const slides = useMemo(() => buildSlides(episode), [episode]);
   const coverBack = onCoverBack ?? (() => navigate({ to: "/natural-method/audiobooks" }));
+  const nextEpisodeId = useMemo(() => getNextProducedEpisodeId(episode.id), [episode.id]);
   const episodeGlossary = useMemo(() => buildEpisodeGlossary(episode), [episode]);
   // Leaving the episode keeps the scene the learner was on.
   const posKey = `sb-pos-${episode.id}`;
