@@ -1,4 +1,5 @@
 import type { StorybookEpisode, StorybookLine, StorybookSpeaker, StorybookWord } from "./types";
+import { SHARKS_AUTHORED_DIALOGUE_3_8 } from "./sharks-dialogue-authored-3-8";
 
 type SceneExpansion = {
   lines: [StorybookLine, StorybookLine];
@@ -122,7 +123,12 @@ export function expandSharksDialogue(episode: StorybookEpisode): StorybookEpisod
   return {
     ...episode,
     scenes: episode.scenes.map((scene) => {
-      const supplied = expansion?.[scene.id];
+      const authoredEpisode = SHARKS_AUTHORED_DIALOGUE_3_8[episode.id as keyof typeof SHARKS_AUTHORED_DIALOGUE_3_8];
+      const authored = authoredEpisode?.[scene.id as keyof typeof authoredEpisode];
+      const supplied = expansion?.[scene.id] ?? (authored ? {
+        lines: authored.lines.map(([speaker, text, es]) => ({ speaker, text, es })) as [StorybookLine, StorybookLine],
+        words: authored.words.map(([word, es]) => ({ word, es })),
+      } : undefined);
       const original = scene.lines?.[0] ?? {
         speaker: scene.speaker ?? "narrator",
         text: scene.text,
