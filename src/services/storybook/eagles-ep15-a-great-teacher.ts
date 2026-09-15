@@ -81,11 +81,11 @@ export const EAGLES_EP15_A_GREAT_TEACHER: StorybookEpisode = {
       imageAlt: "The first candidate, a young man in a suit, speaks with perfect pronunciation.",
       text: "9:00 a.m. The first candidate has perfect English.",
       es: "9:00 a.m. El primer candidato tiene inglés perfecto.",
-      speaker: "tito",
+      speaker: "candidateM",
       lines: [
-        { speaker: "tito", text: "I correct every mistake immediately. Students need discipline.", es: "«Corrijo cada error de inmediato. Los estudiantes necesitan disciplina»." },
+        { speaker: "candidateM", text: "I correct every mistake immediately. Students need discipline.", es: "«Corrijo cada error de inmediato. Los estudiantes necesitan disciplina»." },
         { speaker: "vale", text: "And when they stop speaking?", es: "«¿Y cuando dejan de hablar?»" },
-        { speaker: "tito", text: "Then they study more at home.", es: "«Entonces estudian más en casa»." },
+        { speaker: "candidateM", text: "Then they study more at home.", es: "«Entonces estudian más en casa»." },
       ],
       words: [
         { word: "correct", es: "corregir" },
@@ -117,11 +117,11 @@ export const EAGLES_EP15_A_GREAT_TEACHER: StorybookEpisode = {
       imageAlt: "The second candidate arrives late and talks about her salary first.",
       text: "10:00 a.m. The second candidate arrives twenty minutes late.",
       es: "10:00 a.m. La segunda candidata llega veinte minutos tarde.",
-      speaker: "kat",
+      speaker: "candidateF",
       lines: [
-        { speaker: "kat", text: "Sorry. Traffic. How much do you pay?", es: "«Perdón. Tráfico. ¿Cuánto pagan?»" },
+        { speaker: "candidateF", text: "Sorry. Traffic. How much do you pay?", es: "«Perdón. Tráfico. ¿Cuánto pagan?»" },
         { speaker: "vale", text: "First tell me what you do when a student is afraid.", es: "«Primero dime qué haces cuando un estudiante tiene miedo»." },
-        { speaker: "kat", text: "Honestly? I do not know yet.", es: "«¿Honestamente? Todavía no sé»." },
+        { speaker: "candidateF", text: "Honestly? I do not know yet.", es: "«¿Honestamente? Todavía no sé»." },
       ],
       words: [
         { word: "sorry", es: "perdón" },
