@@ -102,6 +102,15 @@ const CONTINUITY_OPENERS: Record<string, StorybookLine> = {
   "sharks-ep17-the-investor": { speaker: "vale", text: "I know you now sit on Renata's board, Mr. Reed, so I need to understand whose interests this offer represents.", es: "Sé que ahora está en la junta de Renata, señor Reed, así que necesito entender qué intereses representa esta oferta." },
 };
 
+const CONTINUITY_WORDS: Record<string, StorybookWord[]> = {
+  "sharks-ep7-quality-at-scale": [{ word: "replaced", es: "reemplazó" }, { word: "emergency", es: "emergencia" }, { word: "weaken", es: "debilitar" }],
+  "sharks-ep8-vale-kids": [{ word: "connection", es: "conexión" }, { word: "fixed", es: "resuelto" }, { word: "rescheduled", es: "reprogramado" }],
+  "sharks-ep10-partner-or-rival": [{ word: "valuable", es: "valioso" }, { word: "competitor", es: "competidor" }, { word: "clarity", es: "claridad" }],
+  "sharks-ep11-what-went-wrong": [{ word: "accepted", es: "aceptaron" }, { word: "recovery", es: "recuperación" }, { word: "failed", es: "falló" }],
+  "sharks-ep15-winning-it-back": [{ word: "director", es: "director" }, { word: "proof", es: "prueba" }, { word: "recovery", es: "recuperación" }],
+  "sharks-ep17-the-investor": [{ word: "board", es: "junta directiva" }, { word: "interests", es: "intereses" }, { word: "represents", es: "representa" }],
+};
+
 /**
  * Adds the richer B2 conversation layer without changing episode order,
  * quiz anchors, artwork imports, or the original plot-defining line.
@@ -130,7 +139,7 @@ export function expandSharksDialogue(episode: StorybookEpisode): StorybookEpisod
           continuity ?? { speaker: alternate, ...frame.before },
           { speaker: original.speaker, ...frame.after },
         ],
-        words: frame.words,
+        words: continuity ? CONTINUITY_WORDS[episode.id] ?? frame.words : frame.words,
       };
       const extra = supplied ?? generated;
       const lines = [extra.lines[0], original, extra.lines[1]];
