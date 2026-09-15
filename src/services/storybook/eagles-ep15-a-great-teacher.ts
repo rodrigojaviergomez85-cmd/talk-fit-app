@@ -47,7 +47,7 @@ export const EAGLES_EP15_A_GREAT_TEACHER: StorybookEpisode = {
       es: "8:15 a.m. Tres nombres en tres papeles.",
       speaker: "vale",
       lines: [
-        { speaker: "vale", text: "One studied in Canada. One teaches kids. One works at a hotel.", es: "«Una estudió en Canadá. Una enseña a niños. Una trabaja en un hotel»." },
+        { speaker: "vale", text: "One studied in Canada. One teaches kids. One works at a hotel.", es: "«Uno estudió en Canadá. Una enseña a niños. Una trabaja en un hotel»." },
         { speaker: "camila", text: "What do you look for in a teacher?", es: "«¿Qué buscas en una maestra?»" },
         { speaker: "vale", text: "A great teacher listens more than she talks.", es: "«Una gran maestra escucha más de lo que habla»." },
       ],
@@ -78,14 +78,14 @@ export const EAGLES_EP15_A_GREAT_TEACHER: StorybookEpisode = {
     {
       id: "s3",
       image: s3,
-      imageAlt: "The first candidate speaks confidently with perfect pronunciation.",
+      imageAlt: "The first candidate, a young man in a suit, speaks with perfect pronunciation.",
       text: "9:00 a.m. The first candidate has perfect English.",
-      es: "9:00 a.m. La primera candidata tiene inglés perfecto.",
-      speaker: "ana",
+      es: "9:00 a.m. El primer candidato tiene inglés perfecto.",
+      speaker: "tito",
       lines: [
-        { speaker: "ana", text: "I correct every mistake immediately. Students need discipline.", es: "«Corrijo cada error de inmediato. Los estudiantes necesitan disciplina»." },
+        { speaker: "tito", text: "I correct every mistake immediately. Students need discipline.", es: "«Corrijo cada error de inmediato. Los estudiantes necesitan disciplina»." },
         { speaker: "vale", text: "And when they stop speaking?", es: "«¿Y cuando dejan de hablar?»" },
-        { speaker: "ana", text: "Then they study more at home.", es: "«Entonces estudian más en casa»." },
+        { speaker: "tito", text: "Then they study more at home.", es: "«Entonces estudian más en casa»." },
       ],
       words: [
         { word: "correct", es: "corregir" },
@@ -101,8 +101,8 @@ export const EAGLES_EP15_A_GREAT_TEACHER: StorybookEpisode = {
       es: "La puerta se cierra. Camila habla primero.",
       speaker: "camila",
       lines: [
-        { speaker: "camila", text: "Her English is better than mine.", es: "«Su inglés es mejor que el mío»." },
-        { speaker: "vale", text: "And she makes people quiet. We sell the opposite.", es: "«Y hace que la gente se calle. Nosotros vendemos lo contrario»." },
+        { speaker: "camila", text: "His English is better than mine.", es: "«Su inglés es mejor que el mío»." },
+        { speaker: "vale", text: "And he makes people quiet. We sell the opposite.", es: "«Y hace que la gente se calle. Nosotros vendemos lo contrario»." },
         { speaker: "camila", text: "So a great teacher is not the person with the best English.", es: "«Entonces una gran maestra no es la persona con el mejor inglés»." },
       ],
       words: [
