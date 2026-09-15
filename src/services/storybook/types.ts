@@ -121,6 +121,8 @@ export type StorybookEpisode = {
   mindsetCard?: StorybookMindsetCard;
   /** Optional positive-habit micro-lesson modeled by a character. */
   habitCard?: StorybookHabitCard;
+  /** Max seconds for the final monologue recording. Defaults to 15. */
+  finaleSeconds?: number;
   /** Final "continúa la historia" prompt. */
   continuePrompt: { en: string; es: string };
   /** Week-1 chunks the learner reuses in their own version. */
