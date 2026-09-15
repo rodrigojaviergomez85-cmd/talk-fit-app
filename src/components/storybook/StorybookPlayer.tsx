@@ -350,6 +350,13 @@ export function StorybookPlayer({
               onSaid={() => setStars((s) => s + 1)}
             />
           ) : null}
+          {slide.kind === "natives" && episode.expressions?.length ? (
+            <NativesSlide
+              expressions={episode.expressions}
+              es={es}
+              onSaid={() => setStars((s) => s + 1)}
+            />
+          ) : null}
           {slide.kind === "quiz" ? (
             <QuizSlide
               quiz={slide.quiz}
