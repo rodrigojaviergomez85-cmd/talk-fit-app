@@ -129,8 +129,8 @@ export const TIGERS_EP2_WHAT_COULD_HAPPEN: StorybookEpisode = {
       words: [
         { word: "leave", es: "irse" },
         { word: "shiny", es: "brillante" },
-        { speaker: undefined, word: "lower", es: "más bajos" } as never,
-      ].map(({ word, es }) => ({ word, es })),
+        { word: "lower", es: "más bajos" },
+      ],
     },
     {
       id: "s6",
