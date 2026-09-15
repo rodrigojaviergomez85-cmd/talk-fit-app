@@ -33,4 +33,5 @@
 - [x] Prueba `tigers-consistency.test.ts` que bloquea imágenes de relleno; 53 pruebas verdes y tipos en orden
 
 ## Siguiente
-- [ ] Temporada 8 (Sharks), 9-11 (Advanced 1-3)
+- [x] Temporada 8 (Sharks) episodio 1 piloto B2 — "Tell the story" (día 1), arte 768px, glosario, tests
+- [ ] Temporada 8 (Sharks) episodios 2-20; temporadas 9-11 (Advanced 1-3)
