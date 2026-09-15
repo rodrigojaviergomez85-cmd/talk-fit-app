@@ -1,4 +1,4 @@
--- Manual verification of log_ai_call atomicity and idempotency.
+-- Manual verification of log_ai_call atomicity, idempotency, and prune accounting.
 -- NOT a migration. Run by hand in the SQL editor as an admin.
 -- Cleans up after itself (rolls back at the end).
 
@@ -54,5 +54,52 @@ BEGIN
   RAISE NOTICE 'OK: cache hit incremented only cache_hits';
 END;
 $outer$;
+
+-- Prune must count quota denials correctly when it recreates a missing rollup row.
+DO $denialprune$
+DECLARE
+  _id uuid := gen_random_uuid();
+  _uid uuid := gen_random_uuid();
+  _endpoint text := 'test-denial-prune-' || _id;
+  _model text := 'whisper-large-v3-turbo';
+  _old_day date := ((now() - interval '2 days') AT TIME ZONE 'UTC')::date;
+  _rows integer;
+  _calls integer;
+  _failures integer;
+  _denials integer;
+BEGIN
+  INSERT INTO public.ai_call_log
+    (id, created_at, user_id, endpoint, provider, model, day,
+     audio_seconds, billed_audio_seconds, input_tokens, output_tokens, characters,
+     ok, error_code, latency_ms, est_cost_usd)
+  VALUES
+    (gen_random_uuid(), now() - interval '2 days', _uid, _endpoint, 'none', _model, NULL,
+     NULL, 0, NULL, NULL, NULL, false, 'quota', NULL, 0),
+    (gen_random_uuid(), now() - interval '2 days', _uid, _endpoint, 'none', _model, NULL,
+     NULL, 0, NULL, NULL, NULL, false, 'quota', NULL, 0),
+    (gen_random_uuid(), now() - interval '2 days', _uid, _endpoint, 'none', _model, NULL,
+     NULL, 0, NULL, NULL, NULL, false, 'quota', NULL, 0);
+
+  SELECT count(*) INTO _rows
+  FROM public.ai_daily_rollup
+  WHERE day = _old_day AND endpoint = _endpoint AND model = _model;
+  IF _rows <> 0 THEN RAISE EXCEPTION 'FAIL: rollup row already exists for denial test'; END IF;
+
+  PERFORM public.prune_ai_call_log(1);
+
+  SELECT calls, failures, denials INTO _calls, _failures, _denials
+  FROM public.ai_daily_rollup
+  WHERE day = _old_day AND endpoint = _endpoint AND model = _model;
+
+  IF _calls IS NULL OR _failures IS NULL OR _denials IS NULL THEN
+    RAISE EXCEPTION 'FAIL: rollup row not created after prune';
+  END IF;
+  IF _calls <> 0 THEN RAISE EXCEPTION 'FAIL: denials counted as calls: %', _calls; END IF;
+  IF _failures <> 0 THEN RAISE EXCEPTION 'FAIL: denials counted as failures: %', _failures; END IF;
+  IF _denials <> 3 THEN RAISE EXCEPTION 'FAIL: expected 3 denials, found %', _denials; END IF;
+
+  RAISE NOTICE 'OK: prune recreated rollup with calls=0 failures=0 denials=3';
+END;
+$denialprune$;
 
 ROLLBACK;
