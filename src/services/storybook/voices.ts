@@ -27,6 +27,7 @@ export function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice 
   if (speaker === "bryan") return "male";
   if (speaker === "sofia") return "femaleBright";
   if (speaker === "herrera") return "boss";
+  if (speaker === "reed") return "boss";
   return "neutral";
 }
 
