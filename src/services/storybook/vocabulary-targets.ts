@@ -37,7 +37,7 @@ export const EPISODE_VOCAB_BUDGET: Record<string, string[]> = {
   ],
   "sharks-ep13-the-hard-negotiation": [
     "verdict", "harsh", "demotion", "punishment", "preparation", "potential",
-    "insulted", "attendance", "complaints", "deserves", "contract",
+    "insulted", "attendance", "feedback", "deserves", "contract",
     "point out", "step up", "give him a fair shot", "support", "truth",
   ],
   "sharks-ep14-losing-a-client": [
