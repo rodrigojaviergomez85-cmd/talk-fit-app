@@ -953,6 +953,8 @@ export const PROPER_NOUNS: Record<string, string> = {
   northline: "Northline (nombre de la empresa)",
   english: "inglés (el idioma)",
   spanish: "español (el idioma)",
+  dallas: "Dallas (ciudad de Texas)",
+  florida: "Florida (estado de EE. UU.)",
 };
 
 /** Contractions keep their apostrophe after normalizeWord. */
