@@ -61,7 +61,12 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     look: "medium-brown / light-medium tan skin, short curly black hair, clean-shaven, no glasses, adult proportions",
     outfit: "light blue shirt",
     seasons: ["past-stories", "mixed-tenses", "eagles-week-1", "tigers", "sharks"],
-    neverDo: ["Dani is male — never a woman", "never drawn as a child", "never dark-brown skin"],
+    neverDo: [
+      "Dani is male — never a woman",
+      "always he/him — never she/her",
+      "never drawn as a child",
+      "never dark-brown skin",
+    ],
   },
   camila: {
     id: "camila",

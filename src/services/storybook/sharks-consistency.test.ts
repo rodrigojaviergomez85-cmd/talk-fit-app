@@ -17,7 +17,6 @@ const ALLOWED_SPEAKERS = new Set([
   "lucia",
   "renata",
   "tito",
-  "student",
 ]);
 
 describe("Sharks Episode 1 consistency", () => {
@@ -73,6 +72,22 @@ describe("Sharks Episodes 3–10 B2 safeguards", () => {
   it("keeps Mateo out and uses 45-second checkpoints only on Days 5 and 10", () => {
     for (const episode of episodes) expect(JSON.stringify(episode).toLowerCase()).not.toContain("mateo");
     expect(episodes.map((episode) => episode.finaleSeconds)).toEqual([30, 30, 45, 30, 30, 30, 30, 45]);
+  });
+
+  it("keeps every scene speaker inside its declared canonical cast", () => {
+    for (const episode of episodes) {
+      for (const scene of episode.scenes) {
+        expect(scene.cast, `${episode.id}/${scene.id} must declare its cast`).toBeDefined();
+        if (scene.speaker && scene.speaker !== "narrator") {
+          expect(scene.cast, `${episode.id}/${scene.id} must draw ${scene.speaker}`).toContain(scene.speaker);
+        }
+        for (const line of scene.lines ?? []) {
+          if (line.speaker !== "narrator") {
+            expect(scene.cast, `${episode.id}/${scene.id} must draw ${line.speaker}`).toContain(line.speaker);
+          }
+        }
+      }
+    }
   });
 });
 
