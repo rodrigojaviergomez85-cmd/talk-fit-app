@@ -48,6 +48,13 @@ Advanced 1–3 arrancan con Dani como candidato y Vale como mentora: él aprende
 5. Los "Say It" responden la pregunta que se hace, con ejemplo coherente.
 6. Cast según el canon: Vale, Dani, Camila, Renata, Lucía, Mr. Reed, Don Tito. Mateo no aparece en Sharks.
 7. Cada episodio arranca retomando el final del anterior.
+8. Vocabulario: mínimo 15 unidades nuevas por episodio (palabras o expresiones que no aparecían antes en el curso), elegidas para nivel B1–B2, más reciclaje de 10–20 unidades de episodios anteriores dentro del diálogo.
+
+## Meta de vocabulario (3,500 palabras activas)
+- Hoy: 4,214 familias distintas en todo el curso; 3,033 aparecen al menos 2 veces; 1,930 con 5+ repeticiones.
+- Las 12 reescrituras de Sharks (9–20) deben aportar ~180 unidades nuevas y reciclar las existentes.
+- Advanced 1–3 deberá aportar ~15 unidades nuevas por episodio (~900 en 60 episodios) con reciclaje planificado; se detallará en el plan de Advanced.
+- Después de cada bloque, una prueba automática verifica el presupuesto de vocabulario nuevo y el reciclaje por episodio.
 
 ## Cómo lo voy a hacer
 1. Reescribir los episodios 9 y 10 con la trama nueva.
