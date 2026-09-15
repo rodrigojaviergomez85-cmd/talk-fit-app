@@ -12,7 +12,7 @@ import { buildSayItHint, buildSayItStartHint } from "@/lib/story-say-match";
 import { isStoryAdvanceLocked } from "@/lib/storybook-advance";
 import { AudioService } from "@/services/audio-service";
 import { supabase } from "@/integrations/supabase/client";
-import { getSeason } from "@/services/storybook";
+import { getSeason, getNextProducedEpisodeId } from "@/services/storybook";
 import { speakerVoice, speakerTone, speakerName } from "@/services/storybook/voices";
 import { speakDialogue, startDialogue, type DialogueController } from "@/services/storybook/dialogue-audio";
 import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
@@ -71,6 +71,7 @@ export function StorybookPlayer({
   const navigate = useNavigate();
   const slides = useMemo(() => buildSlides(episode), [episode]);
   const coverBack = onCoverBack ?? (() => navigate({ to: "/natural-method/audiobooks" }));
+  const nextEpisodeId = useMemo(() => getNextProducedEpisodeId(episode.id), [episode.id]);
   const episodeGlossary = useMemo(() => buildEpisodeGlossary(episode), [episode]);
   // Leaving the episode keeps the scene the learner was on.
   const posKey = `sb-pos-${episode.id}`;
@@ -395,6 +396,19 @@ export function StorybookPlayer({
                 className="inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-[14px] font-bold uppercase tracking-[0.1em] text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none disabled:active:scale-100"
               >
                 {es ? "Siguiente" : "Next"} <ArrowRight className="size-4" />
+              </button>
+            ) : nextEpisodeId ? (
+              <button
+                type="button"
+                onClick={() =>
+                  navigate({
+                    to: "/natural-method/cuento/$storyId",
+                    params: { storyId: nextEpisodeId },
+                  })
+                }
+                className="inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-[13px] font-bold uppercase tracking-[0.1em] text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98]"
+              >
+                {es ? "Siguiente episodio" : "Next episode"} <ArrowRight className="size-4" />
               </button>
             ) : null}
           </div>

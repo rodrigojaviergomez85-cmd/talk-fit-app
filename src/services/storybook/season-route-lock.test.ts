@@ -1,6 +1,12 @@
 import { describe, it, expect } from "vitest";
 import type { JourneyState, ModuleId } from "@/lib/types";
-import { isDayUnlocked, isSeasonUnlocked, unlockedDayInModule } from "./seasons";
+import {
+  isDayUnlocked,
+  isSeasonUnlocked,
+  unlockedDayInModule,
+  getNextProducedEpisodeId,
+  STORYBOOK_SEASONS,
+} from "./seasons";
 
 function makeState(completed: Partial<Record<ModuleId, number>>): JourneyState {
   const days: JourneyState["days"] = {};
@@ -21,42 +27,42 @@ function makeState(completed: Partial<Record<ModuleId, number>>): JourneyState {
   return { days, streakDays: 0, totalRepsCompleted: 0, totalSpeakingSeconds: 0, weekSeconds: {} };
 }
 
-describe("story unlocking follows the official route", () => {
-  it("keeps future seasons fully locked", () => {
+describe("the story catalogue is open to every learner", () => {
+  it("opens future seasons too", () => {
     const state = makeState({ "basic-zero": 3 });
-    expect(isSeasonUnlocked(state, "mixed-tenses")).toBe(false);
-    expect(isDayUnlocked(state, "mixed-tenses", 1)).toBe(false);
-    expect(unlockedDayInModule(state, "mixed-tenses")).toBe(0);
+    expect(isSeasonUnlocked(state, "mixed-tenses")).toBe(true);
+    expect(isDayUnlocked(state, "mixed-tenses", 1)).toBe(true);
+    expect(unlockedDayInModule(state, "mixed-tenses")).toBeGreaterThan(0);
   });
 
-  it("opens the current season only up to the day the learner reached", () => {
+  it("keeps every episode of the current season open", () => {
     const state = makeState({ "basic-zero": 3 });
-    expect(isDayUnlocked(state, "basic-zero", 3)).toBe(true);
-    expect(isDayUnlocked(state, "basic-zero", 4)).toBe(true);
-    expect(isDayUnlocked(state, "basic-zero", 5)).toBe(false);
-  });
-
-  it("keeps only the last three episodes open for review", () => {
-    const state = makeState({ "basic-zero": 10 });
-    expect(isDayUnlocked(state, "basic-zero", 11)).toBe(true);
-    expect(isDayUnlocked(state, "basic-zero", 10)).toBe(true);
-    expect(isDayUnlocked(state, "basic-zero", 8)).toBe(true);
-    expect(isDayUnlocked(state, "basic-zero", 7)).toBe(false);
-    expect(isDayUnlocked(state, "basic-zero", 1)).toBe(false);
-  });
-
-  it("lets the review window cross back into the finished season", () => {
-    const state = makeState({ "basic-zero": 20, "simple-future": 2 });
-    expect(isDayUnlocked(state, "simple-future", 3)).toBe(true);
-    expect(isDayUnlocked(state, "simple-future", 4)).toBe(false);
-    expect(isSeasonUnlocked(state, "simple-future")).toBe(true);
+    expect(isDayUnlocked(state, "basic-zero", 1)).toBe(true);
+    expect(isDayUnlocked(state, "basic-zero", 5)).toBe(true);
     expect(isDayUnlocked(state, "basic-zero", 20)).toBe(true);
-    expect(isDayUnlocked(state, "basic-zero", 16)).toBe(false);
   });
 
-  it("opens only the first episode for a brand new learner", () => {
+  it("never closes old episodes behind the learner", () => {
+    const state = makeState({ "basic-zero": 20, "simple-future": 2 });
+    expect(isDayUnlocked(state, "basic-zero", 1)).toBe(true);
+    expect(isDayUnlocked(state, "simple-future", 20)).toBe(true);
+  });
+
+  it("opens everything for a brand new learner", () => {
     const state = makeState({});
     expect(isDayUnlocked(state, "basic-zero", 1)).toBe(true);
-    expect(isDayUnlocked(state, "basic-zero", 2)).toBe(false);
+    expect(isDayUnlocked(state, "basic-zero", 2)).toBe(true);
+  });
+
+  it("rejects days that do not exist in a season", () => {
+    const state = makeState({});
+    expect(isDayUnlocked(state, "basic-zero", 99)).toBe(false);
+  });
+
+  it("chains to the next produced episode across seasons", () => {
+    const last = STORYBOOK_SEASONS[0]!.slots.filter((s) => s.episodeId).at(-1)!;
+    const next = getNextProducedEpisodeId(last.episodeId!);
+    expect(next).toBeTruthy();
+    expect(next).not.toBe(last.episodeId);
   });
 });
