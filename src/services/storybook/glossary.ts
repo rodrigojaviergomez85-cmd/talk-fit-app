@@ -1484,6 +1484,9 @@ export function normalizeWord(word: string): string {
 /** All curated words of an episode (every scene + review words), lowercased. */
 export function buildEpisodeGlossary(episode: StorybookEpisode): Map<string, string> {
   const map = new Map<string, string>();
+  // Global phrasal verbs / idioms first: the episode's own words and
+  // expressions below can always override them.
+  for (const [phrase, es] of globalExpressionMap()) map.set(phrase, es);
   for (const w of episode.reviewWords ?? []) map.set(normalizeWord(w.word), w.es);
   for (const scene of episode.scenes) {
     for (const w of scene.words) map.set(normalizeWord(w.word), w.es);
