@@ -550,7 +550,11 @@ function TappableText({
   onCloseWord?: () => void;
 }) {
   const [open, setOpen] = useState<string | null>(null);
-  const tokens = tokenizeWordsForDisplay(text);
+  const expressionPhrases = useMemo(
+    () => [...episodeGlossary.keys()].filter((entry) => entry.includes(" ")),
+    [episodeGlossary],
+  );
+  const tokens = tokenizeWordsForDisplay(text, expressionPhrases);
   const result = open ? lookupWord(open, { scene, episodeGlossary }) : null;
   const close = () => {
     setOpen(null);

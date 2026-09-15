@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { buildEpisodeGlossary, lookupWord, normalizeWord } from "./glossary";
 import { VALE_FIRST_DAY } from "./vale-first-day";
 import { STORYBOOK_EPISODES } from "./index";
+import { SHARKS_EP2_GUATEMALA_SEVEN_AM } from "./sharks-ep2-guatemala-seven-am";
 
 
 describe("storybook glossary", () => {
@@ -43,6 +44,23 @@ describe("storybook glossary", () => {
     expect(lookupWord("terrified").meaning).toBeTruthy();
     expect(lookupWord("8:57").meaning).toBeTruthy();
     expect(lookupWord("B").meaning).toBeTruthy();
+  });
+
+  it("uses one contextual meaning for complete expressions and their variants", () => {
+    const sharksGlossary = buildEpisodeGlossary(SHARKS_EP2_GUATEMALA_SEVEN_AM);
+
+    expect(lookupWord("back out", { episodeGlossary: sharksGlossary })).toEqual({
+      meaning: "echarse para atrás / retractarse",
+      curated: true,
+    });
+    expect(lookupWord("showed up", { episodeGlossary: sharksGlossary })).toEqual({
+      meaning: "presentarse / aparecer",
+      curated: true,
+    });
+    expect(lookupWord("the bottom line", { episodeGlossary: sharksGlossary })).toEqual({
+      meaning: "lo esencial / la conclusión final",
+      curated: true,
+    });
   });
 });
 

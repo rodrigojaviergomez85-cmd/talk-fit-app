@@ -88,13 +88,49 @@ export function tokenizeWords(text: string): Array<{ value: string; isWord: bool
 export type DisplayWordToken = {
   value: string;
   isWord: boolean;
+  /** A multi-word expression that must remain one tappable unit. */
+  isExpression?: boolean;
   /** Closing punctuation rendered beside the word so it cannot wrap alone. */
   suffix?: string;
 };
 
-/** Keep closing punctuation attached to its preceding tappable word. */
-export function tokenizeWordsForDisplay(text: string): DisplayWordToken[] {
-  const tokens = tokenizeWords(text);
+function phraseTokens(text: string, expressions: string[]): DisplayWordToken[] {
+  const phrases = [...new Set(expressions.map((phrase) => phrase.trim()).filter((phrase) => phrase.includes(" ")))]
+    .sort((a, b) => b.length - a.length);
+  if (phrases.length === 0) return tokenizeWords(text);
+
+  const lower = text.toLowerCase();
+  const tokens: DisplayWordToken[] = [];
+  let plainStart = 0;
+  let cursor = 0;
+
+  while (cursor < text.length) {
+    const phrase = phrases.find((candidate) => {
+      const normalized = candidate.toLowerCase();
+      if (!lower.startsWith(normalized, cursor)) return false;
+      const before = cursor === 0 ? "" : text[cursor - 1] ?? "";
+      const after = text[cursor + candidate.length] ?? "";
+      return !/[A-Za-z']/.test(before) && !/[A-Za-z']/.test(after);
+    });
+
+    if (!phrase) {
+      cursor += 1;
+      continue;
+    }
+
+    if (cursor > plainStart) tokens.push(...tokenizeWords(text.slice(plainStart, cursor)));
+    tokens.push({ value: text.slice(cursor, cursor + phrase.length), isWord: true, isExpression: true });
+    cursor += phrase.length;
+    plainStart = cursor;
+  }
+
+  if (plainStart < text.length) tokens.push(...tokenizeWords(text.slice(plainStart)));
+  return tokens;
+}
+
+/** Keep multi-word expressions whole and closing punctuation attached. */
+export function tokenizeWordsForDisplay(text: string, expressions: string[] = []): DisplayWordToken[] {
+  const tokens = phraseTokens(text, expressions);
   const display: DisplayWordToken[] = [];
 
   for (let i = 0; i < tokens.length; i += 1) {

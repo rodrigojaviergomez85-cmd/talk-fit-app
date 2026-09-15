@@ -329,6 +329,7 @@ export const SHARKS_EP2_GUATEMALA_SEVEN_AM: StorybookEpisode = {
   expressions: [
     {
       phrase: "show up",
+      variants: ["showed up"],
       es: "presentarse / aparecer",
       kind: "phrasal",
       example: "Either way, you showed up. Most people never even get on the bus.",
