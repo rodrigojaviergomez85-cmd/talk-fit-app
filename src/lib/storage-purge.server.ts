@@ -287,16 +287,17 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
         result.finalsTruncated = true;
         break finals;
       }
-      const base = row.recording_path!;
-      const latest = base.replace(/\.([a-z0-9]+)$/i, "-latest.$1");
-      if (!pathBelongsTo(row.user_id, base) || !pathBelongsTo(row.user_id, latest)) {
+      // One row = ONE file. The `-latest` object is never derived from the
+      // base path any more: it arrives as its own row with its own clock.
+      const path = row.recording_path!;
+      if (!pathBelongsTo(row.user_id, path)) {
         errors.push(
           `OWNERSHIP MISMATCH: day final ${row.module_id} day ${row.day} path does not belong to user ${row.user_id}`,
         );
         continue;
       }
       try {
-        const { error: removeError } = await timed(admin.storage.from(BUCKET).remove([base, latest]), "storage.remove");
+        const { error: removeError } = await timed(admin.storage.from(BUCKET).remove([path]), "storage.remove");
         if (removeError) throw new Error(removeError.message);
       } catch (err) {
         errors.push(`day final remove failed: ${message(err)}`);
@@ -309,10 +310,14 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
         break finals;
       }
       try {
+        const stamp =
+          row.which === "latest"
+            ? { latest_purged_at: now.toISOString() }
+            : { recording_purged_at: now.toISOString() };
         const { error: markError } = await timed(
           admin
             .from("day_progress")
-            .update({ recording_purged_at: now.toISOString() })
+            .update(stamp)
             .eq("user_id", row.user_id)
             .eq("module_id", row.module_id)
             .eq("day", row.day),
@@ -323,6 +328,7 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
         errors.push(`day final mark failed: ${message(err)}`);
         continue;
       }
+
       result.dayFinalMarkedRows += 1;
       progressed = true;
       finalsHandled += 1;
