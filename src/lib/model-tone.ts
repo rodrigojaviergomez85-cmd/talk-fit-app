@@ -14,8 +14,9 @@ import type { RolePlayTurn } from "@/lib/types";
  *  - earnest:  sincere, motivated teenage student (storybook characters like Dani)
  *  - warm:     calm, affectionate mother around 45 (storybook characters like Vale's mom)
  *  - pro:      confident American corporate professional, sitcom-real conversational delivery
+ *  - sly:      aggressive, smooth-talking rival salesman with a suspicious edge (BigTalk's Bryan)
  */
-export type ModelTone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy" | "earnest" | "warm" | "pro";
+export type ModelTone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy" | "earnest" | "warm" | "pro" | "sly";
 
 const AUTHORITY = /recruiter|reclutador|interviewer|entrevistador|manager|gerente|hiring|hr\b/i;
 const CUSTOMER = /customer|cliente|caller/i;
