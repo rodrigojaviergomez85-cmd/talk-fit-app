@@ -16,35 +16,39 @@ export const SHARKS_EP13_THE_HARD_NEGOTIATION: StorybookEpisode = {
   "id": "sharks-ep13-the-hard-negotiation",
   "moduleId": "sharks",
   "week": 3,
-  "title": "The hard negotiation",
-  "titleEs": "La negociación dura",
+  "title": "The hard conversation",
+  "titleEs": "La conversación difícil",
   "episodeLabel": {
     "en": "Season 8 · Episode 13",
     "es": "Temporada 8 · Episodio 13"
   },
   "previously": [
     {
-      "en": "Renata wants the school. She also wants a better price.",
-      "es": "Renata quiere la escuela. También quiere un mejor precio."
+      "en": "The numbers revealed the truth: Marco's group is two months behind and parents are complaining.",
+      "es": "Los números revelaron la verdad: el grupo de Marco está dos meses atrás y los padres se están quejando."
+    },
+    {
+      "en": "Vale accepted the hardest task: telling Marco herself, with respect and a plan.",
+      "es": "Vale aceptó la tarea más difícil: decírselo a Marco ella misma, con respeto y con un plan."
     }
   ],
   "reviewWords": [
     {
-      "word": "contract",
-      "es": "contrato"
+      "word": "attendance",
+      "es": "asistencia"
     },
     {
-      "word": "discount",
-      "es": "descuento"
+      "word": "complaints",
+      "es": "quejas"
     },
     {
-      "word": "terms",
-      "es": "condiciones"
+      "word": "deserves",
+      "es": "merece"
     }
   ],
   "blurb": {
-    "en": "Your price is high. Give me a thirty percent discount or I walk away. But my lawyer reads every clause first.",
-    "es": "Su precio es alto. Deme treinta por ciento de descuento o me retiro. Pero mi abogado lee cada cláusula primero."
+    "en": "Marco trained half the academy, but his students are falling behind. Vale must tell a beloved teacher he is not ready to lead — and Dani does not agree with the timing.",
+    "es": "Marco capacitó a media academia, pero sus estudiantes se están quedando atrás. Vale debe decirle a un maestro querido que no está listo para liderar, y Dani no está de acuerdo con el momento."
   },
   "cover": cover,
   "voice": "girl",
@@ -52,374 +56,492 @@ export const SHARKS_EP13_THE_HARD_NEGOTIATION: StorybookEpisode = {
     {
       "id": "s1",
       "image": s1,
-      "imageAlt": "Scene 1 of The hard negotiation.",
-      "text": "Your price is high. Give me a thirty percent discount or I walk away.",
-      "es": "Su precio es alto. Deme treinta por ciento de descuento o me retiro.",
-      "speaker": "renata",
-      "cast": [
-        "renata",
-        "vale"
-      ],
+      "imageAlt": "Dani finds Vale staring at Marco's report early in the morning.",
+      "text": "You have been staring at that page for ten minutes. It is Marco's report, isn't it.",
+      "es": "Llevas diez minutos mirando esa página. Es el informe de Marco, ¿verdad?",
+      "speaker": "dani",
+      "cast": ["dani", "vale"],
       "lines": [
         {
-          "speaker": "renata",
-          "text": "Your price is high. Give me a thirty percent discount or I walk away.",
-          "es": "Su precio es alto. Deme treinta por ciento de descuento o me retiro."
+          "speaker": "dani",
+          "text": "You have been staring at that page for ten minutes. It is Marco's report, isn't it.",
+          "es": "Llevas diez minutos mirando esa página. Es el informe de Marco, ¿verdad?"
+        },
+        {
+          "speaker": "vale",
+          "text": "Two months behind, three parents left harsh feedback, and his attendance keeps falling.",
+          "es": "Dos meses atrás, tres padres dejaron comentarios duros, y su asistencia sigue cayendo."
+        },
+        {
+          "speaker": "dani",
+          "text": "He also trained me, Camila, and half the academy. Numbers do not know that part.",
+          "es": "Él también nos capacitó a mí, a Camila y a media academia. Los números no saben esa parte."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "staring", "es": "mirando fijamente" },
+        { "word": "report", "es": "informe" },
+        { "word": "harsh", "es": "duros / severos" }
+      ]
     },
     {
       "id": "s2",
       "image": s2,
-      "imageAlt": "Scene 2 of The hard negotiation.",
-      "text": "I hear you. Your budget is your leverage, and my results are mine. Let us look at the terms before we talk about the price.",
-      "es": "La escucho. Su presupuesto es su ventaja, y mis resultados son la mía. Veamos las condiciones antes de hablar del precio.",
-      "speaker": "vale",
-      "cast": [
-        "vale",
-        "renata"
-      ],
+      "imageAlt": "Vale and Dani debate Marco's future beside the office window.",
+      "text": "Then let him. Give him a fair shot. One bad month is not a verdict.",
+      "es": "Entonces déjalo. Dale una oportunidad justa. Un mal mes no es un veredicto.",
+      "speaker": "dani",
+      "cast": ["vale", "dani"],
       "lines": [
         {
           "speaker": "vale",
-          "text": "I hear you. Your budget is your leverage, and my results are mine. Let us look at the terms before we talk about the price.",
-          "es": "La escucho. Su presupuesto es su ventaja, y mis resultados son la mía. Veamos las condiciones antes de hablar del precio."
+          "text": "I know his heart, Dani. That is exactly why this is hard. He wants to lead a group.",
+          "es": "Conozco su corazón, Dani. Es exactamente por eso que esto es difícil. Él quiere liderar un grupo."
+        },
+        {
+          "speaker": "dani",
+          "text": "Then let him. Give him a fair shot. One bad month is not a verdict.",
+          "es": "Entonces déjalo. Dale una oportunidad justa. Un mal mes no es un veredicto."
+        },
+        {
+          "speaker": "vale",
+          "text": "Two bad months, and twelve kids paying for it with their Saturdays.",
+          "es": "Dos meses malos, y doce niños pagándolo con sus sábados."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "heart", "es": "corazón" },
+        { "word": "a fair shot", "es": "una oportunidad justa" },
+        { "word": "verdict", "es": "veredicto" }
+      ]
     },
     {
       "id": "s3",
       "image": s3,
-      "imageAlt": "Scene 3 of The hard negotiation.",
-      "text": "The exclusive clause is the problem. I cannot sign that for three years.",
-      "es": "La cláusula de exclusividad es el problema. No puedo firmar eso por tres años.",
-      "speaker": "renata",
-      "cast": [
-        "renata",
-        "vale"
-      ],
+      "imageAlt": "Camila joins the debate and points out that both are defending different things.",
+      "text": "May I point out something? You are both defending Marco. You just defend different things.",
+      "es": "¿Puedo señalar algo? Los dos están defendiendo a Marco. Solo defienden cosas distintas.",
+      "speaker": "camila",
+      "cast": ["camila", "vale", "dani"],
       "lines": [
         {
-          "speaker": "renata",
-          "text": "The exclusive clause is the problem. I cannot sign that for three years.",
-          "es": "La cláusula de exclusividad es el problema. No puedo firmar eso por tres años."
+          "speaker": "camila",
+          "text": "May I point out something? You are both defending Marco. You just defend different things.",
+          "es": "¿Puedo señalar algo? Los dos están defendiendo a Marco. Solo defienden cosas distintas."
+        },
+        {
+          "speaker": "vale",
+          "text": "Explain that.",
+          "es": "Explica eso."
+        },
+        {
+          "speaker": "camila",
+          "text": "Dani defends Marco's feelings. You defend his students. Both are love, different directions.",
+          "es": "Dani defiende los sentimientos de Marco. Tú defiendes a sus estudiantes. Ambos son cariño, en direcciones distintas."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "point out", "es": "señalar" },
+        { "word": "defending", "es": "defendiendo" },
+        { "word": "directions", "es": "direcciones" }
+      ]
     },
     {
       "id": "s4",
       "image": s4,
-      "imageAlt": "Scene 4 of The hard negotiation.",
-      "text": "Then we change the clause to one year with automatic renewal. That is a real concession.",
-      "es": "Entonces cambiamos la cláusula a un año con renovación automática. Esa es una concesión real.",
+      "imageAlt": "Dani warns about the team's fear while Vale explains the co-teaching plan.",
+      "text": "I am not removing him. I am moving him back to co-teaching, with training, paid the same.",
+      "es": "No lo estoy despidiendo. Lo regreso a co-enseñanza, con capacitación, con el mismo sueldo.",
       "speaker": "vale",
-      "cast": [
-        "vale",
-        "dani"
-      ],
+      "cast": ["dani", "vale"],
       "lines": [
         {
+          "speaker": "dani",
+          "text": "If you remove him, the other teachers will be afraid to make any mistake.",
+          "es": "Si lo quitas, los otros maestros tendrán miedo de cometer cualquier error."
+        },
+        {
           "speaker": "vale",
-          "text": "Then we change the clause to one year with automatic renewal. That is a real concession.",
-          "es": "Entonces cambiamos la cláusula a un año con renovación automática. Esa es una concesión real."
+          "text": "I am not removing him. I am moving him back to co-teaching, with training, paid the same.",
+          "es": "No lo estoy despidiendo. Lo regreso a co-enseñanza, con capacitación, con el mismo sueldo."
+        },
+        {
+          "speaker": "dani",
+          "text": "Co-teaching. So he keeps his salary, loses the title. He will still feel it like a demotion.",
+          "es": "Co-enseñanza. O sea que conserva su salario, pierde el título. Igual lo va a sentir como una degradación."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "remove", "es": "quitar del puesto" },
+        { "word": "co-teaching", "es": "co-enseñanza (enseñar acompañado)" },
+        { "word": "demotion", "es": "degradación de puesto" }
+      ]
     },
     {
       "id": "s5",
       "image": s5,
-      "imageAlt": "Scene 5 of The hard negotiation.",
-      "text": "And a deposit of twenty percent protects both sides if the start is delayed.",
-      "es": "Y un depósito del veinte por ciento protege a ambas partes si el inicio se atrasa.",
-      "speaker": "dani",
-      "cast": [
-        "dani",
-        "renata"
-      ],
+      "imageAlt": "Vale practices the exact words she will use with Marco, notebook in hand.",
+      "text": "Then I will say it honestly: this is not punishment, it is preparation. He is not ready yet.",
+      "es": "Entonces lo diré honestamente: esto no es un castigo, es preparación. Todavía no está listo.",
+      "speaker": "vale",
+      "cast": ["vale", "dani"],
       "lines": [
         {
+          "speaker": "vale",
+          "text": "Then I will say it honestly: this is not punishment, it is preparation. He is not ready yet.",
+          "es": "Entonces lo diré honestamente: esto no es un castigo, es preparación. Todavía no está listo."
+        },
+        {
           "speaker": "dani",
-          "text": "And a deposit of twenty percent protects both sides if the start is delayed.",
-          "es": "Y un depósito del veinte por ciento protege a ambas partes si el inicio se atrasa."
+          "text": "Not ready yet. Those three words matter more than all the others.",
+          "es": "Todavía no está listo. Esas tres palabras importan más que todas las demás."
+        },
+        {
+          "speaker": "vale",
+          "text": "And I will offer him a path: eight weeks, clear goals, my own Saturdays included.",
+          "es": "Y le ofreceré un camino: ocho semanas, metas claras, mis propios sábados incluidos."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "punishment", "es": "castigo" },
+        { "word": "preparation", "es": "preparación" },
+        { "word": "path", "es": "camino" }
+      ]
     },
     {
       "id": "s6",
       "image": s6,
-      "imageAlt": "Scene 6 of The hard negotiation.",
-      "text": "You drive a hard bargain for someone who wants my signature this week.",
-      "es": "Usted negocia duro para alguien que quiere mi firma esta semana.",
-      "speaker": "renata",
-      "cast": [
-        "renata",
-        "vale"
-      ],
+      "imageAlt": "Camila raises the risk that Marco feels insulted and quits.",
+      "text": "He has real potential. But what if he feels insulted and quits anyway?",
+      "es": "Tiene potencial real. ¿Pero qué pasa si se siente ofendido y renuncia de todos modos?",
+      "speaker": "camila",
+      "cast": ["camila", "vale", "dani"],
       "lines": [
         {
-          "speaker": "renata",
-          "text": "You drive a hard bargain for someone who wants my signature this week.",
-          "es": "Usted negocia duro para alguien que quiere mi firma esta semana."
+          "speaker": "camila",
+          "text": "He has real potential. But what if he feels insulted and quits anyway?",
+          "es": "Tiene potencial real. ¿Pero qué pasa si se siente ofendido y renuncia de todos modos?"
+        },
+        {
+          "speaker": "vale",
+          "text": "Then I will listen, and I will still choose the students. But I think he steps up.",
+          "es": "Entonces escucharé, y aun así elegiré a los estudiantes. Pero creo que él va a aceptar el reto."
+        },
+        {
+          "speaker": "dani",
+          "text": "You really believe that? After you tell him his group is the worst in the academy?",
+          "es": "¿De verdad lo crees? ¿Después de decirle que su grupo es el peor de la academia?"
         }
       ],
-      "words": []
+      "words": [
+        { "word": "potential", "es": "potencial" },
+        { "word": "insulted", "es": "ofendido" },
+        { "word": "steps up", "es": "acepta el reto" }
+      ]
     },
     {
       "id": "s7",
       "image": s7,
-      "imageAlt": "Scene 7 of The hard negotiation.",
-      "text": "I want a fair deal, not a fast one. A bad contract ends the relationship anyway.",
-      "es": "Quiero un trato justo, no rápido. Un mal contrato termina la relación de todos modos.",
+      "imageAlt": "Dani finally supports the decision even though he disagrees with the timing.",
+      "text": "I believe people rise when you respect them enough to tell them the truth.",
+      "es": "Creo que la gente se supera cuando la respetas lo suficiente para decirle la verdad.",
       "speaker": "vale",
-      "cast": [
-        "vale",
-        "renata"
-      ],
+      "cast": ["vale", "dani"],
       "lines": [
         {
           "speaker": "vale",
-          "text": "I want a fair deal, not a fast one. A bad contract ends the relationship anyway.",
-          "es": "Quiero un trato justo, no rápido. Un mal contrato termina la relación de todos modos."
+          "text": "I believe people rise when you respect them enough to tell them the truth.",
+          "es": "Creo que la gente se supera cuando la respetas lo suficiente para decirle la verdad."
+        },
+        {
+          "speaker": "dani",
+          "text": "Okay. I disagree with the timing, but I will support the decision. He is my friend too.",
+          "es": "Okay. No estoy de acuerdo con el momento, pero apoyaré la decisión. Él también es mi amigo."
+        },
+        {
+          "speaker": "vale",
+          "text": "Disagreeing and still helping — that is what a real team does, Dani.",
+          "es": "No estar de acuerdo y aun así ayudar — eso es lo que hace un equipo de verdad, Dani."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "rise", "es": "superarse" },
+        { "word": "truth", "es": "verdad" },
+        { "word": "support", "es": "apoyar" }
+      ]
     },
     {
       "id": "s8",
       "image": s8,
-      "imageAlt": "Scene 8 of The hard negotiation.",
-      "text": "Fifteen percent, then, and I want a deadline extension for the first payment.",
-      "es": "Quince por ciento, entonces, y quiero una prórroga para el primer pago.",
-      "speaker": "renata",
-      "cast": [
-        "renata",
-        "vale"
-      ],
+      "imageAlt": "Vale walks toward room two where Marco is finishing his class.",
+      "text": "No. But ready is not required — honest is. Wish me luck.",
+      "es": "No. Pero no se necesita estar lista — se necesita ser honesta. Deséenme suerte.",
+      "speaker": "vale",
+      "cast": ["camila", "vale", "dani"],
       "lines": [
         {
-          "speaker": "renata",
-          "text": "Fifteen percent, then, and I want a deadline extension for the first payment.",
-          "es": "Quince por ciento, entonces, y quiero una prórroga para el primer pago."
+          "speaker": "camila",
+          "text": "He is in room two, finishing his class. Are you ready?",
+          "es": "Está en la sala dos, terminando su clase. ¿Estás lista?"
+        },
+        {
+          "speaker": "vale",
+          "text": "No. But ready is not required — honest is. Wish me luck.",
+          "es": "No. Pero no se necesita estar lista — se necesita ser honesta. Deséenme suerte."
+        },
+        {
+          "speaker": "dani",
+          "text": "Hey. Tell him the good part first. There is a good part, right?",
+          "es": "Oye. Dile primero la parte buena. Hay una parte buena, ¿verdad?"
         }
       ],
-      "words": []
+      "words": [
+        { "word": "required", "es": "necesario" },
+        { "word": "luck", "es": "suerte" },
+        { "word": "the good part", "es": "la parte buena" }
+      ]
     },
     {
       "id": "s9",
       "image": s9,
-      "imageAlt": "Scene 9 of The hard negotiation.",
-      "text": "Twelve, with the extension. That is my last number and my honest one.",
-      "es": "Doce, con la prórroga. Ese es mi último número y es honesto.",
+      "imageAlt": "Vale returns to the office, tired but calm, and tells Dani and Camila how it went.",
+      "text": "He listened. He was angry for five minutes, quiet for ten, and then he asked about the plan.",
+      "es": "Él escuchó. Estuvo enojado cinco minutos, callado diez, y luego preguntó por el plan.",
       "speaker": "vale",
-      "cast": [
-        "vale",
-        "dani"
-      ],
+      "cast": ["vale", "dani"],
       "lines": [
         {
           "speaker": "vale",
-          "text": "Twelve, with the extension. That is my last number and my honest one.",
-          "es": "Doce, con la prórroga. Ese es mi último número y es honesto."
+          "text": "He listened. He was angry for five minutes, quiet for ten, and then he asked about the plan.",
+          "es": "Él escuchó. Estuvo enojado cinco minutos, callado diez, y luego preguntó por el plan."
+        },
+        {
+          "speaker": "dani",
+          "text": "He asked about the plan? That is Marco. Always building something.",
+          "es": "¿Preguntó por el plan? Ese es Marco. Siempre construyendo algo."
+        },
+        {
+          "speaker": "vale",
+          "text": "He starts co-teaching on Monday. And he asked me to thank you both for the honest numbers.",
+          "es": "Empieza la co-enseñanza el lunes. Y me pidió que les agradeciera a los dos los números honestos."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "angry", "es": "enojado" },
+        { "word": "quiet", "es": "callado" },
+        { "word": "thank", "es": "agradecer" }
+      ]
     },
     {
       "id": "s10",
       "image": s10,
-      "imageAlt": "Scene 10 of The hard negotiation.",
-      "text": "Should we hold off on the Guatemala start until this contract is signed?",
-      "es": "¿Deberíamos esperar con el inicio en Guatemala hasta que se firme este contrato?",
-      "speaker": "dani",
-      "cast": [
-        "dani",
-        "renata"
-      ],
+      "imageAlt": "Camila smiles in disbelief at how well the hardest conversation ended.",
+      "text": "People can carry hard news; they cannot carry feeling small.",
+      "es": "La gente puede cargar noticias duras; lo que no puede cargar es sentirse pequeña.",
+      "speaker": "vale",
+      "cast": ["camila", "vale", "dani"],
       "lines": [
         {
+          "speaker": "camila",
+          "text": "So the hardest conversation of the month ends with a thank-you. I did not see that coming.",
+          "es": "Así que la conversación más difícil del mes termina con un agradecimiento. No lo vi venir."
+        },
+        {
+          "speaker": "vale",
+          "text": "Respect does that. People can carry hard news; they cannot carry feeling small.",
+          "es": "El respeto hace eso. La gente puede cargar noticias duras; lo que no puede cargar es sentirse pequeña."
+        },
+        {
           "speaker": "dani",
-          "text": "Should we hold off on the Guatemala start until this contract is signed?",
-          "es": "¿Deberíamos esperar con el inicio en Guatemala hasta que se firme este contrato?"
+          "text": "Write that down, Camila. That sentence belongs on our wall.",
+          "es": "Escríbelo, Camila. Esa frase merece estar en nuestra pared."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "news", "es": "noticias" },
+        { "word": "carry", "es": "cargar / soportar" },
+        { "word": "belongs", "es": "merece estar / pertenece" }
+      ]
     },
     {
       "id": "s11",
       "image": s11,
-      "imageAlt": "Scene 11 of The hard negotiation.",
-      "text": "Do not hold off. Send the papers. But my lawyer reads every clause first.",
-      "es": "No esperen. Manden los papeles. Pero mi abogado lee cada cláusula primero.",
-      "speaker": "renata",
-      "cast": [
-        "renata"
-      ],
+      "imageAlt": "Camila reads a new email from the Northline office in San Miguel and her face changes.",
+      "text": "They are cancelling their contract. A competitor offered them half our price.",
+      "es": "Están cancelando su contrato. Un competidor les ofreció la mitad de nuestro precio.",
+      "speaker": "camila",
+      "cast": ["camila", "vale"],
       "lines": [
         {
-          "speaker": "renata",
-          "text": "Do not hold off. Send the papers. But my lawyer reads every clause first.",
-          "es": "No esperen. Manden los papeles. Pero mi abogado lee cada cláusula primero."
+          "speaker": "camila",
+          "text": "Vale, one more message. The Northline office in San Miguel just sent an email.",
+          "es": "Vale, un mensaje más. La oficina de Northline en San Miguel acaba de enviar un correo."
+        },
+        {
+          "speaker": "vale",
+          "text": "Read it to me, please. Slowly.",
+          "es": "Léemelo, por favor. Despacio."
+        },
+        {
+          "speaker": "camila",
+          "text": "They are cancelling their contract. A competitor offered them half our price.",
+          "es": "Están cancelando su contrato. Un competidor les ofreció la mitad de nuestro precio."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "cancelling", "es": "cancelando" },
+        { "word": "contract", "es": "contrato" },
+        { "word": "price", "es": "precio" }
+      ]
     }
   ],
   "quizzes": [
     {
       "id": "q1",
-      "afterScene": "s4",
-      "questionEn": "What concession does Vale offer?",
-      "questionEs": "¿Qué concesión ofrece Vale?",
+      "afterScene": "s3",
+      "questionEn": "What are Vale and Dani really debating?",
+      "questionEs": "¿Qué están debatiendo Vale y Dani en realidad?",
       "options": [
         {
-          "label": "Then we change the clause to one year with automatic renewal. That is a real concession.",
-          "emoji": "🎯"
+          "label": "Whether Marco is ready to lead a group.",
+          "emoji": "⚖️"
         },
         {
-          "label": "She cancels the contract.",
-          "emoji": "🛑"
+          "label": "Whether to buy new computers.",
+          "emoji": "💻"
         },
         {
-          "label": "She raises the price.",
-          "emoji": "❓"
+          "label": "Whether to cancel Saturday classes.",
+          "emoji": "📅"
         }
       ],
       "answer": 0,
-      "sayIt": "She changes the exclusive clause to one year.",
-      "sayItEs": "Ejemplo: «She changes the exclusive clause to one year.»",
-      "sayItAskEn": "What would you ask for in this negotiation?",
-      "sayItAskEs": "¿Qué pedirías tú en esta negociación?",
+      "sayIt": "I would give him a fair shot with clear goals.",
+      "sayItEs": "Ejemplo: «I would give him a fair shot with clear goals.»",
+      "sayItAskEn": "What would you do with Marco?",
+      "sayItAskEs": "¿Qué harías tú con Marco?",
       "sayItCheck": {
-        "target": "I would ask for *",
+        "target": "I would *",
         "altTargets": [
-          "I would negotiate *",
-          "First, I would ask *"
+          "I would give him *",
+          "I would talk to *"
         ]
       }
     },
     {
       "id": "q2",
       "afterScene": "s7",
-      "questionEn": "What kind of deal does Vale want?",
-      "questionEs": "¿Qué tipo de trato quiere Vale?",
+      "questionEn": "What does Vale finally decide about Marco?",
+      "questionEs": "¿Qué decide finalmente Vale sobre Marco?",
       "options": [
         {
-          "label": "I want a fair deal, not a fast one. A bad contract ends the relationship anyway.",
-          "emoji": "💬"
+          "label": "Move him to co-teaching with training and a path back.",
+          "emoji": "🛤️"
         },
         {
-          "label": "A fast deal at any price.",
+          "label": "Fire him immediately without talking.",
+          "emoji": "🚪"
+        },
+        {
+          "label": "Ignore his results forever.",
           "emoji": "🙈"
-        },
-        {
-          "label": "No deal at all.",
-          "emoji": "🚫"
         }
       ],
       "answer": 0,
-      "sayIt": "She wants a fair deal, not a fast one.",
-      "sayItEs": "Ejemplo: «She wants a fair deal, not a fast one.»",
-      "sayItAskEn": "Explain when it is better to walk away from a deal.",
-      "sayItAskEs": "Explica cuándo es mejor retirarse de un trato.",
+      "sayIt": "I agree because the students come first, but the teacher matters too.",
+      "sayItEs": "Ejemplo: «I agree because the students come first, but the teacher matters too.»",
+      "sayItAskEn": "Do you agree with Vale's decision? Why?",
+      "sayItAskEs": "¿Estás de acuerdo con la decisión de Vale? ¿Por qué?",
       "sayItCheck": {
-        "target": "It is better to walk away when *",
+        "target": "I agree because *",
         "altTargets": [
-          "I would walk away if *",
-          "You should walk away when *"
+          "I disagree because *",
+          "Yes, because *"
         ]
       }
     },
     {
       "id": "q3",
       "afterScene": "s11",
-      "questionEn": "How does the negotiation end?",
-      "questionEs": "¿Cómo termina la negociación?",
+      "questionEn": "How did Marco respond to the hard conversation?",
+      "questionEs": "¿Cómo respondió Marco a la conversación difícil?",
       "options": [
         {
-          "label": "Do not hold off. Send the papers. But my lawyer reads every clause first.",
-          "emoji": "⚡"
+          "label": "He was angry, then quiet, and finally asked about the plan.",
+          "emoji": "🌱"
         },
         {
-          "label": "Renata refuses to talk again.",
-          "emoji": "😴"
+          "label": "He shouted and left the building.",
+          "emoji": "😡"
         },
         {
-          "label": "They forget the contract.",
-          "emoji": "🏖️"
+          "label": "He laughed at the numbers.",
+          "emoji": "😂"
         }
       ],
       "answer": 0,
-      "sayIt": "Do not hold off. Send the papers. But my lawyer reads every clause first.",
-      "sayItEs": "Ejemplo: «Do not hold off. Send the papers. But my lawyer reads every clause first.»",
-      "sayItAskEn": "Summarize the offer, the concession and the result.",
-      "sayItAskEs": "Resume la oferta, la concesión y el resultado.",
+      "sayIt": "I would tell my friend honestly and offer a plan to improve.",
+      "sayItEs": "Ejemplo: «I would tell my friend honestly and offer a plan to improve.»",
+      "sayItAskEn": "How would you give hard feedback to a friend?",
+      "sayItAskEs": "¿Cómo le darías una crítica difícil a un amigo?",
       "sayItCheck": {
-        "target": "They offered *, we gave *, and finally *",
+        "target": "I would tell * honestly and *",
         "altTargets": [
-          "In the end, *",
-          "The result was *"
+          "I would say * with respect",
+          "I would * honestly"
         ]
       }
     }
   ],
   "mindsetCard": {
     "afterScene": "s6",
-    "phrase": "I can do it. A hard conversation is still a conversation.",
-    "es": "Puedo hacerlo. Una conversación difícil sigue siendo una conversación."
+    "phrase": "I can do hard things. Mistakes are part of the process.",
+    "es": "Puedo hacer cosas difíciles. Los errores son parte del proceso."
   },
   "habitCard": {
     "afterScene": "s4",
-    "phrase": "English is easy when I say my number and then my reason.",
-    "es": "El inglés es fácil cuando digo mi número y luego mi razón.",
+    "phrase": "English is easy when I listen, clarify, and speak again.",
+    "es": "El inglés es fácil cuando escucho, aclaro y vuelvo a hablar.",
     "model": "vale",
-    "modelActionEs": "Vale da el número y después la razón."
+    "modelActionEs": "Vale escucha el desacuerdo de Dani sin enojarse y ajusta su plan."
   },
   "expressions": [
     {
-      "phrase": "walk away",
-      "variants": [
-        "walk away"
-      ],
-      "es": "retirarse de una negociación",
+      "phrase": "point out",
+      "es": "señalar / hacer notar",
       "kind": "phrasal",
-      "example": "Give me a thirty percent discount or I walk away.",
-      "exampleEs": "Deme treinta por ciento de descuento o me retiro."
+      "example": "May I point out something? You are both defending Marco. You just defend different things.",
+      "exampleEs": "¿Puedo señalar algo? Los dos están defendiendo a Marco. Solo defienden cosas distintas."
     },
     {
-      "phrase": "hold off",
-      "variants": [
-        "hold off"
-      ],
-      "es": "esperar antes de actuar",
+      "phrase": "step up",
+      "variants": ["steps up"],
+      "es": "aceptar el reto / dar la cara",
       "kind": "phrasal",
-      "example": "Should we hold off on the Guatemala start until this contract is signed?",
-      "exampleEs": "¿Deberíamos esperar con el inicio en Guatemala hasta que se firme este contrato?"
+      "example": "Then I will listen, and I will still choose the students. But I think he steps up.",
+      "exampleEs": "Entonces escucharé, y aun así elegiré a los estudiantes. Pero creo que él va a aceptar el reto."
     },
     {
-      "phrase": "drive a hard bargain",
-      "es": "negociar con mucha firmeza",
+      "phrase": "give someone a fair shot",
+      "variants": ["give him a fair shot"],
+      "es": "darle a alguien una oportunidad justa",
       "kind": "idiom",
-      "example": "You drive a hard bargain for someone who wants my signature this week.",
-      "exampleEs": "Usted negocia duro para alguien que quiere mi firma esta semana."
+      "example": "Then let him. Give him a fair shot. One bad month is not a verdict.",
+      "exampleEs": "Entonces déjalo. Dale una oportunidad justa. Un mal mes no es un veredicto."
     }
   ],
   "finaleSeconds": 30,
   "continuePrompt": {
-    "en": "Your turn, 30 seconds: make an offer, give one concession, and explain your limit.",
-    "es": "Tu turno, 30 segundos: haz una oferta, da una concesión y explica tu límite."
+    "en": "Your turn, 30 seconds: explain the problem with Marco and how Vale handled the hard conversation.",
+    "es": "Tu turno, 30 segundos: explica el problema con Marco y cómo manejó Vale la conversación difícil."
   },
   "continueWith": [
-    "My offer is ...",
-    "I can give you ... if ...",
-    "My limit is ... because ..."
+    "Marco's problem was ...",
+    "Vale told him ...",
+    "In the end, Marco ..."
   ],
   "cliffhanger": {
-    "en": "Do not hold off. Send the papers. But my lawyer reads every clause first.",
-    "es": "No esperen. Manden los papeles. Pero mi abogado lee cada cláusula primero."
+    "en": "They are cancelling their contract. A competitor offered them half our price.",
+    "es": "Están cancelando su contrato. Un competidor les ofreció la mitad de nuestro precio."
   }
 };

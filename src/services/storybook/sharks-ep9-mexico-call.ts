@@ -13,524 +13,534 @@ import s10 from "@/assets/storybook/sharks-ep9-mexico-call/s10.jpg";
 import s11 from "@/assets/storybook/sharks-ep9-mexico-call/s11.jpg";
 
 export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
-  id: "sharks-ep9-mexico-call",
-  moduleId: "sharks",
-  week: 2,
-  title: "The Mexico call",
-  titleEs: "La llamada de México",
-  episodeLabel: {
-    en: "Season 8 · Episode 9",
-    es: "Temporada 8 · Episodio 9"
+  "id": "sharks-ep9-mexico-call",
+  "moduleId": "sharks",
+  "week": 2,
+  "title": "The Mexico call",
+  "titleEs": "La llamada de México",
+  "episodeLabel": {
+    "en": "Season 8 · Episode 9",
+    "es": "Temporada 8 · Episodio 9"
   },
-  previously: [
+  "previously": [
     {
-      en: "Vale won an international contract, but every new opportunity brings a harder decision.",
-      es: "Vale ganó un contrato internacional, pero cada oportunidad trae una decisión más difícil."
+      "en": "Vale decided to open Vale Kids: one small Saturday group at the community center.",
+      "es": "Vale decidió abrir Vale Kids: un pequeño grupo de sábado en el centro comunitario."
+    },
+    {
+      "en": "At the end of a long week, a message arrived from Mexico asking for a call.",
+      "es": "Al final de una semana larga, llegó un mensaje de México pidiendo una llamada."
     }
   ],
-  reviewWords: [
-    { word: "contract", es: "contrato" },
-    { word: "quality", es: "calidad" },
-    { word: "deadline", es: "fecha límite" }
+  "reviewWords": [
+    {
+      "word": "quality",
+      "es": "calidad"
+    },
+    {
+      "word": "training",
+      "es": "capacitación"
+    },
+    {
+      "word": "client",
+      "es": "cliente"
+    }
   ],
-  blurb: {
-    en: "So you want me to buy your brand and run it exactly your way. Good. You should also know that I own six schools that compete with you.",
-    es: "Entonces quiere que compre su marca y la maneje exactamente a su manera. Bien. También debe saber que tengo seis escuelas que compiten con ustedes."
+  "blurb": {
+    "en": "Twelve kids, a box of puppets, and the first Vale Kids class ever. Then the phone rings: a school in Monterrey saw the video and wants to know how Vale does it.",
+    "es": "Doce niños, una caja de títeres y la primera clase de Vale Kids. Luego suena el teléfono: una escuela en Monterrey vio el video y quiere saber cómo lo hace Vale."
   },
-  cover: cover,
-  voice: "girl",
-  scenes: [
+  "cover": cover,
+  "voice": "girl",
+  "scenes": [
     {
-      id: "s1",
-      image: s1,
-      imageAlt: "Vale answers the call from Mexico while Renata appears on the academy's video screen and Dani watches.",
-      text: "Good afternoon, Vale. Thank you for answering so quickly. Let me be direct: so you want me to buy your brand and run it exactly your way.",
-      es: "Buenas tardes, Vale. Gracias por contestar tan rápido. Seré directa: entonces quiere que compre su marca y la maneje exactamente a su manera.",
-      speaker: "renata",
-      cast: ["renata", "dani", "vale"],
-      lines: [
+      "id": "s1",
+      "image": s1,
+      "imageAlt": "Vale and Dani arrange small chairs inside the community center before the children arrive.",
+      "text": "Because in one hour, twelve kids walk through that door for the first Vale Kids class ever.",
+      "es": "Porque en una hora, doce niños van a entrar por esa puerta para la primera clase de Vale Kids.",
+      "speaker": "vale",
+      "cast": ["vale", "dani"],
+      "lines": [
         {
-          speaker: "renata",
-          text: "Good afternoon, Vale. Thank you for answering so quickly. Let me be direct: so you want me to buy your brand and run it exactly your way.",
-          es: "Buenas tardes, Vale. Gracias por contestar tan rápido. Seré directa: entonces quiere que compre su marca y la maneje exactamente a su manera."
+          "speaker": "dani",
+          "text": "Eight o'clock on a Saturday, Vale. Tell me again why we are moving chairs instead of sleeping.",
+          "es": "Ocho de la mañana un sábado, Vale. Dime otra vez por qué movemos sillas en vez de dormir."
         },
         {
-          speaker: "dani",
-          text: "She sounds worried. Vale, she thinks this is a sale, not an alliance. I heard it in her voice from the first word.",
-          es: "Suena preocupada. Vale, cree que esto es una venta, no una alianza. Lo escuché en su voz desde la primera palabra."
+          "speaker": "vale",
+          "text": "Because in one hour, twelve kids walk through that door for the first Vale Kids class ever.",
+          "es": "Porque en una hora, doce niños van a entrar por esa puerta para la primera clase de Vale Kids."
         },
         {
-          speaker: "vale",
-          text: "When Mexico calls, I answer, Renata. I promised Don Tito I would. Now let us fix that idea first, and thank you for saying it directly.",
-          es: "Cuando México llama, yo contesto, Renata. Le prometí a Don Tito que lo haría. Ahora arreglemos esa idea primero, y gracias por decirlo directamente."
+          "speaker": "dani",
+          "text": "Twelve kids, one teacher, and a box of puppets. This is either brilliant or completely crazy.",
+          "es": "Doce niños, una maestra y una caja de títeres. Esto es brillante o completamente loco."
         }
       ],
-      words: [
-        { word: "brand", es: "marca" },
-        { word: "exactly", es: "exactamente" },
-        { word: "alliance", es: "alianza" }
+      "words": [
+        { "word": "instead", "es": "en lugar de" },
+        { "word": "puppets", "es": "títeres" },
+        { "word": "either", "es": "o... o / ya sea" }
       ]
     },
     {
-      id: "s2",
-      image: s2,
-      imageAlt: "Vale explains the model calmly while Camila takes notes beside her.",
-      text: "Not exactly. Let me spell out the model before we get our wires crossed.",
-      es: "No exactamente. Déjeme explicar claramente el modelo antes de que nos confundamos.",
-      speaker: "vale",
-      cast: ["vale", "camila"],
-      lines: [
+      "id": "s2",
+      "image": s2,
+      "imageAlt": "Vale leads the children in a movement game while Dani watches from the back of the room.",
+      "text": "Okay, team! When I say jump, you jump. When I say stop, you freeze like statues.",
+      "es": "¡Muy bien, equipo! Cuando yo diga salta, saltan. Cuando diga alto, se congelan como estatuas.",
+      "speaker": "vale",
+      "cast": ["vale", "dani"],
+      "lines": [
         {
-          speaker: "vale",
-          text: "Not exactly. Let me spell out the model before we get our wires crossed.",
-          es: "No exactamente. Déjeme explicar claramente el modelo antes de que nos confundamos."
+          "speaker": "vale",
+          "text": "Okay, team! When I say jump, you jump. When I say stop, you freeze like statues.",
+          "es": "¡Muy bien, equipo! Cuando yo diga salta, saltan. Cuando diga alto, se congelan como estatuas."
         },
         {
-          speaker: "camila",
-          text: "That is smart. If we define the model first, the price conversation gets easier, and nobody feels pressured.",
-          es: "Es inteligente. Si definimos el modelo primero, la conversación del precio se vuelve más fácil, y nadie se siente presionado."
+          "speaker": "dani",
+          "text": "They understand every word. Look at the little one in front — she is leading the whole group.",
+          "es": "Entienden cada palabra. Mira a la pequeña de adelante: está guiando a todo el grupo."
         },
         {
-          speaker: "vale",
-          text: "Exactly. Nobody should sign something they do not understand.",
-          es: "Exacto. Nadie debería firmar algo que no entiende."
+          "speaker": "vale",
+          "text": "That is the method: the body learns first, and the words follow the movement.",
+          "es": "Ese es el método: el cuerpo aprende primero, y las palabras siguen al movimiento."
         }
       ],
-      words: [
-        { word: "model", es: "modelo" },
-        { word: "define", es: "definir" },
-        { word: "sign", es: "firmar" }
+      "words": [
+        { "word": "freeze", "es": "congelarse" },
+        { "word": "statues", "es": "estatuas" },
+        { "word": "leading", "es": "guiando" }
       ]
     },
     {
-      id: "s3",
-      image: s3,
-      imageAlt: "Renata explains on the video call that she builds schools instead of buying franchises.",
-      text: "Please do, because I do not buy franchises. I build schools.",
-      es: "Por favor, porque yo no compro franquicias. Yo construyo escuelas.",
-      speaker: "renata",
-      cast: ["renata", "vale"],
-      lines: [
+      "id": "s3",
+      "image": s3,
+      "imageAlt": "Camila records a short video of the dinosaur game on her phone while Vale plays with the children.",
+      "text": "Vale, give me thirty seconds. I am filming the dinosaur game for our social media.",
+      "es": "Vale, dame treinta segundos. Estoy grabando el juego del dinosaurio para nuestras redes.",
+      "speaker": "camila",
+      "cast": ["camila", "vale"],
+      "lines": [
         {
-          speaker: "renata",
-          text: "Please do, because I do not buy franchises. I build schools.",
-          es: "Por favor, porque yo no compro franquicias. Yo construyo escuelas."
+          "speaker": "camila",
+          "text": "Vale, give me thirty seconds. I am filming the dinosaur game for our social media.",
+          "es": "Vale, dame treinta segundos. Estoy grabando el juego del dinosaurio para nuestras redes."
         },
         {
-          speaker: "vale",
-          text: "And that is exactly why we called you. Builders understand quality, and they protect what they built.",
-          es: "Y esa es exactamente la razón por la que la llamamos. Quienes construyen entienden la calidad."
+          "speaker": "vale",
+          "text": "Film the part where they roar in English. Parents need to see their kids speaking, not just listening.",
+          "es": "Graba la parte donde rugen en inglés. Los padres necesitan ver a sus hijos hablando, no solo escuchando."
         },
         {
-          speaker: "renata",
-          text: "Good answer. Keep going, I am listening, and my partners in Monterrey are waiting for my report.",
-          es: "Buena respuesta. Continúe, la escucho, y mis socios en Monterrey esperan mi reporte."
+          "speaker": "camila",
+          "text": "Got it. This video is going to travel further than any advertisement we could pay for.",
+          "es": "Listo. Este video va a viajar más lejos que cualquier anuncio que pudiéramos pagar."
         }
       ],
-      words: [
-        { word: "franchise", es: "franquicia" },
-        { word: "build", es: "construir" },
-        { word: "quality", es: "calidad" }
+      "words": [
+        { "word": "filming", "es": "grabando" },
+        { "word": "roar", "es": "rugir" },
+        { "word": "advertisement", "es": "anuncio publicitario" }
       ]
     },
     {
-      id: "s4",
-      image: s4,
-      imageAlt: "Dani suggests a simple comparison to help everyone understand the model.",
-      text: "Vale, compare it to a shared kitchen, not a franchise.",
-      es: "Vale, compáralo con una cocina compartida, no con una franquicia.",
-      speaker: "dani",
-      cast: ["dani", "vale", "renata"],
-      lines: [
+      "id": "s4",
+      "image": s4,
+      "imageAlt": "Dani counts registration forms at the door while happy children leave with their parents.",
+      "text": "Twelve kids signed up for next Saturday before their parents even reached the door.",
+      "es": "Doce niños se inscribieron para el próximo sábado antes de que sus padres llegaran a la puerta.",
+      "speaker": "dani",
+      "cast": ["dani", "vale"],
+      "lines": [
         {
-          speaker: "dani",
-          text: "Vale, compare it to a shared kitchen, not a franchise.",
-          es: "Vale, compáralo con una cocina compartida, no con una franquicia."
+          "speaker": "dani",
+          "text": "Twelve kids signed up for next Saturday before their parents even reached the door.",
+          "es": "Doce niños se inscribieron para el próximo sábado antes de que sus padres llegaran a la puerta."
         },
         {
-          speaker: "vale",
-          text: "I like that. Renata, imagine every cook keeps their own restaurant but shares the same professional kitchen.",
-          es: "Me gusta. Renata, imagine que cada cocinero conserva su propio restaurante pero comparte la misma cocina profesional."
+          "speaker": "vale",
+          "text": "I spent three weeks designing this class, and the kids made it better in ten minutes.",
+          "es": "Pasé tres semanas diseñando esta clase, y los niños la mejoraron en diez minutos."
         },
         {
-          speaker: "renata",
-          text: "That comparison makes sense. My school stays mine, with my name on the door.",
-          es: "Esa comparación tiene sentido. Mi escuela sigue siendo mía, con mi nombre en la puerta."
+          "speaker": "dani",
+          "text": "That is what a good class does. You build the road, and they run on it.",
+          "es": "Eso es lo que hace una buena clase. Tú construyes el camino, y ellos corren sobre él."
         }
       ],
-      words: [
-        { word: "compare", es: "comparar" },
-        { word: "shared", es: "compartida" },
-        { word: "kitchen", es: "cocina" }
+      "words": [
+        { "word": "signed up", "es": "se inscribieron" },
+        { "word": "designing", "es": "diseñando" },
+        { "word": "build", "es": "construir" }
       ]
     },
     {
-      id: "s5",
-      image: s5,
-      imageAlt: "Vale describes what the academy provides while Dani shows the platform on a laptop.",
-      text: "In other words, you keep your school. We provide the curriculum, training, and platform.",
-      es: "En otras palabras, usted conserva su escuela. Nosotros damos el currículo, capacitación y plataforma.",
-      speaker: "vale",
-      cast: ["vale", "dani", "renata"],
-      lines: [
+      "id": "s5",
+      "image": s5,
+      "imageAlt": "Vale answers her phone in the empty community center while Dani packs the puppets away.",
+      "text": "Renata Fuentes, from Monterrey. I run an English school here, and this morning I saw your video.",
+      "es": "Renata Fuentes, de Monterrey. Dirijo una escuela de inglés aquí, y esta mañana vi su video.",
+      "speaker": "renata",
+      "cast": ["vale", "renata"],
+      "lines": [
         {
-          speaker: "vale",
-          text: "In other words, you keep your school. We provide the curriculum, training, and platform.",
-          es: "En otras palabras, usted conserva su escuela. Nosotros damos el currículo, capacitación y plataforma."
+          "speaker": "vale",
+          "text": "Hello? Yes, this is Vale speaking... I am sorry, who did you say is calling?",
+          "es": "¿Bueno? Sí, habla Vale... Perdón, ¿quién dijo que llama?"
         },
         {
-          speaker: "dani",
-          text: "Your teachers learn our method, but they stay on your payroll, follow your schedule, and answer to you.",
-          es: "Sus maestros aprenden nuestro método, pero siguen en su nómina y con su horario."
+          "speaker": "renata",
+          "text": "Renata Fuentes, from Monterrey. I run an English school here, and this morning I saw your video.",
+          "es": "Renata Fuentes, de Monterrey. Dirijo una escuela de inglés aquí, y esta mañana vi su video."
         },
         {
-          speaker: "renata",
-          text: "That part I like. My teachers are loyal to me, not to a brand, and their students trust them completely.",
-          es: "Esa parte me gusta. Mis maestros son leales a mí, no a una marca, y sus estudiantes confían plenamente en ellos."
+          "speaker": "vale",
+          "text": "The video from today? We posted it two hours ago. The internet works fast, Ms. Fuentes.",
+          "es": "¿El video de hoy? Lo publicamos hace dos horas. El internet trabaja rápido, señora Fuentes."
         }
       ],
-      words: [
-        { word: "curriculum", es: "currículo" },
-        { word: "training", es: "capacitación" },
-        { word: "payroll", es: "nómina" }
+      "words": [
+        { "word": "run", "es": "dirigir (un negocio)" },
+        { "word": "posted", "es": "publicamos" },
+        { "word": "fast", "es": "rápido" }
       ]
     },
     {
-      id: "s6",
-      image: s6,
-      imageAlt: "Renata asks about the cost while Camila prepares the price document.",
-      text: "Are you saying I would pay you for every student forever?",
-      es: "¿Está diciendo que le pagaría por cada estudiante para siempre?",
-      speaker: "renata",
-      cast: ["renata", "camila"],
-      lines: [
+      "id": "s6",
+      "image": s6,
+      "imageAlt": "Renata speaks from her school office in Monterrey during the phone call with Vale.",
+      "text": "That is why I am calling you instead of copying you. I want to open a Kids program the right way.",
+      "es": "Por eso la llamo en vez de copiarla. Quiero abrir un programa para niños de la manera correcta.",
+      "speaker": "renata",
+      "cast": ["renata", "vale"],
+      "lines": [
         {
-          speaker: "renata",
-          text: "Are you saying I would pay you for every student forever?",
-          es: "¿Está diciendo que le pagaría por cada estudiante para siempre?"
+          "speaker": "renata",
+          "text": "Two hundred people shared it in Mexico already. My teachers asked me: why don't we do this?",
+          "es": "Doscientas personas ya lo compartieron en México. Mis maestros me preguntaron: ¿por qué nosotros no hacemos esto?"
         },
         {
-          speaker: "camila",
-          text: "No, and it is a fair question. Forever payments scare every serious owner.",
-          es: "No, y es una pregunta justa. Los pagos eternos asustan a cualquier dueña seria."
+          "speaker": "vale",
+          "text": "Because it looks easy on video, and it is not. Every game has a language goal behind it.",
+          "es": "Porque se ve fácil en video, y no lo es. Cada juego tiene una meta de idioma detrás."
         },
         {
-          speaker: "renata",
-          text: "They should. I worked twenty years for what I have, and I do not sign away my future.",
-          es: "Así debería ser. Trabajé veinte años por lo que tengo, y no firmo lejos mi futuro."
+          "speaker": "renata",
+          "text": "Exactly. That is why I am calling you instead of copying you. I want to open a Kids program the right way.",
+          "es": "Exacto. Por eso la llamo en vez de copiarla. Quiero abrir un programa para niños de la manera correcta."
         }
       ],
-      words: [
-        { word: "forever", es: "para siempre" },
-        { word: "fair", es: "justa" },
-        { word: "owner", es: "dueña" }
+      "words": [
+        { "word": "shared", "es": "compartieron" },
+        { "word": "copying", "es": "copiando" },
+        { "word": "the right way", "es": "de la manera correcta" }
       ]
     },
     {
-      id: "s7",
-      image: s7,
-      imageAlt: "Vale explains the annual license while Renata listens on the screen.",
-      text: "Let me clear that up. The license is annual, and support is based on active students.",
-      es: "Déjeme aclarar eso. La licencia es anual, y el soporte se basa en estudiantes activos.",
-      speaker: "vale",
-      cast: ["vale", "renata"],
-      lines: [
+      "id": "s7",
+      "image": s7,
+      "imageAlt": "Vale sits on the edge of a small table and smiles as she understands what Renata is really asking.",
+      "text": "In other words, you are not asking me for permission. You are asking me for the recipe.",
+      "es": "En otras palabras, no me está pidiendo permiso. Me está pidiendo la receta.",
+      "speaker": "vale",
+      "cast": ["vale", "renata"],
+      "lines": [
         {
-          speaker: "vale",
-          text: "Let me clear that up. The license is annual, and support is based on active students.",
-          es: "Déjeme aclarar eso. La licencia es anual, y el soporte se basa en estudiantes activos."
+          "speaker": "renata",
+          "text": "So here is my question, Vale: what do I need to open something like this in Monterrey?",
+          "es": "Entonces aquí está mi pregunta, Vale: ¿qué necesito para abrir algo así en Monterrey?"
         },
         {
-          speaker: "renata",
-          text: "So if a student leaves, I stop paying for that student?",
-          es: "Entonces, si un estudiante se va, ¿dejo de pagar por ese estudiante?"
+          "speaker": "vale",
+          "text": "In other words, you are not asking me for permission. You are asking me for the recipe.",
+          "es": "En otras palabras, no me está pidiendo permiso. Me está pidiendo la receta."
         },
         {
-          speaker: "vale",
-          text: "Correct. You only pay for the students who are actually learning in your classrooms each month.",
-          es: "Correcto. Solo paga por los estudiantes que realmente están aprendiendo en sus salones cada mes."
+          "speaker": "renata",
+          "text": "I am asking for both, honestly. I would rather work with you than compete with you.",
+          "es": "Le pido ambas, honestamente. Prefiero trabajar con usted que competir con usted."
         }
       ],
-      words: [
-        { word: "license", es: "licencia" },
-        { word: "annual", es: "anual" },
-        { word: "support", es: "soporte" }
+      "words": [
+        { "word": "permission", "es": "permiso" },
+        { "word": "recipe", "es": "receta" },
+        { "word": "rather", "es": "preferiría / antes que" }
       ]
     },
     {
-      id: "s8",
-      image: s8,
-      imageAlt: "Camila describes the partnership idea while Vale nods in agreement.",
-      text: "Think of it as a partnership with shared tools, not a new owner.",
-      es: "Piénselo como una alianza con herramientas compartidas, no como un nuevo dueño.",
-      speaker: "camila",
-      cast: ["camila", "vale"],
-      lines: [
+      "id": "s8",
+      "image": s8,
+      "imageAlt": "Vale explains the training model with her notebook open while Renata listens on speakerphone.",
+      "text": "Let me spell out the model, and please do not cut corners: trained teachers, one method, weekly quality checks.",
+      "es": "Déjeme explicar el modelo con claridad, y por favor no ahorre en lo esencial: maestros capacitados, un método, controles de calidad semanales.",
+      "speaker": "vale",
+      "cast": ["vale", "renata"],
+      "lines": [
         {
-          speaker: "camila",
-          text: "Think of it as a partnership with shared tools, not a new owner.",
-          es: "Piénselo como una alianza con herramientas compartidas, no como un nuevo dueño."
+          "speaker": "vale",
+          "text": "Let me spell out the model, and please do not cut corners: trained teachers, one method, weekly quality checks.",
+          "es": "Déjeme explicar el modelo con claridad, y por favor no ahorre en lo esencial: maestros capacitados, un método, controles de calidad semanales."
         },
         {
-          speaker: "vale",
-          text: "We grow when you grow. If your school fails, our model fails too, so your success is my job.",
-          es: "Nosotras crecemos cuando usted crece. Si su escuela fracasa, nuestro modelo también fracasa."
+          "speaker": "renata",
+          "text": "And the money side? What does a program like this cost in its first three months?",
+          "es": "¿Y el lado del dinero? ¿Cuánto cuesta un programa así en sus primeros tres meses?"
         },
         {
-          speaker: "camila",
-          text: "That is why we protect quality in every classroom, yours and ours, because one bad class hurts both names.",
-          es: "Por eso protegemos la calidad en cada salón, el suyo y el nuestro, porque una mala clase daña ambos nombres."
+          "speaker": "vale",
+          "text": "Less than you think, but more than zero. Cut corners on training and the whole program falls apart.",
+          "es": "Menos de lo que piensa, pero más que cero. Ahorre en la capacitación y todo el programa se cae a pedazos."
         }
       ],
-      words: [
-        { word: "partnership", es: "alianza" },
-        { word: "tools", es: "herramientas" },
-        { word: "grow", es: "crecer" }
+      "words": [
+        { "word": "model", "es": "modelo" },
+        { "word": "cost", "es": "costo" },
+        { "word": "falls apart", "es": "se cae a pedazos" }
       ]
     },
     {
-      id: "s9",
-      image: s9,
-      imageAlt: "Renata relaxes on the call and admits she misunderstood the offer.",
-      text: "That is much clearer. I thought you wanted control of my classrooms.",
-      es: "Eso está mucho más claro. Pensé que quería controlar mis salones.",
-      speaker: "renata",
-      cast: ["renata", "dani"],
-      lines: [
+      "id": "s9",
+      "image": s9,
+      "imageAlt": "Vale and Renata agree on the next call while Dani writes the date on the board.",
+      "text": "And if something is not clear on that call, stop me and we will clear that up together.",
+      "es": "Y si algo no queda claro en esa llamada, deténgame y lo aclaramos juntas.",
+      "speaker": "renata",
+      "cast": ["vale", "renata", "dani"],
+      "lines": [
         {
-          speaker: "renata",
-          text: "That is much clearer. I thought you wanted control of my classrooms.",
-          es: "Eso está mucho más claro. Pensé que quería controlar mis salones."
+          "speaker": "vale",
+          "text": "Here is what I propose: we talk next week with numbers on the table, both schools, no promises yet.",
+          "es": "Esto es lo que propongo: hablamos la próxima semana con números sobre la mesa, ambas escuelas, sin promesas todavía."
         },
         {
-          speaker: "dani",
-          text: "Control stays with you. We only visit to train and to audit quality.",
-          es: "El control se queda con usted. Nosotros solo visitamos para capacitar y auditar la calidad."
+          "speaker": "renata",
+          "text": "Agreed. And if something is not clear on that call, stop me and we will clear that up together.",
+          "es": "De acuerdo. Y si algo no queda claro en esa llamada, deténgame y lo aclaramos juntas."
         },
         {
-          speaker: "renata",
-          text: "Audit, not command. I can live with that, and so can my teachers.",
-          es: "Auditar, no mandar. Con eso sí puedo vivir, y mis maestros también."
+          "speaker": "vale",
+          "text": "Deal. Send me your school's numbers before Friday, and I will send you our training plan.",
+          "es": "Trato hecho. Envíeme los números de su escuela antes del viernes, y yo le envío nuestro plan de capacitación."
         }
       ],
-      words: [
-        { word: "clearer", es: "más claro" },
-        { word: "control", es: "control" },
-        { word: "audit", es: "auditar" }
+      "words": [
+        { "word": "propose", "es": "proponer" },
+        { "word": "promises", "es": "promesas" },
+        { "word": "deal", "es": "trato" }
       ]
     },
     {
-      id: "s10",
-      image: s10,
-      imageAlt: "Vale smiles and explains how both sides combine their strengths.",
-      text: "No. You know Mexico; we know the system. Together we can adapt it.",
-      es: "No. Usted conoce México; nosotros conocemos el sistema. Juntas podemos adaptarlo.",
-      speaker: "vale",
-      cast: ["vale", "camila", "renata"],
-      lines: [
+      "id": "s10",
+      "image": s10,
+      "imageAlt": "Dani turns around from the board with wide eyes as Vale finishes the call with a big smile.",
+      "text": "The director of a school in Monterrey. She wants to open a Kids program and asked how we do it.",
+      "es": "La directora de una escuela en Monterrey. Quiere abrir un programa para niños y preguntó cómo lo hacemos.",
+      "speaker": "vale",
+      "cast": ["dani", "vale"],
+      "lines": [
         {
-          speaker: "vale",
-          text: "No. You know Mexico; we know the system. Together we can adapt it.",
-          es: "No. Usted conoce México; nosotros conocemos el sistema. Juntas podemos adaptarlo."
+          "speaker": "dani",
+          "text": "Okay. You smiled for the whole second half of that call. Who was she?",
+          "es": "Bueno. Sonreíste durante toda la segunda mitad de esa llamada. ¿Quién era?"
         },
         {
-          speaker: "camila",
-          text: "For example, your market prefers evening classes. Our platform adapts the schedule without changing the method.",
-          es: "Por ejemplo, su mercado prefiere clases nocturnas. Nuestra plataforma adapta el horario sin cambiar el método."
+          "speaker": "vale",
+          "text": "The director of a school in Monterrey. She wants to open a Kids program and asked how we do it.",
+          "es": "La directora de una escuela en Monterrey. Quiere abrir un programa para niños y preguntó cómo lo hacemos."
         },
         {
-          speaker: "renata",
-          text: "Good, because my students work during the day, and that detail matters more than any marketing.",
-          es: "Bien, porque mis estudiantes trabajan de día, y ese detalle importa más que cualquier marketing."
+          "speaker": "dani",
+          "text": "Mexico. Two weeks after the first class. Vale, this thing is growing faster than we are.",
+          "es": "México. Dos semanas después de la primera clase. Vale, esto está creciendo más rápido que nosotros."
         }
       ],
-      words: [
-        { word: "together", es: "juntas" },
-        { word: "adapt", es: "adaptar" },
-        { word: "schedule", es: "horario" }
+      "words": [
+        { "word": "second half", "es": "segunda mitad" },
+        { "word": "growing", "es": "creciendo" },
+        { "word": "faster", "es": "más rápido" }
       ]
     },
     {
-      id: "s11",
-      image: s11,
-      imageAlt: "Renata reveals a surprise that changes the whole conversation.",
-      text: "Good. You should also know that I own six schools that compete with you.",
-      es: "Bien. También debe saber que tengo seis escuelas que compiten con ustedes.",
-      speaker: "renata",
-      cast: ["renata", "vale"],
-      lines: [
+      "id": "s11",
+      "image": s11,
+      "imageAlt": "Vale holds the phone in surprise as Renata adds one last important detail before hanging up.",
+      "text": "One more thing before I go, Vale. My schools also serve corporate clients here in Mexico.",
+      "es": "Una cosa más antes de irme, Vale. Mis escuelas también atienden clientes corporativos aquí en México.",
+      "speaker": "renata",
+      "cast": ["vale", "renata", "dani"],
+      "lines": [
         {
-          speaker: "renata",
-          text: "Good. You should also know that I own six schools that compete with you.",
-          es: "Bien. También debe saber que tengo seis escuelas que compiten con ustedes."
+          "speaker": "renata",
+          "text": "One more thing before I go, Vale. My schools also serve corporate clients here in Mexico.",
+          "es": "Una cosa más antes de irme, Vale. Mis escuelas también atienden clientes corporativos aquí en México."
         },
         {
-          speaker: "vale",
-          text: "I did not expect that confession. Why tell us now, before we even sign anything?",
-          es: "No me lo esperaba. ¿Por qué decirnos ahora?"
+          "speaker": "vale",
+          "text": "Corporate clients? Like Northline? Then we need to talk very carefully next week.",
+          "es": "¿Clientes corporativos? ¿Como Northline? Entonces tenemos que hablar con mucho cuidado la próxima semana."
         },
         {
-          speaker: "renata",
-          text: "Because honest partners start with honest numbers. Think about it, and call me tomorrow. I want to see how you think under pressure.",
-          es: "Porque los socios honestos empiezan con números honestos. Piénselo y llámeme mañana. Quiero ver cómo piensa bajo presión."
+          "speaker": "dani",
+          "text": "What did she say at the end? You look like someone just moved your chess pieces.",
+          "es": "¿Qué dijo al final? Tienes cara de que alguien acaba de mover tus piezas de ajedrez."
         }
       ],
-      words: [
-        { word: "own", es: "tener / ser dueña de" },
-        { word: "compete", es: "competir" },
-        { word: "honest", es: "honestos" }
+      "words": [
+        { "word": "serve", "es": "atender (clientes)" },
+        { "word": "carefully", "es": "con cuidado" },
+        { "word": "chess pieces", "es": "piezas de ajedrez" }
       ]
     }
   ],
-  quizzes: [
+  "quizzes": [
     {
-      id: "q1",
-      afterScene: "s3",
-      questionEn: "What does Renata think Vale wants at the beginning?",
-      questionEs: "¿Qué cree Renata que Vale quiere al principio?",
-      options: [
+      "id": "q1",
+      "afterScene": "s3",
+      "questionEn": "What is Camila doing during the first class?",
+      "questionEs": "¿Qué hace Camila durante la primera clase?",
+      "options": [
         {
-          label: "That Renata buys the brand and runs it Vale's way.",
-          emoji: "🏷️"
+          "label": "She is filming the kids' game for social media.",
+          "emoji": "🎬"
         },
         {
-          label: "That Renata closes her schools.",
-          emoji: "🚪"
+          "label": "She is selling tickets at the door.",
+          "emoji": "🎟️"
         },
         {
-          label: "That Renata moves to Houston.",
-          emoji: "✈️"
+          "label": "She is teaching the class herself.",
+          "emoji": "👩‍🏫"
         }
       ],
-      answer: 0,
-      sayIt: "She thinks Vale wants to sell her the brand.",
-      sayItEs: "Ejemplo: «She thinks Vale wants to sell her the brand.»",
-      sayItAskEn: "What does Renata believe at first?",
-      sayItAskEs: "¿Qué cree Renata al principio?",
-      sayItCheck: {
-        target: "She thinks *",
-        altTargets: [
-          "Renata thinks *",
-          "She believes *",
-          "Vale wants *"
+      "answer": 0,
+      "sayIt": "I would film the kids playing and speaking English.",
+      "sayItEs": "Ejemplo: «I would film the kids playing and speaking English.»",
+      "sayItAskEn": "What moment of this class would you film, and why?",
+      "sayItAskEs": "¿Qué momento de esta clase grabarías y por qué?",
+      "sayItCheck": {
+        "target": "I would film *",
+        "altTargets": [
+          "I would record *",
+          "I would film the *"
         ]
       }
     },
     {
-      id: "q2",
-      afterScene: "s7",
-      questionEn: "How does the payment model work?",
-      questionEs: "¿Cómo funciona el modelo de pago?",
-      options: [
+      "id": "q2",
+      "afterScene": "s7",
+      "questionEn": "What does Renata really want?",
+      "questionEs": "¿Qué quiere Renata en realidad?",
+      "options": [
         {
-          label: "An annual license, and support based on active students.",
-          emoji: "📋"
+          "label": "To open a Kids program in Monterrey with Vale's help.",
+          "emoji": "🤝"
         },
         {
-          label: "A payment for every student forever.",
-          emoji: "♾️"
+          "label": "To buy Vale's whole academy.",
+          "emoji": "💰"
         },
         {
-          label: "One payment and no support.",
-          emoji: "💸"
+          "label": "To close Vale's new program.",
+          "emoji": "🚫"
         }
       ],
-      answer: 0,
-      sayIt: "The license is annual, and support is based on active students.",
-      sayItEs: "Ejemplo: «The license is annual, and support is based on active students.»",
-      sayItAskEn: "Explain the payment model in your own words.",
-      sayItAskEs: "Explica el modelo de pago con tus propias palabras.",
-      sayItCheck: {
-        target: "The license is *",
-        altTargets: [
-          "They pay *",
-          "It is *",
-          "She pays *"
+      "answer": 0,
+      "sayIt": "I would help her because helping grows faster than competing.",
+      "sayItEs": "Ejemplo: «I would help her because helping grows faster than competing.»",
+      "sayItAskEn": "If you were Vale, would you share your method? Why?",
+      "sayItAskEs": "Si fueras Vale, ¿compartirías tu método? ¿Por qué?",
+      "sayItCheck": {
+        "target": "I would * because *",
+        "altTargets": [
+          "Yes, because *",
+          "No, because *"
         ]
       }
     },
     {
-      id: "q3",
-      afterScene: "s11",
-      questionEn: "What surprise does Renata reveal at the end?",
-      questionEs: "¿Qué sorpresa revela Renata al final?",
-      options: [
+      "id": "q3",
+      "afterScene": "s11",
+      "questionEn": "Why does Vale say they must talk carefully next week?",
+      "questionEs": "¿Por qué dice Vale que deben hablar con cuidado la próxima semana?",
+      "options": [
         {
-          label: "She owns six schools that compete with Vale.",
-          emoji: "⚡"
+          "label": "Because Renata's schools also serve corporate clients in Mexico.",
+          "emoji": "♟️"
         },
         {
-          label: "She wants to close the academy.",
-          emoji: "🔒"
+          "label": "Because Renata hung up angrily.",
+          "emoji": "📵"
         },
         {
-          label: "She already signed with BigTalk.",
-          emoji: "✍️"
+          "label": "Because the kids were too loud.",
+          "emoji": "🔊"
         }
       ],
-      answer: 0,
-      sayIt: "Renata owns six schools that compete with the academy.",
-      sayItEs: "Ejemplo: «Renata owns six schools that compete with the academy.»",
-      sayItAskEn: "What does Renata reveal, and why does she say it?",
-      sayItAskEs: "¿Qué revela Renata y por qué lo dice?",
-      sayItCheck: {
-        target: "She owns *",
-        altTargets: [
-          "Renata owns *",
-          "She has *",
-          "Because honest *"
+      "answer": 0,
+      "sayIt": "Vale taught her first Kids class, and then Mexico called with a big opportunity.",
+      "sayItEs": "Ejemplo: «Vale taught her first Kids class, and then Mexico called with a big opportunity.»",
+      "sayItAskEn": "Summarize what happened in this episode.",
+      "sayItAskEs": "Resume lo que pasó en este episodio.",
+      "sayItCheck": {
+        "target": "Vale taught *, and then *",
+        "altTargets": [
+          "First Vale *, then *",
+          "Vale opened *"
         ]
       }
     }
   ],
-  mindsetCard: {
-    afterScene: "s6",
-    phrase: "I can do hard things. Mistakes are part of the process.",
-    es: "Puedo hacer cosas difíciles. Los errores son parte del proceso."
+  "mindsetCard": {
+    "afterScene": "s6",
+    "phrase": "I can do hard things. Mistakes are part of the process.",
+    "es": "Puedo hacer cosas difíciles. Los errores son parte del proceso."
   },
-  habitCard: {
-    afterScene: "s4",
-    phrase: "English is easy when I listen, clarify, and speak again.",
-    es: "El inglés es fácil cuando escucho, aclaro y vuelvo a hablar.",
-    model: "vale",
-    modelActionEs: "Vale escucha, aclara y responde con calma."
+  "habitCard": {
+    "afterScene": "s4",
+    "phrase": "English is easy when I listen, clarify, and speak again.",
+    "es": "El inglés es fácil cuando escucho, aclaro y vuelvo a hablar.",
+    "model": "vale",
+    "modelActionEs": "Vale escucha la pregunta completa de Renata antes de responder."
   },
-  expressions: [
+  "expressions": [
     {
-      phrase: "spell out",
-      es: "explicar con total claridad",
-      kind: "phrasal",
-      example: "Not exactly. Let me spell out the model before we get our wires crossed.",
-      exampleEs: "No exactamente. Déjeme explicar claramente el modelo antes de que nos confundamos."
+      "phrase": "spell out",
+      "es": "explicar con total claridad",
+      "kind": "phrasal",
+      "example": "Let me spell out the model, and please do not cut corners: trained teachers, one method, weekly quality checks.",
+      "exampleEs": "Déjeme explicar el modelo con claridad, y por favor no ahorre en lo esencial: maestros capacitados, un método, controles de calidad semanales."
     },
     {
-      phrase: "clear up",
-      variants: ["clear that up"],
-      es: "aclarar / resolver una confusión",
-      kind: "phrasal",
-      example: "Let me clear that up. The license is annual, and support is based on active students.",
-      exampleEs: "Déjeme aclarar eso. La licencia es anual, y el soporte se basa en estudiantes activos."
+      "phrase": "clear up",
+      "variants": ["clear that up"],
+      "es": "aclarar / resolver una confusión",
+      "kind": "phrasal",
+      "example": "And if something is not clear on that call, stop me and we will clear that up together.",
+      "exampleEs": "Y si algo no queda claro en esa llamada, deténgame y lo aclaramos juntas."
     },
     {
-      phrase: "get our wires crossed",
-      es: "confundir lo que cada persona quiso decir",
-      kind: "idiom",
-      example: "Not exactly. Let me spell out the model before we get our wires crossed.",
-      exampleEs: "No exactamente. Déjeme explicar claramente el modelo antes de que nos confundamos."
+      "phrase": "cut corners",
+      "es": "ahorrar en lo esencial / hacer las cosas a medias",
+      "kind": "idiom",
+      "example": "Let me spell out the model, and please do not cut corners: trained teachers, one method, weekly quality checks.",
+      "exampleEs": "Déjeme explicar el modelo con claridad, y por favor no ahorre en lo esencial: maestros capacitados, un método, controles de calidad semanales."
     }
   ],
-  finaleSeconds: 30,
-  continuePrompt: {
-    en: "Your turn, 30 seconds: explain the problem, compare the options, and defend your decision.",
-    es: "Tu turno, 30 segundos: explica el problema, compara las opciones y defiende tu decisión."
+  "finaleSeconds": 30,
+  "continuePrompt": {
+    "en": "Your turn, 30 seconds: explain how the first Kids class went and what the Mexico call means.",
+    "es": "Tu turno, 30 segundos: explica cómo salió la primera clase de Kids y qué significa la llamada de México."
   },
-  continueWith: [
-    "The main issue is ...",
-    "If I were responsible, I would ...",
-    "The best option is ... because ..."
+  "continueWith": [
+    "The first class went ...",
+    "In other words, ...",
+    "Next week, Vale has to ..."
   ],
-  cliffhanger: {
-    en: "Good. You should also know that I own six schools that compete with you.",
-    es: "Bien. También debe saber que tengo seis escuelas que compiten con ustedes."
+  "cliffhanger": {
+    "en": "My schools also serve corporate clients here in Mexico.",
+    "es": "Mis escuelas también atienden clientes corporativos aquí en México."
   }
 };
