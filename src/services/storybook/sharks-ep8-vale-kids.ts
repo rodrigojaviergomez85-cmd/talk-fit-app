@@ -120,9 +120,9 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
     {
       "id": "s3",
       "image": s3,
-      "imageAlt": "Dani tells Vale about the leadership program he is building at his company.",
-      "text": "I have been working on a leadership program at my company.",
-      "es": "He estado trabajando en un programa de liderazgo en mi empresa.",
+      "imageAlt": "Dani tells Vale about the leadership program he is building at the academy.",
+      "text": "I have been working on a leadership program for the academy.",
+      "es": "He estado trabajando en un programa de liderazgo para la academia.",
       "speaker": "dani",
       "cast": [
         "dani",
@@ -136,8 +136,8 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "I have been working on a leadership program at my company.",
-          "es": "He estado trabajando en un programa de liderazgo en mi empresa."
+          "text": "I have been working on a leadership program for the academy.",
+          "es": "He estado trabajando en un programa de liderazgo para la academia."
         },
         {
           "speaker": "vale",
@@ -423,20 +423,20 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
     {
       "id": "q1",
       "afterScene": "s3",
-      "questionEn": "What is the main problem the team identifies?",
-      "questionEs": "¿Cuál es el problema principal que identifica el equipo?",
+      "questionEn": "What has Dani been working on?",
+      "questionEs": "¿En qué ha estado trabajando Dani?",
       "options": [
         {
-          "label": "I have been working on a leadership program at my company.",
+          "label": "A leadership program for the academy.",
           "emoji": "🎯"
         },
         {
-          "label": "They decide to stop working.",
-          "emoji": "🛑"
+          "label": "A new job at another company.",
+          "emoji": "🏢"
         },
         {
-          "label": "They forget the meeting.",
-          "emoji": "❓"
+          "label": "A vacation plan.",
+          "emoji": "🏖️"
         }
       ],
       "answer": 0,
