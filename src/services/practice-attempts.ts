@@ -8,6 +8,7 @@ import {
   type PracticeCapResult,
 } from "@/lib/practice-cap";
 import { isModuleId } from "./course-service";
+import { serverDayKey } from "./server-day";
 import { notifyIfClockMismatch } from "@/lib/clock-mismatch";
 import type { ModuleId } from "@/lib/types";
 
@@ -38,12 +39,27 @@ function activeKey(moduleId: ModuleId, day: number): string {
   return `${ACTIVE_PREFIX}:${scope}:${moduleId}:${day}`;
 }
 
-/** Learner's LOCAL calendar date. Never UTC: El Salvador stays on Sep 7. */
+/**
+ * The practice day, in the ONE fixed timezone the server uses
+ * (America/El_Salvador). Not the device timezone and not UTC, so this agrees
+ * with the server everywhere except on a device with a wrong clock.
+ */
 export function localDayKey(date = new Date()): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
+  try {
+    return new Intl.DateTimeFormat("en-CA", { timeZone: "America/El_Salvador" }).format(date);
+  } catch {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+}
+
+/** Moves a YYYY-MM-DD key by whole days without touching timezones. */
+export function shiftDayKey(key: string, days: number): string {
+  const ms = Date.parse(`${key}T12:00:00Z`);
+  if (Number.isNaN(ms)) return key;
+  return new Date(ms + days * 86400000).toISOString().slice(0, 10);
 }
 
 function readAll(): PracticeAttempt[] {
@@ -112,7 +128,7 @@ export const PracticeAttempts = {
     const all = readAll();
     const savedId = typeof window === "undefined" ? null : window.localStorage.getItem(activeKey(moduleId, day));
     const existing = savedId ? all.find((a) => a.id === savedId) : undefined;
-    if (existing && !existing.completedAt && existing.localDayKey === localDayKey()) return existing;
+    if (existing && !existing.completedAt && existing.localDayKey === serverDayKey()) return existing;
 
     const attempt: PracticeAttempt = {
       id: newId(),
@@ -245,7 +261,7 @@ export const PracticeAttempts = {
     const { data: auth } = await supabase.auth.getUser();
     const uid = auth.user?.id;
     if (!uid) return readAll();
-    const since = localDayKey(new Date(Date.now() - 7 * 86400000));
+    const since = shiftDayKey(serverDayKey(), -7);
     const { data, error } = await supabase
       .from("practice_attempts")
       .select(
