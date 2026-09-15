@@ -1570,6 +1570,10 @@ export function lookupWord(
   const fromEpisode = options.episodeGlossary?.get(key);
   if (fromEpisode) return { meaning: fromEpisode, curated: key.includes(" ") };
 
+  // Complete expressions (phrasal verbs / idioms) always win over the words.
+  const fromExpressions = globalExpressionMap().get(key);
+  if (fromExpressions) return { meaning: fromExpressions, curated: true };
+
 
   const direct =
     BASE_GLOSSARY[key] ??
