@@ -116,6 +116,11 @@ type Admin = {
   };
 };
 
+/** A storage path always begins with its owner's user id and a slash. */
+function pathBelongsTo(userId: string, path: string | null | undefined): boolean {
+  return typeof path === "string" && typeof userId === "string" && userId.length > 0 && path.startsWith(`${userId}/`);
+}
+
 const RPC_ARGS = {
   _take_min_age_hours: TAKE_MIN_AGE_HOURS,
   _final_retention_days: FINAL_RETENTION_DAYS,
@@ -186,7 +191,14 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
     // candidate. Finals matched through `day_progress.recording_path` are the
     // database's job, so the in-memory pass runs with empty lookups.
     const noLookups = buildLookups([]);
-    const batch = rows.filter((rec) => classifyRecording(rec, noLookups, now).kind === "candidate");
+    const classified = rows.filter((rec) => classifyRecording(rec, noLookups, now).kind === "candidate");
+    // Independent ownership check: never hand storage a path that does not
+    // belong to the row it came from, even if the database allowed it.
+    const batch = classified.filter((rec) => {
+      if (pathBelongsTo(rec.user_id, rec.storage_path)) return true;
+      errors.push(`OWNERSHIP MISMATCH: recording ${rec.id} path does not belong to user ${rec.user_id}`);
+      return false;
+    });
     result.candidates += batch.length;
     if (dryRun || batch.length === 0) {
       takesHandled += rows.length;
@@ -277,6 +289,12 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
       }
       const base = row.recording_path!;
       const latest = base.replace(/\.([a-z0-9]+)$/i, "-latest.$1");
+      if (!pathBelongsTo(row.user_id, base) || !pathBelongsTo(row.user_id, latest)) {
+        errors.push(
+          `OWNERSHIP MISMATCH: day final ${row.module_id} day ${row.day} path does not belong to user ${row.user_id}`,
+        );
+        continue;
+      }
       try {
         const { error: removeError } = await timed(admin.storage.from(BUCKET).remove([base, latest]), "storage.remove");
         if (removeError) throw new Error(removeError.message);

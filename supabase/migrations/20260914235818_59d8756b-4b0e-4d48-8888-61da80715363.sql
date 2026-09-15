@@ -1,0 +1,1 @@
+ALTER FUNCTION public.owns_storage_path(uuid, text) SET search_path TO 'public';

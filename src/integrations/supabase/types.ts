@@ -308,6 +308,7 @@ export type Database = {
       day_progress: {
         Row: {
           completed_at: string
+          created_at: string
           day: number
           final_seconds: number
           id: string
@@ -325,6 +326,7 @@ export type Database = {
         }
         Insert: {
           completed_at?: string
+          created_at?: string
           day: number
           final_seconds?: number
           id?: string
@@ -342,6 +344,7 @@ export type Database = {
         }
         Update: {
           completed_at?: string
+          created_at?: string
           day?: number
           final_seconds?: number
           id?: string
@@ -1397,6 +1400,10 @@ export type Database = {
       is_pro_subscriber: { Args: { _user_id: string }; Returns: boolean }
       is_unlimited_test_user: { Args: { _user_id: string }; Returns: boolean }
       limits_enabled: { Args: never; Returns: boolean }
+      owns_storage_path: {
+        Args: { _path: string; _user_id: string }
+        Returns: boolean
+      }
       plan_multiplier: { Args: { _user_id: string }; Returns: number }
       prune_ai_call_log: { Args: { _keep_days: number }; Returns: number }
       purge_backlog: {
