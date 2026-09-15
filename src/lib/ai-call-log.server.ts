@@ -72,6 +72,25 @@ export const TTS_MODEL = "openai/gpt-4o-mini-tts";
 
 const warnedModels = new Set<string>();
 
+/**
+ * Groq bills a minimum of 10 seconds per transcription request: "Minimum
+ * Billed Length: 10 seconds. If you submit a request less than this, you will
+ * still be billed for 10 seconds." Verified 2026-09-15.
+ */
+export const GROQ_MIN_BILLED_SECONDS = 10;
+
+/**
+ * Pure: the seconds the provider actually charges for. Audio models priced per
+ * hour are floored at the documented minimum; other models are unaffected.
+ */
+export function billableAudioSeconds(model: string | null | undefined, audioSeconds: number | null | undefined): number {
+  const seconds = num(audioSeconds);
+  const hourly = PRICES.audioPerHour[model ?? ""];
+  if (typeof hourly !== "number") return seconds;
+  if (seconds <= 0) return 0;
+  return Math.max(seconds, GROQ_MIN_BILLED_SECONDS);
+}
+
 /** Pure: estimated USD for one call. Never throws; unknown model returns 0. */
 export function estimateCostUsd(entry: Pick<AiCallEntry, "ok" | "provider" | "model" | "audio_seconds" | "input_tokens" | "output_tokens" | "characters">): number {
   if (!entry.ok || entry.provider === "none") return 0;
@@ -82,7 +101,7 @@ export function estimateCostUsd(entry: Pick<AiCallEntry, "ok" | "provider" | "mo
   }
   const hourly = PRICES.audioPerHour[model];
   if (typeof hourly === "number") {
-    return (num(entry.audio_seconds) / 3600) * hourly;
+    return (billableAudioSeconds(model, entry.audio_seconds) / 3600) * hourly;
   }
   const tokens = PRICES.tokensPerMillion[model];
   if (tokens) {
@@ -103,52 +122,66 @@ function int(value: number | null | undefined): number | null {
   return typeof value === "number" && Number.isFinite(value) ? Math.round(value) : null;
 }
 
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 /**
  * Fire-and-forget. Never throws, never delays the learner's response, swallows
  * and logs its own failures. Cache hits only bump the rollup.
+ *
+ * The detail row and the rollup bump are one atomic `log_ai_call` call, so a
+ * retry with the same id can never double-count.
  */
 export async function logAiCall(entry: AiCallEntry): Promise<void> {
   try {
     const cost = estimateCostUsd(entry);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const cacheHit = entry.cacheHit === true;
+    const id = crypto.randomUUID();
 
-    if (!cacheHit) {
-      const { error } = await supabaseAdmin.from("ai_call_log").insert({
-        user_id: entry.user_id,
-        endpoint: entry.endpoint,
-        provider: entry.provider,
-        model: entry.model ?? null,
-        module_id: entry.module_id ?? null,
-        day: int(entry.day),
-        audio_seconds: entry.audio_seconds ?? null,
-        input_tokens: int(entry.input_tokens),
-        output_tokens: int(entry.output_tokens),
-        characters: int(entry.characters),
-        ok: entry.ok,
-        error_code: entry.error_code ?? null,
-        latency_ms: int(entry.latency_ms),
-        est_cost_usd: cost,
-      });
-      if (error) console.error(`[ai-call-log] insert failed: ${error.message}`);
-    }
-
-    const isProviderCall = !cacheHit && entry.provider !== "none";
-    const { error: rpcError } = await supabaseAdmin.rpc("bump_ai_rollup", {
+    const args = {
+      _id: id,
+      _user_id: entry.user_id,
       _endpoint: entry.endpoint,
-      _model: entry.model ?? "",
-      _calls: isProviderCall ? 1 : 0,
-      _failures: !entry.ok && entry.provider !== "none" ? 1 : 0,
-      _denials: entry.error_code === "quota" ? 1 : 0,
-      _cache_hits: cacheHit ? 1 : 0,
-      _audio_seconds: num(entry.audio_seconds),
-      _input_tokens: num(entry.input_tokens),
-      _output_tokens: num(entry.output_tokens),
-      _characters: num(entry.characters),
+      _provider: entry.provider,
+      _model: entry.model ?? null,
+      _module_id: entry.module_id ?? null,
+      _day: int(entry.day),
+      _audio_seconds: entry.audio_seconds ?? null,
+      _billed_audio_seconds: billableAudioSeconds(entry.model, entry.audio_seconds),
+      _input_tokens: int(entry.input_tokens),
+      _output_tokens: int(entry.output_tokens),
+      _characters: int(entry.characters),
+      _ok: entry.ok,
+      _error_code: entry.error_code ?? null,
+      _latency_ms: int(entry.latency_ms),
       _est_cost_usd: cost,
-    });
-    if (rpcError) console.error(`[ai-call-log] rollup failed: ${rpcError.message}`);
+      _cache_hit: cacheHit,
+    };
+
+    const attempt = async () => {
+      try {
+        const { error } = await supabaseAdmin.rpc("log_ai_call", args as never);
+        return error ? error.message : null;
+      } catch (error) {
+        return error instanceof Error ? error.message : String(error);
+      }
+    };
+
+    const first = await attempt();
+    if (!first) return;
+    console.error(`[ai-call-log] write failed: ${first}`);
+    // A cache hit is written at most once: losing one only shifts the
+    // cache-hit percentage, never the money.
+    if (cacheHit) return;
+    await delay(250);
+    const second = await attempt();
+    if (second) {
+      console.error(`[ai-call-log] dropped endpoint=${entry.endpoint} model=${entry.model ?? ""}: ${second}`);
+    }
   } catch (error) {
     console.error(`[ai-call-log] logging failed: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
+

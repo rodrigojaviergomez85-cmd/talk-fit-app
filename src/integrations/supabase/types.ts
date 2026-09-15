@@ -47,6 +47,7 @@ export type Database = {
       ai_call_log: {
         Row: {
           audio_seconds: number | null
+          billed_audio_seconds: number | null
           characters: number | null
           created_at: string
           day: number | null
@@ -65,6 +66,7 @@ export type Database = {
         }
         Insert: {
           audio_seconds?: number | null
+          billed_audio_seconds?: number | null
           characters?: number | null
           created_at?: string
           day?: number | null
@@ -83,6 +85,7 @@ export type Database = {
         }
         Update: {
           audio_seconds?: number | null
+          billed_audio_seconds?: number | null
           characters?: number | null
           created_at?: string
           day?: number | null
@@ -131,6 +134,7 @@ export type Database = {
       ai_daily_rollup: {
         Row: {
           audio_seconds: number
+          billed_audio_seconds: number
           cache_hits: number
           calls: number
           characters: number
@@ -146,6 +150,7 @@ export type Database = {
         }
         Insert: {
           audio_seconds?: number
+          billed_audio_seconds?: number
           cache_hits?: number
           calls?: number
           characters?: number
@@ -161,6 +166,7 @@ export type Database = {
         }
         Update: {
           audio_seconds?: number
+          billed_audio_seconds?: number
           cache_hits?: number
           calls?: number
           characters?: number
@@ -1400,6 +1406,28 @@ export type Database = {
       is_pro_subscriber: { Args: { _user_id: string }; Returns: boolean }
       is_unlimited_test_user: { Args: { _user_id: string }; Returns: boolean }
       limits_enabled: { Args: never; Returns: boolean }
+      log_ai_call: {
+        Args: {
+          _audio_seconds: number
+          _billed_audio_seconds: number
+          _cache_hit: boolean
+          _characters: number
+          _day: number
+          _endpoint: string
+          _error_code: string
+          _est_cost_usd: number
+          _id: string
+          _input_tokens: number
+          _latency_ms: number
+          _model: string
+          _module_id: string
+          _ok: boolean
+          _output_tokens: number
+          _provider: string
+          _user_id: string
+        }
+        Returns: boolean
+      }
       owns_storage_path: {
         Args: { _path: string; _user_id: string }
         Returns: boolean
