@@ -118,7 +118,7 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "And that is exactly why we called you. Builders understand quality.",
+          text: "And that is exactly why we called you. Builders understand quality, and they protect what they built.",
           es: "Y esa es exactamente la razón por la que la llamamos. Quienes construyen entienden la calidad."
         },
         {
@@ -180,7 +180,7 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "Your teachers learn our method, but they stay on your payroll and follow your schedule.",
+          text: "Your teachers learn our method, but they stay on your payroll, follow your schedule, and answer to you.",
           es: "Sus maestros aprenden nuestro método, pero siguen en su nómina y con su horario."
         },
         {
@@ -273,7 +273,7 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "We grow when you grow. If your school fails, our model fails too.",
+          text: "We grow when you grow. If your school fails, our model fails too, so your success is my job.",
           es: "Nosotras crecemos cuando usted crece. Si su escuela fracasa, nuestro modelo también fracasa."
         },
         {
@@ -366,7 +366,7 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "I did not expect that. Why tell us now?",
+          text: "I did not expect that confession. Why tell us now, before we even sign anything?",
           es: "No me lo esperaba. ¿Por qué decirnos ahora?"
         },
         {
