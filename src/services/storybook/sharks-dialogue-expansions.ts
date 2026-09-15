@@ -11,9 +11,6 @@ type EpisodeExpansion = Record<string, SceneExpansion>;
 export const SHARKS_DIALOGUE_EXPANSIONS: Record<string, EpisodeExpansion> = {};
 
 const SHARKS_RICH_EPISODES = new Set([
-  "sharks-ep13-the-hard-negotiation",
-  "sharks-ep14-losing-a-client",
-  "sharks-ep15-winning-it-back",
   "sharks-ep16-a-team-in-three-countries",
   "sharks-ep17-the-investor",
   "sharks-ep18-say-no-with-respect",

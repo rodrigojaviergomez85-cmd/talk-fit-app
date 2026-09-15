@@ -13,524 +13,534 @@ import s10 from "@/assets/storybook/sharks-ep10-partner-or-rival/s10.jpg";
 import s11 from "@/assets/storybook/sharks-ep10-partner-or-rival/s11.jpg";
 
 export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
-  id: "sharks-ep10-partner-or-rival",
-  moduleId: "sharks",
-  week: 2,
-  title: "A partner or a rival",
-  titleEs: "¿Socia o rival?",
-  episodeLabel: {
-    en: "Season 8 · Episode 10",
-    es: "Temporada 8 · Episodio 10"
+  "id": "sharks-ep10-partner-or-rival",
+  "moduleId": "sharks",
+  "week": 2,
+  "title": "A partner or a rival",
+  "titleEs": "¿Socia o rival?",
+  "episodeLabel": {
+    "en": "Season 8 · Episode 10",
+    "es": "Temporada 8 · Episodio 10"
   },
-  previously: [
+  "previously": [
     {
-      en: "Vale won an international contract, but every new opportunity brings a harder decision.",
-      es: "Vale ganó un contrato internacional, pero cada oportunidad trae una decisión más difícil."
+      "en": "The first Vale Kids class filled the community center with twelve laughing children.",
+      "es": "La primera clase de Vale Kids llenó el centro comunitario con doce niños felices."
+    },
+    {
+      "en": "Renata called from Monterrey: she wants a Kids program too — and her schools serve corporate clients.",
+      "es": "Renata llamó desde Monterrey: también quiere un programa Kids, y sus escuelas atienden clientes corporativos."
     }
   ],
-  reviewWords: [
-    { word: "license", es: "licencia" },
-    { word: "partnership", es: "alianza" },
-    { word: "compete", es: "competir" }
+  "reviewWords": [
+    {
+      "word": "recipe",
+      "es": "receta"
+    },
+    {
+      "word": "corporate",
+      "es": "corporativo"
+    },
+    {
+      "word": "training plan",
+      "es": "plan de capacitación"
+    }
   ],
-  blurb: {
-    en: "Your contract says Mexico is exclusive. I will not pay for a surprise. Vale, Lucía is calling. Something went wrong in the first class.",
-    es: "Su contrato dice que México es exclusivo. No pagaré por una sorpresa. Vale, Lucía está llamando. Algo salió mal en la primera clase."
+  "blurb": {
+    "en": "Renata's schools touch the same market as Northline. Before anyone else defines this relationship, Vale's team defines it themselves — three options, one honest call, and rules written from day one.",
+    "es": "Las escuelas de Renata tocan el mismo mercado que Northline. Antes de que alguien más defina esta relación, el equipo de Vale la define: tres opciones, una llamada honesta y reglas escritas desde el primer día."
   },
-  cover: cover,
-  voice: "girl",
-  scenes: [
+  "cover": cover,
+  "voice": "girl",
+  "scenes": [
     {
-      id: "s1",
-      image: s1,
-      imageAlt: "Renata appears on the video screen, upset about a contract clause.",
-      text: "Your contract says Mexico is exclusive. I will not pay for a surprise.",
-      es: "Su contrato dice que México es exclusivo. No pagaré por una sorpresa.",
-      speaker: "renata",
-      cast: ["renata", "vale"],
-      lines: [
+      "id": "s1",
+      "image": s1,
+      "imageAlt": "Camila finds Vale at the office early in the morning with coffee and tired eyes.",
+      "text": "I could not sleep. Renata's last sentence kept me awake: corporate clients, in Mexico.",
+      "es": "No pude dormir. La última frase de Renata me tuvo despierta: clientes corporativos, en México.",
+      "speaker": "vale",
+      "cast": ["camila", "vale", "dani"],
+      "lines": [
         {
-          speaker: "renata",
-          text: "Your contract says Mexico is exclusive to you. I will not pay for a surprise I never ordered.",
-          es: "Su contrato dice que México es exclusivo. No pagaré por una sorpresa."
+          "speaker": "camila",
+          "text": "You were up late. I can tell because you answered my messages at one in the morning.",
+          "es": "Te acostaste tarde. Lo sé porque respondiste mis mensajes a la una de la mañana."
         },
         {
-          speaker: "vale",
-          text: "Renata, you are right to call us. Let me look at the document with you before anyone signs or pays anything.",
-          es: "Renata, hace bien en llamarnos. Déjeme revisar el documento con usted."
+          "speaker": "vale",
+          "text": "I could not sleep. Renata's last sentence kept me awake: corporate clients, in Mexico.",
+          "es": "No pude dormir. La última frase de Renata me tuvo despierta: clientes corporativos, en México."
         },
         {
-          speaker: "renata",
-          text: "I have it in front of me. Page three, second paragraph. Read it out loud, please.",
-          es: "Lo tengo enfrente. Página tres, segundo párrafo. Léalo en voz alta, por favor."
+          "speaker": "dani",
+          "text": "The same sentence that sounded like good news at first and like a warning by midnight.",
+          "es": "La misma frase que al principio sonó a buena noticia y a medianoche sonó a advertencia."
         }
       ],
-      words: [
-        { word: "exclusive", es: "exclusivo" },
-        { word: "surprise", es: "sorpresa" },
-        { word: "paragraph", es: "párrafo" }
+      "words": [
+        { "word": "awake", "es": "despierta" },
+        { "word": "warning", "es": "advertencia" },
+        { "word": "at first", "es": "al principio" }
       ]
     },
     {
-      id: "s2",
-      image: s2,
-      imageAlt: "Vale asks for facts while the team opens the contract files.",
-      text: "Before we react, let us get the facts right. Which version did you receive, and when did it arrive?",
-      es: "Antes de reaccionar, aclaremos los hechos. ¿Qué versión recibió?",
-      speaker: "vale",
-      cast: ["vale", "dani"],
-      lines: [
+      "id": "s2",
+      "image": s2,
+      "imageAlt": "Dani draws a simple map of Mexico and the Northline contract on the office whiteboard.",
+      "text": "And now a possible partner teaches their competitors. If Northline finds out, they will ask questions.",
+      "es": "Y ahora una posible socia enseña a sus competidores. Si Northline se entera, hará preguntas.",
+      "speaker": "camila",
+      "cast": ["dani", "camila", "vale"],
+      "lines": [
         {
-          speaker: "vale",
-          text: "Before we react, let us get the facts right. Which version did you receive?",
-          es: "Antes de reaccionar, aclaremos los hechos. ¿Qué versión recibió?"
+          "speaker": "dani",
+          "text": "Let me understand the problem. Northline pays us to train their people, and Mexico is part of that map.",
+          "es": "Déjame entender el problema. Northline nos paga por capacitar a su gente, y México es parte de ese mapa."
         },
         {
-          speaker: "dani",
-          text: "I am opening both files now, the one we sent and the one she has on her desk.",
-          es: "Estoy abriendo ambos archivos, el que enviamos y el que ella tiene en su escritorio."
+          "speaker": "camila",
+          "text": "And now a possible partner teaches their competitors. If Northline finds out, they will ask questions.",
+          "es": "Y ahora una posible socia enseña a sus competidores. Si Northline se entera, hará preguntas."
         },
         {
-          speaker: "vale",
-          text: "Good. We compare line by line before anyone promises anything to anyone, on this call or in any email after it.",
-          es: "Bien. Comparamos línea por línea antes de que alguien prometa algo a alguien en esta llamada."
+          "speaker": "vale",
+          "text": "So before anyone else defines this relationship, we define it ourselves, today.",
+          "es": "Así que antes de que alguien más defina esta relación, la definimos nosotros, hoy."
         }
       ],
-      words: [
-        { word: "react", es: "reaccionar" },
-        { word: "facts", es: "hechos" },
-        { word: "version", es: "versión" }
+      "words": [
+        { "word": "train", "es": "capacitar" },
+        { "word": "finds out", "es": "se entera" },
+        { "word": "define", "es": "definir" }
       ]
     },
     {
-      id: "s3",
-      image: s3,
-      imageAlt: "Dani compares two versions of the contract on his laptop.",
-      text: "I compared both files twice. Houston added the clause after our call, and nobody told us.",
-      es: "Comparé ambos archivos. Houston agregó la cláusula después de nuestra llamada.",
-      speaker: "dani",
-      cast: ["dani", "vale"],
-      lines: [
+      "id": "s3",
+      "image": s3,
+      "imageAlt": "Dani, Camila and Vale stand around the whiteboard comparing three possible options.",
+      "text": "Or option three: everything together, and we all figure out the rules before we start.",
+      "es": "O la opción tres: todo junto, y todos definimos las reglas antes de empezar.",
+      "speaker": "vale",
+      "cast": ["dani", "camila", "vale"],
+      "lines": [
         {
-          speaker: "dani",
-          text: "I compared both files. Houston added the clause after our call.",
-          es: "Comparé ambos archivos. Houston agregó la cláusula después de nuestra llamada."
+          "speaker": "dani",
+          "text": "Option one: we say no to Renata and lose the biggest door into Mexico we have ever seen.",
+          "es": "Opción uno: le decimos que no a Renata y perdemos la puerta más grande a México que hemos visto."
         },
         {
-          speaker: "vale",
-          text: "So Renata received a version we never approved. No wonder she is upset. I would be upset too.",
-          es: "Entonces Renata recibió una versión que nunca aprobamos. Con razón está molesta."
+          "speaker": "camila",
+          "text": "Option two: we work with her on Kids and stay away from her corporate clients completely.",
+          "es": "Opción dos: trabajamos con ella en Kids y nos mantenemos lejos de sus clientes corporativos por completo."
         },
         {
-          speaker: "dani",
-          text: "Exactly. Our copy is clean; hers has one extra paragraph about exclusivity and fees.",
-          es: "Exacto. Nuestra copia está limpia; la de ella tiene un párrafo extra sobre exclusividad y tarifas."
+          "speaker": "vale",
+          "text": "Or option three: everything together, and we all figure out the rules before we start.",
+          "es": "O la opción tres: todo junto, y todos definimos las reglas antes de empezar."
         }
       ],
-      words: [
-        { word: "clause", es: "cláusula" },
-        { word: "approved", es: "aprobamos" },
-        { word: "extra", es: "extra" }
+      "words": [
+        { "word": "option", "es": "opción" },
+        { "word": "stay away", "es": "mantenerse lejos" },
+        { "word": "rules", "es": "reglas" }
       ]
     },
     {
-      id: "s4",
-      image: s4,
-      imageAlt: "Vale explains to Renata on the screen that the error came from the process.",
-      text: "Renata, what I mean is that the error came from our document process, not from you or your team.",
-      es: "Renata, lo que quiero decir es que el error vino del proceso de documentos, no de usted.",
-      speaker: "vale",
-      cast: ["vale", "renata"],
-      lines: [
+      "id": "s4",
+      "image": s4,
+      "imageAlt": "Vale proposes the brave option while Dani leans on the desk, worried about the risk.",
+      "text": "There is a fourth option nobody said: tell Mr. Reed ourselves, before he hears it from someone else.",
+      "es": "Hay una cuarta opción que nadie dijo: decírselo nosotros al señor Reed, antes de que lo escuche de otra persona.",
+      "speaker": "vale",
+      "cast": ["vale", "dani"],
+      "lines": [
         {
-          speaker: "vale",
-          text: "Renata, what I mean is that the error came from the document process, not from you.",
-          es: "Renata, lo que quiero decir es que el error vino del proceso de documentos, no de usted."
+          "speaker": "vale",
+          "text": "There is a fourth option nobody said: tell Mr. Reed ourselves, before he hears it from someone else.",
+          "es": "Hay una cuarta opción que nadie dijo: decírselo nosotros al señor Reed, antes de que lo escuche de otra persona."
         },
         {
-          speaker: "renata",
-          text: "So I am not crazy. The paper really says exclusive, in black and white.",
-          es: "Entonces no estoy loca. El papel sí dice exclusivo, en blanco y negro."
+          "speaker": "dani",
+          "text": "That is brave. And risky. He could cancel the contract the moment he hears the word Mexico.",
+          "es": "Eso es valiente. Y arriesgado. Podría cancelar el contrato en el momento en que escuche la palabra México."
         },
         {
-          speaker: "vale",
-          text: "It does, and it should not. We will fix it today, together.",
-          es: "Así es, y no debería. Lo corregiremos hoy."
+          "speaker": "vale",
+          "text": "He could also respect us more. Secrets are expensive, Dani. I learned that the hard way.",
+          "es": "También podría respetarnos más. Los secretos cuestan caro, Dani. Eso lo aprendí a las malas."
         }
       ],
-      words: [
-        { word: "error", es: "error" },
-        { word: "process", es: "proceso" },
-        { word: "fix", es: "corregir" }
+      "words": [
+        { "word": "brave", "es": "valiente" },
+        { "word": "risky", "es": "arriesgado" },
+        { "word": "the hard way", "es": "a las malas" }
       ]
     },
     {
-      id: "s5",
-      image: s5,
-      imageAlt: "Mr. Reed joins remotely from Houston to admit the mistake on a video screen.",
-      text: "Houston assumed the partnership was exclusive. That assumption was wrong.",
-      es: "Houston asumió que la alianza era exclusiva. Esa suposición fue un error.",
-      speaker: "reed",
-      cast: ["reed", "vale"],
-      lines: [
+      "id": "s5",
+      "image": s5,
+      "imageAlt": "Renata appears on the video call screen from Monterrey with a direct, playful smile.",
+      "text": "Good morning, partners-to-be. Or should I say rivals? I read your silence all weekend.",
+      "es": "Buenos días, futuros socios. ¿O debería decir rivales? Leí su silencio todo el fin de semana.",
+      "speaker": "renata",
+      "cast": ["renata", "vale"],
+      "lines": [
         {
-          speaker: "reed",
-          text: "Houston assumed the partnership was exclusive. That assumption was wrong.",
-          es: "Houston asumió que la alianza era exclusiva. Esa suposición fue un error."
+          "speaker": "renata",
+          "text": "Good morning, partners-to-be. Or should I say rivals? I read your silence all weekend.",
+          "es": "Buenos días, futuros socios. ¿O debería decir rivales? Leí su silencio todo el fin de semana."
         },
         {
-          speaker: "vale",
-          text: "Thank you for saying it on the call, Mr. Reed. Renata deserves to hear it from you, not from a letter.",
-          es: "Gracias por decirlo en la llamada, señor Reed. Renata merece escucharlo de usted."
+          "speaker": "vale",
+          "text": "You read it wrong. We spent the weekend working, not worrying. Can I be direct with you?",
+          "es": "Lo leyó mal. Pasamos el fin de semana trabajando, no preocupándonos. ¿Puedo ser directa con usted?"
         },
         {
-          speaker: "reed",
-          text: "Ms. Renata, my team added that clause without asking Vale, and I apologize for the confusion it caused.",
-          es: "Señora Renata, mi equipo agregó esa cláusula sin preguntarle a Vale, y me disculpo por la confusión que causó."
+          "speaker": "renata",
+          "text": "Please. I built six schools on direct conversations. Vague people do not last in this business.",
+          "es": "Por favor. Construí seis escuelas a base de conversaciones directas. La gente vaga no dura en este negocio."
         }
       ],
-      words: [
-        { word: "assumed", es: "asumió" },
-        { word: "assumption", es: "suposición" },
-        { word: "apologize", es: "disculparse" }
+      "words": [
+        { "word": "silence", "es": "silencio" },
+        { "word": "direct", "es": "directa" },
+        { "word": "vague", "es": "vago / poco claro" }
       ]
     },
     {
-      id: "s6",
-      image: s6,
-      imageAlt: "Camila prepares a corrected invoice at her desk during the call.",
-      text: "I will follow up with a corrected invoice today, before the end of business.",
-      es: "Daré seguimiento con una factura corregida hoy.",
-      speaker: "camila",
-      cast: ["camila", "dani"],
-      lines: [
+      "id": "s6",
+      "image": s6,
+      "imageAlt": "Renata raises one hand on screen to stop Vale and clarify her real intentions.",
+      "text": "What I mean is simple: I do not want Northline's contract, and I never will.",
+      "es": "Lo que quiero decir es simple: no quiero el contrato de Northline, y nunca lo querré.",
+      "speaker": "renata",
+      "cast": ["renata", "vale"],
+      "lines": [
         {
-          speaker: "camila",
-          text: "I will follow up with a corrected invoice today.",
-          es: "Daré seguimiento con una factura corregida hoy."
+          "speaker": "vale",
+          "text": "Then here it is. Kids, yes, together. Corporate clients in Mexico, separate, at least for now.",
+          "es": "Entonces aquí va. Kids, sí, juntas. Clientes corporativos en México, separados, al menos por ahora."
         },
         {
-          speaker: "dani",
-          text: "I can send the clean contract too, with the date of our original call on top, so everyone sees which version came first.",
-          es: "También puedo enviar el contrato limpio, con la fecha de nuestra llamada original arriba."
+          "speaker": "renata",
+          "text": "What I mean is simple: I do not want Northline's contract, and I never will.",
+          "es": "Lo que quiero decir es simple: no quiero el contrato de Northline, y nunca lo querré."
         },
         {
-          speaker: "camila",
-          text: "Perfect. Renata will have both documents before dinner, with a short summary on the first page.",
-          es: "Perfecto. Renata tendrá ambos documentos antes de la cena, con un resumen corto en la primera página."
+          "speaker": "vale",
+          "text": "Why not? It is the biggest contract in the region. Most schools would fight for it.",
+          "es": "¿Por qué no? Es el contrato más grande de la región. La mayoría de las escuelas pelearían por él."
         }
       ],
-      words: [
-        { word: "invoice", es: "factura" },
-        { word: "corrected", es: "corregida" },
-        { word: "original", es: "original" }
+      "words": [
+        { "word": "separate", "es": "separados" },
+        { "word": "region", "es": "región" },
+        { "word": "fight for", "es": "pelear por" }
       ]
     },
     {
-      id: "s7",
-      image: s7,
-      imageAlt: "Vale summarizes the agreement clearly for everyone on the call.",
-      text: "Let us straighten this out: no exclusivity fee, and no hidden condition.",
-      es: "Aclaremos esto: sin tarifa de exclusividad y sin condición oculta.",
-      speaker: "vale",
-      cast: ["vale", "renata"],
-      lines: [
+      "id": "s7",
+      "image": s7,
+      "imageAlt": "Vale writes three rules on the whiteboard while Renata follows along from the screen.",
+      "text": "Two: my corporate clients stay mine, your Northline stays yours, and nobody poaches anybody.",
+      "es": "Dos: mis clientes corporativos se quedan conmigo, tu Northline se queda contigo, y nadie le roba clientes a nadie.",
+      "speaker": "renata",
+      "cast": ["vale", "renata"],
+      "lines": [
         {
-          speaker: "vale",
-          text: "Let us straighten this out: no exclusivity fee, and no hidden condition.",
-          es: "Aclaremos esto: sin tarifa de exclusividad y sin condición oculta."
+          "speaker": "vale",
+          "text": "Then let us write the rules today. One: Kids in Monterrey follows our method and our training.",
+          "es": "Entonces escribamos las reglas hoy. Una: Kids en Monterrey sigue nuestro método y nuestra capacitación."
         },
         {
-          speaker: "renata",
-          text: "And if Houston changes the paper again without telling anyone?",
-          es: "¿Y si Houston cambia el papel otra vez?"
+          "speaker": "renata",
+          "text": "Two: my corporate clients stay mine, your Northline stays yours, and nobody poaches anybody.",
+          "es": "Dos: mis clientes corporativos se quedan conmigo, tu Northline se queda contigo, y nadie le roba clientes a nadie."
         },
         {
-          speaker: "vale",
-          text: "Then you call me directly, and the contract dies that same day, no lawyers needed.",
-          es: "Entonces me llama directamente, y el contrato muere ese mismo día, sin abogados."
+          "speaker": "vale",
+          "text": "Three: we tell Mr. Reed together, on one call, so the story is honest from day one.",
+          "es": "Tres: se lo decimos al señor Reed juntas, en una llamada, para que la historia sea honesta desde el día uno."
         }
       ],
-      words: [
-        { word: "fee", es: "tarifa" },
-        { word: "hidden", es: "oculta" },
-        { word: "directly", es: "directamente" }
+      "words": [
+        { "word": "poaches", "es": "roba (clientes o talento)" },
+        { "word": "honest", "es": "honesta" },
+        { "word": "day one", "es": "el primer día" }
       ]
     },
     {
-      id: "s8",
-      image: s8,
-      imageAlt: "Renata smiles for the first time and offers a smaller next step.",
-      text: "Now we are finally on the same page. I can discuss a pilot, not a takeover of my schools.",
-      es: "Ahora estamos en la misma sintonía. Puedo discutir un piloto, no una adquisición.",
-      speaker: "renata",
-      cast: ["renata", "camila"],
-      lines: [
+      "id": "s8",
+      "image": s8,
+      "imageAlt": "Renata laughs on screen, impressed by how firmly Vale negotiates the new rules.",
+      "text": "My grandmother, every Sunday. So — are we on the same page, Renata?",
+      "es": "Mi abuela, todos los domingos. Entonces, ¿estamos en la misma página, Renata?",
+      "speaker": "vale",
+      "cast": ["renata", "vale"],
+      "lines": [
         {
-          speaker: "renata",
-          text: "Now we are on the same page. I can discuss a pilot, not a takeover.",
-          es: "Ahora estamos en la misma sintonía. Puedo discutir un piloto, no una adquisición."
+          "speaker": "renata",
+          "text": "You negotiate like someone twice your age. Did anyone ever tell you that?",
+          "es": "Negocias como alguien con el doble de tu edad. ¿Alguien te lo ha dicho alguna vez?"
         },
         {
-          speaker: "camila",
-          text: "A pilot in one school, three months, with clear goals we both measure every single week.",
-          es: "Un piloto en una escuela, tres meses, con metas claras que ambas medimos cada semana."
+          "speaker": "vale",
+          "text": "My grandmother, every Sunday. So — are we on the same page, Renata?",
+          "es": "Mi abuela, todos los domingos. Entonces, ¿estamos en la misma página, Renata?"
         },
         {
-          speaker: "renata",
-          text: "Three months. And I choose the school, the teachers, and the schedule.",
-          es: "Tres meses. Y yo elijo la escuela."
+          "speaker": "renata",
+          "text": "We are on the same page, and it is a good page. Send me the training plan tonight.",
+          "es": "Estamos en la misma página, y es una buena página. Envíame el plan de capacitación esta noche."
         }
       ],
-      words: [
-        { word: "pilot", es: "piloto" },
-        { word: "takeover", es: "adquisición" },
-        { word: "goals", es: "metas" }
+      "words": [
+        { "word": "twice", "es": "el doble" },
+        { "word": "negotiate", "es": "negociar" },
+        { "word": "tonight", "es": "esta noche" }
       ]
     },
     {
-      id: "s9",
-      image: s9,
-      imageAlt: "Vale agrees to the pilot and lets results decide the future.",
-      text: "A pilot is enough. Results can decide what happens next.",
-      es: "Un piloto es suficiente. Los resultados pueden decidir qué pasa después.",
-      speaker: "vale",
-      cast: ["vale", "dani"],
-      lines: [
+      "id": "s9",
+      "image": s9,
+      "imageAlt": "Dani and Camila celebrate quietly in the office after the call ends well.",
+      "text": "I cannot believe it. Last night she was a threat, and today she is teaming up with us.",
+      "es": "No lo puedo creer. Anoche era una amenaza, y hoy se está aliando con nosotros.",
+      "speaker": "dani",
+      "cast": ["dani", "camila", "vale"],
+      "lines": [
         {
-          speaker: "vale",
-          text: "A pilot is enough. Results can decide what happens next.",
-          es: "Un piloto es suficiente. Los resultados pueden decidir qué pasa después."
+          "speaker": "dani",
+          "text": "I cannot believe it. Last night she was a threat, and today she is teaming up with us.",
+          "es": "No lo puedo creer. Anoche era una amenaza, y hoy se está aliando con nosotros."
         },
         {
-          speaker: "dani",
-          text: "If her students speak like ours after three months, the expansion sells itself without any pressure.",
-          es: "Si sus estudiantes hablan como los nuestros después de tres meses, la expansión se vende sola y sin presión."
+          "speaker": "camila",
+          "text": "That is what a good conversation does. It turns a wall into a door.",
+          "es": "Eso es lo que hace una buena conversación. Convierte una pared en una puerta."
         },
         {
-          speaker: "vale",
-          text: "And if they do not, we walk away with respect and no debts. That is the deal.",
-          es: "Y si no, nos retiramos con respeto. Ese es el trato."
+          "speaker": "vale",
+          "text": "A door with rules, Camila. Rules first, trust second, celebration third.",
+          "es": "Una puerta con reglas, Camila. Reglas primero, confianza segundo, celebración tercero."
         }
       ],
-      words: [
-        { word: "enough", es: "suficiente" },
-        { word: "results", es: "resultados" },
-        { word: "walk away", es: "retirarse" }
+      "words": [
+        { "word": "threat", "es": "amenaza" },
+        { "word": "teaming up", "es": "aliándose / uniéndose" },
+        { "word": "wall", "es": "pared" }
       ]
     },
     {
-      id: "s10",
-      image: s10,
-      imageAlt: "Renata raises the stakes with a challenge between schools.",
-      text: "Then prove it. My best school will compete against your Guatemala office in a real speaking exam.",
-      es: "Entonces demuéstrelo. Mi mejor escuela competirá contra su oficina de Guatemala.",
-      speaker: "renata",
-      cast: ["renata", "vale"],
-      lines: [
+      "id": "s10",
+      "image": s10,
+      "imageAlt": "Vale assigns tasks for the night while Camila opens her laptop with the numbers ready.",
+      "text": "Tomorrow I call Mr. Reed with Renata. Tonight, I want the Kids training plan finished.",
+      "es": "Mañana llamo al señor Reed con Renata. Esta noche quiero el plan de capacitación de Kids terminado.",
+      "speaker": "vale",
+      "cast": ["vale", "dani", "camila"],
+      "lines": [
         {
-          speaker: "renata",
-          text: "Then prove it. My best school will compete against your Guatemala office.",
-          es: "Entonces demuéstrelo. Mi mejor escuela competirá contra su oficina de Guatemala."
+          "speaker": "vale",
+          "text": "Tomorrow I call Mr. Reed with Renata. Tonight, I want the Kids training plan finished.",
+          "es": "Mañana llamo al señor Reed con Renata. Esta noche quiero el plan de capacitación de Kids terminado."
         },
         {
-          speaker: "vale",
-          text: "A friendly competition. Same exam, same month, students from both schools.",
-          es: "Una competencia amistosa. Mismo examen, mismo mes, estudiantes de ambas escuelas."
+          "speaker": "dani",
+          "text": "I will have the plan ready by nine. Camila, can you review the numbers section?",
+          "es": "Tendré el plan listo para las nueve. Camila, ¿puedes revisar la sección de números?"
         },
         {
-          speaker: "renata",
-          text: "Friendly but serious. My students do not like to lose, and neither do their parents, and neither do I.",
-          es: "Amistosa pero seria. A mis estudiantes no les gusta perder, y a sus padres tampoco."
+          "speaker": "camila",
+          "text": "Already done. You two dream big; I make sure the dreams can pay rent.",
+          "es": "Ya está hecho. Ustedes dos sueñan en grande; yo me aseguro de que los sueños puedan pagar el alquiler."
         }
       ],
-      words: [
-        { word: "prove", es: "demostrar" },
-        { word: "exam", es: "examen" },
-        { word: "lose", es: "perder" }
+      "words": [
+        { "word": "finished", "es": "terminado" },
+        { "word": "review", "es": "revisar" },
+        { "word": "rent", "es": "alquiler" }
       ]
     },
     {
-      id: "s11",
-      image: s11,
-      imageAlt: "Dani receives an urgent call from Lucía during the meeting.",
-      text: "Vale, Lucía is calling. Something went wrong in the first class.",
-      es: "Vale, Lucía está llamando. Algo salió mal en la primera clase.",
-      speaker: "dani",
-      cast: ["dani", "vale", "renata"],
-      lines: [
+      "id": "s11",
+      "image": s11,
+      "imageAlt": "Vale answers a late call from Lucía and her face changes as she hears the news from Guatemala.",
+      "text": "Vale, sorry to call this late. Something went wrong in a class today, and parents are upset.",
+      "es": "Vale, perdón por llamar tan tarde. Algo salió mal en una clase hoy, y los padres están molestos.",
+      "speaker": "lucia",
+      "cast": ["vale", "lucia"],
+      "lines": [
         {
-          speaker: "dani",
-          text: "Vale, Lucía is calling. Something went wrong in the first class.",
-          es: "Vale, Lucía está llamando. Algo salió mal en la primera clase."
+          "speaker": "lucia",
+          "text": "Vale, sorry to call this late. Something went wrong in a class today, and parents are upset.",
+          "es": "Vale, perdón por llamar tan tarde. Algo salió mal en una clase hoy, y los padres están molestos."
         },
         {
-          speaker: "vale",
-          text: "Renata, give me one minute. A class problem always comes first.",
-          es: "Renata, déme un minuto. Un problema de clase siempre va primero."
+          "speaker": "vale",
+          "text": "Slow down, Lucía. Which class, which teacher, and how upset are the parents?",
+          "es": "Más despacio, Lucía. ¿Qué clase, qué maestro, y qué tan molestos están los padres?"
         },
         {
-          speaker: "renata",
-          text: "Take your time, Vale. How you handle bad news tells me more about your school and your team than any contract ever will.",
-          es: "Tómese su tiempo. Cómo maneja las malas noticias me dice más de lo que cualquier contrato dirá jamás."
+          "speaker": "lucia",
+          "text": "The new teacher in zone two. Half the class walked out. I think we need you here.",
+          "es": "El maestro nuevo de la zona dos. La mitad de la clase se salió. Creo que te necesitamos aquí."
         }
       ],
-      words: [
-        { word: "calling", es: "llamando" },
-        { word: "handle", es: "manejar" },
-        { word: "bad news", es: "malas noticias" }
+      "words": [
+        { "word": "upset", "es": "molestos" },
+        { "word": "walked out", "es": "se salieron" },
+        { "word": "late", "es": "tarde" }
       ]
     }
   ],
-  quizzes: [
+  "quizzes": [
     {
-      id: "q1",
-      afterScene: "s3",
-      questionEn: "Why is Renata upset at the beginning?",
-      questionEs: "¿Por qué está molesta Renata al principio?",
-      options: [
+      "id": "q1",
+      "afterScene": "s3",
+      "questionEn": "What options does the team discuss?",
+      "questionEs": "¿Qué opciones discute el equipo?",
+      "options": [
         {
-          label: "Her contract says Mexico is exclusive, a clause Houston added.",
-          emoji: "📄"
+          "label": "Say no, work together only on Kids, or do everything with clear rules.",
+          "emoji": "📋"
         },
         {
-          label: "Her students failed the exam.",
-          emoji: "📝"
+          "label": "Close the academy and move abroad.",
+          "emoji": "✈️"
         },
         {
-          label: "Vale raised the price.",
-          emoji: "💰"
+          "label": "Ignore Renata until she disappears.",
+          "emoji": "🙈"
         }
       ],
-      answer: 0,
-      sayIt: "Renata is upset because Houston added an exclusivity clause.",
-      sayItEs: "Ejemplo: «Renata is upset because Houston added an exclusivity clause.»",
-      sayItAskEn: "Why is Renata upset?",
-      sayItAskEs: "¿Por qué está molesta Renata?",
-      sayItCheck: {
-        target: "* clause *",
-        altTargets: [
-          "Because *",
-          "Houston added *",
-          "She is upset *"
+      "answer": 0,
+      "sayIt": "I would choose option three because clear rules protect everyone.",
+      "sayItEs": "Ejemplo: «I would choose option three because clear rules protect everyone.»",
+      "sayItAskEn": "Which option would you choose, and why?",
+      "sayItAskEs": "¿Qué opción elegirías y por qué?",
+      "sayItCheck": {
+        "target": "I would choose * because *",
+        "altTargets": [
+          "I would pick *",
+          "The best option is * because *"
         ]
       }
     },
     {
-      id: "q2",
-      afterScene: "s7",
-      questionEn: "How does Vale solve the contract problem?",
-      questionEs: "¿Cómo resuelve Vale el problema del contrato?",
-      options: [
+      "id": "q2",
+      "afterScene": "s7",
+      "questionEn": "What rules do Vale and Renata agree on?",
+      "questionEs": "¿En qué reglas acuerdan Vale y Renata?",
+      "options": [
         {
-          label: "No exclusivity fee, no hidden condition, and corrected documents today.",
-          emoji: "✅"
+          "label": "Kids together, corporate clients separate, and one honest call with Mr. Reed.",
+          "emoji": "✍️"
         },
         {
-          label: "She cancels the partnership forever.",
-          emoji: "🚫"
+          "label": "No rules at all — only trust.",
+          "emoji": "🤞"
         },
         {
-          label: "She asks Renata to pay anyway.",
-          emoji: "🤑"
+          "label": "Renata takes over Northline.",
+          "emoji": "🏴"
         }
       ],
-      answer: 0,
-      sayIt: "She removes the fee and sends corrected documents the same day.",
-      sayItEs: "Ejemplo: «She removes the fee and sends corrected documents the same day.»",
-      sayItAskEn: "What does Vale promise to fix?",
-      sayItAskEs: "¿Qué promete corregir Vale?",
-      sayItCheck: {
-        target: "* no exclusivity *",
-        altTargets: [
-          "She removes *",
-          "She fixes *",
-          "No hidden *"
+      "answer": 0,
+      "sayIt": "I think telling Mr. Reed is smart because secrets are expensive.",
+      "sayItEs": "Ejemplo: «I think telling Mr. Reed is smart because secrets are expensive.»",
+      "sayItAskEn": "Do you think telling Mr. Reed is a good idea? Why?",
+      "sayItAskEs": "¿Crees que decirle al señor Reed es buena idea? ¿Por qué?",
+      "sayItCheck": {
+        "target": "I think * because *",
+        "altTargets": [
+          "Yes, because *",
+          "I believe * because *"
         ]
       }
     },
     {
-      id: "q3",
-      afterScene: "s11",
-      questionEn: "What happens right at the end of the episode?",
-      questionEs: "¿Qué pasa justo al final del episodio?",
-      options: [
+      "id": "q3",
+      "afterScene": "s11",
+      "questionEn": "What happens at the very end of the episode?",
+      "questionEs": "¿Qué pasa al final del episodio?",
+      "options": [
         {
-          label: "Lucía calls: something went wrong in the first class.",
-          emoji: "📞"
+          "label": "Lucía calls: a class in Guatemala went wrong and parents are upset.",
+          "emoji": "📞"
         },
         {
-          label: "Renata signs the full contract.",
-          emoji: "🖊️"
+          "label": "The team goes on vacation to rest.",
+          "emoji": "🏖️"
         },
         {
-          label: "The team celebrates with a party.",
-          emoji: "🎉"
+          "label": "Renata cancels the whole partnership.",
+          "emoji": "❌"
         }
       ],
-      answer: 0,
-      sayIt: "Lucía calls because something went wrong in the first class.",
-      sayItEs: "Ejemplo: «Lucía calls because something went wrong in the first class.»",
-      sayItAskEn: "What bad news arrives at the end?",
-      sayItAskEs: "¿Qué mala noticia llega al final?",
-      sayItCheck: {
-        target: "* went wrong *",
-        altTargets: [
-          "Something went wrong *",
-          "Lucía is calling *",
-          "A problem *"
+      "answer": 0,
+      "sayIt": "Vale has to help Guatemala because the new teacher's class went wrong.",
+      "sayItEs": "Ejemplo: «Vale has to help Guatemala because the new teacher's class went wrong.»",
+      "sayItAskEn": "Summarize the new problem Vale faces now.",
+      "sayItAskEs": "Resume el nuevo problema que Vale enfrenta ahora.",
+      "sayItCheck": {
+        "target": "Vale has to * because *",
+        "altTargets": [
+          "The problem is *",
+          "Vale needs to *"
         ]
       }
     }
   ],
-  mindsetCard: {
-    afterScene: "s6",
-    phrase: "I can do hard things. Mistakes are part of the process.",
-    es: "Puedo hacer cosas difíciles. Los errores son parte del proceso."
+  "mindsetCard": {
+    "afterScene": "s6",
+    "phrase": "I can do hard things. Mistakes are part of the process.",
+    "es": "Puedo hacer cosas difíciles. Los errores son parte del proceso."
   },
-  habitCard: {
-    afterScene: "s4",
-    phrase: "English is easy when I listen, clarify, and speak again.",
-    es: "El inglés es fácil cuando escucho, aclaro y vuelvo a hablar.",
-    model: "vale",
-    modelActionEs: "Vale escucha, aclara y responde con calma."
+  "habitCard": {
+    "afterScene": "s4",
+    "phrase": "English is easy when I listen, clarify, and speak again.",
+    "es": "El inglés es fácil cuando escucho, aclaro y vuelvo a hablar.",
+    "model": "vale",
+    "modelActionEs": "Vale elige la honestidad y habla claro incluso cuando hay riesgo."
   },
-  expressions: [
+  "expressions": [
     {
-      phrase: "follow up",
-      es: "dar seguimiento",
-      kind: "phrasal",
-      example: "I will follow up with a corrected invoice today.",
-      exampleEs: "Daré seguimiento con una factura corregida hoy."
+      "phrase": "figure out",
+      "es": "resolver / descifrar",
+      "kind": "phrasal",
+      "example": "Or option three: everything together, and we all figure out the rules before we start.",
+      "exampleEs": "O la opción tres: todo junto, y todos definimos las reglas antes de empezar."
     },
     {
-      phrase: "straighten out",
-      variants: ["straighten this out"],
-      es: "aclarar y resolver",
-      kind: "phrasal",
-      example: "Let us straighten this out: no exclusivity fee, and no hidden condition.",
-      exampleEs: "Aclaremos esto: sin tarifa de exclusividad y sin condición oculta."
+      "phrase": "team up",
+      "variants": ["teaming up"],
+      "es": "aliarse / unir fuerzas",
+      "kind": "phrasal",
+      "example": "I cannot believe it. Last night she was a threat, and today she is teaming up with us.",
+      "exampleEs": "No lo puedo creer. Anoche era una amenaza, y hoy se está aliando con nosotros."
     },
     {
-      phrase: "on the same page",
-      es: "estar en la misma sintonía",
-      kind: "idiom",
-      example: "Now we are on the same page. I can discuss a pilot, not a takeover.",
-      exampleEs: "Ahora estamos en la misma sintonía. Puedo discutir un piloto, no una adquisición."
+      "phrase": "on the same page",
+      "es": "de acuerdo / entendiendo lo mismo",
+      "kind": "idiom",
+      "example": "My grandmother, every Sunday. So — are we on the same page, Renata?",
+      "exampleEs": "Mi abuela, todos los domingos. Entonces, ¿estamos en la misma página, Renata?"
     }
   ],
-  finaleSeconds: 45,
-  continuePrompt: {
-    en: "Your turn, 45 seconds: explain the problem, compare the options, and defend your decision.",
-    es: "Tu turno, 45 segundos: explica el problema, compara las opciones y defiende tu decisión."
+  "finaleSeconds": 45,
+  "continuePrompt": {
+    "en": "Your turn, 45 seconds: explain the problem with Renata, the rules the team wrote, and what you think about telling Mr. Reed.",
+    "es": "Tu turno, 45 segundos: explica el problema con Renata, las reglas que escribió el equipo y qué opinas de decirle al señor Reed."
   },
-  continueWith: [
-    "The main issue is ...",
-    "If I were responsible, I would ...",
-    "The best option is ... because ..."
+  "continueWith": [
+    "The problem was ...",
+    "They wrote three rules: ...",
+    "In my opinion, telling Mr. Reed is ..."
   ],
-  cliffhanger: {
-    en: "Vale, Lucía is calling. Something went wrong in the first class.",
-    es: "Vale, Lucía está llamando. Algo salió mal en la primera clase."
+  "cliffhanger": {
+    "en": "The new teacher in zone two. Half the class walked out. I think we need you here.",
+    "es": "El maestro nuevo de la zona dos. La mitad de la clase se salió. Creo que te necesitamos aquí."
   }
 };

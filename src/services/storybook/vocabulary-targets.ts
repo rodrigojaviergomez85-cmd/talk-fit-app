@@ -26,29 +26,29 @@ export const ACTIVE_GOAL = 3500;
 /** 16 target units per episode: content words + phrasal verbs + one idiom. */
 export const EPISODE_VOCAB_BUDGET: Record<string, string[]> = {
   "sharks-ep11-what-went-wrong": [
-    "root cause", "downtime", "escalate", "outage", "refund", "accountable",
-    "glitch", "report", "affected", "apology", "look into", "own up to",
-    "drop the ball", "platform", "honest", "server",
+    "root cause", "untrained", "apology", "reschedule", "refund", "report",
+    "blame", "reputation", "pause", "honest", "promise", "fault",
+    "look into", "own up to", "weakness", "currency",
   ],
   "sharks-ep12-say-it-in-numbers": [
     "revenue", "margin", "forecast", "churn", "retention", "quarterly",
     "average", "spreadsheet", "invoice", "budget", "break down", "add up",
-    "the numbers speak for themselves", "growth", "estimate", "chase",
+    "the numbers speak for themselves", "growth", "estimate", "retraining",
   ],
   "sharks-ep13-the-hard-negotiation": [
-    "leverage", "concession", "clause", "deposit", "exclusive", "terms",
-    "renewal", "lawyer", "fair", "deadline extension", "walk away",
-    "hold off", "drive a hard bargain", "discount", "signature", "relationship",
+    "verdict", "harsh", "demotion", "punishment", "preparation", "potential",
+    "insulted", "attendance", "complaints", "deserves", "contract",
+    "point out", "step up", "give him a fair shot", "support", "truth",
   ],
   "sharks-ep14-losing-a-client": [
-    "cancel", "notice", "disappointed", "competitor", "feedback", "trainers",
+    "cancelling", "notice", "disappointed", "competitor", "feedback", "pilot",
     "complaint", "cancellation", "satisfaction", "survey", "pull out", "follow up",
     "a wake-up call", "unhappy", "listening", "revenue",
   ],
   "sharks-ep15-winning-it-back": [
     "guarantee", "attendance", "commitment", "pilot", "credibility",
     "measurable", "recovery", "transparent", "dashboard", "standard",
-    "win back", "make up for", "go the extra mile", "reliable", "progress report", "permanent",
+    "won back", "make up for", "the extra mile", "reliable", "progress report", "permanent",
   ],
   "sharks-ep16-a-team-in-three-countries": [
     "timezone", "remote", "onboarding", "workload", "coordinate", "delegate",

@@ -13,526 +13,534 @@ import s10 from "@/assets/storybook/sharks-ep11-what-went-wrong/s10.jpg";
 import s11 from "@/assets/storybook/sharks-ep11-what-went-wrong/s11.jpg";
 
 export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
-  id: "sharks-ep11-what-went-wrong",
-  moduleId: "sharks",
-  week: 3,
-  title: "What went wrong",
-  titleEs: "Qué salió mal",
-  episodeLabel: {
-    en: "Season 8 · Episode 11",
-    es: "Temporada 8 · Episodio 11"
+  "id": "sharks-ep11-what-went-wrong",
+  "moduleId": "sharks",
+  "week": 3,
+  "title": "What went wrong",
+  "titleEs": "Qué salió mal",
+  "episodeLabel": {
+    "en": "Season 8 · Episode 11",
+    "es": "Temporada 8 · Episodio 11"
   },
-  previously: [
+  "previously": [
     {
-      en: "A failure is only a disaster when nobody explains it.",
-      es: "Un fracaso solo es un desastre cuando nadie lo explica."
+      "en": "Vale and Renata agreed on rules: Kids together, corporate clients separate.",
+      "es": "Vale y Renata acordaron reglas: Kids juntas, clientes corporativos separados."
+    },
+    {
+      "en": "At night, Lucía called from Guatemala: a class went wrong and parents are upset.",
+      "es": "Por la noche, Lucía llamó desde Guatemala: una clase salió mal y los padres están molestos."
     }
   ],
-  reviewWords: [
-    { word: "invoice", es: "factura" },
-    { word: "clause", es: "cláusula" },
-    { word: "pilot", es: "piloto" }
+  "reviewWords": [
+    {
+      "word": "upset",
+      "es": "molestos"
+    },
+    {
+      "word": "method",
+      "es": "método"
+    },
+    {
+      "word": "teacher",
+      "es": "maestro"
+    }
   ],
-  blurb: {
-    en: "The platform was down for two hours and forty classes were affected. Renata read the report before we sent it.",
-    es: "La plataforma estuvo caída dos horas y cuarenta clases se vieron afectadas. Renata leyó el reporte antes de que lo enviáramos."
+  "blurb": {
+    "en": "A class in Guatemala failed because the teacher never received training. Vale looks into the root cause, owns up to the mistake, and pauses growth until every teacher is ready.",
+    "es": "Una clase en Guatemala falló porque el maestro nunca recibió capacitación. Vale investiga la causa raíz, admite el error y pausa el crecimiento hasta que cada maestro esté listo."
   },
-  cover: cover,
-  voice: "girl",
-  scenes: [
+  "cover": cover,
+  "voice": "girl",
+  "scenes": [
     {
-      id: "s1",
-      image: s1,
-      imageAlt: "Lucía reports the platform failure to the team in the office.",
-      text: "The platform was down for two hours and forty classes were affected.",
-      es: "La plataforma estuvo caída dos horas y cuarenta clases se vieron afectadas.",
-      speaker: "lucia",
-      cast: ["lucia", "vale"],
-      lines: [
+      "id": "s1",
+      "image": s1,
+      "imageAlt": "Lucía explains from Guatemala by video call how the new teacher's class collapsed.",
+      "text": "The class started at four. By four twenty, half the children had walked out with their parents.",
+      "es": "La clase empezó a las cuatro. Para las cuatro y veinte, la mitad de los niños se había salido con sus padres.",
+      "speaker": "lucia",
+      "cast": ["lucia", "vale"],
+      "lines": [
         {
-          speaker: "lucia",
-          text: "The platform was down for two hours and forty classes were affected.",
-          es: "La plataforma estuvo caída dos horas y cuarenta clases se vieron afectadas."
+          "speaker": "lucia",
+          "text": "The class started at four. By four twenty, half the children had walked out with their parents.",
+          "es": "La clase empezó a las cuatro. Para las cuatro y veinte, la mitad de los niños se había salido con sus padres."
         },
         {
-          speaker: "vale",
-          text: "Two hours in the middle of the morning. That is the worst possible window for our students.",
-          es: "Dos horas en plena mañana. Es la peor ventana posible."
+          "speaker": "vale",
+          "text": "Walked out? Lucía, who trained this teacher before we put him in front of twelve families?",
+          "es": "¿Se salieron? Lucía, ¿quién capacitó a este maestro antes de ponerlo frente a doce familias?"
         },
         {
-          speaker: "lucia",
-          text: "I know. The outage started at nine, and teachers had to improvise with paper, phone calls, and a lot of patience.",
-          es: "Lo sé. El corte empezó a las nueve, y los maestros tuvieron que improvisar con papel, llamadas y mucha paciencia."
+          "speaker": "lucia",
+          "text": "Nobody, Vale. He was untrained. We hired him on Thursday and he taught alone on Monday.",
+          "es": "Nadie, Vale. No estaba capacitado. Lo contratamos el jueves y enseñó solo el lunes."
         }
       ],
-      words: [
-        { word: "platform", es: "plataforma" },
-        { word: "down", es: "caída" },
-        { word: "affected", es: "afectadas" }
+      "words": [
+        { "word": "walked out", "es": "se salieron" },
+        { "word": "untrained", "es": "sin capacitación" },
+        { "word": "hired", "es": "contratamos" }
       ]
     },
     {
-      id: "s2",
-      image: s2,
-      imageAlt: "Vale asks for the root cause before apologizing to anyone.",
-      text: "Okay. Before we apologize, I need the root cause, not a guess.",
-      es: "Bien. Antes de disculparnos, necesito la causa raíz, no una suposición.",
-      speaker: "vale",
-      cast: ["vale", "dani"],
-      lines: [
+      "id": "s2",
+      "image": s2,
+      "imageAlt": "Vale takes responsibility at the office while Dani and Camila listen seriously.",
+      "text": "Then this is not his fault, and it is not yours. It is mine. I approved a class without training.",
+      "es": "Entonces no es culpa de él, ni tuya. Es mía. Yo aprobé una clase sin capacitación.",
+      "speaker": "vale",
+      "cast": ["vale", "dani", "camila"],
+      "lines": [
         {
-          speaker: "vale",
-          text: "Okay. Before we apologize, I need the root cause, not a guess.",
-          es: "Bien. Antes de disculparnos, necesito la causa raíz, no una suposición."
+          "speaker": "vale",
+          "text": "Then this is not his fault, and it is not yours. It is mine. I approved a class without training.",
+          "es": "Entonces no es culpa de él, ni tuya. Es mía. Yo aprobé una clase sin capacitación."
         },
         {
-          speaker: "dani",
-          text: "Give me ten minutes with the server logs and the error reports.",
-          es: "Dame diez minutos con los registros del servidor."
+          "speaker": "dani",
+          "text": "You approved the calendar, yes, but all of us signed the plan. We dropped the ball together.",
+          "es": "Tú aprobaste el calendario, sí, pero todos firmamos el plan. La regamos juntos."
         },
         {
-          speaker: "vale",
-          text: "Take fifteen. A wrong explanation is worse than a slow one, especially with Northline watching us.",
-          es: "Toma quince. Una explicación equivocada es peor que una lenta, especialmente con Northline observándonos."
+          "speaker": "camila",
+          "text": "Agreed. Now, before we apologize, let us look into what actually happened inside that classroom.",
+          "es": "De acuerdo. Ahora, antes de disculparnos, investiguemos qué pasó realmente dentro de esa clase."
         }
       ],
-      words: [
-        { word: "root cause", es: "causa raíz" },
-        { word: "guess", es: "suposición" },
-        { word: "logs", es: "registros" }
+      "words": [
+        { "word": "fault", "es": "culpa" },
+        { "word": "approved", "es": "aprobé" },
+        { "word": "dropped the ball", "es": "la regamos / fallamos" }
       ]
     },
     {
-      id: "s3",
-      image: s3,
-      imageAlt: "Dani finds the real origin of the glitch on his computer.",
-      text: "The glitch started in the new video server. The downtime was thirty minutes longer than we reported.",
-      es: "La falla empezó en el nuevo servidor de video. La caída fue treinta minutos más larga de lo que reportamos.",
-      speaker: "dani",
-      cast: ["dani", "vale"],
-      lines: [
+      "id": "s3",
+      "image": s3,
+      "imageAlt": "Lucía shows the class recording on her screen while the team watches silently.",
+      "text": "So the root cause is simple: we sent a teacher to do our method without ever teaching him the method.",
+      "es": "Así que la causa raíz es simple: mandamos a un maestro a usar nuestro método sin haberle enseñado el método.",
+      "speaker": "vale",
+      "cast": ["lucia", "vale", "dani"],
+      "lines": [
         {
-          speaker: "dani",
-          text: "The glitch started in the new video server. The downtime was thirty minutes longer than we reported.",
-          es: "La falla empezó en el nuevo servidor de video. La caída fue treinta minutos más larga de lo que reportamos."
+          "speaker": "lucia",
+          "text": "I watched the recording. He read from a book for forty minutes. No games, no movement, no smiles.",
+          "es": "Vi la grabación. Leyó de un libro por cuarenta minutos. Sin juegos, sin movimiento, sin sonrisas."
         },
         {
-          speaker: "vale",
-          text: "So our first message to clients was wrong too. We have to correct it before they notice.",
-          es: "Entonces nuestro primer mensaje a los clientes también fue incorrecto. Tenemos que corregirlo."
+          "speaker": "vale",
+          "text": "So the root cause is simple: we sent a teacher to do our method without ever teaching him the method.",
+          "es": "Así que la causa raíz es simple: mandamos a un maestro a usar nuestro método sin haberle enseñado el método."
         },
         {
-          speaker: "dani",
-          text: "Yes. The automatic alert fired late, and nobody noticed for half an hour because the dashboard froze too.",
-          es: "Sí. La alerta automática se activó tarde, y nadie lo notó por media hora porque el tablero también se congeló."
+          "speaker": "dani",
+          "text": "And the parents paid for the method. They have every right to be angry.",
+          "es": "Y los padres pagaron por el método. Tienen todo el derecho de estar enojados."
         }
       ],
-      words: [
-        { word: "glitch", es: "falla técnica" },
-        { word: "downtime", es: "tiempo caído" },
-        { word: "alert", es: "alerta" }
+      "words": [
+        { "word": "recording", "es": "grabación" },
+        { "word": "root cause", "es": "causa raíz" },
+        { "word": "angry", "es": "enojados" }
       ]
     },
     {
-      id: "s4",
-      image: s4,
-      imageAlt: "Camila shares how clients are reacting to the failure.",
-      text: "Three clients already asked for a refund, and Northline escalated it to their director.",
-      es: "Tres clientes ya pidieron reembolso, y Northline lo escaló a su director.",
-      speaker: "camila",
-      cast: ["camila", "vale"],
-      lines: [
+      "id": "s4",
+      "image": s4,
+      "imageAlt": "Vale writes an apology plan on the whiteboard while Lucía nods from the screen.",
+      "text": "First we own up to it, in person. Then we offer every family a free new class with our best teacher.",
+      "es": "Primero lo admitimos, en persona. Luego ofrecemos a cada familia una clase nueva gratis con nuestra mejor maestra.",
+      "speaker": "vale",
+      "cast": ["vale", "lucia"],
+      "lines": [
         {
-          speaker: "camila",
-          text: "Three clients already asked for a refund, and Northline escalated it to their director.",
-          es: "Tres clientes ya pidieron reembolso, y Northline lo escaló a su director."
+          "speaker": "vale",
+          "text": "First we own up to it, in person. Then we offer every family a free new class with our best teacher.",
+          "es": "Primero lo admitimos, en persona. Luego ofrecemos a cada familia una clase nueva gratis con nuestra mejor maestra."
         },
         {
-          speaker: "vale",
-          text: "Northline is our biggest contract. Who is talking to their director right now?",
-          es: "Northline es nuestro contrato más grande. ¿Quién está hablando con su director?"
+          "speaker": "lucia",
+          "text": "The parents meet on Saturday morning. If you are serious, Vale, they want to hear it from you.",
+          "es": "Los padres se reúnen el sábado por la mañana. Si hablas en serio, Vale, quieren escucharlo de ti."
         },
         {
-          speaker: "camila",
-          text: "Nobody yet. They are waiting for our report before the call, and their patience is running out.",
-          es: "Nadie todavía. Están esperando nuestro reporte antes de la llamada, y su paciencia se está acabando."
+          "speaker": "vale",
+          "text": "Then I am on the bus Friday night. An apology on the phone is half an apology.",
+          "es": "Entonces voy en el autobús del viernes por la noche. Una disculpa por teléfono es media disculpa."
         }
       ],
-      words: [
-        { word: "refund", es: "reembolso" },
-        { word: "escalated", es: "escaló" },
-        { word: "director", es: "director" }
+      "words": [
+        { "word": "own up to", "es": "admitir la culpa" },
+        { "word": "apology", "es": "disculpa" },
+        { "word": "free", "es": "gratis" }
       ]
     },
     {
-      id: "s5",
-      image: s5,
-      imageAlt: "Vale decides the team will take responsibility today.",
-      text: "Then we own up to it today. A late apology costs more than an honest one.",
-      es: "Entonces lo asumimos hoy. Una disculpa tardía cuesta más que una honesta.",
-      speaker: "vale",
-      cast: ["vale", "camila"],
-      lines: [
+      "id": "s5",
+      "image": s5,
+      "imageAlt": "Dani raises a deeper concern about the system while Vale drinks her coffee.",
+      "text": "We opened three groups in Guatemala in one month. We are growing faster than we can train people.",
+      "es": "Abrimos tres grupos en Guatemala en un mes. Estamos creciendo más rápido de lo que podemos capacitar gente.",
+      "speaker": "dani",
+      "cast": ["dani", "vale"],
+      "lines": [
         {
-          speaker: "vale",
-          text: "Then we own up to it today. A late apology costs more than an honest one.",
-          es: "Entonces lo asumimos hoy. Una disculpa tardía cuesta más que una honesta."
+          "speaker": "dani",
+          "text": "Going is good. But Vale, one apology does not fix the system that produced this.",
+          "es": "Ir es bueno. Pero Vale, una disculpa no arregla el sistema que produjo esto."
         },
         {
-          speaker: "camila",
-          text: "Even with the extra thirty minutes? That makes us look worse than we are.",
-          es: "¿Incluso con los treinta minutos extra? Eso nos hace ver peor."
+          "speaker": "vale",
+          "text": "Explain.",
+          "es": "Explica."
         },
         {
-          speaker: "vale",
-          text: "Especially with the extra thirty minutes. Clients forgive errors, not cover-ups, and Northline has trusted us since the beginning.",
-          es: "Especialmente con los treinta minutos extra. Los clientes perdonan errores, no encubrimientos, y Northline ha confiado en nosotros desde el principio."
+          "speaker": "dani",
+          "text": "We opened three groups in Guatemala in one month. We are growing faster than we can train people.",
+          "es": "Abrimos tres grupos en Guatemala en un mes. Estamos creciendo más rápido de lo que podemos capacitar gente."
         }
       ],
-      words: [
-        { word: "apology", es: "disculpa" },
-        { word: "honest", es: "honesta" },
-        { word: "cover-up", es: "encubrimiento" }
+      "words": [
+        { "word": "system", "es": "sistema" },
+        { "word": "produced", "es": "produjo" },
+        { "word": "faster", "es": "más rápido" }
       ]
     },
     {
-      id: "s6",
-      image: s6,
-      imageAlt: "Lucía offers to review every affected class before noon.",
-      text: "I can look into every affected class and build the list by noon.",
-      es: "Puedo revisar cada clase afectada y armar la lista al mediodía.",
-      speaker: "lucia",
-      cast: ["lucia", "dani"],
-      lines: [
+      "id": "s6",
+      "image": s6,
+      "imageAlt": "Camila counts cities on her fingers as the team realizes how fast they have grown.",
+      "text": "He is right. In January we had one city. Today we have four, plus Kids, plus Monterrey soon.",
+      "es": "Él tiene razón. En enero teníamos una ciudad. Hoy tenemos cuatro, más Kids, más Monterrey pronto.",
+      "speaker": "camila",
+      "cast": ["camila", "vale", "dani"],
+      "lines": [
         {
-          speaker: "lucia",
-          text: "I can look into every affected class and build the list by noon.",
-          es: "Puedo revisar cada clase afectada y armar la lista al mediodía."
+          "speaker": "camila",
+          "text": "He is right. In January we had one city. Today we have four, plus Kids, plus Monterrey soon.",
+          "es": "Él tiene razón. En enero teníamos una ciudad. Hoy tenemos cuatro, más Kids, más Monterrey pronto."
         },
         {
-          speaker: "dani",
-          text: "I will send you the exact time window from the logs so no class is missing.",
-          es: "Te enviaré la ventana exacta de tiempo de los registros para que no falte ninguna clase."
+          "speaker": "vale",
+          "text": "And every new group needs a trained teacher, and training takes me two full weeks per person.",
+          "es": "Y cada grupo nuevo necesita un maestro capacitado, y la capacitación me toma dos semanas completas por persona."
         },
         {
-          speaker: "lucia",
-          text: "Perfect. Each class gets a teacher name, a student count, and a recovery plan anyone can read in one minute.",
-          es: "Perfecto. Cada clase tendrá nombre del maestro, número de estudiantes y un plan de recuperación que cualquiera lee en un minuto."
+          "speaker": "camila",
+          "text": "Two weeks you do not have. Your calendar is already full until the end of the month.",
+          "es": "Dos semanas que no tienes. Tu calendario ya está lleno hasta fin de mes."
         }
       ],
-      words: [
-        { word: "noon", es: "mediodía" },
-        { word: "missing", es: "faltante" },
-        { word: "recovery", es: "recuperación" }
+      "words": [
+        { "word": "soon", "es": "pronto" },
+        { "word": "calendar", "es": "calendario" },
+        { "word": "full", "es": "lleno" }
       ]
     },
     {
-      id: "s7",
-      image: s7,
-      imageAlt: "Dani admits his mistake in front of the team.",
-      text: "I dropped the ball on testing the server before the launch. That one is on me.",
-      es: "Fallé al probar el servidor. Esa es mía.",
-      speaker: "dani",
-      cast: ["dani", "vale"],
-      lines: [
+      "id": "s7",
+      "image": s7,
+      "imageAlt": "Vale announces a pause on new groups while Lucía reacts with surprise from Guatemala.",
+      "text": "Then we pause. No new groups in Guatemala until every active teacher passes our training.",
+      "es": "Entonces hacemos una pausa. Nada de grupos nuevos en Guatemala hasta que cada maestro activo pase nuestra capacitación.",
+      "speaker": "vale",
+      "cast": ["vale", "lucia"],
+      "lines": [
         {
-          speaker: "dani",
-          text: "I dropped the ball on testing the server. That one is on me.",
-          es: "Fallé al probar el servidor. Esa es mía."
+          "speaker": "vale",
+          "text": "Then we pause. No new groups in Guatemala until every active teacher passes our training.",
+          "es": "Entonces hacemos una pausa. Nada de grupos nuevos en Guatemala hasta que cada maestro activo pase nuestra capacitación."
         },
         {
-          speaker: "vale",
-          text: "Thank you for saying it. Being accountable is faster than being perfect.",
-          es: "Gracias por decirlo. Ser responsable es más rápido que ser perfecto."
+          "speaker": "lucia",
+          "text": "Some parents will ask for refunds. Pausing looks like weakness to them.",
+          "es": "Algunos padres pedirán reembolsos. Pausar les va a parecer debilidad."
         },
         {
-          speaker: "dani",
-          text: "I will write the new testing checklist tonight so it never happens again on my watch.",
-          es: "Escribiré la nueva lista de pruebas esta noche para que no vuelva a pasar en mi turno."
+          "speaker": "vale",
+          "text": "Pausing is honest. Selling classes we cannot deliver well — that is weakness.",
+          "es": "Pausar es honesto. Vender clases que no podemos dar bien — eso sí es debilidad."
         }
       ],
-      words: [
-        { word: "testing", es: "pruebas" },
-        { word: "accountable", es: "responsable" },
-        { word: "checklist", es: "lista de verificación" }
+      "words": [
+        { "word": "pause", "es": "pausar" },
+        { "word": "refunds", "es": "reembolsos" },
+        { "word": "weakness", "es": "debilidad" }
       ]
     },
     {
-      id: "s8",
-      image: s8,
-      imageAlt: "Camila asks how to compensate the affected students.",
-      text: "Do we offer a refund, or free classes for the affected students?",
-      es: "¿Ofrecemos reembolso o clases gratis para los estudiantes afectados?",
-      speaker: "camila",
-      cast: ["camila", "vale"],
-      lines: [
+      "id": "s8",
+      "image": s8,
+      "imageAlt": "Dani and Camila divide the recovery tasks at the office table.",
+      "text": "I will reschedule the two new groups and call every family myself. In English, so they hear our level.",
+      "es": "Voy a reprogramar los dos grupos nuevos y llamaré a cada familia yo mismo. En inglés, para que escuchen nuestro nivel.",
+      "speaker": "dani",
+      "cast": ["dani", "camila", "vale"],
+      "lines": [
         {
-          speaker: "camila",
-          text: "Do we offer a refund, or free classes for the affected students?",
-          es: "¿Ofrecemos reembolso o clases gratis para los estudiantes afectados?"
+          "speaker": "dani",
+          "text": "I will reschedule the two new groups and call every family myself. In English, so they hear our level.",
+          "es": "Voy a reprogramar los dos grupos nuevos y llamaré a cada familia yo mismo. En inglés, para que escuchen nuestro nivel."
         },
         {
-          speaker: "vale",
-          text: "Both options, and the client chooses. Send the report with the root cause attached.",
-          es: "Ambas opciones, y el cliente elige. Envía el reporte con la causa raíz adjunta."
+          "speaker": "camila",
+          "text": "And I will prepare a one-page report: what happened, why, and what changes on Monday.",
+          "es": "Y yo prepararé un informe de una página: qué pasó, por qué, y qué cambia el lunes."
         },
         {
-          speaker: "camila",
-          text: "Choosing gives them control. I like it, and it is much cheaper than losing them to BigTalk.",
-          es: "Elegir les da control. Me gusta, y es mucho más barato que perderlos ante BigTalk."
+          "speaker": "vale",
+          "text": "Add the recovery plan: free class, new teacher, and a parent meeting with me leading it.",
+          "es": "Agrega el plan de recuperación: clase gratis, maestro nuevo, y una reunión de padres dirigida por mí."
         }
       ],
-      words: [
-        { word: "free", es: "gratis" },
-        { word: "chooses", es: "elige" },
-        { word: "attached", es: "adjunta" }
+      "words": [
+        { "word": "reschedule", "es": "reprogramar" },
+        { "word": "report", "es": "informe" },
+        { "word": "recovery", "es": "recuperación" }
       ]
     },
     {
-      id: "s9",
-      image: s9,
-      imageAlt: "Vale calls the Northline director herself with the honest report.",
-      text: "I will call the Northline director myself, with the real numbers on the table.",
-      es: "Llamaré yo misma a la directora de Northline, con los números reales sobre la mesa.",
-      speaker: "vale",
-      cast: ["vale", "camila"],
-      lines: [
+      "id": "s9",
+      "image": s9,
+      "imageAlt": "Lucía smiles with relief on the screen after hearing the whole plan.",
+      "text": "Thank you. I was afraid you would blame me from far away. You came closer instead.",
+      "es": "Gracias. Temía que me culparas desde lejos. En cambio, te acercaste.",
+      "speaker": "lucia",
+      "cast": ["lucia", "vale"],
+      "lines": [
         {
-          speaker: "vale",
-          text: "I will call the Northline director myself, with the real numbers on the table.",
-          es: "Llamaré yo misma a la directora de Northline, con los números reales sobre la mesa."
+          "speaker": "lucia",
+          "text": "Thank you. I was afraid you would blame me from far away. You came closer instead.",
+          "es": "Gracias. Temía que me culparas desde lejos. En cambio, te acercaste."
         },
         {
-          speaker: "camila",
-          text: "Are you sure? A manager could take that difficult call for you.",
-          es: "¿Estás segura? Una gerente podría tomar esa llamada por ti."
+          "speaker": "vale",
+          "text": "Blame travels fast and helps nobody. Help travels slow, so we start early.",
+          "es": "La culpa viaja rápido y no ayuda a nadie. La ayuda viaja lento, así que empezamos temprano."
         },
         {
-          speaker: "vale",
-          text: "Big contract, big mistake, big name on the phone. That is my job, and I am not delegating it today.",
-          es: "Contrato grande, error grande, nombre grande en el teléfono. Ese es mi trabajo, y hoy no lo delego."
+          "speaker": "lucia",
+          "text": "Then see you Saturday. I will have every parent in that room, I promise.",
+          "es": "Entonces nos vemos el sábado. Tendré a cada padre en esa sala, lo prometo."
         }
       ],
-      words: [
-        { word: "myself", es: "yo misma" },
-        { word: "real", es: "reales" },
-        { word: "manager", es: "gerente" }
+      "words": [
+        { "word": "blame", "es": "culpar" },
+        { "word": "afraid", "es": "temerosa / con miedo" },
+        { "word": "promise", "es": "prometer" }
       ]
     },
     {
-      id: "s10",
-      image: s10,
-      imageAlt: "The Northline director accepts the apology and appreciates the honesty.",
-      text: "The director appreciated the honesty. Northline stays, and they want the new checklist.",
-      es: "La directora agradeció la honestidad. Northline se queda, y quieren la nueva lista de verificación.",
-      speaker: "vale",
-      cast: ["vale", "dani"],
-      lines: [
+      "id": "s10",
+      "image": s10,
+      "imageAlt": "Dani counts the cost of the week while Vale packs her bag for the bus trip.",
+      "text": "Cheaper than a bad reputation. A reputation is the only currency we cannot print.",
+      "es": "Más barato que una mala reputación. La reputación es la única moneda que no podemos imprimir.",
+      "speaker": "vale",
+      "cast": ["dani", "vale"],
+      "lines": [
         {
-          speaker: "vale",
-          text: "The director appreciated the honesty. Northline stays, and they want the new checklist.",
-          es: "La directora agradeció la honestidad. Northline se queda, y quieren la nueva lista de verificación."
+          "speaker": "dani",
+          "text": "You just paused growth, paid for free classes, and bought a bus ticket. Expensive Saturday.",
+          "es": "Acabas de pausar el crecimiento, pagar clases gratis y comprar un boleto de autobús. Sábado caro."
         },
         {
-          speaker: "dani",
-          text: "They want my checklist? The one that came from my own mistake?",
-          es: "¿Quieren mi lista de verificación? ¿La de mi error?"
+          "speaker": "vale",
+          "text": "Cheaper than a bad reputation. A reputation is the only currency we cannot print.",
+          "es": "Más barato que una mala reputación. La reputación es la única moneda que no podemos imprimir."
         },
         {
-          speaker: "vale",
-          text: "The one from your lesson. There is a difference, and they noticed it on the call.",
-          es: "La de tu lección. Hay una diferencia, y ellos la notaron en la llamada."
+          "speaker": "dani",
+          "text": "That sounds like your grandmother again. Safe trip — and Vale, you are doing the right thing.",
+          "es": "Eso suena a tu abuela otra vez. Buen viaje — y Vale, estás haciendo lo correcto."
         }
       ],
-      words: [
-        { word: "appreciated", es: "agradeció" },
-        { word: "honesty", es: "honestidad" },
-        { word: "lesson", es: "lección" }
+      "words": [
+        { "word": "reputation", "es": "reputación" },
+        { "word": "currency", "es": "moneda" },
+        { "word": "the right thing", "es": "lo correcto" }
       ]
     },
     {
-      id: "s11",
-      image: s11,
-      imageAlt: "Dani reveals that Renata read the report before it was sent.",
-      text: "Vale, one more thing. Renata read the report before we sent it.",
-      es: "Vale, una cosa más. Renata leyó el reporte antes de que lo enviáramos.",
-      speaker: "dani",
-      cast: ["dani", "vale"],
-      lines: [
+      "id": "s11",
+      "image": s11,
+      "imageAlt": "Camila stops Vale at the door with her laptop open, showing the real numbers.",
+      "text": "That is the thing. It is not only this mistake. Sit down — you need to see this.",
+      "es": "Ese es el punto. No es solo este error. Siéntate — necesitas ver esto.",
+      "speaker": "camila",
+      "cast": ["camila", "vale"],
+      "lines": [
         {
-          speaker: "dani",
-          text: "Vale, one more thing. Renata read the report before we sent it.",
-          es: "Vale, una cosa más. Renata leyó el reporte antes de que lo enviáramos."
+          "speaker": "camila",
+          "text": "Vale, before you pack. I finished the real numbers — Northline, Kids, everything.",
+          "es": "Vale, antes de que empagues. Terminé los números reales: Northline, Kids, todo."
         },
         {
-          speaker: "vale",
-          text: "Before we sent it? How is that possible?",
-          es: "¿Antes de que lo enviáramos? ¿Cómo es posible?"
+          "speaker": "vale",
+          "text": "Give me the short version. How much is this mistake costing us?",
+          "es": "Dame la versión corta. ¿Cuánto nos está costando este error?"
         },
         {
-          speaker: "dani",
-          text: "She just wrote to me a minute ago. She says, and I quote, interesting way to handle a crisis. She still wants the pilot.",
-          es: "Me acaba de escribir. Dice, y cito, interesante manera de manejar una crisis. Aún quiere el piloto."
+          "speaker": "camila",
+          "text": "That is the thing. It is not only this mistake. Sit down — you need to see this.",
+          "es": "Ese es el punto. No es solo este error. Siéntate — necesitas ver esto."
         }
       ],
-      words: [
-        { word: "report", es: "reporte" },
-        { word: "possible", es: "posible" },
-        { word: "crisis", es: "crisis" }
+      "words": [
+        { "word": "pack", "es": "empacar" },
+        { "word": "short version", "es": "versión corta" },
+        { "word": "mistake", "es": "error" }
       ]
     }
   ],
-  quizzes: [
+  "quizzes": [
     {
-      id: "q1",
-      afterScene: "s3",
-      questionEn: "What caused the platform failure?",
-      questionEs: "¿Qué causó la falla de la plataforma?",
-      options: [
+      "id": "q1",
+      "afterScene": "s3",
+      "questionEn": "What was the root cause of the failed class in Guatemala?",
+      "questionEs": "¿Cuál fue la causa raíz de la clase fallida en Guatemala?",
+      "options": [
         {
-          label: "A glitch in the new video server.",
-          emoji: "🖥️"
+          "label": "The teacher never received Vale's training.",
+          "emoji": "🎯"
         },
         {
-          label: "A storm cut the power.",
-          emoji: "⛈️"
+          "label": "The children were too tired to learn.",
+          "emoji": "😴"
         },
         {
-          label: "A teacher deleted the classes.",
-          emoji: "🗑️"
+          "label": "The classroom was too small.",
+          "emoji": "🚪"
         }
       ],
-      answer: 0,
-      sayIt: "The glitch started in the new video server.",
-      sayItEs: "Ejemplo: «The glitch started in the new video server.»",
-      sayItAskEn: "What was the root cause?",
-      sayItAskEs: "¿Cuál fue la causa raíz?",
-      sayItCheck: {
-        target: "* server *",
-        altTargets: [
-          "The glitch *",
-          "The video server *",
-          "It started *"
+      "answer": 0,
+      "sayIt": "She should apologize in person and retrain the teacher.",
+      "sayItEs": "Ejemplo: «She should apologize in person and retrain the teacher.»",
+      "sayItAskEn": "What should Vale do first to fix this?",
+      "sayItAskEs": "¿Qué debería hacer Vale primero para arreglar esto?",
+      "sayItCheck": {
+        "target": "She should *",
+        "altTargets": [
+          "Vale should *",
+          "First, she should *"
         ]
       }
     },
     {
-      id: "q2",
-      afterScene: "s7",
-      questionEn: "What does Dani admit in front of the team?",
-      questionEs: "¿Qué admite Dani frente al equipo?",
-      options: [
+      "id": "q2",
+      "afterScene": "s7",
+      "questionEn": "What difficult decision does Vale make?",
+      "questionEs": "¿Qué decisión difícil toma Vale?",
+      "options": [
         {
-          label: "He dropped the ball on testing the server.",
-          emoji: "🙋"
+          "label": "Pause new groups until every active teacher passes the training.",
+          "emoji": "⏸️"
         },
         {
-          label: "He wants to quit the academy.",
-          emoji: "🚪"
+          "label": "Open more groups to earn money faster.",
+          "emoji": "💸"
         },
         {
-          label: "He lost the client list.",
-          emoji: "📋"
+          "label": "Close the academy in Guatemala forever.",
+          "emoji": "🔒"
         }
       ],
-      answer: 0,
-      sayIt: "Dani dropped the ball on testing the server.",
-      sayItEs: "Ejemplo: «Dani dropped the ball on testing the server.»",
-      sayItAskEn: "What mistake does Dani admit?",
-      sayItAskEs: "¿Qué error admite Dani?",
-      sayItCheck: {
-        target: "* dropped the ball *",
-        altTargets: [
-          "He admits *",
-          "He failed *",
-          "Dani dropped *"
+      "answer": 0,
+      "sayIt": "I agree because quality matters more than speed.",
+      "sayItEs": "Ejemplo: «I agree because quality matters more than speed.»",
+      "sayItAskEn": "Do you agree with pausing growth? Why or why not?",
+      "sayItAskEs": "¿Estás de acuerdo con pausar el crecimiento? ¿Por qué?",
+      "sayItCheck": {
+        "target": "I agree because *",
+        "altTargets": [
+          "I disagree because *",
+          "Yes, because *"
         ]
       }
     },
     {
-      id: "q3",
-      afterScene: "s11",
-      questionEn: "What surprise does Dani share at the end?",
-      questionEs: "¿Qué sorpresa comparte Dani al final?",
-      options: [
+      "id": "q3",
+      "afterScene": "s11",
+      "questionEn": "What does Camila announce at the end?",
+      "questionEs": "¿Qué anuncia Camila al final?",
+      "options": [
         {
-          label: "Renata read the report before they sent it.",
-          emoji: "👀"
+          "label": "She finished the real numbers, and Vale needs to see them.",
+          "emoji": "📊"
         },
         {
-          label: "Northline cancelled the contract.",
-          emoji: "❌"
+          "label": "She is going on vacation.",
+          "emoji": "🏖️"
         },
         {
-          label: "The server failed again.",
-          emoji: "🔥"
+          "label": "She sold the academy.",
+          "emoji": "🏷️"
         }
       ],
-      answer: 0,
-      sayIt: "Renata read the report before they sent it.",
-      sayItEs: "Ejemplo: «Renata read the report before they sent it.»",
-      sayItAskEn: "What did Renata do, and what did she write?",
-      sayItAskEs: "¿Qué hizo Renata y qué escribió?",
-      sayItCheck: {
-        target: "Renata *",
-        altTargets: [
-          "She read *",
-          "* before *",
-          "* crisis *"
+      "answer": 0,
+      "sayIt": "Vale owned up to the mistake, paused growth, and went to Guatemala.",
+      "sayItEs": "Ejemplo: «Vale owned up to the mistake, paused growth, and went to Guatemala.»",
+      "sayItAskEn": "Summarize how Vale handled this mistake.",
+      "sayItAskEs": "Resume cómo manejó Vale este error.",
+      "sayItCheck": {
+        "target": "Vale owned up to * and *",
+        "altTargets": [
+          "She apologized and *",
+          "First she *, then *"
         ]
       }
     }
   ],
-  mindsetCard: {
-    afterScene: "s6",
-    phrase: "Mistakes are part of the process. I fix them out loud.",
-    es: "Los errores son parte del proceso. Los corrijo en voz alta."
+  "mindsetCard": {
+    "afterScene": "s6",
+    "phrase": "I can do hard things. Mistakes are part of the process.",
+    "es": "Puedo hacer cosas difíciles. Los errores son parte del proceso."
   },
-  habitCard: {
-    afterScene: "s4",
-    phrase: "English is easy when I report the facts before the feelings.",
-    es: "El inglés es fácil cuando reporto los hechos antes que los sentimientos.",
-    model: "vale",
-    modelActionEs: "Vale reporta los hechos con calma."
+  "habitCard": {
+    "afterScene": "s4",
+    "phrase": "English is easy when I listen, clarify, and speak again.",
+    "es": "El inglés es fácil cuando escucho, aclaro y vuelvo a hablar.",
+    "model": "vale",
+    "modelActionEs": "Vale admite el error de inmediato y convierte la disculpa en un plan."
   },
-  expressions: [
+  "expressions": [
     {
-      phrase: "look into",
-      variants: ["look into"],
-      es: "investigar a fondo",
-      kind: "phrasal",
-      example: "I can look into every affected class and build the list by noon.",
-      exampleEs: "Puedo revisar cada clase afectada y armar la lista al mediodía."
+      "phrase": "look into",
+      "es": "investigar / revisar a fondo",
+      "kind": "phrasal",
+      "example": "Agreed. Now, before we apologize, let us look into what actually happened inside that classroom.",
+      "exampleEs": "De acuerdo. Ahora, antes de disculparnos, investiguemos qué pasó realmente dentro de esa clase."
     },
     {
-      phrase: "own up to",
-      variants: ["own up to it"],
-      es: "asumir la responsabilidad",
-      kind: "phrasal",
-      example: "Then we own up to it today. A late apology costs more than an honest one.",
-      exampleEs: "Entonces lo asumimos hoy. Una disculpa tardía cuesta más que una honesta."
+      "phrase": "own up to",
+      "es": "admitir la culpa",
+      "kind": "phrasal",
+      "example": "First we own up to it, in person. Then we offer every family a free new class with our best teacher.",
+      "exampleEs": "Primero lo admitimos, en persona. Luego ofrecemos a cada familia una clase nueva gratis con nuestra mejor maestra."
     },
     {
-      phrase: "drop the ball",
-      variants: ["dropped the ball"],
-      es: "fallar en algo que era tu responsabilidad",
-      kind: "idiom",
-      example: "I dropped the ball on testing the server. That one is on me.",
-      exampleEs: "Fallé al probar el servidor. Esa es mía."
+      "phrase": "drop the ball",
+      "variants": ["dropped the ball"],
+      "es": "fallar en una responsabilidad / regarla",
+      "kind": "idiom",
+      "example": "You approved the calendar, yes, but all of us signed the plan. We dropped the ball together.",
+      "exampleEs": "Tú aprobaste el calendario, sí, pero todos firmamos el plan. La regamos juntos."
     }
   ],
-  finaleSeconds: 30,
-  continuePrompt: {
-    en: "Your turn, 30 seconds: explain what went wrong, who was accountable, and how you fixed it.",
-    es: "Tu turno, 30 segundos: explica qué salió mal, quién fue responsable y cómo lo resolviste."
+  "finaleSeconds": 30,
+  "continuePrompt": {
+    "en": "Your turn, 30 seconds: explain what went wrong in Guatemala and what Vale decided to do about it.",
+    "es": "Tu turno, 30 segundos: explica qué salió mal en Guatemala y qué decidió hacer Vale."
   },
-  continueWith: [
-    "The root cause was ...",
-    "We owned up to ...",
-    "To prevent it, we will ..."
+  "continueWith": [
+    "The class failed because ...",
+    "Vale decided to ...",
+    "In my opinion, her decision was ..."
   ],
-  cliffhanger: {
-    en: "Vale, one more thing. Renata read the report before we sent it.",
-    es: "Vale, una cosa más. Renata leyó el reporte antes de que lo enviáramos."
+  "cliffhanger": {
+    "en": "That is the thing. It is not only this mistake. Sit down — you need to see this.",
+    "es": "Ese es el punto. No es solo este error. Siéntate — necesitas ver esto."
   }
 };
