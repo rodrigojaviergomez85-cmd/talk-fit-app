@@ -375,8 +375,8 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
-          "text": "What if we do everything right and they still leave?",
-          "es": "¿Y si hacemos todo bien y aun así se van?"
+          "text": "What if we do everything right, every single class, and they still leave at the end of the month?",
+          "es": "¿Y si hacemos todo bien, cada clase, y aun así se van al final del mes?"
         },
         {
           "speaker": "vale",
