@@ -61,8 +61,8 @@ export const SHARKS_EP19_THE_REGIONAL_DEAL: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "Agreed. And the territory is only Renata's affiliated schools here in Mexico, not the whole country.",
-          es: "De acuerdo. Y el territorio son solo las escuelas afiliadas de Renata aquí en México, no todo el país.",
+          text: "Agreed. Our legal team reviewed it: the territory is only Renata's affiliated schools here in Mexico, not the whole country.",
+          es: "De acuerdo. Nuestro equipo legal lo revisó: el territorio son solo las escuelas afiliadas de Renata aquí en México, no todo el país.",
         },
       ],
       words: [
