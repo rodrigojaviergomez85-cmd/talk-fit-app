@@ -30,6 +30,7 @@ export function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice 
   if (speaker === "reed") return "boss";
   if (speaker === "candidateM") return "youngMaleCalm";
   if (speaker === "candidateF") return "femaleBright";
+  if (speaker === "candidateHotel") return "femaleMature";
   return "neutral";
 }
 
@@ -48,6 +49,7 @@ export function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
   if (speaker === "reed") return "tense";
   if (speaker === "candidateM") return "neutral";
   if (speaker === "candidateF") return "neutral";
+  if (speaker === "candidateHotel") return "story";
   return "story";
 }
 
@@ -79,6 +81,20 @@ export function speakerName(speaker: StorybookSpeaker | undefined): string {
     reed: "Mr. Reed",
     candidateM: "Candidate",
     candidateF: "Candidate",
+    candidateHotel: "Candidate",
   };
   return names[speaker ?? "narrator"];
+}
+
+/**
+ * Some characters are shown as "Candidate" before the story reveals their name.
+ * They are the same person, so voice-uniqueness checks fold them together.
+ */
+const SPEAKER_ALIASES: Partial<Record<StorybookSpeaker, StorybookSpeaker>> = {
+  candidateHotel: "ana",
+};
+
+/** Canonical identity of a speaker (an alias resolves to the named character). */
+export function canonicalSpeaker(speaker: StorybookSpeaker): StorybookSpeaker {
+  return SPEAKER_ALIASES[speaker] ?? speaker;
 }
