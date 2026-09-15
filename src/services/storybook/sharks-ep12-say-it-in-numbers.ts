@@ -69,8 +69,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "That sounds serious. How bad is it?",
-          "es": "Eso suena serio. ¿Qué tan mal está?"
+          "text": "That sounds serious. How bad is it, really?",
+          "es": "Eso suena serio. ¿Qué tan mal está, de verdad?"
         },
         {
           "speaker": "camila",
@@ -255,8 +255,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "Sales will not love that. Neither will Renata — Monterrey is waiting.",
-          "es": "A ventas no le va a encantar. A Renata tampoco — Monterrey está esperando."
+          "text": "Sales will not love that. Neither will Renata — Monterrey is waiting for our answer.",
+          "es": "A ventas no le va a encantar. A Renata tampoco — Monterrey está esperando nuestra respuesta."
         },
         {
           "speaker": "vale",
@@ -348,8 +348,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "So what, we just tell Marco he is failing? He trained half of us.",
-          "es": "¿Entonces qué, solo le decimos a Marco que está fallando? Él capacitó a la mitad de nosotros."
+          "text": "So what, we just tell Marco he is failing? He trained half of us, and everybody respects him.",
+          "es": "¿Entonces qué, solo le decimos a Marco que está fallando? Él capacitó a la mitad de nosotros, y todos lo respetan."
         },
         {
           "speaker": "vale",
