@@ -320,7 +320,45 @@ function MetricsPage() {
               </div>
             </Card>
 
-            {/* 7. Centro de costos */}
+            {/* 7. El Mundo de Vale */}
+            {story ? (
+              <Card title={es ? "7. El Mundo de Vale (lectura)" : "7. El Mundo de Vale (reading)"}>
+                <div className="grid grid-cols-2 gap-2">
+                  <Stat
+                    label={es ? "Lectores hoy" : "Readers today"}
+                    value={fmtNum(story.readers_today)}
+                    hint={`${fmtNum(story.opens_today)} ${es ? "aperturas" : "opens"}`}
+                  />
+                  <Stat
+                    label={es ? "Terminaron hoy" : "Finished today"}
+                    value={fmtNum(story.completed_today)}
+                    hint={`${fmtNum(story.completed_total)} ${es ? "en total" : "all time"}`}
+                  />
+                  <Stat label={es ? "Lectores 7 días" : "Readers 7 days"} value={fmtNum(story.readers_7d)} />
+                  <Stat label={es ? "Lectores 30 días" : "Readers 30 days"} value={fmtNum(story.readers_30d)} />
+                </div>
+                {story.top_episodes.length ? (
+                  <div className="mt-3 space-y-2">
+                    <p className="text-[12px] font-semibold">{es ? "Episodios más leídos" : "Most read episodes"}</p>
+                    {story.top_episodes.slice(0, 8).map((e) => (
+                      <Bar
+                        key={e.episode_id}
+                        label={e.episode_id}
+                        value={e.readers}
+                        total={story.top_episodes[0]?.readers ?? 1}
+                        right={`${fmtNum(e.readers)} · ${fmtNum(e.completions)} ${es ? "fin" : "done"}`}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="mt-3 text-[12px] text-muted-foreground">
+                    {es ? "Aún no hay lecturas registradas." : "No reads recorded yet."}
+                  </p>
+                )}
+              </Card>
+            ) : null}
+
+            {/* 8. Centro de costos */}
             {costs ? (
               <Card title={es ? "7. Centro de costos (últimos 30 días)" : "7. Cost center (last 30 days)"}>
                 {(() => {
