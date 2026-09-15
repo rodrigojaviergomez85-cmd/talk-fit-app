@@ -10,12 +10,10 @@ type EpisodeExpansion = Record<string, SceneExpansion>;
 
 export const SHARKS_DIALOGUE_EXPANSIONS: Record<string, EpisodeExpansion> = {};
 
-const SHARKS_RICH_EPISODES = new Set([
-  "sharks-ep16-a-team-in-three-countries",
-  "sharks-ep18-say-no-with-respect",
-  "sharks-ep19-the-regional-deal",
-  "sharks-ep20-sharks-close-deals",
-]);
+// Episodes 16-20 are now hand-written scene by scene, so no episode uses the
+// generic enrichment layer anymore.
+const SHARKS_RICH_EPISODES = new Set<string>([]);
+
 
 const CONVERSATION_FRAMES: Array<{
   before: { text: string; es: string };
