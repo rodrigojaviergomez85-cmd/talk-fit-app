@@ -455,3 +455,20 @@ export function getNextEpisodeSlot(currentEpisodeId: string, state: JourneyState
     unlocked: isDayUnlocked(state, nextSeason.moduleId, first.day),
   };
 }
+
+/**
+ * Next produced episode after this one, crossing into the following season
+ * when needed. Slots still in production are skipped. Open catalogue: no
+ * journey state is needed.
+ */
+export function getNextProducedEpisodeId(currentEpisodeId: string): string | null {
+  const flat: string[] = [];
+  for (const season of STORYBOOK_SEASONS) {
+    for (const slot of season.slots) {
+      if (slot.episodeId) flat.push(slot.episodeId);
+    }
+  }
+  const idx = flat.indexOf(currentEpisodeId);
+  if (idx < 0) return null;
+  return flat[idx + 1] ?? null;
+}
