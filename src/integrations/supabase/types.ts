@@ -970,6 +970,51 @@ export type Database = {
         }
         Relationships: []
       }
+      story_episode_views: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          episode_id: string
+          episode_number: number | null
+          first_opened_at: string
+          id: string
+          last_opened_at: string
+          max_scene_index: number
+          scenes_reached: number
+          season: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          episode_id: string
+          episode_number?: number | null
+          first_opened_at?: string
+          id?: string
+          last_opened_at?: string
+          max_scene_index?: number
+          scenes_reached?: number
+          season?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          episode_id?: string
+          episode_number?: number | null
+          first_opened_at?: string
+          id?: string
+          last_opened_at?: string
+          max_scene_index?: number
+          scenes_reached?: number
+          season?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       stripe_events: {
         Row: {
           id: string
@@ -1303,6 +1348,7 @@ export type Database = {
       admin_cost_center: { Args: never; Returns: Json }
       admin_engagement_metrics: { Args: never; Returns: Json }
       admin_health_snapshot: { Args: never; Returns: Json }
+      admin_story_metrics: { Args: never; Returns: Json }
       apply_admin_settings: {
         Args: {
           _admin_email: string
@@ -1490,6 +1536,16 @@ export type Database = {
           user_id: string
           which: string
         }[]
+      }
+      record_story_view: {
+        Args: {
+          _completed: boolean
+          _episode_id: string
+          _episode_number: number
+          _scene_index: number
+          _season: number
+        }
+        Returns: undefined
       }
       release_tts_lock: {
         Args: { _clip_key: string; _owner: string }

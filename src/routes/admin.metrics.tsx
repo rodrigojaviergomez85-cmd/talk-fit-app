@@ -10,6 +10,8 @@ import { useAppLang } from "@/lib/i18n";
 import { isAdmin } from "@/lib/storage-report.functions";
 import { getAdminMetrics } from "@/lib/admin-metrics.functions";
 import { fmtNum, fmtPct, pct, type AdminMetrics } from "@/lib/admin-metrics";
+import { getStoryMetrics } from "@/lib/story-analytics.functions";
+import type { StoryMetrics } from "@/lib/story-analytics";
 import { getAdminCostCenter } from "@/lib/admin-cost-center.functions";
 import { estimateCosts, fmtUsd, type AdminCostCenter } from "@/lib/admin-cost-center";
 
@@ -70,10 +72,12 @@ function MetricsPage() {
   const checkAdmin = useServerFn(isAdmin);
   const load = useServerFn(getAdminMetrics);
   const loadCosts = useServerFn(getAdminCostCenter);
+  const loadStory = useServerFn(getStoryMetrics);
 
   const [admin, setAdmin] = useState<boolean | null>(null);
   const [data, setData] = useState<AdminMetrics | null>(null);
   const [costs, setCosts] = useState<AdminCostCenter | null>(null);
+  const [story, setStory] = useState<StoryMetrics | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -95,15 +99,16 @@ function MetricsPage() {
     setBusy(true);
     setError(null);
     try {
-      const [m, c] = await Promise.all([load(), loadCosts()]);
+      const [m, c, st] = await Promise.all([load(), loadCosts(), loadStory().catch(() => null)]);
       setData(m);
       setCosts(c);
+      setStory(st);
     } catch {
       setError(es ? "No se pudieron cargar las métricas." : "Could not load metrics.");
     } finally {
       setBusy(false);
     }
-  }, [load, loadCosts, es]);
+  }, [load, loadCosts, loadStory, es]);
 
   useEffect(() => {
     if (admin === true) void refresh();
@@ -320,7 +325,45 @@ function MetricsPage() {
               </div>
             </Card>
 
-            {/* 7. Centro de costos */}
+            {/* 7. El Mundo de Vale */}
+            {story ? (
+              <Card title={es ? "7. El Mundo de Vale (lectura)" : "7. El Mundo de Vale (reading)"}>
+                <div className="grid grid-cols-2 gap-2">
+                  <Stat
+                    label={es ? "Lectores hoy" : "Readers today"}
+                    value={fmtNum(story.readers_today)}
+                    hint={`${fmtNum(story.opens_today)} ${es ? "aperturas" : "opens"}`}
+                  />
+                  <Stat
+                    label={es ? "Terminaron hoy" : "Finished today"}
+                    value={fmtNum(story.completed_today)}
+                    hint={`${fmtNum(story.completed_total)} ${es ? "en total" : "all time"}`}
+                  />
+                  <Stat label={es ? "Lectores 7 días" : "Readers 7 days"} value={fmtNum(story.readers_7d)} />
+                  <Stat label={es ? "Lectores 30 días" : "Readers 30 days"} value={fmtNum(story.readers_30d)} />
+                </div>
+                {story.top_episodes.length ? (
+                  <div className="mt-3 space-y-2">
+                    <p className="text-[12px] font-semibold">{es ? "Episodios más leídos" : "Most read episodes"}</p>
+                    {story.top_episodes.slice(0, 8).map((e) => (
+                      <Bar
+                        key={e.episode_id}
+                        label={e.episode_id}
+                        value={e.readers}
+                        total={story.top_episodes[0]?.readers ?? 1}
+                        right={`${fmtNum(e.readers)} · ${fmtNum(e.completions)} ${es ? "fin" : "done"}`}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="mt-3 text-[12px] text-muted-foreground">
+                    {es ? "Aún no hay lecturas registradas." : "No reads recorded yet."}
+                  </p>
+                )}
+              </Card>
+            ) : null}
+
+            {/* 8. Centro de costos */}
             {costs ? (
               <Card title={es ? "7. Centro de costos (últimos 30 días)" : "7. Cost center (last 30 days)"}>
                 {(() => {

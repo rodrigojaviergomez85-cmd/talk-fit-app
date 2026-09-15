@@ -15,7 +15,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { getSeason, getNextProducedEpisodeId, getProducedEpisodeIds } from "@/services/storybook";
 import { speakerVoice, speakerTone, speakerName } from "@/services/storybook/voices";
 import { speakDialogue, startDialogue, type DialogueController } from "@/services/storybook/dialogue-audio";
-import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
+import { markEpisodeSeen, getSeenEpisodes } from "@/services/storybook/storybook-progress";
+import { STORYBOOK_SEASONS } from "@/services/storybook/seasons";
+import { recordStoryEpisodeView, backfillStoryProgress } from "@/lib/story-analytics.functions";
+import { parseEpisodeNumber } from "@/lib/story-analytics";
 import { readCatchUpPlan, recordCatchUpEpisode, type CatchUpPlan } from "@/services/storybook/catch-up";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
 import { shuffleQuizOptions } from "@/services/storybook/shuffle-options";
@@ -143,6 +146,45 @@ export function StorybookPlayer({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slide.kind, episode.id]);
+
+  /** Season/episode numbers for reading analytics (never blocks the reader). */
+  const seasonNumber = useMemo(
+    () => STORYBOOK_SEASONS.findIndex((s) => s.moduleId === episode.moduleId) + 1,
+    [episode.moduleId],
+  );
+  const episodeNumber = useMemo(() => parseEpisodeNumber(episode.id) ?? 0, [episode.id]);
+
+  // One-time upload of episodes already finished on this device.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const KEY = "storybook.synced.v1";
+    if (window.localStorage.getItem(KEY)) return;
+    const seen = getSeenEpisodes();
+    window.localStorage.setItem(KEY, "1");
+    if (!seen.length) return;
+    void backfillStoryProgress({ data: { episodeIds: seen } }).catch(() => {
+      window.localStorage.removeItem(KEY);
+    });
+  }, []);
+
+  // Record opening the episode and the furthest slide reached (debounced).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const timer = window.setTimeout(() => {
+      void recordStoryEpisodeView({
+        data: {
+          episodeId: episode.id,
+          season: seasonNumber,
+          episodeNumber,
+          sceneIndex: idx,
+          completed: slide.kind === "finale",
+        },
+      }).catch(() => {
+        /* analytics only — never interrupt the story */
+      });
+    }, 1200);
+    return () => window.clearTimeout(timer);
+  }, [episode.id, seasonNumber, episodeNumber, idx, slide.kind]);
 
   const go = (next: number) => {
     setIdx(Math.min(total - 1, Math.max(0, next)));
