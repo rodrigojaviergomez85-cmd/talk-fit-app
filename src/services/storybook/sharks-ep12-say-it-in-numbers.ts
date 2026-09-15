@@ -13,414 +13,525 @@ import s10 from "@/assets/storybook/sharks-ep12-say-it-in-numbers/s10.jpg";
 import s11 from "@/assets/storybook/sharks-ep12-say-it-in-numbers/s11.jpg";
 
 export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
-  "id": "sharks-ep12-say-it-in-numbers",
-  "moduleId": "sharks",
-  "week": 3,
-  "title": "Say it in numbers",
-  "titleEs": "Dilo en números",
-  "episodeLabel": {
-    "en": "Season 8 · Episode 12",
-    "es": "Temporada 8 · Episodio 12"
+  id: "sharks-ep12-say-it-in-numbers",
+  moduleId: "sharks",
+  week: 3,
+  title: "Say it in numbers",
+  titleEs: "Dilo con números",
+  episodeLabel: {
+    en: "Season 8 · Episode 12",
+    es: "Temporada 8 · Episodio 12"
   },
-  "previously": [
+  previously: [
     {
-      "en": "Vale can tell the story. Now she has to tell it in numbers.",
-      "es": "Vale sabe contar la historia. Ahora tiene que contarla en números."
+      en: "Vale can tell the story. Now she has to tell it in numbers.",
+      es: "Vale sabe contar la historia. Ahora tiene que contarla con números."
     }
   ],
-  "reviewWords": [
-    {
-      "word": "revenue",
-      "es": "ingresos"
-    },
-    {
-      "word": "margin",
-      "es": "margen"
-    },
-    {
-      "word": "report",
-      "es": "reporte"
-    }
+  reviewWords: [
+    { word: "refund", es: "reembolso" },
+    { word: "root cause", es: "causa raíz" },
+    { word: "checklist", es: "lista de verificación" }
   ],
-  "blurb": {
-    "en": "Our quarterly revenue went up eleven percent, but the margin stayed flat. The investor wants a meeting.",
-    "es": "Nuestros ingresos trimestrales subieron once por ciento, pero el margen quedó igual. El inversionista quiere una reunión."
+  blurb: {
+    en: "Our quarterly revenue went up eleven percent, but the margin stayed flat. The investor wants a meeting.",
+    es: "Nuestros ingresos trimestrales subieron once por ciento, pero el margen se quedó igual. El inversionista quiere una reunión."
   },
-  "cover": cover,
-  "voice": "girl",
-  "scenes": [
+  cover: cover,
+  voice: "girl",
+  scenes: [
     {
-      "id": "s1",
-      "image": s1,
-      "imageAlt": "Scene 1 of Say it in numbers.",
-      "text": "Our quarterly revenue went up eleven percent, but the margin stayed flat.",
-      "es": "Nuestros ingresos trimestrales subieron once por ciento, pero el margen quedó igual.",
-      "speaker": "camila",
-      "cast": [
-        "camila",
-        "vale"
-      ],
-      "lines": [
+      id: "s1",
+      image: s1,
+      imageAlt: "Camila presents the quarterly numbers on a screen in the academy office.",
+      text: "Our quarterly revenue went up eleven percent, but the margin stayed flat.",
+      es: "Nuestros ingresos trimestrales subieron once por ciento, pero el margen se quedó igual.",
+      speaker: "camila",
+      cast: ["camila", "vale"],
+      lines: [
         {
-          "speaker": "camila",
-          "text": "Our quarterly revenue went up eleven percent, but the margin stayed flat.",
-          "es": "Nuestros ingresos trimestrales subieron once por ciento, pero el margen quedó igual."
-        }
-      ],
-      "words": []
-    },
-    {
-      "id": "s2",
-      "image": s2,
-      "imageAlt": "Scene 2 of Say it in numbers.",
-      "text": "Then let us break down the costs line by line before we celebrate.",
-      "es": "Entonces desglosemos los costos línea por línea antes de celebrar.",
-      "speaker": "vale",
-      "cast": [
-        "vale",
-        "dani"
-      ],
-      "lines": [
-        {
-          "speaker": "vale",
-          "text": "Then let us break down the costs line by line before we celebrate.",
-          "es": "Entonces desglosemos los costos línea por línea antes de celebrar."
-        }
-      ],
-      "words": []
-    },
-    {
-      "id": "s3",
-      "image": s3,
-      "imageAlt": "Scene 3 of Say it in numbers.",
-      "text": "Teacher hours are the biggest cost. The average class costs us nine dollars.",
-      "es": "Las horas de maestros son el mayor costo. La clase promedio nos cuesta nueve dólares.",
-      "speaker": "dani",
-      "cast": [
-        "dani",
-        "camila"
-      ],
-      "lines": [
-        {
-          "speaker": "dani",
-          "text": "Teacher hours are the biggest cost. The average class costs us nine dollars.",
-          "es": "Las horas de maestros son el mayor costo. La clase promedio nos cuesta nueve dólares."
-        }
-      ],
-      "words": []
-    },
-    {
-      "id": "s4",
-      "image": s4,
-      "imageAlt": "Scene 4 of Say it in numbers.",
-      "text": "Retention is ninety-four percent, so churn is very low for this market.",
-      "es": "La retención es noventa y cuatro por ciento, así que la deserción es muy baja para este mercado.",
-      "speaker": "camila",
-      "cast": [
-        "camila",
-        "vale"
-      ],
-      "lines": [
-        {
-          "speaker": "camila",
-          "text": "Retention is ninety-four percent, so churn is very low for this market.",
-          "es": "La retención es noventa y cuatro por ciento, así que la deserción es muy baja para este mercado."
-        }
-      ],
-      "words": []
-    },
-    {
-      "id": "s5",
-      "image": s5,
-      "imageAlt": "Scene 5 of Say it in numbers.",
-      "text": "Good. In a proposal, the numbers speak for themselves if we present them clearly.",
-      "es": "Bien. En una propuesta, los números hablan por sí solos si los presentamos con claridad.",
-      "speaker": "vale",
-      "cast": [
-        "vale",
-        "dani"
-      ],
-      "lines": [
-        {
-          "speaker": "vale",
-          "text": "Good. In a proposal, the numbers speak for themselves if we present them clearly.",
-          "es": "Bien. En una propuesta, los números hablan por sí solos si los presentamos con claridad."
-        }
-      ],
-      "words": []
-    },
-    {
-      "id": "s6",
-      "image": s6,
-      "imageAlt": "Scene 6 of Say it in numbers.",
-      "text": "I built a spreadsheet with the forecast for the next two quarters.",
-      "es": "Armé una hoja de cálculo con el pronóstico de los próximos dos trimestres.",
-      "speaker": "dani",
-      "cast": [
-        "dani",
-        "vale"
-      ],
-      "lines": [
-        {
-          "speaker": "dani",
-          "text": "I built a spreadsheet with the forecast for the next two quarters.",
-          "es": "Armé una hoja de cálculo con el pronóstico de los próximos dos trimestres."
-        }
-      ],
-      "words": []
-    },
-    {
-      "id": "s7",
-      "image": s7,
-      "imageAlt": "Scene 7 of Say it in numbers.",
-      "text": "Does the forecast add up if Mexico starts in March instead of January?",
-      "es": "¿El pronóstico cuadra si México empieza en marzo en lugar de enero?",
-      "speaker": "vale",
-      "cast": [
-        "vale",
-        "camila"
-      ],
-      "lines": [
-        {
-          "speaker": "vale",
-          "text": "Does the forecast add up if Mexico starts in March instead of January?",
-          "es": "¿El pronóstico cuadra si México empieza en marzo en lugar de enero?"
-        }
-      ],
-      "words": []
-    },
-    {
-      "id": "s8",
-      "image": s8,
-      "imageAlt": "Scene 8 of Say it in numbers.",
-      "text": "It still adds up, but the growth is slower and the budget gets tight.",
-      "es": "Sigue cuadrando, pero el crecimiento es más lento y el presupuesto se ajusta.",
-      "speaker": "camila",
-      "cast": [
-        "camila",
-        "dani"
-      ],
-      "lines": [
-        {
-          "speaker": "camila",
-          "text": "It still adds up, but the growth is slower and the budget gets tight.",
-          "es": "Sigue cuadrando, pero el crecimiento es más lento y el presupuesto se ajusta."
-        }
-      ],
-      "words": []
-    },
-    {
-      "id": "s9",
-      "image": s9,
-      "imageAlt": "Scene 9 of Say it in numbers.",
-      "text": "Two invoices are late, and that changes the estimate for this month.",
-      "es": "Dos facturas están atrasadas, y eso cambia el estimado de este mes.",
-      "speaker": "dani",
-      "cast": [
-        "dani",
-        "vale"
-      ],
-      "lines": [
-        {
-          "speaker": "dani",
-          "text": "Two invoices are late, and that changes the estimate for this month.",
-          "es": "Dos facturas están atrasadas, y eso cambia el estimado de este mes."
-        }
-      ],
-      "words": []
-    },
-    {
-      "id": "s10",
-      "image": s10,
-      "imageAlt": "Scene 10 of Say it in numbers.",
-      "text": "Chase them today. A number nobody collects is not revenue, it is hope.",
-      "es": "Perséguelas hoy. Un número que nadie cobra no es ingreso, es esperanza.",
-      "speaker": "vale",
-      "cast": [
-        "vale",
-        "camila"
-      ],
-      "lines": [
-        {
-          "speaker": "vale",
-          "text": "Chase them today. A number nobody collects is not revenue, it is hope.",
-          "es": "Perséguelas hoy. Un número que nadie cobra no es ingreso, es esperanza."
-        }
-      ],
-      "words": []
-    },
-    {
-      "id": "s11",
-      "image": s11,
-      "imageAlt": "Scene 11 of Say it in numbers.",
-      "text": "Vale, the investor asked for these numbers too. He wants a meeting.",
-      "es": "Vale, el inversionista también pidió estos números. Quiere una reunión.",
-      "speaker": "camila",
-      "cast": [
-        "camila"
-      ],
-      "lines": [
-        {
-          "speaker": "camila",
-          "text": "Vale, the investor asked for these numbers too. He wants a meeting.",
-          "es": "Vale, el inversionista también pidió estos números. Quiere una reunión."
-        }
-      ],
-      "words": []
-    }
-  ],
-  "quizzes": [
-    {
-      "id": "q1",
-      "afterScene": "s2",
-      "questionEn": "What does Vale want before celebrating?",
-      "questionEs": "¿Qué quiere Vale antes de celebrar?",
-      "options": [
-        {
-          "label": "Then let us break down the costs line by line before we celebrate.",
-          "emoji": "🎯"
+          speaker: "camila",
+          text: "Our quarterly revenue went up eleven percent, but the margin stayed flat.",
+          es: "Nuestros ingresos trimestrales subieron once por ciento, pero el margen se quedó igual."
         },
         {
-          "label": "She wants a party.",
-          "emoji": "🛑"
+          speaker: "vale",
+          text: "Eleven percent up is good news. A flat margin is the question.",
+          es: "Once por ciento arriba es buena noticia. El margen plano es la pregunta."
         },
         {
-          "label": "She wants to close the school.",
-          "emoji": "❓"
+          speaker: "camila",
+          text: "Exactly. We are selling more, but we are not keeping more.",
+          es: "Exacto. Estamos vendiendo más, pero no nos queda más."
         }
       ],
-      "answer": 0,
-      "sayIt": "She wants to break down the costs.",
-      "sayItEs": "Ejemplo: «She wants to break down the costs.»",
-      "sayItAskEn": "Explain your own numbers: how much do you study each week?",
-      "sayItAskEs": "Explica tus números: ¿cuánto estudias cada semana?",
-      "sayItCheck": {
-        "target": "I study * hours",
-        "altTargets": [
-          "I practice *",
-          "Every week I *"
+      words: [
+        { word: "quarterly", es: "trimestral" },
+        { word: "revenue", es: "ingresos" },
+        { word: "margin", es: "margen" }
+      ]
+    },
+    {
+      id: "s2",
+      image: s2,
+      imageAlt: "Vale asks the team to review the costs before celebrating.",
+      text: "Then let us break down the costs line by line before we celebrate.",
+      es: "Entonces desglosemos los costos línea por línea antes de celebrar.",
+      speaker: "vale",
+      cast: ["vale", "dani"],
+      lines: [
+        {
+          speaker: "vale",
+          text: "Then let us break down the costs line by line before we celebrate.",
+          es: "Entonces desglosemos los costos línea por línea antes de celebrar."
+        },
+        {
+          speaker: "dani",
+          text: "I have the full list here: teachers, platform, rent, and marketing.",
+          es: "Aquí tengo la lista completa: maestros, plataforma, alquiler y marketing."
+        },
+        {
+          speaker: "vale",
+          text: "Perfect. Celebration comes after understanding, not before.",
+          es: "Perfecto. La celebración viene después de entender, no antes."
+        }
+      ],
+      words: [
+        { word: "costs", es: "costos" },
+        { word: "line by line", es: "línea por línea" },
+        { word: "rent", es: "alquiler" }
+      ]
+    },
+    {
+      id: "s3",
+      image: s3,
+      imageAlt: "Dani points at the biggest cost on the spreadsheet.",
+      text: "Teacher hours are the biggest cost. The average class costs us nine dollars.",
+      es: "Las horas de los maestros son el costo más grande. La clase promedio nos cuesta nueve dólares.",
+      speaker: "dani",
+      cast: ["dani", "camila"],
+      lines: [
+        {
+          speaker: "dani",
+          text: "Teacher hours are the biggest cost. The average class costs us nine dollars.",
+          es: "Las horas de los maestros son el costo más grande. La clase promedio nos cuesta nueve dólares."
+        },
+        {
+          speaker: "camila",
+          text: "And the average student pays fourteen, so each class leaves five.",
+          es: "Y el estudiante promedio paga catorce, así que cada clase deja cinco."
+        },
+        {
+          speaker: "dani",
+          text: "Five dollars before rent and platform. That is the real margin problem.",
+          es: "Cinco dólares antes de alquiler y plataforma. Ese es el verdadero problema del margen."
+        }
+      ],
+      words: [
+        { word: "average", es: "promedio" },
+        { word: "per class", es: "por clase" },
+        { word: "real", es: "verdadero" }
+      ]
+    },
+    {
+      id: "s4",
+      image: s4,
+      imageAlt: "Camila shares the good retention numbers with the team.",
+      text: "Retention is ninety-four percent, so churn is very low for this market.",
+      es: "La retención es noventa y cuatro por ciento, así que la fuga es muy baja para este mercado.",
+      speaker: "camila",
+      cast: ["camila", "vale"],
+      lines: [
+        {
+          speaker: "camila",
+          text: "Retention is ninety-four percent, so churn is very low for this market.",
+          es: "La retención es noventa y cuatro por ciento, así que la fuga es muy baja para este mercado."
+        },
+        {
+          speaker: "vale",
+          text: "Ninety-four percent means students stay because they speak. That is our best number.",
+          es: "Noventa y cuatro por ciento significa que los estudiantes se quedan porque hablan. Es nuestro mejor número."
+        },
+        {
+          speaker: "camila",
+          text: "It is. BigTalk loses almost twenty percent of students every quarter.",
+          es: "Lo es. BigTalk pierde casi veinte por ciento de estudiantes cada trimestre."
+        }
+      ],
+      words: [
+        { word: "retention", es: "retención" },
+        { word: "churn", es: "fuga de clientes" },
+        { word: "market", es: "mercado" }
+      ]
+    },
+    {
+      id: "s5",
+      image: s5,
+      imageAlt: "Vale explains how to present the numbers clearly.",
+      text: "Good. In a proposal, the numbers speak for themselves if we present them clearly.",
+      es: "Bien. En una propuesta, los números hablan por sí solos si los presentamos con claridad.",
+      speaker: "vale",
+      cast: ["vale", "camila"],
+      lines: [
+        {
+          speaker: "vale",
+          text: "Good. In a proposal, the numbers speak for themselves if we present them clearly.",
+          es: "Bien. En una propuesta, los números hablan por sí solos si los presentamos con claridad."
+        },
+        {
+          speaker: "camila",
+          text: "So: one number, one meaning, one decision. No walls of data.",
+          es: "Entonces: un número, un significado, una decisión. Sin muros de datos."
+        },
+        {
+          speaker: "vale",
+          text: "Exactly. Nobody remembers twenty numbers. Everyone remembers three.",
+          es: "Exacto. Nadie recuerda veinte números. Todos recuerdan tres."
+        }
+      ],
+      words: [
+        { word: "proposal", es: "propuesta" },
+        { word: "clearly", es: "con claridad" },
+        { word: "remember", es: "recordar" }
+      ]
+    },
+    {
+      id: "s6",
+      image: s6,
+      imageAlt: "Dani shows a forecast spreadsheet for the next two quarters.",
+      text: "I built a spreadsheet with the forecast for the next two quarters.",
+      es: "Hice una hoja de cálculo con el pronóstico para los próximos dos trimestres.",
+      speaker: "dani",
+      cast: ["dani", "vale"],
+      lines: [
+        {
+          speaker: "dani",
+          text: "I built a spreadsheet with the forecast for the next two quarters.",
+          es: "Hice una hoja de cálculo con el pronóstico para los próximos dos trimestres."
+        },
+        {
+          speaker: "vale",
+          text: "Does it include the Mexico pilot with Renata?",
+          es: "¿Incluye el piloto de México con Renata?"
+        },
+        {
+          speaker: "dani",
+          text: "Yes, with three scenarios: slow, normal, and the one Renata dreams about.",
+          es: "Sí, con tres escenarios: lento, normal y el con el que Renata sueña."
+        }
+      ],
+      words: [
+        { word: "spreadsheet", es: "hoja de cálculo" },
+        { word: "forecast", es: "pronóstico" },
+        { word: "scenario", es: "escenario" }
+      ]
+    },
+    {
+      id: "s7",
+      image: s7,
+      imageAlt: "Vale tests the forecast with a harder question.",
+      text: "Does the forecast add up if Mexico starts in March instead of January?",
+      es: "¿El pronóstico cuadra si México empieza en marzo en lugar de enero?",
+      speaker: "vale",
+      cast: ["vale", "dani"],
+      lines: [
+        {
+          speaker: "vale",
+          text: "Does the forecast add up if Mexico starts in March instead of January?",
+          es: "¿El pronóstico cuadra si México empieza en marzo en lugar de enero?"
+        },
+        {
+          speaker: "camila",
+          text: "It still adds up, but the growth is slower and the budget gets tight.",
+          es: "Todavía cuadra, pero el crecimiento es más lento y el presupuesto se aprieta."
+        },
+        {
+          speaker: "vale",
+          text: "Tight is okay. Broken is not. We can survive slow, not empty.",
+          es: "Apretado está bien. Roto no. Podemos sobrevivir lento, no vacío."
+        }
+      ],
+      words: [
+        { word: "instead of", es: "en lugar de" },
+        { word: "growth", es: "crecimiento" },
+        { word: "tight", es: "apretado" }
+      ]
+    },
+    {
+      id: "s8",
+      image: s8,
+      imageAlt: "Dani reports two late invoices that change the month's estimate.",
+      text: "Two invoices are late, and that changes the estimate for this month.",
+      es: "Dos facturas están atrasadas, y eso cambia la estimación de este mes.",
+      speaker: "dani",
+      cast: ["dani", "camila"],
+      lines: [
+        {
+          speaker: "dani",
+          text: "Two invoices are late, and that changes the estimate for this month.",
+          es: "Dos facturas están atrasadas, y eso cambia la estimación de este mes."
+        },
+        {
+          speaker: "camila",
+          text: "How late are we talking about?",
+          es: "¿De qué tan atrasadas hablamos?"
+        },
+        {
+          speaker: "dani",
+          text: "One is twelve days, the other three weeks. Both clients answered my email yesterday.",
+          es: "Una de doce días, la otra de tres semanas. Ambos clientes respondieron mi correo ayer."
+        }
+      ],
+      words: [
+        { word: "late", es: "atrasadas" },
+        { word: "estimate", es: "estimación" },
+        { word: "answered", es: "respondieron" }
+      ]
+    },
+    {
+      id: "s9",
+      image: s9,
+      imageAlt: "Vale tells the team to collect the late payments today.",
+      text: "Chase them today. A number nobody collects is not revenue, it is hope.",
+      es: "Cóbralas hoy. Un número que nadie cobra no es ingreso, es esperanza.",
+      speaker: "vale",
+      cast: ["vale", "camila"],
+      lines: [
+        {
+          speaker: "vale",
+          text: "Chase them today. A number nobody collects is not revenue, it is hope.",
+          es: "Cóbralas hoy. Un número que nadie cobra no es ingreso, es esperanza."
+        },
+        {
+          speaker: "camila",
+          text: "I will call both clients this morning with a friendly reminder and a payment link.",
+          es: "Llamaré a ambos clientes esta mañana con un recordatorio amable y un enlace de pago."
+        },
+        {
+          speaker: "vale",
+          text: "Friendly first. Firm second. Legal, never, I hope.",
+          es: "Amable primero. Firme después. Legal, nunca, espero."
+        }
+      ],
+      words: [
+        { word: "chase", es: "perseguir / cobrar" },
+        { word: "collect", es: "cobrar" },
+        { word: "reminder", es: "recordatorio" }
+      ]
+    },
+    {
+      id: "s10",
+      image: s10,
+      imageAlt: "The team reviews the three key numbers they will present.",
+      text: "So our three numbers are: eleven percent growth, ninety-four percent retention, five dollars per class.",
+      es: "Entonces nuestros tres números son: once por ciento de crecimiento, noventa y cuatro de retención, cinco dólares por clase.",
+      speaker: "dani",
+      cast: ["dani", "vale"],
+      lines: [
+        {
+          speaker: "dani",
+          text: "So our three numbers are: eleven percent growth, ninety-four percent retention, five dollars per class.",
+          es: "Entonces nuestros tres números son: once por ciento de crecimiento, noventa y cuatro de retención, cinco dólares por clase."
+        },
+        {
+          speaker: "vale",
+          text: "And the story behind them: we grow, students stay, and each class pays for itself.",
+          es: "Y la historia detrás de ellos: crecemos, los estudiantes se quedan, y cada clase se paga sola."
+        },
+        {
+          speaker: "camila",
+          text: "That is a story any investor can repeat at lunch.",
+          es: "Esa es una historia que cualquier inversionista puede repetir en un almuerzo."
+        }
+      ],
+      words: [
+        { word: "growth", es: "crecimiento" },
+        { word: "story", es: "historia" },
+        { word: "pays for itself", es: "se paga sola" }
+      ]
+    },
+    {
+      id: "s11",
+      image: s11,
+      imageAlt: "Camila announces that the investor wants a meeting with Vale.",
+      text: "Vale, the investor asked for these numbers too. He wants a meeting.",
+      es: "Vale, el inversionista también pidió estos números. Quiere una reunión.",
+      speaker: "camila",
+      cast: ["camila", "vale"],
+      lines: [
+        {
+          speaker: "camila",
+          text: "Vale, the investor asked for these numbers too. He wants a meeting.",
+          es: "Vale, el inversionista también pidió estos números. Quiere una reunión."
+        },
+        {
+          speaker: "vale",
+          text: "Which investor? The one from the education fund, or Renata's friend?",
+          es: "¿Cuál inversionista? ¿El del fondo de educación o el amigo de Renata?"
+        },
+        {
+          speaker: "camila",
+          text: "Both. They are coming together, and they want to meet the founder.",
+          es: "Ambos. Vienen juntos, y quieren conocer a la fundadora."
+        }
+      ],
+      words: [
+        { word: "investor", es: "inversionista" },
+        { word: "meeting", es: "reunión" },
+        { word: "founder", es: "fundadora" }
+      ]
+    }
+  ],
+  quizzes: [
+    {
+      id: "q1",
+      afterScene: "s3",
+      questionEn: "What is the academy's biggest cost?",
+      questionEs: "¿Cuál es el costo más grande de la academia?",
+      options: [
+        {
+          label: "Teacher hours, about nine dollars per class.",
+          emoji: "👩‍🏫"
+        },
+        {
+          label: "The office rent.",
+          emoji: "🏢"
+        },
+        {
+          label: "The marketing campaigns.",
+          emoji: "📣"
+        }
+      ],
+      answer: 0,
+      sayIt: "Teacher hours are the biggest cost, nine dollars per class.",
+      sayItEs: "Ejemplo: «Teacher hours are the biggest cost, nine dollars per class.»",
+      sayItAskEn: "What is the biggest cost and how much is it?",
+      sayItAskEs: "¿Cuál es el costo más grande y cuánto es?",
+      sayItCheck: {
+        target: "Teacher hours *",
+        altTargets: [
+          "* nine dollars *",
+          "The biggest cost is *",
+          "Teachers *"
         ]
       }
     },
     {
-      "id": "q2",
-      "afterScene": "s7",
-      "questionEn": "What does Vale ask about the forecast?",
-      "questionEs": "¿Qué pregunta Vale sobre el pronóstico?",
-      "options": [
+      id: "q2",
+      afterScene: "s7",
+      questionEn: "What happens if the Mexico pilot starts in March?",
+      questionEs: "¿Qué pasa si el piloto de México empieza en marzo?",
+      options: [
         {
-          "label": "Does the forecast add up if Mexico starts in March instead of January?",
-          "emoji": "💬"
+          label: "It still adds up, but growth is slower and the budget gets tight.",
+          emoji: "📉"
         },
         {
-          "label": "She asks for more vacations.",
-          "emoji": "🙈"
+          label: "The academy loses all its money.",
+          emoji: "🔥"
         },
         {
-          "label": "She asks about the weather.",
-          "emoji": "🚫"
+          label: "Nothing changes at all.",
+          emoji: "😴"
         }
       ],
-      "answer": 0,
-      "sayIt": "She asks if the forecast still adds up.",
-      "sayItEs": "Ejemplo: «She asks if the forecast still adds up.»",
-      "sayItAskEn": "Compare two options using numbers.",
-      "sayItAskEs": "Compara dos opciones usando números.",
-      "sayItCheck": {
-        "target": "Option A is * than option B because *",
-        "altTargets": [
-          "The first one is *",
-          "I would choose * because *"
+      answer: 0,
+      sayIt: "It still adds up, but growth is slower and the budget gets tight.",
+      sayItEs: "Ejemplo: «It still adds up, but growth is slower and the budget gets tight.»",
+      sayItAskEn: "What changes if Mexico starts later?",
+      sayItAskEs: "¿Qué cambia si México empieza más tarde?",
+      sayItCheck: {
+        target: "* adds up *",
+        altTargets: [
+          "* slower *",
+          "The budget *",
+          "Growth is *"
         ]
       }
     },
     {
-      "id": "q3",
-      "afterScene": "s11",
-      "questionEn": "What happens at the end?",
-      "questionEs": "¿Qué pasa al final?",
-      "options": [
+      id: "q3",
+      afterScene: "s11",
+      questionEn: "What does Camila announce at the end?",
+      questionEs: "¿Qué anuncia Camila al final?",
+      options: [
         {
-          "label": "Vale, the investor asked for these numbers too. He wants a meeting.",
-          "emoji": "⚡"
+          label: "The investors want a meeting with the founder.",
+          emoji: "🤝"
         },
         {
-          "label": "The team stops working.",
-          "emoji": "😴"
+          label: "The invoices were never paid.",
+          emoji: "🧾"
         },
         {
-          "label": "The numbers disappear.",
-          "emoji": "🏖️"
+          label: "The platform failed again.",
+          emoji: "💻"
         }
       ],
-      "answer": 0,
-      "sayIt": "Vale, the investor asked for these numbers too. He wants a meeting.",
-      "sayItEs": "Ejemplo: «Vale, the investor asked for these numbers too. He wants a meeting.»",
-      "sayItAskEn": "Present the results, the risk and your recommendation.",
-      "sayItAskEs": "Presenta los resultados, el riesgo y tu recomendación.",
-      "sayItCheck": {
-        "target": "The results show *, the risk is *, so I recommend *",
-        "altTargets": [
-          "In short, *",
-          "My recommendation is *"
+      answer: 0,
+      sayIt: "The investors asked for the numbers and want to meet the founder.",
+      sayItEs: "Ejemplo: «The investors asked for the numbers and want to meet the founder.»",
+      sayItAskEn: "Who wants a meeting, and with whom?",
+      sayItAskEs: "¿Quién quiere una reunión y con quién?",
+      sayItCheck: {
+        target: "* investor *",
+        altTargets: [
+          "* meeting *",
+          "They want to meet *",
+          "The founder *"
         ]
       }
     }
   ],
-  "mindsetCard": {
-    "afterScene": "s6",
-    "phrase": "I can do hard things, even in numbers.",
-    "es": "Puedo hacer cosas difíciles, incluso con números."
+  mindsetCard: {
+    afterScene: "s6",
+    phrase: "I can do hard things, even in numbers.",
+    es: "Puedo hacer cosas difíciles, incluso con números."
   },
-  "habitCard": {
-    "afterScene": "s4",
-    "phrase": "English is easy when I say the number, then the meaning.",
-    "es": "El inglés es fácil cuando digo el número y luego el significado.",
-    "model": "camila",
-    "modelActionEs": "Camila dice el dato y después lo explica."
+  habitCard: {
+    afterScene: "s4",
+    phrase: "English is easy when I say the number, then the meaning.",
+    es: "El inglés es fácil cuando digo el número y luego el significado.",
+    model: "camila",
+    modelActionEs: "Camila dice el dato y después lo explica."
   },
-  "expressions": [
+  expressions: [
     {
-      "phrase": "break down",
-      "variants": [
-        "break down",
-        "breaks down"
-      ],
-      "es": "desglosar en partes",
-      "kind": "phrasal",
-      "example": "Then let us break down the costs line by line before we celebrate.",
-      "exampleEs": "Entonces desglosemos los costos línea por línea antes de celebrar."
+      phrase: "break down",
+      variants: ["break down", "breaks down"],
+      es: "desglosar en partes",
+      kind: "phrasal",
+      example: "Then let us break down the costs line by line before we celebrate.",
+      exampleEs: "Entonces desglosemos los costos línea por línea antes de celebrar."
     },
     {
-      "phrase": "add up",
-      "variants": [
-        "adds up"
-      ],
-      "es": "cuadrar / tener sentido matemático",
-      "kind": "phrasal",
-      "example": "Does the forecast add up if Mexico starts in March instead of January?",
-      "exampleEs": "¿El pronóstico cuadra si México empieza en marzo en lugar de enero?"
+      phrase: "add up",
+      variants: ["adds up"],
+      es: "cuadrar / tener sentido matemático",
+      kind: "phrasal",
+      example: "Does the forecast add up if Mexico starts in March instead of January?",
+      exampleEs: "¿El pronóstico cuadra si México empieza en marzo en lugar de enero?"
     },
     {
-      "phrase": "the numbers speak for themselves",
-      "es": "los resultados son evidentes por sí solos",
-      "kind": "idiom",
-      "example": "In a proposal, the numbers speak for themselves if we present them clearly.",
-      "exampleEs": "En una propuesta, los números hablan por sí solos si los presentamos con claridad."
+      phrase: "the numbers speak for themselves",
+      es: "los resultados son evidentes por sí solos",
+      kind: "idiom",
+      example: "In a proposal, the numbers speak for themselves if we present them clearly.",
+      exampleEs: "En una propuesta, los números hablan por sí solos si los presentamos con claridad."
     }
   ],
-  "finaleSeconds": 30,
-  "continuePrompt": {
-    "en": "Your turn, 30 seconds: report three numbers and say what they mean for the business.",
-    "es": "Tu turno, 30 segundos: reporta tres números y di qué significan para el negocio."
+  finaleSeconds: 30,
+  continuePrompt: {
+    en: "Your turn, 30 seconds: report three numbers and say what they mean for the business.",
+    es: "Tu turno, 30 segundos: reporta tres números y di qué significan para el negocio."
   },
-  "continueWith": [
+  continueWith: [
     "Revenue went up ...",
     "The margin is ... because ...",
     "My forecast for next month is ..."
   ],
-  "cliffhanger": {
-    "en": "Vale, the investor asked for these numbers too. He wants a meeting.",
-    "es": "Vale, el inversionista también pidió estos números. Quiere una reunión."
+  cliffhanger: {
+    en: "Vale, the investor asked for these numbers too. He wants a meeting.",
+    es: "Vale, el inversionista también pidió estos números. Quiere una reunión."
   }
 };
