@@ -1,4 +1,5 @@
 import type { StorybookEpisode, StorybookScene } from "./types";
+import { globalExpressionMap } from "./expressions";
 
 /**
  * Base glossary of common/function words used across the storybook episodes.
