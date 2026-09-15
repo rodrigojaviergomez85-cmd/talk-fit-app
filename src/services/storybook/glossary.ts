@@ -761,6 +761,8 @@ export const BASE_GLOSSARY: Record<string, string> = {
   valentina: "Valentina (nombre)",
   website: "sitio web",
   yet: "todavía",
+  "two-minute": "de dos minutos",
+  "twenty-two": "veintidós",
 };
 
 
