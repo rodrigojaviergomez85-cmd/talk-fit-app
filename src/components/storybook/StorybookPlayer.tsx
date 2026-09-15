@@ -396,6 +396,19 @@ export function StorybookPlayer({
               >
                 {es ? "Siguiente" : "Next"} <ArrowRight className="size-4" />
               </button>
+            ) : nextEpisodeId ? (
+              <button
+                type="button"
+                onClick={() =>
+                  navigate({
+                    to: "/natural-method/cuento/$storyId",
+                    params: { storyId: nextEpisodeId },
+                  })
+                }
+                className="inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-[13px] font-bold uppercase tracking-[0.1em] text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98]"
+              >
+                {es ? "Siguiente episodio" : "Next episode"} <ArrowRight className="size-4" />
+              </button>
             ) : null}
           </div>
         ) : null}
