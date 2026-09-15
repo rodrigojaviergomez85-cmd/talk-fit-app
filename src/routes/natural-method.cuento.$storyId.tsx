@@ -1,12 +1,8 @@
-import { useEffect, useState } from "react";
 import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { AppShell } from "@/components/fluency/AppShell";
 import { StorybookPlayer } from "@/components/storybook/StorybookPlayer";
 import { getStorybookEpisode } from "@/services/storybook";
 import { getEpisodeSlot } from "@/services/storybook/seasons";
-import { JourneyService } from "@/services/journey-service";
-import type { JourneyState } from "@/lib/types";
-import { useAppLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/natural-method/cuento/$storyId")({
   validateSearch: (search: Record<string, unknown>) =>
