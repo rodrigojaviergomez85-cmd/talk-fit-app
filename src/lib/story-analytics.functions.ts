@@ -22,8 +22,8 @@ export const recordStoryEpisodeView = createServerFn({ method: "POST" })
     if (!episodeId) throw new Error("episodeId required");
     return {
       episodeId,
-      season: Number.isFinite(input.season) ? Number(input.season) : null,
-      episodeNumber: Number.isFinite(input.episodeNumber) ? Number(input.episodeNumber) : null,
+      season: Number.isFinite(input.season) ? Number(input.season) : 0,
+      episodeNumber: Number.isFinite(input.episodeNumber) ? Number(input.episodeNumber) : 0,
       sceneIndex: Number.isFinite(input.sceneIndex) ? Math.max(0, Number(input.sceneIndex)) : 0,
       completed: Boolean(input.completed),
     };
@@ -50,8 +50,8 @@ export const backfillStoryProgress = createServerFn({ method: "POST" })
     for (const episodeId of data.episodeIds) {
       await context.supabase.rpc("record_story_view", {
         _episode_id: episodeId.slice(0, 120),
-        _season: null,
-        _episode_number: null,
+        _season: 0,
+        _episode_number: 0,
         _scene_index: 0,
         _completed: true,
       });
