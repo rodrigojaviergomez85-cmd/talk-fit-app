@@ -1,55 +1,16 @@
 # Roadmap
 
-- [x] Complete and register Season 3 Episodes 1–5
-- [x] Create, visually audit, compress, and register Season 3 Episodes 6–10
-- [x] Verify Episodes 6–10 curriculum alignment, question mix, voices, glossary, daily unlocking, and tests
-- [x] Create and register Season 3 Episodes 11–15 with full visual/audio QA
-- [x] Create and register Season 3 Episodes 16–20 with full visual/audio QA
-- [x] Run final Season 3 mobile and complete test validation
+## Temporada 6 (Eagles) — El mundo de Vale
+- [x] Episodio 2 "The proposal" (día 2: could / might)
+- [x] Episodio 3 "The competitor" (día 3: should / must)
+- [x] Episodio 4 "The objection" (día 4: need to / don't have to)
+- [x] Episodio 5 "What would you do?" (día 5: segundo condicional)
+- [x] Episodio 6 "Then & now" (día 6: pasado y presente progresivo)
+- [x] Registro en el índice y en el calendario de la temporada
+- [x] 55 ilustraciones nuevas (768x768, <250 KB)
+- [x] Triple revisión de consistencia (imágenes + voces) automatizada
+- [x] Glosario completo en español
+- [x] Verificaciones de tipos y pruebas
 
-## Temporada 4 (past-stories)
-- [x] Ep 1-5 guiones, arte y registro
-- [x] Fase B-D: ep 6-20 guiones, arte, QA, tests y móvil
-
-## Temporada 5 (mixed-tenses) — completada
-- [x] Infraestructura `habitCard` en tipos y `StorybookPlayer` (tarjeta de hábito sin IA, grabación opcional)
-- [x] Registro de Temporada 5 en `seasons.ts` e `index.ts`
-- [x] Ep 1-5 guiones (primeros estudiantes, descanso, snacks saludables, hábitos de sueño)
-- [x] Placeholders de arte para ep 1-5 (cover + s1-s10)
-- [x] Tests, tsgo y ruta móvil 394px OK
-- [x] Ep 6-10 (ejercicio, agua, cuerpo fuerte, mentor, IA)
-- [x] Ep 11-15 (práctica diaria, errores, gratitud, quietud, confianza)
-- [x] Ep 16-20 (creer en sí mismo, días difíciles, reintentar, celebración)
-
-## Temporada 1 — correcciones actuales
-- [x] Corregir la frase incoherente “Today... every day” en la escena mostrada
-- [x] Revisar y corregir anatomía e identidad de los personajes en los episodios 19 y 20
-- [x] Validar imágenes móviles y pruebas de las historias
-
-## Temporada 2 — consistencia visual de Vale
-- [x] Auditar los 20 episodios contra la referencia oficial de Vale
-- [x] Corregir las variaciones más claras de rostro, piel, edad y anatomía
-- [x] Optimizar y validar los 220 dibujos para celular
-- [x] Verificar pruebas y páginas representativas de la temporada
-- [x] Corregir proporciones e identidad de Vale y Mateo en el Episodio 6
-
-## Escalamiento a 17k estudiantes
-- [x] Paso 1: Habilitar límites diarios y ventana de episodios de Vale (3 anteriores + actual)
-- [x] Paso 2: Redimensionar instancia a X-Large y disco a 500 GB
-- [x] Paso 3: Retención (tomas 48 h, finales 90 días, día 1 y 20 permanentes)
-- [x] Paso 4: Alertas de gasto y salud en /admin/alertas + aviso en pantallas admin
-- [x] Paso 5: Prueba de carga 20/80/170 rps OK (p95 ≤ 94 ms), índices de crecimiento agregados
-
-## Lanzamiento escalonado
-- [x] Etapa 1 (14 sep): abrir a ~5.000 estudiantes — límites activos, instancia X-Large, disco 500 GB, retención y alertas listas
-- [ ] Revisar /admin/alertas a diario durante la primera semana
-- [ ] Etapa 2: 8.000 estudiantes
-- [ ] Etapa 3: 17.000 estudiantes
-
-
-## Limpieza de audio a escala
-- [x] Selección de candidatos dentro de la base (sin cargar tablas enteras)
-- [x] Corridas acotadas por cantidad y por tiempo
-- [x] Registro de cada corrida en `job_runs`
-- [x] Bloque "Limpieza de audio" en /admin/alertas
-- [x] Trabajo programado cada 4 horas
+## Pendiente
+- [ ] Episodios 7-20 de la temporada 6

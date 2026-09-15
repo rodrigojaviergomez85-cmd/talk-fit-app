@@ -18,6 +18,8 @@ const DAY_PATTERNS: Record<number, RegExp[]> = {
   4: [/need to/i, /don't have to/i],
   // Day 5 — second conditional
   5: [/if i .*, i would|i would/i],
+  // Day 6 — past progressive + present progressive (before vs. now)
+  6: [/was \*|was \w+ing/i, /right now i am|right now i'm|i am \w+ing|i'm \w+ing/i],
 };
 
 const season6 = STORYBOOK_SEASONS.find((s) => s.moduleId === "eagles-week-1");

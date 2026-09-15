@@ -99,6 +99,11 @@ import { VALE_S5_FIRST_EMPLOYEE } from "./vale-s5-first-employee";
 import { VALE_S5_THE_COMPANY_CALL } from "./vale-s5-the-company-call";
 import { VALE_S5_THE_PROMISE } from "./vale-s5-the-promise";
 import { EAGLES_EP1_THE_OFFER } from "./eagles-ep1-the-offer";
+import { EAGLES_EP2_THE_PROPOSAL } from "./eagles-ep2-the-proposal";
+import { EAGLES_EP3_THE_COMPETITOR } from "./eagles-ep3-the-competitor";
+import { EAGLES_EP4_THE_OBJECTION } from "./eagles-ep4-the-objection";
+import { EAGLES_EP5_WHAT_WOULD_YOU_DO } from "./eagles-ep5-what-would-you-do";
+import { EAGLES_EP6_THEN_AND_NOW } from "./eagles-ep6-then-and-now";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -203,6 +208,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_S5_THE_COMPANY_CALL,
   VALE_S5_THE_PROMISE,
   EAGLES_EP1_THE_OFFER,
+  EAGLES_EP2_THE_PROPOSAL,
+  EAGLES_EP3_THE_COMPETITOR,
+  EAGLES_EP4_THE_OBJECTION,
+  EAGLES_EP5_WHAT_WOULD_YOU_DO,
+  EAGLES_EP6_THEN_AND_NOW,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
