@@ -16,6 +16,7 @@ import { getSeason, getNextProducedEpisodeId } from "@/services/storybook";
 import { speakerVoice, speakerTone, speakerName } from "@/services/storybook/voices";
 import { speakDialogue, startDialogue, type DialogueController } from "@/services/storybook/dialogue-audio";
 import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
+import { readCatchUpPlan, recordCatchUpEpisode, type CatchUpPlan } from "@/services/storybook/catch-up";
 import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
 import { shuffleQuizOptions } from "@/services/storybook/shuffle-options";
 import type { StorybookEpisode, StorybookQuiz, StorybookScene, StorybookSpeaker } from "@/services/storybook/types";
@@ -72,6 +73,7 @@ export function StorybookPlayer({
   const slides = useMemo(() => buildSlides(episode), [episode]);
   const coverBack = onCoverBack ?? (() => navigate({ to: "/natural-method/audiobooks" }));
   const nextEpisodeId = useMemo(() => getNextProducedEpisodeId(episode.id), [episode.id]);
+  const [catchUpPlan, setCatchUpPlan] = useState<CatchUpPlan | null>(null);
   const episodeGlossary = useMemo(() => buildEpisodeGlossary(episode), [episode]);
   // Leaving the episode keeps the scene the learner was on.
   const posKey = `sb-pos-${episode.id}`;
@@ -127,7 +129,11 @@ export function StorybookPlayer({
 
   // Reaching the finale counts as completing the story (local, optional step).
   useEffect(() => {
-    if (slide.kind === "finale") markEpisodeSeen(episode.id);
+    if (slide.kind === "finale") {
+      markEpisodeSeen(episode.id);
+      recordCatchUpEpisode(episode.id);
+      setCatchUpPlan(readCatchUpPlan());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slide.kind, episode.id]);
 
@@ -412,6 +418,13 @@ export function StorybookPlayer({
               </button>
             ) : null}
           </div>
+        ) : null}
+        {slide.kind === "finale" && catchUpPlan?.active && catchUpPlan.todayRemaining === 0 ? (
+          <p className="mt-3 text-center text-[12px] font-semibold text-primary">
+            {es
+              ? "¡Meta de hoy cumplida! Puedes seguir si quieres."
+              : "Today's goal is done! Keep going if you want."}
+          </p>
         ) : null}
         {slide.kind === "quiz" && advanceLocked ? (
           <p className="mt-3 text-center text-[12px] font-semibold text-muted-foreground">

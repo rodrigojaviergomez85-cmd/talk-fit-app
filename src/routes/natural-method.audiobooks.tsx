@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ChevronDown, Lock, PlayCircle } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { CatchUpCard } from "@/components/storybook/CatchUpCard";
 import { useAppLang } from "@/lib/i18n";
 import {
   NATURAL_METHOD_AUDIOBOOKS,
@@ -72,6 +73,8 @@ function AudiobooksPage() {
               : "Listen to the full story, then repeat out loud sentence by sentence."}
           </p>
         </header>
+
+        <CatchUpCard showEs={showEs} />
 
         <SeasonMap showEs={showEs} />
 

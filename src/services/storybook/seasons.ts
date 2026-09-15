@@ -457,17 +457,27 @@ export function getNextEpisodeSlot(currentEpisodeId: string, state: JourneyState
 }
 
 /**
- * Next produced episode after this one, crossing into the following season
- * when needed. Slots still in production are skipped. Open catalogue: no
- * journey state is needed.
+ * Every produced episode id, in story order (season 1 → last season).
+ * Slots still in production are skipped, so newly published episodes join
+ * the list automatically.
  */
-export function getNextProducedEpisodeId(currentEpisodeId: string): string | null {
+export function getProducedEpisodeIds(): string[] {
   const flat: string[] = [];
   for (const season of STORYBOOK_SEASONS) {
     for (const slot of season.slots) {
       if (slot.episodeId) flat.push(slot.episodeId);
     }
   }
+  return flat;
+}
+
+/**
+ * Next produced episode after this one, crossing into the following season
+ * when needed. Slots still in production are skipped. Open catalogue: no
+ * journey state is needed.
+ */
+export function getNextProducedEpisodeId(currentEpisodeId: string): string | null {
+  const flat = getProducedEpisodeIds();
   const idx = flat.indexOf(currentEpisodeId);
   if (idx < 0) return null;
   return flat[idx + 1] ?? null;
