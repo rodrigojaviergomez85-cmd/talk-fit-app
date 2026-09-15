@@ -52,7 +52,7 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
     {
       "id": "s1",
       "image": s1,
-      "imageAlt": "Scene 1 of Vale Kids.",
+      "imageAlt": "Dani asks Vale how she really is during a calm Saturday at the community center.",
       "text": "We have been talking about work for twenty minutes. How have you been, really?",
       "es": "Llevamos veinte minutos hablando de trabajo. ¿Cómo has estado, de verdad?",
       "speaker": "dani",
@@ -62,16 +62,30 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
+          "text": "It is Saturday, and the community center feels calm for the first time in weeks. The adults are inside, and nobody needs anything from us.",
+          "es": "Es sábado, y el centro comunitario se siente tranquilo por primera vez en semanas. Los adultos están adentro, y nadie necesita nada de nosotros."
+        },
+        {
+          "speaker": "dani",
           "text": "We have been talking about work for twenty minutes. How have you been, really?",
           "es": "Llevamos veinte minutos hablando de trabajo. ¿Cómo has estado, de verdad?"
+        },
+        {
+          "speaker": "dani",
+          "text": "And please do not answer with a project update. I asked about you, not about Northline.",
+          "es": "Y por favor no respondas con una actualización de proyecto. Pregunté por ti, no por Northline."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "talking", "es": "hablando" },
+        { "word": "calm", "es": "tranquilo" },
+        { "word": "update", "es": "actualización" }
+      ]
     },
     {
       "id": "s2",
       "image": s2,
-      "imageAlt": "Scene 2 of Vale Kids.",
+      "imageAlt": "Vale admits her exhausting routine while Don Tito listens nearby.",
       "text": "I have been traveling, solving problems, and sleeping next to my laptop.",
       "es": "He estado viajando, resolviendo problemas y durmiendo junto a mi laptop.",
       "speaker": "vale",
@@ -84,14 +98,28 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
           "speaker": "vale",
           "text": "I have been traveling, solving problems, and sleeping next to my laptop.",
           "es": "He estado viajando, resolviendo problemas y durmiendo junto a mi laptop."
+        },
+        {
+          "speaker": "tito",
+          "text": "That is how young people burn out, Vale. I have seen it many times in this neighborhood. Rest is not a reward; it is part of the work.",
+          "es": "Así es como se agota la gente joven, Vale. Lo he visto muchas veces en este barrio. El descanso no es un premio; es parte del trabajo."
+        },
+        {
+          "speaker": "vale",
+          "text": "You are right, Don Tito. Today I promised myself no calls until the afternoon.",
+          "es": "Tiene razón, Don Tito. Hoy me prometí no hacer llamadas hasta la tarde."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "traveling", "es": "viajando" },
+        { "word": "laptop", "es": "computadora portátil" },
+        { "word": "neighborhood", "es": "barrio" }
+      ]
     },
     {
       "id": "s3",
       "image": s3,
-      "imageAlt": "Scene 3 of Vale Kids.",
+      "imageAlt": "Dani tells Vale about the leadership program he is building at his company.",
       "text": "I have been working on a leadership program at my company.",
       "es": "He estado trabajando en un programa de liderazgo en mi empresa.",
       "speaker": "dani",
@@ -101,17 +129,31 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "vale",
+          "text": "And you, Dani? You look different lately, calmer and busier at the same time.",
+          "es": "¿Y tú, Dani? Te ves diferente últimamente, más tranquilo y más ocupado a la vez."
+        },
+        {
           "speaker": "dani",
           "text": "I have been working on a leadership program at my company.",
           "es": "He estado trabajando en un programa de liderazgo en mi empresa."
+        },
+        {
+          "speaker": "vale",
+          "text": "Leadership suits you. Five years ago you could barely order a coffee in English.",
+          "es": "El liderazgo te queda bien. Hace cinco años apenas podías pedir un café en inglés."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "leadership", "es": "liderazgo" },
+        { "word": "lately", "es": "últimamente" },
+        { "word": "barely", "es": "apenas" }
+      ]
     },
     {
       "id": "s4",
       "image": s4,
-      "imageAlt": "Scene 4 of Vale Kids.",
+      "imageAlt": "Vale notices the children waiting while their parents finish the adult class.",
       "text": "Look at those kids. They have been waiting while their parents finish class.",
       "es": "Mira a esos niños. Han estado esperando mientras sus padres terminan la clase.",
       "speaker": "vale",
@@ -121,17 +163,31 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "dani",
+          "text": "Something is happening behind you. Half of those children have been staring at us for minutes, and they are listening to every word we say in English.",
+          "es": "Algo está pasando detrás de ti. La mitad de esos niños lleva minutos mirándonos, y están escuchando cada palabra que decimos en inglés."
+        },
+        {
           "speaker": "vale",
           "text": "Look at those kids. They have been waiting while their parents finish class.",
           "es": "Mira a esos niños. Han estado esperando mientras sus padres terminan la clase."
+        },
+        {
+          "speaker": "dani",
+          "text": "Waiting, and repeating everything they hear. Nobody told them to practice anything.",
+          "es": "Esperando, y repitiendo todo lo que escuchan. Nadie les dijo que practicaran nada."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "kids", "es": "niños" },
+        { "word": "parents", "es": "padres" },
+        { "word": "repeating", "es": "repitiendo" }
+      ]
     },
     {
       "id": "s5",
       "image": s5,
-      "imageAlt": "Scene 5 of Vale Kids.",
+      "imageAlt": "Dani and Don Tito watch a boy repeating Vale's question outside the classroom.",
       "text": "That boy has been repeating your opening question for ten minutes.",
       "es": "Ese niño lleva diez minutos repitiendo tu pregunta inicial.",
       "speaker": "dani",
@@ -141,17 +197,31 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "tito",
+          "text": "The small one in the red shirt has not stopped since your class began this morning.",
+          "es": "El pequeño de la camisa roja no ha parado desde que empezó su clase esta mañana."
+        },
+        {
           "speaker": "dani",
           "text": "That boy has been repeating your opening question for ten minutes.",
           "es": "Ese niño lleva diez minutos repitiendo tu pregunta inicial."
+        },
+        {
+          "speaker": "tito",
+          "text": "Children copy what they admire, and that boy admires the adults who speak English here.",
+          "es": "Los niños copian lo que admiran, y ese niño admira a los adultos que hablan inglés aquí."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "boy", "es": "niño" },
+        { "word": "shirt", "es": "camisa" },
+        { "word": "admire", "es": "admirar" }
+      ]
     },
     {
       "id": "s6",
       "image": s6,
-      "imageAlt": "Scene 6 of Vale Kids.",
+      "imageAlt": "Vale stands alone thinking about teaching the waiting children.",
       "text": "Maybe we should catch up less and listen more. They want a class too.",
       "es": "Quizás deberíamos ponernos al día menos y escuchar más. Ellos también quieren una clase.",
       "speaker": "vale",
@@ -161,16 +231,30 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "vale",
+          "text": "I have spent three years designing courses for adults who already lost their fear, and every course assumed the student had already decided to study.",
+          "es": "He pasado tres años diseñando cursos para adultos que ya perdieron el miedo, y cada curso asumía que el estudiante ya había decidido estudiar."
+        },
+        {
+          "speaker": "vale",
           "text": "Maybe we should catch up less and listen more. They want a class too.",
           "es": "Quizás deberíamos ponernos al día menos y escuchar más. Ellos también quieren una clase."
+        },
+        {
+          "speaker": "vale",
+          "text": "Imagine reaching them at eight years old, before anybody tells them English is difficult.",
+          "es": "Imagina alcanzarlos a los ocho años, antes de que alguien les diga que el inglés es difícil."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "listen", "es": "escuchar" },
+        { "word": "adults", "es": "adultos" },
+        { "word": "fear", "es": "miedo" }
+      ]
     },
     {
       "id": "s7",
       "image": s7,
-      "imageAlt": "Scene 7 of Vale Kids.",
+      "imageAlt": "Dani encourages Vale to create a proper program for kids.",
       "text": "You have been building adult courses. Why not work on a kids program?",
       "es": "Has estado creando cursos para adultos. ¿Por qué no trabajar en un programa para niños?",
       "speaker": "dani",
@@ -180,16 +264,30 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
+          "text": "Then do it properly, not as a favor on a free Saturday morning.",
+          "es": "Entonces hazlo bien, no como un favor en una mañana libre de sábado."
+        },
+        {
+          "speaker": "dani",
           "text": "You have been building adult courses. Why not work on a kids program?",
           "es": "Has estado creando cursos para adultos. ¿Por qué no trabajar en un programa para niños?"
+        },
+        {
+          "speaker": "dani",
+          "text": "You already have teachers, materials, and a method. The only missing piece is the decision.",
+          "es": "Ya tienes maestros, materiales y un método. La única pieza que falta es la decisión."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "building", "es": "creando" },
+        { "word": "courses", "es": "cursos" },
+        { "word": "decision", "es": "decisión" }
+      ]
     },
     {
       "id": "s8",
       "image": s8,
-      "imageAlt": "Scene 8 of Vale Kids.",
+      "imageAlt": "Don Tito speaks about planting a seed for a whole generation.",
       "text": "A small Saturday class can plant the seed for a whole generation.",
       "es": "Una pequeña clase sabatina puede sembrar la semilla para toda una generación.",
       "speaker": "tito",
@@ -199,16 +297,30 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "tito",
+          "text": "I have watched this neighborhood for forty years, and I will tell you something important.",
+          "es": "He observado este barrio durante cuarenta años, y les diré algo importante."
+        },
+        {
+          "speaker": "tito",
           "text": "A small Saturday class can plant the seed for a whole generation.",
           "es": "Una pequeña clase sabatina puede sembrar la semilla para toda una generación."
+        },
+        {
+          "speaker": "tito",
+          "text": "Those parents inside the classroom are the proof, and their children are already watching them.",
+          "es": "Esos padres dentro del aula son la prueba, y sus hijos ya los están observando."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "generation", "es": "generación" },
+        { "word": "proof", "es": "prueba" },
+        { "word": "watching", "es": "observando" }
+      ]
     },
     {
       "id": "s9",
       "image": s9,
-      "imageAlt": "Scene 9 of Vale Kids.",
+      "imageAlt": "Vale sketches the first Saturday kids class with stories and movement.",
       "text": "Then we start small: stories, movement, and speaking from day one.",
       "es": "Entonces empezamos pequeño: historias, movimiento y habla desde el primer día.",
       "speaker": "vale",
@@ -218,16 +330,30 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "vale",
+          "text": "Fine. One group, twelve children, Saturdays at nine, and absolutely no grammar exercises.",
+          "es": "Está bien. Un grupo, doce niños, sábados a las nueve, y absolutamente nada de ejercicios de gramática."
+        },
+        {
+          "speaker": "vale",
           "text": "Then we start small: stories, movement, and speaking from day one.",
           "es": "Entonces empezamos pequeño: historias, movimiento y habla desde el primer día."
+        },
+        {
+          "speaker": "vale",
+          "text": "If a child speaks one sentence and laughs, that class already did its job.",
+          "es": "Si un niño dice una oración y se ríe, esa clase ya hizo su trabajo."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "movement", "es": "movimiento" },
+        { "word": "grammar", "es": "gramática" },
+        { "word": "sentence", "es": "oración" }
+      ]
     },
     {
       "id": "s10",
       "image": s10,
-      "imageAlt": "Scene 10 of Vale Kids.",
+      "imageAlt": "Dani watches the smiling parents as the first Vale Kids class takes shape.",
       "text": "The parents are smiling. I think Vale Kids has its first class.",
       "es": "Los padres están sonriendo. Creo que Vale Kids tiene su primera clase.",
       "speaker": "dani",
@@ -237,16 +363,30 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
+          "text": "I asked four mothers while you were talking, and all four said yes immediately.",
+          "es": "Le pregunté a cuatro mamás mientras hablabas, y las cuatro dijeron que sí de inmediato."
+        },
+        {
+          "speaker": "dani",
           "text": "The parents are smiling. I think Vale Kids has its first class.",
           "es": "Los padres están sonriendo. Creo que Vale Kids tiene su primera clase."
+        },
+        {
+          "speaker": "dani",
+          "text": "And they asked for a second group, because their neighbors will want the same thing. Saturday mornings could become the busiest hours of your week.",
+          "es": "Y pidieron un segundo grupo, porque sus vecinos van a querer lo mismo. Las mañanas de sábado podrían volverse las horas más ocupadas de tu semana."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "smiling", "es": "sonriendo" },
+        { "word": "mothers", "es": "mamás" },
+        { "word": "neighbors", "es": "vecinos" }
+      ]
     },
     {
       "id": "s11",
       "image": s11,
-      "imageAlt": "Scene 11 of Vale Kids.",
+      "imageAlt": "Vale reads the message from Mexico while Don Tito comments on the children singing.",
       "text": "And Mexico just asked for a call about bringing the idea there.",
       "es": "Y México acaba de pedir una llamada para llevar la idea allá.",
       "speaker": "vale",
@@ -256,12 +396,26 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "tito",
+          "text": "Look at your phone, Vale. It has been vibrating since the children started singing.",
+          "es": "Mira tu teléfono, Vale. Lleva vibrando desde que los niños empezaron a cantar."
+        },
+        {
           "speaker": "vale",
           "text": "And Mexico just asked for a call about bringing the idea there.",
           "es": "Y México acaba de pedir una llamada para llevar la idea allá."
+        },
+        {
+          "speaker": "tito",
+          "text": "So the seed already traveled. Answer that call before the idea belongs to somebody else.",
+          "es": "Así que la semilla ya viajó. Contesta esa llamada antes de que la idea sea de alguien más."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "idea", "es": "idea" },
+        { "word": "phone", "es": "teléfono" },
+        { "word": "seed", "es": "semilla" }
+      ]
     }
   ],
   "quizzes": [

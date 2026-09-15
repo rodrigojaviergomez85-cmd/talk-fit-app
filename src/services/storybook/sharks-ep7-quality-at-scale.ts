@@ -52,7 +52,7 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
     {
       "id": "s1",
       "image": s1,
-      "imageAlt": "Scene 1 of Quality at scale.",
+      "imageAlt": "Mr. Reed questions Camila about training three offices at the same time.",
       "text": "Have you ever trained three offices at the same time?",
       "es": "¿Alguna vez han capacitado tres oficinas al mismo tiempo?",
       "speaker": "reed",
@@ -63,16 +63,30 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
       "lines": [
         {
           "speaker": "reed",
+          "text": "Before we expand this contract, I need evidence that your quality survives in three countries. My board reads these reports, and they are not patient people.",
+          "es": "Antes de ampliar este contrato, necesito evidencia de que su calidad sobrevive en tres países. Mi junta lee estos informes, y no son personas pacientes."
+        },
+        {
+          "speaker": "reed",
           "text": "Have you ever trained three offices at the same time?",
           "es": "¿Alguna vez han capacitado tres oficinas al mismo tiempo?"
+        },
+        {
+          "speaker": "camila",
+          "text": "We have, and we can show you the data from the last eight weeks.",
+          "es": "Sí lo hemos hecho, y podemos mostrarle los datos de las últimas ocho semanas."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "expand", "es": "ampliar" },
+        { "word": "evidence", "es": "evidencia" },
+        { "word": "data", "es": "datos" }
+      ]
     },
     {
       "id": "s2",
       "image": s2,
-      "imageAlt": "Scene 2 of Quality at scale.",
+      "imageAlt": "Vale and Lucia present the parallel groups data during the quality review.",
       "text": "Yes. We have run parallel groups since the Northline contract.",
       "es": "Sí. Hemos manejado grupos paralelos desde el contrato de Northline.",
       "speaker": "vale",
@@ -82,17 +96,31 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "lucia",
+          "text": "Vale, he wants proof, not opinions. Show him the numbers we reviewed on Monday. He has already heard promises from three other providers this month.",
+          "es": "Vale, él quiere pruebas, no opiniones. Muéstrale los números que revisamos el lunes. Ya escuchó promesas de otros tres proveedores este mes."
+        },
+        {
           "speaker": "vale",
           "text": "Yes. We have run parallel groups since the Northline contract.",
           "es": "Sí. Hemos manejado grupos paralelos desde el contrato de Northline."
+        },
+        {
+          "speaker": "lucia",
+          "text": "Three groups, three cities, the same lesson plan, and the results stayed within four points.",
+          "es": "Tres grupos, tres ciudades, el mismo plan de clase, y los resultados se mantuvieron en cuatro puntos."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "parallel", "es": "paralelo" },
+        { "word": "proof", "es": "prueba" },
+        { "word": "results", "es": "resultados" }
+      ]
     },
     {
       "id": "s3",
       "image": s3,
-      "imageAlt": "Scene 3 of Quality at scale.",
+      "imageAlt": "Camila shows the attendance and speaking-time report while Mr. Reed reads it on screen.",
       "text": "We have tracked attendance and speaking time for every group.",
       "es": "Hemos registrado asistencia y tiempo hablado para cada grupo.",
       "speaker": "camila",
@@ -105,14 +133,28 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
           "speaker": "camila",
           "text": "We have tracked attendance and speaking time for every group.",
           "es": "Hemos registrado asistencia y tiempo hablado para cada grupo."
+        },
+        {
+          "speaker": "reed",
+          "text": "Speaking time is unusual. Most providers only report attendance and a final exam score.",
+          "es": "El tiempo hablado es inusual. La mayoría de proveedores solo reporta asistencia y una nota final."
+        },
+        {
+          "speaker": "camila",
+          "text": "Attendance shows who came. Speaking time shows who practiced, and that predicts real progress, so we correct a class in week two instead of week ten.",
+          "es": "La asistencia muestra quién vino. El tiempo hablado muestra quién practicó, y eso predice el progreso real, así corregimos una clase en la semana dos y no en la diez."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "tracked", "es": "registrado" },
+        { "word": "attendance", "es": "asistencia" },
+        { "word": "progress", "es": "progreso" }
+      ]
     },
     {
       "id": "s4",
       "image": s4,
-      "imageAlt": "Scene 4 of Quality at scale.",
+      "imageAlt": "Lucia describes her two classroom observations in Guatemala to Vale.",
       "text": "I have already observed the Guatemala teachers twice.",
       "es": "Ya he observado dos veces a los maestros de Guatemala.",
       "speaker": "lucia",
@@ -122,17 +164,31 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "vale",
+          "text": "Lucía, explain what you saw, because you are the person who visited those classrooms.",
+          "es": "Lucía, explica qué viste, porque tú eres quien visitó esas aulas."
+        },
+        {
           "speaker": "lucia",
           "text": "I have already observed the Guatemala teachers twice.",
           "es": "Ya he observado dos veces a los maestros de Guatemala."
+        },
+        {
+          "speaker": "lucia",
+          "text": "Both times I sat at the back, measured speaking time, and met the teacher afterwards.",
+          "es": "Las dos veces me senté atrás, medí el tiempo hablado y me reuní con el maestro después."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "observed", "es": "observado" },
+        { "word": "classrooms", "es": "aulas" },
+        { "word": "measured", "es": "medido" }
+      ]
     },
     {
       "id": "s5",
       "image": s5,
-      "imageAlt": "Scene 5 of Quality at scale.",
+      "imageAlt": "Mr. Reed asks Camila whether the team follows through with struggling students.",
       "text": "But have they followed through when a student falls behind?",
       "es": "¿Pero han cumplido cuando un estudiante se queda atrás?",
       "speaker": "reed",
@@ -143,16 +199,30 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
       "lines": [
         {
           "speaker": "reed",
+          "text": "Observation is useful, although observing a problem and fixing it are completely different things. I have seen beautiful reports hide very ordinary classrooms.",
+          "es": "Observar es útil, aunque observar un problema y resolverlo son cosas completamente distintas. He visto informes hermosos esconder aulas muy corrientes."
+        },
+        {
+          "speaker": "reed",
           "text": "But have they followed through when a student falls behind?",
           "es": "¿Pero han cumplido cuando un estudiante se queda atrás?"
+        },
+        {
+          "speaker": "camila",
+          "text": "Yes, and I can prove it with one case from the second week in Guatemala.",
+          "es": "Sí, y puedo probarlo con un caso de la segunda semana en Guatemala."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "followed", "es": "cumplido" },
+        { "word": "behind", "es": "atrasado" },
+        { "word": "case", "es": "caso" }
+      ]
     },
     {
       "id": "s6",
       "image": s6,
-      "imageAlt": "Scene 6 of Quality at scale.",
+      "imageAlt": "Vale and Lucia explain the recovery sessions for the students who fell behind.",
       "text": "They have. Lucía called each student and scheduled a recovery session.",
       "es": "Sí. Lucía llamó a cada estudiante y programó una sesión de recuperación.",
       "speaker": "vale",
@@ -162,17 +232,31 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "lucia",
+          "text": "Four students missed two classes, and normally those four disappear before the month ends, because nobody calls them and everybody assumes somebody else did.",
+          "es": "Cuatro estudiantes faltaron a dos clases, y normalmente esos cuatro desaparecen antes de que acabe el mes, porque nadie los llama y todos suponen que otro ya lo hizo."
+        },
+        {
           "speaker": "vale",
           "text": "They have. Lucía called each student and scheduled a recovery session.",
           "es": "Sí. Lucía llamó a cada estudiante y programó una sesión de recuperación."
+        },
+        {
+          "speaker": "lucia",
+          "text": "Three returned that same week, and the fourth moved to the Saturday group instead of quitting.",
+          "es": "Tres regresaron esa misma semana, y el cuarto se pasó al grupo del sábado en lugar de abandonar."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "scheduled", "es": "programado" },
+        { "word": "recovery", "es": "recuperación" },
+        { "word": "quitting", "es": "abandonar" }
+      ]
     },
     {
       "id": "s7",
       "image": s7,
-      "imageAlt": "Scene 7 of Quality at scale.",
+      "imageAlt": "Camila defends the early-warning system while Mr. Reed pushes for proof at scale.",
       "text": "We are keeping up with growth because the system shows problems early.",
       "es": "Nos mantenemos al ritmo del crecimiento porque el sistema muestra problemas temprano.",
       "speaker": "camila",
@@ -182,17 +266,31 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "reed",
+          "text": "That is one student. My question is whether your system survives two hundred of them.",
+          "es": "Ese es un estudiante. Mi pregunta es si su sistema sobrevive a doscientos de ellos."
+        },
+        {
           "speaker": "camila",
           "text": "We are keeping up with growth because the system shows problems early.",
           "es": "Nos mantenemos al ritmo del crecimiento porque el sistema muestra problemas temprano."
+        },
+        {
+          "speaker": "reed",
+          "text": "Early is the right word. Late information is only an expensive explanation of a failure.",
+          "es": "Temprano es la palabra correcta. La información tardía solo es una explicación cara de un fracaso."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "growth", "es": "crecimiento" },
+        { "word": "system", "es": "sistema" },
+        { "word": "information", "es": "información" }
+      ]
     },
     {
       "id": "s8",
       "image": s8,
-      "imageAlt": "Scene 8 of Quality at scale.",
+      "imageAlt": "Lucia admits to Vale that one group still needs coaching support.",
       "text": "One class improved after coaching, but another still needs support.",
       "es": "Una clase mejoró después del acompañamiento, pero otra todavía necesita apoyo.",
       "speaker": "lucia",
@@ -202,17 +300,31 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "vale",
+          "text": "Lucía, tell him the part we do not like, because honest data includes the weak results.",
+          "es": "Lucía, dile la parte que no nos gusta, porque los datos honestos incluyen los resultados débiles."
+        },
+        {
           "speaker": "lucia",
           "text": "One class improved after coaching, but another still needs support.",
           "es": "Una clase mejoró después del acompañamiento, pero otra todavía necesita apoyo."
+        },
+        {
+          "speaker": "vale",
+          "text": "That group has a new teacher, so we added weekly coaching until the numbers improve. We will report that group to you every Friday.",
+          "es": "Ese grupo tiene un maestro nuevo, así que agregamos acompañamiento semanal hasta que mejoren los números. Le reportaremos ese grupo cada viernes."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "coaching", "es": "acompañamiento" },
+        { "word": "support", "es": "apoyo" },
+        { "word": "weak", "es": "débil" }
+      ]
     },
     {
       "id": "s9",
       "image": s9,
-      "imageAlt": "Scene 9 of Quality at scale.",
+      "imageAlt": "Mr. Reed demands a higher standard while Camila takes note of it.",
       "text": "Then raise the bar. Good is not enough at international scale.",
       "es": "Entonces eleven el estándar. Bueno no es suficiente a escala internacional.",
       "speaker": "reed",
@@ -222,17 +334,31 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "camila",
+          "text": "So our promise is simple: we show the problem early, and we fix it in writing.",
+          "es": "Así que nuestra promesa es simple: mostramos el problema temprano y lo corregimos por escrito."
+        },
+        {
           "speaker": "reed",
           "text": "Then raise the bar. Good is not enough at international scale.",
           "es": "Entonces eleven el estándar. Bueno no es suficiente a escala internacional."
+        },
+        {
+          "speaker": "camila",
+          "text": "Tell me the standard you expect, and we will publish it for every country.",
+          "es": "Dígame el estándar que espera, y lo publicaremos para cada país."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "scale", "es": "escala" },
+        { "word": "standard", "es": "estándar" },
+        { "word": "publish", "es": "publicar" }
+      ]
     },
     {
       "id": "s10",
       "image": s10,
-      "imageAlt": "Scene 10 of Quality at scale.",
+      "imageAlt": "Vale and Lucia define the single quality standard for every country.",
       "text": "Agreed. We will publish one quality standard for every country.",
       "es": "De acuerdo. Publicaremos un estándar de calidad para cada país.",
       "speaker": "vale",
@@ -245,14 +371,28 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
           "speaker": "vale",
           "text": "Agreed. We will publish one quality standard for every country.",
           "es": "De acuerdo. Publicaremos un estándar de calidad para cada país."
+        },
+        {
+          "speaker": "lucia",
+          "text": "One standard means the same speaking minutes, the same reports, the same monthly observation, and the same response time when a teacher asks for help.",
+          "es": "Un estándar significa los mismos minutos de habla, los mismos informes, la misma observación mensual y el mismo tiempo de respuesta cuando un maestro pide ayuda."
+        },
+        {
+          "speaker": "vale",
+          "text": "Exactly, and if an office cannot reach it, we support that office before we blame it.",
+          "es": "Exacto, y si una oficina no lo alcanza, apoyamos a esa oficina antes de culparla."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "quality", "es": "calidad" },
+        { "word": "monthly", "es": "mensual" },
+        { "word": "blame", "es": "culpar" }
+      ]
     },
     {
       "id": "s11",
       "image": s11,
-      "imageAlt": "Scene 11 of Quality at scale.",
+      "imageAlt": "Lucia interrupts with the connection failure in the second office while Mr. Reed watches.",
       "text": "Vale, the second office just reported that half the class cannot connect.",
       "es": "Vale, la segunda oficina acaba de informar que la mitad de la clase no puede conectarse.",
       "speaker": "lucia",
@@ -262,12 +402,26 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "reed",
+          "text": "Send me that document tomorrow. If it is serious, I will show it to my board.",
+          "es": "Envíeme ese documento mañana. Si es serio, se lo mostraré a mi junta."
+        },
+        {
           "speaker": "lucia",
           "text": "Vale, the second office just reported that half the class cannot connect.",
           "es": "Vale, la segunda oficina acaba de informar que la mitad de la clase no puede conectarse."
+        },
+        {
+          "speaker": "reed",
+          "text": "Then your new standard begins today, and I am watching how quickly you respond.",
+          "es": "Entonces su nuevo estándar empieza hoy, y estoy observando qué tan rápido responden."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "reported", "es": "informado" },
+        { "word": "connect", "es": "conectarse" },
+        { "word": "respond", "es": "responder" }
+      ]
     }
   ],
   "quizzes": [
