@@ -1,0 +1,67 @@
+# Sharks 16–20: primero el guion, después la producción
+
+## Punto de partida confirmado
+
+Los episodios 16–20 actuales solo tienen 11 frases principales, vocabulario contextual vacío y una ampliación automática genérica. Se reemplazarán por conversaciones escritas manualmente; no se reutilizará ese relleno.
+
+## Regla de aprobación
+
+El trabajo tendrá dos etapas separadas:
+
+1. **Guion:** escribir y presentarte los cinco guiones completos, en inglés y español, para que revises historia, lógica, nivel B2, personajes y diálogos.
+2. **Producción:** solo después de tu aprobación, incorporarlos a la app, preparar preguntas, grabaciones, vocabulario tocable, voces e imágenes.
+
+No se generará ni reemplazará ninguna imagen durante la etapa de guion.
+
+## Arco lógico propuesto
+
+### Episodio 16 — A Team in Three Countries
+Después de recuperar la confianza de Northline, Vale no abre tres países de golpe. El equipo recibe grupos adicionales de El Salvador, México y Guatemala y debe coordinarlos desde la academia. Un supervisor guatemalteco renuncia en plena transición; Vale evita culparlo, redistribuye responsabilidades y Dani demuestra que puede dirigir operaciones.
+
+**Meta B2:** coordinación remota, delegación, carga laboral, explicar un problema operativo y proponer un sistema.
+
+### Episodio 17 — The Investor
+El buen manejo de la crisis llama la atención de Mr. Reed, quien ofrece invertir en la academia, no comprarla. Vale, Dani y Camila analizan valoración, participación, control y riesgos. Vale no acepta en el momento: presenta una contraoferta que protege las decisiones educativas. Renata pide participar en una conversación separada porque su interés es expandir Vale Kids en México.
+
+**Meta B2:** condiciones, inversión, causa y consecuencia, desacuerdo profesional y contraoferta.
+
+### Episodio 18 — Say No with Respect
+Renata propone abrir cincuenta grupos de Vale Kids demasiado rápido. Vale explica que aceptar pondría en riesgo a niños, maestros y reputación. En vez de romper la relación, ofrece un lanzamiento gradual: veinte grupos primero, revisión de resultados y luego expansión. Renata acepta, pero exige una fecha medible.
+
+**Meta B2:** límites profesionales, rechazo diplomático, alternativas, concesiones y condiciones.
+
+### Episodio 19 — The Regional Deal
+El piloto funciona y se negocia un acuerdo regional realista: no cuatro aperturas simultáneas, sino un calendario por etapas. Guatemala será el primer nuevo mercado; cada país tendrá anexos legales, responsables y metas. Una filtración a la prensa amenaza con anunciar algo que todavía no está firmado.
+
+**Meta B2:** planificación futura, hitos, lenguaje contractual, riesgos y respuesta ante información incompleta.
+
+### Episodio 20 — Beyond One Border
+Vale responde a la filtración con honestidad: confirma la visión, pero no inventa acuerdos cerrados. El equipo firma únicamente la primera fase regional. Dani acepta liderar operaciones y revela que trabajar con maestros y familias despertó en él interés por el servicio público, sembrando su futura ruta política sin sacarlo todavía de la empresa. Mr. Reed invita a Vale a presentar su modelo ante un programa internacional, abriendo Advanced 1.
+
+**Meta B2:** síntesis, reflexión, discurso de 45 segundos, logros, responsabilidad y visión futura.
+
+## Cómo se escribirán los cinco guiones
+
+Cada episodio tendrá:
+
+- 11 escenas conectadas y **33 líneas manuales** de diálogo natural, aproximadamente 500–650 palabras habladas.
+- Casi nada de narración: tono de serie de vida real, con interrupciones, dudas, humor ligero, tensión y reacciones auténticas.
+- Vale como maestra y empresaria ya fluida; Dani siempre hombre y todavía empleado de Vale; Camila, Renata, Lucía y Reed según su identidad y rol canónicos.
+- Al menos 16 unidades B1–B2 nuevas y 10–20 recicladas, usadas con sentido dentro de la conversación.
+- Exactamente dos phrasal verbs y un idiom/collocation principal por episodio, tratados como expresiones completas.
+- Una decisión o consecuencia clara que conecte con el episodio siguiente.
+- Cuatro intervenciones del estudiante, incluyendo dos respuestas abiertas; preguntas coherentes con lo dicho y ejemplos que respondan exactamente a cada pregunta.
+- Finales de 30 segundos en 16–19 y checkpoint de 45 segundos en el episodio 20.
+- Traducción natural al español línea por línea, sin traducciones literales extrañas.
+
+## Entrega para revisión
+
+Te presentaré primero un documento legible con los episodios 16–20 completos, separados por escena, indicando hablante, diálogo en inglés y traducción. Al final de cada episodio incluiré:
+
+- objetivo curricular;
+- vocabulario nuevo y reciclado;
+- dos phrasal verbs y un idiom/collocation;
+- preguntas y turnos hablados;
+- cliffhanger o enlace al siguiente episodio.
+
+La producción dentro de la app quedará detenida hasta que apruebes o corrijas esos guiones.
