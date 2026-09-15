@@ -120,7 +120,7 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
     {
       "id": "s3",
       "image": s3,
-      "imageAlt": "Dani tells Vale about the leadership program he is building at the academy.",
+      "imageAlt": "Dani and Vale sit on the park bench while he tells her about the leadership program for the academy.",
       "text": "I have been working on a leadership program for the academy.",
       "es": "He estado trabajando en un programa de liderazgo para la academia.",
       "speaker": "dani",
