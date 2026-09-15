@@ -1579,7 +1579,9 @@ function FinaleSlide({
           ))}
         </ul>
         <p className="text-[12px] font-bold uppercase tracking-[0.1em] opacity-80">
-          {es ? "Máximo 15 segundos · unas 5 oraciones" : "Max 15 seconds · about 5 sentences"}
+          {es
+            ? `Máximo ${episode.finaleSeconds ?? 15} segundos`
+            : `Max ${episode.finaleSeconds ?? 15} seconds`}
         </p>
         <VoiceRecorder
           onStart={() => AudioService.stop()}
