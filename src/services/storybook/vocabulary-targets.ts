@@ -41,8 +41,8 @@ export const EPISODE_VOCAB_BUDGET: Record<string, string[]> = {
     "point out", "step up", "give him a fair shot", "support", "truth",
   ],
   "sharks-ep14-losing-a-client": [
-    "cancelling", "notice", "disappointed", "competitor", "feedback", "pilot",
-    "complaint", "cancellation", "satisfaction", "survey", "pull out", "follow up",
+    "cancellation", "notice", "disappointed", "competitor", "feedback", "pilot",
+    "complaint", "reverse", "satisfaction", "survey", "pull out", "follow up",
     "a wake-up call", "unhappy", "listening", "revenue",
   ],
   "sharks-ep15-winning-it-back": [

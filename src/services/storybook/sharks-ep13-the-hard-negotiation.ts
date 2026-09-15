@@ -131,8 +131,8 @@ export const SHARKS_EP13_THE_HARD_NEGOTIATION: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "Explain that.",
-          "es": "Explica eso."
+          "text": "Explain that, please, because right now I only hear two people arguing about the same man from opposite corners.",
+          "es": "Explica eso, por favor, porque ahora mismo solo escucho a dos personas discutiendo sobre el mismo hombre desde esquinas opuestas."
         },
         {
           "speaker": "camila",
@@ -193,8 +193,8 @@ export const SHARKS_EP13_THE_HARD_NEGOTIATION: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "Not ready yet. Those three words matter more than all the others.",
-          "es": "Todavía no está listo. Esas tres palabras importan más que todas las demás."
+          "text": "Not ready yet. Those three words matter more than all the others. He can hear 'not ready yet' without hearing 'never'.",
+          "es": "Todavía no está listo. Esas tres palabras importan más que todas las demás. Él puede escuchar 'todavía no' sin escuchar 'nunca'."
         },
         {
           "speaker": "vale",
