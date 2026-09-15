@@ -61,7 +61,7 @@ export const TIGERS_EP7_YOUR_EXPERIENCE: StorybookEpisode = {
     {
       id: "s2",
       image: s2,
-      imageAlt: "Bryan presenta a un hombre de camisa blanca: el dueño de una empresa de logística.",
+      imageAlt: "Bryan presenta al señor Herrera, un hombre mayor con barba gris y traje gris oscuro, dueño de una empresa de logística.",
       text: "This is Mr. Herrera. He owns a logistics company and he needs English training.",
       es: "«Este es el señor Herrera. Es dueño de una empresa de logística y necesita entrenamiento en inglés».",
       speaker: "bryan",
