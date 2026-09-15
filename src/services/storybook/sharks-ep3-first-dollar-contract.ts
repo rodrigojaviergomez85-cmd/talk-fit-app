@@ -52,220 +52,343 @@ export const SHARKS_EP3_FIRST_DOLLAR_CONTRACT: StorybookEpisode = {
     {
       "id": "s1",
       "image": s1,
-      "imageAlt": "Scene 1 of The first dollar contract.",
+      "imageAlt": "Vale and Dani read the Northline contract together early in the morning at the academy office.",
       "text": "The payment clause says ninety days. We should look over every line before we sign.",
       "es": "La cláusula de pago dice noventa días. Deberíamos revisar cada línea antes de firmar.",
       "speaker": "vale",
-      "cast": [
-        "vale",
-        "dani"
-      ],
+      "cast": ["vale", "dani"],
       "lines": [
+        {
+          "speaker": "dani",
+          "text": "The contract from Houston arrived last night, Vale. Did you read the payment section before this meeting?",
+          "es": "El contrato de Houston llegó anoche, Vale. ¿Leíste la sección de pago antes de esta reunión?"
+        },
         {
           "speaker": "vale",
           "text": "The payment clause says ninety days. We should look over every line before we sign.",
           "es": "La cláusula de pago dice noventa días. Deberíamos revisar cada línea antes de firmar."
+        },
+        {
+          "speaker": "dani",
+          "text": "Ninety days? That means we pay our teachers three times before Northline sends us a single dollar.",
+          "es": "¿Noventa días? Eso significa que pagamos a nuestros maestros tres veces antes de que Northline nos envíe un solo dólar."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "clause", "es": "cláusula" },
+        { "word": "payment", "es": "pago" },
+        { "word": "sign", "es": "firmar" }
+      ]
     },
     {
       "id": "s2",
       "image": s2,
-      "imageAlt": "Scene 2 of The first dollar contract.",
+      "imageAlt": "Dani and Camila review the school budget on a laptop while discussing the ninety-day payment term.",
       "text": "You should push back. A small school cannot finance a global company for three months.",
       "es": "Deberías oponerte. Una escuela pequeña no puede financiar una empresa global por tres meses.",
       "speaker": "dani",
-      "cast": [
-        "dani",
-        "camila"
-      ],
+      "cast": ["dani", "camila"],
       "lines": [
         {
           "speaker": "dani",
           "text": "You should push back. A small school cannot finance a global company for three months.",
           "es": "Deberías oponerte. Una escuela pequeña no puede financiar una empresa global por tres meses."
+        },
+        {
+          "speaker": "camila",
+          "text": "He is right. Our savings cover six weeks of salaries, not twelve weeks of waiting for money.",
+          "es": "Él tiene razón. Nuestros ahorros cubren seis semanas de salarios, no doce semanas esperando el dinero."
+        },
+        {
+          "speaker": "dani",
+          "text": "So ask them for thirty days, and explain clearly why that number protects both companies, not only ours.",
+          "es": "Entonces pídeles treinta días y explica con claridad por qué ese número protege a ambas empresas, no solo a la nuestra."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "finance", "es": "financiar" },
+        { "word": "savings", "es": "ahorros" },
+        { "word": "salaries", "es": "salarios" }
+      ]
     },
     {
       "id": "s3",
       "image": s3,
-      "imageAlt": "Scene 3 of The first dollar contract.",
+      "imageAlt": "Camila points at the contract while Mr. Reed appears on the video call screen to open the negotiation.",
       "text": "Read the fine print. They can delay payment if one report is late.",
       "es": "Lee la letra pequeña. Pueden retrasar el pago si un informe llega tarde.",
       "speaker": "camila",
-      "cast": [
-        "camila",
-        "reed"
-      ],
+      "cast": ["camila", "reed", "vale"],
       "lines": [
         {
           "speaker": "camila",
           "text": "Read the fine print. They can delay payment if one report is late.",
           "es": "Lee la letra pequeña. Pueden retrasar el pago si un informe llega tarde."
+        },
+        {
+          "speaker": "reed",
+          "text": "Good morning. I am Mr. Reed, Northline's director. I understand you have questions about the contract.",
+          "es": "Buenos días. Soy el señor Reed, director de Northline. Entiendo que tienen preguntas sobre el contrato."
+        },
+        {
+          "speaker": "vale",
+          "text": "Good morning, Mr. Reed. Yes, we have two questions: the payment term and the report deadline.",
+          "es": "Buenos días, señor Reed. Sí, tenemos dos preguntas: el plazo de pago y la fecha límite del informe."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "delay", "es": "retrasar" },
+        { "word": "director", "es": "director" },
+        { "word": "deadline", "es": "fecha límite" }
+      ]
     },
     {
       "id": "s4",
       "image": s4,
-      "imageAlt": "Scene 4 of The first dollar contract.",
+      "imageAlt": "Mr. Reed answers firmly from Houston on the video call while Vale listens and takes notes.",
       "text": "Houston uses one contract worldwide. You will have to adapt.",
       "es": "Houston usa un contrato en todo el mundo. Tendrán que adaptarse.",
       "speaker": "reed",
-      "cast": [
-        "reed",
-        "vale"
-      ],
+      "cast": ["reed", "vale"],
       "lines": [
+        {
+          "speaker": "vale",
+          "text": "Ninety days is a long time for a school that pays its teachers every two weeks, Mr. Reed.",
+          "es": "Noventa días es mucho tiempo para una escuela que paga a sus maestros cada dos semanas, señor Reed."
+        },
         {
           "speaker": "reed",
           "text": "Houston uses one contract worldwide. You will have to adapt.",
           "es": "Houston usa un contrato en todo el mundo. Tendrán que adaptarse."
+        },
+        {
+          "speaker": "vale",
+          "text": "I understand the policy, but that standard should still work for the partner your company chose.",
+          "es": "Entiendo la política, pero ese estándar también debería funcionar para el socio que su empresa eligió."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "worldwide", "es": "en todo el mundo" },
+        { "word": "adapt", "es": "adaptarse" },
+        { "word": "policy", "es": "política" }
+      ]
     },
     {
       "id": "s5",
       "image": s5,
-      "imageAlt": "Scene 5 of The first dollar contract.",
+      "imageAlt": "Vale makes a concrete counter-offer on the call while Dani watches the numbers on the screen.",
       "text": "We can adapt, but you should change this clause to thirty days.",
       "es": "Podemos adaptarnos, pero debería cambiar esta cláusula a treinta días.",
       "speaker": "vale",
-      "cast": [
-        "vale",
-        "dani"
-      ],
+      "cast": ["vale", "reed", "dani"],
       "lines": [
+        {
+          "speaker": "reed",
+          "text": "What exactly are you proposing? Be specific, please. I do not negotiate with vague ideas.",
+          "es": "¿Qué está proponiendo exactamente? Sea específica, por favor. No negocio con ideas vagas."
+        },
         {
           "speaker": "vale",
           "text": "We can adapt, but you should change this clause to thirty days.",
           "es": "Podemos adaptarnos, pero debería cambiar esta cláusula a treinta días."
+        },
+        {
+          "speaker": "reed",
+          "text": "Thirty days is aggressive. I can take sixty days to my finance team, and I promise nothing.",
+          "es": "Treinta días es agresivo. Puedo llevar sesenta días a mi equipo de finanzas, y no prometo nada."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "proposing", "es": "proponiendo" },
+        { "word": "specific", "es": "específico" },
+        { "word": "negotiate", "es": "negociar" }
+      ]
     },
     {
       "id": "s6",
       "image": s6,
-      "imageAlt": "Scene 6 of The first dollar contract.",
+      "imageAlt": "Dani and Camila talk quietly with the call on mute while they decide their limit.",
       "text": "If they refuse, we should not risk the teachers salaries.",
       "es": "Si se niegan, no deberíamos arriesgar los salarios de los maestros.",
       "speaker": "dani",
-      "cast": [
-        "dani",
-        "camila"
-      ],
+      "cast": ["dani", "camila"],
       "lines": [
+        {
+          "speaker": "camila",
+          "text": "He put the call on mute. Sixty days is better than ninety, but it still hurts our cash.",
+          "es": "Puso la llamada en silencio. Sesenta días es mejor que noventa, pero aun así golpea nuestro efectivo."
+        },
         {
           "speaker": "dani",
           "text": "If they refuse, we should not risk the teachers salaries.",
           "es": "Si se niegan, no deberíamos arriesgar los salarios de los maestros."
+        },
+        {
+          "speaker": "camila",
+          "text": "Then decide your limit now, Vale. Know the lowest offer you can accept before you speak again.",
+          "es": "Entonces decide tu límite ahora, Vale. Conoce la oferta más baja que puedes aceptar antes de volver a hablar."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "refuse", "es": "negarse" },
+        { "word": "risk", "es": "arriesgar" },
+        { "word": "limit", "es": "límite" }
+      ]
     },
     {
       "id": "s7",
       "image": s7,
-      "imageAlt": "Scene 7 of The first dollar contract.",
+      "imageAlt": "Camila advises Vale in the office while Vale prepares to return to the negotiation.",
       "text": "You must protect cash flow, but you should keep the conversation open.",
       "es": "Debes proteger el flujo de caja, pero deberías mantener abierta la conversación.",
       "speaker": "camila",
-      "cast": [
-        "camila",
-        "reed"
-      ],
+      "cast": ["camila", "vale"],
       "lines": [
+        {
+          "speaker": "vale",
+          "text": "If I demand thirty days and he walks away, we lose the biggest contract of the year.",
+          "es": "Si exijo treinta días y él se va, perdemos el contrato más grande del año."
+        },
         {
           "speaker": "camila",
           "text": "You must protect cash flow, but you should keep the conversation open.",
           "es": "Debes proteger el flujo de caja, pero deberías mantener abierta la conversación."
+        },
+        {
+          "speaker": "vale",
+          "text": "So I say no to the clause, not to the client. That difference changes everything, thank you.",
+          "es": "Entonces le digo que no a la cláusula, no al cliente. Esa diferencia lo cambia todo, gracias."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "demand", "es": "exigir" },
+        { "word": "protect", "es": "proteger" },
+        { "word": "client", "es": "cliente" }
+      ]
     },
     {
       "id": "s8",
       "image": s8,
-      "imageAlt": "Scene 8 of The first dollar contract.",
+      "imageAlt": "Vale speaks calmly and directly to the camera during the hardest moment of the negotiation.",
       "text": "Mr. Reed, I am not rejecting the deal. I am asking for a workable deal.",
       "es": "Señor Reed, no estoy rechazando el trato. Estoy pidiendo un trato viable.",
       "speaker": "vale",
-      "cast": [
-        "vale"
-      ],
+      "cast": ["vale", "reed"],
       "lines": [
         {
           "speaker": "vale",
           "text": "Mr. Reed, I am not rejecting the deal. I am asking for a workable deal.",
           "es": "Señor Reed, no estoy rechazando el trato. Estoy pidiendo un trato viable."
+        },
+        {
+          "speaker": "reed",
+          "text": "Explain it in numbers. Why should Northline change a clause it already uses in twelve countries?",
+          "es": "Explíquelo con números. ¿Por qué debería Northline cambiar una cláusula que ya usa en doce países?"
+        },
+        {
+          "speaker": "vale",
+          "text": "Because a partner who cannot pay teachers cannot deliver classes. Faster payment protects your quality too.",
+          "es": "Porque un socio que no puede pagar a sus maestros no puede dar clases. Un pago más rápido también protege su calidad."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "rejecting", "es": "rechazando" },
+        { "word": "workable", "es": "viable" },
+        { "word": "deliver", "es": "entregar / cumplir" }
+      ]
     },
     {
       "id": "s9",
       "image": s9,
-      "imageAlt": "Scene 9 of The first dollar contract.",
+      "imageAlt": "Mr. Reed leans forward with a small nod of respect while Dani listens beside Vale.",
       "text": "You push back without making it personal. I respect that.",
       "es": "Usted se opone sin hacerlo personal. Respeto eso.",
       "speaker": "reed",
-      "cast": [
-        "reed",
-        "dani"
-      ],
+      "cast": ["reed", "vale", "dani"],
       "lines": [
         {
           "speaker": "reed",
           "text": "You push back without making it personal. I respect that.",
           "es": "Usted se opone sin hacerlo personal. Respeto eso."
+        },
+        {
+          "speaker": "vale",
+          "text": "Thank you. I want a long relationship with Northline, not one contract and a broken team.",
+          "es": "Gracias. Quiero una relación larga con Northline, no un contrato y un equipo roto."
+        },
+        {
+          "speaker": "reed",
+          "text": "Then bring me one number and one condition. If both are reasonable, I will sign this deal today.",
+          "es": "Entonces tráigame un número y una condición. Si ambos son razonables, firmaré este trato hoy."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "respect", "es": "respetar" },
+        { "word": "relationship", "es": "relación" },
+        { "word": "condition", "es": "condición" }
+      ]
     },
     {
       "id": "s10",
       "image": s10,
-      "imageAlt": "Scene 10 of The first dollar contract.",
+      "imageAlt": "Vale and Camila write their two final conditions on the whiteboard before answering Mr. Reed.",
       "text": "Then let us use thirty days and automatic approval for reports.",
       "es": "Entonces usemos treinta días y aprobación automática para los informes.",
       "speaker": "vale",
-      "cast": [
-        "vale",
-        "camila"
-      ],
+      "cast": ["vale", "camila"],
       "lines": [
         {
           "speaker": "vale",
           "text": "Then let us use thirty days and automatic approval for reports.",
           "es": "Entonces usemos treinta días y aprobación automática para los informes."
+        },
+        {
+          "speaker": "camila",
+          "text": "And if a report arrives late, Northline still pays, and we correct the report within forty-eight hours.",
+          "es": "Y si un informe llega tarde, Northline paga igual, y nosotros corregimos el informe en cuarenta y ocho horas."
+        },
+        {
+          "speaker": "vale",
+          "text": "That is fair for both sides. Mr. Reed, those are our two conditions, clearly written here.",
+          "es": "Eso es justo para ambas partes. Señor Reed, esas son nuestras dos condiciones, escritas claramente aquí."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "automatic", "es": "automático" },
+        { "word": "approval", "es": "aprobación" },
+        { "word": "fair", "es": "justo" }
+      ]
     },
     {
       "id": "s11",
       "image": s11,
-      "imageAlt": "Scene 11 of The first dollar contract.",
+      "imageAlt": "Mr. Reed accepts the terms on screen and announces the new launch date to Vale.",
       "text": "Agreed. Now tell your team: the launch date just moved forward.",
       "es": "De acuerdo. Ahora dígale a su equipo: la fecha de lanzamiento se adelantó.",
       "speaker": "reed",
-      "cast": [
-        "reed"
-      ],
+      "cast": ["reed", "vale"],
       "lines": [
+        {
+          "speaker": "reed",
+          "text": "My finance team accepts thirty days. You defended your school well, and your numbers support the request.",
+          "es": "Mi equipo de finanzas acepta treinta días. Defendió bien su escuela, y sus números respaldan la petición."
+        },
+        {
+          "speaker": "vale",
+          "text": "Thank you. We will send the signed contract this afternoon and start planning the first classes.",
+          "es": "Gracias. Enviaremos el contrato firmado esta tarde y empezaremos a planificar las primeras clases."
+        },
         {
           "speaker": "reed",
           "text": "Agreed. Now tell your team: the launch date just moved forward.",
           "es": "De acuerdo. Ahora dígale a su equipo: la fecha de lanzamiento se adelantó."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "accepts", "es": "acepta" },
+        { "word": "signed", "es": "firmado" },
+        { "word": "launch", "es": "lanzamiento" }
+      ]
     }
   ],
   "quizzes": [
