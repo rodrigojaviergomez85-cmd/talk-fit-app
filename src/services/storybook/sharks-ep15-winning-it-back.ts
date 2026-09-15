@@ -69,13 +69,13 @@ export const SHARKS_EP15_WINNING_IT_BACK: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "Ready. Today we do not defend the past. We show them the next thirty days.",
-          "es": "Lista. Hoy no defendemos el pasado. Les mostramos los próximos treinta días."
+          "text": "Ready. Today we do not defend the past. We show them the next thirty days, step by step.",
+          "es": "Lista. Hoy no defendemos el pasado. Les mostramos los próximos treinta días, paso a paso."
         },
         {
           "speaker": "camila",
-          "text": "The dashboard is on my laptop: attendance, scores and progress reports, all transparent.",
-          "es": "El panel está en mi laptop: asistencia, notas e informes de progreso, todo transparente."
+          "text": "The dashboard is on my laptop: attendance, scores and progress reports, all transparent for Mr. Reed to see.",
+          "es": "El panel está en mi laptop: asistencia, notas e informes de progreso, todo transparente para que el señor Reed lo vea."
         }
       ],
       "words": [
@@ -100,13 +100,13 @@ export const SHARKS_EP15_WINNING_IT_BACK: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "A client who is leaving deserves more than an email, Mr. Reed.",
-          "es": "Un cliente que se va merece más que un correo, señor Reed."
+          "text": "A client who is leaving after eight months deserves more than a cold email, Mr. Reed.",
+          "es": "Un cliente que se va después de ocho meses merece más que un correo frío, señor Reed."
         },
         {
           "speaker": "reed",
-          "text": "You have one hour, Vale. Show me why my team should stay with your academy.",
-          "es": "Tiene una hora, Vale. Muéstreme por qué mi equipo debería quedarse con su academia."
+          "text": "You have one hour, Vale. Show me why my whole team should stay with your academy and not the cheaper one.",
+          "es": "Tiene una hora, Vale. Muéstreme por qué todo mi equipo debería quedarse con su academia y no con la más barata."
         }
       ],
       "words": [
@@ -131,8 +131,8 @@ export const SHARKS_EP15_WINNING_IT_BACK: StorybookEpisode = {
         },
         {
           "speaker": "reed",
-          "text": "Measured how, exactly? I need something measurable, not another promise.",
-          "es": "¿Medido cómo, exactamente? Necesito algo medible, no otra promesa."
+          "text": "Measured how, exactly? I need something measurable, not another beautiful promise on paper.",
+          "es": "¿Medido cómo, exactamente? Necesito algo medible, no otra promesa bonita en papel."
         },
         {
           "speaker": "camila",
@@ -157,8 +157,8 @@ export const SHARKS_EP15_WINNING_IT_BACK: StorybookEpisode = {
       "lines": [
         {
           "speaker": "reed",
-          "text": "Your competitor guarantees results in ninety days. Can you guarantee the same?",
-          "es": "Su competidor garantiza resultados en noventa días. ¿Puede usted garantizar lo mismo?"
+          "text": "Your competitor guarantees fluency results in ninety days, in writing. Can you guarantee me the same?",
+          "es": "Su competidor garantiza resultados de fluidez en noventa días, por escrito. ¿Puede usted garantizarme lo mismo?"
         },
         {
           "speaker": "vale",
@@ -193,8 +193,8 @@ export const SHARKS_EP15_WINNING_IT_BACK: StorybookEpisode = {
         },
         {
           "speaker": "reed",
-          "text": "Teach them? Here? Vale, these are busy adults, not children.",
-          "es": "¿Enseñarles? ¿Aquí? Vale, estos son adultos ocupados, no niños."
+          "text": "Teach them? Here, right now? Vale, these are busy working adults, not children.",
+          "es": "¿Enseñarles? ¿Aquí, ahora mismo? Vale, estos son adultos ocupados que trabajan, no niños."
         },
         {
           "speaker": "vale",
@@ -224,13 +224,13 @@ export const SHARKS_EP15_WINNING_IT_BACK: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "I saw something better: the quiet lady in the back answered three questions.",
-          "es": "Vi algo mejor: la señora callada del fondo respondió tres preguntas."
+          "text": "I saw something better: the quiet lady in the back answered three full questions in English.",
+          "es": "Vi algo mejor: la señora callada del fondo respondió tres preguntas completas en inglés."
         },
         {
           "speaker": "camila",
-          "text": "Her name is on the survey as most unhappy. Today she asked how to continue.",
-          "es": "Su nombre aparece en la encuesta como la más insatisfecha. Hoy preguntó cómo continuar."
+          "text": "Her name is on the survey as the most unhappy. Today she asked me how to continue.",
+          "es": "Su nombre aparece en la encuesta como la más insatisfecha. Hoy me preguntó cómo continuar."
         }
       ],
       "words": [
@@ -255,8 +255,8 @@ export const SHARKS_EP15_WINNING_IT_BACK: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "Then let us make up for the bad months: pilot month free, then you decide with data.",
-          "es": "Entonces déjenos compensar los meses malos: mes piloto gratis, y luego usted decide con datos."
+          "text": "Then let us make up for the bad months: one pilot month free, then you decide with real data.",
+          "es": "Entonces déjenos compensar los meses malos: un mes piloto gratis, y luego usted decide con datos reales."
         },
         {
           "speaker": "reed",
@@ -286,8 +286,8 @@ export const SHARKS_EP15_WINNING_IT_BACK: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "You will have it tonight: teachers, dates, goals and the dashboard access included.",
-          "es": "Lo tendrá esta noche: maestros, fechas, metas y el acceso al panel incluido."
+          "text": "You will have it tonight, in writing: teachers, dates, goals and the dashboard access included.",
+          "es": "Lo tendrá esta noche, por escrito: maestros, fechas, metas y el acceso al panel incluido."
         },
         {
           "speaker": "reed",
@@ -312,8 +312,8 @@ export const SHARKS_EP15_WINNING_IT_BACK: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
-          "text": "We kept the client! I want to shout, but the receptionist is looking at me.",
-          "es": "¡Conservamos al cliente! Quiero gritar, pero la recepcionista me está viendo."
+          "text": "We kept the client! I want to shout it out loud, but the receptionist is looking right at me.",
+          "es": "¡Conservamos al cliente! Quiero gritarlo en voz alta, pero la recepcionista me está viendo."
         },
         {
           "speaker": "camila",
@@ -353,8 +353,8 @@ export const SHARKS_EP15_WINNING_IT_BACK: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "Poetry later. Tonight we write the plan, because Mr. Reed reads everything.",
-          "es": "Poesía después. Esta noche escribimos el plan, porque el señor Reed lee todo."
+          "text": "Poetry later. Tonight we write the whole plan, because Mr. Reed reads absolutely everything.",
+          "es": "Poesía después. Esta noche escribimos el plan completo, porque el señor Reed lee absolutamente todo."
         }
       ],
       "words": [
@@ -374,8 +374,8 @@ export const SHARKS_EP15_WINNING_IT_BACK: StorybookEpisode = {
       "lines": [
         {
           "speaker": "vale",
-          "text": "One client saved, one teacher in training, one partner in Mexico. What is next?",
-          "es": "Un cliente salvado, un maestro en capacitación, una socia en México. ¿Qué sigue?"
+          "text": "One client saved, one teacher in training, one new partner in Mexico. What is next for us?",
+          "es": "Un cliente salvado, un maestro en capacitación, una nueva socia en México. ¿Qué sigue para nosotros?"
         },
         {
           "speaker": "camila",
