@@ -148,6 +148,16 @@ import { SHARKS_EP7_QUALITY_AT_SCALE } from "./sharks-ep7-quality-at-scale";
 import { SHARKS_EP8_VALE_KIDS } from "./sharks-ep8-vale-kids";
 import { SHARKS_EP9_MEXICO_CALL } from "./sharks-ep9-mexico-call";
 import { SHARKS_EP10_PARTNER_OR_RIVAL } from "./sharks-ep10-partner-or-rival";
+import { SHARKS_EP11_WHAT_WENT_WRONG } from "./sharks-ep11-what-went-wrong";
+import { SHARKS_EP12_SAY_IT_IN_NUMBERS } from "./sharks-ep12-say-it-in-numbers";
+import { SHARKS_EP13_THE_HARD_NEGOTIATION } from "./sharks-ep13-the-hard-negotiation";
+import { SHARKS_EP14_LOSING_A_CLIENT } from "./sharks-ep14-losing-a-client";
+import { SHARKS_EP15_WINNING_IT_BACK } from "./sharks-ep15-winning-it-back";
+import { SHARKS_EP16_A_TEAM_IN_THREE_COUNTRIES } from "./sharks-ep16-a-team-in-three-countries";
+import { SHARKS_EP17_THE_INVESTOR } from "./sharks-ep17-the-investor";
+import { SHARKS_EP18_SAY_NO_WITH_RESPECT } from "./sharks-ep18-say-no-with-respect";
+import { SHARKS_EP19_THE_REGIONAL_DEAL } from "./sharks-ep19-the-regional-deal";
+import { SHARKS_EP20_SHARKS_CLOSE_DEALS } from "./sharks-ep20-sharks-close-deals";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -301,6 +311,16 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   SHARKS_EP8_VALE_KIDS,
   SHARKS_EP9_MEXICO_CALL,
   SHARKS_EP10_PARTNER_OR_RIVAL,
+  SHARKS_EP11_WHAT_WENT_WRONG,
+  SHARKS_EP12_SAY_IT_IN_NUMBERS,
+  SHARKS_EP13_THE_HARD_NEGOTIATION,
+  SHARKS_EP14_LOSING_A_CLIENT,
+  SHARKS_EP15_WINNING_IT_BACK,
+  SHARKS_EP16_A_TEAM_IN_THREE_COUNTRIES,
+  SHARKS_EP17_THE_INVESTOR,
+  SHARKS_EP18_SAY_NO_WITH_RESPECT,
+  SHARKS_EP19_THE_REGIONAL_DEAL,
+  SHARKS_EP20_SHARKS_CLOSE_DEALS,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
