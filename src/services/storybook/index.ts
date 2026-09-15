@@ -140,6 +140,14 @@ import { TIGERS_EP19_NEW_LEADERS } from "./tigers-ep19-new-leaders";
 import { TIGERS_EP20_DEFEND_YOUR_DECISION } from "./tigers-ep20-defend-your-decision";
 import { SHARKS_EP1_TELL_THE_STORY } from "./sharks-ep1-tell-the-story";
 import { SHARKS_EP2_GUATEMALA_SEVEN_AM } from "./sharks-ep2-guatemala-seven-am";
+import { SHARKS_EP3_FIRST_DOLLAR_CONTRACT } from "./sharks-ep3-first-dollar-contract";
+import { SHARKS_EP4_THREE_OFFICES_ONE_TEAM } from "./sharks-ep4-three-offices-one-team";
+import { SHARKS_EP5_COUNTER_OFFER } from "./sharks-ep5-counter-offer";
+import { SHARKS_EP6_HIRING_ACROSS_BORDERS } from "./sharks-ep6-hiring-across-borders";
+import { SHARKS_EP7_QUALITY_AT_SCALE } from "./sharks-ep7-quality-at-scale";
+import { SHARKS_EP8_VALE_KIDS } from "./sharks-ep8-vale-kids";
+import { SHARKS_EP9_MEXICO_CALL } from "./sharks-ep9-mexico-call";
+import { SHARKS_EP10_PARTNER_OR_RIVAL } from "./sharks-ep10-partner-or-rival";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -285,6 +293,14 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   TIGERS_EP20_DEFEND_YOUR_DECISION,
   SHARKS_EP1_TELL_THE_STORY,
   SHARKS_EP2_GUATEMALA_SEVEN_AM,
+  SHARKS_EP3_FIRST_DOLLAR_CONTRACT,
+  SHARKS_EP4_THREE_OFFICES_ONE_TEAM,
+  SHARKS_EP5_COUNTER_OFFER,
+  SHARKS_EP6_HIRING_ACROSS_BORDERS,
+  SHARKS_EP7_QUALITY_AT_SCALE,
+  SHARKS_EP8_VALE_KIDS,
+  SHARKS_EP9_MEXICO_CALL,
+  SHARKS_EP10_PARTNER_OR_RIVAL,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
