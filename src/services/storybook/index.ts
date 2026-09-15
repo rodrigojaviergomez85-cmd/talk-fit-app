@@ -138,6 +138,7 @@ import { TIGERS_EP17_THE_VISIT } from "./tigers-ep17-the-visit";
 import { TIGERS_EP18_THE_VOTE } from "./tigers-ep18-the-vote";
 import { TIGERS_EP19_NEW_LEADERS } from "./tigers-ep19-new-leaders";
 import { TIGERS_EP20_DEFEND_YOUR_DECISION } from "./tigers-ep20-defend-your-decision";
+import { SHARKS_EP1_TELL_THE_STORY } from "./sharks-ep1-tell-the-story";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -281,6 +282,7 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   TIGERS_EP18_THE_VOTE,
   TIGERS_EP19_NEW_LEADERS,
   TIGERS_EP20_DEFEND_YOUR_DECISION,
+  SHARKS_EP1_TELL_THE_STORY,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {

@@ -15,6 +15,7 @@ import season4Cover from "@/assets/storybook/vale-s4-ep1/cover.jpg";
 import season5Cover from "@/assets/storybook/vale-s5-first-students/cover.jpg";
 import season6Cover from "@/assets/storybook/eagles-ep1-the-offer/cover.jpg";
 import season7Cover from "@/assets/storybook/tigers-ep1-a-decision-i-made/cover.jpg";
+import season8Cover from "@/assets/storybook/sharks-ep1-tell-the-story/cover.jpg";
 
 export type SeasonWeek = 1 | 2 | 3 | 4;
 
@@ -281,6 +282,39 @@ export const STORYBOOK_SEASONS: Season[] = [
       { day: 18, episodeId: "tigers-ep18-the-vote", teaser: { en: "The vote", es: "El voto" } },
       { day: 19, episodeId: "tigers-ep19-new-leaders", teaser: { en: "New leaders", es: "Nuevos líderes" } },
       { day: 20, episodeId: "tigers-ep20-defend-your-decision", teaser: { en: "Defend your decision", es: "Defiende tu decisión" } },
+    ],
+  },
+  {
+    moduleId: "sharks",
+    seasonNumber: 8,
+    title: { en: "Season 8 · Sharks", es: "Temporada 8 · Sharks" },
+    blurb: {
+      en: "International waters: dollar contracts, hard negotiators and a school that crosses borders.",
+      es: "Aguas internacionales: contratos en dólares, negociadores duros y una escuela que cruza fronteras.",
+    },
+    image: season8Cover,
+    imageAlt: { en: "Vale on a video call with an American executive", es: "Vale en una videollamada con un ejecutivo estadounidense" },
+    slots: [
+      { day: 1, episodeId: "sharks-ep1-tell-the-story", teaser: { en: "Tell the story", es: "Cuenta la historia" } },
+      { day: 2, episodeId: null, teaser: { en: "Guatemala, seven a.m.", es: "Guatemala, siete de la mañana" } },
+      { day: 3, episodeId: null, teaser: { en: "The first dollar contract", es: "El primer contrato en dólares" } },
+      { day: 4, episodeId: null, teaser: { en: "Three offices, one team", es: "Tres oficinas, un equipo" } },
+      { day: 5, episodeId: null, teaser: { en: "The counter-offer", es: "La contraoferta" } },
+      { day: 6, episodeId: null, teaser: { en: "Hiring across borders", es: "Contratar en otro país" } },
+      { day: 7, episodeId: null, teaser: { en: "Quality at scale", es: "Calidad a gran escala" } },
+      { day: 8, episodeId: null, teaser: { en: "Vale Kids", es: "Vale Kids" } },
+      { day: 9, episodeId: null, teaser: { en: "The Mexico call", es: "La llamada de México" } },
+      { day: 10, episodeId: null, teaser: { en: "A partner or a rival", es: "Socio o rival" } },
+      { day: 11, episodeId: null, teaser: { en: "What went wrong", es: "Qué salió mal" } },
+      { day: 12, episodeId: null, teaser: { en: "Say it in numbers", es: "Dilo en números" } },
+      { day: 13, episodeId: null, teaser: { en: "The hard negotiation", es: "La negociación dura" } },
+      { day: 14, episodeId: null, teaser: { en: "Losing a client", es: "Perder un cliente" } },
+      { day: 15, episodeId: null, teaser: { en: "Winning it back", es: "Recuperarlo" } },
+      { day: 16, episodeId: null, teaser: { en: "A team in three countries", es: "Un equipo en tres países" } },
+      { day: 17, episodeId: null, teaser: { en: "The investor", es: "El inversionista" } },
+      { day: 18, episodeId: null, teaser: { en: "Say no with respect", es: "Decir no con respeto" } },
+      { day: 19, episodeId: null, teaser: { en: "The regional deal", es: "El acuerdo regional" } },
+      { day: 20, episodeId: null, teaser: { en: "Sharks close deals", es: "Los tiburones cierran tratos" } },
     ],
   },
 ];
