@@ -77,7 +77,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "Salvadoran woman in her late 20s, team trainer",
     look: "medium tan skin, dark brown hair in a high ponytail, friendly confident face",
     outfit: "teal blouse with a headset at the call center",
-    seasons: ["basic-zero", "simple-future", "simple-present", "past-stories", "mixed-tenses", "eagles-week-1"],
+    seasons: ["basic-zero", "simple-future", "simple-present", "past-stories", "mixed-tenses", "eagles-week-1", "tigers"],
     neverDo: ["Kat is a woman — never drawn as a man"],
   },
   mateo: {
@@ -136,7 +136,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "Salvadoran woman in her 50s, Vale's mother",
     look: "light-medium tan skin, black hair with gray streaks pulled back, warm face",
     outfit: "floral apron over a simple blouse",
-    seasons: ["simple-present", "mixed-tenses", "eagles-week-1", "tigers"],
+    seasons: ["basic-zero", "simple-present", "past-stories", "mixed-tenses", "eagles-week-1", "tigers"],
   },
   tito: {
     id: "tito",
