@@ -97,7 +97,7 @@ export const SHARKS_EP17_THE_INVESTOR: StorybookEpisode = {
         }
       ],
       "words": [
-        { "word": "scale up", "es": "escalar / crecer" },
+        { "word": "scaling up", "es": "escalar / crecer" },
         { "word": "investor", "es": "inversionista" },
         { "word": "ownership", "es": "propiedad" }
       ]

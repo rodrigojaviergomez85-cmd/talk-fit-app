@@ -375,6 +375,7 @@ export const BASE_GLOSSARY: Record<string, string> = {
   'certain': 'ciertos',
   'subsidiary': 'filial',
   'inconsistency': 'inconsistencia',
+  'phased': 'por etapas',
   'brilliant': 'brillante',
   'jump': 'saltar',
   'body': 'cuerpo',
