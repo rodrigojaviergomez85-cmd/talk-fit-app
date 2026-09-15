@@ -14,6 +14,21 @@ import type { StorybookEpisode, StorybookSpeaker } from "./types";
 const ASSETS = resolve(process.cwd(), "src/assets/storybook");
 const MAX_BYTES = 250 * 1024;
 
+function jpegDimensions(file: string): { width: number; height: number } | undefined {
+  const bytes = readFileSync(file);
+  let offset = 2;
+  while (offset + 9 < bytes.length) {
+    if (bytes[offset] !== 0xff) return undefined;
+    const marker = bytes[offset + 1];
+    const length = bytes.readUInt16BE(offset + 2);
+    if (marker && marker >= 0xc0 && marker <= 0xc3) {
+      return { height: bytes.readUInt16BE(offset + 5), width: bytes.readUInt16BE(offset + 7) };
+    }
+    offset += 2 + length;
+  }
+  return undefined;
+}
+
 const season6 = STORYBOOK_SEASONS.find((s) => s.moduleId === "eagles-week-1")!;
 const registered: StorybookEpisode[] = season6.slots
   .map((slot) => STORYBOOK_EPISODES.find((e) => e.id === slot.episodeId))
