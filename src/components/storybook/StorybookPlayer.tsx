@@ -30,6 +30,7 @@ type Slide =
   | { kind: "mindset" }
   | { kind: "habit" }
   | { kind: "quiz"; quiz: StorybookQuiz }
+  | { kind: "natives" }
   | { kind: "finale" };
 
 function buildSlides(episode: StorybookEpisode): Slide[] {
