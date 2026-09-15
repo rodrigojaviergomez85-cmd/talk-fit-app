@@ -11,7 +11,7 @@ export type StorybookWord = {
 };
 
 /** Who speaks the scene line — drives the per-character TTS voice. */
-export type StorybookSpeaker = "narrator" | "vale" | "boss" | "kat" | "dylan" | "mateo" | "luis" | "camila" | "ana" | "beto" | "mom" | "tito" | "dani" | "morgan" | "bryan" | "sofia" | "herrera";
+export type StorybookSpeaker = "narrator" | "vale" | "boss" | "kat" | "dylan" | "mateo" | "luis" | "camila" | "ana" | "beto" | "mom" | "tito" | "dani" | "morgan" | "bryan" | "sofia" | "herrera" | "reed";
 
 /**
  * One conversational reply inside a scene (sitcom-style dialogue, B1→B2 seasons).
@@ -121,6 +121,8 @@ export type StorybookEpisode = {
   mindsetCard?: StorybookMindsetCard;
   /** Optional positive-habit micro-lesson modeled by a character. */
   habitCard?: StorybookHabitCard;
+  /** Max seconds for the final monologue recording. Defaults to 15. */
+  finaleSeconds?: number;
   /** Final "continúa la historia" prompt. */
   continuePrompt: { en: string; es: string };
   /** Week-1 chunks the learner reuses in their own version. */

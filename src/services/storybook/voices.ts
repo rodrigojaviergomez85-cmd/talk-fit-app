@@ -27,6 +27,7 @@ export function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice 
   if (speaker === "bryan") return "male";
   if (speaker === "sofia") return "femaleBright";
   if (speaker === "herrera") return "boss";
+  if (speaker === "reed") return "boss";
   return "neutral";
 }
 
@@ -42,6 +43,7 @@ export function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
   if (speaker === "bryan") return "pro";
   if (speaker === "sofia") return "warm";
   if (speaker === "herrera") return "pro";
+  if (speaker === "reed") return "tense";
   return "story";
 }
 
@@ -70,6 +72,7 @@ export function speakerName(speaker: StorybookSpeaker | undefined): string {
     bryan: "Bryan",
     sofia: "Sofía",
     herrera: "Mr. Herrera",
+    reed: "Mr. Reed",
   };
   return names[speaker ?? "narrator"];
 }
