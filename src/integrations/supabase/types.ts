@@ -1433,6 +1433,7 @@ export type Database = {
         Returns: boolean
       }
       plan_multiplier: { Args: { _user_id: string }; Returns: number }
+      practice_day_key: { Args: never; Returns: string }
       prune_ai_call_log: { Args: { _keep_days: number }; Returns: number }
       purge_backlog: {
         Args: {
