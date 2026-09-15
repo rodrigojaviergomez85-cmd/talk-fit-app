@@ -29,6 +29,16 @@ Los títulos/teasers coinciden con los slots ya definidos en `src/services/story
 - Continuidad visual: mismas referencias canónicas de Vale, Dani, Camila, Morgan; auditoría de anatomía/identidad en las 55 imágenes nuevas.
 - Bloqueo por ruta oficial (2 episodios nuevos al día, repaso hacia atrás) sin cambios.
 
+## Triple chequeo de consistencia (imágenes y voces)
+
+Cada episodio pasa por tres revisiones antes de darse por terminado:
+
+1. **Al generar** — cada imagen se compara contra la ficha canónica del personaje (piel, cabello, edad, ropa, proporciones, dos brazos y dos manos, sin texto en la imagen) y se regenera si algo no cuadra. Cada línea de diálogo queda asignada a la voz fija del personaje.
+2. **Revisión automática** — pruebas que verifican: las 11 imágenes existen y pesan menos de 250 KB en 768×768; cada personaje que habla tiene voz registrada; ningún personaje comparte voz con otro; la voz de un personaje es la misma en todos los episodios de la temporada.
+3. **Revisión final lado a lado** — se comparan los 5 episodios nuevos contra el episodio 1 y contra temporadas previas: mismo rostro y vestuario de Vale, Dani, Camila y Morgan, misma edad aparente, escenarios y objetos coherentes; y escucha de una escena por episodio para confirmar que cada voz suena igual que antes.
+
+Si algo falla en cualquiera de los tres pasos, se corrige y se repite el paso.
+
 ## Verificación
 
 - TypeScript y suite Vitest completa en verde, incluidas pruebas de unicidad de voces y cobertura de arte.
