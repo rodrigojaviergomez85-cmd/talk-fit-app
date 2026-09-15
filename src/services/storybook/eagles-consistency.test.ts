@@ -134,3 +134,28 @@ describe("Season 6 keeps the sitcom dialogue format", () => {
     }
   });
 });
+
+describe("Interview candidates are never recurring cast members", () => {
+  const RECURRING: StorybookSpeaker[] = ["kat", "tito", "mateo", "luis", "dylan", "camila", "dani", "morgan", "mom", "bryan", "sofia"];
+
+  it("unnamed interviewees in Episode 15 use the Candidate speakers", () => {
+    const ep15 = registered.find((e) => e.id === "eagles-ep15-a-great-teacher");
+    expect(ep15, "episode 15 must be registered").toBeTruthy();
+    const interviewScenes = ["s3", "s5"];
+    for (const sceneId of interviewScenes) {
+      const scene = ep15!.scenes.find((s) => s.id === sceneId);
+      expect(scene, `${sceneId} must exist`).toBeTruthy();
+      const speakers = new Set((scene!.lines ?? []).map((l) => l.speaker));
+      for (const recurring of RECURRING) {
+        expect(speakers.has(recurring), `${sceneId} must not use ${recurring} as an interview candidate`).toBe(false);
+      }
+      const hasCandidate = speakers.has("candidateM") || speakers.has("candidateF");
+      expect(hasCandidate, `${sceneId} needs a Candidate speaker`).toBe(true);
+    }
+  });
+
+  it("both candidate speakers are labelled Candidate", () => {
+    expect(speakerName("candidateM")).toBe("Candidate");
+    expect(speakerName("candidateF")).toBe("Candidate");
+  });
+});
