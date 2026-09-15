@@ -12,7 +12,7 @@ DECLARE
   _today text := to_char((now() AT TIME ZONE 'UTC')::date, 'YYYY-MM-DD');
   _yesterday text := to_char((now() AT TIME ZONE 'UTC')::date - 1, 'YYYY-MM-DD');
   _tomorrow text := to_char((now() AT TIME ZONE 'UTC')::date + 1, 'YYYY-MM-DD');
-  _far text := to_char((now() AT TIME ZONE 'UTC')::date + 10, 'YYYY-MM-DD');
+  _far text := to_char((now() AT TIME ZONE 'UTC')::date + interval '10 years', 'YYYY-MM-DD');
   _msg text;
 BEGIN
   INSERT INTO auth.users (id, instance_id, aud, role, email, encrypted_password, created_at, updated_at)
