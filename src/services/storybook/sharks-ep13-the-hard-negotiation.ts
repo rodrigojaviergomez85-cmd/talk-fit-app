@@ -100,8 +100,8 @@ export const SHARKS_EP13_THE_HARD_NEGOTIATION: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "Then let him. Give him a fair shot. One bad month is not a verdict.",
-          "es": "Entonces déjalo. Dale una oportunidad justa. Un mal mes no es un veredicto."
+          "text": "Then let him stay. He deserves a fair shot. One bad month is not a verdict.",
+          "es": "Entonces déjalo quedarse. Merece una oportunidad justa. Un mal mes no es un veredicto."
         },
         {
           "speaker": "vale",
