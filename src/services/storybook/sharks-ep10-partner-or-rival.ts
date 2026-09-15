@@ -371,7 +371,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "Take your time. How you handle bad news tells me more than any contract ever will.",
+          text: "Take your time, Vale. How you handle bad news tells me more about your school than any contract ever will.",
           es: "Tómese su tiempo. Cómo maneja las malas noticias me dice más de lo que cualquier contrato dirá jamás."
         }
       ],
