@@ -230,7 +230,7 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
       id: "s7",
       image: s7,
       imageAlt: "Dani admits his mistake in front of the team.",
-      text: "I dropped the ball on testing the server. That one is on me.",
+      text: "I dropped the ball on testing the server before the launch. That one is on me.",
       es: "Fallé al probar el servidor. Esa es mía.",
       speaker: "dani",
       cast: ["dani", "vale"],

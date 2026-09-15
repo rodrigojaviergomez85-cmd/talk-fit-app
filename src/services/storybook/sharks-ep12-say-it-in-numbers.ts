@@ -51,7 +51,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       lines: [
         {
           speaker: "camila",
-          text: "Our quarterly revenue went up eleven percent, but the margin stayed flat.",
+          text: "Our quarterly revenue went up eleven percent, but the margin stayed completely flat.",
           es: "Nuestros ingresos trimestrales subieron once por ciento, pero el margen se quedó igual."
         },
         {
@@ -199,7 +199,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       id: "s6",
       image: s6,
       imageAlt: "Dani shows a forecast spreadsheet for the next two quarters.",
-      text: "I built a spreadsheet with the forecast for the next two quarters.",
+      text: "I built a spreadsheet with the full forecast for the next two quarters, including Mexico.",
       es: "Hice una hoja de cálculo con el pronóstico para los próximos dos trimestres.",
       speaker: "dani",
       cast: ["dani", "vale"],
@@ -211,7 +211,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Does it include the Mexico pilot with Renata?",
+          text: "Does it include the Mexico pilot with Renata and her six schools?",
           es: "¿Incluye el piloto de México con Renata?"
         },
         {
@@ -292,7 +292,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       id: "s9",
       image: s9,
       imageAlt: "Vale tells the team to collect the late payments today.",
-      text: "Chase them today. A number nobody collects is not revenue, it is hope.",
+      text: "Chase them today. A number nobody collects is not revenue, it is hope, and hope does not pay salaries.",
       es: "Cóbralas hoy. Un número que nadie cobra no es ingreso, es esperanza.",
       speaker: "vale",
       cast: ["vale", "camila"],

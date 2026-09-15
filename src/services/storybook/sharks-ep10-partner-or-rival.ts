@@ -51,7 +51,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       lines: [
         {
           speaker: "renata",
-          text: "Your contract says Mexico is exclusive. I will not pay for a surprise.",
+          text: "Your contract says Mexico is exclusive to you. I will not pay for a surprise I never ordered.",
           es: "Su contrato dice que México es exclusivo. No pagaré por una sorpresa."
         },
         {
@@ -75,7 +75,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       id: "s2",
       image: s2,
       imageAlt: "Vale asks for facts while the team opens the contract files.",
-      text: "Before we react, let us get the facts right. Which version did you receive?",
+      text: "Before we react, let us get the facts right. Which version did you receive, and when did it arrive?",
       es: "Antes de reaccionar, aclaremos los hechos. ¿Qué versión recibió?",
       speaker: "vale",
       cast: ["vale", "dani"],
@@ -137,7 +137,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       id: "s4",
       image: s4,
       imageAlt: "Vale explains to Renata on the screen that the error came from the process.",
-      text: "Renata, what I mean is that the error came from the document process, not from you.",
+      text: "Renata, what I mean is that the error came from our document process, not from you or your team.",
       es: "Renata, lo que quiero decir es que el error vino del proceso de documentos, no de usted.",
       speaker: "vale",
       cast: ["vale", "renata"],
@@ -278,7 +278,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "Three months. And I choose the school.",
+          text: "Three months. And I choose the school, the teachers, and the schedule.",
           es: "Tres meses. Y yo elijo la escuela."
         }
       ],
