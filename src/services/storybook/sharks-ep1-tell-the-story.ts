@@ -117,7 +117,7 @@ export const SHARKS_EP1_TELL_THE_STORY: StorybookEpisode = {
     {
       id: "s5",
       image: s5,
-      imageAlt: "Mateo con la laptop y Camila con una calculadora, trabajando en los números.",
+      imageAlt: "Dani con la laptop y Camila con una calculadora, trabajando en los números.",
       text: "By Saturday the whole team was working, and the numbers finally started to make sense.",
       es: "Para el sábado todo el equipo estaba trabajando, y los números por fin empezaron a tener sentido.",
       speaker: "narrator",
