@@ -51,8 +51,8 @@ export const SHARKS_EP19_THE_REGIONAL_DEAL: StorybookEpisode = {
       lines: [
         {
           speaker: "renata",
-          text: "Welcome. Today we put on paper exactly what Mexico needs from this partnership.",
-          es: "Bienvenidas. Hoy ponemos en papel exactamente lo que México necesita de esta sociedad.",
+          text: "Welcome. Today we put on paper exactly what Mexico needs from this regional partnership.",
+          es: "Bienvenidas. Hoy ponemos en papel exactamente lo que México necesita de esta sociedad regional.",
         },
         {
           speaker: "vale",
