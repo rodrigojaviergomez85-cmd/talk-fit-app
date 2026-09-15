@@ -28,6 +28,8 @@ export function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice 
   if (speaker === "sofia") return "femaleBright";
   if (speaker === "herrera") return "boss";
   if (speaker === "reed") return "boss";
+  if (speaker === "lucia") return "femaleBright";
+  if (speaker === "renata") return "femaleMature";
   if (speaker === "candidateM") return "youngMaleCalm";
   if (speaker === "candidateF") return "femaleBright";
   if (speaker === "candidateHotel") return "femaleMature";
@@ -47,6 +49,8 @@ export function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
   if (speaker === "sofia") return "warm";
   if (speaker === "herrera") return "pro";
   if (speaker === "reed") return "tense";
+  if (speaker === "lucia") return "earnest";
+  if (speaker === "renata") return "pro";
   if (speaker === "candidateM") return "neutral";
   if (speaker === "candidateF") return "neutral";
   if (speaker === "candidateHotel") return "story";
@@ -79,6 +83,8 @@ export function speakerName(speaker: StorybookSpeaker | undefined): string {
     sofia: "Sofía",
     herrera: "Mr. Herrera",
     reed: "Mr. Reed",
+    lucia: "Lucía",
+    renata: "Renata",
     candidateM: "Candidate",
     candidateF: "Candidate",
     candidateHotel: "Candidate",
