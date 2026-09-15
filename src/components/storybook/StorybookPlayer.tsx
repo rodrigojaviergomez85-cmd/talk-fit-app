@@ -12,7 +12,7 @@ import { buildSayItHint, buildSayItStartHint } from "@/lib/story-say-match";
 import { isStoryAdvanceLocked } from "@/lib/storybook-advance";
 import { AudioService } from "@/services/audio-service";
 import { supabase } from "@/integrations/supabase/client";
-import { getSeason } from "@/services/storybook";
+import { getSeason, getNextProducedEpisodeId } from "@/services/storybook";
 import { speakerVoice, speakerTone, speakerName } from "@/services/storybook/voices";
 import { speakDialogue, startDialogue, type DialogueController } from "@/services/storybook/dialogue-audio";
 import { markEpisodeSeen } from "@/services/storybook/storybook-progress";
