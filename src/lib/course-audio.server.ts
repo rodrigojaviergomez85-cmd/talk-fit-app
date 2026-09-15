@@ -11,7 +11,7 @@
  */
 import type { AiLogMeta } from "./ai-call-log.server";
 
-export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy" | "earnest" | "warm" | "pro";
+export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy" | "earnest" | "warm" | "pro" | "sly";
 export type RequestedVoice = "neutral" | "female" | "femaleBright" | "femaleMature" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm" | "shyBoy" | "teenBoy" | "elder";
 
 /** Normalised request: `voice` is the provider voice selected below. */
