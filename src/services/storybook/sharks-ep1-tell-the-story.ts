@@ -70,7 +70,7 @@ export const SHARKS_EP1_TELL_THE_STORY: StorybookEpisode = {
       lines: [
         { speaker: "vale", text: "The screen showed a number from the United States. I looked at it for three full seconds.", es: "«La pantalla mostró un número de Estados Unidos. Lo miré por tres segundos completos»." },
         { speaker: "vale", text: "Then I answered in my calmest voice, and a man said: this is Northline International, from Houston.", es: "«Luego contesté con mi voz más calmada, y un hombre dijo: habla Northline International, desde Houston»." },
-        { speaker: "mateo", text: "No way. The sister company called you directly, without an email first? That never happens.", es: "«No puede ser. ¿La empresa hermana te llamó directamente, sin un correo primero? Eso nunca pasa»." },
+        { speaker: "dani", text: "No way. The sister company called you directly, without an email first? That never happens.", es: "«No puede ser. ¿La empresa hermana te llamó directamente, sin un correo primero? Eso nunca pasa»." },
       ],
       words: [
         { word: "screen", es: "pantalla" },
@@ -117,12 +117,12 @@ export const SHARKS_EP1_TELL_THE_STORY: StorybookEpisode = {
     {
       id: "s5",
       image: s5,
-      imageAlt: "Mateo con la laptop y Camila con una calculadora, trabajando en los números.",
+      imageAlt: "Dani con la laptop y Camila con una calculadora, trabajando en los números.",
       text: "By Saturday the whole team was working, and the numbers finally started to make sense.",
       es: "Para el sábado todo el equipo estaba trabajando, y los números por fin empezaron a tener sentido.",
       speaker: "narrator",
       lines: [
-        { speaker: "mateo", text: "I built the platform version for three offices on Saturday. It took eleven hours and two pupusas.", es: "«Construí la versión de la plataforma para tres oficinas el sábado. Me tomó once horas y dos pupusas»." },
+        { speaker: "dani", text: "I built the platform version for three offices on Saturday. It took eleven hours and two pupusas.", es: "«Construí la versión de la plataforma para tres oficinas el sábado. Me tomó once horas y dos pupusas»." },
         { speaker: "camila", text: "I calculated the cost per student, and honestly, our margin is small but it is healthy.", es: "«Calculé el costo por estudiante y, honestamente, nuestro margen es pequeño pero es sano»." },
         { speaker: "vale", text: "Small and healthy is fine. I did not build this school to be the cheapest one on the list.", es: "«Pequeño y sano está bien. No construí esta escuela para ser la más barata de la lista»." },
       ],
