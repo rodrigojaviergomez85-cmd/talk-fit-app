@@ -384,10 +384,13 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
   "expressions": [
     {
       "phrase": "follow through",
+      "variants": [
+        "followed through"
+      ],
       "es": "cumplir hasta el final",
       "kind": "phrasal",
-      "example": "Have you ever trained three offices at the same time?",
-      "exampleEs": "¿Alguna vez han capacitado tres oficinas al mismo tiempo?"
+      "example": "But have they followed through when a student falls behind?",
+      "exampleEs": "¿Pero han cumplido cuando un estudiante se queda atrás?"
     },
     {
       "phrase": "keep up",

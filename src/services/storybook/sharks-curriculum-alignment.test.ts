@@ -7,9 +7,9 @@ const EXPECTED = [
   [4, "sharks-ep4-three-offices-one-team", ["need to", "first things first"]],
   [5, "sharks-ep5-counter-offer", ["if we", "meet halfway"]],
   [6, "sharks-ep6-hiring-across-borders", ["used to", "settle in"]],
-  [7, "sharks-ep7-quality-at-scale", ["have", "follow through"]],
+  [7, "sharks-ep7-quality-at-scale", ["have", "followed through"]],
   [8, "sharks-ep8-vale-kids", ["have been", "catch up"]],
-  [9, "sharks-ep9-mexico-call", ["in other words", "clear up"]],
+  [9, "sharks-ep9-mexico-call", ["in other words", "clear that up"]],
   [10, "sharks-ep10-partner-or-rival", ["what i mean", "on the same page"]],
 ] as const;
 

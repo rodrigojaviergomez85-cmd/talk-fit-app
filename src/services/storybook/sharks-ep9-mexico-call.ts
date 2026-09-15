@@ -389,10 +389,13 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
     },
     {
       "phrase": "clear up",
+      "variants": [
+        "clear that up"
+      ],
       "es": "aclarar / resolver una confusión",
       "kind": "phrasal",
-      "example": "So you want me to buy your brand and run it exactly your way.",
-      "exampleEs": "Entonces quiere que compre su marca y la maneje exactamente a su manera."
+      "example": "Let me clear that up. The license is annual, and support is based on active students.",
+      "exampleEs": "Déjeme aclarar eso. La licencia es anual, y el soporte se basa en estudiantes activos."
     },
     {
       "phrase": "get our wires crossed",

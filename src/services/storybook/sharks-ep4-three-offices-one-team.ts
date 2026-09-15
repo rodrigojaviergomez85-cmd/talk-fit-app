@@ -383,10 +383,13 @@ export const SHARKS_EP4_THREE_OFFICES_ONE_TEAM: StorybookEpisode = {
   "expressions": [
     {
       "phrase": "sort out",
+      "variants": [
+        "sorted out"
+      ],
       "es": "resolver / poner en orden",
       "kind": "phrasal",
-      "example": "Three offices have three emergencies. First things first: which problem stops the launch?",
-      "exampleEs": "Tres oficinas tienen tres emergencias. Primero lo primero: ¿qué problema detiene el lanzamiento?"
+      "example": "I sorted out the teacher conflict. One person was listed in two cities.",
+      "exampleEs": "Resolví el conflicto de maestros. Una persona aparecía en dos ciudades."
     },
     {
       "phrase": "set up",

@@ -43,8 +43,8 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
     }
   ],
   "blurb": {
-    "en": "This invoice includes an exclusivity fee we never approved. Vale, Lucía is calling. Something went wrong in the first class.",
-    "es": "Esta factura incluye una tarifa de exclusividad que nunca aprobamos. Vale, Lucía está llamando. Algo salió mal en la primera clase."
+    "en": "Your contract says Mexico is exclusive. I will not pay for a surprise. Vale, Lucía is calling. Something went wrong in the first class.",
+    "es": "Su contrato dice que México es exclusivo. No pagaré una sorpresa. Vale, Lucía está llamando. Algo salió mal en la primera clase."
   },
   "cover": cover,
   "voice": "girl",
@@ -53,32 +53,12 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       "id": "s1",
       "image": s1,
       "imageAlt": "Scene 1 of A partner or a rival.",
-      "text": "This invoice includes an exclusivity fee we never approved.",
-      "es": "Esta factura incluye una tarifa de exclusividad que nunca aprobamos.",
-      "speaker": "camila",
-      "cast": [
-        "camila",
-        "dani"
-      ],
-      "lines": [
-        {
-          "speaker": "camila",
-          "text": "This invoice includes an exclusivity fee we never approved.",
-          "es": "Esta factura incluye una tarifa de exclusividad que nunca aprobamos."
-        }
-      ],
-      "words": []
-    },
-    {
-      "id": "s2",
-      "image": s2,
-      "imageAlt": "Scene 2 of A partner or a rival.",
       "text": "Your contract says Mexico is exclusive. I will not pay for a surprise.",
       "es": "Su contrato dice que México es exclusivo. No pagaré una sorpresa.",
       "speaker": "renata",
       "cast": [
         "renata",
-        "camila"
+        "dani"
       ],
       "lines": [
         {
@@ -90,15 +70,15 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       "words": []
     },
     {
-      "id": "s3",
-      "image": s3,
-      "imageAlt": "Scene 3 of A partner or a rival.",
+      "id": "s2",
+      "image": s2,
+      "imageAlt": "Scene 2 of A partner or a rival.",
       "text": "Before we react, let us get the facts right. Which version did you receive?",
       "es": "Antes de reaccionar, confirmemos los hechos. ¿Qué versión recibió?",
       "speaker": "vale",
       "cast": [
         "vale",
-        "renata"
+        "camila"
       ],
       "lines": [
         {
@@ -110,15 +90,15 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       "words": []
     },
     {
-      "id": "s4",
-      "image": s4,
-      "imageAlt": "Scene 4 of A partner or a rival.",
+      "id": "s3",
+      "image": s3,
+      "imageAlt": "Scene 3 of A partner or a rival.",
       "text": "I compared both files. Houston added the clause after our call.",
       "es": "Comparé ambos archivos. Houston agregó la cláusula después de nuestra llamada.",
       "speaker": "dani",
       "cast": [
         "dani",
-        "reed"
+        "renata"
       ],
       "lines": [
         {
@@ -130,14 +110,15 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       "words": []
     },
     {
-      "id": "s5",
-      "image": s5,
-      "imageAlt": "Scene 5 of A partner or a rival.",
+      "id": "s4",
+      "image": s4,
+      "imageAlt": "Scene 4 of A partner or a rival.",
       "text": "Renata, what I mean is that the error came from the document process, not from you.",
       "es": "Renata, lo que quiero decir es que el error vino del proceso de documentos, no de usted.",
       "speaker": "vale",
       "cast": [
-        "vale"
+        "vale",
+        "reed"
       ],
       "lines": [
         {
@@ -149,15 +130,15 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       "words": []
     },
     {
-      "id": "s6",
-      "image": s6,
-      "imageAlt": "Scene 6 of A partner or a rival.",
+      "id": "s5",
+      "image": s5,
+      "imageAlt": "Scene 5 of A partner or a rival.",
       "text": "Houston assumed the partnership was exclusive. That assumption was wrong.",
       "es": "Houston asumió que la alianza era exclusiva. Esa suposición fue incorrecta.",
       "speaker": "reed",
       "cast": [
         "reed",
-        "dani"
+        "vale"
       ],
       "lines": [
         {
@@ -169,14 +150,15 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       "words": []
     },
     {
-      "id": "s7",
-      "image": s7,
-      "imageAlt": "Scene 7 of A partner or a rival.",
+      "id": "s6",
+      "image": s6,
+      "imageAlt": "Scene 6 of A partner or a rival.",
       "text": "I will follow up with a corrected invoice today.",
       "es": "Daré seguimiento con una factura corregida hoy.",
       "speaker": "camila",
       "cast": [
-        "camila"
+        "camila",
+        "dani"
       ],
       "lines": [
         {
@@ -188,15 +170,15 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       "words": []
     },
     {
-      "id": "s8",
-      "image": s8,
-      "imageAlt": "Scene 8 of A partner or a rival.",
+      "id": "s7",
+      "image": s7,
+      "imageAlt": "Scene 7 of A partner or a rival.",
       "text": "Let us straighten this out: no exclusivity fee, and no hidden condition.",
       "es": "Aclaremos esto: sin tarifa de exclusividad y sin condición oculta.",
       "speaker": "vale",
       "cast": [
         "vale",
-        "renata"
+        "camila"
       ],
       "lines": [
         {
@@ -208,15 +190,14 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       "words": []
     },
     {
-      "id": "s9",
-      "image": s9,
-      "imageAlt": "Scene 9 of A partner or a rival.",
+      "id": "s8",
+      "image": s8,
+      "imageAlt": "Scene 8 of A partner or a rival.",
       "text": "Now we are on the same page. I can discuss a pilot, not a takeover.",
       "es": "Ahora estamos en la misma sintonía. Puedo discutir un piloto, no una adquisición.",
       "speaker": "renata",
       "cast": [
-        "renata",
-        "reed"
+        "renata"
       ],
       "lines": [
         {
@@ -228,14 +209,15 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       "words": []
     },
     {
-      "id": "s10",
-      "image": s10,
-      "imageAlt": "Scene 10 of A partner or a rival.",
+      "id": "s9",
+      "image": s9,
+      "imageAlt": "Scene 9 of A partner or a rival.",
       "text": "A pilot is enough. Results can decide what happens next.",
       "es": "Un piloto es suficiente. Los resultados pueden decidir qué pasa después.",
       "speaker": "vale",
       "cast": [
-        "vale"
+        "vale",
+        "reed"
       ],
       "lines": [
         {
@@ -247,15 +229,15 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       "words": []
     },
     {
-      "id": "s11",
-      "image": s11,
-      "imageAlt": "Scene 11 of A partner or a rival.",
+      "id": "s10",
+      "image": s10,
+      "imageAlt": "Scene 10 of A partner or a rival.",
       "text": "Then prove it. My best school will compete against your Guatemala office.",
       "es": "Entonces demuéstrelo. Mi mejor escuela competirá contra su oficina de Guatemala.",
       "speaker": "renata",
       "cast": [
         "renata",
-        "dani"
+        "vale"
       ],
       "lines": [
         {
@@ -267,15 +249,14 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       "words": []
     },
     {
-      "id": "s12",
-      "image": "s12",
-      "imageAlt": "Scene 12 of A partner or a rival.",
+      "id": "s11",
+      "image": s11,
+      "imageAlt": "Scene 11 of A partner or a rival.",
       "text": "Vale, Lucía is calling. Something went wrong in the first class.",
       "es": "Vale, Lucía está llamando. Algo salió mal en la primera clase.",
       "speaker": "dani",
       "cast": [
-        "dani",
-        "camila"
+        "dani"
       ],
       "lines": [
         {
@@ -295,7 +276,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       "questionEs": "¿Cuál es el problema principal que identifica el equipo?",
       "options": [
         {
-          "label": "Before we react, let us get the facts right. Which version did you receive?",
+          "label": "I compared both files. Houston added the clause after our call.",
           "emoji": "🎯"
         },
         {
@@ -328,7 +309,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       "questionEs": "¿Cómo responde el equipo bajo presión?",
       "options": [
         {
-          "label": "I will follow up with a corrected invoice today.",
+          "label": "Let us straighten this out: no exclusivity fee, and no hidden condition.",
           "emoji": "💬"
         },
         {
@@ -410,8 +391,8 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       "phrase": "straighten out",
       "es": "aclarar y resolver",
       "kind": "phrasal",
-      "example": "This invoice includes an exclusivity fee we never approved.",
-      "exampleEs": "Esta factura incluye una tarifa de exclusividad que nunca aprobamos."
+      "example": "Your contract says Mexico is exclusive. I will not pay for a surprise.",
+      "exampleEs": "Su contrato dice que México es exclusivo. No pagaré una sorpresa."
     },
     {
       "phrase": "on the same page",
