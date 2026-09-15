@@ -47,17 +47,21 @@ describe("Season 6 artwork consistency", () => {
     }
   });
 
-  it("every image stays under 250 KB so phones load it fast", () => {
-    const heavy: string[] = [];
+  it("every image is 768×768 and stays under 250 KB so phones load it fast", () => {
+    const invalid: string[] = [];
     for (const episode of registered) {
       const dir = resolve(ASSETS, episode.id);
       if (!existsSync(dir)) continue;
       for (const file of readdirSync(dir).filter((f) => f.endsWith(".jpg"))) {
-        const size = statSync(resolve(dir, file)).size;
-        if (size > MAX_BYTES) heavy.push(`${episode.id}/${file} = ${Math.round(size / 1024)} KB`);
+        const path = resolve(dir, file);
+        const size = statSync(path).size;
+        const dimensions = jpegDimensions(path);
+        if (size > MAX_BYTES || dimensions?.width !== 768 || dimensions.height !== 768) {
+          invalid.push(`${episode.id}/${file} = ${dimensions?.width}×${dimensions?.height}, ${Math.round(size / 1024)} KB`);
+        }
       }
     }
-    expect(heavy).toEqual([]);
+    expect(invalid).toEqual([]);
   });
 
   it("every scene declares alt text", () => {
