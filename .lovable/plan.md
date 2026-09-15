@@ -1,30 +1,42 @@
-# Preguntas repetidas en Sharks (episodios 3 al 10)
+# Reescritura manual de Sharks, episodios 9–20
 
-## Qué está pasando
+## Estado actual
 
-Los episodios 3 al 10 comparten exactamente el mismo bloque de preguntas y de "Say it", palabra por palabra:
+Los episodios 9–20 de Sharks siguen usando el relleno genérico automático (`sharks-dialogue-expansions.ts`): frases de negocios idénticas insertadas alrededor de las líneas originales. Es la misma causa del episodio 3 desconectado y aburrido. Los episodios 3–8 ya fueron reescritos a mano con éxito.
 
-- "What is the main problem the team identifies?" -> "What advice would you give the team?"
-- "How does the team respond under pressure?" -> "Describe how you would respond in this situation."
-- "What changes at the end of the episode?" -> "Summarize the problem, the response, and the result."
+## Propuesta
 
-Incluso las opciones de respuesta ("They decide to stop working.", "They forget the meeting.") son las mismas en los ocho episodios. Vienen de la misma capa genérica automática que ya causó los diálogos ilógicos; los episodios 11 al 20 sí tienen preguntas propias de su trama.
+Reescribir a mano los 12 episodios restantes en **3 chunks de 4 episodios**, para que puedas revisar cada chunk antes de seguir:
 
-## Qué voy a hacer
+- **Chunk 1:** Episodios 9–12 (la llamada de México, ¿socio o rival?, qué salió mal, dilo con números)
+- **Chunk 2:** Episodios 13–16 (la negociación dura, perder un cliente, recuperarlo, un equipo en tres países)
+- **Chunk 3:** Episodios 17–20 (el inversionista, decir no con respeto, el trato regional, cierre de temporada)
 
-Reescribir a mano las 3 preguntas y los 3 momentos de grabación de cada episodio del 3 al 10, uno por uno, basándome en lo que realmente pasa en cada escena.
+## Cómo se escribirá cada episodio
 
-Para cada episodio:
-- Pregunta 1 (después de la escena 3): sobre el hecho concreto que se acaba de contar, con dos opciones falsas creíbles tomadas del mismo contexto (no "se olvidan de la reunión").
-- Pregunta 2 (después de la escena 7): sobre la decisión o el conflicto del medio del episodio.
-- Pregunta 3 (después de la escena 11): sobre el desenlace y el gancho hacia el siguiente episodio.
-- Cada "Say it" conectado con esa pregunta y con el tema del episodio (contrato, contraoferta, contratación, calidad, niños, México, socio o rival), con su ejemplo inicial coherente y su traducción al español.
+Igual que hicimos con el 3 y el 4–8, escena por escena:
 
-No toco: el diálogo, las imágenes, las voces, el orden de escenas, el vocabulario tocable ni los bloqueos por día.
+1. Se preserva la trama original, el título, el cliffhanger y la continuidad con Tigers y el resto de Sharks.
+2. 11 escenas, 33 líneas de diálogo natural estilo conversación real (pregunta → respuesta → reacción), ~500–650 palabras.
+3. Solo personajes del canon con sus voces asignadas; Reed siempre remoto desde Houston cuando aplique; Dani es hombre y trabaja para Vale.
+4. Mínimo 3 palabras tocables por escena, traducidas, contextuales; exactamente 2 phrasal verbs + 1 idioma/collocación por episodio, subrayados como expresión completa.
+5. Preguntas de comprensión únicas por episodio, basadas en la trama real (evento inicial, decisión a la mitad, cierre/gancho), con opciones y ejemplos "Say It" coherentes — nada de preguntas repetidas.
+6. `imageAlt` descriptivo y coherente con dónde está cada personaje.
+7. Traducciones nuevas agregadas al glosario.
+8. Al terminar cada chunk: suite de storybook + TypeScript, y te aviso para que revises en el preview.
+
+## Al final (chunk 3)
+
+- Eliminar por completo `sharks-dialogue-expansions.ts` y el set `SHARKS_RICH_EPISODES` — ya no quedará ningún episodio con relleno genérico.
+- Auditoría final de continuidad de toda la temporada (1–20).
+
+## Lo que NO cambia
+
+Imágenes existentes, voces, orden de escenas, bloqueos de ruta, estrellas, grabaciones finales.
 
 ## Detalles técnicos
 
-- Archivos: `src/services/storybook/sharks-ep3-...` hasta `sharks-ep10-...`, solo el arreglo `quizzes`.
-- Se mantiene la forma actual de cada quiz: `id`, `afterScene`, `questionEn/Es`, 3 `options` con emoji, `answer`, `sayIt`, `sayItEs`, `sayItAskEn/Es`, `sayItCheck` con `target` y `altTargets`.
-- El índice de la respuesta correcta se reparte entre las tres posiciones (el barajado con semilla sigue aplicando).
-- Verificación: prueba nueva que asegure que ningún par de episodios de Sharks comparte el mismo texto de pregunta, más la suite de storybook y el chequeo de tipos.
+- Archivos: `src/services/storybook/sharks-ep{9..20}-*.ts` (reescritura completa de cada archivo, mismo formato que ep4–ep8).
+- Glosario: `src/services/storybook/glossary.ts` (entradas nuevas).
+- Limpieza final: borrar `sharks-dialogue-expansions.ts` y su import donde se use.
+- Verificación: `bunx vitest run src/services/storybook` + `bunx tsgo --noEmit` por chunk.
