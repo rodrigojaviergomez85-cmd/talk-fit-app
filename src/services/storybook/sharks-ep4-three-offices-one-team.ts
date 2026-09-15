@@ -290,7 +290,7 @@ export const SHARKS_EP4_THREE_OFFICES_ONE_TEAM: StorybookEpisode = {
     {
       "id": "s8",
       "image": s8,
-      "imageAlt": "Vale speaks to the team alone in the office about solving one blocking problem at a time.",
+      "imageAlt": "Vale stands at the whiteboard speaking to Dani and Camila about solving one blocking problem at a time.",
       "text": "Good. Do not solve everything at once; solve what blocks the next step.",
       "es": "Bien. No resuelvan todo a la vez; resuelvan lo que bloquea el siguiente paso.",
       "speaker": "vale",
