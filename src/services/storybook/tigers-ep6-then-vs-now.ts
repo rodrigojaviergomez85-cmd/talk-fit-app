@@ -204,7 +204,7 @@ export const TIGERS_EP6_THEN_VS_NOW: StorybookEpisode = {
       words: [
         { word: "born", es: "nacida" },
         { word: "could", es: "pude" },
-        { word: "them", es: "ellos" },
+        { word: "practicing", es: "practicando" },
       ],
     },
     {
