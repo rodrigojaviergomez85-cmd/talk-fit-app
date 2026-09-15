@@ -85,9 +85,9 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
     {
       "id": "s2",
       "image": s2,
-      "imageAlt": "Vale admits her exhausting routine while Don Tito listens nearby.",
-      "text": "I have been traveling, solving problems, and sleeping next to my laptop.",
-      "es": "He estado viajando, resolviendo problemas y durmiendo junto a mi laptop.",
+      "imageAlt": "Don Tito sits down on the bench beside Vale while she answers Dani's question.",
+      "text": "Honestly, Dani? I have been traveling, solving problems, and sleeping next to my laptop.",
+      "es": "¿Sinceramente, Dani? He estado viajando, resolviendo problemas y durmiendo junto a mi laptop.",
       "speaker": "vale",
       "cast": [
         "vale",
@@ -96,18 +96,18 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "vale",
-          "text": "I have been traveling, solving problems, and sleeping next to my laptop.",
-          "es": "He estado viajando, resolviendo problemas y durmiendo junto a mi laptop."
+          "text": "Honestly, Dani? I have been traveling, solving problems, and sleeping next to my laptop.",
+          "es": "¿Sinceramente, Dani? He estado viajando, resolviendo problemas y durmiendo junto a mi laptop."
         },
         {
           "speaker": "tito",
-          "text": "That is how young people burn out, Vale. I have seen it many times in this neighborhood. Rest is not a reward; it is part of the work.",
-          "es": "Así es como se agota la gente joven, Vale. Lo he visto muchas veces en este barrio. El descanso no es un premio; es parte del trabajo."
+          "text": "Good morning, you two. Don Tito sits down on the bench, and he heard that last part. That is how young people burn out, Vale. I have seen it many times in this neighborhood.",
+          "es": "Buenos días a los dos. Don Tito se sienta en la banca, y escuchó esa última parte. Así es como se agota la gente joven, Vale. Lo he visto muchas veces en este barrio."
         },
         {
           "speaker": "vale",
-          "text": "You are right, Don Tito. Today I promised myself no calls until the afternoon.",
-          "es": "Tiene razón, Don Tito. Hoy me prometí no hacer llamadas hasta la tarde."
+          "text": "Good morning, Don Tito. You are right, and Dani has been telling me the same thing. Today I promised myself no calls until the afternoon.",
+          "es": "Buenos días, Don Tito. Tiene razón, y Dani me ha estado diciendo lo mismo. Hoy me prometí no hacer llamadas hasta la tarde."
         }
       ],
       "words": [
@@ -116,6 +116,7 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
         { "word": "neighborhood", "es": "barrio" }
       ]
     },
+
     {
       "id": "s3",
       "image": s3,

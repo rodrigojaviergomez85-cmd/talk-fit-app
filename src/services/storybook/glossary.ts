@@ -917,6 +917,8 @@ export const BASE_GLOSSARY: Record<string, string> = {
   each: "cada",
   interviewer: "entrevistador / entrevistadora",
   shirt: "camisa",
+  bench: "banca",
+
   juice: "jugo",
   strong: "fuerte",
   stronger: "más fuerte",
