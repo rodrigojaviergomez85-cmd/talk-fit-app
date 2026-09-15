@@ -91,9 +91,9 @@ export const TIGERS_EP17_THE_VISIT: StorybookEpisode = {
       ],
       words: [
         { word: "practicing", es: "practicando" },
-        { speaker: undefined, word: "silently", es: "en silencio" } as never,
+        { word: "silently", es: "en silencio" },
         { word: "years", es: "años" },
-      ].map(({ word, es }) => ({ word, es })),
+      ],
     },
     {
       id: "s4",
