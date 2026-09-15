@@ -1,0 +1,249 @@
+/**
+ * Character bible for "El mundo de Vale".
+ *
+ * Single source of truth for who a character is, how they look, how they sound
+ * and which seasons they can appear in. Scripts, artwork prompts and the
+ * automatic consistency test all read from here, so a character can never drift
+ * between episodes without this file changing first.
+ */
+
+import type { StorybookSpeaker } from "./types";
+
+/** Season module ids, in story order. */
+export const SEASON_MODULE_IDS = [
+  "basic-zero", // S1
+  "simple-future", // S2
+  "simple-present", // S3
+  "past-stories", // S4
+  "mixed-tenses", // S5
+  "eagles-week-1", // S6
+  "tigers", // S7
+  "sharks", // S8
+] as const;
+
+export type SeasonModuleId = (typeof SEASON_MODULE_IDS)[number];
+
+export type CharacterCanon = {
+  id: StorybookSpeaker;
+  /** Name as it appears in the reader and in scene text. */
+  name: string;
+  /** Other spellings used inside scene text (for the "who is named here" check). */
+  aka?: string[];
+  /** Short age description used in artwork prompts. */
+  age: string;
+  /** Physical look — copied verbatim into every artwork prompt. */
+  look: string;
+  /** Default outfit that keeps the character recognizable across episodes. */
+  outfit: string;
+  /** Seasons this character may speak in or be drawn in. */
+  seasons: SeasonModuleId[];
+  /** Notes that have caused real mistakes before. */
+  neverDo?: string[];
+};
+
+const ALL: SeasonModuleId[] = [...SEASON_MODULE_IDS];
+
+export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, CharacterCanon> = {
+  vale: {
+    id: "vale",
+    name: "Vale",
+    aka: ["Valeria"],
+    age: "young Salvadoran woman, 19 in Season 1, mid-20s by Season 8",
+    look: "warm light-medium tan skin, long straight black hair, brown eyes, adult proportions",
+    outfit: "mustard yellow blouse or cardigan",
+    seasons: ALL,
+    neverDo: ["never drawn as a teenager or a child", "never with curly or short hair"],
+  },
+  dani: {
+    id: "dani",
+    name: "Dani",
+    age: "young Salvadoran man, about 19-20 at first appearance",
+    look: "medium-brown / light-medium tan skin, short curly black hair, clean-shaven, no glasses, adult proportions",
+    outfit: "light blue shirt",
+    seasons: ["past-stories", "mixed-tenses", "eagles-week-1", "tigers", "sharks"],
+    neverDo: ["Dani is male — never a woman", "never drawn as a child", "never dark-brown skin"],
+  },
+  camila: {
+    id: "camila",
+    name: "Camila",
+    age: "young Afro-Latina woman, early 20s",
+    look: "dark brown skin, shoulder-length curly black hair, adult proportions",
+    outfit: "purple top",
+    seasons: ["basic-zero", "simple-future", "past-stories", "mixed-tenses", "eagles-week-1", "tigers", "sharks"],
+  },
+  kat: {
+    id: "kat",
+    name: "Kat",
+    age: "Salvadoran woman in her late 20s, team trainer",
+    look: "medium tan skin, dark brown hair in a high ponytail, friendly confident face",
+    outfit: "teal blouse with a headset at the call center",
+    seasons: ["basic-zero", "simple-future", "simple-present", "past-stories", "mixed-tenses", "eagles-week-1"],
+    neverDo: ["Kat is a woman — never drawn as a man"],
+  },
+  mateo: {
+    id: "mateo",
+    name: "Mateo",
+    age: "young Salvadoran man, about 20",
+    look: "light-medium tan skin, short straight black hair, cheerful face, adult proportions",
+    outfit: "green polo shirt",
+    seasons: ["basic-zero", "simple-future", "simple-present", "past-stories", "mixed-tenses", "eagles-week-1", "tigers"],
+    neverDo: ["Mateo does not appear in Sharks (Season 8) — those lines belong to Dani"],
+  },
+  luis: {
+    id: "luis",
+    name: "Luis",
+    age: "Salvadoran man in his 30s",
+    look: "medium-brown skin, short black hair, short trimmed beard",
+    outfit: "gray call-center polo",
+    seasons: ["basic-zero", "simple-future", "simple-present", "past-stories", "eagles-week-1"],
+  },
+  dylan: {
+    id: "dylan",
+    name: "Dylan",
+    age: "young Salvadoran man, about 19",
+    look: "light tan skin, short wavy brown hair, shy smile",
+    outfit: "navy t-shirt",
+    seasons: ["basic-zero", "simple-future", "simple-present", "past-stories"],
+  },
+  ana: {
+    id: "ana",
+    name: "Ana",
+    age: "Salvadoran woman in her 30s",
+    look: "medium tan skin, dark brown hair tied back, calm mature face",
+    outfit: "burgundy blouse",
+    seasons: ["basic-zero", "simple-future", "simple-present", "past-stories", "eagles-week-1", "tigers"],
+  },
+  beto: {
+    id: "beto",
+    name: "Beto",
+    age: "young Salvadoran man, about 20, a student",
+    look: "medium-brown skin, short curly black hair, clean-shaven, adult proportions",
+    outfit: "gray hoodie",
+    seasons: ["simple-future", "eagles-week-1", "tigers"],
+    neverDo: ["Beto is a student — never drawn with a call-center headset"],
+  },
+  boss: {
+    id: "boss",
+    name: "Boss",
+    age: "Salvadoran man in his 40s, call-center supervisor",
+    look: "medium tan skin, short black hair, clean-shaven, serious face",
+    outfit: "white dress shirt with a badge",
+    seasons: ["basic-zero", "simple-future", "simple-present", "past-stories", "eagles-week-1"],
+  },
+  mom: {
+    id: "mom",
+    name: "Mom",
+    age: "Salvadoran woman in her 50s, Vale's mother",
+    look: "light-medium tan skin, black hair with gray streaks pulled back, warm face",
+    outfit: "floral apron over a simple blouse",
+    seasons: ["simple-present", "mixed-tenses", "eagles-week-1", "tigers"],
+  },
+  tito: {
+    id: "tito",
+    name: "Don Tito",
+    age: "Salvadoran man in his 70s, neighborhood elder",
+    look: "light tan weathered skin, white mustache, kind wrinkled face",
+    outfit: "flat cap and a cream guayabera",
+    seasons: ["simple-present", "eagles-week-1", "tigers", "sharks"],
+  },
+  morgan: {
+    id: "morgan",
+    name: "Morgan",
+    age: "American woman in her 40s, corporate client",
+    look: "fair skin, chin-length blonde hair, professional confident face",
+    outfit: "navy blazer",
+    seasons: ["eagles-week-1", "tigers"],
+    neverDo: ["Morgan is a woman — always she/her, never drawn as a man"],
+  },
+  bryan: {
+    id: "bryan",
+    name: "Bryan",
+    age: "Salvadoran man in his 30s, BigTalk manager and rival",
+    look: "medium tan skin, slicked-back black hair, thin smirk",
+    outfit: "black suit with no tie",
+    seasons: ["tigers"],
+  },
+  sofia: {
+    id: "sofia",
+    name: "Sofía",
+    age: "young Salvadoran woman, mid-20s, academy teacher",
+    look: "light-medium tan skin, long wavy brown hair, bright friendly face",
+    outfit: "coral blouse",
+    seasons: ["tigers"],
+  },
+  herrera: {
+    id: "herrera",
+    name: "Mr. Herrera",
+    age: "older Latin man, about 60, school board director",
+    look: "medium tan skin, gray beard and mustache, gray hair, authoritative face",
+    outfit: "dark suit and tie",
+    seasons: ["tigers"],
+    neverDo: ["never drawn young or clean-shaven"],
+  },
+  reed: {
+    id: "reed",
+    name: "Mr. Reed",
+    age: "American man, about 55, international executive",
+    look: "fair skin, short silver-gray hair, clean-shaven, stern face",
+    outfit: "dark navy suit with a tie",
+    seasons: ["sharks"],
+  },
+  candidateM: {
+    id: "candidateM",
+    name: "Candidate",
+    age: "young Salvadoran man, about 25, job candidate",
+    look: "medium tan skin, short black hair, nervous polite face",
+    outfit: "light blue dress shirt",
+    seasons: ["eagles-week-1"],
+  },
+  candidateF: {
+    id: "candidateF",
+    name: "Candidate",
+    age: "young Salvadoran woman, about 25, job candidate",
+    look: "light-medium tan skin, dark hair in a low bun, polite face",
+    outfit: "white blouse",
+    seasons: ["eagles-week-1"],
+  },
+  candidateHotel: {
+    id: "candidateHotel",
+    name: "Candidate",
+    age: "Salvadoran woman in her 30s, hotel-experienced candidate (later revealed as Ana)",
+    look: "medium tan skin, dark brown hair tied back, calm mature face",
+    outfit: "burgundy blouse",
+    seasons: ["eagles-week-1"],
+  },
+};
+
+/** Canon entry for a speaker, or undefined for the narrator. */
+export function characterCanon(speaker: StorybookSpeaker): CharacterCanon | undefined {
+  if (speaker === "narrator") return undefined;
+  return CHARACTER_CANON[speaker];
+}
+
+/** Whether a character may appear in a given season module. */
+export function appearsInSeason(speaker: StorybookSpeaker, moduleId: string): boolean {
+  if (speaker === "narrator") return true;
+  const canon = characterCanon(speaker);
+  if (!canon) return false;
+  return canon.seasons.includes(moduleId as SeasonModuleId);
+}
+
+/**
+ * Exact physical description to paste into an artwork generation or correction
+ * prompt. Never describe a character from memory — always build it from here.
+ */
+export function buildCharacterPrompt(speaker: StorybookSpeaker): string {
+  const canon = characterCanon(speaker);
+  if (!canon) return "";
+  const never = canon.neverDo?.length ? ` Rules: ${canon.neverDo.join("; ")}.` : "";
+  return `${canon.name.toUpperCase()}: ${canon.age}; ${canon.look}; wearing ${canon.outfit}.${never}`;
+}
+
+/** Prompt block describing every character that appears in a scene. */
+export function buildScenePrompt(cast: StorybookSpeaker[]): string {
+  return cast
+    .filter((speaker) => speaker !== "narrator")
+    .map(buildCharacterPrompt)
+    .filter(Boolean)
+    .join("\n");
+}
