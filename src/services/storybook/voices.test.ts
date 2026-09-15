@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { STORYBOOK_EPISODES } from "./index";
 import { STORYBOOK_SEASONS } from "./seasons";
-import { speakerSound } from "./voices";
+import { speakerSound, canonicalSpeaker } from "./voices";
 import type { StorybookSpeaker } from "./types";
 
 const ASSETS = path.resolve(process.cwd(), "src/assets/storybook");
@@ -24,6 +24,7 @@ describe("storybook character voices", () => {
         if (speaker === "narrator") continue;
         const sound = speakerSound(speaker);
         const clash = bySound.get(sound);
+        if (clash && canonicalSpeaker(clash) === canonicalSpeaker(speaker)) continue;
         expect(clash, `${season.moduleId}: ${speaker} and ${clash} share the voice ${sound}`).toBeUndefined();
         bySound.set(sound, speaker);
       }

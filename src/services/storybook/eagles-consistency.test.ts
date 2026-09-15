@@ -3,7 +3,7 @@ import { existsSync, statSync, readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { STORYBOOK_SEASONS } from "./seasons";
 import { STORYBOOK_EPISODES } from "./index";
-import { speakerVoice, speakerTone, speakerSound, speakerName } from "./voices";
+import { speakerVoice, speakerTone, speakerSound, speakerName, canonicalSpeaker } from "./voices";
 import type { StorybookEpisode, StorybookSpeaker } from "./types";
 
 /**
@@ -111,7 +111,7 @@ describe("Season 6 voice consistency", () => {
         if (speaker === "narrator") continue;
         const voice = speakerSound(speaker);
         const owner = used.get(voice);
-        if (owner && owner !== speaker) {
+        if (owner && canonicalSpeaker(owner) !== canonicalSpeaker(speaker)) {
           throw new Error(`${speaker} and ${owner} share the voice ${voice}`);
         }
         used.set(voice, speaker);
@@ -136,12 +136,12 @@ describe("Season 6 keeps the sitcom dialogue format", () => {
 });
 
 describe("Interview candidates are never recurring cast members", () => {
-  const RECURRING: StorybookSpeaker[] = ["kat", "tito", "mateo", "luis", "dylan", "camila", "dani", "morgan", "mom", "bryan", "sofia"];
+  const RECURRING: StorybookSpeaker[] = ["kat", "tito", "mateo", "luis", "dylan", "camila", "dani", "morgan", "mom", "bryan", "sofia", "ana"];
 
   it("unnamed interviewees in Episode 15 use the Candidate speakers", () => {
     const ep15 = registered.find((e) => e.id === "eagles-ep15-a-great-teacher");
     expect(ep15, "episode 15 must be registered").toBeTruthy();
-    const interviewScenes = ["s3", "s5"];
+    const interviewScenes = ["s3", "s5", "s6"];
     for (const sceneId of interviewScenes) {
       const scene = ep15!.scenes.find((s) => s.id === sceneId);
       expect(scene, `${sceneId} must exist`).toBeTruthy();
@@ -149,7 +149,7 @@ describe("Interview candidates are never recurring cast members", () => {
       for (const recurring of RECURRING) {
         expect(speakers.has(recurring), `${sceneId} must not use ${recurring} as an interview candidate`).toBe(false);
       }
-      const hasCandidate = speakers.has("candidateM") || speakers.has("candidateF");
+      const hasCandidate = speakers.has("candidateM") || speakers.has("candidateF") || speakers.has("candidateHotel");
       expect(hasCandidate, `${sceneId} needs a Candidate speaker`).toBe(true);
     }
   });
@@ -157,5 +157,6 @@ describe("Interview candidates are never recurring cast members", () => {
   it("both candidate speakers are labelled Candidate", () => {
     expect(speakerName("candidateM")).toBe("Candidate");
     expect(speakerName("candidateF")).toBe("Candidate");
+    expect(speakerName("candidateHotel")).toBe("Candidate");
   });
 });
