@@ -1,51 +1,66 @@
-# Sharks: plan maestro revisado (episodios 9–20)
+# Plan: Repensar el arco de Sharks (Temporada 8)
 
-## El problema de lógica
+## Problema actual
+- El Episodio 8 cierra con una llamada de México interesado en llevar la idea de Vale Kids.
+- El Episodio 9 salta a una oferta de compra de marca, contratos exclusivos y cláusulas de Houston.
+- Vale Kids todavía no es una marca consolidada, ni existe una razón real para que alguien quiera comprarla.
+- Los conflictos legales/contractuales son difíciles de seguir para estudiantes B1 y no reflejan el método de la app (escuchar, hablar, practicar).
 
-El Episodio 8 termina con Vale Kids dando su **primera clase** (un grupo, un sábado) y con una llamada de México. El Episodio 9 abre con Renata hablando de **comprar la marca** y de franquicias. Nadie compra un negocio que acaba de nacer. Ese salto rompe la credibilidad y contamina lo que viene después (inversionista de 200 mil, cuatro países al mismo tiempo).
+## Nueva dirección propuesta
+Sharks será la temporada en la que Vale lleva su método a México **paso a paso**, con una aliada realista (Renata) que quiere replicar el modelo en su escuela, no comprarlo. El conflicto central es práctico: ¿cómo adaptar un método que funciona en El Salvador a otro país, cultura y horario?
 
-La corrección de fondo: la escalera debe subir escalón por escalón — *un grupo piloto → un acuerdo pequeño → un problema real → recuperación → crecimiento medido*. Nada de saltos a compra de marca ni expansión masiva.
+## Objetivos de aprendizaje B1→B2
+- Futuro, presente progresivo y pasado en diálogo fluido.
+- Expresiones de negociación, acuerdo, objeción y cierre.
+- Phrasal verbs e idiomas de negocios presentados como frases completas.
+- Monólogos de 45 segundos al final de los episodios 5, 10, 15 y 20.
 
-## Línea de tiempo acordada
+## Arco por episodios
 
-Sharks cubre aproximadamente un año. Al final Vale NO es multinacional: tiene una academia sólida, un contrato corporativo (Northline), un socio en México y un piloto regional. Eso deja espacio para Advanced 1–3.
+### Semana 1 (días 1–5): La puerta se abre
+- **Ep 1**: México llama. Renata, directora de una escuela en Monterrey, vio un video de Vale Kids y quiere saber cómo empezar.
+- **Ep 2**: Vale explica el método por videollamada. No es una franquicia; es un modelo de aula con historias y movimiento.
+- **Ep 3**: Renata prueba una clase piloto con 5 niños. El desafío: los niños mexicanos usan algunas palabras distintas.
+- **Ep 4**: Vale viaja (o se conecta) para entrenar a los maestros de Renata. Error cómico: un maestro habla demasiado español.
+- **Ep 5**: Primera clase piloto en México. Vale observa, corrige con respeto y cierra con un monólogo del estudiante sobre qué método usaría con un niño.
 
-## Lógica episodio por episodio (9–20)
+### Semana 2 (días 6–10): Primeros problemas reales
+- **Ep 6**: Los padres de Monterrey preguntan por resultados. Renata no sabe cómo medirlos.
+- **Ep 7**: Camila diseña una pequeña evaluación oral. Dani explica por qué no se usa examen escrito.
+- **Ep 8**: Un niño se frustra y no quiere hablar. Vale lo maneja con paciencia.
+- **Ep 9**: Renata quiere crecer a 3 grupos, pero no tiene suficientes maestros entrenados.
+- **Ep 10**: Deciden abrir una “escuela hermana” en vez de franquicia. Monólogo de cierre sobre un problema resuelto.
 
-**Ep 9 — La llamada de México.** Renata NO quiere comprar nada. Vio el video de Vale Kids y quiere probar el método con un grupo en su propia escuela en Monterrey. La tensión: Renata teme que sea una franquicia que le quite el nombre de su escuela; Vale aclara que es una licencia de método, un grupo piloto, tres meses. Cierra con Renata pidiendo verlo funcionar antes de firmar.
+### Semana 3 (días 11–15): Competencia y presión
+- **Ep 11**: BigTalk (o una escuela local copia) anuncia clases similares más baratas.
+- **Ep 12**: Renata quiere bajar precios. Vale explica que la calidad no se negocia.
+- **Ep 13**: Hacen una clase abierta para padres. Los niños enseñan lo que aprendieron.
+- **Ep 14**: Un padre difícil pide garantías. Renata responde con datos de la clase piloto.
+- **Ep 15**: Vale y Renata revisan el acuerdo. No es compra: es colaboración con metas claras. Monólogo de cierre sobre una decisión difícil.
 
-**Ep 10 — ¿Socia o rival?** Renata recibe un borrador con una cláusula de exclusividad que Houston (Reed) añadió sin avisar. El conflicto ya no es dinero grande, es confianza sobre un piloto pequeño. Reed se disculpa en la llamada. Cierra con el piloto firmado.
+### Semana 4 (días 16–20): Cierre y gancho para Advanced
+- **Ep 16**: La escuela hermana de México tiene su primera graduación simbólica.
+- **Ep 17**: Renata propone llevar el modelo a Guatemala. Vale dice que primero hay que documentar todo.
+- **Ep 18**: El equipo crea un manual sencillo para nuevos maestros.
+- **Ep 19**: Vale reflexiona: lo que empezó como una clase sabatina ahora conecta tres países.
+- **Ep 20**: Último episodio de Sharks. Una llamada inesperada abre Advanced: un corporativo internacional quiere entrenar a adultos con el método Vale. Monólogo final de 45 segundos.
 
-**Ep 11 — Qué salió mal.** La plataforma se cae dos horas durante clases, justo cuando el piloto de Monterrey empieza y Northline observa. Vale exige la causa raíz antes de disculparse.
+## Reglas de escritura para cada episodio
+1. Máximo 11 escenas, 33 líneas de diálogo, 500–650 palabras habladas.
+2. Cada escena debe tener al menos 3 palabras tocables contextualizadas y traducidas como frase cuando aplica.
+3. Exactamente 2 phrasal verbs y 1 idiom/collocation por episodio, siempre como expresión completa.
+4. Las preguntas de comprensión deben ser únicas y basadas en eventos específicos de ese episodio.
+5. Los "Say It" deben responder la pregunta planteada, no ser ejemplos genéricos.
+6. El cast debe respetar el canon: Vale, Dani, Camila, Renata, Lucía, Mr. Reed (remoto), Don Tito. Mateo no aparece en Sharks.
 
-**Ep 12 — Dilo con números.** Se vende más pero el margen no sube. Costo por clase contra precio por estudiante. Vale descubre que el piloto de Kids no es rentable todavía y decide qué corregir.
+## Tareas del plan
+1. Reescribir el guion maestro de Sharks (arco de 20 episodios) en un documento compartido.
+2. Reescribir los episodios 9 y 10 para que encajen con el nuevo arco.
+3. Revisar y ajustar los episodios 1–2 ya existentes si es necesario.
+4. Planificar y reescribir los episodios 11–20 en chunks de 5.
+5. Auditar cast, glossary, artwork prompts y quizzes después de cada chunk.
+6. Ejecutar tests de TypeScript y storybook antes de marcar cada chunk como listo.
 
-**Ep 13 — La negociación dura.** Un cliente corporativo nuevo (no Northline) exige 30% de descuento y exclusividad de tres años. Vale negocia términos, no precio, y acepta un contrato más pequeño con metas claras.
-
-**Ep 14 — Perder un cliente.** Northline cancela dos de cuatro programas: rotación de maestros y falta de seguimiento. Consecuencia directa del crecimiento del Ep 11–13.
-
-**Ep 15 — Recuperarlo.** Vale presenta pruebas medibles: un maestro permanente por grupo, reporte semanal. Northline da una segunda oportunidad condicionada.
-
-**Ep 16 — Un equipo en tres países.** El Salvador, Guatemala y el grupo de Monterrey. Husos horarios, una hora de traslape, estándares de calidad. Es coordinación, no imperio.
-
-**Ep 17 — El inversionista.** Oferta realista para el tamaño real de la academia: capital a cambio de participación, con presión para crecer rápido. Vale pregunta cómo calcularon la valuación y descubre que el dinero viene con condiciones que chocan con la calidad.
-
-**Ep 18 — Decir no con respeto.** El inversionista (o el cliente grande) pide cincuenta grupos en un mes. Vale dice que no, ofrece un plan por etapas y pierde la oferta grande ganando respeto.
-
-**Ep 19 — El acuerdo regional.** No cuatro países simultáneos: dos mercados (México y Guatemala) con calendario escalonado, marco legal distinto y aprobación por etapas.
-
-**Ep 20 — Los tiburones cierran tratos.** Cierre del año: de un aula con ocho sillas a un acuerdo regional real. Se firma, se reconoce al equipo y se deja el gancho hacia Advanced 1.
-
-## Qué se cambia en el código
-
-- Reescritura manual de guion en los episodios cuya premisa cambia: **9, 10, 17, 18, 19** (y ajuste de continuidad en 12 y 20 para que las cifras y el cierre coincidan con la nueva escala).
-- Los episodios **11, 13, 14, 15, 16** conservan su premisa; solo se revisan líneas de enlace y referencias a "cuatro países" o "compra de marca".
-- Se mantiene en cada episodio: 11 escenas, 33 líneas conectadas, 500–650 palabras, cast canónico (Dani hombre; Reed remoto desde Houston), tres palabras tocables contextuales por escena, dos phrasal verbs más un idiom/colocación, preguntas de comprensión propias de la trama, prompts de habla coherentes, imageAlt con sentido.
-- Arte: solo se regeneran escenas donde la nueva premisa contradiga la imagen (por ejemplo, presencia física de alguien que está remoto). El resto se conserva.
-- QA después de cada bloque: pruebas de storybook, chequeo de tipos, consistencia de cast y glosario.
-
-## Orden de trabajo
-
-1. Bloque A: episodios 9 y 10 (arreglan la ruptura que se ve hoy).
-2. Bloque B: episodios 11–16 (revisión de continuidad y cifras).
-3. Bloque C: episodios 17–20 (escala realista y cierre).
+## No incluido en este plan
+- No se modifica la estructura técnica del reproductor, los locks, ni el sistema de capítulos diarios.
+- No se regenera artwork de episodios que no cambien de escena/cast.
