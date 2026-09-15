@@ -1214,6 +1214,7 @@ export const BASE_GLOSSARY: Record<string, string> = {
 /** Character, place and language names used across the seasons. */
 export const PROPER_NOUNS: Record<string, string> = {
   vale: "Vale (nombre de persona)",
+  valeria: "Valeria (nombre completo de Vale)",
   "vale's": "de Vale",
   dani: "Dani (nombre de persona)",
   "dani's": "de Dani",
