@@ -98,13 +98,13 @@ export const TIGERS_EP17_THE_VISIT: StorybookEpisode = {
     {
       id: "s4",
       image: s4,
-      imageAlt: "Un miembro de la junta pregunta a una estudiante directamente.",
+      imageAlt: "Mr. Herrera pregunta a Ana, una estudiante joven de la clase, mientras Camila la acompaña.",
       text: "A board member turned to a student. Do you like this school? A direct question, no warning.",
       es: "Un miembro de la junta se dirigió a una estudiante. «¿Te gusta esta escuela?» Una pregunta directa, sin aviso.",
       speaker: "narrator",
       lines: [
         { speaker: "herrera", text: "Excuse me. Do you like this school?", es: "«Disculpe. ¿Le gusta esta escuela?»" },
-        { speaker: "vale", text: "…", es: "«…»" },
+        { speaker: "ana", text: "…", es: "«…»" },
         { speaker: "camila", text: "Take your time, Ana.", es: "«Tómate tu tiempo, Ana»." },
       ],
       words: [
@@ -119,10 +119,10 @@ export const TIGERS_EP17_THE_VISIT: StorybookEpisode = {
       imageAlt: "Ana responde en inglés, despacio y con una sonrisa enorme.",
       text: "I have been studying here for six months, and my life has changed. I am not afraid of English anymore.",
       es: "«He estado estudiando aquí por seis meses, y mi vida ha cambiado. Ya no le tengo miedo al inglés».",
-      speaker: "camila",
+      speaker: "ana",
       lines: [
-        { speaker: "camila", text: "I have been studying here for six months, and my life has changed.", es: "«He estado estudiando aquí por seis meses, y mi vida ha cambiado»." },
-        { speaker: "camila", text: "I am not afraid of English anymore. English is my friend now.", es: "«Ya no le tengo miedo al inglés. El inglés ahora es mi amigo»." },
+        { speaker: "ana", text: "I have been studying here for six months, and my life has changed.", es: "«He estado estudiando aquí por seis meses, y mi vida ha cambiado»." },
+        { speaker: "ana", text: "I am not afraid of English anymore. English is my friend now.", es: "«Ya no le tengo miedo al inglés. El inglés ahora es mi amigo»." },
         { speaker: "herrera", text: "…Thank you. That is the best answer I have heard in any school.", es: "«…Gracias. Esa es la mejor respuesta que he escuchado en cualquier escuela»." },
       ],
       words: [
@@ -209,10 +209,10 @@ export const TIGERS_EP17_THE_VISIT: StorybookEpisode = {
       imageAlt: "Beto dice su oración: ha estado aprendiendo inglés y ya no se esconde.",
       text: "I have been learning English for one year. I used to hide. Now I am talking to you.",
       es: "«He estado aprendiendo inglés por un año. Antes me escondía. Ahora les estoy hablando a ustedes».",
-      speaker: "vale",
+      speaker: "beto",
       lines: [
-        { speaker: "vale", text: "I have been learning English for one year. I used to hide from foreigners.", es: "«He estado aprendiendo inglés por un año. Antes me escondía de los extranjeros»." },
-        { speaker: "vale", text: "Now I am talking to three foreigners. Voluntarily. So… the school works. Thank you.", es: "«Ahora les estoy hablando a tres extranjeros. Voluntariamente. Así que… la escuela funciona. Gracias»." },
+        { speaker: "beto", text: "I have been learning English for one year. I used to hide from foreigners.", es: "«He estado aprendiendo inglés por un año. Antes me escondía de los extranjeros»." },
+        { speaker: "beto", text: "Now I am talking to three foreigners. Voluntarily. So… the school works. Thank you.", es: "«Ahora les estoy hablando a tres extranjeros. Voluntariamente. Así que… la escuela funciona. Gracias»." },
         { speaker: "herrera", text: "…That is the best presentation I have ever seen. And it wasn't even a presentation.", es: "«…Esa es la mejor presentación que he visto en mi vida. Y ni siquiera fue una presentación»." },
       ],
       words: [
