@@ -6,11 +6,15 @@
 - [x] Episodio 4 "The objection" (día 4: need to / don't have to)
 - [x] Episodio 5 "What would you do?" (día 5: segundo condicional)
 - [x] Episodio 6 "Then & now" (día 6: pasado y presente progresivo)
+- [x] Episodio 7 "Have you ever?" (día 7: presente perfecto)
+- [x] Episodio 8 "How long have you been…?" (día 8: presente perfecto progresivo)
+- [x] Episodio 9 "The complaint" (día 9: servicio al cliente)
+- [x] Episodio 10 "Two hours" (día 10: transferencia)
 - [x] Registro en el índice y en el calendario de la temporada
-- [x] 55 ilustraciones nuevas (768x768, <250 KB)
+- [x] 99 ilustraciones nuevas (768x768, <250 KB)
 - [x] Triple revisión de consistencia (imágenes + voces) automatizada
 - [x] Glosario completo en español
 - [x] Verificaciones de tipos y pruebas
 
 ## Pendiente
-- [ ] Episodios 7-20 de la temporada 6
+- [ ] Episodios 11-20 de la temporada 6
