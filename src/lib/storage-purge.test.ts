@@ -133,14 +133,13 @@ describe("runPurge", () => {
     expect(result.errors.some((e) => e.startsWith("OWNERSHIP MISMATCH"))).toBe(true);
   });
 
-  it("skips a day final whose derived latest path is not owned", async () => {
+  it("skips a day final whose path is not owned by its user", async () => {
     const bad = { ...dayFinal(7), recording_path: "u1/basic-zero-day-7.webm" };
-    // A path with no extension derives a latest path that keeps no owner prefix.
     const broken = { ...dayFinal(8), user_id: "u1", recording_path: "u2/basic-zero-day-8.webm" };
     const { admin, removed } = fakeAdmin({ recordings: [[]], dayFinals: [[bad, broken], []] });
     const result = await runPurge(admin as never, { now: NOW });
 
-    expect(removed).toEqual([["u1/basic-zero-day-7.webm", "u1/basic-zero-day-7-latest.webm"]]);
+    expect(removed).toEqual([["u1/basic-zero-day-7.webm"]]);
     expect(result.dayFinalDeletedFiles).toBe(1);
     expect(result.dayFinalMarkedRows).toBe(1);
     expect(result.errors.some((e) => e.startsWith("OWNERSHIP MISMATCH"))).toBe(true);
