@@ -20,7 +20,6 @@ export function CatchUpCard({ showEs }: { showEs: boolean }) {
     setPlan(readCatchUpPlan());
   }, []);
 
-  if (typeof window !== "undefined") console.log("catchup plan", JSON.stringify(plan));
   if (!plan) return null;
 
   if (!plan.active) {
