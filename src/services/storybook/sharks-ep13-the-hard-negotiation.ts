@@ -136,8 +136,8 @@ export const SHARKS_EP13_THE_HARD_NEGOTIATION: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "Dani defends Marco's feelings. You defend his students. Both are love, different directions.",
-          "es": "Dani defiende los sentimientos de Marco. Tú defiendes a sus estudiantes. Ambos son cariño, en direcciones distintas."
+          "text": "Dani defends Marco's feelings. You defend his students. Both are love, just pointed in different directions, and the room feels it.",
+          "es": "Dani defiende los sentimientos de Marco. Tú defiendes a sus estudiantes. Ambos son cariño, apuntando en direcciones distintas, y la sala lo siente."
         }
       ],
       "words": [
@@ -229,8 +229,8 @@ export const SHARKS_EP13_THE_HARD_NEGOTIATION: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "You really believe that? After you tell him his group is the worst in the academy?",
-          "es": "¿De verdad lo crees? ¿Después de decirle que su grupo es el peor de la academia?"
+          "text": "You really believe that? After you tell him his group is the worst in the academy? After you take away the title he worked two years to earn?",
+          "es": "¿De verdad lo crees? ¿Después de decirle que su grupo es el peor de la academia? ¿Después de quitarle el título que trabajó dos años para ganar?"
         }
       ],
       "words": [
