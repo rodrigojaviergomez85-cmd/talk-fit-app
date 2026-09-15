@@ -115,13 +115,24 @@ function CoachCheckPage() {
 
         <StatusLine status={status} />
 
-        {practices.length === 0 ? (
+        {(day?.practices ?? practices.length) === 0 ? (
           <section className="rounded-3xl border border-destructive/30 bg-card p-5 text-center shadow-[var(--shadow-card)]">
             <p className="text-[18px] font-extrabold uppercase tracking-tight">🔴 {t("coach.none")}</p>
             <p className="mt-2 text-[14px] font-semibold text-muted-foreground">
               {t("coach.noneBody")} {formatSentenceDate(selected, lang)}.
             </p>
           </section>
+        ) : day ? (
+          <DaySummary payload={day}>
+            {practices.map((record, i) => (
+              <PracticeCard
+                key={`${record.moduleId}:${record.day}`}
+                record={record}
+                {...(practices.length > 1 ? { index: i } : {})}
+                {...(practices.length === 1 ? { recordingsCount: day.recordings } : {})}
+              />
+            ))}
+          </DaySummary>
         ) : (
           <section className="space-y-3">
             <p className="text-[18px] font-extrabold uppercase tracking-tight">
@@ -136,6 +147,7 @@ function CoachCheckPage() {
             ))}
           </section>
         )}
+
 
         <SevenDayHistory counts={counts} selected={selected} onSelect={select} />
       </div>
