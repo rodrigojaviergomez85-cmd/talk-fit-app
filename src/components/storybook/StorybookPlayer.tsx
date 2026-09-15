@@ -47,6 +47,7 @@ function buildSlides(episode: StorybookEpisode): Slide[] {
       slides.push({ kind: "quiz", quiz });
     }
   }
+  if (episode.expressions?.length) slides.push({ kind: "natives" });
   slides.push({ kind: "finale" });
   return slides;
 }
