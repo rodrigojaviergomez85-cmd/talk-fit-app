@@ -3,6 +3,16 @@
 ## Visión del cierre
 Vale termina como empresaria internacional: presencia en 12+ países, clases para niños, cientos de empleados. Dani crece en el mundo corporativo hasta convertirse en **presidenta de El Salvador**, impulsando educación de calidad para todos. El mensaje final al estudiante: perseverancia + inglés = transformación real ("I can do it", "English is easy", "Mistakes are part of the process").
 
+## Salto a B2 real (lo nuevo para estos 4 meses)
+Las temporadas 1–7 enseñan estructuras. Para que el estudiante salga hablando B2 de verdad, Sharks y Advanced suben la exigencia con estas seis capas:
+
+1. **Menos repetir, más producir.** Cada episodio pasa de 2–3 turnos guiados a 4 turnos: 2 guiados + 2 abiertos donde el estudiante opina, no completa. Ejemplo: "Should Vale accept the offer? Say why." (respuesta libre, mínimo 2 oraciones).
+2. **Monólogo de 45 segundos por episodio.** Reemplaza el final de 15 s: el estudiante resume, opina o defiende una postura. Se califica por longitud, uso de la estructura del día y conectores — no por coincidencia exacta.
+3. **Español que desaparece.** Sharks muestra la traducción solo si el estudiante la pide; Advanced 1 la limita al glosario; Advanced 2–3 la quitan del diálogo. Inglés-a-inglés: las definiciones del glosario pasan a ser en inglés simple con la traducción abajo.
+4. **Velocidad y largo nativos.** Audio por defecto a 1.0×, con 1.25× disponible; líneas más largas (12–20 palabras), interrupciones, y expresiones reales (collocations, idioms de negocio, phrasal verbs) marcadas como vocabulario del día.
+5. **Meta de vocabulario activo.** 25 palabras/expresiones nuevas por episodio = 2,000 en las 4 temporadas, con reciclaje espaciado: cada episodio reusa 5 palabras de episodios anteriores dentro del diálogo y al menos 1 en una pregunta calificada.
+6. **Checkpoints B2.** Día 5, 10, 15 y 20 de cada temporada: episodio de evaluación hablada (sin opciones múltiples) — debate, presentación de 1 minuto, entrevista de trabajo simulada y defensa de una decisión. El último día de Advanced 3 es el examen de salida oral completo.
+
 ## Arco por temporada (B1 sólido → B2)
 
 ### Season 8 — Sharks (Días 1–20): "Vale cruza fronteras"
