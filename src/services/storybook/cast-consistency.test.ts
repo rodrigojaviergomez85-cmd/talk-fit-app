@@ -119,11 +119,15 @@ describe("storybook cast consistency", () => {
   it("ships real artwork for every registered scene", () => {
     const offenders: string[] = [];
     for (const episode of EPISODES) {
-      const dir = resolve(ASSETS, episode.id);
       for (const scene of episode.scenes) {
-        const file = resolve(dir, `${scene.id}.jpg`);
+        const relative = scene.image.split("src/assets/storybook/")[1];
+        if (!relative) {
+          offenders.push(`${episode.id}/${scene.id}: image is not a storybook asset`);
+          continue;
+        }
+        const file = resolve(ASSETS, relative);
         if (!existsSync(file)) {
-          offenders.push(`${episode.id}/${scene.id}.jpg missing`);
+          offenders.push(`${relative} missing`);
           continue;
         }
         const size = statSync(file).size;
