@@ -61,7 +61,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "Exactly. We are selling more every month, but we are not keeping more at the end of it.",
+          text: "Exactly. We are selling more and more every month, but we are not keeping more at the end of it.",
           es: "Exacto. Vendemos más cada mes, pero no nos queda más al final."
         }
       ],
@@ -154,7 +154,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "It is. BigTalk loses almost twenty percent of students every quarter, and they spend double on ads.",
+          text: "It is. BigTalk loses almost twenty percent of their students every quarter, and they spend double on ads.",
           es: "Lo es. BigTalk pierde casi veinte por ciento de estudiantes cada trimestre, y gastan el doble en anuncios."
         }
       ],
@@ -278,7 +278,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "One is twelve days, the other three weeks. Both clients answered my email yesterday with excuses.",
+          text: "One is twelve days late, the other three weeks. Both clients answered my email yesterday with excuses.",
           es: "Una de doce días, la otra de tres semanas. Ambos clientes respondieron mi correo ayer con excusas."
         }
       ],
@@ -340,7 +340,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "That is a story any investor can repeat at lunch without opening a single spreadsheet.",
+          text: "That is a story any investor can repeat at lunch without opening a single spreadsheet or report.",
           es: "Esa es una historia que cualquier inversionista puede repetir en un almuerzo sin abrir una sola hoja de cálculo."
         }
       ],
