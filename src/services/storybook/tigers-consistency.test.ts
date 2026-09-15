@@ -205,3 +205,32 @@ describe("Tigers 17 — student lines", () => {
     expect(betoLine?.speaker).toBe("beto");
   });
 });
+
+/**
+ * Tigers 19: the cast is only Vale, Camila, Dani and Sofia (plus narrator).
+ * No unnamed or new characters may appear in the episode.
+ */
+describe("Tigers 19 — cast", () => {
+  const ep = STORYBOOK_EPISODES.find((e) => e.id === "tigers-ep19-new-leaders");
+  const allowed = new Set(["vale", "camila", "dani", "sofia", "narrator"]);
+
+  it("exists", () => {
+    expect(ep).toBeTruthy();
+  });
+
+  it("uses only canonical characters", () => {
+    const speakers = new Set<string>();
+    for (const scene of ep?.scenes ?? []) {
+      if (scene.speaker) speakers.add(scene.speaker);
+      for (const line of scene.lines ?? []) speakers.add(line.speaker);
+    }
+    expect([...speakers].filter((s) => !allowed.has(s))).toEqual([]);
+  });
+
+  it("features Camila and Dani in the closing scene", () => {
+    const closing = ep?.scenes[ep.scenes.length - 1];
+    const text = (closing?.lines ?? []).map((l) => l.text).join(" ");
+    expect(text).toContain("Camila");
+    expect(text).toContain("Dani");
+  });
+});
