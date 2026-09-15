@@ -101,7 +101,7 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "Then we do not match it. Nobody wins a race to the bottom, Dani.",
+          "text": "Then we do not match it. Nobody ever wins a race to the bottom, Dani.",
           "es": "Entonces no lo igualamos. Nadie gana una carrera hacia el fondo, Dani."
         },
         {
