@@ -14,6 +14,7 @@ import season3Cover from "@/assets/storybook/vale-s3-ep1/cover.jpg";
 import season4Cover from "@/assets/storybook/vale-s4-ep1/cover.jpg";
 import season5Cover from "@/assets/storybook/vale-s5-first-students/cover.jpg";
 import season6Cover from "@/assets/storybook/eagles-ep1-the-offer/cover.jpg";
+import season7Cover from "@/assets/storybook/tigers-ep1-a-decision-i-made/cover.jpg";
 
 export type SeasonWeek = 1 | 2 | 3 | 4;
 
@@ -247,6 +248,39 @@ export const STORYBOOK_SEASONS: Season[] = [
       { day: 18, episodeId: "eagles-ep18-danis-long-road", teaser: { en: "Dani's long road", es: "El largo camino de Dani" } },
       { day: 19, episodeId: "eagles-ep19-the-angry-director", teaser: { en: "The angry director", es: "El director molesto" } },
       { day: 20, episodeId: "eagles-ep20-the-contract", teaser: { en: "The contract", es: "El contrato" } },
+    ],
+  },
+  {
+    moduleId: "tigers",
+    seasonNumber: 7,
+    title: { en: "Season 7 · Tigers", es: "Temporada 7 · Tigers" },
+    blurb: {
+      en: "The competitor: BigTalk tries to buy Vale's school — and loses more than a contract.",
+      es: "El competidor: BigTalk intenta comprar la escuela de Vale — y pierde más que un contrato.",
+    },
+    image: season7Cover,
+    imageAlt: { en: "Vale's school faces the BigTalk chain across the street", es: "La escuela de Vale enfrenta a la cadena BigTalk al otro lado de la calle" },
+    slots: [
+      { day: 1, episodeId: "tigers-ep1-a-decision-i-made", teaser: { en: "A decision I made", es: "Una decisión que tomé" } },
+      { day: 2, episodeId: "tigers-ep2-what-could-happen", teaser: { en: "What could happen?", es: "¿Qué podría pasar?" } },
+      { day: 3, episodeId: "tigers-ep3-give-advice", teaser: { en: "Give advice", es: "Da un consejo" } },
+      { day: 4, episodeId: "tigers-ep4-what-needs-to-change", teaser: { en: "What needs to change", es: "Lo que tiene que cambiar" } },
+      { day: 5, episodeId: "tigers-ep5-what-would-you-do", teaser: { en: "What would you do?", es: "¿Qué harías tú?" } },
+      { day: 6, episodeId: "tigers-ep6-then-vs-now", teaser: { en: "Then vs. now", es: "Antes vs. ahora" } },
+      { day: 7, episodeId: "tigers-ep7-your-experience", teaser: { en: "Your experience", es: "Tu experiencia" } },
+      { day: 8, episodeId: "tigers-ep8-working-on", teaser: { en: "What we've been working on", es: "En qué hemos estado trabajando" } },
+      { day: 9, episodeId: "tigers-ep9-why-are-you-ready", teaser: { en: "Why are you ready?", es: "¿Por qué estás lista?" } },
+      { day: 10, episodeId: "tigers-ep10-interview-challenge", teaser: { en: "Job interview challenge", es: "El reto de la entrevista" } },
+      { day: 11, episodeId: "tigers-ep11-the-old-days", teaser: { en: "The old days", es: "Los viejos tiempos" } },
+      { day: 12, episodeId: "tigers-ep12-smaller-but-better", teaser: { en: "Smaller, but better", es: "Más pequeña, pero mejor" } },
+      { day: 13, episodeId: "tigers-ep13-the-best-of-the-city", teaser: { en: "The best in the city", es: "La mejor de la ciudad" } },
+      { day: 14, episodeId: "tigers-ep14-the-phone-never-stops", teaser: { en: "The phone never stops", es: "El teléfono no para" } },
+      { day: 15, episodeId: "tigers-ep15-last-offer", teaser: { en: "The last offer", es: "La última oferta" } },
+      { day: 16, episodeId: "tigers-ep16-what-we-have-achieved", teaser: { en: "What we have achieved", es: "Lo que hemos logrado" } },
+      { day: 17, episodeId: "tigers-ep17-the-visit", teaser: { en: "The visit", es: "La visita" } },
+      { day: 18, episodeId: "tigers-ep18-the-vote", teaser: { en: "The vote", es: "El voto" } },
+      { day: 19, episodeId: "tigers-ep19-new-leaders", teaser: { en: "New leaders", es: "Nuevos líderes" } },
+      { day: 20, episodeId: "tigers-ep20-defend-your-decision", teaser: { en: "Defend your decision", es: "Defiende tu decisión" } },
     ],
   },
 ];

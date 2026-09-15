@@ -118,6 +118,26 @@ import { EAGLES_EP17_SO_FAR_SO_GOOD } from "./eagles-ep17-so-far-so-good";
 import { EAGLES_EP18_DANIS_LONG_ROAD } from "./eagles-ep18-danis-long-road";
 import { EAGLES_EP19_THE_ANGRY_DIRECTOR } from "./eagles-ep19-the-angry-director";
 import { EAGLES_EP20_THE_CONTRACT } from "./eagles-ep20-the-contract";
+import { TIGERS_EP1_A_DECISION_I_MADE } from "./tigers-ep1-a-decision-i-made";
+import { TIGERS_EP2_WHAT_COULD_HAPPEN } from "./tigers-ep2-what-could-happen";
+import { TIGERS_EP3_GIVE_ADVICE } from "./tigers-ep3-give-advice";
+import { TIGERS_EP4_WHAT_NEEDS_TO_CHANGE } from "./tigers-ep4-what-needs-to-change";
+import { TIGERS_EP5_WHAT_WOULD_YOU_DO } from "./tigers-ep5-what-would-you-do";
+import { TIGERS_EP6_THEN_VS_NOW } from "./tigers-ep6-then-vs-now";
+import { TIGERS_EP7_YOUR_EXPERIENCE } from "./tigers-ep7-your-experience";
+import { TIGERS_EP8_WORKING_ON } from "./tigers-ep8-working-on";
+import { TIGERS_EP9_WHY_ARE_YOU_READY } from "./tigers-ep9-why-are-you-ready";
+import { TIGERS_EP10_INTERVIEW_CHALLENGE } from "./tigers-ep10-interview-challenge";
+import { TIGERS_EP11_THE_OLD_DAYS } from "./tigers-ep11-the-old-days";
+import { TIGERS_EP12_SMALLER_BUT_BETTER } from "./tigers-ep12-smaller-but-better";
+import { TIGERS_EP13_THE_BEST_OF_THE_CITY } from "./tigers-ep13-the-best-of-the-city";
+import { TIGERS_EP14_THE_PHONE_NEVER_STOPS } from "./tigers-ep14-the-phone-never-stops";
+import { TIGERS_EP15_LAST_OFFER } from "./tigers-ep15-last-offer";
+import { TIGERS_EP16_WHAT_WE_HAVE_ACHIEVED } from "./tigers-ep16-what-we-have-achieved";
+import { TIGERS_EP17_THE_VISIT } from "./tigers-ep17-the-visit";
+import { TIGERS_EP18_THE_VOTE } from "./tigers-ep18-the-vote";
+import { TIGERS_EP19_NEW_LEADERS } from "./tigers-ep19-new-leaders";
+import { TIGERS_EP20_DEFEND_YOUR_DECISION } from "./tigers-ep20-defend-your-decision";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -241,6 +261,26 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   EAGLES_EP18_DANIS_LONG_ROAD,
   EAGLES_EP19_THE_ANGRY_DIRECTOR,
   EAGLES_EP20_THE_CONTRACT,
+  TIGERS_EP1_A_DECISION_I_MADE,
+  TIGERS_EP2_WHAT_COULD_HAPPEN,
+  TIGERS_EP3_GIVE_ADVICE,
+  TIGERS_EP4_WHAT_NEEDS_TO_CHANGE,
+  TIGERS_EP5_WHAT_WOULD_YOU_DO,
+  TIGERS_EP6_THEN_VS_NOW,
+  TIGERS_EP7_YOUR_EXPERIENCE,
+  TIGERS_EP8_WORKING_ON,
+  TIGERS_EP9_WHY_ARE_YOU_READY,
+  TIGERS_EP10_INTERVIEW_CHALLENGE,
+  TIGERS_EP11_THE_OLD_DAYS,
+  TIGERS_EP12_SMALLER_BUT_BETTER,
+  TIGERS_EP13_THE_BEST_OF_THE_CITY,
+  TIGERS_EP14_THE_PHONE_NEVER_STOPS,
+  TIGERS_EP15_LAST_OFFER,
+  TIGERS_EP16_WHAT_WE_HAVE_ACHIEVED,
+  TIGERS_EP17_THE_VISIT,
+  TIGERS_EP18_THE_VOTE,
+  TIGERS_EP19_NEW_LEADERS,
+  TIGERS_EP20_DEFEND_YOUR_DECISION,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
