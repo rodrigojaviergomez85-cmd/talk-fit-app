@@ -74,14 +74,21 @@ export function StorybookPlayer({
   const episodeGlossary = useMemo(() => buildEpisodeGlossary(episode), [episode]);
   // Leaving the episode keeps the scene the learner was on.
   const posKey = `sb-pos-${episode.id}`;
-  const [idx, setIdx] = useState(() => {
-    if (typeof window === "undefined") return 0;
-    const saved = Number(window.localStorage.getItem(posKey) ?? "0");
-    if (!Number.isFinite(saved) || saved <= 0) return 0;
-    return Math.min(saved, buildSlides(episode).length - 1);
-  });
+  // Start at 0 during SSR and first client render so hydration matches;
+  // restore the saved position right after mount.
+  const [idx, setIdx] = useState(0);
+  const posRestoredRef = useRef(false);
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (posRestoredRef.current) return;
+    posRestoredRef.current = true;
+    const saved = Number(window.localStorage.getItem(posKey) ?? "0");
+    if (Number.isFinite(saved) && saved > 0) {
+      setIdx(Math.min(saved, buildSlides(episode).length - 1));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [posKey, episode]);
+  useEffect(() => {
+    if (typeof window === "undefined" || !posRestoredRef.current) return;
     try {
       window.localStorage.setItem(posKey, String(idx));
     } catch {

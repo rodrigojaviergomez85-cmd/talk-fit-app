@@ -18,3 +18,8 @@
 
 ## Pendiente
 - [x] Episodios 11-20 de la temporada 6 (guiones, arte, glosario y pruebas)
+- [x] Cierre T6: fix de hidratación en el reproductor, triple revisión visual de episodios 11–20, rutas OK (200), 48 pruebas verdes
+
+## Siguiente
+- [ ] Temporada 7 (Tigers) — plan maestro ya mapeado en .lovable/plan/
+- [ ] Temporada 8 (Sharks), 9-11 (Advanced 1-3)
