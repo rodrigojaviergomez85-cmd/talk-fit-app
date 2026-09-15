@@ -157,8 +157,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
-          "text": "Okay, but growth is still good, right? More students, more invoices, more everything.",
-          "es": "Okay, pero el crecimiento sigue siendo bueno, ¿no? Más estudiantes, más facturas, más todo."
+          "text": "Okay, but growth is still good, right? More students, more invoices, more of everything.",
+          "es": "Okay, pero el crecimiento sigue siendo bueno, ¿no? Más estudiantes, más facturas, más de todo."
         },
         {
           "speaker": "camila",
