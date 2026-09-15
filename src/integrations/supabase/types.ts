@@ -1537,6 +1537,16 @@ export type Database = {
           which: string
         }[]
       }
+      record_story_view: {
+        Args: {
+          _completed: boolean
+          _episode_id: string
+          _episode_number: number
+          _scene_index: number
+          _season: number
+        }
+        Returns: undefined
+      }
       release_tts_lock: {
         Args: { _clip_key: string; _owner: string }
         Returns: boolean
