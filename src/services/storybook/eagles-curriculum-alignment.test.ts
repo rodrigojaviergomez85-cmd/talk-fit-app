@@ -20,6 +20,14 @@ const DAY_PATTERNS: Record<number, RegExp[]> = {
   5: [/if i .*, i would|i would/i],
   // Day 6 — past progressive + present progressive (before vs. now)
   6: [/was \*|was \w+ing/i, /right now i am|right now i'm|i am \w+ing|i'm \w+ing/i],
+  // Day 7 — present perfect: experiences (have you ever / I have ...)
+  7: [/i have |i've /i],
+  // Day 8 — present perfect progressive: how long (I have been ...)
+  8: [/i have been|i've been/i],
+  // Day 9 — customer service: past + present perfect + perfect progressive
+  9: [/it was .* because|it was \*/i, /i have /i, /i have been/i],
+  // Day 10 — transfer: a new problem with the same three forms
+  10: [/it happened|it was \*/i, /i have been/i, /i have /i],
 };
 
 const season6 = STORYBOOK_SEASONS.find((s) => s.moduleId === "eagles-week-1");

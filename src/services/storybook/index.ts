@@ -104,6 +104,10 @@ import { EAGLES_EP3_THE_COMPETITOR } from "./eagles-ep3-the-competitor";
 import { EAGLES_EP4_THE_OBJECTION } from "./eagles-ep4-the-objection";
 import { EAGLES_EP5_WHAT_WOULD_YOU_DO } from "./eagles-ep5-what-would-you-do";
 import { EAGLES_EP6_THEN_AND_NOW } from "./eagles-ep6-then-and-now";
+import { EAGLES_EP7_HAVE_YOU_EVER } from "./eagles-ep7-have-you-ever";
+import { EAGLES_EP8_HOW_LONG } from "./eagles-ep8-how-long";
+import { EAGLES_EP9_THE_COMPLAINT } from "./eagles-ep9-the-complaint";
+import { EAGLES_EP10_TWO_HOURS } from "./eagles-ep10-two-hours";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -213,6 +217,10 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   EAGLES_EP4_THE_OBJECTION,
   EAGLES_EP5_WHAT_WOULD_YOU_DO,
   EAGLES_EP6_THEN_AND_NOW,
+  EAGLES_EP7_HAVE_YOU_EVER,
+  EAGLES_EP8_HOW_LONG,
+  EAGLES_EP9_THE_COMPLAINT,
+  EAGLES_EP10_TWO_HOURS,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
