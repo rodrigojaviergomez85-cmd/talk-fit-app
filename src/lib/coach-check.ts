@@ -84,3 +84,42 @@ export function formatTime(iso: string, lang: AppLang): string {
   if (Number.isNaN(date.getTime())) return "";
   return date.toLocaleTimeString(locale(lang), { hour: "numeric", minute: "2-digit" });
 }
+
+/** One playable final audio as reported by the `coach_check_day` RPC. */
+export type CoachAudio = {
+  path: string;
+  kind: "base" | "latest";
+  recorded_at: string | null;
+  available_until: string | null;
+  expired: boolean;
+};
+
+/** Payload of the `coach_check_day` RPC — the server's own counts. */
+export type CoachCheckDayPayload = {
+  day_key: string;
+  retention_days: number;
+  practices: number;
+  recordings: number;
+  audios: CoachAudio[];
+};
+
+export type DaySummaryView = {
+  practices: number;
+  /** Counted from rows, never from the list of files that still exist. */
+  recordings: number;
+  /** `none` = nothing practised, `expired` = audio deleted, activity kept. */
+  state: "none" | "available" | "expired";
+  /** Latest expiry among the playable audios, ISO, only when `available`. */
+  availableUntil: string | null;
+};
+
+/** What the Coach Check card for one date must show, from the server payload. */
+export function summarizeDay(payload: CoachCheckDayPayload): DaySummaryView {
+  const alive = payload.audios.filter((a) => !a.expired && a.available_until);
+  const availableUntil = alive
+    .map((a) => a.available_until as string)
+    .sort()
+    .at(-1) ?? null;
+  const state = payload.practices === 0 ? "none" : alive.length > 0 ? "available" : "expired";
+  return { practices: payload.practices, recordings: payload.recordings, state, availableUntil };
+}
