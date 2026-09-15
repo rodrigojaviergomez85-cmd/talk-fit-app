@@ -28,6 +28,26 @@ const DAY_PATTERNS: Record<number, RegExp[]> = {
   9: [/it was .* because|it was \*/i, /i have /i, /i have been/i],
   // Day 10 — transfer: a new problem with the same three forms
   10: [/it happened|it was \*/i, /i have been/i, /i have /i],
+  // Day 11 — used to: past habits vs current habits
+  11: [/used to/i, /now i/i],
+  // Day 12 — short comparatives
+  12: [/better than/i, /cheaper than|faster than/i],
+  // Day 13 — long comparatives
+  13: [/more convenient/i, /more comfortable|more flexible/i],
+  // Day 14 — superlatives with several criteria
+  14: [/the best/i, /the most/i],
+  // Day 15 — simple present: qualities + justification
+  15: [/a great (teacher|employee)/i, /because/i],
+  // Day 16 — simple future: going to / will
+  16: [/going to/i, /i will|i'll/i],
+  // Day 17 — present perfect: already / yet / so far
+  17: [/already/i, /yet|so far/i],
+  // Day 18 — present perfect progressive: long effort + next step
+  18: [/i have been/i, /for |since /i],
+  // Day 19 — customer service #2: acknowledge, own, solve, confirm
+  19: [/i understand|i'm sorry/i, /i will/i],
+  // Day 20 — consultative sales: recommend + reason + close
+  20: [/i recommend/i, /because|if we start/i],
 };
 
 const season6 = STORYBOOK_SEASONS.find((s) => s.moduleId === "eagles-week-1");
