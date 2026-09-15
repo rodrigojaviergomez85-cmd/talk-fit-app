@@ -219,7 +219,7 @@ export const EAGLES_EP3_THE_COMPETITOR: StorybookEpisode = {
       ],
       words: [
         { word: "race", es: "carrera" },
-        { word: "told", es: "dijo" },
+        { word: "tell", es: "decir" },
         { word: "people", es: "personas" },
       ],
     },
