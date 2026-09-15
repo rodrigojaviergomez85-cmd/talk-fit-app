@@ -1,4 +1,5 @@
 import type { StorybookEpisode } from "./types";
+
 import cover from "@/assets/storybook/sharks-ep14-losing-a-client/cover.jpg";
 import s1 from "@/assets/storybook/sharks-ep14-losing-a-client/s1.jpg";
 import s2 from "@/assets/storybook/sharks-ep14-losing-a-client/s2.jpg";
@@ -100,7 +101,7 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "Then we do not match it. Nobody wins a race to the bottom, Dani.",
+          "text": "Then we do not match it. Nobody ever wins a race to the very bottom, Dani.",
           "es": "Entonces no lo igualamos. Nadie gana una carrera hacia el fondo, Dani."
         },
         {
@@ -131,13 +132,13 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "I appreciate that, Mr. Reed. Was it only the price, or did we fail you somewhere?",
-          "es": "Se lo agradezco, señor Reed. ¿Fue solo el precio, o le fallamos en algo?"
+          "text": "I appreciate that, Mr. Reed. Was it only the price, or did we fail you somewhere along the way?",
+          "es": "Se lo agradezco, señor Reed. ¿Fue solo el precio, o le fallamos en algo del camino?"
         },
         {
           "speaker": "reed",
-          "text": "Two complaints about teacher changes, then the feedback in the survey dropped. Price was the excuse.",
-          "es": "Dos quejas por cambios de maestro, luego bajaron los comentarios en la encuesta. El precio fue la excusa."
+          "text": "Two complaints about teacher changes, then the feedback in the survey dropped hard. Price was just the excuse.",
+          "es": "Dos quejas por cambios de maestro, luego bajaron fuerte los comentarios en la encuesta. El precio fue solo la excusa."
         }
       ],
       "words": [
@@ -193,8 +194,8 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "I am not asking you to reverse it. I am asking for thirty days to show you something.",
-          "es": "No le pido que la revierta. Le pido treinta días para mostrarle algo."
+          "text": "I am not asking you to reverse it today. I am asking for thirty days to show you something truly important.",
+          "es": "No le pido que la revierta hoy. Le pido treinta días para mostrarle algo verdaderamente importante."
         },
         {
           "speaker": "reed",
@@ -224,13 +225,13 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
         },
         {
           "speaker": "reed",
-          "text": "You would teach for free for a month? That is either confidence or madness.",
-          "es": "¿Enseñaría gratis por un mes? Eso es confianza o locura."
+          "text": "You would teach for free for a whole month? That is either great confidence or complete madness.",
+          "es": "¿Enseñaría gratis durante un mes completo? Eso es o gran confianza o completa locura."
         },
         {
           "speaker": "vale",
-          "text": "It is satisfaction insurance, Mr. Reed. If they are not happier, we leave quietly.",
-          "es": "Es un seguro de satisfacción, señor Reed. Si no están más contentos, nos vamos en silencio."
+          "text": "It is satisfaction insurance, Mr. Reed. If your people are not happier, we leave quietly and you lose nothing.",
+          "es": "Es un seguro de satisfacción, señor Reed. Si su gente no está más contenta, nos vamos en silencio y usted no pierde nada."
         }
       ],
       "words": [
@@ -312,8 +313,8 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
-          "text": "The unhappy parents in Guatemala, the hard talk with Marco, and now San Miguel. Heavy week.",
-          "es": "Los padres molestos en Guatemala, la charla difícil con Marco, y ahora San Miguel. Semana pesada."
+          "text": "The unhappy parents in Guatemala, the hard talk with Marco, and now San Miguel. This has been a heavy week.",
+          "es": "Los padres molestos en Guatemala, la charla difícil con Marco, y ahora San Miguel. Esta ha sido una semana pesada."
         },
         {
           "speaker": "vale",
@@ -322,8 +323,8 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "Comfortable sounds nice right now, I am not going to lie.",
-          "es": "Cómodo suena bonito ahorita, no voy a mentir."
+          "text": "Comfortable sounds nice right now, I am not going to lie to you.",
+          "es": "Cómodo suena bonito ahorita, no te voy a mentir."
         }
       ],
       "words": [
@@ -374,8 +375,8 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
-          "text": "What if we do everything right and they still leave?",
-          "es": "¿Y si hacemos todo bien y aun así se van?"
+          "text": "What if we do everything right, every single class, and they still leave at the end of the month?",
+          "es": "¿Y si hacemos todo bien, cada clase, y aun así se van al final del mes?"
         },
         {
           "speaker": "vale",
@@ -391,7 +392,7 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
       "words": [
         { "word": "materials", "es": "materiales" },
         { "word": "win back", "es": "recuperar / reconquistar" },
-        { "word": "one at a time", "es": "uno a la vez" }
+        { "word": "one class at a time", "es": "una clase a la vez" }
       ]
     }
   ],

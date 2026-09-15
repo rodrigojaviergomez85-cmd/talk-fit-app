@@ -105,7 +105,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "Retraining. Every class that fails costs us a refund, a free class, and a reputation repair that takes weeks of patience.",
+          "text": "Retraining. Every single class that fails costs us a refund, a free class, and a reputation repair that takes weeks of patience.",
           "es": "Recapacitación. Cada clase que falla nos cuesta un reembolso, una clase gratis y una reparación de reputación que toma semanas de paciencia."
         }
       ],
@@ -157,8 +157,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
-          "text": "Okay, but growth is still good, right? More students, more invoices, more everything.",
-          "es": "Okay, pero el crecimiento sigue siendo bueno, ¿no? Más estudiantes, más facturas, más todo."
+          "text": "Okay, but growth is still good, right? More students, more invoices, more of everything.",
+          "es": "Okay, pero el crecimiento sigue siendo bueno, ¿no? Más estudiantes, más facturas, más de todo."
         },
         {
           "speaker": "camila",
@@ -167,8 +167,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "Twelve percent of students leave every month? That number just ruined my breakfast.",
-          "es": "¿Doce por ciento de los estudiantes se va cada mes? Ese número acaba de arruinar mi desayuno."
+          "text": "Twelve percent of our students leave every single month? That number just ruined my breakfast.",
+          "es": "¿Doce por ciento de nuestros estudiantes se va cada mes? Ese número acaba de arruinar mi desayuno."
         }
       ],
       "words": [

@@ -100,8 +100,8 @@ export const SHARKS_EP13_THE_HARD_NEGOTIATION: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "Then let him. Give him a fair shot. One bad month is not a verdict.",
-          "es": "Entonces déjalo. Dale una oportunidad justa. Un mal mes no es un veredicto."
+          "text": "Then let him stay. He deserves a fair shot. One bad month is not a verdict.",
+          "es": "Entonces déjalo quedarse. Merece una oportunidad justa. Un mal mes no es un veredicto."
         },
         {
           "speaker": "vale",
@@ -131,13 +131,13 @@ export const SHARKS_EP13_THE_HARD_NEGOTIATION: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "Explain that.",
-          "es": "Explica eso."
+          "text": "Explain that, please, because right now I only hear two people arguing about the same man from opposite corners.",
+          "es": "Explica eso, por favor, porque ahora mismo solo escucho a dos personas discutiendo sobre el mismo hombre desde esquinas opuestas."
         },
         {
           "speaker": "camila",
-          "text": "Dani defends Marco's feelings. You defend his students. Both are love, different directions.",
-          "es": "Dani defiende los sentimientos de Marco. Tú defiendes a sus estudiantes. Ambos son cariño, en direcciones distintas."
+          "text": "Dani defends Marco's feelings. You defend his students. Both are love, just pointed in different directions, and the room feels it.",
+          "es": "Dani defiende los sentimientos de Marco. Tú defiendes a sus estudiantes. Ambos son cariño, apuntando en direcciones distintas, y la sala lo siente."
         }
       ],
       "words": [
@@ -193,8 +193,8 @@ export const SHARKS_EP13_THE_HARD_NEGOTIATION: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "Not ready yet. Those three words matter more than all the others.",
-          "es": "Todavía no está listo. Esas tres palabras importan más que todas las demás."
+          "text": "Not ready yet. Those three words matter more than all the others. He can hear 'not ready yet' without hearing 'never'.",
+          "es": "Todavía no está listo. Esas tres palabras importan más que todas las demás. Él puede escuchar 'todavía no' sin escuchar 'nunca'."
         },
         {
           "speaker": "vale",
@@ -229,8 +229,8 @@ export const SHARKS_EP13_THE_HARD_NEGOTIATION: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "You really believe that? After you tell him his group is the worst in the academy?",
-          "es": "¿De verdad lo crees? ¿Después de decirle que su grupo es el peor de la academia?"
+          "text": "You really believe that? After you tell him his group is the worst in the academy? After you take away the title he worked two years to earn?",
+          "es": "¿De verdad lo crees? ¿Después de decirle que su grupo es el peor de la academia? ¿Después de quitarle el título que trabajó dos años para ganar?"
         }
       ],
       "words": [
