@@ -84,6 +84,23 @@ export type StorybookQuiz = {
   sayItCheck?: StorybookSayItCheck;
 };
 
+/**
+ * B2 layer (Sharks and later): a phrasal verb or business idiom a character
+ * actually says inside the episode. Shown on the "Say it like a native" card
+ * right before the finale and recycled in later episodes of the season.
+ */
+export type StorybookExpression = {
+  /** The expression as a native would say it, e.g. "follow up". */
+  phrase: string;
+  /** Spanish meaning. */
+  es: string;
+  kind: "phrasal" | "idiom";
+  /** The line from this episode where it was used. */
+  example: string;
+  /** Spanish translation of the example. */
+  exampleEs: string;
+};
+
 export type StorybookMindsetCard = {
   /** Scene id after which the mindset card appears. */
   afterScene: string;
@@ -127,6 +144,11 @@ export type StorybookEpisode = {
   mindsetCard?: StorybookMindsetCard;
   /** Optional positive-habit micro-lesson modeled by a character. */
   habitCard?: StorybookHabitCard;
+  /**
+   * "Say it like a native" expressions (B2 layer). Shown on their own card
+   * right before the finale; each one must be said by a character in a scene.
+   */
+  expressions?: StorybookExpression[];
   /** Max seconds for the final monologue recording. Defaults to 15. */
   finaleSeconds?: number;
   /** Final "continúa la historia" prompt. */

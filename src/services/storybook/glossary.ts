@@ -7,6 +7,25 @@ import type { StorybookEpisode, StorybookScene } from "./types";
  */
 export const BASE_GLOSSARY: Record<string, string> = {
   a: "un / una",
+  around: "alrededor / cerca de",
+  below: "debajo / por debajo de",
+  bottom: "fondo / parte de abajo",
+  easily: "fácilmente",
+  executives: "ejecutivos",
+  "fifty-eight": "cincuenta y ocho",
+  fly: "volar",
+  flying: "volando",
+  lands: "aterriza",
+  mattered: "importó (pasado de \"matter\")",
+  memorized: "memorizado / memoricé",
+  outcomes: "resultados",
+  rather: "más bien / preferiblemente",
+  scream: "gritar / grito",
+  shook: "sacudió / estrechó (pasado de \"shake\")",
+  staying: "quedándose / hospedándose",
+  strangest: "más extraño",
+  suitcase: "maleta",
+  wrong: "equivocado / mal",
   am: "soy / estoy",
   an: "un / una",
   and: "y",
@@ -1195,6 +1214,7 @@ export const BASE_GLOSSARY: Record<string, string> = {
 /** Character, place and language names used across the seasons. */
 export const PROPER_NOUNS: Record<string, string> = {
   vale: "Vale (nombre de persona)",
+  valeria: "Valeria (nombre completo de Vale)",
   "vale's": "de Vale",
   dani: "Dani (nombre de persona)",
   "dani's": "de Dani",

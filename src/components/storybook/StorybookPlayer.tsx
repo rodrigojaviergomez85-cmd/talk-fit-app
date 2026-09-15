@@ -30,6 +30,7 @@ type Slide =
   | { kind: "mindset" }
   | { kind: "habit" }
   | { kind: "quiz"; quiz: StorybookQuiz }
+  | { kind: "natives" }
   | { kind: "finale" };
 
 function buildSlides(episode: StorybookEpisode): Slide[] {
@@ -46,6 +47,7 @@ function buildSlides(episode: StorybookEpisode): Slide[] {
       slides.push({ kind: "quiz", quiz });
     }
   }
+  if (episode.expressions?.length) slides.push({ kind: "natives" });
   slides.push({ kind: "finale" });
   return slides;
 }
@@ -344,6 +346,13 @@ export function StorybookPlayer({
           {slide.kind === "habit" && episode.habitCard ? (
             <HabitSlide
               habit={episode.habitCard}
+              es={es}
+              onSaid={() => setStars((s) => s + 1)}
+            />
+          ) : null}
+          {slide.kind === "natives" && episode.expressions?.length ? (
+            <NativesSlide
+              expressions={episode.expressions}
               es={es}
               onSaid={() => setStars((s) => s + 1)}
             />
@@ -1531,6 +1540,85 @@ function HabitSlide({
             label={es ? "REPETIR" : "REPEAT"}
             stopLabel={es ? "PARAR" : "STOP"}
             maxSeconds={15}
+            countdown
+            size="md"
+            onComplete={() => {
+              setRecorded(true);
+              onSaid();
+            }}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** B2 layer: the phrasal verbs and idioms the characters used in this episode. */
+function NativesSlide({
+  expressions,
+  es,
+  onSaid,
+}: {
+  expressions: NonNullable<StorybookEpisode["expressions"]>;
+  es: boolean;
+  onSaid: () => void;
+}) {
+  const [recorded, setRecorded] = useState(false);
+
+  return (
+    <div className="space-y-4">
+      <div className="rounded-3xl border border-border bg-card p-5 text-center">
+        <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-primary">
+          {es ? "Dilo como nativo" : "Say it like a native"}
+        </p>
+        <p className="mt-2 text-[13px] font-semibold text-muted-foreground">
+          {es
+            ? "Tres expresiones que tus personajes usaron hoy. Escúchalas y quédatelas."
+            : "Three expressions your characters used today. Listen and keep them."}
+        </p>
+      </div>
+
+      <div className="space-y-3">
+        {expressions.map((expression) => (
+          <div key={expression.phrase} className="rounded-3xl border border-border bg-card p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-muted-foreground">
+                  {expression.kind === "idiom" ? "Idiom" : "Phrasal verb"}
+                </p>
+                <h3 className="text-xl font-extrabold leading-tight text-foreground">{expression.phrase}</h3>
+                <p className="text-sm font-semibold text-muted-foreground">{expression.es}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => AudioService.speak(expression.example, { voice: "female", tone: "story" })}
+                className="inline-flex shrink-0 items-center gap-1 rounded-full bg-secondary px-3 py-2 text-xs font-bold text-foreground"
+              >
+                <Volume2 className="size-4 text-primary" /> {es ? "Oír" : "Listen"}
+              </button>
+            </div>
+            <p className="mt-3 text-[14px] font-semibold text-foreground">“{expression.example}”</p>
+            <p className="text-[13px] text-muted-foreground">{expression.exampleEs}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="rounded-3xl border border-border bg-card p-5 text-center">
+        <p className="mb-3 text-[14px] font-bold text-foreground">
+          {es
+            ? "Usa UNA de las tres en tu propia oración, en voz alta:"
+            : "Use ONE of the three in your own sentence, out loud:"}
+        </p>
+        {recorded ? (
+          <p className="flex items-center justify-center gap-2 text-[13px] font-bold text-primary">
+            <Check className="size-4" /> {es ? "¡Lo dijiste! +1 ⭐" : "You said it! +1 ⭐"}
+          </p>
+        ) : (
+          <VoiceRecorder
+            onStart={() => AudioService.stop()}
+            label={es ? "HABLAR" : "SPEAK"}
+            stopLabel={es ? "PARAR" : "STOP"}
+            maxSeconds={20}
             countdown
             size="md"
             onComplete={() => {
