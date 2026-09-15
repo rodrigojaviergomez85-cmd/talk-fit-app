@@ -16,9 +16,12 @@
 - [x] Glosario completo en español
 - [x] Verificaciones de tipos y pruebas
 
-## Pendiente
-- [x] Episodios 11-20 de la temporada 6 (guiones, arte, glosario y pruebas)
-- [x] Cierre T6: fix de hidratación en el reproductor, triple revisión visual de episodios 11–20, rutas OK (200), 48 pruebas verdes
+## Temporada 6 cerrada
+- [x] Episodios 11-20 (guiones, arte, glosario y pruebas)
+- [x] Revisión visual completa de episodios 1–20: Vale, Dani, Camila, Morgan y personajes secundarios alineados escena por escena
+- [x] Escenas corregidas donde la imagen no correspondía con el personaje que hablaba, incluida Morgan con Vale y Dani en el episodio 20
+- [x] Todas las ilustraciones Eagles verificadas a 768×768 y menos de 250 KB
+- [x] Voces únicas y estables; 13 pruebas finales verdes; ruta del episodio 20 responde sin errores
 
 ## Siguiente
 - [ ] Temporada 7 (Tigers) — plan maestro ya mapeado en .lovable/plan/

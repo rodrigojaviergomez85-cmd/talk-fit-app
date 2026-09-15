@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { existsSync, statSync, readdirSync } from "node:fs";
+import { existsSync, statSync, readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { STORYBOOK_SEASONS } from "./seasons";
 import { STORYBOOK_EPISODES } from "./index";
@@ -13,6 +13,21 @@ import type { StorybookEpisode, StorybookSpeaker } from "./types";
  */
 const ASSETS = resolve(process.cwd(), "src/assets/storybook");
 const MAX_BYTES = 250 * 1024;
+
+function jpegDimensions(file: string): { width: number; height: number } | undefined {
+  const bytes = readFileSync(file);
+  let offset = 2;
+  while (offset + 9 < bytes.length) {
+    if (bytes[offset] !== 0xff) return undefined;
+    const marker = bytes[offset + 1];
+    const length = bytes.readUInt16BE(offset + 2);
+    if (marker && marker >= 0xc0 && marker <= 0xc3) {
+      return { height: bytes.readUInt16BE(offset + 5), width: bytes.readUInt16BE(offset + 7) };
+    }
+    offset += 2 + length;
+  }
+  return undefined;
+}
 
 const season6 = STORYBOOK_SEASONS.find((s) => s.moduleId === "eagles-week-1")!;
 const registered: StorybookEpisode[] = season6.slots
@@ -32,17 +47,21 @@ describe("Season 6 artwork consistency", () => {
     }
   });
 
-  it("every image stays under 250 KB so phones load it fast", () => {
-    const heavy: string[] = [];
+  it("every image is 768×768 and stays under 250 KB so phones load it fast", () => {
+    const invalid: string[] = [];
     for (const episode of registered) {
       const dir = resolve(ASSETS, episode.id);
       if (!existsSync(dir)) continue;
       for (const file of readdirSync(dir).filter((f) => f.endsWith(".jpg"))) {
-        const size = statSync(resolve(dir, file)).size;
-        if (size > MAX_BYTES) heavy.push(`${episode.id}/${file} = ${Math.round(size / 1024)} KB`);
+        const path = resolve(dir, file);
+        const size = statSync(path).size;
+        const dimensions = jpegDimensions(path);
+        if (size > MAX_BYTES || dimensions?.width !== 768 || dimensions.height !== 768) {
+          invalid.push(`${episode.id}/${file} = ${dimensions?.width}×${dimensions?.height}, ${Math.round(size / 1024)} KB`);
+        }
       }
     }
-    expect(heavy).toEqual([]);
+    expect(invalid).toEqual([]);
   });
 
   it("every scene declares alt text", () => {
