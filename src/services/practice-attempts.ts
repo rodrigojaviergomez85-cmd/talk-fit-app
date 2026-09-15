@@ -38,12 +38,20 @@ function activeKey(moduleId: ModuleId, day: number): string {
   return `${ACTIVE_PREFIX}:${scope}:${moduleId}:${day}`;
 }
 
-/** Learner's LOCAL calendar date. Never UTC: El Salvador stays on Sep 7. */
+/**
+ * The practice day, in the ONE fixed timezone the server uses
+ * (America/El_Salvador). Not the device timezone and not UTC, so this agrees
+ * with the server everywhere except on a device with a wrong clock.
+ */
 export function localDayKey(date = new Date()): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
+  try {
+    return new Intl.DateTimeFormat("en-CA", { timeZone: "America/El_Salvador" }).format(date);
+  } catch {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
 }
 
 function readAll(): PracticeAttempt[] {
