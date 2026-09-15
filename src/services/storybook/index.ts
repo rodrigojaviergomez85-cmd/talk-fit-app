@@ -284,6 +284,7 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   TIGERS_EP19_NEW_LEADERS,
   TIGERS_EP20_DEFEND_YOUR_DECISION,
   SHARKS_EP1_TELL_THE_STORY,
+  SHARKS_EP2_GUATEMALA_SEVEN_AM,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
