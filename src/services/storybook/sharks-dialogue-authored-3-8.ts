@@ -2109,5 +2109,4 @@ export const SHARKS_AUTHORED_DIALOGUE_3_8 =
       ]
     }
   }
-}
- as const;
+} as const;
