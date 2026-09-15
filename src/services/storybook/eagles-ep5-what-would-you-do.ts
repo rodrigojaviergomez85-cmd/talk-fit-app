@@ -214,7 +214,7 @@ export const EAGLES_EP5_WHAT_WOULD_YOU_DO: StorybookEpisode = {
         { speaker: "vale", text: "If we win this contract, everything changes.", es: "«Si ganamos este contrato, todo cambia»." },
       ],
       words: [
-        { word: "pushed", es: "empujado" },
+        { word: "trust", es: "confiar" },
         { word: "still", es: "todavía" },
         { word: "changes", es: "cambia" },
       ],
