@@ -40,14 +40,7 @@ function StorybookPage() {
   const { episode } = Route.useLoaderData();
   const { from } = Route.useSearch();
   const navigate = useNavigate();
-  const showEs = useAppLang().lang === "es";
   const slot = getEpisodeSlot(episode.id);
-  const [journey, setJourney] = useState<JourneyState | null>(null);
-
-  useEffect(() => {
-    setJourney(JourneyService.load());
-    void JourneyService.pull().then(setJourney).catch(() => {});
-  }, []);
 
   const onCoverBack =
     from === "day" && slot
