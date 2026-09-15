@@ -92,6 +92,8 @@ export type StorybookQuiz = {
 export type StorybookExpression = {
   /** The expression as a native would say it, e.g. "follow up". */
   phrase: string;
+  /** Conjugated or inflected forms that appear in dialogue, e.g. "showed up". */
+  variants?: string[];
   /** Spanish meaning. */
   es: string;
   kind: "phrasal" | "idiom";

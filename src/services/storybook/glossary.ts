@@ -1370,6 +1370,12 @@ export function buildEpisodeGlossary(episode: StorybookEpisode): Map<string, str
   for (const scene of episode.scenes) {
     for (const w of scene.words) map.set(normalizeWord(w.word), w.es);
   }
+  for (const expression of episode.expressions ?? []) {
+    map.set(normalizeWord(expression.phrase), expression.es);
+    for (const variant of expression.variants ?? []) {
+      map.set(normalizeWord(variant), expression.es);
+    }
+  }
   return map;
 }
 
@@ -1440,7 +1446,7 @@ export function lookupWord(
   if (sceneWord) return { meaning: sceneWord.es, curated: true };
 
   const fromEpisode = options.episodeGlossary?.get(key);
-  if (fromEpisode) return { meaning: fromEpisode, curated: false };
+  if (fromEpisode) return { meaning: fromEpisode, curated: key.includes(" ") };
 
 
   const direct =
