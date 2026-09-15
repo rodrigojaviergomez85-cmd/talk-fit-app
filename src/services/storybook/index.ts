@@ -300,6 +300,7 @@ export {
   isSeasonUnlocked,
   unlockedDayInModule,
   getNextEpisodeSlot,
+  getNextProducedEpisodeId,
 
   type Season,
   type SeasonEpisodeSlot,
