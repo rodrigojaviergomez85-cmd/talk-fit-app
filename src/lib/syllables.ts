@@ -100,18 +100,34 @@ function phraseTokens(text: string, expressions: string[]): DisplayWordToken[] {
   if (phrases.length === 0) return tokenizeWords(text);
 
   const lower = text.toLowerCase();
+
+  // Index by first word so long dictionaries stay cheap to match.
+  const byFirstWord = new Map<string, string[]>();
+  for (const phrase of phrases) {
+    const first = phrase.toLowerCase().split(" ")[0] ?? "";
+    const list = byFirstWord.get(first);
+    if (list) list.push(phrase);
+    else byFirstWord.set(first, [phrase]);
+  }
+
   const tokens: DisplayWordToken[] = [];
   let plainStart = 0;
   let cursor = 0;
 
   while (cursor < text.length) {
-    const phrase = phrases.find((candidate) => {
-      const normalized = candidate.toLowerCase();
-      if (!lower.startsWith(normalized, cursor)) return false;
-      const before = cursor === 0 ? "" : text[cursor - 1] ?? "";
-      const after = text[cursor + candidate.length] ?? "";
-      return !/[A-Za-z']/.test(before) && !/[A-Za-z']/.test(after);
-    });
+    const before = cursor === 0 ? "" : text[cursor - 1] ?? "";
+    let phrase: string | undefined;
+
+    if (!/[A-Za-z']/.test(before) && /[A-Za-z]/.test(text[cursor] ?? "")) {
+      const firstWord = (lower.slice(cursor).match(/^[a-z'-]+/)?.[0] ?? "");
+      const candidates = byFirstWord.get(firstWord);
+      phrase = candidates?.find((candidate) => {
+        const normalized = candidate.toLowerCase();
+        if (!lower.startsWith(normalized, cursor)) return false;
+        const after = text[cursor + candidate.length] ?? "";
+        return !/[A-Za-z']/.test(after);
+      });
+    }
 
     if (!phrase) {
       cursor += 1;
