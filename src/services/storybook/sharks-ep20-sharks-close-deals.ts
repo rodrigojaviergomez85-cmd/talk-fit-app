@@ -67,8 +67,8 @@ export const SHARKS_EP20_SHARKS_CLOSE_DEALS: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "Third, the Mexico agreement is only with Mexico. It does not include Guatemala or a full buyout.",
-          "es": "Tercera: el acuerdo con México solo es con México. No incluye Guatemala ni una compra total."
+          "text": "Third, the Mexico agreement is only with Mexico, and it covers a clear phased plan for Renata's affiliated schools. It does not include Guatemala or a full buyout of our academy.",
+          "es": "Tercera: el acuerdo con México solo es con México, y cubre un plan por etapas claro para las escuelas afiliadas de Renata. No incluye Guatemala ni una compra total de nuestra academia."
         }
       ],
       "words": [
