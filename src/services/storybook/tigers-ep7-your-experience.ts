@@ -55,8 +55,8 @@ export const TIGERS_EP7_YOUR_EXPERIENCE: StorybookEpisode = {
       words: [
         { word: "neighbors", es: "vecinos" },
         { word: "enough", es: "suficientes" },
-        { speaker: undefined, word: "alone", es: "solo" } as never,
-      ].map(({ word, es }) => ({ word, es })),
+        { word: "alone", es: "solo" },
+      ],
     },
     {
       id: "s2",
@@ -142,7 +142,7 @@ export const TIGERS_EP7_YOUR_EXPERIENCE: StorybookEpisode = {
       lines: [
         { speaker: "vale", text: "I have taught thirty people at Northline, and I have learned something from every single one.", es: "«He enseñado a treinta personas en Northline y he aprendido algo de cada una»." },
         { speaker: "vale", text: "Forty companies is a number. Rosario is a person. I know every person in my classes.", es: "«Cuarenta empresas es un número. Rosario es una persona. Yo conozco a cada persona en mis clases»." },
-        { speaker: "herrera", text: "How do you measure progress, Miss Vale?", es: "«¿Cómo mide el progreso, señorita Vale?»" } as never,
+        { speaker: "herrera", text: "How do you measure progress, Miss Vale?", es: "«¿Cómo mide el progreso, señorita Vale?»" },
       ],
       words: [
         { word: "learned", es: "aprendido" },
@@ -160,7 +160,7 @@ export const TIGERS_EP7_YOUR_EXPERIENCE: StorybookEpisode = {
       lines: [
         { speaker: "vale", text: "Every student records answers in week one and week ten.", es: "«Cada estudiante graba respuestas en la semana uno y en la semana diez»." },
         { speaker: "vale", text: "Then we compare them together. They hear their own progress.", es: "«Luego las comparamos juntos. Escuchan su propio progreso»." },
-        { speaker: "herrera", text: "And have you ever lost a student?", es: "«¿Y alguna vez ha perdido a un estudiante?»" } as never,
+        { speaker: "herrera", text: "And have you ever lost a student?", es: "«¿Y alguna vez ha perdido a un estudiante?»" },
         { speaker: "vale", text: "I have. Two people left last year. I called both, and one came back.", es: "«Sí. Dos personas se fueron el año pasado. Llamé a las dos y una regresó»." },
       ],
       words: [
