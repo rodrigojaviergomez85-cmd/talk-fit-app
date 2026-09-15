@@ -185,3 +185,23 @@ describe("Tigers — Dani", () => {
     expect(problems).toEqual([]);
   });
 });
+
+/**
+ * Tigers 17: the visiting board talks to Ana (a student) and Beto (a student),
+ * not to Vale or Camila.
+ */
+describe("Tigers 17 — student lines", () => {
+  const ep = STORYBOOK_EPISODES.find((e) => e.id === "tigers-ep17-the-visit");
+
+  it("exists", () => {
+    expect(ep).toBeTruthy();
+  });
+
+  it("attributes the student answers to Ana and Beto", () => {
+    const all = (ep?.scenes ?? []).flatMap((s) => s.lines ?? []);
+    const anaLine = all.find((l) => l.text.startsWith("I have been studying here for six months"));
+    const betoLine = all.find((l) => l.text.startsWith("I have been learning English for one year"));
+    expect(anaLine?.speaker).toBe("ana");
+    expect(betoLine?.speaker).toBe("beto");
+  });
+});
