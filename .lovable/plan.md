@@ -20,7 +20,7 @@ Dani sigue siendo empleado de Vale durante toda esta temporada. En Advanced da e
 ## Arco nuevo, episodios 9–20
 
 ### Semana 2 (9–10): Kids arranca de verdad
-- **Ep 9 — La llamada de México**: Renata dirige una escuela en Monterrey, vio el video de la primera clase de Kids y quiere abrir uno igual. No compra nada: pregunta cómo se hace. Vale contesta desde el centro comunitario, todavía con los niños cantando de fondo.
+- **Ep 9 — La primera clase y la llamada de México**: el episodio abre con Vale dando la primera clase real de Vale Kids en el centro comunitario, doce niños, historias y movimiento. Al terminar, aparece la llamada: Renata dirige una escuela en Monterrey, vio un video de esa misma clase y quiere abrir un Kids igual. No compra nada: pregunta cómo se hace. Así el hilo del 8 al 9 se ve en pantalla, no solo se menciona.
 - **Ep 10 — ¿Socia o rival?**: Renata también atiende clientes corporativos en México, igual que Northline. Vale descubre que podrían chocar en el mismo mercado. Cierre: Lucía llama desde Guatemala, algo salió mal en una clase.
 
 ### Semana 3 (11–15): El costo de crecer
