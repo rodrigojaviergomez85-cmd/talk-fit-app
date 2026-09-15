@@ -3,7 +3,7 @@ import { existsSync, statSync, readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { STORYBOOK_SEASONS } from "./seasons";
 import { STORYBOOK_EPISODES } from "./index";
-import { speakerVoice, speakerTone, speakerSound } from "./voices";
+import { speakerVoice, speakerTone, speakerSound, speakerName } from "./voices";
 import type { StorybookEpisode, StorybookSpeaker } from "./types";
 
 /**
