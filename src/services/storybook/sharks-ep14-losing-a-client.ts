@@ -132,13 +132,13 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "I appreciate that, Mr. Reed. Was it only the price, or did we fail you somewhere?",
-          "es": "Se lo agradezco, señor Reed. ¿Fue solo el precio, o le fallamos en algo?"
+          "text": "I appreciate that, Mr. Reed. Was it only the price, or did we fail you somewhere along the way?",
+          "es": "Se lo agradezco, señor Reed. ¿Fue solo el precio, o le fallamos en algo del camino?"
         },
         {
           "speaker": "reed",
-          "text": "Two complaints about teacher changes, then the feedback in the survey dropped. Price was the excuse.",
-          "es": "Dos quejas por cambios de maestro, luego bajaron los comentarios en la encuesta. El precio fue la excusa."
+          "text": "Two complaints about teacher changes, then the feedback in the survey dropped hard. Price was just the excuse.",
+          "es": "Dos quejas por cambios de maestro, luego bajaron fuerte los comentarios en la encuesta. El precio fue solo la excusa."
         }
       ],
       "words": [
@@ -313,8 +313,8 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
-          "text": "The unhappy parents in Guatemala, the hard talk with Marco, and now San Miguel. Heavy week.",
-          "es": "Los padres molestos en Guatemala, la charla difícil con Marco, y ahora San Miguel. Semana pesada."
+          "text": "The unhappy parents in Guatemala, the hard talk with Marco, and now San Miguel. This has been a heavy week.",
+          "es": "Los padres molestos en Guatemala, la charla difícil con Marco, y ahora San Miguel. Esta ha sido una semana pesada."
         },
         {
           "speaker": "vale",
@@ -323,8 +323,8 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "Comfortable sounds nice right now, I am not going to lie.",
-          "es": "Cómodo suena bonito ahorita, no voy a mentir."
+          "text": "Comfortable sounds nice right now, I am not going to lie to you.",
+          "es": "Cómodo suena bonito ahorita, no te voy a mentir."
         }
       ],
       "words": [
