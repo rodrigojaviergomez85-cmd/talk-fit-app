@@ -230,7 +230,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       id: "s7",
       image: s7,
       imageAlt: "Vale tests the forecast with a harder question.",
-      text: "Does the forecast add up if Mexico starts in March instead of January?",
+      text: "Does the whole forecast add up if Mexico starts in March instead of January?",
       es: "¿El pronóstico cuadra si México empieza en marzo en lugar de enero?",
       speaker: "vale",
       cast: ["vale", "dani", "camila"],
@@ -261,7 +261,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       id: "s8",
       image: s8,
       imageAlt: "Dani reports two late invoices that change the month's estimate.",
-      text: "Two invoices are late, and that changes the estimate for this month.",
+      text: "Two invoices are late, and that changes the estimate for this month completely.",
       es: "Dos facturas están atrasadas, y eso cambia la estimación de este mes.",
       speaker: "dani",
       cast: ["dani", "camila"],
@@ -371,7 +371,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "Both. They are coming together next Tuesday, and they want to meet the founder in person.",
+          text: "Both. They are coming together next Tuesday, and they want to meet the founder and the team in person.",
           es: "Ambos. Vienen juntos el próximo martes, y quieren conocer a la fundadora en persona."
         }
       ],
