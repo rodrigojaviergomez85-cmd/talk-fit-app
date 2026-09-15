@@ -16,6 +16,11 @@ function read(): string[] {
   }
 }
 
+export function getSeenEpisodes(): string[] {
+  if (typeof window === "undefined") return [];
+  return read();
+}
+
 export function isEpisodeSeen(episodeId: string): boolean {
   if (typeof window === "undefined") return false;
   return read().includes(episodeId);
