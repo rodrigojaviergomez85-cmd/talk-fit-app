@@ -160,7 +160,7 @@ export const SHARKS_EP20_SHARKS_CLOSE_DEALS: StorybookEpisode = {
         },
         {
           "speaker": "renata",
-          "text": "Twenty groups in September, forty in January. You train the teachers, I take care of the schools. Signed.",
+          "text": "Twenty groups in September, forty in January. You train the teachers, I take care of the schools. This regional deal is signed.",
           "es": "Veinte grupos en septiembre, cuarenta en enero. Tú entrenas a los maestros, yo cuido las escuelas. Firmado."
         }
       ],
@@ -191,8 +191,8 @@ export const SHARKS_EP20_SHARKS_CLOSE_DEALS: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "Yes, you. You already coordinated the Guatemala crisis. You know how to listen, delegate, and ask for help.",
-          "es": "Sí, tú. Ya coordinaste la crisis de Guatemala. Sabes escuchar, delegar y pedir ayuda."
+          "text": "Yes, you. You already coordinated the Guatemala crisis. You know how to listen, delegate, talk to our providers, and ask for help.",
+          "es": "Sí, tú. Ya coordinaste la crisis de Guatemala. Sabes escuchar, delegar, hablar con nuestros proveedores y pedir ayuda."
         }
       ],
       "words": [
@@ -205,15 +205,15 @@ export const SHARKS_EP20_SHARKS_CLOSE_DEALS: StorybookEpisode = {
       "id": "s6",
       "image": s6,
       "imageAlt": "Dani sits across from Vale, thoughtful, holding the folder while explaining his decision.",
-      "text": "I accept. But I want to stay close to the teachers and the families.",
-      "es": "Acepto. Pero quiero seguir cerca de los maestros y las familias.",
+      "text": "I accept. But I want to stay close to the classroom, the teachers, and the families.",
+      "es": "Acepto. Pero quiero seguir cerca del salón de clases, los maestros y las familias.",
       "speaker": "dani",
       "cast": ["dani", "vale"],
       "lines": [
         {
           "speaker": "dani",
-          "text": "I accept. But I want to stay close to the teachers and the families.",
-          "es": "Acepto. Pero quiero seguir cerca de los maestros y las familias."
+          "text": "I accept. But I want to stay close to the classroom, the teachers, and the families.",
+          "es": "Acepto. Pero quiero seguir cerca del salón de clases, los maestros y las familias."
         },
         {
           "speaker": "vale",
@@ -341,7 +341,7 @@ export const SHARKS_EP20_SHARKS_CLOSE_DEALS: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "We have determination, real results, and a legacy of trained teachers. That is a strong start.",
+          "text": "We have determination, real results, strong student retention, and a legacy of trained teachers. That achievement is a strong start.",
           "es": "Tenemos determinación, resultados reales y un legado de maestros capacitados. Eso es un buen comienzo."
         },
         {
@@ -360,14 +360,14 @@ export const SHARKS_EP20_SHARKS_CLOSE_DEALS: StorybookEpisode = {
       "id": "s11",
       "image": s11,
       "imageAlt": "Vale, Dani and Camila stand together outside the academy at dusk, looking forward with hope.",
-      "text": "Ready? This does not end with Mexico. It begins with an opportunity we have to earn.",
+      "text": "Ready? This does not end with Mexico or with two signed contracts. It begins with a global opportunity we have to earn.",
       "es": "¿Listos? Esto no termina con México. Empieza con una oportunidad que tenemos que ganar.",
       "speaker": "vale",
       "cast": ["vale", "dani", "camila"],
       "lines": [
         {
           "speaker": "vale",
-          "text": "Ready? This does not end with Mexico. It begins with an opportunity we have to earn.",
+          "text": "Ready? This does not end with Mexico or with two signed contracts. It begins with a global opportunity we have to earn.",
           "es": "¿Listos? Esto no termina con México. Empieza con una oportunidad que tenemos que ganar."
         },
         {
