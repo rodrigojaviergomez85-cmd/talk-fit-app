@@ -3,7 +3,7 @@ import { existsSync, statSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { STORYBOOK_SEASONS } from "./seasons";
 import { STORYBOOK_EPISODES } from "./index";
-import { speakerVoice, speakerTone } from "./voices";
+import { speakerVoice, speakerTone, speakerSound } from "./voices";
 import type { StorybookEpisode, StorybookSpeaker } from "./types";
 
 /**
@@ -77,7 +77,7 @@ describe("Season 6 voice consistency", () => {
     const byCharacter = new Map<StorybookSpeaker, string>();
     for (const episode of registered) {
       for (const speaker of speakersOf(episode)) {
-        const voice = String(speakerVoice(speaker));
+        const voice = speakerSound(speaker);
         const seen = byCharacter.get(speaker);
         if (seen) expect(voice, `${speaker} changed voice in ${episode.id}`).toBe(seen);
         else byCharacter.set(speaker, voice);
@@ -90,7 +90,7 @@ describe("Season 6 voice consistency", () => {
     for (const episode of registered) {
       for (const speaker of speakersOf(episode)) {
         if (speaker === "narrator") continue;
-        const voice = String(speakerVoice(speaker));
+        const voice = speakerSound(speaker);
         const owner = used.get(voice);
         if (owner && owner !== speaker) {
           throw new Error(`${speaker} and ${owner} share the voice ${voice}`);
