@@ -70,7 +70,7 @@ export const SHARKS_EP1_TELL_THE_STORY: StorybookEpisode = {
       lines: [
         { speaker: "vale", text: "The screen showed a number from the United States. I looked at it for three full seconds.", es: "«La pantalla mostró un número de Estados Unidos. Lo miré por tres segundos completos»." },
         { speaker: "vale", text: "Then I answered in my calmest voice, and a man said: this is Northline International, from Houston.", es: "«Luego contesté con mi voz más calmada, y un hombre dijo: habla Northline International, desde Houston»." },
-        { speaker: "mateo", text: "No way. The sister company called you directly, without an email first? That never happens.", es: "«No puede ser. ¿La empresa hermana te llamó directamente, sin un correo primero? Eso nunca pasa»." },
+        { speaker: "dani", text: "No way. The sister company called you directly, without an email first? That never happens.", es: "«No puede ser. ¿La empresa hermana te llamó directamente, sin un correo primero? Eso nunca pasa»." },
       ],
       words: [
         { word: "screen", es: "pantalla" },
