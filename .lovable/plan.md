@@ -40,6 +40,35 @@ Vale responde a la filtración con honestidad: confirma las conversaciones, pero
 
 **Meta B2:** síntesis, reflexión, discurso de 45 segundos, logros, responsabilidad y visión futura.
 
+## Puente hacia Advanced 1, 2 y 3
+
+El final de Sharks no presentará una expansión global ya conseguida. Abrirá una **oportunidad** que Vale y su equipo tendrán que ganarse durante los tres niveles Advanced.
+
+### Advanced 1 — Earn the Opportunity
+
+Mr. Reed invita a Vale a competir por un programa internacional. Vale debe presentar su trayectoria, defender el modelo de la academia y responder preguntas difíciles ante un comité. Dani también debe demostrar que está preparado para dirigir la operación de México. La historia seguirá entrevistas, presentaciones profesionales, fortalezas, experiencias, evidencia y metas.
+
+Esto conecta directamente con el currículo actual de Advanced 1: presentación profesional, respuestas estructuradas, historias reales, opiniones, servicio, ventas y preguntas inesperadas. El final será la aprobación de un piloto internacional limitado, no una expansión mundial instantánea.
+
+### Advanced 2 — Deliver Under Pressure
+
+Con México activo y el piloto internacional recién aprobado, el reto deja de ser conseguir oportunidades y pasa a **cumplirlas**. Vale, Dani y Camila enfrentarán padres molestos, clientes confusos, fallas de servicio, cambios de reservación, objeciones, ventas y recuperación de confianza. Renata seguirá como socia exigente, no como dueña del negocio.
+
+Esto conecta con el currículo actual de Advanced 2: escuchar, aclarar, confirmar, resolver problemas, manejar clientes, adaptar una respuesta y cerrar una conversación profesional. El cierre mostrará que el equipo puede operar bajo presión sin sacrificar calidad.
+
+### Advanced 3 — Lead Beyond the Script
+
+El piloto exitoso lleva a Vale a conversaciones de mayor nivel: alianzas, una presentación internacional, decisiones éticas y situaciones inesperadas donde ya no existe una respuesta memorizada. Dani continúa trabajando con Vale, pero su contacto con maestros, familias y comunidades fortalece su interés por el servicio público; todavía no se convierte en político de repente.
+
+Esto conecta con el currículo actual de Advanced 3: contar experiencias inesperadas, reaccionar, explicar decisiones, sostener opiniones, manejar repreguntas y hablar 50–70 segundos con naturalidad. El final cerrará el viaje B2 con Vale lista para crecer internacionalmente y Dani dando su primer paso creíble hacia una futura vida pública.
+
+```text
+Sharks 20: México firmado + invitación internacional
+    → Advanced 1: ganarse la oportunidad
+    → Advanced 2: demostrar que pueden cumplir bajo presión
+    → Advanced 3: liderar, improvisar y tomar decisiones complejas
+```
+
 ## Cómo se escribirán los cinco guiones
 
 Cada episodio tendrá:
