@@ -53,7 +53,7 @@ export const EAGLES_EP20_THE_CONTRACT: StorybookEpisode = {
         { speaker: "dani", text: "Then let's go sell a year of classes.", es: "«Entonces vamos a vender un año de clases»." },
       ],
       words: [
-        { word: "airport", es: "aeropuerto" },
+        { word: "airplane", es: "avión" },
         { word: "saving", es: "guardando" },
         { word: "sell", es: "vender" },
       ],
