@@ -43,16 +43,16 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
     {
       id: "s1",
       image: s1,
-      imageAlt: "Renata speaks from Mexico on the academy's video screen while Dani watches.",
-      text: "So you want me to buy your brand and run it exactly your way.",
-      es: "Entonces quiere que compre su marca y la maneje exactamente a su manera.",
+      imageAlt: "Vale answers the call from Mexico while Renata appears on the academy's video screen and Dani watches.",
+      text: "Good afternoon, Vale. Thank you for answering so quickly. Let me be direct: so you want me to buy your brand and run it exactly your way.",
+      es: "Buenas tardes, Vale. Gracias por contestar tan rápido. Seré directa: entonces quiere que compre su marca y la maneje exactamente a su manera.",
       speaker: "renata",
       cast: ["renata", "dani", "vale"],
       lines: [
         {
           speaker: "renata",
-          text: "So you want me to buy your brand and run it exactly your way.",
-          es: "Entonces quiere que compre su marca y la maneje exactamente a su manera."
+          text: "Good afternoon, Vale. Thank you for answering so quickly. Let me be direct: so you want me to buy your brand and run it exactly your way.",
+          es: "Buenas tardes, Vale. Gracias por contestar tan rápido. Seré directa: entonces quiere que compre su marca y la maneje exactamente a su manera."
         },
         {
           speaker: "dani",
@@ -61,8 +61,8 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Then let us fix that idea first. Renata, thank you for saying it directly.",
-          es: "Entonces arreglemos esa idea primero. Renata, gracias por decirlo directamente."
+          text: "When Mexico calls, I answer, Renata. I promised Don Tito I would. Now let us fix that idea first, and thank you for saying it directly.",
+          es: "Cuando México llama, yo contesto, Renata. Le prometí a Don Tito que lo haría. Ahora arreglemos esa idea primero, y gracias por decirlo directamente."
         }
       ],
       words: [
