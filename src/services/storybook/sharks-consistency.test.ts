@@ -111,3 +111,47 @@ describe("Sharks B2 expressions", () => {
     expect(dialogue).toContain("the bottom line");
   });
 });
+
+describe("Sharks Episodes 3–20 depth standard", () => {
+  const episodes = STORYBOOK_EPISODES.filter((episode) => episode.moduleId === "sharks").slice(2);
+
+  it("matches the full conversational structure established by the pilot", () => {
+    expect(episodes).toHaveLength(18);
+    for (const episode of episodes) {
+      const lines = episode.scenes.flatMap((scene) => scene.lines ?? []);
+      const spokenWords = lines
+        .flatMap((line) => line.text.match(/[A-Za-z]+(?:['’][A-Za-z]+)*/g) ?? [])
+        .length;
+
+      expect(lines, `${episode.id} needs three conversational turns per scene`).toHaveLength(33);
+      expect(spokenWords, `${episode.id} needs a substantial B2 script`).toBeGreaterThanOrEqual(500);
+      expect(spokenWords, `${episode.id} should remain usable in one sitting`).toBeLessThanOrEqual(650);
+    }
+  });
+
+  it("provides contextual tappable vocabulary in every scene", () => {
+    for (const episode of episodes) {
+      for (const scene of episode.scenes) {
+        expect(scene.words.length, `${episode.id}/${scene.id} needs at least three words`).toBeGreaterThanOrEqual(3);
+        const dialogue = (scene.lines ?? []).map((line) => line.text.toLowerCase()).join(" ");
+        for (const entry of scene.words) {
+          expect(dialogue, `${episode.id}/${scene.id}: ${entry.word} must be spoken`).toContain(entry.word.toLowerCase());
+          expect(entry.es.trim().length, `${episode.id}/${scene.id}: ${entry.word} needs Spanish`).toBeGreaterThan(0);
+        }
+      }
+    }
+  });
+
+  it("keeps dialogue voices visible in the matching illustration", () => {
+    for (const episode of episodes) {
+      expect(JSON.stringify(episode).toLowerCase()).not.toContain("mateo");
+      for (const scene of episode.scenes) {
+        expect(scene.imageAlt).not.toMatch(/^Scene \d+ of /);
+        for (const line of scene.lines ?? []) {
+          expect(ALLOWED_SPEAKERS).toContain(line.speaker);
+          if (line.speaker !== "narrator") expect(scene.cast).toContain(line.speaker);
+        }
+      }
+    }
+  });
+});
