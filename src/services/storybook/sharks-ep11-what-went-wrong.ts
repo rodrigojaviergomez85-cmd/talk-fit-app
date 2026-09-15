@@ -371,7 +371,7 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "She just wrote to me. She says, and I quote, interesting way to handle a crisis. She still wants the pilot.",
+          text: "She just wrote to me a minute ago. She says, and I quote, interesting way to handle a crisis. She still wants the pilot.",
           es: "Me acaba de escribir. Dice, y cito, interesante manera de manejar una crisis. Aún quiere el piloto."
         }
       ],
