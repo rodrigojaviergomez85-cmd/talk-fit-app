@@ -39,6 +39,12 @@ export type StorybookScene = {
    * the reader; `text`/`es` stay as the plain-text fallback for older code.
    */
   lines?: StorybookLine[];
+  /**
+   * Characters drawn in this scene's illustration. Required for new episodes:
+   * the consistency test checks that everyone who speaks here is also drawn
+   * here, and artwork prompts are built from this list.
+   */
+  cast?: StorybookSpeaker[];
   /** Tappable words with meanings. */
   words: StorybookWord[];
 };
