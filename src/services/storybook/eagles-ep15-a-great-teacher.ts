@@ -135,11 +135,11 @@ export const EAGLES_EP15_A_GREAT_TEACHER: StorybookEpisode = {
       imageAlt: "The third candidate, a calm woman in a hotel uniform, sits down.",
       text: "11:00 a.m. The third one still wears her hotel uniform.",
       es: "11:00 a.m. La tercera todavía trae su uniforme del hotel.",
-      speaker: "mom",
+      speaker: "ana",
       lines: [
-        { speaker: "mom", text: "I work at the front desk. I speak English every day with guests.", es: "«Trabajo en la recepción. Hablo inglés todos los días con huéspedes»." },
+        { speaker: "ana", text: "I work at the front desk. I speak English every day with guests.", es: "«Trabajo en la recepción. Hablo inglés todos los días con huéspedes»." },
         { speaker: "vale", text: "What do you do when a person does not understand you?", es: "«¿Qué hace cuando una persona no la entiende?»" },
-        { speaker: "mom", text: "I say it slower, I use my hands, and I never make them feel small.", es: "«Lo digo más despacio, uso las manos y nunca los hago sentir pequeños»." },
+        { speaker: "ana", text: "I say it slower, I use my hands, and I never make them feel small.", es: "«Lo digo más despacio, uso las manos y nunca los hago sentir pequeños»." },
       ],
       words: [
         { word: "guests", es: "huéspedes" },
@@ -156,7 +156,7 @@ export const EAGLES_EP15_A_GREAT_TEACHER: StorybookEpisode = {
       speaker: "beto",
       lines: [
         { speaker: "beto", text: "I... I work in a store.", es: "«Yo… yo trabajo en una tienda»." },
-        { speaker: "mom", text: "Good. Say it again and tell me one thing you sell.", es: "«Bien. Dilo otra vez y dime una cosa que vendes»." },
+        { speaker: "ana", text: "Good. Say it again and tell me one thing you sell.", es: "«Bien. Dilo otra vez y dime una cosa que vendes»." },
         { speaker: "beto", text: "I work in a store and I sell shoes!", es: "«¡Trabajo en una tienda y vendo zapatos!»" },
       ],
       words: [
@@ -192,7 +192,7 @@ export const EAGLES_EP15_A_GREAT_TEACHER: StorybookEpisode = {
       speaker: "vale",
       lines: [
         { speaker: "vale", text: "You start Monday with group B. Your English grows here too.", es: "«Empieza el lunes con el grupo B. Su inglés también crece aquí»." },
-        { speaker: "mom", text: "I never think I am good enough for this.", es: "«Yo nunca creo que soy suficiente para esto»." },
+        { speaker: "ana", text: "I never think I am good enough for this.", es: "«Yo nunca creo que soy suficiente para esto»." },
         { speaker: "vale", text: "Neither did I. Mistakes are part of the process.", es: "«Yo tampoco lo creía. Los errores son parte del proceso»." },
       ],
       words: [

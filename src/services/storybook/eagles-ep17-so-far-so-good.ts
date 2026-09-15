@@ -135,11 +135,11 @@ export const EAGLES_EP17_SO_FAR_SO_GOOD: StorybookEpisode = {
       imageAlt: "Vale and the new teacher review group B's progress together.",
       text: "The new teacher reports her first week.",
       es: "La maestra nueva reporta su primera semana.",
-      speaker: "mom",
+      speaker: "ana",
       lines: [
-        { speaker: "mom", text: "Group B has already finished unit two. Nobody has left yet.", es: "«El grupo B ya terminó la unidad dos. Nadie se ha ido todavía»." },
+        { speaker: "ana", text: "Group B has already finished unit two. Nobody has left yet.", es: "«El grupo B ya terminó la unidad dos. Nadie se ha ido todavía»." },
         { speaker: "vale", text: "That is the number I care about.", es: "«Ese es el número que me importa»." },
-        { speaker: "mom", text: "So far this is the best job I have had.", es: "«Hasta ahora este es el mejor trabajo que he tenido»." },
+        { speaker: "ana", text: "So far this is the best job I have had.", es: "«Hasta ahora este es el mejor trabajo que he tenido»." },
       ],
       words: [
         { word: "unit", es: "unidad" },
