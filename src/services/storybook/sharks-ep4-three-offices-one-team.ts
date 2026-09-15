@@ -63,8 +63,8 @@ export const SHARKS_EP4_THREE_OFFICES_ONE_TEAM: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
-          "text": "Vale, it is seven in the morning and three offices already called me with different emergencies.",
-          "es": "Vale, son las siete de la mañana y tres oficinas ya me llamaron con emergencias diferentes."
+          "text": "Vale, it is seven in the morning and three offices already called me with different emergencies. Nothing like this happened when we worked in one country.",
+          "es": "Vale, son las siete de la mañana y tres oficinas ya me llamaron con emergencias diferentes. Nada así pasaba cuando trabajábamos en un solo país."
         },
         {
           "speaker": "vale",
@@ -141,8 +141,8 @@ export const SHARKS_EP4_THREE_OFFICES_ONE_TEAM: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "Two afternoon groups in San Salvador have no assigned teacher, and classes begin in five hours.",
-          "es": "Dos grupos de la tarde en San Salvador no tienen maestro asignado, y las clases empiezan en cinco horas."
+          "text": "Two afternoon groups in San Salvador have no assigned teacher, and classes begin in five hours. If we cancel, those families will ask for their money back.",
+          "es": "Dos grupos de la tarde en San Salvador no tienen maestro asignado, y las clases empiezan en cinco horas. Si cancelamos, esas familias pedirán su dinero de vuelta."
         }
       ],
       "words": [
@@ -209,8 +209,8 @@ export const SHARKS_EP4_THREE_OFFICES_ONE_TEAM: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "That makes sense. A class we cannot teach today can never be repeated tomorrow.",
-          "es": "Tiene sentido. Una clase que no podemos dar hoy nunca se puede repetir mañana."
+          "text": "That makes sense. A class we cannot teach today can never be repeated tomorrow, and that is exactly what happened to us last November.",
+          "es": "Tiene sentido. Una clase que no podemos dar hoy nunca se puede repetir mañana, y eso es exactamente lo que nos pasó en noviembre."
         }
       ],
       "words": [
@@ -344,8 +344,8 @@ export const SHARKS_EP4_THREE_OFFICES_ONE_TEAM: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "Two things: a direct contact in Houston and permission to test with real student data.",
-          "es": "Dos cosas: un contacto directo en Houston y permiso para probar con datos reales de estudiantes."
+          "text": "Two things: a direct contact in Houston and permission to test with real student data. Without that access, the test proves almost nothing.",
+          "es": "Dos cosas: un contacto directo en Houston y permiso para probar con datos reales de estudiantes. Sin ese acceso, la prueba no demuestra casi nada."
         }
       ],
       "words": [
@@ -402,8 +402,8 @@ export const SHARKS_EP4_THREE_OFFICES_ONE_TEAM: StorybookEpisode = {
       "lines": [
         {
           "speaker": "reed",
-          "text": "You have thirty minutes for testing, and I will stay on the line until it finishes.",
-          "es": "Tienen treinta minutos para las pruebas, y me quedaré en la línea hasta que terminen."
+          "text": "You have thirty minutes for testing, and I will stay on the line until it finishes. I also expect a written summary immediately afterwards.",
+          "es": "Tienen treinta minutos para las pruebas, y me quedaré en la línea hasta que terminen. También espero un resumen escrito inmediatamente después."
         },
         {
           "speaker": "dani",

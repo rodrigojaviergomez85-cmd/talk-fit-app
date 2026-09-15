@@ -63,8 +63,8 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
-          "text": "Good morning, Mr. Reed. We received your counteroffer last night, and it surprised the whole team.",
-          "es": "Buenos días, señor Reed. Recibimos su contraoferta anoche, y sorprendió a todo el equipo."
+          "text": "Good morning, Mr. Reed. We received your counteroffer last night, and it surprised the whole team. Nobody expected Houston to change two conditions at once.",
+          "es": "Buenos días, señor Reed. Recibimos su contraoferta anoche, y sorprendió a todo el equipo. Nadie esperaba que Houston cambiara dos condiciones a la vez."
         },
         {
           "speaker": "reed",
@@ -96,8 +96,8 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
       "lines": [
         {
           "speaker": "camila",
-          "text": "I ran the numbers twice this morning, and both times the result looked exactly the same.",
-          "es": "Corrí los números dos veces esta mañana, y las dos veces el resultado se vio exactamente igual."
+          "text": "I ran the numbers twice this morning, and both times the result looked exactly the same, even after I used the new prices Houston sent us.",
+          "es": "Corrí los números dos veces esta mañana, y las dos veces el resultado se vio exactamente igual, incluso usando los precios nuevos que envió Houston."
         },
         {
           "speaker": "camila",
@@ -163,8 +163,8 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
       "lines": [
         {
           "speaker": "vale",
-          "text": "Three teachers would teach without training, and the first class always defines the client's opinion.",
-          "es": "Tres maestros darían clase sin capacitación, y la primera clase siempre define la opinión del cliente."
+          "text": "Three teachers would teach without training, and the first class always defines the client's opinion. We cannot repair a first impression with a discount later.",
+          "es": "Tres maestros darían clase sin capacitación, y la primera clase siempre define la opinión del cliente. No podemos reparar una primera impresión con un descuento después."
         },
         {
           "speaker": "vale",
@@ -275,8 +275,8 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "Fifteen percent lower, and your teachers keep the same training hours we promised before.",
-          "es": "Quince por ciento menos, y sus maestros conservan las mismas horas de capacitación que prometimos antes."
+          "text": "Fifteen percent lower, and your teachers keep the same training hours we promised before. That protects our quality and improves your cash position.",
+          "es": "Quince por ciento menos, y sus maestros conservan las mismas horas de capacitación que prometimos antes. Eso protege nuestra calidad y mejora su posición de efectivo."
         }
       ],
       "words": [
@@ -400,8 +400,8 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
       "lines": [
         {
           "speaker": "reed",
-          "text": "Before you celebrate, there is one detail my operations team asked me to include.",
-          "es": "Antes de que celebren, hay un detalle que mi equipo de operaciones me pidió incluir."
+          "text": "Before you celebrate, there is one detail my operations team asked me to include. Please listen carefully before anybody signs anything today.",
+          "es": "Antes de que celebren, hay un detalle que mi equipo de operaciones me pidió incluir. Por favor escuchen con atención antes de que alguien firme algo hoy."
         },
         {
           "speaker": "reed",

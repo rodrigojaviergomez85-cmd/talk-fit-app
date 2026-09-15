@@ -62,8 +62,8 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
-          "text": "It is Saturday, and the community center feels calm for the first time in weeks.",
-          "es": "Es sábado, y el centro comunitario se siente tranquilo por primera vez en semanas."
+          "text": "It is Saturday, and the community center feels calm for the first time in weeks. The adults are inside, and nobody needs anything from us.",
+          "es": "Es sábado, y el centro comunitario se siente tranquilo por primera vez en semanas. Los adultos están adentro, y nadie necesita nada de nosotros."
         },
         {
           "speaker": "dani",
@@ -101,8 +101,8 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
         },
         {
           "speaker": "tito",
-          "text": "That is how young people burn out, Vale. I have seen it many times in this neighborhood.",
-          "es": "Así es como se agota la gente joven, Vale. Lo he visto muchas veces en este barrio."
+          "text": "That is how young people burn out, Vale. I have seen it many times in this neighborhood. Rest is not a reward; it is part of the work.",
+          "es": "Así es como se agota la gente joven, Vale. Lo he visto muchas veces en este barrio. El descanso no es un premio; es parte del trabajo."
         },
         {
           "speaker": "vale",
@@ -164,8 +164,8 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
-          "text": "Something is happening behind you. Half of those children have been staring at us for minutes.",
-          "es": "Algo está pasando detrás de ti. La mitad de esos niños lleva minutos mirándonos."
+          "text": "Something is happening behind you. Half of those children have been staring at us for minutes, and they are listening to every word we say in English.",
+          "es": "Algo está pasando detrás de ti. La mitad de esos niños lleva minutos mirándonos, y están escuchando cada palabra que decimos en inglés."
         },
         {
           "speaker": "vale",
@@ -231,8 +231,8 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "vale",
-          "text": "I have spent three years designing courses for adults who already lost their fear.",
-          "es": "He pasado tres años diseñando cursos para adultos que ya perdieron el miedo."
+          "text": "I have spent three years designing courses for adults who already lost their fear, and every course assumed the student had already decided to study.",
+          "es": "He pasado tres años diseñando cursos para adultos que ya perdieron el miedo, y cada curso asumía que el estudiante ya había decidido estudiar."
         },
         {
           "speaker": "vale",
@@ -373,8 +373,8 @@ export const SHARKS_EP8_VALE_KIDS: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "And they asked for a second group, because their neighbors will want the same thing.",
-          "es": "Y pidieron un segundo grupo, porque sus vecinos van a querer lo mismo."
+          "text": "And they asked for a second group, because their neighbors will want the same thing. Saturday mornings could become the busiest hours of your week.",
+          "es": "Y pidieron un segundo grupo, porque sus vecinos van a querer lo mismo. Las mañanas de sábado podrían volverse las horas más ocupadas de tu semana."
         }
       ],
       "words": [

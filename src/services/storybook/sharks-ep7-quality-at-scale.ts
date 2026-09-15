@@ -63,8 +63,8 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
       "lines": [
         {
           "speaker": "reed",
-          "text": "Before we expand this contract, I need evidence that your quality survives in three countries.",
-          "es": "Antes de ampliar este contrato, necesito evidencia de que su calidad sobrevive en tres países."
+          "text": "Before we expand this contract, I need evidence that your quality survives in three countries. My board reads these reports, and they are not patient people.",
+          "es": "Antes de ampliar este contrato, necesito evidencia de que su calidad sobrevive en tres países. Mi junta lee estos informes, y no son personas pacientes."
         },
         {
           "speaker": "reed",
@@ -97,8 +97,8 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
       "lines": [
         {
           "speaker": "lucia",
-          "text": "Vale, he wants proof, not opinions. Show him the numbers we reviewed on Monday.",
-          "es": "Vale, él quiere pruebas, no opiniones. Muéstrale los números que revisamos el lunes."
+          "text": "Vale, he wants proof, not opinions. Show him the numbers we reviewed on Monday. He has already heard promises from three other providers this month.",
+          "es": "Vale, él quiere pruebas, no opiniones. Muéstrale los números que revisamos el lunes. Ya escuchó promesas de otros tres proveedores este mes."
         },
         {
           "speaker": "vale",
@@ -141,8 +141,8 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "Attendance shows who came. Speaking time shows who practiced, and that predicts real progress.",
-          "es": "La asistencia muestra quién vino. El tiempo hablado muestra quién practicó, y eso predice el progreso real."
+          "text": "Attendance shows who came. Speaking time shows who practiced, and that predicts real progress, so we correct a class in week two instead of week ten.",
+          "es": "La asistencia muestra quién vino. El tiempo hablado muestra quién practicó, y eso predice el progreso real, así corregimos una clase en la semana dos y no en la diez."
         }
       ],
       "words": [
@@ -199,8 +199,8 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
       "lines": [
         {
           "speaker": "reed",
-          "text": "Observation is useful, although observing a problem and fixing it are completely different things.",
-          "es": "Observar es útil, aunque observar un problema y resolverlo son cosas completamente distintas."
+          "text": "Observation is useful, although observing a problem and fixing it are completely different things. I have seen beautiful reports hide very ordinary classrooms.",
+          "es": "Observar es útil, aunque observar un problema y resolverlo son cosas completamente distintas. He visto informes hermosos esconder aulas muy corrientes."
         },
         {
           "speaker": "reed",
@@ -233,8 +233,8 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
       "lines": [
         {
           "speaker": "lucia",
-          "text": "Four students missed two classes, and normally those four disappear before the month ends.",
-          "es": "Cuatro estudiantes faltaron a dos clases, y normalmente esos cuatro desaparecen antes de que acabe el mes."
+          "text": "Four students missed two classes, and normally those four disappear before the month ends, because nobody calls them and everybody assumes somebody else did.",
+          "es": "Cuatro estudiantes faltaron a dos clases, y normalmente esos cuatro desaparecen antes de que acabe el mes, porque nadie los llama y todos suponen que otro ya lo hizo."
         },
         {
           "speaker": "vale",
@@ -311,8 +311,8 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "That group has a new teacher, so we added weekly coaching until the numbers improve.",
-          "es": "Ese grupo tiene un maestro nuevo, así que agregamos acompañamiento semanal hasta que mejoren los números."
+          "text": "That group has a new teacher, so we added weekly coaching until the numbers improve. We will report that group to you every Friday.",
+          "es": "Ese grupo tiene un maestro nuevo, así que agregamos acompañamiento semanal hasta que mejoren los números. Le reportaremos ese grupo cada viernes."
         }
       ],
       "words": [
@@ -374,8 +374,8 @@ export const SHARKS_EP7_QUALITY_AT_SCALE: StorybookEpisode = {
         },
         {
           "speaker": "lucia",
-          "text": "One standard means the same speaking minutes, the same reports, and the same monthly observation.",
-          "es": "Un estándar significa los mismos minutos de habla, los mismos informes y la misma observación mensual."
+          "text": "One standard means the same speaking minutes, the same reports, the same monthly observation, and the same response time when a teacher asks for help.",
+          "es": "Un estándar significa los mismos minutos de habla, los mismos informes, la misma observación mensual y el mismo tiempo de respuesta cuando un maestro pide ayuda."
         },
         {
           "speaker": "vale",

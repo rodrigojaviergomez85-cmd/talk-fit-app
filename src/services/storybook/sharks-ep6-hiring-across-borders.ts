@@ -63,8 +63,8 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
-          "text": "The interview starts in two minutes, Vale. Her experience is strong, but the role is demanding.",
-          "es": "La entrevista empieza en dos minutos, Vale. Su experiencia es fuerte, pero el puesto es exigente."
+          "text": "The interview starts in two minutes, Vale. Her experience is strong, but the role is demanding. She would handle three offices and every report Houston reads.",
+          "es": "La entrevista empieza en dos minutos, Vale. Su experiencia es fuerte, pero el puesto es exigente. Manejaría tres oficinas y cada informe que lee Houston."
         },
         {
           "speaker": "vale",
@@ -106,8 +106,8 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
         },
         {
           "speaker": "lucia",
-          "text": "The distances are longer, the schedules are stricter, and every meeting happens in two languages.",
-          "es": "Las distancias son más largas, los horarios más estrictos, y cada reunión ocurre en dos idiomas."
+          "text": "The distances are longer, the schedules are stricter, and every meeting happens in two languages. Honestly, I learned more in one year here than in five before.",
+          "es": "Las distancias son más largas, los horarios más estrictos, y cada reunión ocurre en dos idiomas. Honestamente, aprendí más en un año aquí que en cinco antes."
         }
       ],
       "words": [
@@ -174,8 +174,8 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
         },
         {
           "speaker": "lucia",
-          "text": "I listened for a month before I changed anything, and that patience opened every door.",
-          "es": "Escuché durante un mes antes de cambiar nada, y esa paciencia me abrió todas las puertas."
+          "text": "I listened for a month before I changed anything, and that patience opened every door. People trust you when they see you doing the work with them.",
+          "es": "Escuché durante un mes antes de cambiar nada, y esa paciencia me abrió todas las puertas. La gente confía en ti cuando te ve haciendo el trabajo con ellos."
         }
       ],
       "words": [
@@ -265,8 +265,8 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
-          "text": "I want to test one situation, because it happens more often than we like to admit.",
-          "es": "Quiero probar una situación, porque pasa más seguido de lo que nos gusta admitir."
+          "text": "I want to test one situation, because it happens more often than we like to admit, and the answer shows how somebody thinks under real pressure.",
+          "es": "Quiero probar una situación, porque pasa más seguido de lo que nos gusta admitir, y la respuesta muestra cómo piensa alguien bajo presión real."
         },
         {
           "speaker": "dani",
@@ -341,8 +341,8 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "You will manage three offices and report directly to me every Friday afternoon.",
-          "es": "Manejarás tres oficinas y me reportarás directamente cada viernes por la tarde."
+          "text": "You will manage three offices and report directly to me every Friday afternoon, and your first task starts this week if that is possible.",
+          "es": "Manejarás tres oficinas y me reportarás directamente cada viernes por la tarde, y tu primera tarea empieza esta semana si es posible."
         }
       ],
       "words": [
