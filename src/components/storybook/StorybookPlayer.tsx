@@ -88,7 +88,7 @@ export function StorybookPlayer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [posKey, episode]);
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || !posRestoredRef.current) return;
     try {
       window.localStorage.setItem(posKey, String(idx));
     } catch {
