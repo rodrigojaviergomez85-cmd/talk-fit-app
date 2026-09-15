@@ -109,11 +109,11 @@ describe("logAiCall", () => {
     expect(rpc).toHaveBeenCalledTimes(1);
     const [fn, args] = rpc.mock.calls[0] as [string, Record<string, unknown>];
     expect(fn).toBe("log_ai_call");
-    expect(String(args._id)).toMatch(/^[0-9a-f-]{36}$/i);
-    expect(args._audio_seconds).toBe(3);
-    expect(args._billed_audio_seconds).toBe(10);
-    expect(args._est_cost_usd).toBeCloseTo((10 / 3600) * 0.04, 12);
-    expect(args._cache_hit).toBe(false);
+    expect(String(args['_id'])).toMatch(/^[0-9a-f-]{36}$/i);
+    expect(args['_audio_seconds']).toBe(3);
+    expect(args['_billed_audio_seconds']).toBe(10);
+    expect(args['_est_cost_usd']).toBeCloseTo((10 / 3600) * 0.04, 12);
+    expect(args['_cache_hit']).toBe(false);
   });
 
   it("retries exactly once with the same uuid and then drops the line", async () => {
@@ -123,7 +123,7 @@ describe("logAiCall", () => {
     expect(rpc).toHaveBeenCalledTimes(2);
     const first = (rpc.mock.calls[0] as [string, Record<string, unknown>])[1];
     const second = (rpc.mock.calls[1] as [string, Record<string, unknown>])[1];
-    expect(second._id).toBe(first._id);
+    expect(second['_id']).toBe(first['_id']);
     expect(errorSpy.mock.calls.flat().join(" ")).toContain("[ai-call-log] dropped");
     errorSpy.mockRestore();
   });
@@ -133,7 +133,7 @@ describe("logAiCall", () => {
     rpc.mockResolvedValue({ error: { message: "boom" } });
     await logAiCall({ user_id: "u", endpoint: "tts", provider: "none", characters: 40, ok: true, cacheHit: true });
     expect(rpc).toHaveBeenCalledTimes(1);
-    expect((rpc.mock.calls[0] as [string, Record<string, unknown>])[1]._cache_hit).toBe(true);
+    expect((rpc.mock.calls[0] as [string, Record<string, unknown>])[1]['_cache_hit']).toBe(true);
     errorSpy.mockRestore();
   });
 
