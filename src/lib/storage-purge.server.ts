@@ -3,7 +3,8 @@
  *
  * Policy (decided with the product owner):
  *   • Practice takes (non-final) are deleted 48 hours after recording.
- *   • Final audio is deleted 90 days after recording.
+ *   • Final audio is deleted 10 days after recording. A repeat's "-latest"
+ *     object counts from its own recording date, not the first completion.
  *   • Milestone finals (day 1 and the last day of a module) are NEVER deleted.
  *
  * NOTHING IS EVER ROW-DELETED. Progress, day completions, coach evaluations,
