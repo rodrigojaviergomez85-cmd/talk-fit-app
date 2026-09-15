@@ -173,13 +173,13 @@ describe("runPurge", () => {
     expect(removed).toEqual([]);
   });
 
-  it("purges journey final audio older than 90 days and its -latest copy", async () => {
+  it("purges an expired journey final, one file per row", async () => {
     const { admin, removed } = fakeAdmin({ recordings: [[]], dayFinals: [[dayFinal(7)], []] });
     const result = await runPurge(admin as never, { now: NOW });
 
     expect(result.dayFinalDeletedFiles).toBe(1);
     expect(result.dayFinalMarkedRows).toBe(1);
-    expect(removed[0]).toEqual(["u1/basic-zero-day-7.webm", "u1/basic-zero-day-7-latest.webm"]);
+    expect(removed[0]).toEqual(["u1/basic-zero-day-7.webm"]);
   });
 
   it("runs both queues on their own ceilings", async () => {
