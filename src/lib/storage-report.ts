@@ -3,7 +3,8 @@
  *
  * RETENTION POLICY (decided with the product owner):
  *   • Practice takes (non-final): deleted 48 hours after recording.
- *   • Final audio: deleted 90 days after recording.
+ *   • Final audio: deleted 10 days after recording (a repeat's "-latest" file
+ *     counts from ITS OWN recording date, not the first completion).
  *   • Milestone finals (day 1 and the last day of a module) are kept FOREVER,
  *     so the learner can always hear their "before and after".
  *
@@ -17,15 +18,15 @@
  * Hard rules for a recordings row (first matching reason wins):
  *   1. already purged       → audio_purged_at IS NOT NULL
  *   2. milestone final      → final AND day 1 or last day of the module
- *   3. final within 90 days → final AND younger than FINAL_RETENTION_DAYS
+ *   3. final within retention → final AND younger than FINAL_RETENTION_DAYS
  *   4. take younger than 48 h
  *   5. otherwise            → candidate
  */
 
 /** Practice takes live 48 hours. */
 export const TAKE_MIN_AGE_HOURS = 48;
-/** Final audio lives 90 days (milestones excepted). */
-export const FINAL_RETENTION_DAYS = 90;
+/** Final audio lives 10 days (milestones excepted). */
+export const FINAL_RETENTION_DAYS = 10;
 /** Every curriculum module is 20 days long. */
 export const MODULE_LAST_DAY = 20;
 
@@ -63,7 +64,15 @@ export type DayFinalRow = {
   user_id: string;
   module_id: string;
   day: number;
+  /**
+   * Which stored object this row is about. `base` is the first completion
+   * (clock: `completed_at`); `latest` is a repeat's own `-latest` object
+   * (clock: `latest_recorded_at`), so a repeat made today survives even when
+   * the day was first completed long ago.
+   */
+  which?: "base" | "latest";
   completed_at: string;
+  latest_recorded_at?: string | null;
   recording_path: string | null;
   recording_purged_at: string | null;
 };
@@ -116,7 +125,9 @@ export function classifyRecording(
 export function classifyDayFinal(row: DayFinalRow, now: Date): Classification {
   if (row.recording_purged_at || !row.recording_path) return { kind: "excluded", reason: "alreadyPurged" };
   if (isMilestoneDay(row.day)) return { kind: "excluded", reason: "milestoneFinal" };
-  const ageMs = now.getTime() - new Date(row.completed_at).getTime();
+  const clock = row.which === "latest" ? row.latest_recorded_at : row.completed_at;
+  if (!clock) return { kind: "excluded", reason: "alreadyPurged" };
+  const ageMs = now.getTime() - new Date(clock).getTime();
   if (ageMs < FINAL_RETENTION_DAYS * 86_400_000) return { kind: "excluded", reason: "finalWithinRetention" };
   return { kind: "candidate" };
 }

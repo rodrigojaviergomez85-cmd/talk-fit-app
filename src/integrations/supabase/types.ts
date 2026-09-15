@@ -318,6 +318,8 @@ export type Database = {
           day: number
           final_seconds: number
           id: string
+          latest_purged_at: string | null
+          latest_recorded_at: string | null
           local_day_key: string | null
           module_id: string
           practice_seconds: number
@@ -336,6 +338,8 @@ export type Database = {
           day: number
           final_seconds?: number
           id?: string
+          latest_purged_at?: string | null
+          latest_recorded_at?: string | null
           local_day_key?: string | null
           module_id?: string
           practice_seconds?: number
@@ -354,6 +358,8 @@ export type Database = {
           day?: number
           final_seconds?: number
           id?: string
+          latest_purged_at?: string | null
+          latest_recorded_at?: string | null
           local_day_key?: string | null
           module_id?: string
           practice_seconds?: number
@@ -1324,6 +1330,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      coach_check_day: {
+        Args: { _day_key: string; _retention_days?: number }
+        Returns: Json
+      }
       consume_ai_coach_quota: {
         Args: { _user_id: string }
         Returns: {
@@ -1473,10 +1483,12 @@ export type Database = {
         Returns: {
           completed_at: string
           day: number
+          latest_recorded_at: string
           module_id: string
           recording_path: string
           recording_purged_at: string
           user_id: string
+          which: string
         }[]
       }
       release_tts_lock: {

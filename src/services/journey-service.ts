@@ -584,6 +584,9 @@ export const JourneyService = {
         recordings_count: record.recordingsCount,
         sentence_count: record.sentenceCount ?? null,
         recording_path: recordingPath,
+        // A repeat's "-latest" object gets its OWN retention clock, so a
+        // recording made today is never deleted with an old first completion.
+        ...(isRepeat && blob ? { latest_recorded_at: new Date().toISOString() } : {}),
         self_assessment: record.selfAssessment ?? null,
         ...(record.repDurations ? { rep_durations: record.repDurations } : {}),
       },

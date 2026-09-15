@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AppShell } from "@/components/fluency/AppShell";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { DateChips } from "@/components/fluency/coach/DateChips";
+import { DaySummary, type CoachCheckDayPayload } from "@/components/fluency/coach/DaySummary";
 import { PracticeCard } from "@/components/fluency/coach/PracticeCard";
 import { SevenDayHistory } from "@/components/fluency/coach/SevenDayHistory";
 import { stopPlayback } from "@/hooks/use-recording-playback";
@@ -10,6 +11,7 @@ import { useAuth } from "@/lib/auth";
 import { formatLongDate, formatSentenceDate, groupByDayKey, recentDayKeys } from "@/lib/coach-check";
 import { useAppLang } from "@/lib/i18n";
 import type { JourneyState } from "@/lib/types";
+import { fetchCoachCheckDay } from "@/services/coach-check-day";
 import { JourneyService } from "@/services/journey-service";
 
 export const Route = createFileRoute("/coach-check")({
@@ -66,6 +68,21 @@ function CoachCheckPage() {
   }, [groups]);
   const practices = groups.get(selected) ?? [];
 
+  // Server-owned counts for the selected date: they never change when audio
+  // is deleted, because they count rows and not files.
+  const [day, setDay] = useState<CoachCheckDayPayload | null>(null);
+  useEffect(() => {
+    if (!user || !selected) return;
+    let alive = true;
+    setDay(null);
+    fetchCoachCheckDay(selected)
+      .then((payload) => alive && setDay(payload))
+      .catch(() => alive && setDay(null));
+    return () => {
+      alive = false;
+    };
+  }, [user, selected]);
+
   const select = (key: string) => {
     stopPlayback();
     setSelected(key);
@@ -115,13 +132,24 @@ function CoachCheckPage() {
 
         <StatusLine status={status} />
 
-        {practices.length === 0 ? (
+        {(day?.practices ?? practices.length) === 0 ? (
           <section className="rounded-3xl border border-destructive/30 bg-card p-5 text-center shadow-[var(--shadow-card)]">
             <p className="text-[18px] font-extrabold uppercase tracking-tight">🔴 {t("coach.none")}</p>
             <p className="mt-2 text-[14px] font-semibold text-muted-foreground">
               {t("coach.noneBody")} {formatSentenceDate(selected, lang)}.
             </p>
           </section>
+        ) : day ? (
+          <DaySummary payload={day}>
+            {practices.map((record, i) => (
+              <PracticeCard
+                key={`${record.moduleId}:${record.day}`}
+                record={record}
+                {...(practices.length > 1 ? { index: i } : {})}
+                {...(practices.length === 1 ? { recordingsCount: day.recordings } : {})}
+              />
+            ))}
+          </DaySummary>
         ) : (
           <section className="space-y-3">
             <p className="text-[18px] font-extrabold uppercase tracking-tight">
@@ -136,6 +164,7 @@ function CoachCheckPage() {
             ))}
           </section>
         )}
+
 
         <SevenDayHistory counts={counts} selected={selected} onSelect={select} />
       </div>

@@ -608,6 +608,13 @@ const DICT = {
   "coach.offline": ["SIN CONEXIÓN", "OFFLINE"],
   "coach.offlineBody": ["Mostrando el último progreso disponible", "Showing the last available progress"],
   "coach.learner": ["ESTUDIANTE", "LEARNER"],
+  "coach.recordingsMade": ["grabaciones realizadas", "recordings made"],
+  "coach.availableUntil": ["Disponibles hasta el", "Available until"],
+  "coach.audiosExpired": [
+    "Los audios expiraron. Tu actividad sigue registrada.",
+    "The audios expired. Your activity is still recorded.",
+  ],
+
 
   // Progress
   "prog.thisWeek": ["Esta semana", "This week"],

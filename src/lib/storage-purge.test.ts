@@ -133,14 +133,13 @@ describe("runPurge", () => {
     expect(result.errors.some((e) => e.startsWith("OWNERSHIP MISMATCH"))).toBe(true);
   });
 
-  it("skips a day final whose derived latest path is not owned", async () => {
+  it("skips a day final whose path is not owned by its user", async () => {
     const bad = { ...dayFinal(7), recording_path: "u1/basic-zero-day-7.webm" };
-    // A path with no extension derives a latest path that keeps no owner prefix.
     const broken = { ...dayFinal(8), user_id: "u1", recording_path: "u2/basic-zero-day-8.webm" };
     const { admin, removed } = fakeAdmin({ recordings: [[]], dayFinals: [[bad, broken], []] });
     const result = await runPurge(admin as never, { now: NOW });
 
-    expect(removed).toEqual([["u1/basic-zero-day-7.webm", "u1/basic-zero-day-7-latest.webm"]]);
+    expect(removed).toEqual([["u1/basic-zero-day-7.webm"]]);
     expect(result.dayFinalDeletedFiles).toBe(1);
     expect(result.dayFinalMarkedRows).toBe(1);
     expect(result.errors.some((e) => e.startsWith("OWNERSHIP MISMATCH"))).toBe(true);
@@ -173,13 +172,13 @@ describe("runPurge", () => {
     expect(removed).toEqual([]);
   });
 
-  it("purges journey final audio older than 90 days and its -latest copy", async () => {
+  it("purges an expired journey final, one file per row", async () => {
     const { admin, removed } = fakeAdmin({ recordings: [[]], dayFinals: [[dayFinal(7)], []] });
     const result = await runPurge(admin as never, { now: NOW });
 
     expect(result.dayFinalDeletedFiles).toBe(1);
     expect(result.dayFinalMarkedRows).toBe(1);
-    expect(removed[0]).toEqual(["u1/basic-zero-day-7.webm", "u1/basic-zero-day-7-latest.webm"]);
+    expect(removed[0]).toEqual(["u1/basic-zero-day-7.webm"]);
   });
 
   it("runs both queues on their own ceilings", async () => {
@@ -280,5 +279,129 @@ describe("purge overlap guard", () => {
   it("ignores an unfinished run from 40 minutes ago", async () => {
     const { admin } = runLookup([{ started_at: new Date(nowMs - 40 * 60_000).toISOString() }]);
     expect(await hasActiveRun(admin as never, nowMs)).toBe(false);
+  });
+});
+
+/**
+ * Repeats have their own clock: the database returns ONE ROW PER FILE, with
+ * `which` saying which stamp the job must write.
+ */
+describe("runPurge — base vs latest finals", () => {
+  const YESTERDAY = new Date(NOW.getTime() - 86_400_000).toISOString();
+  const ELEVEN_DAYS = new Date(NOW.getTime() - 11 * 86_400_000).toISOString();
+
+  /** Fake admin that captures the exact update payload per day-final row. */
+  function finalsAdmin(pages: Row[][]) {
+    const removed: string[][] = [];
+    const stamps: Row[] = [];
+    let calls = 0;
+    const queue = [...pages];
+    const admin = {
+      rpc: async (name: string) => {
+        calls += 1;
+        if (calls > 50) throw new Error("runaway loop");
+        return { data: name === "purge_day_final_candidates" ? (queue.shift() ?? []) : [], error: null };
+      },
+      from: () => ({
+        update: (payload: Row) => ({
+          in: async () => ({ error: null }),
+          eq: () => ({
+            eq: () => ({
+              eq: async () => {
+                stamps.push(payload);
+                return { error: null };
+              },
+            }),
+          }),
+        }),
+      }),
+      storage: {
+        from: () => ({
+          remove: async (paths: string[]) => {
+            removed.push(paths);
+            return { error: null };
+          },
+        }),
+      },
+    };
+    return { admin, removed, stamps };
+  }
+
+  it("deletes only the base file and stamps only recording_purged_at", async () => {
+    const { admin, removed, stamps } = finalsAdmin([
+      [
+        {
+          user_id: "u1",
+          module_id: "basic-zero",
+          day: 5,
+          which: "base",
+          completed_at: ELEVEN_DAYS,
+          latest_recorded_at: YESTERDAY,
+          recording_path: "u1/basic-zero-day-5.webm",
+          recording_purged_at: null,
+        },
+      ],
+      [],
+    ]);
+    const result = await runPurge(admin as never, { now: NOW });
+
+    expect(result.dayFinalDeletedFiles).toBe(1);
+    expect(removed).toEqual([["u1/basic-zero-day-5.webm"]]);
+    expect(Object.keys(stamps[0] ?? {})).toEqual(["recording_purged_at"]);
+  });
+
+  it("deletes only the -latest file and stamps only latest_purged_at", async () => {
+    const { admin, removed, stamps } = finalsAdmin([
+      [
+        {
+          user_id: "u1",
+          module_id: "basic-zero",
+          day: 7,
+          which: "latest",
+          completed_at: VERY_OLD,
+          latest_recorded_at: ELEVEN_DAYS,
+          recording_path: "u1/basic-zero-day-7-latest.webm",
+          recording_purged_at: null,
+        },
+      ],
+      [],
+    ]);
+    const result = await runPurge(admin as never, { now: NOW });
+
+    expect(result.dayFinalDeletedFiles).toBe(1);
+    expect(removed).toEqual([["u1/basic-zero-day-7-latest.webm"]]);
+    expect(Object.keys(stamps[0] ?? {})).toEqual(["latest_purged_at"]);
+  });
+
+  it("never touches day 1 or day 20, base or latest", async () => {
+    const { admin, removed } = finalsAdmin([
+      [
+        {
+          user_id: "u1",
+          module_id: "basic-zero",
+          day: 1,
+          which: "base",
+          completed_at: VERY_OLD,
+          latest_recorded_at: null,
+          recording_path: "u1/basic-zero-day-1.webm",
+          recording_purged_at: null,
+        },
+        {
+          user_id: "u1",
+          module_id: "basic-zero",
+          day: 20,
+          which: "latest",
+          completed_at: VERY_OLD,
+          latest_recorded_at: ELEVEN_DAYS,
+          recording_path: "u1/basic-zero-day-20-latest.webm",
+          recording_purged_at: null,
+        },
+      ],
+      [],
+    ]);
+    const result = await runPurge(admin as never, { now: NOW });
+
+    expect(result.dayFinalDeletedFiles).toBe(0);
+    expect(removed).toEqual([]);
   });
 });

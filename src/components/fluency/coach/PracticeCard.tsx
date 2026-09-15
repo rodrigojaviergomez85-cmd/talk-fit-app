@@ -14,7 +14,17 @@ import { JourneyService } from "@/services/journey-service";
  * One completed curriculum Day for Coach Check: module + Day, real completion
  * time, the Final Rep as the primary audio, and the Rep 5 takes collapsed.
  */
-export function PracticeCard({ record, index }: { record: DayRecord; index?: number }) {
+export function PracticeCard({
+  record,
+  index,
+  recordingsCount,
+}: {
+  record: DayRecord;
+  index?: number;
+  /** Server count for the day. Never derived from the take list, which only
+   * holds audio that still exists. */
+  recordingsCount?: number;
+}) {
   const { t, lang } = useAppLang();
   const [open, setOpen] = useState(false);
   const [takes, setTakes] = useState<TakeRow[] | null>(null);
@@ -34,7 +44,7 @@ export function PracticeCard({ record, index }: { record: DayRecord; index?: num
     };
   }, [open, takes, record.moduleId, record.day]);
 
-  const count = takes ? takes.length : record.recordingsCount;
+  const count = recordingsCount ?? record.recordingsCount;
   const listenLabel = `${t("coach.listen")}${record.finalSeconds ? ` · ${formatDuration(record.finalSeconds)}` : ""}`;
 
   return (
