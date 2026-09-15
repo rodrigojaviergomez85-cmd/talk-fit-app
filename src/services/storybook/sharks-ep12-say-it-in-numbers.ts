@@ -106,7 +106,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       id: "s3",
       image: s3,
       imageAlt: "Dani points at the biggest cost on the spreadsheet.",
-      text: "Teacher hours are the biggest cost. The average class costs us nine dollars.",
+      text: "Teacher hours are the biggest cost. The average class costs us nine dollars right now.",
       es: "Las horas de los maestros son el costo más grande. La clase promedio nos cuesta nueve dólares.",
       speaker: "dani",
       cast: ["dani", "camila"],
@@ -144,7 +144,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       lines: [
         {
           speaker: "camila",
-          text: "Retention is ninety-four percent, so churn is very low for this market.",
+          text: "Retention is ninety-four percent, so churn is very low for this kind of market.",
           es: "La retención es noventa y cuatro por ciento, así que la fuga es muy baja para este mercado."
         },
         {
@@ -199,7 +199,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       id: "s6",
       image: s6,
       imageAlt: "Dani shows a forecast spreadsheet for the next two quarters.",
-      text: "I built a spreadsheet with the full forecast for the next two quarters, including Mexico.",
+      text: "I built a spreadsheet with the full forecast for the next two quarters, including the Mexico pilot.",
       es: "Hice una hoja de cálculo con el pronóstico para los próximos dos trimestres.",
       speaker: "dani",
       cast: ["dani", "vale"],
