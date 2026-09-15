@@ -161,7 +161,7 @@ export const SHARKS_EP20_SHARKS_CLOSE_DEALS: StorybookEpisode = {
         {
           "speaker": "renata",
           "text": "Twenty groups in September, forty in January. You train the teachers, I take care of the schools. This regional deal is signed.",
-          "es": "Veinte grupos en septiembre, cuarenta en enero. Tú entrenas a los maestros, yo cuido las escuelas. Firmado."
+          "es": "Veinte grupos en septiembre, cuarenta en enero. Tú entrenas a los maestros, yo cuido las escuelas. Este acuerdo regional está firmado."
         }
       ],
       "words": [
@@ -342,7 +342,7 @@ export const SHARKS_EP20_SHARKS_CLOSE_DEALS: StorybookEpisode = {
         {
           "speaker": "camila",
           "text": "We have determination, real results, strong student retention, and a legacy of trained teachers. That achievement is a strong start.",
-          "es": "Tenemos determinación, resultados reales y un legado de maestros capacitados. Eso es un buen comienzo."
+          "es": "Tenemos determinación, resultados reales, buena retención de estudiantes y un legado de maestros capacitados. Ese logro es un buen comienzo."
         },
         {
           "speaker": "dani",
@@ -361,14 +361,14 @@ export const SHARKS_EP20_SHARKS_CLOSE_DEALS: StorybookEpisode = {
       "image": s11,
       "imageAlt": "Vale, Dani and Camila stand together outside the academy at dusk, looking forward with hope.",
       "text": "Ready? This does not end with Mexico or with two signed contracts. It begins with a global opportunity we have to earn.",
-      "es": "¿Listos? Esto no termina con México. Empieza con una oportunidad que tenemos que ganar.",
+      "es": "¿Listos? Esto no termina con México ni con dos contratos firmados. Empieza con una oportunidad global que tenemos que ganar.",
       "speaker": "vale",
       "cast": ["vale", "dani", "camila"],
       "lines": [
         {
           "speaker": "vale",
           "text": "Ready? This does not end with Mexico or with two signed contracts. It begins with a global opportunity we have to earn.",
-          "es": "¿Listos? Esto no termina con México. Empieza con una oportunidad que tenemos que ganar."
+          "es": "¿Listos? Esto no termina con México ni con dos contratos firmados. Empieza con una oportunidad global que tenemos que ganar."
         },
         {
           "speaker": "dani",
