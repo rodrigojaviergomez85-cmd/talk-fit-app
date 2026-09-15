@@ -390,7 +390,7 @@ export const SHARKS_EP18_SAY_NO_WITH_RESPECT: StorybookEpisode = {
       ],
       "words": [
         { "word": "delay", "es": "demorarse" },
-        { "word": "contracts", "es": "contratos" },
+        { "word": "contract", "es": "contrato" },
         { "word": "inconsistency", "es": "inconsistencia" }
       ]
     }
