@@ -23,13 +23,14 @@
 - [x] Todas las ilustraciones Eagles verificadas a 768×768 y menos de 250 KB
 - [x] Voces únicas y estables; 13 pruebas finales verdes; ruta del episodio 20 responde sin errores
 
-## Temporada 7 (Tigers) — revisión
+## Temporada 7 (Tigers) cerrada
 - [x] 20 episodios escritos y registrados; 11 escenas, 3 preguntas, afirmación y cliffhanger en cada uno
 - [x] Voces únicas y estables en toda la temporada (incluidos Bryan, Sofía y Mr. Herrera)
 - [x] Glosario al 100%: 210 palabras nuevas con significado en español
 - [x] 4 palabras tocables corregidas porque no aparecían en su escena
-- [x] 48 pruebas del cuento animado en verde
-- [ ] Ilustraciones reales: las 240 imágenes siguen siendo marcadores de posición
+- [x] 240 ilustraciones reales generadas con las fichas canónicas (768×768, 40–250 KB)
+- [x] Revisión visual por tandas; imágenes con texto inventado regeneradas
+- [x] Prueba `tigers-consistency.test.ts` que bloquea imágenes de relleno; 53 pruebas verdes y tipos en orden
 
 ## Siguiente
 - [ ] Temporada 8 (Sharks), 9-11 (Advanced 1-3)
