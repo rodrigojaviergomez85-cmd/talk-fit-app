@@ -184,7 +184,7 @@ export const SHARKS_EP13_THE_HARD_NEGOTIATION: StorybookEpisode = {
       "text": "Then I will say it honestly: this is not punishment, it is preparation. He is not ready yet.",
       "es": "Entonces lo diré honestamente: esto no es un castigo, es preparación. Todavía no está listo.",
       "speaker": "vale",
-      "cast": ["vale", "dani"],
+      "cast": ["vale", "dani", "camila"],
       "lines": [
         {
           "speaker": "vale",
