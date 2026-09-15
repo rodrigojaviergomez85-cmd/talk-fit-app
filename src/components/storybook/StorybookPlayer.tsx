@@ -1587,7 +1587,7 @@ function FinaleSlide({
           onStart={() => AudioService.stop()}
           label={take ? (es ? "GRABAR OTRA VEZ" : "RECORD AGAIN") : es ? "GRABAR MI PRESENTACIÓN" : "RECORD MY INTRO"}
           stopLabel={es ? "PARAR" : "STOP"}
-          maxSeconds={15}
+          maxSeconds={episode.finaleSeconds ?? 15}
           countdown
           onComplete={(rec) => {
             setTake(rec);
