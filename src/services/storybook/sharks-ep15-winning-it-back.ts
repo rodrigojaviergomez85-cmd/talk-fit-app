@@ -304,7 +304,7 @@ export const SHARKS_EP15_WINNING_IT_BACK: StorybookEpisode = {
     {
       "id": "s9",
       "image": s9,
-      "imageAlt": "Dani holds back a celebration shout in the hallway after the meeting.",
+      "imageAlt": "Dani holds back a celebration shout while Camila and Vale celebrate with him in the hallway.",
       "text": "We did not just keep him. The change is permanent: we raised our standard forever.",
       "es": "No solo lo conservamos. El cambio es permanente: elevamos nuestro estándar para siempre.",
       "speaker": "camila",
