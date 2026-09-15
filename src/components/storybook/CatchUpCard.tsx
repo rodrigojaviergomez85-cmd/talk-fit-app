@@ -73,9 +73,13 @@ export function CatchUpCard({ showEs }: { showEs: boolean }) {
               ? showEs
                 ? `¡Meta de hoy cumplida! Llevas ${plan.doneTodayCount} episodios hoy. Puedes seguir si quieres.`
                 : `Today's goal is done! ${plan.doneTodayCount} episodes today. Keep going if you want.`
-              : showEs
-                ? `Te faltan ${plan.todayRemaining} de ${CATCH_UP_DAILY_GOAL} episodios hoy.`
-                : `${plan.todayRemaining} of ${CATCH_UP_DAILY_GOAL} episodes left today.`}
+              : plan.doneTodayCount === 0
+                ? showEs
+                  ? `Hoy te tocan ${CATCH_UP_DAILY_GOAL} episodios.`
+                  : `${CATCH_UP_DAILY_GOAL} episodes for today.`
+                : showEs
+                  ? `Te falta ${plan.todayRemaining} de ${CATCH_UP_DAILY_GOAL} episodios hoy.`
+                  : `${plan.todayRemaining} of ${CATCH_UP_DAILY_GOAL} episodes left today.`}
           </p>
           <p className="mt-1 text-[12px] font-bold uppercase tracking-[0.12em] text-primary">
             {showEs
