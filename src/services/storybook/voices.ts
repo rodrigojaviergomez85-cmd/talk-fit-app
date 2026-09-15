@@ -24,6 +24,8 @@ export function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice 
   if (speaker === "mom") return "femaleMature";
   if (speaker === "tito") return "elder";
   if (speaker === "morgan") return "femaleMature";
+  if (speaker === "bryan") return "male";
+  if (speaker === "sofia") return "femaleBright";
   return "neutral";
 }
 
@@ -36,6 +38,8 @@ export function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
   if (speaker === "dani") return "earnest";
   if (speaker === "mom") return "warm";
   if (speaker === "morgan") return "pro";
+  if (speaker === "bryan") return "pro";
+  if (speaker === "sofia") return "warm";
   return "story";
 }
 
@@ -61,6 +65,8 @@ export function speakerName(speaker: StorybookSpeaker | undefined): string {
     tito: "Don Tito",
     dani: "Dani",
     morgan: "Morgan",
+    bryan: "Bryan",
+    sofia: "Sofía",
   };
   return names[speaker ?? "narrator"];
 }
