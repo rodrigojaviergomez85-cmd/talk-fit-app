@@ -30,13 +30,13 @@ Renata propone abrir cincuenta grupos de Vale Kids demasiado rápido. Vale expli
 
 **Meta B2:** límites profesionales, rechazo diplomático, alternativas, concesiones y condiciones.
 
-### Episodio 19 — The Regional Deal
-El piloto funciona y se negocia un acuerdo regional realista: no cuatro aperturas simultáneas, sino un calendario por etapas. Guatemala será el primer nuevo mercado; cada país tendrá anexos legales, responsables y metas. Una filtración a la prensa amenaza con anunciar algo que todavía no está firmado.
+### Episodio 19 — The Mexico Deal
+El piloto funciona y Vale y Renata negocian **el acuerdo de México** para llevar Vale Kids a las escuelas de Renata. Definen cuántos grupos abrirán, capacitación de maestros, control de calidad, responsabilidades, fechas y la participación de cada socia. Guatemala no forma parte de este acuerdo. Una filtración a la prensa amenaza con anunciar como firmado algo que todavía sigue en negociación.
 
 **Meta B2:** planificación futura, hitos, lenguaje contractual, riesgos y respuesta ante información incompleta.
 
 ### Episodio 20 — Beyond One Border
-Vale responde a la filtración con honestidad: confirma la visión, pero no inventa acuerdos cerrados. El equipo firma únicamente la primera fase regional. Dani acepta liderar operaciones y revela que trabajar con maestros y familias despertó en él interés por el servicio público, sembrando su futura ruta política sin sacarlo todavía de la empresa. Mr. Reed invita a Vale a presentar su modelo ante un programa internacional, abriendo Advanced 1.
+Vale responde a la filtración con honestidad: confirma las conversaciones, pero aclara que el acuerdo aún no estaba cerrado. Después de resolver el conflicto, Vale y Renata firman el acuerdo de México con un lanzamiento gradual y metas medibles. Dani acepta liderar la operación de apoyo desde la academia y revela que trabajar con maestros y familias despertó en él interés por el servicio público, sembrando su futura ruta política sin sacarlo todavía de la empresa. Mr. Reed invita a Vale a presentar su modelo ante un programa internacional, abriendo Advanced 1 sin fingir que ella ya opera en otros países.
 
 **Meta B2:** síntesis, reflexión, discurso de 45 segundos, logros, responsabilidad y visión futura.
 
