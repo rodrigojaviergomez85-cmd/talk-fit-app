@@ -430,7 +430,7 @@ export function StorybookPlayer({
             onClick={() => navigate({ to: "/natural-method/audiobooks" })}
             className="mt-3 inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.1em] text-muted-foreground"
           >
-            <History className="size-4" />
+            <Library className="size-4" />
             {es ? "Ponerme al día con episodios anteriores" : "Catch up on earlier episodes"}
           </button>
         ) : null}
