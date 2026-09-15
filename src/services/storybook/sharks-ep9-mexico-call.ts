@@ -47,7 +47,7 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
       text: "So you want me to buy your brand and run it exactly your way.",
       es: "Entonces quiere que compre su marca y la maneje exactamente a su manera.",
       speaker: "renata",
-      cast: ["renata", "dani"],
+      cast: ["renata", "dani", "vale"],
       lines: [
         {
           speaker: "renata",
@@ -56,8 +56,8 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "She sounds worried. Vale, she thinks this is a sale, not an alliance.",
-          es: "Suena preocupada. Vale, cree que esto es una venta, no una alianza."
+          text: "She sounds worried. Vale, she thinks this is a sale, not an alliance. I heard it in her voice from the first word.",
+          es: "Suena preocupada. Vale, cree que esto es una venta, no una alianza. Lo escuché en su voz desde la primera palabra."
         },
         {
           speaker: "vale",
@@ -87,8 +87,8 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "That is smart. If we define the model first, the price conversation gets easier.",
-          es: "Es inteligente. Si definimos el modelo primero, la conversación del precio se vuelve más fácil."
+          text: "That is smart. If we define the model first, the price conversation gets easier, and nobody feels pressured.",
+          es: "Es inteligente. Si definimos el modelo primero, la conversación del precio se vuelve más fácil, y nadie se siente presionado."
         },
         {
           speaker: "vale",
@@ -109,7 +109,7 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
       text: "Please do, because I do not buy franchises. I build schools.",
       es: "Por favor, porque yo no compro franquicias. Yo construyo escuelas.",
       speaker: "renata",
-      cast: ["renata"],
+      cast: ["renata", "vale"],
       lines: [
         {
           speaker: "renata",
@@ -123,8 +123,8 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "Good answer. Keep going, I am listening.",
-          es: "Buena respuesta. Continúe, la escucho."
+          text: "Good answer. Keep going, I am listening, and my partners in Monterrey are waiting for my report.",
+          es: "Buena respuesta. Continúe, la escucho, y mis socios en Monterrey esperan mi reporte."
         }
       ],
       words: [
@@ -140,7 +140,7 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
       text: "Vale, compare it to a shared kitchen, not a franchise.",
       es: "Vale, compáralo con una cocina compartida, no con una franquicia.",
       speaker: "dani",
-      cast: ["dani", "vale"],
+      cast: ["dani", "vale", "renata"],
       lines: [
         {
           speaker: "dani",
@@ -154,8 +154,8 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "That comparison makes sense. My school stays mine.",
-          es: "Esa comparación tiene sentido. Mi escuela sigue siendo mía."
+          text: "That comparison makes sense. My school stays mine, with my name on the door.",
+          es: "Esa comparación tiene sentido. Mi escuela sigue siendo mía, con mi nombre en la puerta."
         }
       ],
       words: [
@@ -171,7 +171,7 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
       text: "In other words, you keep your school. We provide the curriculum, training, and platform.",
       es: "En otras palabras, usted conserva su escuela. Nosotros damos el currículo, capacitación y plataforma.",
       speaker: "vale",
-      cast: ["vale", "dani"],
+      cast: ["vale", "dani", "renata"],
       lines: [
         {
           speaker: "vale",
@@ -185,8 +185,8 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "That part I like. My teachers are loyal to me, not to a brand.",
-          es: "Esa parte me gusta. Mis maestros son leales a mí, no a una marca."
+          text: "That part I like. My teachers are loyal to me, not to a brand, and their students trust them completely.",
+          es: "Esa parte me gusta. Mis maestros son leales a mí, no a una marca, y sus estudiantes confían plenamente en ellos."
         }
       ],
       words: [
@@ -216,8 +216,8 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "They should. I worked twenty years for what I have.",
-          es: "Así debería ser. Trabajé veinte años por lo que tengo."
+          text: "They should. I worked twenty years for what I have, and I do not sign away my future.",
+          es: "Así debería ser. Trabajé veinte años por lo que tengo, y no firmo lejos mi futuro."
         }
       ],
       words: [
@@ -247,8 +247,8 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Correct. You only pay for the students who are actually learning.",
-          es: "Correcto. Solo paga por los estudiantes que realmente están aprendiendo."
+          text: "Correct. You only pay for the students who are actually learning in your classrooms each month.",
+          es: "Correcto. Solo paga por los estudiantes que realmente están aprendiendo en sus salones cada mes."
         }
       ],
       words: [
@@ -278,8 +278,8 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "That is why we protect quality in every classroom, yours and ours.",
-          es: "Por eso protegemos la calidad en cada salón, el suyo y el nuestro."
+          text: "That is why we protect quality in every classroom, yours and ours, because one bad class hurts both names.",
+          es: "Por eso protegemos la calidad en cada salón, el suyo y el nuestro, porque una mala clase daña ambos nombres."
         }
       ],
       words: [
@@ -309,8 +309,8 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "Audit, not command. I can live with that.",
-          es: "Auditar, no mandar. Con eso sí puedo vivir."
+          text: "Audit, not command. I can live with that, and so can my teachers.",
+          es: "Auditar, no mandar. Con eso sí puedo vivir, y mis maestros también."
         }
       ],
       words: [
@@ -326,7 +326,7 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
       text: "No. You know Mexico; we know the system. Together we can adapt it.",
       es: "No. Usted conoce México; nosotros conocemos el sistema. Juntas podemos adaptarlo.",
       speaker: "vale",
-      cast: ["vale", "camila"],
+      cast: ["vale", "camila", "renata"],
       lines: [
         {
           speaker: "vale",
@@ -340,8 +340,8 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "Good, because my students work during the day. That detail matters.",
-          es: "Bien, porque mis estudiantes trabajan de día. Ese detalle importa."
+          text: "Good, because my students work during the day, and that detail matters more than any marketing.",
+          es: "Bien, porque mis estudiantes trabajan de día, y ese detalle importa más que cualquier marketing."
         }
       ],
       words: [
@@ -357,7 +357,7 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
       text: "Good. You should also know that I own six schools that compete with you.",
       es: "Bien. También debe saber que tengo seis escuelas que compiten con ustedes.",
       speaker: "renata",
-      cast: ["renata"],
+      cast: ["renata", "vale"],
       lines: [
         {
           speaker: "renata",
@@ -371,8 +371,8 @@ export const SHARKS_EP9_MEXICO_CALL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "Because honest partners start with honest numbers. Think about it, and call me tomorrow.",
-          es: "Porque los socios honestos empiezan con números honestos. Piénselo y llámeme mañana."
+          text: "Because honest partners start with honest numbers. Think about it, and call me tomorrow. I want to see how you think under pressure.",
+          es: "Porque los socios honestos empiezan con números honestos. Piénselo y llámeme mañana. Quiero ver cómo piensa bajo presión."
         }
       ],
       words: [
