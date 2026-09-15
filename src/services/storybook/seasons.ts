@@ -296,7 +296,7 @@ export const STORYBOOK_SEASONS: Season[] = [
     imageAlt: { en: "Vale on a video call with an American executive", es: "Vale en una videollamada con un ejecutivo estadounidense" },
     slots: [
       { day: 1, episodeId: "sharks-ep1-tell-the-story", teaser: { en: "Tell the story", es: "Cuenta la historia" } },
-      { day: 2, episodeId: null, teaser: { en: "Guatemala, seven a.m.", es: "Guatemala, siete de la mañana" } },
+      { day: 2, episodeId: "sharks-ep2-guatemala-seven-am", teaser: { en: "Guatemala, seven a.m.", es: "Guatemala, siete de la mañana" } },
       { day: 3, episodeId: null, teaser: { en: "The first dollar contract", es: "El primer contrato en dólares" } },
       { day: 4, episodeId: null, teaser: { en: "Three offices, one team", es: "Tres oficinas, un equipo" } },
       { day: 5, episodeId: null, teaser: { en: "The counter-offer", es: "La contraoferta" } },
