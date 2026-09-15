@@ -84,6 +84,23 @@ export type StorybookQuiz = {
   sayItCheck?: StorybookSayItCheck;
 };
 
+/**
+ * B2 layer (Sharks and later): a phrasal verb or business idiom a character
+ * actually says inside the episode. Shown on the "Say it like a native" card
+ * right before the finale and recycled in later episodes of the season.
+ */
+export type StorybookExpression = {
+  /** The expression as a native would say it, e.g. "follow up". */
+  phrase: string;
+  /** Spanish meaning. */
+  es: string;
+  kind: "phrasal" | "idiom";
+  /** The line from this episode where it was used. */
+  example: string;
+  /** Spanish translation of the example. */
+  exampleEs: string;
+};
+
 export type StorybookMindsetCard = {
   /** Scene id after which the mindset card appears. */
   afterScene: string;
