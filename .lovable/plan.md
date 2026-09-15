@@ -1,66 +1,64 @@
-# Plan: Repensar el arco de Sharks (Temporada 8)
+# Plan: Nueva trama de Sharks (episodios 9–20) y puente a Advanced
 
-## Problema actual
-- El Episodio 8 cierra con una llamada de México interesado en llevar la idea de Vale Kids.
-- El Episodio 9 salta a una oferta de compra de marca, contratos exclusivos y cláusulas de Houston.
-- Vale Kids todavía no es una marca consolidada, ni existe una razón real para que alguien quiera comprarla.
-- Los conflictos legales/contractuales son difíciles de seguir para estudiantes B1 y no reflejan el método de la app (escuchar, hablar, practicar).
+## Qué está pasando ahora (verificado)
+- Episodio 7 "Quality at scale": Vale ya opera con Northline en tres oficinas y batalla con la calidad al mismo tiempo en tres países.
+- Episodio 8 "Vale Kids": en un sábado tranquilo, Vale decide arrancar un programa para niños y al final recibe un mensaje de México.
+- Episodio 9 actual: Renata aparece hablando de comprar la marca y de franquicias. Eso no encaja: Kids apenas nació y Northline sigue siendo el negocio central.
+- Episodios 11–20 actuales: títulos sobre inversionistas, negociaciones duras y acuerdos regionales, pero los diálogos son genéricos y desconectados del hilo real.
 
-## Nueva dirección propuesta
-Sharks será la temporada en la que Vale lleva su método a México **paso a paso**, con una aliada realista (Renata) que quiere replicar el modelo en su escuela, no comprarlo. El conflicto central es práctico: ¿cómo adaptar un método que funciona en El Salvador a otro país, cultura y horario?
+## La trama correcta
+Vale no vende nada. Vale **construye**: sigue operando Northline en tres países, levanta Vale Kids como segunda línea de negocio, y en el camino se convierte en empresaria multinacional. Renata deja de ser compradora y pasa a ser la socia mexicana que quiere abrir Kids en Monterrey. El precio del crecimiento es el tema real: más países, más gente, menos control directo.
 
-## Objetivos de aprendizaje B1→B2
-- Futuro, presente progresivo y pasado en diálogo fluido.
-- Expresiones de negociación, acuerdo, objeción y cierre.
-- Phrasal verbs e idiomas de negocios presentados como frases completas.
-- Monólogos de 45 segundos al final de los episodios 5, 10, 15 y 20.
+Dani sigue siendo empleado de Vale durante toda esta temporada. En Advanced da el salto a la política, y Vale se vuelve su mentora.
 
-## Arco por episodios
+## Tono para Gen Z
+- Diálogo rápido, gracioso a ratos, nada de discursos.
+- Conflictos concretos: un cliente molesto, una clase que sale mal, un empleado que renuncia, un mensaje a medianoche.
+- Nada de lenguaje legal ni cláusulas contractuales como eje.
+- Emoción visible: Vale se cansa, duda, se enoja y se recupera.
 
-### Semana 1 (días 1–5): La puerta se abre
-- **Ep 1**: México llama. Renata, directora de una escuela en Monterrey, vio un video de Vale Kids y quiere saber cómo empezar.
-- **Ep 2**: Vale explica el método por videollamada. No es una franquicia; es un modelo de aula con historias y movimiento.
-- **Ep 3**: Renata prueba una clase piloto con 5 niños. El desafío: los niños mexicanos usan algunas palabras distintas.
-- **Ep 4**: Vale viaja (o se conecta) para entrenar a los maestros de Renata. Error cómico: un maestro habla demasiado español.
-- **Ep 5**: Primera clase piloto en México. Vale observa, corrige con respeto y cierra con un monólogo del estudiante sobre qué método usaría con un niño.
+## Arco nuevo, episodios 9–20
 
-### Semana 2 (días 6–10): Primeros problemas reales
-- **Ep 6**: Los padres de Monterrey preguntan por resultados. Renata no sabe cómo medirlos.
-- **Ep 7**: Camila diseña una pequeña evaluación oral. Dani explica por qué no se usa examen escrito.
-- **Ep 8**: Un niño se frustra y no quiere hablar. Vale lo maneja con paciencia.
-- **Ep 9**: Renata quiere crecer a 3 grupos, pero no tiene suficientes maestros entrenados.
-- **Ep 10**: Deciden abrir una “escuela hermana” en vez de franquicia. Monólogo de cierre sobre un problema resuelto.
+### Semana 2 (9–10): Kids arranca de verdad
+- **Ep 9 — La llamada de México**: Renata dirige una escuela en Monterrey, vio el video de la primera clase de Kids y quiere abrir uno igual. No compra nada: pregunta cómo se hace. Vale contesta desde el centro comunitario, todavía con los niños cantando de fondo.
+- **Ep 10 — ¿Socia o rival?**: Renata también atiende clientes corporativos en México, igual que Northline. Vale descubre que podrían chocar en el mismo mercado. Cierre: Lucía llama desde Guatemala, algo salió mal en una clase.
 
-### Semana 3 (días 11–15): Competencia y presión
-- **Ep 11**: BigTalk (o una escuela local copia) anuncia clases similares más baratas.
-- **Ep 12**: Renata quiere bajar precios. Vale explica que la calidad no se negocia.
-- **Ep 13**: Hacen una clase abierta para padres. Los niños enseñan lo que aprendieron.
-- **Ep 14**: Un padre difícil pide garantías. Renata responde con datos de la clase piloto.
-- **Ep 15**: Vale y Renata revisan el acuerdo. No es compra: es colaboración con metas claras. Monólogo de cierre sobre una decisión difícil.
+### Semana 3 (11–15): El costo de crecer
+- **Ep 11 — Qué salió mal**: la clase de Guatemala falló por un maestro sin entrenar. Vale entiende que creció más rápido de lo que puede entrenar.
+- **Ep 12 — Dilo en números**: Camila presenta los números reales de Northline y Kids. Vale ve por primera vez cuánto está perdiendo por reentrenar.
+- **Ep 13 — La conversación difícil**: Vale tiene que decirle a un maestro querido que no está listo para liderar. Dani no está de acuerdo.
+- **Ep 14 — Perder un cliente**: una oficina de Northline cancela. Primera derrota real de la temporada.
+- **Ep 15 — Recuperarlo**: Vale va en persona, escucha, corrige y recupera al cliente. Monólogo de cierre del estudiante sobre un error que corrigió.
 
-### Semana 4 (días 16–20): Cierre y gancho para Advanced
-- **Ep 16**: La escuela hermana de México tiene su primera graduación simbólica.
-- **Ep 17**: Renata propone llevar el modelo a Guatemala. Vale dice que primero hay que documentar todo.
-- **Ep 18**: El equipo crea un manual sencillo para nuevos maestros.
-- **Ep 19**: Vale reflexiona: lo que empezó como una clase sabatina ahora conecta tres países.
-- **Ep 20**: Último episodio de Sharks. Una llamada inesperada abre Advanced: un corporativo internacional quiere entrenar a adultos con el método Vale. Monólogo final de 45 segundos.
+### Semana 4 (16–20): Empresaria multinacional
+- **Ep 16 — Un equipo en tres países**: Vale organiza por primera vez a su equipo como empresa real, con Lucía en Guatemala y Renata en México.
+- **Ep 17 — El inversionista**: alguien ofrece dinero para acelerar Kids. Vale escucha, pero la condición es soltar el control de la calidad.
+- **Ep 18 — Decir no con respeto**: Vale rechaza la inversión sin quemar el puente. Renata la respalda.
+- **Ep 19 — El acuerdo regional**: Northline y Kids operando en tres países bajo un solo acuerdo que Vale diseñó, no que le impusieron.
+- **Ep 20 — Los sharks cierran tratos**: Vale ya es empresaria multinacional. En el cierre, Dani le dice que va a renunciar: quiere lanzarse a la política para cambiar el país. Gancho directo a Advanced.
 
-## Reglas de escritura para cada episodio
-1. Máximo 11 escenas, 33 líneas de diálogo, 500–650 palabras habladas.
-2. Cada escena debe tener al menos 3 palabras tocables contextualizadas y traducidas como frase cuando aplica.
-3. Exactamente 2 phrasal verbs y 1 idiom/collocation por episodio, siempre como expresión completa.
-4. Las preguntas de comprensión deben ser únicas y basadas en eventos específicos de ese episodio.
-5. Los "Say It" deben responder la pregunta planteada, no ser ejemplos genéricos.
-6. El cast debe respetar el canon: Vale, Dani, Camila, Renata, Lucía, Mr. Reed (remoto), Don Tito. Mateo no aparece en Sharks.
+## Puente a Advanced
+Advanced 1–3 arrancan con Dani como candidato y Vale como mentora: él aprende a hablar en público, a debatir y a negociar en inglés a nivel internacional, mientras Vale sigue creciendo su empresa. Ese arco se planifica aparte, después de cerrar Sharks.
 
-## Tareas del plan
-1. Reescribir el guion maestro de Sharks (arco de 20 episodios) en un documento compartido.
-2. Reescribir los episodios 9 y 10 para que encajen con el nuevo arco.
-3. Revisar y ajustar los episodios 1–2 ya existentes si es necesario.
-4. Planificar y reescribir los episodios 11–20 en chunks de 5.
-5. Auditar cast, glossary, artwork prompts y quizzes después de cada chunk.
-6. Ejecutar tests de TypeScript y storybook antes de marcar cada chunk como listo.
+## Reglas de escritura por episodio
+1. 11 escenas, 33 líneas de diálogo conectadas, 500–650 palabras habladas.
+2. Mínimo 3 palabras tocables por escena, contextuales y traducidas; las expresiones completas se traducen como expresión.
+3. Exactamente 2 phrasal verbs y 1 idiom/collocation por episodio.
+4. Preguntas de comprensión únicas, basadas en lo que pasó en ese episodio: una sobre la escena 3, una sobre el conflicto de la escena 7, una sobre el cierre.
+5. Los "Say It" responden la pregunta que se hace, con ejemplo coherente.
+6. Cast según el canon: Vale, Dani, Camila, Renata, Lucía, Mr. Reed, Don Tito. Mateo no aparece en Sharks.
+7. Cada episodio arranca retomando el final del anterior.
 
-## No incluido en este plan
-- No se modifica la estructura técnica del reproductor, los locks, ni el sistema de capítulos diarios.
-- No se regenera artwork de episodios que no cambien de escena/cast.
+## Cómo lo voy a hacer
+1. Reescribir los episodios 9 y 10 con la trama nueva.
+2. Reescribir 11–15 como segundo bloque.
+3. Reescribir 16–20 como tercer bloque, con el gancho de Dani al final.
+4. Quitar la capa de relleno automático de Sharks una vez que ningún episodio dependa de ella.
+5. Revisar después de cada bloque: cast, glosario, preguntas, textos de imagen, tipos y pruebas.
+6. Regenerar solo las ilustraciones cuyas escenas cambien de lugar o de personajes.
+
+## Detalles técnicos
+- Los guiones viven en `src/services/storybook/sharks-ep*.ts`.
+- El relleno genérico está en `src/services/storybook/sharks-dialogue-expansions.ts`; los episodios reescritos salen de `SHARKS_RICH_EPISODES`.
+- El canon de personajes está en `src/services/storybook/character-canon.ts` y no cambia con este plan.
+- No se tocan el reproductor, los bloqueos diarios, las rutas ni el sistema de progreso.
