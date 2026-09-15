@@ -380,8 +380,8 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "Then we leave better than we arrived. But they will not leave, Dani.",
-          "es": "Entonces nos iremos mejores de lo que llegamos. Pero no se van a ir, Dani."
+          "text": "Then we leave better than we arrived. But they will not leave us, Dani.",
+          "es": "Entonces nos iremos mejores de lo que llegamos. Pero no nos van a dejar, Dani."
         },
         {
           "speaker": "vale",
