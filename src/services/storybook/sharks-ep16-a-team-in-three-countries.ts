@@ -24,27 +24,23 @@ export const SHARKS_EP16_A_TEAM_IN_THREE_COUNTRIES: StorybookEpisode = {
   },
   "previously": [
     {
-      "en": "The school is bigger. The distance between the people is bigger too.",
-      "es": "La escuela es más grande. La distancia entre las personas también."
+      "en": "Vale drove three hours to San Miguel, taught a live class, and won the client back with a free pilot month.",
+      "es": "Vale manejó tres horas a San Miguel, dio una clase en vivo y recuperó al cliente con un mes piloto gratis."
+    },
+    {
+      "en": "The team now operates in three countries with a staff built for only one city.",
+      "es": "El equipo ahora opera en tres países con un personal hecho para una sola ciudad."
     }
   ],
   "reviewWords": [
-    {
-      "word": "team",
-      "es": "equipo"
-    },
-    {
-      "word": "schedule",
-      "es": "horario"
-    },
-    {
-      "word": "training",
-      "es": "capacitación"
-    }
+    { "word": "commitment", "es": "compromiso" },
+    { "word": "credibility", "es": "credibilidad" },
+    { "word": "standards", "es": "estándares" },
+    { "word": "reliable", "es": "confiable" }
   ],
   "blurb": {
-    "en": "Three countries, three timezones, one team. And one supervisor just resigned.",
-    "es": "Tres países, tres husos horarios, un equipo. Y un supervisor acaba de renunciar."
+    "en": "Three countries, three timezones, one whiteboard. When the Guatemala supervisor resigns mid-transition, Vale has to fix the system, not blame the person.",
+    "es": "Tres países, tres husos horarios, una sola pizarra. Cuando el supervisor de Guatemala renuncia a medio camino, Vale tiene que arreglar el sistema, no culpar a la persona."
   },
   "cover": cover,
   "voice": "girl",
@@ -52,248 +48,361 @@ export const SHARKS_EP16_A_TEAM_IN_THREE_COUNTRIES: StorybookEpisode = {
     {
       "id": "s1",
       "image": s1,
-      "imageAlt": "Scene 1 of A team in three countries.",
-      "text": "We have teachers in three countries now, and three different timezones.",
-      "es": "Ahora tenemos maestros en tres países y tres husos horarios distintos.",
+      "imageAlt": "Vale, Dani and Camila stand around one whiteboard in San Salvador with three countries listed on it.",
+      "text": "Okay, we have active groups in three countries and only one whiteboard in San Salvador. How do we start?",
+      "es": "Okay, tenemos grupos activos en tres países y una sola pizarra en San Salvador. ¿Cómo empezamos?",
       "speaker": "vale",
-      "cast": [
-        "vale",
-        "dani"
-      ],
+      "cast": ["vale", "dani", "camila"],
       "lines": [
         {
           "speaker": "vale",
-          "text": "We have teachers in three countries now, and three different timezones.",
-          "es": "Ahora tenemos maestros en tres países y tres husos horarios distintos."
+          "text": "Okay, we have active groups in three countries and only one whiteboard in San Salvador. How do we start?",
+          "es": "Okay, tenemos grupos activos en tres países y una sola pizarra en San Salvador. ¿Cómo empezamos?"
+        },
+        {
+          "speaker": "camila",
+          "text": "First, timezones. Mexico is one hour behind, and Guatemala matches us. My proposal: an overlap window from nine to eleven.",
+          "es": "Primero, los husos horarios. México está una hora atrás, y Guatemala coincide con nosotros. Mi propuesta: una ventana de traslape de nueve a once."
+        },
+        {
+          "speaker": "dani",
+          "text": "And shared documents. If every country keeps its reports in a different folder, we lose control fast.",
+          "es": "Y documentos compartidos. Si cada país guarda sus reportes en una carpeta distinta, perdemos el control rápido."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "timezone", "es": "huso horario" },
+        { "word": "overlap", "es": "traslape" },
+        { "word": "documents", "es": "documentos" }
+      ]
     },
     {
       "id": "s2",
       "image": s2,
-      "imageAlt": "Scene 2 of A team in three countries.",
-      "text": "The Guatemala shift starts at seven, but our headquarters opens at eight.",
-      "es": "El turno de Guatemala empieza a las siete, pero nuestra oficina central abre a las ocho.",
-      "speaker": "dani",
-      "cast": [
-        "dani",
-        "camila"
-      ],
+      "imageAlt": "Vale writes a short policy list on the whiteboard while Camila and Dani watch.",
+      "text": "Good. One clear policy: one sheet per week, one check-in meeting, and zero \"who is doing this\" emails.",
+      "es": "Bien. Una política clara: una hoja por semana, una reunión de seguimiento, y cero correos de \"¿quién hace esto?\".",
+      "speaker": "vale",
+      "cast": ["vale", "camila", "dani"],
       "lines": [
         {
+          "speaker": "vale",
+          "text": "Good. One clear policy: one sheet per week, one check-in meeting, and zero \"who is doing this\" emails.",
+          "es": "Bien. Una política clara: una hoja por semana, una reunión de seguimiento, y cero correos de \"¿quién hace esto?\"."
+        },
+        {
+          "speaker": "camila",
+          "text": "That is delegating, not abandoning. Each country keeps a local leader, but the standard stays the same everywhere.",
+          "es": "Eso es delegar, no abandonar. Cada país mantiene un líder local, pero el estándar sigue siendo el mismo en todos lados."
+        },
+        {
           "speaker": "dani",
-          "text": "The Guatemala shift starts at seven, but our headquarters opens at eight.",
-          "es": "El turno de Guatemala empieza a las siete, pero nuestra oficina central abre a las ocho."
+          "text": "I can coordinate directly with Guatemala if they give me access to their calendar.",
+          "es": "Puedo coordinar directamente con Guatemala si me dan acceso a su calendario."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "policy", "es": "política" },
+        { "word": "delegate", "es": "delegar" },
+        { "word": "leader", "es": "líder" }
+      ]
     },
     {
       "id": "s3",
       "image": s3,
-      "imageAlt": "Scene 3 of A team in three countries.",
-      "text": "So we need one hour of overlap where everybody can check in together.",
-      "es": "Así que necesitamos una hora de traslape donde todos podamos reportarnos juntos.",
-      "speaker": "camila",
-      "cast": [
-        "camila",
-        "lucia"
-      ],
+      "imageAlt": "Lucía appears on a laptop video call from her office in Guatemala looking worried while Vale and Camila listen.",
+      "text": "Vale, I have bad news. Our supervisor resigned this morning. He says the workload is too high.",
+      "es": "Vale, tengo malas noticias. Nuestro supervisor renunció esta mañana. Dice que la carga de trabajo es demasiado alta.",
+      "speaker": "lucia",
+      "cast": ["lucia", "vale", "camila"],
       "lines": [
         {
-          "speaker": "camila",
-          "text": "So we need one hour of overlap where everybody can check in together.",
-          "es": "Así que necesitamos una hora de traslape donde todos podamos reportarnos juntos."
+          "speaker": "lucia",
+          "text": "Vale, I have bad news. Our supervisor resigned this morning. He says the workload is too high.",
+          "es": "Vale, tengo malas noticias. Nuestro supervisor renunció esta mañana. Dice que la carga de trabajo es demasiado alta."
+        },
+        {
+          "speaker": "vale",
+          "text": "He resigned? With no transition, and no handoff of his files?",
+          "es": "¿Renunció? ¿Sin transición y sin entregar sus archivos?"
+        },
+        {
+          "speaker": "lucia",
+          "text": "Exactly. He just told me to figure it out myself.",
+          "es": "Exacto. Solo me dijo que yo me las arreglara."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "resigned", "es": "renunció" },
+        { "word": "workload", "es": "carga de trabajo" },
+        { "word": "transition", "es": "transición" }
+      ]
     },
     {
       "id": "s4",
       "image": s4,
-      "imageAlt": "Scene 4 of A team in three countries.",
-      "text": "In Mexico the onboarding takes two weeks because the documents are different.",
-      "es": "En México la incorporación toma dos semanas porque los documentos son diferentes.",
-      "speaker": "lucia",
-      "cast": [
-        "lucia",
-        "vale"
-      ],
+      "imageAlt": "Camila and Dani talk seriously in the office while Vale listens with her arms crossed, thinking.",
+      "text": "This could fall apart. Guatemala is our newest country, and it just lost its only supervisor.",
+      "es": "Esto podría desmoronarse. Guatemala es nuestro país más nuevo, y acaba de perder a su único supervisor.",
+      "speaker": "camila",
+      "cast": ["camila", "dani", "vale"],
       "lines": [
         {
-          "speaker": "lucia",
-          "text": "In Mexico the onboarding takes two weeks because the documents are different.",
-          "es": "En México la incorporación toma dos semanas porque los documentos son diferentes."
+          "speaker": "camila",
+          "text": "This could fall apart. Guatemala is our newest country, and it just lost its only supervisor.",
+          "es": "Esto podría desmoronarse. Guatemala es nuestro país más nuevo, y acaba de perder a su único supervisor."
+        },
+        {
+          "speaker": "dani",
+          "text": "It is not Lucía's fault. It is the system's fault: we gave her responsibility without any support.",
+          "es": "No es culpa de Lucía. Es culpa del sistema: le dimos responsabilidad sin ningún apoyo."
+        },
+        {
+          "speaker": "vale",
+          "text": "Then let us fix the system, not blame the supervisor who left.",
+          "es": "Entonces arreglemos el sistema, no culpemos al supervisor que se fue."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "fault", "es": "culpa" },
+        { "word": "support", "es": "apoyo" },
+        { "word": "responsibility", "es": "responsabilidad" }
+      ]
     },
     {
       "id": "s5",
       "image": s5,
-      "imageAlt": "Scene 5 of A team in three countries.",
-      "text": "Then write one policy that works for all three, and let each country adapt the details.",
-      "es": "Entonces escribe una política que sirva para los tres, y que cada país adapte los detalles.",
+      "imageAlt": "Vale points at Lucía's video call window on the laptop screen with confidence while Dani and Camila stand beside her.",
+      "text": "Lucía, you are the coordinator now. We are not leaving you alone. Dani will support you for two weeks.",
+      "es": "Lucía, tú eres la coordinadora ahora. No te dejamos sola. Dani te apoyará durante dos semanas.",
       "speaker": "vale",
-      "cast": [
-        "vale",
-        "dani"
-      ],
+      "cast": ["vale", "dani", "camila"],
       "lines": [
         {
           "speaker": "vale",
-          "text": "Then write one policy that works for all three, and let each country adapt the details.",
-          "es": "Entonces escribe una política que sirva para los tres, y que cada país adapte los detalles."
+          "text": "Lucía, you are the coordinator now. We are not leaving you alone. Dani will support you for two weeks.",
+          "es": "Lucía, tú eres la coordinadora ahora. No te dejamos sola. Dani te apoyará durante dos semanas."
+        },
+        {
+          "speaker": "dani",
+          "text": "I travel tomorrow. We will review her onboarding, her reports, and her schedule together.",
+          "es": "Yo viajo mañana. Revisamos juntos su incorporación, sus reportes y sus horarios."
+        },
+        {
+          "speaker": "camila",
+          "text": "And I will redesign the dashboard so everyone sees the same information in real time.",
+          "es": "Y yo rediseño el panel para que todos vean la misma información en tiempo real."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "coordinator", "es": "coordinadora" },
+        { "word": "onboarding", "es": "incorporación" },
+        { "word": "dashboard", "es": "panel de datos" }
+      ]
     },
     {
       "id": "s6",
       "image": s6,
-      "imageAlt": "Scene 6 of A team in three countries.",
-      "text": "My workload is too heavy for that. I am running classes and hiring at the same time.",
-      "es": "Mi carga de trabajo es muy pesada para eso. Estoy dando clases y contratando al mismo tiempo.",
-      "speaker": "dani",
-      "cast": [
-        "dani",
-        "vale"
-      ],
+      "imageAlt": "Lucía smiles with relief on the video call while Vale and Camila nod supportively from the San Salvador office.",
+      "text": "Can Dani really come? Two weeks is a long time for one person to give away.",
+      "es": "¿De verdad puede venir Dani? Dos semanas es mucho tiempo para que una persona lo dé.",
+      "speaker": "lucia",
+      "cast": ["lucia", "vale", "camila"],
       "lines": [
         {
-          "speaker": "dani",
-          "text": "My workload is too heavy for that. I am running classes and hiring at the same time.",
-          "es": "Mi carga de trabajo es muy pesada para eso. Estoy dando clases y contratando al mismo tiempo."
+          "speaker": "lucia",
+          "text": "Can Dani really come? Two weeks is a long time for one person to give away.",
+          "es": "¿De verdad puede venir Dani? Dos semanas es mucho tiempo para que una persona lo dé."
+        },
+        {
+          "speaker": "vale",
+          "text": "Yes. But you have to make the decisions, Lucía, not just receive the help.",
+          "es": "Sí. Pero tú tienes que tomar las decisiones, Lucía, no solo recibir la ayuda."
+        },
+        {
+          "speaker": "lucia",
+          "text": "Understood. I will train my own internal replacement so this never depends on one single person again.",
+          "es": "Entendido. Entrenaré a mi propio reemplazo interno para que esto nunca vuelva a depender de una sola persona."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "decisions", "es": "decisiones" },
+        { "word": "replacement", "es": "reemplazo" },
+        { "word": "depend", "es": "depender" }
+      ]
     },
     {
       "id": "s7",
       "image": s7,
-      "imageAlt": "Scene 7 of A team in three countries.",
-      "text": "Then delegate the hiring to Lucía. A leader who never delegates becomes the problem.",
-      "es": "Entonces delega la contratación a Lucía. Un líder que nunca delega se vuelve el problema.",
-      "speaker": "vale",
-      "cast": [
-        "vale",
-        "lucia"
-      ],
+      "imageAlt": "Dani stands confidently in front of Vale and Camila in the San Salvador office, proposing a new rule.",
+      "text": "Vale, I want to propose a rule: no country should ever have only one point of contact. Always two.",
+      "es": "Vale, quiero proponer una regla: ningún país debería tener solo un punto de contacto. Siempre dos.",
+      "speaker": "dani",
+      "cast": ["dani", "vale", "camila"],
       "lines": [
         {
+          "speaker": "dani",
+          "text": "Vale, I want to propose a rule: no country should ever have only one point of contact. Always two.",
+          "es": "Vale, quiero proponer una regla: ningún país debería tener solo un punto de contacto. Siempre dos."
+        },
+        {
           "speaker": "vale",
-          "text": "Then delegate the hiring to Lucía. A leader who never delegates becomes the problem.",
-          "es": "Entonces delega la contratación a Lucía. Un líder que nunca delega se vuelve el problema."
+          "text": "That costs more headquarters time. But it stops one resignation from stopping the whole operation.",
+          "es": "Eso cuesta más tiempo de la oficina central. Pero evita que una sola renuncia detenga toda la operación."
+        },
+        {
+          "speaker": "camila",
+          "text": "And that is exactly what companies that really grow end up doing.",
+          "es": "Y eso es exactamente lo que terminan haciendo las empresas que realmente crecen."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "headquarters", "es": "oficina central" },
+        { "word": "resignation", "es": "renuncia" },
+        { "word": "operation", "es": "operación" }
+      ]
     },
     {
       "id": "s8",
       "image": s8,
-      "imageAlt": "Scene 8 of A team in three countries.",
-      "text": "I can do it if Camila and I sort out the salary ranges this week.",
-      "es": "Puedo hacerlo si Camila y yo resolvemos los rangos salariales esta semana.",
+      "imageAlt": "Camila shows salary numbers on her laptop screen to Lucía while Vale looks at the dashboard nearby.",
+      "text": "I can do it if Camila and I sort out the salary ranges for the new hires this week.",
+      "es": "Puedo hacerlo si Camila y yo resolvemos los rangos salariales de las nuevas contrataciones esta semana.",
       "speaker": "lucia",
-      "cast": [
-        "lucia",
-        "camila"
-      ],
+      "cast": ["lucia", "camila", "vale"],
       "lines": [
         {
           "speaker": "lucia",
-          "text": "I can do it if Camila and I sort out the salary ranges this week.",
-          "es": "Puedo hacerlo si Camila y yo resolvemos los rangos salariales esta semana."
+          "text": "I can do it if Camila and I sort out the salary ranges for the new hires this week.",
+          "es": "Puedo hacerlo si Camila y yo resolvemos los rangos salariales de las nuevas contrataciones esta semana."
+        },
+        {
+          "speaker": "camila",
+          "text": "We are on the same wavelength, Lucía. I already have the numbers ready on my laptop.",
+          "es": "Estamos en la misma sintonía, Lucía. Ya tengo los números listos en mi laptop."
+        },
+        {
+          "speaker": "vale",
+          "text": "Send me the final policy tonight, and I will approve it before the Guatemala office opens tomorrow.",
+          "es": "Envíame la política final esta noche, y la aprobaré antes de que abra la oficina de Guatemala mañana."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "salary", "es": "salario" },
+        { "word": "sort out", "es": "resolver" },
+        { "word": "approve", "es": "aprobar" }
+      ]
     },
     {
       "id": "s9",
       "image": s9,
-      "imageAlt": "Scene 9 of A team in three countries.",
-      "text": "We are on the same wavelength. I already have the numbers ready.",
-      "es": "Estamos en la misma sintonía. Ya tengo los números listos.",
-      "speaker": "camila",
-      "cast": [
-        "camila",
-        "vale"
-      ],
+      "imageAlt": "Vale, Dani and Camila gather around the whiteboard again, now with a clear, organized plan written on it.",
+      "text": "Let's be clear: we are not three separate countries anymore. We are one team in three timezones.",
+      "es": "Que quede claro: ya no somos tres países separados. Somos un solo equipo en tres husos horarios.",
+      "speaker": "vale",
+      "cast": ["vale", "dani", "camila"],
       "lines": [
         {
+          "speaker": "vale",
+          "text": "Let's be clear: we are not three separate countries anymore. We are one team in three timezones.",
+          "es": "Que quede claro: ya no somos tres países separados. Somos un solo equipo en tres husos horarios."
+        },
+        {
+          "speaker": "dani",
+          "text": "So tomorrow I have a flight to Guatemala. My bag is already packed.",
+          "es": "Entonces mañana tengo un vuelo a Guatemala. Mi maleta ya está lista."
+        },
+        {
           "speaker": "camila",
-          "text": "We are on the same wavelength. I already have the numbers ready.",
-          "es": "Estamos en la misma sintonía. Ya tengo los números listos."
+          "text": "And I will send everyone the new dashboard before midnight, remote and coordinated at the same time.",
+          "es": "Y yo les envío a todos el nuevo panel antes de medianoche, remoto y coordinado al mismo tiempo."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "remote", "es": "remoto" },
+        { "word": "coordinate", "es": "coordinar" },
+        { "word": "flight", "es": "vuelo" }
+      ]
     },
     {
       "id": "s10",
       "image": s10,
-      "imageAlt": "Scene 10 of A team in three countries.",
-      "text": "Perfect. Remote does not mean alone. We coordinate on Monday and report on Friday.",
-      "es": "Perfecto. Remoto no significa solo. Coordinamos el lunes y reportamos el viernes.",
-      "speaker": "vale",
-      "cast": [
-        "vale",
-        "dani"
-      ],
+      "imageAlt": "Dani checks his phone with a proud smile while Vale and Camila high-five near the whiteboard.",
+      "text": "This is the first time we solve a crisis in three countries without one single person carrying it alone.",
+      "es": "Esta es la primera vez que resolvemos una crisis en tres países sin que una sola persona la cargue sola.",
+      "speaker": "dani",
+      "cast": ["dani", "vale", "camila"],
       "lines": [
         {
+          "speaker": "dani",
+          "text": "This is the first time we solve a crisis in three countries without one single person carrying it alone.",
+          "es": "Esta es la primera vez que resolvemos una crisis en tres países sin que una sola persona la cargue sola."
+        },
+        {
           "speaker": "vale",
-          "text": "Perfect. Remote does not mean alone. We coordinate on Monday and report on Friday.",
-          "es": "Perfecto. Remoto no significa solo. Coordinamos el lunes y reportamos el viernes."
+          "text": "Good systems check in on people before people burn out, Dani. That is the whole point.",
+          "es": "Los buenos sistemas se reportan con la gente antes de que la gente se agote, Dani. Ese es todo el punto."
+        },
+        {
+          "speaker": "camila",
+          "text": "Then let's document it, so the next resignation is a plan, not a panic.",
+          "es": "Entonces documentémoslo, para que la próxima renuncia sea un plan, no un pánico."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "crisis", "es": "crisis" },
+        { "word": "check in", "es": "reportarse" },
+        { "word": "document", "es": "documentar" }
+      ]
     },
     {
       "id": "s11",
       "image": s11,
-      "imageAlt": "Scene 11 of A team in three countries.",
-      "text": "Vale, one supervisor in Guatemala just resigned. He is going to the competitor.",
-      "es": "Vale, un supervisor en Guatemala acaba de renunciar. Se va con el competidor.",
-      "speaker": "dani",
-      "cast": [
-        "dani"
-      ],
+      "imageAlt": "Lucía speaks urgently into her laptop camera from Guatemala while Vale leans in close to listen on the other end.",
+      "text": "Vale, before we hang up... someone in Monterrey called our office asking about \"the academy that is growing fast.\" He sounded interested.",
+      "es": "Vale, antes de colgar... alguien en Monterrey llamó a nuestra oficina preguntando por \"la academia que crece rápido\". Sonaba interesado.",
+      "speaker": "lucia",
+      "cast": ["lucia", "vale"],
       "lines": [
         {
-          "speaker": "dani",
-          "text": "Vale, one supervisor in Guatemala just resigned. He is going to the competitor.",
-          "es": "Vale, un supervisor en Guatemala acaba de renunciar. Se va con el competidor."
+          "speaker": "lucia",
+          "text": "Vale, before we hang up... someone in Monterrey called our office asking about \"the academy that is growing fast.\" He sounded interested.",
+          "es": "Vale, antes de colgar... alguien en Monterrey llamó a nuestra oficina preguntando por \"la academia que crece rápido\". Sonaba interesado."
+        },
+        {
+          "speaker": "vale",
+          "text": "Interested how? Did he leave a name, or just a number?",
+          "es": "¿Interesado cómo? ¿Dejó un nombre, o solo un número?"
+        },
+        {
+          "speaker": "lucia",
+          "text": "Just a number, and one strange line: he said he represents a woman with money to invest.",
+          "es": "Solo un número, y una frase extraña: dijo que representa a una mujer con dinero para invertir."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "interested", "es": "interesado" },
+        { "word": "represents", "es": "representa" },
+        { "word": "invest", "es": "invertir" }
+      ]
     }
   ],
   "quizzes": [
     {
       "id": "q1",
       "afterScene": "s3",
-      "questionEn": "What does the team need?",
-      "questionEs": "¿Qué necesita el equipo?",
+      "questionEn": "Why does the Guatemalan supervisor resign?",
+      "questionEs": "¿Por qué renuncia el supervisor de Guatemala?",
       "options": [
-        {
-          "label": "So we need one hour of overlap where everybody can check in together.",
-          "emoji": "🎯"
-        },
-        {
-          "label": "They need a new building.",
-          "emoji": "🛑"
-        },
-        {
-          "label": "They need to close Guatemala.",
-          "emoji": "❓"
-        }
+        { "label": "Because the workload is too high and he received no support.", "emoji": "😓" },
+        { "label": "Because he got a better salary somewhere else.", "emoji": "💰" },
+        { "label": "Because the office in Guatemala closed.", "emoji": "🚪" }
       ],
       "answer": 0,
-      "sayIt": "They need one hour of overlap to check in together.",
-      "sayItEs": "Ejemplo: «They need one hour of overlap to check in together.»",
-      "sayItAskEn": "How would you organize a team in three countries?",
-      "sayItAskEs": "¿Cómo organizarías un equipo en tres países?",
+      "sayIt": "He resigned because the workload was too high and there was no support.",
+      "sayItEs": "Ejemplo: «He resigned because the workload was too high and there was no support.»",
+      "sayItAskEn": "How would you organize a team spread across three countries?",
+      "sayItAskEs": "¿Cómo organizarías un equipo repartido en tres países?",
       "sayItCheck": {
         "target": "I would *",
         "altTargets": [
@@ -305,121 +414,99 @@ export const SHARKS_EP16_A_TEAM_IN_THREE_COUNTRIES: StorybookEpisode = {
     {
       "id": "q2",
       "afterScene": "s7",
-      "questionEn": "What advice does Vale give Dani?",
-      "questionEs": "¿Qué consejo le da Vale a Dani?",
+      "questionEn": "What new rule does Dani propose for every country?",
+      "questionEs": "¿Qué nueva regla propone Dani para cada país?",
       "options": [
-        {
-          "label": "Then delegate the hiring to Lucía. A leader who never delegates becomes the problem.",
-          "emoji": "💬"
-        },
-        {
-          "label": "She tells him to work more hours.",
-          "emoji": "🙈"
-        },
-        {
-          "label": "She tells him to stop teaching forever.",
-          "emoji": "🚫"
-        }
+        { "label": "No country should have only one point of contact — always two.", "emoji": "🤝" },
+        { "label": "Every country should close on Fridays.", "emoji": "🚫" },
+        { "label": "Every country should have its own separate app.", "emoji": "📱" }
       ],
       "answer": 0,
-      "sayIt": "She tells him to delegate the hiring to Lucía.",
-      "sayItEs": "Ejemplo: «She tells him to delegate the hiring to Lucía.»",
-      "sayItAskEn": "What task would you delegate, and why?",
-      "sayItAskEs": "¿Qué tarea delegarías y por qué?",
+      "sayIt": "Dani proposes that every country should always have two points of contact.",
+      "sayItEs": "Ejemplo: «Dani proposes that every country should always have two points of contact.»",
+      "sayItAskEn": "What would you do if your best teammate resigned suddenly?",
+      "sayItAskEs": "¿Qué harías si tu mejor compañero de equipo renunciara de repente?",
       "sayItCheck": {
-        "target": "I would delegate * because *",
+        "target": "I would check *, redistribute *, and ask for *",
         "altTargets": [
-          "I would ask * to *",
-          "The task is *"
+          "First I would *, then I would *",
+          "I would *"
         ]
       }
     },
     {
       "id": "q3",
       "afterScene": "s11",
-      "questionEn": "What is the bad news?",
-      "questionEs": "¿Cuál es la mala noticia?",
+      "questionEn": "What does Lucía say about the phone call from Monterrey?",
+      "questionEs": "¿Qué dice Lucía sobre la llamada de Monterrey?",
       "options": [
-        {
-          "label": "Vale, one supervisor in Guatemala just resigned. He is going to the competitor.",
-          "emoji": "⚡"
-        },
-        {
-          "label": "The office closes.",
-          "emoji": "😴"
-        },
-        {
-          "label": "Everybody gets a bonus.",
-          "emoji": "🏖️"
-        }
+        { "label": "Someone interested in the fast-growing academy called, saying he represents an investor.", "emoji": "📞" },
+        { "label": "A student in Monterrey wants a refund.", "emoji": "😴" },
+        { "label": "The Monterrey office is closing down.", "emoji": "🛑" }
       ],
       "answer": 0,
-      "sayIt": "One supervisor in Guatemala just resigned. He is going to the competitor.",
-      "sayItEs": "Ejemplo: «One supervisor in Guatemala just resigned. He is going to the competitor.»",
-      "sayItAskEn": "Summarize the problem, your decision and the next step.",
-      "sayItAskEs": "Resume el problema, tu decisión y el siguiente paso.",
+      "sayIt": "Someone from Monterrey called asking about the academy and said he represents an investor.",
+      "sayItEs": "Ejemplo: «Someone from Monterrey called asking about the academy and said he represents an investor.»",
+      "sayItAskEn": "Summarize the crisis, the decision, and the next step for the team.",
+      "sayItAskEs": "Resume la crisis, la decisión y el siguiente paso del equipo.",
       "sayItCheck": {
-        "target": "The problem was *, I decided *, and next we *",
+        "target": "The problem was *, the decision was *, and next they *",
         "altTargets": [
           "First *, then *, finally *",
-          "We agreed to *"
+          "They decided *"
         ]
       }
     }
   ],
   "mindsetCard": {
     "afterScene": "s6",
-    "phrase": "I can do it. A team is stronger than my schedule.",
-    "es": "Puedo hacerlo. Un equipo es más fuerte que mi horario."
+    "phrase": "I can carry responsibility and still ask for help.",
+    "es": "Puedo cargar con la responsabilidad y aun así pedir ayuda."
   },
   "habitCard": {
-    "afterScene": "s4",
-    "phrase": "English is easy when I confirm the plan out loud.",
-    "es": "El inglés es fácil cuando confirmo el plan en voz alta.",
+    "afterScene": "s5",
+    "phrase": "English is easy when I confirm the plan out loud before I hang up.",
+    "es": "El inglés es fácil cuando confirmo el plan en voz alta antes de colgar.",
     "model": "camila",
-    "modelActionEs": "Camila repite el acuerdo antes de cerrar la reunión."
+    "modelActionEs": "Camila repite el acuerdo del dashboard antes de cerrar la llamada."
   },
   "expressions": [
     {
       "phrase": "check in",
-      "variants": [
-        "check in"
-      ],
+      "variants": ["check in", "checks in"],
       "es": "reportarse brevemente con el equipo",
       "kind": "phrasal",
-      "example": "We need one hour of overlap where everybody can check in together.",
-      "exampleEs": "Necesitamos una hora de traslape donde todos podamos reportarnos juntos."
+      "example": "Good systems check in on people before people burn out, Dani. That is the whole point.",
+      "exampleEs": "Los buenos sistemas se reportan con la gente antes de que la gente se agote, Dani. Ese es todo el punto."
     },
     {
       "phrase": "sort out",
-      "variants": [
-        "sort out"
-      ],
+      "variants": ["sort out", "sorts out"],
       "es": "resolver o poner en orden",
       "kind": "phrasal",
-      "example": "I can do it if Camila and I sort out the salary ranges this week.",
-      "exampleEs": "Puedo hacerlo si Camila y yo resolvemos los rangos salariales esta semana."
+      "example": "I can do it if Camila and I sort out the salary ranges for the new hires this week.",
+      "exampleEs": "Puedo hacerlo si Camila y yo resolvemos los rangos salariales de las nuevas contrataciones esta semana."
     },
     {
       "phrase": "on the same wavelength",
-      "es": "pensar igual, entenderse sin explicar",
+      "es": "pensar igual, entenderse sin explicar mucho",
       "kind": "idiom",
-      "example": "We are on the same wavelength. I already have the numbers ready.",
-      "exampleEs": "Estamos en la misma sintonía. Ya tengo los números listos."
+      "example": "We are on the same wavelength, Lucía. I already have the numbers ready on my laptop.",
+      "exampleEs": "Estamos en la misma sintonía, Lucía. Ya tengo los números listos en mi laptop."
     }
   ],
   "finaleSeconds": 30,
   "continuePrompt": {
-    "en": "Your turn, 30 seconds: describe your team, one problem and how you would coordinate it.",
-    "es": "Tu turno, 30 segundos: describe tu equipo, un problema y cómo lo coordinarías."
+    "en": "Your turn, 30 seconds: describe your team, one problem you had, and how you coordinated to fix it.",
+    "es": "Tu turno, 30 segundos: describe tu equipo, un problema que tuviste y cómo coordinaron para resolverlo."
   },
   "continueWith": [
     "My team works in ...",
-    "The biggest problem is ...",
-    "I would coordinate it by ..."
+    "The biggest problem was ...",
+    "We coordinated it by ..."
   ],
   "cliffhanger": {
-    "en": "Vale, one supervisor in Guatemala just resigned. He is going to the competitor.",
-    "es": "Vale, un supervisor en Guatemala acaba de renunciar. Se va con el competidor."
+    "en": "Just a number, and one strange line: he said he represents a woman with money to invest.",
+    "es": "Solo un número, y una frase extraña: dijo que representa a una mujer con dinero para invertir."
   }
 };

@@ -19,32 +19,29 @@ export const SHARKS_EP20_SHARKS_CLOSE_DEALS: StorybookEpisode = {
   "title": "Sharks close deals",
   "titleEs": "Los tiburones cierran tratos",
   "episodeLabel": {
-    "en": "Season 8 · Episode 20",
-    "es": "Temporada 8 · Episodio 20"
+    "en": "Season 8 · Episode 20 · Season Finale",
+    "es": "Temporada 8 · Episodio 20 · Final de temporada"
   },
   "previously": [
     {
-      "en": "Sharks do not wait for the deal. They close it.",
-      "es": "Los tiburones no esperan el trato. Lo cierran."
+      "en": "A leak claimed Vale sold the whole academy to Mr. Reed before the Mexico deal was even signed.",
+      "es": "Una filtración afirmó que Vale vendió toda la academia al señor Reed antes de firmar el acuerdo de México."
+    },
+    {
+      "en": "Vale postponed the signing rather than sign next to false headlines.",
+      "es": "Vale pospuso la firma en lugar de firmar junto a titulares falsos."
     }
   ],
   "reviewWords": [
-    {
-      "word": "deal",
-      "es": "trato"
-    },
-    {
-      "word": "growth",
-      "es": "crecimiento"
-    },
-    {
-      "word": "team",
-      "es": "equipo"
-    }
+    { "word": "deal", "es": "trato" },
+    { "word": "growth", "es": "crecimiento" },
+    { "word": "team", "es": "equipo" },
+    { "word": "reputation", "es": "reputación" },
+    { "word": "trained", "es": "capacitado" }
   ],
   "blurb": {
-    "en": "One year ago, eight chairs. Today, four countries. And a global program is waiting.",
-    "es": "Hace un año, ocho sillas. Hoy, cuatro países. Y un programa global espera."
+    "en": "One year ago, eight chairs and a rumor to fix. Today: Mexico signed, Dani steps up, and an international program is watching.",
+    "es": "Hace un año, ocho sillas y un rumor que arreglar. Hoy: México firmado, Dani da un paso al frente, y un programa internacional está observando."
   },
   "cover": cover,
   "voice": "girl",
@@ -52,374 +49,492 @@ export const SHARKS_EP20_SHARKS_CLOSE_DEALS: StorybookEpisode = {
     {
       "id": "s1",
       "image": s1,
-      "imageAlt": "Scene 1 of Sharks close deals.",
-      "text": "One year ago this was a classroom with eight chairs and a lot of ambition.",
-      "es": "Hace un año esto era un salón con ocho sillas y mucha ambición.",
-      "speaker": "vale",
-      "cast": [
-        "vale",
-        "dani"
-      ],
+      "imageAlt": "Reporters push microphones toward Vale outside the academy while Renata and Camila stand beside her.",
+      "text": "Miss Vale, did you or did you not sign an agreement with Reed?",
+      "es": "Señorita Vale, ¿firmó o no un acuerdo con Reed?",
+      "speaker": "narrator",
+      "cast": ["vale", "renata", "camila"],
       "lines": [
         {
+          "speaker": "narrator",
+          "text": "Miss Vale, did you or did you not sign an agreement with Reed?",
+          "es": "Señorita Vale, ¿firmó o no un acuerdo con Reed?"
+        },
+        {
           "speaker": "vale",
-          "text": "One year ago this was a classroom with eight chairs and a lot of ambition.",
-          "es": "Hace un año esto era un salón con ocho sillas y mucha ambición."
+          "text": "I will confirm three things. First, yes, we are talking with Mr. Reed about an investment. Second, it is not signed yet.",
+          "es": "Les confirmo tres cosas. Primera: sí, estamos conversando con el señor Reed sobre una inversión. Segunda: aún no está firmada."
+        },
+        {
+          "speaker": "vale",
+          "text": "Third, the Mexico agreement is only with Mexico. It does not include Guatemala or a full buyout.",
+          "es": "Tercera: el acuerdo con México solo es con México. No incluye Guatemala ni una compra total."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "confirm", "es": "confirmar" },
+        { "word": "agreement", "es": "acuerdo" },
+        { "word": "buyout", "es": "compra total" }
+      ]
     },
     {
       "id": "s2",
       "image": s2,
-      "imageAlt": "Scene 2 of Sharks close deals.",
-      "text": "And today we are signing a regional deal in four countries.",
-      "es": "Y hoy estamos firmando un acuerdo regional en cuatro países.",
-      "speaker": "dani",
-      "cast": [
-        "dani",
-        "reed"
-      ],
+      "imageAlt": "Vale answers a reporter's question calmly while Renata nods beside her in front of the academy.",
+      "text": "Why did you cancel today's signing?",
+      "es": "¿Por qué canceló la firma de hoy?",
+      "speaker": "narrator",
+      "cast": ["vale", "renata"],
       "lines": [
         {
-          "speaker": "dani",
-          "text": "And today we are signing a regional deal in four countries.",
-          "es": "Y hoy estamos firmando un acuerdo regional en cuatro países."
+          "speaker": "narrator",
+          "text": "Why did you cancel today's signing?",
+          "es": "¿Por qué canceló la firma de hoy?"
+        },
+        {
+          "speaker": "vale",
+          "text": "I did not cancel, I postponed. Signing while false information is public would be irresponsible.",
+          "es": "No cancelé, pospuse. Firmar mientras hay información falsa en público sería irresponsable."
+        },
+        {
+          "speaker": "renata",
+          "text": "I support that decision. Our reputation is worth more than a date on a contract.",
+          "es": "Yo apoyo esa decisión. Nuestra reputación vale más que una fecha en un contrato."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "postpone", "es": "posponer" },
+        { "word": "irresponsible", "es": "irresponsable" },
+        { "word": "support", "es": "apoyar" }
+      ]
     },
     {
       "id": "s3",
       "image": s3,
-      "imageAlt": "Scene 3 of Sharks close deals.",
-      "text": "I have worked with big providers. Your team has something they lost: determination.",
-      "es": "He trabajado con grandes proveedores. Su equipo tiene algo que ellos perdieron: determinación.",
-      "speaker": "reed",
-      "cast": [
-        "reed",
-        "renata"
-      ],
+      "imageAlt": "Camila closes her laptop with confidence while Vale and Renata listen in the academy hallway.",
+      "text": "And when we sign, it will be with real numbers, not headlines.",
+      "es": "Y cuando firmemos, será con cifras reales, no con titulares.",
+      "speaker": "camila",
+      "cast": ["camila", "vale", "renata"],
       "lines": [
         {
-          "speaker": "reed",
-          "text": "I have worked with big providers. Your team has something they lost: determination.",
-          "es": "He trabajado con grandes proveedores. Su equipo tiene algo que ellos perdieron: determinación."
+          "speaker": "camila",
+          "text": "And when we sign, it will be with real numbers, not headlines.",
+          "es": "Y cuando firmemos, será con cifras reales, no con titulares."
+        },
+        {
+          "speaker": "vale",
+          "text": "That is exactly it. Confidence comes from proof, not from a press release.",
+          "es": "Exactamente. La confianza viene de las pruebas, no de un comunicado de prensa."
+        },
+        {
+          "speaker": "renata",
+          "text": "So let us finish this the right way. Are you ready to sign, Vale?",
+          "es": "Entonces terminemos esto de la manera correcta. ¿Estás lista para firmar, Vale?"
         }
       ],
-      "words": []
+      "words": [
+        { "word": "headlines", "es": "titulares" },
+        { "word": "proof", "es": "prueba" },
+        { "word": "confidence", "es": "confianza" }
+      ]
     },
     {
       "id": "s4",
       "image": s4,
-      "imageAlt": "Scene 4 of Sharks close deals.",
-      "text": "She also says no when she has to. That is why I trust her with Mexico.",
-      "es": "Ella también dice que no cuando debe. Por eso le confío México.",
-      "speaker": "renata",
-      "cast": [
-        "renata",
-        "camila"
-      ],
+      "imageAlt": "Vale and Renata sign the Mexico contract together at a table with Camila watching and smiling.",
+      "text": "Ready. But I want it on record: this is not the end, it is the first measurable step.",
+      "es": "Lista. Pero quiero que quede grabado: este no es el final, es el primer paso medible.",
+      "speaker": "vale",
+      "cast": ["vale", "renata", "camila"],
       "lines": [
         {
           "speaker": "renata",
-          "text": "She also says no when she has to. That is why I trust her with Mexico.",
-          "es": "Ella también dice que no cuando debe. Por eso le confío México."
+          "text": "Now that everything is clear, I am ready. And you, Vale?",
+          "es": "Ahora que todo está claro, estoy lista. ¿Y tú, Vale?"
+        },
+        {
+          "speaker": "vale",
+          "text": "Ready. But I want it on record: this is not the end, it is the first measurable step.",
+          "es": "Lista. Pero quiero que quede grabado: este no es el final, es el primer paso medible."
+        },
+        {
+          "speaker": "renata",
+          "text": "Twenty groups in September, forty in January. You train the teachers, I take care of the schools. Signed.",
+          "es": "Veinte grupos en septiembre, cuarenta en enero. Tú entrenas a los maestros, yo cuido las escuelas. Firmado."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "on record", "es": "que quede constancia" },
+        { "word": "measurable", "es": "medible" },
+        { "word": "step", "es": "paso" }
+      ]
     },
     {
       "id": "s5",
       "image": s5,
-      "imageAlt": "Scene 5 of Sharks close deals.",
-      "text": "Let us wrap up the numbers: eleven hundred students and ninety-four percent retention.",
-      "es": "Cerremos con los números: mil cien estudiantes y noventa y cuatro por ciento de retención.",
-      "speaker": "camila",
-      "cast": [
-        "camila",
-        "vale"
-      ],
+      "imageAlt": "Vale speaks with Dani in the academy office, offering him a folder about Mexico and Guatemala operations.",
+      "text": "Dani, I want you to be the operation lead supporting Mexico and Guatemala from the academy.",
+      "es": "Dani, quiero que seas el operation lead de apoyo a México y Guatemala desde la academia.",
+      "speaker": "vale",
+      "cast": ["vale", "dani"],
       "lines": [
         {
-          "speaker": "camila",
-          "text": "Let us wrap up the numbers: eleven hundred students and ninety-four percent retention.",
-          "es": "Cerremos con los números: mil cien estudiantes y noventa y cuatro por ciento de retención."
+          "speaker": "vale",
+          "text": "Dani, I want you to be the operation lead supporting Mexico and Guatemala from the academy.",
+          "es": "Dani, quiero que seas el operation lead de apoyo a México y Guatemala desde la academia."
+        },
+        {
+          "speaker": "dani",
+          "text": "Me? Vale, that is a lot of responsibility for one person.",
+          "es": "¿Yo? Vale, eso es mucha responsabilidad para una persona."
+        },
+        {
+          "speaker": "vale",
+          "text": "Yes, you. You already coordinated the Guatemala crisis. You know how to listen, delegate, and ask for help.",
+          "es": "Sí, tú. Ya coordinaste la crisis de Guatemala. Sabes escuchar, delegar y pedir ayuda."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "operation", "es": "operación" },
+        { "word": "responsibility", "es": "responsabilidad" },
+        { "word": "delegate", "es": "delegar" }
+      ]
     },
     {
       "id": "s6",
       "image": s6,
-      "imageAlt": "Scene 6 of Sharks close deals.",
-      "text": "Those numbers are an achievement, but the real legacy is the teachers we trained.",
-      "es": "Esos números son un logro, pero el verdadero legado son los maestros que formamos.",
-      "speaker": "vale",
-      "cast": [
-        "vale",
-        "dani"
-      ],
+      "imageAlt": "Dani sits across from Vale, thoughtful, holding the folder while explaining his decision.",
+      "text": "I accept. But I want to stay close to the teachers and the families.",
+      "es": "Acepto. Pero quiero seguir cerca de los maestros y las familias.",
+      "speaker": "dani",
+      "cast": ["dani", "vale"],
       "lines": [
         {
+          "speaker": "dani",
+          "text": "I accept. But I want to stay close to the teachers and the families.",
+          "es": "Acepto. Pero quiero seguir cerca de los maestros y las familias."
+        },
+        {
           "speaker": "vale",
-          "text": "Those numbers are an achievement, but the real legacy is the teachers we trained.",
-          "es": "Esos números son un logro, pero el verdadero legado son los maestros que formamos."
+          "text": "Why does that matter so much to you?",
+          "es": "¿Por qué te importa tanto eso?"
+        },
+        {
+          "speaker": "dani",
+          "text": "Because working with them made me see that public service matters. I do not know if I will ever go into politics, but I want to help my community somehow.",
+          "es": "Porque trabajar con ellos me hizo ver que el servicio público importa. No sé si algún día entre a política, pero quiero ayudar a mi comunidad de alguna forma."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "public service", "es": "servicio público" },
+        { "word": "community", "es": "comunidad" },
+        { "word": "matter", "es": "importar" }
+      ]
     },
     {
       "id": "s7",
       "image": s7,
-      "imageAlt": "Scene 7 of Sharks close deals.",
-      "text": "I will take on the regional operation. I am ready for that responsibility.",
-      "es": "Yo asumiré la operación regional. Estoy listo para esa responsabilidad.",
-      "speaker": "dani",
-      "cast": [
-        "dani",
-        "vale"
-      ],
+      "imageAlt": "Vale places a hand on Dani's shoulder in the office, reassuring him about his new role.",
+      "text": "That does not take you out of the academy. It makes you more valuable here.",
+      "es": "Eso no te saca de la academia. Te hace más valioso aquí.",
+      "speaker": "vale",
+      "cast": ["vale", "dani"],
       "lines": [
         {
+          "speaker": "vale",
+          "text": "That does not take you out of the academy. It makes you more valuable here.",
+          "es": "Eso no te saca de la academia. Te hace más valioso aquí."
+        },
+        {
           "speaker": "dani",
-          "text": "I will take on the regional operation. I am ready for that responsibility.",
-          "es": "Yo asumiré la operación regional. Estoy listo para esa responsabilidad."
+          "text": "So I can take on this operation and still keep growing toward that other dream someday.",
+          "es": "Entonces puedo asumir esta operación y seguir creciendo hacia ese otro sueño algún día."
+        },
+        {
+          "speaker": "vale",
+          "text": "Exactly. A career and a purpose can grow together, Dani.",
+          "es": "Exacto. Una carrera y un propósito pueden crecer juntos, Dani."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "valuable", "es": "valioso" },
+        { "word": "purpose", "es": "propósito" },
+        { "word": "career", "es": "carrera" }
+      ]
     },
     {
       "id": "s8",
       "image": s8,
-      "imageAlt": "Scene 8 of Sharks close deals.",
-      "text": "You are. Two years ago you could not order coffee in English.",
-      "es": "Lo estás. Hace dos años no podías pedir un café en inglés.",
-      "speaker": "vale",
-      "cast": [
-        "vale",
-        "camila"
-      ],
+      "imageAlt": "Mr. Reed speaks to Vale on a video call in the office, congratulating her on handling the leak.",
+      "text": "Vale, you handled the leak like a top executive. My investment stays and goes up thirty percent.",
+      "es": "Vale, manejó la filtración como una ejecutiva de primera. Mi inversión se mantiene y sube un treinta por ciento.",
+      "speaker": "reed",
+      "cast": ["reed", "vale"],
       "lines": [
         {
+          "speaker": "reed",
+          "text": "Vale, you handled the leak like a top executive. My investment stays and goes up thirty percent.",
+          "es": "Vale, manejó la filtración como una ejecutiva de primera. Mi inversión se mantiene y sube un treinta por ciento."
+        },
+        {
           "speaker": "vale",
-          "text": "You are. Two years ago you could not order coffee in English.",
-          "es": "Lo estás. Hace dos años no podías pedir un café en inglés."
+          "text": "Thank you, Mr. Reed. But the question is: with what conditions?",
+          "es": "Gracias, señor Reed. Pero la pregunta es: ¿con qué condiciones?"
+        },
+        {
+          "speaker": "reed",
+          "text": "The same ones you asked for: a seat on the board, no veto over pedagogy. But there is something more.",
+          "es": "Las mismas que usted pidió: un asiento en la junta, sin veto sobre pedagogía. Pero hay algo más."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "executive", "es": "ejecutiva" },
+        { "word": "conditions", "es": "condiciones" },
+        { "word": "seat on the board", "es": "asiento en la junta" }
+      ]
     },
     {
       "id": "s9",
       "image": s9,
-      "imageAlt": "Scene 9 of Sharks close deals.",
-      "text": "None of us could. Now we negotiate contracts in two languages with confidence.",
-      "es": "Ninguno podía. Ahora negociamos contratos en dos idiomas con confianza.",
-      "speaker": "camila",
-      "cast": [
-        "camila",
-        "vale"
-      ],
+      "imageAlt": "Vale leans toward the video call screen, intrigued, as Mr. Reed explains the international program.",
+      "text": "There is an international program looking for scalable educational models. I want you to present the academy to them.",
+      "es": "Hay un programa internacional que busca modelos educativos escalables. Quiero que usted presente la academia ante ellos.",
+      "speaker": "reed",
+      "cast": ["reed", "vale"],
       "lines": [
         {
-          "speaker": "camila",
-          "text": "None of us could. Now we negotiate contracts in two languages with confidence.",
-          "es": "Ninguno podía. Ahora negociamos contratos en dos idiomas con confianza."
+          "speaker": "reed",
+          "text": "There is an international program looking for scalable educational models. I want you to present the academy to them.",
+          "es": "Hay un programa internacional que busca modelos educativos escalables. Quiero que usted presente la academia ante ellos."
+        },
+        {
+          "speaker": "vale",
+          "text": "International? In what sense, exactly?",
+          "es": "¿Internacional? ¿En qué sentido, exactamente?"
+        },
+        {
+          "speaker": "reed",
+          "text": "It is not a guaranteed expansion, it is a competition. If you win, you receive support to test your model in another country.",
+          "es": "No es una expansión garantizada, es una competencia. Si gana, recibe apoyo para probar su modelo en otro país."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "scalable", "es": "escalable" },
+        { "word": "competition", "es": "competencia" },
+        { "word": "expansion", "es": "expansión" }
+      ]
     },
     {
       "id": "s10",
       "image": s10,
-      "imageAlt": "Scene 10 of Sharks close deals.",
-      "text": "Then say it with me, because for this team the sky is the limit.",
-      "es": "Entonces dilo conmigo, porque para este equipo el cielo es el límite.",
+      "imageAlt": "Vale stands tall, determined, closing her laptop after the call with Mr. Reed as Camila and Dani watch.",
+      "text": "Then we have to earn it. They are not giving it to us.",
+      "es": "Entonces tenemos que ganárnoslo. No me lo regalan.",
       "speaker": "vale",
-      "cast": [
-        "vale",
-        "reed"
-      ],
+      "cast": ["vale", "camila", "dani"],
       "lines": [
         {
           "speaker": "vale",
-          "text": "Then say it with me, because for this team the sky is the limit.",
-          "es": "Entonces dilo conmigo, porque para este equipo el cielo es el límite."
+          "text": "Then we have to earn it. They are not giving it to us.",
+          "es": "Entonces tenemos que ganárnoslo. No me lo regalan."
+        },
+        {
+          "speaker": "camila",
+          "text": "We have determination, real results, and a legacy of trained teachers. That is a strong start.",
+          "es": "Tenemos determinación, resultados reales y un legado de maestros capacitados. Eso es un buen comienzo."
+        },
+        {
+          "speaker": "dani",
+          "text": "Let us wrap up today's work, then. Tomorrow we start preparing that presentation.",
+          "es": "Cerremos el trabajo de hoy, entonces. Mañana empezamos a preparar esa presentación."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "earn", "es": "ganarse" },
+        { "word": "determination", "es": "determinación" },
+        { "word": "legacy", "es": "legado" }
+      ]
     },
     {
       "id": "s11",
       "image": s11,
-      "imageAlt": "Scene 11 of Sharks close deals.",
-      "text": "Before you celebrate, Vale, my board wants you to lead our global program.",
-      "es": "Antes de celebrar, Vale, mi junta quiere que dirija nuestro programa global.",
-      "speaker": "reed",
-      "cast": [
-        "reed"
-      ],
+      "imageAlt": "Vale, Dani and Camila stand together outside the academy at dusk, looking forward with hope.",
+      "text": "Ready? This does not end with Mexico. It begins with an opportunity we have to earn.",
+      "es": "¿Listos? Esto no termina con México. Empieza con una oportunidad que tenemos que ganar.",
+      "speaker": "vale",
+      "cast": ["vale", "dani", "camila"],
       "lines": [
         {
-          "speaker": "reed",
-          "text": "Before you celebrate, Vale, my board wants you to lead our global program.",
-          "es": "Antes de celebrar, Vale, mi junta quiere que dirija nuestro programa global."
+          "speaker": "vale",
+          "text": "Ready? This does not end with Mexico. It begins with an opportunity we have to earn.",
+          "es": "¿Listos? Esto no termina con México. Empieza con una oportunidad que tenemos que ganar."
+        },
+        {
+          "speaker": "dani",
+          "text": "I am with you. And this time I know exactly what my role is.",
+          "es": "Yo estoy contigo. Y esta vez sé exactamente cuál es mi papel."
+        },
+        {
+          "speaker": "camila",
+          "text": "Me too. But first we sleep, because the sky is the limit only if we build carefully.",
+          "es": "Yo también. Pero primero dormimos, porque el cielo es el límite solo si construimos con cuidado."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "opportunity", "es": "oportunidad" },
+        { "word": "role", "es": "papel" },
+        { "word": "carefully", "es": "con cuidado" }
+      ]
     }
   ],
   "quizzes": [
     {
       "id": "q1",
-      "afterScene": "s6",
-      "questionEn": "What does Vale call the real legacy?",
-      "questionEs": "¿Qué llama Vale el verdadero legado?",
+      "afterScene": "s2",
+      "questionEn": "Why does Vale postpone the signing?",
+      "questionEs": "¿Por qué pospone Vale la firma?",
       "options": [
         {
-          "label": "Those numbers are an achievement, but the real legacy is the teachers we trained.",
+          "label": "Because false information was public and signing then would be irresponsible.",
           "emoji": "🎯"
         },
         {
-          "label": "The furniture.",
-          "emoji": "🛑"
+          "label": "Because she does not trust Renata.",
+          "emoji": "🚫"
         },
         {
-          "label": "The old classroom.",
+          "label": "Because Mr. Reed asked her to cancel.",
           "emoji": "❓"
         }
       ],
       "answer": 0,
-      "sayIt": "The teachers they trained.",
-      "sayItEs": "Ejemplo: «The teachers they trained.»",
-      "sayItAskEn": "What achievement are you proud of this year?",
-      "sayItAskEs": "¿De qué logro estás orgulloso este año?",
+      "sayIt": "She postponed it because false information was public.",
+      "sayItEs": "Ejemplo: «She postponed it because false information was public.»",
+      "sayItAskEn": "Have you ever postponed something to protect your reputation? What happened?",
+      "sayItAskEs": "¿Alguna vez pospusiste algo para proteger tu reputación? ¿Qué pasó?",
       "sayItCheck": {
-        "target": "I am proud of *",
+        "target": "I postponed * because *",
         "altTargets": [
-          "This year I *",
-          "My achievement is *"
+          "Yes, I postponed *",
+          "I waited because *"
         ]
       }
     },
     {
       "id": "q2",
-      "afterScene": "s7",
-      "questionEn": "What does Dani decide?",
-      "questionEs": "¿Qué decide Dani?",
+      "afterScene": "s6",
+      "questionEn": "What does Dani discover about himself?",
+      "questionEs": "¿Qué descubre Dani sobre sí mismo?",
       "options": [
         {
-          "label": "I will take on the regional operation. I am ready for that responsibility.",
-          "emoji": "💬"
+          "label": "That working with teachers and families made him care about public service.",
+          "emoji": "💡"
         },
         {
-          "label": "He decides to quit.",
-          "emoji": "🙈"
+          "label": "That he wants to leave the academy.",
+          "emoji": "🚪"
         },
         {
-          "label": "He decides to move to Europe.",
-          "emoji": "🚫"
+          "label": "That he wants to become an investor.",
+          "emoji": "💰"
         }
       ],
       "answer": 0,
-      "sayIt": "He will take on the regional operation.",
-      "sayItEs": "Ejemplo: «He will take on the regional operation.»",
-      "sayItAskEn": "What responsibility would you take on next?",
-      "sayItAskEs": "¿Qué responsabilidad asumirías tú ahora?",
+      "sayIt": "He discovered that public service matters to him.",
+      "sayItEs": "Ejemplo: «He discovered that public service matters to him.»",
+      "sayItAskEn": "If you were Dani, would you accept the new responsibility? Why?",
+      "sayItAskEs": "Si fueras Dani, ¿aceptarías la nueva responsabilidad? ¿Por qué?",
       "sayItCheck": {
-        "target": "I would take on *",
+        "target": "Yes, because *",
         "altTargets": [
-          "Next, I want to *",
-          "I am ready to *"
+          "I would accept because *",
+          "No, because *"
         ]
       }
     },
     {
       "id": "q3",
-      "afterScene": "s11",
-      "questionEn": "What is the final surprise?",
-      "questionEs": "¿Cuál es la sorpresa final?",
+      "afterScene": "s9",
+      "questionEn": "What does Mr. Reed invite Vale to do?",
+      "questionEs": "¿A qué invita el señor Reed a Vale?",
       "options": [
         {
-          "label": "Before you celebrate, Vale, my board wants you to lead our global program.",
-          "emoji": "⚡"
+          "label": "Compete in an international program for scalable educational models.",
+          "emoji": "🌍"
         },
         {
-          "label": "The team goes home.",
-          "emoji": "😴"
+          "label": "Sell the academy immediately.",
+          "emoji": "🏷️"
         },
         {
-          "label": "The deal is cancelled.",
-          "emoji": "🏖️"
+          "label": "Close the Mexico office.",
+          "emoji": "🛑"
         }
       ],
       "answer": 0,
-      "sayIt": "My board wants you to lead our global program.",
-      "sayItEs": "Ejemplo: «My board wants you to lead our global program.»",
-      "sayItAskEn": "Ninety seconds: tell your journey, your achievement and your next goal.",
-      "sayItAskEs": "Cuarenta y cinco segundos: cuenta tu camino, tu logro y tu próxima meta.",
+      "sayIt": "He invited her to compete in an international program.",
+      "sayItEs": "Ejemplo: «He invited her to compete in an international program.»",
+      "sayItAskEn": "Forty-five seconds: imagine you are Vale. Tell the international program why your academy is ready to grow.",
+      "sayItAskEs": "Cuarenta y cinco segundos: imagina que eres Vale. Cuéntale al programa internacional por qué tu academia está lista para crecer.",
       "sayItCheck": {
-        "target": "I started *, I achieved *, and next I will *",
+        "target": "My academy is ready because *",
         "altTargets": [
-          "My journey was *",
-          "Now my goal is *"
+          "We are ready because *",
+          "I am asking for a chance to *"
         ]
       }
     }
   ],
   "mindsetCard": {
-    "afterScene": "s6",
-    "phrase": "I can do it. English is easy when I never stop.",
-    "es": "Puedo hacerlo. El inglés es fácil cuando no me detengo."
+    "afterScene": "s7",
+    "phrase": "I can grow a career and a purpose at the same time.",
+    "es": "Puedo hacer crecer una carrera y un propósito al mismo tiempo."
   },
   "habitCard": {
-    "afterScene": "s4",
-    "phrase": "English is easy when I celebrate progress out loud.",
-    "es": "El inglés es fácil cuando celebro mi avance en voz alta.",
+    "afterScene": "s3",
+    "phrase": "English is easy when I answer with proof, not with promises.",
+    "es": "El inglés es fácil cuando respondo con pruebas, no con promesas.",
     "model": "vale",
-    "modelActionEs": "Vale nombra el avance del equipo en voz alta."
+    "modelActionEs": "Vale responde a la prensa con hechos claros en lugar de reaccionar con miedo."
   },
   "expressions": [
     {
       "phrase": "wrap up",
-      "variants": [
-        "wrap up"
-      ],
+      "variants": ["wrap up", "wrapped up"],
       "es": "cerrar o concluir algo",
       "kind": "phrasal",
-      "example": "Let us wrap up the numbers: eleven hundred students and ninety-four percent retention.",
-      "exampleEs": "Cerremos con los números: mil cien estudiantes y noventa y cuatro por ciento de retención."
+      "example": "Let us wrap up today's work, then. Tomorrow we start preparing that presentation.",
+      "exampleEs": "Cerremos el trabajo de hoy, entonces. Mañana empezamos a preparar esa presentación."
     },
     {
       "phrase": "take on",
-      "variants": [
-        "take on"
-      ],
+      "variants": ["take on", "took on"],
       "es": "asumir una responsabilidad",
       "kind": "phrasal",
-      "example": "I will take on the regional operation.",
-      "exampleEs": "Yo asumiré la operación regional."
+      "example": "So I can take on this operation and still keep growing toward that other dream someday.",
+      "exampleEs": "Entonces puedo asumir esta operación y seguir creciendo hacia ese otro sueño algún día."
     },
     {
       "phrase": "the sky is the limit",
       "es": "no hay límite para lo que puedes lograr",
       "kind": "idiom",
-      "example": "Say it with me, because for this team the sky is the limit.",
-      "exampleEs": "Dilo conmigo, porque para este equipo el cielo es el límite."
+      "example": "Me too. But first we sleep, because the sky is the limit only if we build carefully.",
+      "exampleEs": "Yo también. Pero primero dormimos, porque el cielo es el límite solo si construimos con cuidado."
     }
   ],
   "finaleSeconds": 45,
   "continuePrompt": {
-    "en": "Checkpoint, 45 seconds: tell your journey, your biggest achievement and your next goal.",
-    "es": "Punto de control, 45 segundos: cuenta tu camino, tu mayor logro y tu próxima meta."
+    "en": "Season checkpoint, 45 seconds: imagine you are Vale. Tell the international program why your academy is ready to grow.",
+    "es": "Punto de control de temporada, 45 segundos: imagina que eres Vale. Cuéntale al programa internacional por qué tu academia está lista para crecer."
   },
   "continueWith": [
-    "When I started, I ...",
-    "My biggest achievement is ...",
-    "My next goal is ..."
+    "My academy is ready because ...",
+    "We do not grow fast, we grow ...",
+    "I am asking for a chance to ..."
   ],
   "cliffhanger": {
-    "en": "Before you celebrate, Vale, my board wants you to lead our global program.",
-    "es": "Antes de celebrar, Vale, mi junta quiere que dirija nuestro programa global."
+    "en": "Mr. Reed has opened the door: Vale must now compete for a spot in an international program, and the sky is the limit only if she earns it.",
+    "es": "El señor Reed ha abierto la puerta: ahora Vale debe competir por un lugar en un programa internacional, y el cielo es el límite solo si se lo gana."
   }
 };

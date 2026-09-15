@@ -12,7 +12,6 @@ export const SHARKS_DIALOGUE_EXPANSIONS: Record<string, EpisodeExpansion> = {};
 
 const SHARKS_RICH_EPISODES = new Set([
   "sharks-ep16-a-team-in-three-countries",
-  "sharks-ep17-the-investor",
   "sharks-ep18-say-no-with-respect",
   "sharks-ep19-the-regional-deal",
   "sharks-ep20-sharks-close-deals",
@@ -86,7 +85,6 @@ const CONTINUITY_OPENERS: Record<string, StorybookLine> = {
   "sharks-ep10-partner-or-rival": { speaker: "dani", text: "Renata's six schools make her both a valuable partner and a serious competitor, so we need complete clarity today.", es: "Las seis escuelas de Renata la hacen una socia valiosa y una competidora seria, así que hoy necesitamos total claridad." },
   "sharks-ep11-what-went-wrong": { speaker: "lucia", text: "The parents from our first class accepted our recovery plan, but this morning the learning platform failed across every office.", es: "Los padres de la primera clase aceptaron nuestro plan de recuperación, pero esta mañana la plataforma falló en todas las oficinas." },
   "sharks-ep15-winning-it-back": { speaker: "vale", text: "Mr. Reed, as Northline's director, you saw where we failed. Today we brought proof that the recovery is real.", es: "Señor Reed, como director de Northline, usted vio dónde fallamos. Hoy trajimos pruebas de que la recuperación es real." },
-  "sharks-ep17-the-investor": { speaker: "vale", text: "I know you now sit on Renata's board, Mr. Reed, so I need to understand whose interests this offer represents.", es: "Sé que ahora está en la junta de Renata, señor Reed, así que necesito entender qué intereses representa esta oferta." },
 };
 
 const CONTINUITY_WORDS: Record<string, StorybookWord[]> = {
@@ -95,7 +93,6 @@ const CONTINUITY_WORDS: Record<string, StorybookWord[]> = {
   "sharks-ep10-partner-or-rival": [{ word: "valuable", es: "valioso" }, { word: "competitor", es: "competidor" }, { word: "clarity", es: "claridad" }],
   "sharks-ep11-what-went-wrong": [{ word: "accepted", es: "aceptaron" }, { word: "recovery", es: "recuperación" }, { word: "failed", es: "falló" }],
   "sharks-ep15-winning-it-back": [{ word: "director", es: "director" }, { word: "proof", es: "prueba" }, { word: "recovery", es: "recuperación" }],
-  "sharks-ep17-the-investor": [{ word: "board", es: "junta directiva" }, { word: "interests", es: "intereses" }, { word: "represents", es: "representa" }],
 };
 
 /**
