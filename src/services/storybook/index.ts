@@ -108,6 +108,16 @@ import { EAGLES_EP7_HAVE_YOU_EVER } from "./eagles-ep7-have-you-ever";
 import { EAGLES_EP8_HOW_LONG } from "./eagles-ep8-how-long";
 import { EAGLES_EP9_THE_COMPLAINT } from "./eagles-ep9-the-complaint";
 import { EAGLES_EP10_TWO_HOURS } from "./eagles-ep10-two-hours";
+import { EAGLES_EP11_I_USED_TO } from "./eagles-ep11-i-used-to";
+import { EAGLES_EP12_WHICH_IS_BETTER } from "./eagles-ep12-which-is-better";
+import { EAGLES_EP13_ONLINE_OR_IN_PERSON } from "./eagles-ep13-online-or-in-person";
+import { EAGLES_EP14_THE_BEST_PLAN } from "./eagles-ep14-the-best-plan";
+import { EAGLES_EP15_A_GREAT_TEACHER } from "./eagles-ep15-a-great-teacher";
+import { EAGLES_EP16_ANOTHER_COUNTRY } from "./eagles-ep16-another-country";
+import { EAGLES_EP17_SO_FAR_SO_GOOD } from "./eagles-ep17-so-far-so-good";
+import { EAGLES_EP18_DANIS_LONG_ROAD } from "./eagles-ep18-danis-long-road";
+import { EAGLES_EP19_THE_ANGRY_DIRECTOR } from "./eagles-ep19-the-angry-director";
+import { EAGLES_EP20_THE_CONTRACT } from "./eagles-ep20-the-contract";
 import type { StorybookEpisode } from "./types";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
@@ -221,6 +231,16 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   EAGLES_EP8_HOW_LONG,
   EAGLES_EP9_THE_COMPLAINT,
   EAGLES_EP10_TWO_HOURS,
+  EAGLES_EP11_I_USED_TO,
+  EAGLES_EP12_WHICH_IS_BETTER,
+  EAGLES_EP13_ONLINE_OR_IN_PERSON,
+  EAGLES_EP14_THE_BEST_PLAN,
+  EAGLES_EP15_A_GREAT_TEACHER,
+  EAGLES_EP16_ANOTHER_COUNTRY,
+  EAGLES_EP17_SO_FAR_SO_GOOD,
+  EAGLES_EP18_DANIS_LONG_ROAD,
+  EAGLES_EP19_THE_ANGRY_DIRECTOR,
+  EAGLES_EP20_THE_CONTRACT,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {

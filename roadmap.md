@@ -17,4 +17,4 @@
 - [x] Verificaciones de tipos y pruebas
 
 ## Pendiente
-- [ ] Episodios 11-20 de la temporada 6
+- [x] Episodios 11-20 de la temporada 6 (guiones, arte, glosario y pruebas)
