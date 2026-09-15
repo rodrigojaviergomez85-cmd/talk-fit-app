@@ -210,7 +210,7 @@ export const EAGLES_EP5_WHAT_WOULD_YOU_DO: StorybookEpisode = {
       speaker: "vale",
       lines: [
         { speaker: "vale", text: "Dani, you taught your first corporate group today.", es: "«Dani, hoy diste tu primera clase a un grupo corporativo»." },
-        { speaker: "dani", text: "If you hadn't pushed me, I would still be watching.", es: "«Si no me hubieras empujado, todavía estaría mirando»." },
+        { speaker: "dani", text: "If you didn't trust me, I would still be watching from a chair.", es: "«Si no confiaras en mí, todavía estaría mirando desde una silla»." },
         { speaker: "vale", text: "If we win this contract, everything changes.", es: "«Si ganamos este contrato, todo cambia»." },
       ],
       words: [
