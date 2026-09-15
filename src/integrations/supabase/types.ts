@@ -1483,6 +1483,7 @@ export type Database = {
         Returns: {
           completed_at: string
           day: number
+          latest_recorded_at: string
           module_id: string
           recording_path: string
           recording_purged_at: string
