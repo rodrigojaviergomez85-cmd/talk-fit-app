@@ -61,8 +61,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "Exactly. We are selling more, but we are not keeping more.",
-          es: "Exacto. Estamos vendiendo más, pero no nos queda más."
+          text: "Exactly. We are selling more every month, but we are not keeping more at the end of it.",
+          es: "Exacto. Vendemos más cada mes, pero no nos queda más al final."
         }
       ],
       words: [
@@ -87,13 +87,13 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "I have the full list here: teachers, platform, rent, and marketing.",
-          es: "Aquí tengo la lista completa: maestros, plataforma, alquiler y marketing."
+          text: "I have the full list here: teachers, platform, rent, marketing, and the new video server.",
+          es: "Aquí tengo la lista completa: maestros, plataforma, alquiler, marketing y el nuevo servidor de video."
         },
         {
           speaker: "vale",
-          text: "Perfect. Celebration comes after understanding, not before.",
-          es: "Perfecto. La celebración viene después de entender, no antes."
+          text: "Perfect. Celebration comes after understanding, not before, and today we understand first.",
+          es: "Perfecto. La celebración viene después de entender, no antes, y hoy entendemos primero."
         }
       ],
       words: [
@@ -123,8 +123,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "Five dollars before rent and platform. That is the real margin problem.",
-          es: "Cinco dólares antes de alquiler y plataforma. Ese es el verdadero problema del margen."
+          text: "Five dollars before rent and platform. That is the real margin problem we have to solve this quarter.",
+          es: "Cinco dólares antes de alquiler y plataforma. Ese es el verdadero problema de margen que debemos resolver este trimestre."
         }
       ],
       words: [
@@ -154,8 +154,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "It is. BigTalk loses almost twenty percent of students every quarter.",
-          es: "Lo es. BigTalk pierde casi veinte por ciento de estudiantes cada trimestre."
+          text: "It is. BigTalk loses almost twenty percent of students every quarter, and they spend double on ads.",
+          es: "Lo es. BigTalk pierde casi veinte por ciento de estudiantes cada trimestre, y gastan el doble en anuncios."
         }
       ],
       words: [
@@ -180,8 +180,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "So: one number, one meaning, one decision. No walls of data.",
-          es: "Entonces: un número, un significado, una decisión. Sin muros de datos."
+          text: "So: one number, one meaning, one decision. No walls of data that nobody reads.",
+          es: "Entonces: un número, un significado, una decisión. Sin muros de datos que nadie lee."
         },
         {
           speaker: "vale",
@@ -216,8 +216,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "Yes, with three scenarios: slow, normal, and the one Renata dreams about.",
-          es: "Sí, con tres escenarios: lento, normal y el con el que Renata sueña."
+          text: "Yes, with three scenarios: slow, normal, and the one Renata dreams about at night.",
+          es: "Sí, con tres escenarios: lento, normal y el con el que Renata sueña de noche."
         }
       ],
       words: [
@@ -233,7 +233,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       text: "Does the forecast add up if Mexico starts in March instead of January?",
       es: "¿El pronóstico cuadra si México empieza en marzo en lugar de enero?",
       speaker: "vale",
-      cast: ["vale", "dani"],
+      cast: ["vale", "dani", "camila"],
       lines: [
         {
           speaker: "vale",
@@ -242,13 +242,13 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "It still adds up, but the growth is slower and the budget gets tight.",
-          es: "Todavía cuadra, pero el crecimiento es más lento y el presupuesto se aprieta."
+          text: "It still adds up, but the growth is slower and the budget gets tight in April and May.",
+          es: "Todavía cuadra, pero el crecimiento es más lento y el presupuesto se aprieta en abril y mayo."
         },
         {
           speaker: "vale",
-          text: "Tight is okay. Broken is not. We can survive slow, not empty.",
-          es: "Apretado está bien. Roto no. Podemos sobrevivir lento, no vacío."
+          text: "Tight is okay. Broken is not. We can survive slow, not empty, and slow gives us time to train the new teachers well.",
+          es: "Apretado está bien. Roto no. Podemos sobrevivir lento, no vacío, y lo lento nos da tiempo de capacitar bien a los nuevos maestros."
         }
       ],
       words: [
@@ -278,8 +278,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "One is twelve days, the other three weeks. Both clients answered my email yesterday.",
-          es: "Una de doce días, la otra de tres semanas. Ambos clientes respondieron mi correo ayer."
+          text: "One is twelve days, the other three weeks. Both clients answered my email yesterday with excuses.",
+          es: "Una de doce días, la otra de tres semanas. Ambos clientes respondieron mi correo ayer con excusas."
         }
       ],
       words: [
@@ -304,8 +304,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "I will call both clients this morning with a friendly reminder and a payment link.",
-          es: "Llamaré a ambos clientes esta mañana con un recordatorio amable y un enlace de pago."
+          text: "I will call both clients this morning with a friendly reminder and a payment link they can use in two clicks.",
+          es: "Llamaré a ambos clientes esta mañana con un recordatorio amable y un enlace de pago que pueden usar en dos clics."
         },
         {
           speaker: "vale",
@@ -326,7 +326,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       text: "So our three numbers are: eleven percent growth, ninety-four percent retention, five dollars per class.",
       es: "Entonces nuestros tres números son: once por ciento de crecimiento, noventa y cuatro de retención, cinco dólares por clase.",
       speaker: "dani",
-      cast: ["dani", "vale"],
+      cast: ["dani", "vale", "camila"],
       lines: [
         {
           speaker: "dani",
@@ -340,8 +340,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "That is a story any investor can repeat at lunch.",
-          es: "Esa es una historia que cualquier inversionista puede repetir en un almuerzo."
+          text: "That is a story any investor can repeat at lunch without opening a single spreadsheet.",
+          es: "Esa es una historia que cualquier inversionista puede repetir en un almuerzo sin abrir una sola hoja de cálculo."
         }
       ],
       words: [
@@ -371,8 +371,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "Both. They are coming together, and they want to meet the founder.",
-          es: "Ambos. Vienen juntos, y quieren conocer a la fundadora."
+          text: "Both. They are coming together next Tuesday, and they want to meet the founder in person.",
+          es: "Ambos. Vienen juntos el próximo martes, y quieren conocer a la fundadora en persona."
         }
       ],
       words: [

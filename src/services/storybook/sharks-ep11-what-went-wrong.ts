@@ -61,8 +61,8 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "lucia",
-          text: "I know. Teachers had to improvise with paper and phone calls.",
-          es: "Lo sé. Los maestros tuvieron que improvisar con papel y llamadas."
+          text: "I know. The outage started at nine, and teachers had to improvise with paper, phone calls, and a lot of patience.",
+          es: "Lo sé. El corte empezó a las nueve, y los maestros tuvieron que improvisar con papel, llamadas y mucha paciencia."
         }
       ],
       words: [
@@ -92,8 +92,8 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Take fifteen. A wrong explanation is worse than a slow one.",
-          es: "Toma quince. Una explicación equivocada es peor que una lenta."
+          text: "Take fifteen. A wrong explanation is worse than a slow one, especially with Northline watching us.",
+          es: "Toma quince. Una explicación equivocada es peor que una lenta, especialmente con Northline observándonos."
         }
       ],
       words: [
@@ -123,8 +123,8 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "Yes. The automatic alert fired late, and nobody noticed for half an hour.",
-          es: "Sí. La alerta automática se activó tarde, y nadie lo notó por media hora."
+          text: "Yes. The automatic alert fired late, and nobody noticed for half an hour because the dashboard froze too.",
+          es: "Sí. La alerta automática se activó tarde, y nadie lo notó por media hora porque el tablero también se congeló."
         }
       ],
       words: [
@@ -154,8 +154,8 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "Nobody yet. They are waiting for our report before the call.",
-          es: "Nadie todavía. Están esperando nuestro reporte antes de la llamada."
+          text: "Nobody yet. They are waiting for our report before the call, and their patience is running out.",
+          es: "Nadie todavía. Están esperando nuestro reporte antes de la llamada, y su paciencia se está acabando."
         }
       ],
       words: [
@@ -185,8 +185,8 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Especially with the extra thirty minutes. Clients forgive errors, not cover-ups.",
-          es: "Especialmente con los treinta minutos extra. Los clientes perdonan errores, no encubrimientos."
+          text: "Especially with the extra thirty minutes. Clients forgive errors, not cover-ups, and Northline has trusted us since the beginning.",
+          es: "Especialmente con los treinta minutos extra. Los clientes perdonan errores, no encubrimientos, y Northline ha confiado en nosotros desde el principio."
         }
       ],
       words: [
@@ -216,8 +216,8 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "lucia",
-          text: "Perfect. Each class gets a teacher name, a student count, and a recovery plan.",
-          es: "Perfecto. Cada clase tendrá nombre del maestro, número de estudiantes y un plan de recuperación."
+          text: "Perfect. Each class gets a teacher name, a student count, and a recovery plan anyone can read in one minute.",
+          es: "Perfecto. Cada clase tendrá nombre del maestro, número de estudiantes y un plan de recuperación que cualquiera lee en un minuto."
         }
       ],
       words: [
@@ -247,8 +247,8 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "I will write the new testing checklist tonight so it never happens again.",
-          es: "Escribiré la nueva lista de pruebas esta noche para que no vuelva a pasar."
+          text: "I will write the new testing checklist tonight so it never happens again on my watch.",
+          es: "Escribiré la nueva lista de pruebas esta noche para que no vuelva a pasar en mi turno."
         }
       ],
       words: [
@@ -278,8 +278,8 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "Choosing gives them control. I like it, and it is cheaper than losing them.",
-          es: "Elegir les da control. Me gusta, y es más barato que perderlos."
+          text: "Choosing gives them control. I like it, and it is much cheaper than losing them to BigTalk.",
+          es: "Elegir les da control. Me gusta, y es mucho más barato que perderlos ante BigTalk."
         }
       ],
       words: [
@@ -309,8 +309,8 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Big contract, big mistake, big name on the phone. That is my job.",
-          es: "Contrato grande, error grande, nombre grande en el teléfono. Ese es mi trabajo."
+          text: "Big contract, big mistake, big name on the phone. That is my job, and I am not delegating it today.",
+          es: "Contrato grande, error grande, nombre grande en el teléfono. Ese es mi trabajo, y hoy no lo delego."
         }
       ],
       words: [
@@ -340,8 +340,8 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "The one from your lesson. There is a difference.",
-          es: "La de tu lección. Hay una diferencia."
+          text: "The one from your lesson. There is a difference, and they noticed it on the call.",
+          es: "La de tu lección. Hay una diferencia, y ellos la notaron en la llamada."
         }
       ],
       words: [
@@ -371,8 +371,8 @@ export const SHARKS_EP11_WHAT_WENT_WRONG: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "She just wrote to me. She says, and I quote, interesting way to handle a crisis.",
-          es: "Me acaba de escribir. Dice, y cito, interesante manera de manejar una crisis."
+          text: "She just wrote to me. She says, and I quote, interesting way to handle a crisis. She still wants the pilot.",
+          es: "Me acaba de escribir. Dice, y cito, interesante manera de manejar una crisis. Aún quiere el piloto."
         }
       ],
       words: [

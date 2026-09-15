@@ -61,8 +61,8 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "I have it in front of me. Page three, second paragraph. Read it.",
-          es: "Lo tengo enfrente. Página tres, segundo párrafo. Léalo."
+          text: "I have it in front of me. Page three, second paragraph. Read it out loud, please.",
+          es: "Lo tengo enfrente. Página tres, segundo párrafo. Léalo en voz alta, por favor."
         }
       ],
       words: [
@@ -87,13 +87,13 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "I am opening both files now, the one we sent and the one she has.",
-          es: "Estoy abriendo ambos archivos, el que enviamos y el que ella tiene."
+          text: "I am opening both files now, the one we sent and the one she has on her desk.",
+          es: "Estoy abriendo ambos archivos, el que enviamos y el que ella tiene en su escritorio."
         },
         {
           speaker: "vale",
-          text: "Good. We compare line by line before anyone promises anything.",
-          es: "Bien. Comparamos línea por línea antes de que alguien prometa algo."
+          text: "Good. We compare line by line before anyone promises anything to anyone on this call.",
+          es: "Bien. Comparamos línea por línea antes de que alguien prometa algo a alguien en esta llamada."
         }
       ],
       words: [
@@ -123,8 +123,8 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "Exactly. Our copy is clean; hers has one extra paragraph.",
-          es: "Exacto. Nuestra copia está limpia; la de ella tiene un párrafo extra."
+          text: "Exactly. Our copy is clean; hers has one extra paragraph about exclusivity and fees.",
+          es: "Exacto. Nuestra copia está limpia; la de ella tiene un párrafo extra sobre exclusividad y tarifas."
         }
       ],
       words: [
@@ -149,8 +149,8 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "So I am not crazy. The paper really says exclusive.",
-          es: "Entonces no estoy loca. El papel sí dice exclusivo."
+          text: "So I am not crazy. The paper really says exclusive, in black and white.",
+          es: "Entonces no estoy loca. El papel sí dice exclusivo, en blanco y negro."
         },
         {
           speaker: "vale",
@@ -185,8 +185,8 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "reed",
-          text: "Ms. Renata, my team added that clause without asking Vale. I apologize.",
-          es: "Señora Renata, mi equipo agregó esa cláusula sin preguntarle a Vale. Me disculpo."
+          text: "Ms. Renata, my team added that clause without asking Vale, and I apologize for the confusion it caused.",
+          es: "Señora Renata, mi equipo agregó esa cláusula sin preguntarle a Vale, y me disculpo por la confusión que causó."
         }
       ],
       words: [
@@ -216,8 +216,8 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "Perfect. Renata will have both documents before dinner.",
-          es: "Perfecto. Renata tendrá ambos documentos antes de la cena."
+          text: "Perfect. Renata will have both documents before dinner, with a short summary on the first page.",
+          es: "Perfecto. Renata tendrá ambos documentos antes de la cena, con un resumen corto en la primera página."
         }
       ],
       words: [
@@ -247,8 +247,8 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Then you call me directly, and the contract dies that same day.",
-          es: "Entonces me llama directamente, y el contrato muere ese mismo día."
+          text: "Then you call me directly, and the contract dies that same day, no lawyers needed.",
+          es: "Entonces me llama directamente, y el contrato muere ese mismo día, sin abogados."
         }
       ],
       words: [
@@ -273,8 +273,8 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "A pilot in one school, three months, with clear goals we both measure.",
-          es: "Un piloto en una escuela, tres meses, con metas claras que ambas medimos."
+          text: "A pilot in one school, three months, with clear goals we both measure every single week.",
+          es: "Un piloto en una escuela, tres meses, con metas claras que ambas medimos cada semana."
         },
         {
           speaker: "renata",
@@ -304,8 +304,8 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "If her students speak like ours after three months, the expansion sells itself.",
-          es: "Si sus estudiantes hablan como los nuestros después de tres meses, la expansión se vende sola."
+          text: "If her students speak like ours after three months, the expansion sells itself without any pressure.",
+          es: "Si sus estudiantes hablan como los nuestros después de tres meses, la expansión se vende sola y sin presión."
         },
         {
           speaker: "vale",
@@ -340,8 +340,8 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "Friendly but serious. My students do not like to lose.",
-          es: "Amistosa pero seria. A mis estudiantes no les gusta perder."
+          text: "Friendly but serious. My students do not like to lose, and neither do their parents.",
+          es: "Amistosa pero seria. A mis estudiantes no les gusta perder, y a sus padres tampoco."
         }
       ],
       words: [
@@ -357,7 +357,7 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
       text: "Vale, Lucía is calling. Something went wrong in the first class.",
       es: "Vale, Lucía está llamando. Algo salió mal en la primera clase.",
       speaker: "dani",
-      cast: ["dani", "vale"],
+      cast: ["dani", "vale", "renata"],
       lines: [
         {
           speaker: "dani",
@@ -371,12 +371,12 @@ export const SHARKS_EP10_PARTNER_OR_RIVAL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "Take your time. How you handle bad news tells me more than any contract.",
-          es: "Tómese su tiempo. Cómo maneja las malas noticias me dice más que cualquier contrato."
+          text: "Take your time. How you handle bad news tells me more than any contract ever will.",
+          es: "Tómese su tiempo. Cómo maneja las malas noticias me dice más de lo que cualquier contrato dirá jamás."
         }
       ],
       words: [
-        { word: "urgent", es: "urgente" },
+        { word: "calling", es: "llamando" },
         { word: "handle", es: "manejar" },
         { word: "bad news", es: "malas noticias" }
       ]
