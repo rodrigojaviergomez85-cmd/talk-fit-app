@@ -133,7 +133,7 @@ export const InterviewAttempts = {
     const all = readAll();
     const savedId = typeof window === "undefined" ? null : window.localStorage.getItem(activeKey(simulator));
     const existing = savedId ? all.find((a) => a.id === savedId) : undefined;
-    if (existing && !existing.completedAt && existing.localDayKey === localDayKey()) return existing;
+    if (existing && !existing.completedAt && existing.localDayKey === serverDayKey()) return existing;
 
     const attempt: InterviewAttempt = {
       id: newId(),
@@ -215,7 +215,7 @@ export const InterviewAttempts = {
     // accounts, so a spoofed local value cannot buy extra interviews.
     unlimited = isUnlimitedEmail(auth.user?.email ?? null);
 
-    const since = localDayKey(new Date(Date.now() - 2 * 86400000));
+    const since = shiftDayKey(serverDayKey(), -2);
     const { data, error } = await supabase
       .from("interview_attempts")
       .select("id, simulator, local_day_key, started_at, first_recording_at, completed_at")
