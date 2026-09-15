@@ -8,6 +8,7 @@ import {
   type PracticeCapResult,
 } from "@/lib/practice-cap";
 import { isModuleId } from "./course-service";
+import { serverDayKey } from "./server-day";
 import { notifyIfClockMismatch } from "@/lib/clock-mismatch";
 import type { ModuleId } from "@/lib/types";
 
@@ -120,7 +121,7 @@ export const PracticeAttempts = {
     const all = readAll();
     const savedId = typeof window === "undefined" ? null : window.localStorage.getItem(activeKey(moduleId, day));
     const existing = savedId ? all.find((a) => a.id === savedId) : undefined;
-    if (existing && !existing.completedAt && existing.localDayKey === localDayKey()) return existing;
+    if (existing && !existing.completedAt && existing.localDayKey === serverDayKey()) return existing;
 
     const attempt: PracticeAttempt = {
       id: newId(),
@@ -253,7 +254,7 @@ export const PracticeAttempts = {
     const { data: auth } = await supabase.auth.getUser();
     const uid = auth.user?.id;
     if (!uid) return readAll();
-    const since = localDayKey(new Date(Date.now() - 7 * 86400000));
+    const since = shiftDayKey(serverDayKey(), -7);
     const { data, error } = await supabase
       .from("practice_attempts")
       .select(
