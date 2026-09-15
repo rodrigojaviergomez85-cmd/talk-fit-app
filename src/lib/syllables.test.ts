@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { tokenizeWordsForDisplay } from "./syllables";
+import { buildEpisodeGlossary, lookupWord } from "@/services/storybook/glossary";
+import { VALE_FIRST_DAY } from "@/services/storybook/vale-first-day";
 
 describe("tokenizeWordsForDisplay", () => {
   it("keeps sentence punctuation with the preceding word", () => {
@@ -55,5 +57,37 @@ describe("tokenizeWordsForDisplay", () => {
       "Showed Up",
       "back out",
     ]);
+  });
+});
+describe("global phrasal verbs and idioms stay one unit", () => {
+  const glossary = buildEpisodeGlossary(VALE_FIRST_DAY);
+  const phrases = [...glossary.keys()].filter((k) => k.includes(" "));
+
+  const expression = (text: string) =>
+    tokenizeWordsForDisplay(text, phrases).filter((t) => t.isExpression).map((t) => t.value);
+
+  it("keeps a pronoun phrasal verb whole and attaches punctuation", () => {
+    const tokens = tokenizeWordsForDisplay("I can sort it out in an hour.", phrases);
+    const target = tokens.find((t) => t.isExpression);
+    expect(target?.value).toBe("sort it out");
+    expect(tokens.some((t) => t.value === "sort" && !t.isExpression)).toBe(false);
+  });
+
+  it("matches conjugated forms", () => {
+    expect(expression("She woke up late and showed up anyway.")).toEqual(["woke up", "showed up"]);
+    expect(expression("He picked her up at seven.")).toEqual(["picked her up"]);
+  });
+
+  it("prefers the longest expression", () => {
+    expect(expression("We ran out of time.")).toEqual(["ran out of"]);
+  });
+
+  it("handles repeats in the same line", () => {
+    expect(expression("Never give up, never give up!")).toEqual(["give up", "give up"]);
+  });
+
+  it("translates the whole expression, not its words", () => {
+    expect(lookupWord("sort it out", { episodeGlossary: glossary }).meaning).toBe("resolverlo / arreglarlo");
+    expect(lookupWord("gave up", { episodeGlossary: glossary }).curated).toBe(true);
   });
 });
