@@ -92,7 +92,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Perfect. Celebration comes after understanding, not before, and today we understand first.",
+          text: "Perfect. Celebration comes after understanding, not before, and today we understand the numbers first.",
           es: "Perfecto. La celebración viene después de entender, no antes, y hoy entendemos primero."
         }
       ],
@@ -304,7 +304,7 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "I will call both clients this morning with a friendly reminder and a payment link they can use in two clicks.",
+          text: "I will call both clients this morning with a friendly reminder and a payment link they can use in two easy clicks.",
           es: "Llamaré a ambos clientes esta mañana con un recordatorio amable y un enlace de pago que pueden usar en dos clics."
         },
         {
