@@ -8,8 +8,9 @@ import {
 } from "./storage-report";
 
 const NOW = new Date("2026-09-02T12:00:00Z");
-const OLD = "2026-08-01T10:00:00Z"; // > 48 h, < 90 days
-const ANCIENT = "2026-01-01T10:00:00Z"; // > 90 days
+const OLD = "2026-08-01T10:00:00Z"; // > 48 h, > 10 days
+const FRESH_FINAL = "2026-08-29T10:00:00Z"; // > 48 h, < 10 days
+const ANCIENT = "2026-01-01T10:00:00Z"; // > 10 days
 const RECENT = "2026-09-02T02:00:00Z"; // < 48 h
 
 function rec(over: Partial<RecordingRow> & { id: string }): RecordingRow {
@@ -67,14 +68,14 @@ describe("take retention (48 hours)", () => {
   });
 });
 
-describe("final retention (90 days)", () => {
-  it("keeps a final younger than 90 days", () => {
-    const r = classifyRecordings([rec({ id: "a", is_final_rep: true })], completedDay, NOW);
+describe("final retention (10 days)", () => {
+  it("keeps a final younger than 10 days", () => {
+    const r = classifyRecordings([rec({ id: "a", is_final_rep: true, created_at: FRESH_FINAL })], completedDay, NOW);
     expect(r.excluded.finalWithinRetention).toBe(1);
     expect(r.candidates.files).toBe(0);
   });
 
-  it("purges a final older than 90 days", () => {
+  it("purges a final older than 10 days", () => {
     const r = classifyRecordings([rec({ id: "a", is_final_rep: true, created_at: ANCIENT })], completedDay, NOW);
     expect(r.candidates.files).toBe(1);
   });
@@ -95,13 +96,13 @@ describe("final retention (90 days)", () => {
     const progress: DayProgressRow[] = [
       { user_id: "u1", module_id: "basic-zero", day: 5, recording_path: "u1/basic-zero/5/a.webm" },
     ];
-    const r = classifyRecordings([rec({ id: "a", created_at: OLD })], progress, NOW);
+    const r = classifyRecordings([rec({ id: "a", created_at: FRESH_FINAL })], progress, NOW);
     expect(r.excluded.finalWithinRetention).toBe(1);
   });
 });
 
 describe("journey final audio (day_progress pass)", () => {
-  it("purges a journey final older than 90 days", () => {
+  it("purges a journey final older than 10 days", () => {
     expect(classifyDayFinal(dayFinal(), NOW)).toEqual({ kind: "candidate" });
   });
 
@@ -111,7 +112,7 @@ describe("journey final audio (day_progress pass)", () => {
   });
 
   it("keeps journey finals within retention", () => {
-    expect(classifyDayFinal(dayFinal({ completed_at: OLD }), NOW)).toEqual({
+    expect(classifyDayFinal(dayFinal({ completed_at: FRESH_FINAL }), NOW)).toEqual({
       kind: "excluded",
       reason: "finalWithinRetention",
     });
