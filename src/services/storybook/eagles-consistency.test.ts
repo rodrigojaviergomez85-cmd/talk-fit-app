@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { existsSync, statSync, readdirSync } from "node:fs";
+import { existsSync, statSync, readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { STORYBOOK_SEASONS } from "./seasons";
 import { STORYBOOK_EPISODES } from "./index";
