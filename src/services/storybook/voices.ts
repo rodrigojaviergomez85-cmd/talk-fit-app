@@ -43,7 +43,7 @@ export function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
   if (speaker === "dani") return "earnest";
   if (speaker === "mom") return "warm";
   if (speaker === "morgan") return "pro";
-  if (speaker === "bryan") return "pro";
+  if (speaker === "bryan") return "sly";
   if (speaker === "sofia") return "warm";
   if (speaker === "herrera") return "pro";
   if (speaker === "reed") return "tense";
