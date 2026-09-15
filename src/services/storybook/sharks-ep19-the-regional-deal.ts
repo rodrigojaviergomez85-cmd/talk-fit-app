@@ -87,8 +87,8 @@ export const SHARKS_EP19_THE_REGIONAL_DEAL: StorybookEpisode = {
         },
         {
           speaker: "renata",
-          text: "Correct. And if we miss the first milestone, the agreement pauses, it does not cancel.",
-          es: "Correcto. Y si fallamos el primer hito, el acuerdo se pausa, no se cancela.",
+          text: "Correct. And if we miss the first milestone, the agreement pauses, it does not cancel. That point is not negotiable.",
+          es: "Correcto. Y si fallamos el primer hito, el acuerdo se pausa, no se cancela. Ese punto no es negociable.",
         },
         {
           speaker: "vale",
