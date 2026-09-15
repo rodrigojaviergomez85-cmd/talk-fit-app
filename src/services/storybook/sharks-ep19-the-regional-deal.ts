@@ -123,8 +123,8 @@ export const SHARKS_EP19_THE_REGIONAL_DEAL: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "And we run a quality check every two months, not only once at the very end.",
-          es: "Y hacemos un control de calidad cada dos meses, no solo una vez al final.",
+          text: "And we run a quality check every two months, plus local adaptations for each city, not only once at the very end.",
+          es: "Y hacemos un control de calidad cada dos meses, más adaptaciones locales para cada ciudad, no solo una vez al final.",
         },
       ],
       words: [
