@@ -194,8 +194,8 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "I am not asking you to reverse it today. I am asking for thirty days to show you something important.",
-          "es": "No le pido que la revierta hoy. Le pido treinta días para mostrarle algo importante."
+          "text": "I am not asking you to reverse it today. I am asking for thirty days to show you something truly important.",
+          "es": "No le pido que la revierta hoy. Le pido treinta días para mostrarle algo verdaderamente importante."
         },
         {
           "speaker": "reed",
