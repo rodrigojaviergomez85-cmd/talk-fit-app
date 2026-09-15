@@ -55,6 +55,13 @@ export function localDayKey(date = new Date()): string {
   }
 }
 
+/** Moves a YYYY-MM-DD key by whole days without touching timezones. */
+export function shiftDayKey(key: string, days: number): string {
+  const ms = Date.parse(`${key}T12:00:00Z`);
+  if (Number.isNaN(ms)) return key;
+  return new Date(ms + days * 86400000).toISOString().slice(0, 10);
+}
+
 function readAll(): PracticeAttempt[] {
   if (typeof window === "undefined") return [];
   try {
