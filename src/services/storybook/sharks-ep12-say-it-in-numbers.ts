@@ -305,8 +305,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       "id": "s9",
       "image": s9,
       "imageAlt": "Dani defends Marco with emotion while Camila keeps the numbers on screen.",
-      "text": "Love is not a metric, Dani. His students' scores do not add up — they are falling behind.",
-      "es": "El cariño no es una métrica, Dani. Las notas de sus estudiantes no cuadran — se están quedando atrás.",
+      "text": "Love is not a metric, Dani. His students' scores do not add up — they are falling behind every single month.",
+      "es": "El cariño no es una métrica, Dani. Las notas de sus estudiantes no cuadran — se están quedando atrás cada mes.",
       "speaker": "camila",
       "cast": ["dani", "camila", "vale"],
       "lines": [
@@ -317,8 +317,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "Love is not a metric, Dani. His students' scores do not add up — they are falling behind.",
-          "es": "El cariño no es una métrica, Dani. Las notas de sus estudiantes no cuadran — se están quedando atrás."
+          "text": "Love is not a metric, Dani. His students' scores do not add up — they are falling behind every single month.",
+          "es": "El cariño no es una métrica, Dani. Las notas de sus estudiantes no cuadran — se están quedando atrás cada mes."
         },
         {
           "speaker": "vale",
@@ -336,15 +336,15 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
       "id": "s10",
       "image": s10,
       "imageAlt": "Camila gives the precise delay while Dani looks down, worried about his friend.",
-      "text": "His group is two months behind the plan, and parents notice. Three asked to change teachers.",
-      "es": "Su grupo está dos meses atrás del plan, y los padres lo notan. Tres pidieron cambiar de maestro.",
+      "text": "His group is two months behind the plan, and the parents notice it clearly. Three already asked to change teachers.",
+      "es": "Su grupo está dos meses atrás del plan, y los padres lo notan claramente. Tres ya pidieron cambiar de maestro.",
       "speaker": "camila",
       "cast": ["camila", "dani", "vale"],
       "lines": [
         {
           "speaker": "camila",
-          "text": "His group is two months behind the plan, and parents notice. Three asked to change teachers.",
-          "es": "Su grupo está dos meses atrás del plan, y los padres lo notan. Tres pidieron cambiar de maestro."
+          "text": "His group is two months behind the plan, and the parents notice it clearly. Three already asked to change teachers.",
+          "es": "Su grupo está dos meses atrás del plan, y los padres lo notan claramente. Tres ya pidieron cambiar de maestro."
         },
         {
           "speaker": "dani",
@@ -379,8 +379,8 @@ export const SHARKS_EP12_SAY_IT_IN_NUMBERS: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "He deserves to hear it from my mouth, with respect, and with a plan to help him.",
-          "es": "Merece escucharlo de mi boca, con respeto, y con un plan para ayudarlo."
+          "text": "He deserves to hear it from my mouth, with respect, with patience, and with a real plan to help him grow.",
+          "es": "Merece escucharlo de mi boca, con respeto, con paciencia, y con un plan real para ayudarlo a crecer."
         },
         {
           "speaker": "camila",
