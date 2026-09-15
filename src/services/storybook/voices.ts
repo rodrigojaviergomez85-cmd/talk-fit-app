@@ -20,7 +20,7 @@ export function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice 
   if (speaker === "camila") return "female";
   if (speaker === "ana") return "femaleMature";
   if (speaker === "beto") return "shyBoy";
-  if (speaker === "dani") return "teenBoy";
+  if (speaker === "dani") return "youngMale";
   if (speaker === "mom") return "femaleMature";
   if (speaker === "tito") return "elder";
   if (speaker === "morgan") return "femaleMature";
