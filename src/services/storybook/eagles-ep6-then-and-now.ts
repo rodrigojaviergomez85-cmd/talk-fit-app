@@ -150,7 +150,7 @@ export const EAGLES_EP6_THEN_AND_NOW: StorybookEpisode = {
     {
       id: "s7",
       image: s7,
-      imageAlt: "Vale escribe dos columnas en la pizarra: BEFORE y NOW.",
+      imageAlt: "Vale divide la pizarra en dos columnas: el antes y el ahora.",
       text: "Vale writes two words on the board: before and now.",
       es: "Vale escribe dos palabras en la pizarra: antes y ahora.",
       speaker: "vale",
