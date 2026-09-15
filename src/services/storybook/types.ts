@@ -144,6 +144,11 @@ export type StorybookEpisode = {
   mindsetCard?: StorybookMindsetCard;
   /** Optional positive-habit micro-lesson modeled by a character. */
   habitCard?: StorybookHabitCard;
+  /**
+   * "Say it like a native" expressions (B2 layer). Shown on their own card
+   * right before the finale; each one must be said by a character in a scene.
+   */
+  expressions?: StorybookExpression[];
   /** Max seconds for the final monologue recording. Defaults to 15. */
   finaleSeconds?: number;
   /** Final "continúa la historia" prompt. */
