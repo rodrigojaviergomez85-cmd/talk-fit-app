@@ -394,50 +394,30 @@ export function currentEpisodeIndex(state: JourneyState): number {
 }
 
 /**
- * A season only exists for the learner once the matching module is open on the
- * official route. Future modules keep every episode locked.
+ * Open-catalogue policy: every published season of "El mundo de Vale" is
+ * available to every learner, whatever their level or route progress.
  */
-export function isSeasonUnlocked(state: JourneyState, moduleId: string): boolean {
-  if (hasUnlimitedAccess()) return true;
-  if (!isModuleId(moduleId)) return false;
-  return JourneyService.isModuleUnlocked(state, moduleId);
+export function isSeasonUnlocked(_state: JourneyState, moduleId: string): boolean {
+  return isModuleId(moduleId);
 }
 
-/**
- * Highest episode day open inside one season, following the official route:
- * future modules are closed, and the learner never gets past the episode of
- * the day they have reached. The window is capped at the back by
- * `earliestUnlockedDayInModule`.
- */
-export function unlockedDayInModule(state: JourneyState, moduleId: string): number {
-  if (hasUnlimitedAccess()) return Number.MAX_SAFE_INTEGER;
-  if (!isModuleId(moduleId) || !isSeasonUnlocked(state, moduleId)) return 0;
-  const offset = seasonOffset(moduleId);
-  if (offset === null) return 0;
+/** Every episode day of the season is open. */
+export function unlockedDayInModule(_state: JourneyState, moduleId: string): number {
+  if (!isModuleId(moduleId)) return 0;
   const season = getSeason(moduleId);
-  const top = currentEpisodeIndex(state) - offset;
-  if (top <= 0) return 0;
-  return Math.min(top, season?.slots.length ?? top);
+  return season?.slots.length ?? 0;
 }
 
-/**
- * Oldest episode day still open in this season. Everything before it closes
- * again: the learner keeps today's episode plus `EPISODE_LOOKBACK` older ones.
- */
-export function earliestUnlockedDayInModule(state: JourneyState, moduleId: string): number {
-  if (hasUnlimitedAccess()) return 1;
-  const offset = seasonOffset(moduleId);
-  if (offset === null) return 1;
-  return Math.max(1, currentEpisodeIndex(state) - EPISODE_LOOKBACK - offset);
+/** Nothing closes behind the learner: review always starts at day 1. */
+export function earliestUnlockedDayInModule(_state: JourneyState, _moduleId: string): number {
+  return 1;
 }
 
-export function isDayUnlocked(state: JourneyState, moduleId: string, day: number): boolean {
-  if (hasUnlimitedAccess()) return true;
-  if (!isModuleId(moduleId) || !isSeasonUnlocked(state, moduleId)) return false;
-  const index = globalEpisodeIndex(moduleId, day);
-  if (index === null) return false;
-  const top = currentEpisodeIndex(state);
-  return index <= top && index > top - 1 - EPISODE_LOOKBACK;
+export function isDayUnlocked(_state: JourneyState, moduleId: string, day: number): boolean {
+  if (!isModuleId(moduleId)) return false;
+  const season = getSeason(moduleId);
+  if (!season) return false;
+  return season.slots.some((slot) => slot.day === day);
 }
 
 
