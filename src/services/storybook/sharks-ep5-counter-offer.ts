@@ -52,7 +52,7 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
     {
       "id": "s1",
       "image": s1,
-      "imageAlt": "Scene 1 of The counter-offer.",
+      "imageAlt": "Mr. Reed presents Houston's counteroffer on the call while Dani reads it on the screen.",
       "text": "Houston will sign today if you launch Monday and lower the setup fee.",
       "es": "Houston firmará hoy si lanzan el lunes y bajan la tarifa de instalación.",
       "speaker": "reed",
@@ -62,17 +62,31 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "dani",
+          "text": "Good morning, Mr. Reed. We received your counteroffer last night, and it surprised the whole team.",
+          "es": "Buenos días, señor Reed. Recibimos su contraoferta anoche, y sorprendió a todo el equipo."
+        },
+        {
           "speaker": "reed",
           "text": "Houston will sign today if you launch Monday and lower the setup fee.",
           "es": "Houston firmará hoy si lanzan el lunes y bajan la tarifa de instalación."
+        },
+        {
+          "speaker": "dani",
+          "text": "Monday is four days away, and that fee already covers the training for twelve teachers.",
+          "es": "El lunes es en cuatro días, y esa tarifa ya cubre la capacitación de doce maestros."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "sign", "es": "firmar" },
+        { "word": "launch", "es": "lanzamiento" },
+        { "word": "fee", "es": "tarifa" }
+      ]
     },
     {
       "id": "s2",
       "image": s2,
-      "imageAlt": "Scene 2 of The counter-offer.",
+      "imageAlt": "Camila reviews the budget alone and shows the loss the counteroffer would cause.",
       "text": "If we accepted that, we would lose money during the first month.",
       "es": "Si aceptáramos eso, perderíamos dinero durante el primer mes.",
       "speaker": "camila",
@@ -82,16 +96,30 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
       "lines": [
         {
           "speaker": "camila",
+          "text": "I ran the numbers twice this morning, and both times the result looked exactly the same.",
+          "es": "Corrí los números dos veces esta mañana, y las dos veces el resultado se vio exactamente igual."
+        },
+        {
+          "speaker": "camila",
           "text": "If we accepted that, we would lose money during the first month.",
           "es": "Si aceptáramos eso, perderíamos dinero durante el primer mes."
+        },
+        {
+          "speaker": "camila",
+          "text": "Around two thousand dollars, and that amount is what pays our new teachers in Guatemala.",
+          "es": "Unos dos mil dólares, y esa cantidad es la que paga a nuestros nuevos maestros en Guatemala."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "accepted", "es": "aceptado" },
+        { "word": "lose", "es": "perder" },
+        { "word": "amount", "es": "cantidad" }
+      ]
     },
     {
       "id": "s3",
       "image": s3,
-      "imageAlt": "Scene 3 of The counter-offer.",
+      "imageAlt": "Dani warns about rushing the launch while Mr. Reed listens from Houston.",
       "text": "And if we rushed the launch, quality would drop.",
       "es": "Y si apresuráramos el lanzamiento, la calidad bajaría.",
       "speaker": "dani",
@@ -102,16 +130,30 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
+          "text": "Money is only half of the problem. Honestly, the calendar worries me more than the fee.",
+          "es": "El dinero es solo la mitad del problema. Honestamente, el calendario me preocupa más que la tarifa."
+        },
+        {
+          "speaker": "dani",
           "text": "And if we rushed the launch, quality would drop.",
           "es": "Y si apresuráramos el lanzamiento, la calidad bajaría."
+        },
+        {
+          "speaker": "reed",
+          "text": "Every provider tells me the same thing. Explain what would actually break if you launched Monday.",
+          "es": "Todos los proveedores me dicen lo mismo. Explique qué se rompería realmente si lanzaran el lunes."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "rushed", "es": "apresurado" },
+        { "word": "quality", "es": "calidad" },
+        { "word": "provider", "es": "proveedor" }
+      ]
     },
     {
       "id": "s4",
       "image": s4,
-      "imageAlt": "Scene 4 of The counter-offer.",
+      "imageAlt": "Vale stands alone by the window deciding whether to reject the offer as written.",
       "text": "We may have to turn down the offer as written.",
       "es": "Quizás tengamos que rechazar la oferta tal como está.",
       "speaker": "vale",
@@ -121,16 +163,30 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
       "lines": [
         {
           "speaker": "vale",
+          "text": "Three teachers would teach without training, and the first class always defines the client's opinion.",
+          "es": "Tres maestros darían clase sin capacitación, y la primera clase siempre define la opinión del cliente."
+        },
+        {
+          "speaker": "vale",
           "text": "We may have to turn down the offer as written.",
           "es": "Quizás tengamos que rechazar la oferta tal como está."
+        },
+        {
+          "speaker": "vale",
+          "text": "That sentence is difficult to say to Northline, but a bad launch would damage us longer.",
+          "es": "Esa frase es difícil de decirle a Northline, pero un mal lanzamiento nos dañaría más tiempo."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "training", "es": "capacitación" },
+        { "word": "opinion", "es": "opinión" },
+        { "word": "damage", "es": "dañar" }
+      ]
     },
     {
       "id": "s5",
       "image": s5,
-      "imageAlt": "Scene 5 of The counter-offer.",
+      "imageAlt": "Mr. Reed mentions another provider while Dani defends the team's experience.",
       "text": "Another provider said yes. Why should I wait for you?",
       "es": "Otro proveedor dijo que sí. ¿Por qué debería esperarlos?",
       "speaker": "reed",
@@ -141,16 +197,30 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
       "lines": [
         {
           "speaker": "reed",
+          "text": "Let me be direct with you. My board wants this program running before the quarter closes.",
+          "es": "Permítame ser directo. Mi junta quiere este programa funcionando antes de que cierre el trimestre."
+        },
+        {
+          "speaker": "reed",
           "text": "Another provider said yes. Why should I wait for you?",
           "es": "Otro proveedor dijo que sí. ¿Por qué debería esperarlos?"
+        },
+        {
+          "speaker": "dani",
+          "text": "Because that provider has never trained a team in three countries during the same week.",
+          "es": "Porque ese proveedor nunca ha capacitado a un equipo en tres países durante la misma semana."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "board", "es": "junta directiva" },
+        { "word": "quarter", "es": "trimestre" },
+        { "word": "trained", "es": "capacitado" }
+      ]
     },
     {
       "id": "s6",
       "image": s6,
-      "imageAlt": "Scene 6 of The counter-offer.",
+      "imageAlt": "Vale and Camila prepare a counter-proposal with numbers on the office table.",
       "text": "Because a failed launch costs more than a careful one. Let us work out better terms.",
       "es": "Porque un lanzamiento fallido cuesta más que uno cuidadoso. Busquemos mejores términos.",
       "speaker": "vale",
@@ -160,17 +230,31 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "camila",
+          "text": "Vale, answer his question with numbers. He respects evidence far more than promises.",
+          "es": "Vale, responde su pregunta con números. Él respeta la evidencia mucho más que las promesas."
+        },
+        {
           "speaker": "vale",
           "text": "Because a failed launch costs more than a careful one. Let us work out better terms.",
           "es": "Porque un lanzamiento fallido cuesta más que uno cuidadoso. Busquemos mejores términos."
+        },
+        {
+          "speaker": "camila",
+          "text": "Then offer something real. A refusal without an alternative sounds exactly like a no.",
+          "es": "Entonces ofrece algo real. Una negativa sin alternativa suena exactamente como un no."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "failed", "es": "fallido" },
+        { "word": "terms", "es": "términos" },
+        { "word": "evidence", "es": "evidencia" }
+      ]
     },
     {
       "id": "s7",
       "image": s7,
-      "imageAlt": "Scene 7 of The counter-offer.",
+      "imageAlt": "Camila offers the advance-payment discount while Mr. Reed considers it on screen.",
       "text": "We could reduce the fee if Houston paid the first month in advance.",
       "es": "Podríamos reducir la tarifa si Houston pagara el primer mes por adelantado.",
       "speaker": "camila",
@@ -183,14 +267,28 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
           "speaker": "camila",
           "text": "We could reduce the fee if Houston paid the first month in advance.",
           "es": "Podríamos reducir la tarifa si Houston pagara el primer mes por adelantado."
+        },
+        {
+          "speaker": "reed",
+          "text": "Paying in advance is unusual for us, but it is possible if the discount is real.",
+          "es": "Pagar por adelantado es inusual para nosotros, pero es posible si el descuento es real."
+        },
+        {
+          "speaker": "camila",
+          "text": "Fifteen percent lower, and your teachers keep the same training hours we promised before.",
+          "es": "Quince por ciento menos, y sus maestros conservan las mismas horas de capacitación que prometimos antes."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "reduce", "es": "reducir" },
+        { "word": "advance", "es": "adelantado" },
+        { "word": "discount", "es": "descuento" }
+      ]
     },
     {
       "id": "s8",
       "image": s8,
-      "imageAlt": "Scene 8 of The counter-offer.",
+      "imageAlt": "Dani proposes a staged launch to Vale using the three-office calendar.",
       "text": "And we could start one office Monday, then add the other two Friday.",
       "es": "Y podríamos empezar una oficina el lunes y agregar las otras dos el viernes.",
       "speaker": "dani",
@@ -200,17 +298,31 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "vale",
+          "text": "The fee is solved. Now we still have the calendar, and Monday has not moved.",
+          "es": "La tarifa está resuelta. Todavía tenemos el calendario, y el lunes no se ha movido."
+        },
+        {
           "speaker": "dani",
           "text": "And we could start one office Monday, then add the other two Friday.",
           "es": "Y podríamos empezar una oficina el lunes y agregar las otras dos el viernes."
+        },
+        {
+          "speaker": "vale",
+          "text": "One office gives us a real test with real students before the other two open.",
+          "es": "Una oficina nos da una prueba real con estudiantes reales antes de que abran las otras dos."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "office", "es": "oficina" },
+        { "word": "calendar", "es": "calendario" },
+        { "word": "test", "es": "prueba" }
+      ]
     },
     {
       "id": "s9",
       "image": s9,
-      "imageAlt": "Scene 9 of The counter-offer.",
+      "imageAlt": "Vale and Dani agree on the middle point that protects the program.",
       "text": "That is how we meet halfway without risking the program.",
       "es": "Así llegamos a un punto medio sin arriesgar el programa.",
       "speaker": "vale",
@@ -220,17 +332,31 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "dani",
+          "text": "So Houston gets its Monday, and we get the time our teachers actually need.",
+          "es": "Así Houston tiene su lunes, y nosotros tenemos el tiempo que nuestros maestros realmente necesitan."
+        },
+        {
           "speaker": "vale",
           "text": "That is how we meet halfway without risking the program.",
           "es": "Así llegamos a un punto medio sin arriesgar el programa."
+        },
+        {
+          "speaker": "dani",
+          "text": "Say it to him exactly like that, calmly, and let him decide with the full picture.",
+          "es": "Díselo exactamente así, con calma, y deja que él decida con el panorama completo."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "risking", "es": "arriesgando" },
+        { "word": "program", "es": "programa" },
+        { "word": "decide", "es": "decidir" }
+      ]
     },
     {
       "id": "s10",
       "image": s10,
-      "imageAlt": "Scene 10 of The counter-offer.",
+      "imageAlt": "Mr. Reed accepts the final terms while Camila writes them down.",
       "text": "One office Monday, payment in advance, all three by Friday. Deal.",
       "es": "Una oficina el lunes, pago por adelantado, las tres para el viernes. Trato.",
       "speaker": "reed",
@@ -240,17 +366,31 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "camila",
+          "text": "Mr. Reed, that is our complete proposal, and every number in it is written here.",
+          "es": "Señor Reed, esa es nuestra propuesta completa, y cada número está escrito aquí."
+        },
+        {
           "speaker": "reed",
           "text": "One office Monday, payment in advance, all three by Friday. Deal.",
           "es": "Una oficina el lunes, pago por adelantado, las tres para el viernes. Trato."
+        },
+        {
+          "speaker": "camila",
+          "text": "Thank you. I will send the revised contract within the hour so nothing stays verbal.",
+          "es": "Gracias. Enviaré el contrato revisado dentro de una hora para que nada quede verbal."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "payment", "es": "pago" },
+        { "word": "proposal", "es": "propuesta" },
+        { "word": "revised", "es": "revisado" }
+      ]
     },
     {
       "id": "s11",
       "image": s11,
-      "imageAlt": "Scene 11 of The counter-offer.",
+      "imageAlt": "Mr. Reed adds a last condition from Houston about hiring a coordinator in Guatemala.",
       "text": "One more condition: hire a local coordinator in Guatemala by tomorrow.",
       "es": "Una condición más: contraten una coordinadora local en Guatemala para mañana.",
       "speaker": "reed",
@@ -260,11 +400,25 @@ export const SHARKS_EP5_COUNTER_OFFER: StorybookEpisode = {
       "lines": [
         {
           "speaker": "reed",
+          "text": "Before you celebrate, there is one detail my operations team asked me to include.",
+          "es": "Antes de que celebren, hay un detalle que mi equipo de operaciones me pidió incluir."
+        },
+        {
+          "speaker": "reed",
           "text": "One more condition: hire a local coordinator in Guatemala by tomorrow.",
           "es": "Una condición más: contraten una coordinadora local en Guatemala para mañana."
+        },
+        {
+          "speaker": "reed",
+          "text": "Nobody in Houston can supervise that office from here, so I need somebody on the ground.",
+          "es": "Nadie en Houston puede supervisar esa oficina desde aquí, así que necesito a alguien en el terreno."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "condition", "es": "condición" },
+        { "word": "coordinator", "es": "coordinador" },
+        { "word": "supervise", "es": "supervisar" }
+      ]
     }
   ],
   "quizzes": [

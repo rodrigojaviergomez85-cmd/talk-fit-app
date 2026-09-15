@@ -52,7 +52,7 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
     {
       "id": "s1",
       "image": s1,
-      "imageAlt": "Scene 1 of Hiring across borders.",
+      "imageAlt": "Vale and Dani prepare for the interview with Lucia's resume on the table.",
       "text": "Lucía, tell me how your life in Guatemala City is different now.",
       "es": "Lucía, cuéntame cómo es diferente tu vida en Ciudad de Guatemala ahora.",
       "speaker": "vale",
@@ -62,17 +62,31 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "dani",
+          "text": "The interview starts in two minutes, Vale. Her experience is strong, but the role is demanding.",
+          "es": "La entrevista empieza en dos minutos, Vale. Su experiencia es fuerte, pero el puesto es exigente."
+        },
+        {
           "speaker": "vale",
           "text": "Lucía, tell me how your life in Guatemala City is different now.",
           "es": "Lucía, cuéntame cómo es diferente tu vida en Ciudad de Guatemala ahora."
+        },
+        {
+          "speaker": "dani",
+          "text": "Ask about the move first. How a person handles change tells us more than any certificate.",
+          "es": "Pregunta primero por la mudanza. Cómo alguien maneja el cambio dice más que cualquier certificado."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "interview", "es": "entrevista" },
+        { "word": "role", "es": "puesto" },
+        { "word": "change", "es": "cambio" }
+      ]
     },
     {
       "id": "s2",
       "image": s2,
-      "imageAlt": "Scene 2 of Hiring across borders.",
+      "imageAlt": "Lucia answers from her office in Guatemala City about her move from a small town.",
       "text": "I used to work in a small town. Now I manage programs in a crowded city.",
       "es": "Antes trabajaba en un pueblo pequeño. Ahora manejo programas en una ciudad concurrida.",
       "speaker": "lucia",
@@ -82,16 +96,30 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "lucia",
+          "text": "Thank you for the call. My life changed completely when I moved two years ago.",
+          "es": "Gracias por la llamada. Mi vida cambió por completo cuando me mudé hace dos años."
+        },
+        {
+          "speaker": "lucia",
           "text": "I used to work in a small town. Now I manage programs in a crowded city.",
           "es": "Antes trabajaba en un pueblo pequeño. Ahora manejo programas en una ciudad concurrida."
+        },
+        {
+          "speaker": "lucia",
+          "text": "The distances are longer, the schedules are stricter, and every meeting happens in two languages.",
+          "es": "Las distancias son más largas, los horarios más estrictos, y cada reunión ocurre en dos idiomas."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "manage", "es": "administrar" },
+        { "word": "crowded", "es": "concurrido" },
+        { "word": "schedules", "es": "horarios" }
+      ]
     },
     {
       "id": "s3",
       "image": s3,
-      "imageAlt": "Scene 3 of Hiring across borders.",
+      "imageAlt": "Dani asks Vale how to explore the candidate's adaptation to the capital.",
       "text": "Was it difficult to settle in?",
       "es": "¿Fue difícil adaptarte?",
       "speaker": "dani",
@@ -101,17 +129,31 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "vale",
+          "text": "Dani, ask her about the beginning. The first months usually reveal how somebody adapts.",
+          "es": "Dani, pregúntale por el comienzo. Los primeros meses suelen revelar cómo se adapta alguien."
+        },
+        {
           "speaker": "dani",
           "text": "Was it difficult to settle in?",
           "es": "¿Fue difícil adaptarte?"
+        },
+        {
+          "speaker": "vale",
+          "text": "And be honest with her, because this job will feel exactly like that first month again.",
+          "es": "Y sé honesto con ella, porque este trabajo se sentirá otra vez como ese primer mes."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "beginning", "es": "comienzo" },
+        { "word": "adapts", "es": "se adapta" },
+        { "word": "honest", "es": "honesto" }
+      ]
     },
     {
       "id": "s4",
       "image": s4,
-      "imageAlt": "Scene 4 of Hiring across borders.",
+      "imageAlt": "Lucia tells Dani how she built trust in her first months in a new city.",
       "text": "At first, yes. I was used to knowing everyone. Here I had to build trust quickly.",
       "es": "Al principio, sí. Estaba acostumbrada a conocer a todos. Aquí tuve que generar confianza rápido.",
       "speaker": "lucia",
@@ -121,17 +163,31 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "dani",
+          "text": "Tell us about those first months. What surprised you most about working in the capital?",
+          "es": "Cuéntanos de esos primeros meses. ¿Qué te sorprendió más de trabajar en la capital?"
+        },
+        {
           "speaker": "lucia",
           "text": "At first, yes. I was used to knowing everyone. Here I had to build trust quickly.",
           "es": "Al principio, sí. Estaba acostumbrada a conocer a todos. Aquí tuve que generar confianza rápido."
+        },
+        {
+          "speaker": "lucia",
+          "text": "I listened for a month before I changed anything, and that patience opened every door.",
+          "es": "Escuché durante un mes antes de cambiar nada, y esa paciencia me abrió todas las puertas."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "trust", "es": "confianza" },
+        { "word": "surprised", "es": "sorprendido" },
+        { "word": "patience", "es": "paciencia" }
+      ]
     },
     {
       "id": "s5",
       "image": s5,
-      "imageAlt": "Scene 5 of Hiring across borders.",
+      "imageAlt": "Vale explains the three-office role to Lucia on the video call.",
       "text": "This role means taking on three offices and reporting in English.",
       "es": "Este puesto implica asumir tres oficinas y reportar en inglés.",
       "speaker": "vale",
@@ -144,14 +200,28 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
           "speaker": "vale",
           "text": "This role means taking on three offices and reporting in English.",
           "es": "Este puesto implica asumir tres oficinas y reportar en inglés."
+        },
+        {
+          "speaker": "lucia",
+          "text": "Three offices in three countries. Would I travel, or would most coordination happen online?",
+          "es": "Tres oficinas en tres países. ¿Viajaría, o la mayor parte de la coordinación sería en línea?"
+        },
+        {
+          "speaker": "vale",
+          "text": "Mostly online, with one visit per month, and every weekly report presented in English.",
+          "es": "Mayormente en línea, con una visita al mes, y cada informe semanal presentado en inglés."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "reporting", "es": "reportar" },
+        { "word": "travel", "es": "viajar" },
+        { "word": "weekly", "es": "semanal" }
+      ]
     },
     {
       "id": "s6",
       "image": s6,
-      "imageAlt": "Scene 6 of Hiring across borders.",
+      "imageAlt": "Lucia describes the larger teams she has managed while Vale listens.",
       "text": "I have taken on larger teams before, and I learned to ask precise questions.",
       "es": "He asumido equipos más grandes antes, y aprendí a hacer preguntas precisas.",
       "speaker": "lucia",
@@ -164,14 +234,28 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
           "speaker": "lucia",
           "text": "I have taken on larger teams before, and I learned to ask precise questions.",
           "es": "He asumido equipos más grandes antes, y aprendí a hacer preguntas precisas."
+        },
+        {
+          "speaker": "vale",
+          "text": "Give me an example of a precise question you asked when a team was failing.",
+          "es": "Dame un ejemplo de una pregunta precisa que hiciste cuando un equipo estaba fallando."
+        },
+        {
+          "speaker": "lucia",
+          "text": "I asked which student stopped speaking, not why the class felt bad. Then we fixed something real.",
+          "es": "Pregunté qué estudiante dejó de hablar, no por qué la clase se sentía mal. Entonces arreglamos algo real."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "precise", "es": "preciso" },
+        { "word": "example", "es": "ejemplo" },
+        { "word": "failing", "es": "fallando" }
+      ]
     },
     {
       "id": "s7",
       "image": s7,
-      "imageAlt": "Scene 7 of Hiring across borders.",
+      "imageAlt": "Dani poses a difficult hypothetical question about a class with no materials.",
       "text": "What would you do if a class started tomorrow with no materials?",
       "es": "¿Qué harías si una clase empezara mañana sin materiales?",
       "speaker": "dani",
@@ -181,16 +265,30 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "dani",
+          "text": "I want to test one situation, because it happens more often than we like to admit.",
+          "es": "Quiero probar una situación, porque pasa más seguido de lo que nos gusta admitir."
+        },
+        {
+          "speaker": "dani",
           "text": "What would you do if a class started tomorrow with no materials?",
           "es": "¿Qué harías si una clase empezara mañana sin materiales?"
+        },
+        {
+          "speaker": "dani",
+          "text": "Take your time. I am interested in the first three steps, not in a perfect answer.",
+          "es": "Tómate tu tiempo. Me interesan los primeros tres pasos, no una respuesta perfecta."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "materials", "es": "materiales" },
+        { "word": "situation", "es": "situación" },
+        { "word": "steps", "es": "pasos" }
+      ]
     },
     {
       "id": "s8",
       "image": s8,
-      "imageAlt": "Scene 8 of Hiring across borders.",
+      "imageAlt": "Lucia answers the emergency question confidently from her desk.",
       "text": "I would use the shared lessons, call each teacher, and hit the ground running.",
       "es": "Usaría las lecciones compartidas, llamaría a cada maestro y empezaría con todo.",
       "speaker": "lucia",
@@ -200,16 +298,30 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "lucia",
+          "text": "I would not cancel anything. A cancelled class costs more confidence than a rough class.",
+          "es": "No cancelaría nada. Una clase cancelada cuesta más confianza que una clase imperfecta."
+        },
+        {
+          "speaker": "lucia",
           "text": "I would use the shared lessons, call each teacher, and hit the ground running.",
           "es": "Usaría las lecciones compartidas, llamaría a cada maestro y empezaría con todo."
+        },
+        {
+          "speaker": "lucia",
+          "text": "Then I would write down what was missing, so the same gap never repeats next month.",
+          "es": "Luego anotaría qué faltó, para que la misma falta no se repita el próximo mes."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "shared", "es": "compartido" },
+        { "word": "cancel", "es": "cancelar" },
+        { "word": "gap", "es": "vacío / falta" }
+      ]
     },
     {
       "id": "s9",
       "image": s9,
-      "imageAlt": "Scene 9 of Hiring across borders.",
+      "imageAlt": "Vale offers Lucia the job during the interview.",
       "text": "That is the answer I needed. The job is yours.",
       "es": "Esa es la respuesta que necesitaba. El trabajo es tuyo.",
       "speaker": "vale",
@@ -219,16 +331,30 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
       "lines": [
         {
           "speaker": "vale",
+          "text": "Lucía, you solved the problem before you complained about it. That is exactly our culture.",
+          "es": "Lucía, resolviste el problema antes de quejarte de él. Esa es exactamente nuestra cultura."
+        },
+        {
+          "speaker": "vale",
           "text": "That is the answer I needed. The job is yours.",
           "es": "Esa es la respuesta que necesitaba. El trabajo es tuyo."
+        },
+        {
+          "speaker": "vale",
+          "text": "You will manage three offices and report directly to me every Friday afternoon.",
+          "es": "Manejarás tres oficinas y me reportarás directamente cada viernes por la tarde."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "answer", "es": "respuesta" },
+        { "word": "culture", "es": "cultura" },
+        { "word": "directly", "es": "directamente" }
+      ]
     },
     {
       "id": "s10",
       "image": s10,
-      "imageAlt": "Scene 10 of Hiring across borders.",
+      "imageAlt": "Lucia accepts and tells Dani she can start the same day.",
       "text": "Thank you. I can start today, not tomorrow.",
       "es": "Gracias. Puedo empezar hoy, no mañana.",
       "speaker": "lucia",
@@ -241,14 +367,28 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
           "speaker": "lucia",
           "text": "Thank you. I can start today, not tomorrow.",
           "es": "Gracias. Puedo empezar hoy, no mañana."
+        },
+        {
+          "speaker": "dani",
+          "text": "Today? Most people ask for two weeks before they leave their previous position.",
+          "es": "¿Hoy? La mayoría pide dos semanas antes de dejar su puesto anterior."
+        },
+        {
+          "speaker": "lucia",
+          "text": "I finished my last contract on Friday, so my calendar is honestly completely open.",
+          "es": "Terminé mi último contrato el viernes, así que mi calendario está honestamente completamente libre."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "start", "es": "empezar" },
+        { "word": "previous", "es": "anterior" },
+        { "word": "contract", "es": "contrato" }
+      ]
     },
     {
       "id": "s11",
       "image": s11,
-      "imageAlt": "Scene 11 of Hiring across borders.",
+      "imageAlt": "Vale warns Lucia that the second office has already lost its teacher.",
       "text": "Perfect, because our second office has already lost its teacher.",
       "es": "Perfecto, porque nuestra segunda oficina ya perdió a su maestro.",
       "speaker": "vale",
@@ -258,12 +398,26 @@ export const SHARKS_EP6_HIRING_ACROSS_BORDERS: StorybookEpisode = {
       ],
       "lines": [
         {
+          "speaker": "lucia",
+          "text": "Then tell me where you need me first, and I will open my notebook right now.",
+          "es": "Entonces dime dónde me necesitas primero, y abriré mi cuaderno ahora mismo."
+        },
+        {
           "speaker": "vale",
           "text": "Perfect, because our second office has already lost its teacher.",
           "es": "Perfecto, porque nuestra segunda oficina ya perdió a su maestro."
+        },
+        {
+          "speaker": "lucia",
+          "text": "Understood. Send me the class list tonight, and I will call every student before morning.",
+          "es": "Entendido. Mándame la lista de la clase esta noche, y llamaré a cada estudiante antes de la mañana."
         }
       ],
-      "words": []
+      "words": [
+        { "word": "lost", "es": "perdido" },
+        { "word": "notebook", "es": "cuaderno" },
+        { "word": "tonight", "es": "esta noche" }
+      ]
     }
   ],
   "quizzes": [
