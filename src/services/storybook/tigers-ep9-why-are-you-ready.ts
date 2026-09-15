@@ -146,7 +146,7 @@ export const TIGERS_EP9_WHY_ARE_YOU_READY: StorybookEpisode = {
         { speaker: "vale", text: "Have built for what you can see today. Have been improving for what continues.", es: "«Have built para lo que se ve hoy. Have been improving para lo que continúa»." },
       ],
       words: [
-        { word: "tenses", es: "tiempos verbales" },
+        { word: "tense", es: "tiempo verbal" },
         { word: "finished", es: "terminada" },
         { word: "continues", es: "continúa" },
       ],

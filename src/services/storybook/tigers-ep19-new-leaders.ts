@@ -128,7 +128,7 @@ export const TIGERS_EP19_NEW_LEADERS: StorybookEpisode = {
       words: [
         { word: "operations", es: "operaciones" },
         { word: "exactly", es: "exactamente" },
-        { word: "report", es: "reportar" },
+        { word: "director", es: "director" },
       ],
     },
     {

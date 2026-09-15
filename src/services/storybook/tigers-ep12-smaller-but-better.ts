@@ -181,7 +181,7 @@ export const TIGERS_EP12_SMALLER_BUT_BETTER: StorybookEpisode = {
       ],
       words: [
         { word: "system", es: "sistema" },
-        { word: "chain", es: "cadena" },
+        { word: "flexible", es: "flexible" },
         { word: "custom", es: "a la medida" },
       ],
     },
@@ -199,7 +199,7 @@ export const TIGERS_EP12_SMALLER_BUT_BETTER: StorybookEpisode = {
       ],
       words: [
         { word: "honesty", es: "honestidad" },
-        { word: "worse", es: "peor" },
+        { word: "marketing", es: "mercadeo" },
         { word: "simply", es: "simplemente" },
       ],
     },
