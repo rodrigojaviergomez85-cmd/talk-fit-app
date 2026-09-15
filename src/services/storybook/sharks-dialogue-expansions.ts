@@ -12,11 +12,6 @@ export const SHARKS_DIALOGUE_EXPANSIONS: Record<string, EpisodeExpansion> = {};
 
 const SHARKS_RICH_EPISODES = new Set([
   
-  "sharks-ep4-three-offices-one-team",
-  "sharks-ep5-counter-offer",
-  "sharks-ep6-hiring-across-borders",
-  "sharks-ep7-quality-at-scale",
-  "sharks-ep8-vale-kids",
   "sharks-ep9-mexico-call",
   "sharks-ep10-partner-or-rival",
   "sharks-ep11-what-went-wrong",
