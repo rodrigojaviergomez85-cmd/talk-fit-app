@@ -1,5 +1,4 @@
 import type { StorybookEpisode } from "./types";
-// WORD_FIX_MARKER
 
 import cover from "@/assets/storybook/sharks-ep14-losing-a-client/cover.jpg";
 import s1 from "@/assets/storybook/sharks-ep14-losing-a-client/s1.jpg";
@@ -393,7 +392,7 @@ export const SHARKS_EP14_LOSING_A_CLIENT: StorybookEpisode = {
       "words": [
         { "word": "materials", "es": "materiales" },
         { "word": "win back", "es": "recuperar / reconquistar" },
-        { "word": "one at a time", "es": "uno a la vez" }
+        { "word": "one class at a time", "es": "una clase a la vez" }
       ]
     }
   ],
