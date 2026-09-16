@@ -189,6 +189,10 @@ function LeaguePage() {
     void openPage(Math.floor(myPosition / PAGE_SIZE) * PAGE_SIZE);
   }, [myPosition, openPage]);
 
+  const activeId = selected ?? summary?.competitionId ?? null;
+  const selectedWeek = history.find((w) => w.competitionId === activeId) ?? null;
+  const isCurrentWeek = selectedWeek ? selectedWeek.isCurrent : !summary?.closed;
+
   const moduleLabel = summary?.moduleId
     ? (() => {
         try {
