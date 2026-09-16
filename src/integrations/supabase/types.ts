@@ -1737,11 +1737,16 @@ export type Database = {
         Returns: string
       }
       league_is_excluded: { Args: { _user_id: string }; Returns: boolean }
+      league_my_competitions: { Args: never; Returns: Json }
       league_my_summary: {
         Args: { _curriculum_week: number; _module_id: string }
         Returns: Json
       }
       league_set_hidden: { Args: { _hidden: boolean }; Returns: boolean }
+      league_summary_by_competition: {
+        Args: { _competition_id: string }
+        Returns: Json
+      }
       league_week_start: { Args: { _ts?: string }; Returns: string }
       limits_enabled: { Args: never; Returns: boolean }
       log_ai_call: {
