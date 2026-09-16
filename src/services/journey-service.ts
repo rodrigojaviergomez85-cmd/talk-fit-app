@@ -178,9 +178,15 @@ export const JourneyService = {
     return Boolean(state.days[recordKey(moduleId, day)]);
   },
 
-  /** All days are open: the learner can practice any day at any time. */
-  isDayUnlocked(_state: JourneyState, _moduleId: ModuleId, _day: number): boolean {
-    return true;
+  /**
+   * Sequential unlock: the learner can repeat any day they already finished
+   * and catch up on earlier ones, but a future day opens only once the
+   * current day's audios (the required activity) are done. `currentDay`
+   * already respects the onboarding start week.
+   */
+  isDayUnlocked(state: JourneyState, moduleId: ModuleId, day: number): boolean {
+    if (JourneyService.isDayCompleted(state, moduleId, day)) return true;
+    return day <= JourneyService.currentDay(state, moduleId);
   },
 
   /**
