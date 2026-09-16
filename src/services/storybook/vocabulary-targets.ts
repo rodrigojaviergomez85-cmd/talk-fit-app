@@ -81,9 +81,9 @@ export const EPISODE_VOCAB_BUDGET: Record<string, string[]> = {
     "available", "billed", "clause", "protects", "detail",
   ],
   "advanced1-ep15-the-room-that-interrupts": [
-    "restart", "nervous", "evidence", "pilot", "variable", "assuming",
-    "salary band", "candidates", "depends", "cohorts", "documented",
-    "record", "quiet", "slot", "decision", "summary",
+    "restart", "interrupt", "attrition", "measured", "bill", "survives",
+    "rehearsed", "criticise", "certain", "piloting", "honest", "risk",
+    "colleague", "measurement", "decision", "professional",
   ],
   "advanced1-ep1-rules-of-the-game": [
     "committee", "compete", "spot", "founder", "introduction", "structure",
