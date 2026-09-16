@@ -229,8 +229,8 @@ export const ADVANCED1_EP2_NORTHLINE_NIGHT: StorybookEpisode = {
         },
         {
           speaker: "narrator",
-          text: "The committee answers: a clear story. Setting, action, result, lesson. Thank you.",
-          es: "El comité responde: una historia clara. Escena, acción, resultado, lección. Gracias.",
+          text: "The committee answers: a clear story. Situation, action, result, lesson. Thank you.",
+          es: "El comité responde: una historia clara. Situación, acción, resultado, lección. Gracias.",
         },
       ],
       words: [
@@ -395,8 +395,8 @@ export const ADVANCED1_EP2_NORTHLINE_NIGHT: StorybookEpisode = {
   },
   habitCard: {
     afterScene: "s2",
-    phrase: "I tell my stories in four parts: setting, action, result, lesson.",
-    es: "Cuento mis historias en cuatro partes: escena, acción, resultado, lección.",
+    phrase: "I tell my stories in four parts: situation, action, result, lesson.",
+    es: "Cuento mis historias en cuatro partes: situación, acción, resultado, lección.",
     model: "reed",
     modelActionEs: "Reed le dio a Vale una estructura de cuatro partes en lugar de una lista de hechos.",
   },
