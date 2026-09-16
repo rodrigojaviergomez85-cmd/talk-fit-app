@@ -59,6 +59,21 @@ const PAGE_SIZE = 25;
 function LeaguePage() {
   const { lang } = useAppLang();
   const es = lang === "es";
+  const { from, day: fromDay } = Route.useSearch();
+  // Where "Back to my day" goes: the day we came from, else the learner's
+  // current day, else Home.
+  const [fallbackDay, setFallbackDay] = useState<{ moduleId: string; day: number } | null>(null);
+  useEffect(() => {
+    if (from && fromDay) return;
+    try {
+      const state = JourneyService.load();
+      const moduleId = JourneyService.currentModule(state);
+      setFallbackDay({ moduleId, day: JourneyService.currentDay(state, moduleId) });
+    } catch {
+      setFallbackDay(null);
+    }
+  }, [from, fromDay]);
+  const backTo = from && fromDay ? { moduleId: from, day: fromDay } : fallbackDay;
   const { user } = useAuth();
   const loadSummary = useServerFn(getMyLeagueSummary);
   const loadPreview = useServerFn(getLeaguePreview);
