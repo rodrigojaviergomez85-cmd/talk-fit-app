@@ -11,6 +11,13 @@ import {
   isDayUnlocked,
 } from "@/services/storybook";
 import { isEpisodeSeen } from "@/services/storybook/storybook-progress";
+import {
+  LeagueDaySection,
+  LeaguePointsBadge,
+  LeagueRewardToast,
+  useLeagueDay,
+} from "@/components/fluency/LeagueDaySection";
+import { hasReward } from "@/lib/league";
 import type { JourneyState, ModuleId } from "@/lib/types";
 
 /**
@@ -80,6 +87,12 @@ function DayHubPage() {
     data.episode && journey ? isDayUnlocked(journey, data.moduleId, data.day) : false;
   const showStory = Boolean(data.episode && episodeUnlocked);
 
+  // Weekly league: server-confirmed points for this curriculum day.
+  const league = useLeagueDay(data.moduleId, data.day);
+  const rewards = league.summary?.rewards ?? [];
+  const storyEarned = hasReward(rewards, data.day, "story");
+  const practiceEarned = hasReward(rewards, data.day, "practice");
+
   return (
     <AppShell>
       <div className="space-y-3 p-4 pb-6">
@@ -122,9 +135,10 @@ function DayHubPage() {
               className="size-20 shrink-0 rounded-xl object-cover object-top"
             />
             <span className="min-w-0 flex-1">
-              <span className="flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-primary">
+              <span className="flex flex-wrap items-center gap-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-primary">
                 <Star className="size-3 fill-primary" aria-hidden="true" />
                 {t("day.recommended")} · {t("day.storyMinutes")}
+                {league.eligible ? <LeaguePointsBadge earned={storyEarned} es={es} /> : null}
               </span>
               <span className="mt-0.5 block truncate text-[15px] font-extrabold text-foreground">
                 {es ? data.episode.titleEs : data.episode.title}
@@ -155,8 +169,9 @@ function DayHubPage() {
             <Mic className="size-5" aria-hidden="true" />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-navy-foreground/70">
+            <span className="flex flex-wrap items-center gap-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-navy-foreground/70">
               {t("day.required")}
+              {league.eligible ? <LeaguePointsBadge earned={practiceEarned} es={es} /> : null}
             </span>
             <span className="block text-[15px] font-extrabold leading-tight">{t("day.audiosTitle")}</span>
             <span className="block truncate text-xs font-medium text-navy-foreground/70">
@@ -165,6 +180,17 @@ function DayHubPage() {
           </span>
           <ArrowRight className="size-5 shrink-0" aria-hidden="true" />
         </Link>
+
+        {league.eligible && league.summary?.enrolled ? (
+          <LeagueDaySection
+            summary={league.summary}
+            day={data.day}
+            es={es}
+            moduleLabel={data.moduleLabel}
+          />
+        ) : null}
+
+        <LeagueRewardToast count={league.awarded.length} es={es} onDone={league.clearAwarded} />
       </div>
     </AppShell>
   );

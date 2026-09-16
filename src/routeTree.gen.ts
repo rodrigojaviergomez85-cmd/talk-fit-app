@@ -15,6 +15,7 @@ import { Route as CoachCheckRouteImport } from './routes/coach-check'
 import { Route as CuentaRouteImport } from './routes/cuenta'
 import { Route as InstallRouteImport } from './routes/install'
 import { Route as LevelRouteImport } from './routes/level'
+import { Route as LigaRouteImport } from './routes/liga'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
@@ -95,6 +96,11 @@ const InstallRoute = InstallRouteImport.update({
 const LevelRoute = LevelRouteImport.update({
   id: '/level',
   path: '/level',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LigaRoute = LigaRouteImport.update({
+  id: '/liga',
+  path: '/liga',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -370,6 +376,7 @@ export interface FileRoutesByFullPath {
   '/cuenta': typeof CuentaRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
+  '/liga': typeof LigaRoute
   '/onboarding': typeof OnboardingRoute
   '/practice': typeof PracticeRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
@@ -429,6 +436,7 @@ export interface FileRoutesByTo {
   '/cuenta': typeof CuentaRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
+  '/liga': typeof LigaRoute
   '/onboarding': typeof OnboardingRoute
   '/practice': typeof PracticeRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
@@ -488,6 +496,7 @@ export interface FileRoutesById {
   '/cuenta': typeof CuentaRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
+  '/liga': typeof LigaRoute
   '/onboarding': typeof OnboardingRoute
   '/practice': typeof PracticeRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
@@ -549,6 +558,7 @@ export interface FileRouteTypes {
     | '/cuenta'
     | '/install'
     | '/level'
+    | '/liga'
     | '/onboarding'
     | '/practice'
     | '/privacy-policy'
@@ -608,6 +618,7 @@ export interface FileRouteTypes {
     | '/cuenta'
     | '/install'
     | '/level'
+    | '/liga'
     | '/onboarding'
     | '/practice'
     | '/privacy-policy'
@@ -666,6 +677,7 @@ export interface FileRouteTypes {
     | '/cuenta'
     | '/install'
     | '/level'
+    | '/liga'
     | '/onboarding'
     | '/practice'
     | '/privacy-policy'
@@ -726,6 +738,7 @@ export interface RootRouteChildren {
   CuentaRoute: typeof CuentaRoute
   InstallRoute: typeof InstallRoute
   LevelRoute: typeof LevelRoute
+  LigaRoute: typeof LigaRoute
   OnboardingRoute: typeof OnboardingRoute
   PracticeRoute: typeof PracticeRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
@@ -817,6 +830,13 @@ declare module '@tanstack/react-router' {
       path: '/level'
       fullPath: '/level'
       preLoaderRoute: typeof LevelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/liga': {
+      id: '/liga'
+      path: '/liga'
+      fullPath: '/liga'
+      preLoaderRoute: typeof LigaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -1203,6 +1223,7 @@ const rootRouteChildren: RootRouteChildren = {
   CuentaRoute: CuentaRoute,
   InstallRoute: InstallRoute,
   LevelRoute: LevelRoute,
+  LigaRoute: LigaRoute,
   OnboardingRoute: OnboardingRoute,
   PracticeRoute: PracticeRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,

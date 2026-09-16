@@ -658,6 +658,178 @@ export type Database = {
         }
         Relationships: []
       }
+      league_competitions: {
+        Row: {
+          closed: boolean
+          created_at: string
+          curriculum_week: number
+          id: string
+          module_id: string
+          updated_at: string
+          week_end: string
+          week_start: string
+        }
+        Insert: {
+          closed?: boolean
+          created_at?: string
+          curriculum_week: number
+          id?: string
+          module_id: string
+          updated_at?: string
+          week_end: string
+          week_start: string
+        }
+        Update: {
+          closed?: boolean
+          created_at?: string
+          curriculum_week?: number
+          id?: string
+          module_id?: string
+          updated_at?: string
+          week_end?: string
+          week_start?: string
+        }
+        Relationships: []
+      }
+      league_memberships: {
+        Row: {
+          competition_id: string
+          created_at: string
+          curriculum_week: number
+          hidden: boolean
+          id: string
+          module_id: string
+          points: number
+          updated_at: string
+          user_id: string
+          week_start: string
+        }
+        Insert: {
+          competition_id: string
+          created_at?: string
+          curriculum_week: number
+          hidden?: boolean
+          id?: string
+          module_id: string
+          points?: number
+          updated_at?: string
+          user_id: string
+          week_start: string
+        }
+        Update: {
+          competition_id?: string
+          created_at?: string
+          curriculum_week?: number
+          hidden?: boolean
+          id?: string
+          module_id?: string
+          points?: number
+          updated_at?: string
+          user_id?: string
+          week_start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "league_memberships_competition_id_fkey"
+            columns: ["competition_id"]
+            isOneToOne: false
+            referencedRelation: "league_competitions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      league_pilot_cohorts: {
+        Row: {
+          created_at: string
+          curriculum_week: number
+          enabled: boolean
+          module_id: string
+        }
+        Insert: {
+          created_at?: string
+          curriculum_week: number
+          enabled?: boolean
+          module_id: string
+        }
+        Update: {
+          created_at?: string
+          curriculum_week?: number
+          enabled?: boolean
+          module_id?: string
+        }
+        Relationships: []
+      }
+      league_rewards: {
+        Row: {
+          activity_key: string
+          activity_type: string
+          awarded_at: string
+          competition_id: string
+          completed_at: string
+          created_at: string
+          day: number
+          id: string
+          module_id: string
+          points: number
+          user_id: string
+        }
+        Insert: {
+          activity_key: string
+          activity_type: string
+          awarded_at?: string
+          competition_id: string
+          completed_at: string
+          created_at?: string
+          day: number
+          id?: string
+          module_id: string
+          points: number
+          user_id: string
+        }
+        Update: {
+          activity_key?: string
+          activity_type?: string
+          awarded_at?: string
+          competition_id?: string
+          completed_at?: string
+          created_at?: string
+          day?: number
+          id?: string
+          module_id?: string
+          points?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "league_rewards_competition_id_fkey"
+            columns: ["competition_id"]
+            isOneToOne: false
+            referencedRelation: "league_competitions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      league_settings: {
+        Row: {
+          created_at: string
+          id: string
+          launched_at: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          launched_at?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          launched_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       practice_attempts: {
         Row: {
           completed_at: string | null
@@ -1465,6 +1637,32 @@ export type Database = {
       is_admin: { Args: { p_user_id: string }; Returns: boolean }
       is_pro_subscriber: { Args: { _user_id: string }; Returns: boolean }
       is_unlimited_test_user: { Args: { _user_id: string }; Returns: boolean }
+      league_award: {
+        Args: {
+          _activity_key: string
+          _activity_type: string
+          _day: number
+          _min_scene_index?: number
+          _module_id: string
+        }
+        Returns: Json
+      }
+      league_board: {
+        Args: { _competition_id: string; _limit?: number; _offset?: number }
+        Returns: Json
+      }
+      league_board_preview: { Args: { _competition_id: string }; Returns: Json }
+      league_ensure_membership: {
+        Args: { _curriculum_week: number; _module_id: string }
+        Returns: string
+      }
+      league_is_excluded: { Args: { _user_id: string }; Returns: boolean }
+      league_my_summary: {
+        Args: { _curriculum_week: number; _module_id: string }
+        Returns: Json
+      }
+      league_set_hidden: { Args: { _hidden: boolean }; Returns: boolean }
+      league_week_start: { Args: { _ts?: string }; Returns: string }
       limits_enabled: { Args: never; Returns: boolean }
       log_ai_call: {
         Args: {
