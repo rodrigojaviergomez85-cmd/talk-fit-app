@@ -108,7 +108,8 @@ export const claimDayRewards = createServerFn({ method: "POST" })
       _curriculum_week: data.week,
     });
     const before = shapeSummary(rawBefore as RawSummary | null, data.moduleId, data.week);
-    if (!before.enrolled) return empty;
+    // Observers (admin / unlimited) can see the league but never score.
+    if (!before.enrolled) return { awarded: [] as LeagueActivityType[], summary: before };
 
     const awarded: LeagueActivityType[] = [];
 
