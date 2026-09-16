@@ -487,6 +487,7 @@ const DICT = {
     "* Aún no puedes ganar puntos para esta semana, solo tu semana activa *",
     "* You can't earn points for this week yet, only for your active week *",
   ],
+  "day.seeMyLeagueWeek": ["VER MI SEMANA DE LIGA", "SEE MY LEAGUE WEEK"],
   "day.moduleFinished": ["Terminaste este módulo", "You finished this module"],
   "story.goPractice": ["AHORA GRABA TUS AUDIOS", "NOW RECORD YOUR AUDIOS"],
   "day.weekDay": ["SEMANA {week} · DÍA {day} DE {total}", "WEEK {week} · DAY {day} OF {total}"],
