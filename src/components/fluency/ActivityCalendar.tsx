@@ -91,6 +91,10 @@ export function ActivityCalendar({ es }: { es: boolean }) {
   const [selected, setSelected] = useState<string>(today);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [picked, setPicked] = useState<DateRange | undefined>(undefined);
+  const [customBounds, setCustomBounds] = useState<{ from: string; to: string } | null>(null);
+  const [customData, setCustomData] = useState<DailyActivity | null>(null);
+  const [customBusy, setCustomBusy] = useState(false);
 
   const bounds = useMemo(() => resolveRange(range, monthAnchor, today), [range, monthAnchor, today]);
 
@@ -115,13 +119,48 @@ export function ActivityCalendar({ es }: { es: boolean }) {
     void fetchAll();
   }, [fetchAll]);
 
+  useEffect(() => {
+    if (!customBounds) {
+      setCustomData(null);
+      return;
+    }
+    let active = true;
+    setCustomBusy(true);
+    void load({ data: { from: customBounds.from, to: customBounds.to } })
+      .then((res) => {
+        if (active) setCustomData(res);
+      })
+      .catch(() => {
+        if (active) setError(es ? "No se pudo cargar el periodo." : "Could not load the period.");
+      })
+      .finally(() => {
+        if (active) setCustomBusy(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [load, customBounds, es]);
+
+  const onPick = (next: DateRange | undefined) => {
+    setPicked(next);
+    if (next?.from && next.to) {
+      setCustomBounds(normalizeCustomRange(dateToKey(next.from), dateToKey(next.to)));
+    }
+  };
+
   const weekDays = weekData?.days ?? [];
   const rangeDays = rangeData?.days ?? [];
+  const customDays = customData?.days ?? [];
   const maxWeek = weekDays.reduce((m, d) => Math.max(m, d.active_users), 0);
+  const maxCustom = customDays.reduce((m, d) => Math.max(m, d.active_users), 0);
   const summary = summarize(rangeDays);
+  const customSummary = summarize(customDays);
 
   const detail =
-    weekDays.find((d) => d.day === selected) ?? rangeDays.find((d) => d.day === selected) ?? emptyDay(selected);
+    weekDays.find((d) => d.day === selected) ??
+    customDays.find((d) => d.day === selected) ??
+    rangeDays.find((d) => d.day === selected) ??
+    emptyDay(selected);
 
   const chartData = rangeDays.map((d) => ({
     day: d.day,
