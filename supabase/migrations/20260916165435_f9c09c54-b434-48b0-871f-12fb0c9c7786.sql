@@ -1,0 +1,1 @@
+REVOKE ALL ON FUNCTION public.sanitize_profile_avatar_status() FROM PUBLIC, anon, authenticated;
