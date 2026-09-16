@@ -1771,6 +1771,10 @@ export type Database = {
         Args: { _competition_id: string }
         Returns: Json
       }
+      league_summary_for_cohort: {
+        Args: { _curriculum_week: number; _module_id: string }
+        Returns: Json
+      }
       league_week_start: { Args: { _ts?: string }; Returns: string }
       limits_enabled: { Args: never; Returns: boolean }
       log_ai_call: {
