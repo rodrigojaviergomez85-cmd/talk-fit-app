@@ -113,3 +113,51 @@ export function monthLabel(monthAnchor: string, lang: "en" | "es"): string {
   const dt = new Date(Date.UTC(y!, (m ?? 1) - 1, 1));
   return new Intl.DateTimeFormat(lang === "es" ? "es" : "en", { month: "long", year: "numeric", timeZone: "UTC" }).format(dt);
 }
+
+/** Maximum span the admin_daily_activity RPC accepts. */
+export const MAX_RANGE_DAYS = 400;
+
+/** Whole days between two day keys, inclusive of both ends. */
+export function daysBetween(from: string, to: string): number {
+  const [fy, fm, fd] = from.split("-").map(Number);
+  const [ty, tm, td] = to.split("-").map(Number);
+  const a = Date.UTC(fy!, (fm ?? 1) - 1, fd ?? 1);
+  const b = Date.UTC(ty!, (tm ?? 1) - 1, td ?? 1);
+  return Math.round((b - a) / 86_400_000) + 1;
+}
+
+/**
+ * Normalizes a user-picked range: orders the ends and clamps the span to
+ * MAX_RANGE_DAYS counting back from the later date.
+ */
+export function normalizeCustomRange(from: string, to: string): { from: string; to: string } {
+  const start = from <= to ? from : to;
+  const end = from <= to ? to : from;
+  if (daysBetween(start, end) > MAX_RANGE_DAYS) {
+    return { from: addDays(end, -(MAX_RANGE_DAYS - 1)), to: end };
+  }
+  return { from: start, to: end };
+}
+
+/** Human label for a picked period, e.g. "1 sep – 15 sep 2026". */
+export function rangeLabel(from: string, to: string, lang: "en" | "es"): string {
+  const short = (key: string) => {
+    const [y, m, d] = key.split("-").map(Number);
+    const dt = new Date(Date.UTC(y!, (m ?? 1) - 1, d ?? 1));
+    return new Intl.DateTimeFormat(lang === "es" ? "es" : "en", { day: "numeric", month: "short", timeZone: "UTC" }).format(dt);
+  };
+  const year = to.slice(0, 4);
+  return `${short(from)} – ${short(to)} ${year}`;
+}
+
+/** Converts a Date (already in local picker terms) to a YYYY-MM-DD key. */
+export function dateToKey(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+/** Converts a YYYY-MM-DD key to a local Date for the calendar picker. */
+export function keyToDate(key: string): Date {
+  const [y, m, d] = key.split("-").map(Number);
+  return new Date(y!, (m ?? 1) - 1, d ?? 1);
+}
+
