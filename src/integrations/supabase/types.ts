@@ -1346,6 +1346,10 @@ export type Database = {
         Returns: boolean
       }
       admin_cost_center: { Args: never; Returns: Json }
+      admin_daily_activity: {
+        Args: { _from: string; _to: string }
+        Returns: Json
+      }
       admin_engagement_metrics: { Args: never; Returns: Json }
       admin_health_snapshot: { Args: never; Returns: Json }
       admin_story_metrics: { Args: never; Returns: Json }
