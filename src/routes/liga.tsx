@@ -214,9 +214,25 @@ function LeaguePage() {
                     }`}
                   >
                     <span className="w-8 shrink-0 text-[12px] font-bold text-muted-foreground">{row.rank}</span>
-                    <LearnerAvatar avatarId={row.avatar} name={row.name} className="size-7" />
+                    <LearnerAvatar
+                      avatarId={row.avatar}
+                      photoUrl={row.photo ? (photoUrls[row.photo] ?? null) : null}
+                      name={row.name}
+                      className="size-7"
+                    />
                     <span className="min-w-0 flex-1 truncate">{row.name}</span>
                     <span className="shrink-0 text-[12px] font-bold">{formatPoints(row.points)}</span>
+                    {row.photo && !row.isMe ? (
+                      <button
+                        type="button"
+                        aria-label={es ? "Reportar foto" : "Report photo"}
+                        disabled={reported.includes(row.photo)}
+                        onClick={() => void report(row.photo as string)}
+                        className="shrink-0 rounded-full p-1 text-muted-foreground disabled:opacity-40"
+                      >
+                        <Flag className="size-3.5" />
+                      </button>
+                    ) : null}
                   </li>
                 ))}
                 {!(full ? rows : preview).length ? (
