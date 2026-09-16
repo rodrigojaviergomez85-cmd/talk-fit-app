@@ -120,7 +120,7 @@ export function StorybookPlayer({
     sceneRateRef.current = rate;
     setSceneRate(rate);
   };
-  const touchX = useRef<number | null>(null);
+  
 
   /** Module day this episode matches — used for the "record your audios" shortcut. */
   const practiceDay = useMemo(
@@ -337,16 +337,6 @@ export function StorybookPlayer({
 
       <div
         className={cn("mt-3", immersive && "mt-0 flex min-h-0 flex-1 flex-col")}
-        onTouchStart={(e) => {
-          touchX.current = e.touches[0]?.clientX ?? null;
-        }}
-        onTouchEnd={(e) => {
-          if (touchX.current === null) return;
-          const delta = (e.changedTouches[0]?.clientX ?? 0) - touchX.current;
-          touchX.current = null;
-           if (delta < -48 && !advanceLocked) go(idx + 1);
-          else if (delta > 48) go(idx - 1);
-        }}
       >
         <div
           key={idx}
@@ -556,7 +546,7 @@ function CoverSlide({ episode, es, onStart }: { episode: StorybookEpisode; es: b
           <Play className="size-5 fill-current" /> {es ? "Empezar" : "Start"}
         </button>
         <p className="text-center text-[12px] text-muted-foreground">
-          {es ? "Desliza o toca para pasar la página · toca cualquier palabra para ver su significado" : "Swipe or tap to turn the page · tap any word to see its meaning"}
+          {es ? "Toca para pasar la página · toca cualquier palabra para ver su significado" : "Tap to turn the page · tap any word to see its meaning"}
         </p>
         <p className="text-center text-[12px] font-bold text-muted-foreground">
           {es
