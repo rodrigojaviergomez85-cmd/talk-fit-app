@@ -224,6 +224,31 @@ function LeaguePage() {
           </p>
         ) : null}
 
+        {status === "ready" && history.length > 1 ? (
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {history.map((w) => (
+              <button
+                key={w.competitionId}
+                type="button"
+                onClick={() => void selectWeek(w.competitionId)}
+                className={`shrink-0 rounded-2xl border px-3 py-2 text-left text-[11px] font-bold ${
+                  w.competitionId === activeId
+                    ? "border-primary bg-primary/10 text-foreground"
+                    : "border-border bg-card text-muted-foreground"
+                }`}
+              >
+                <span className="block">
+                  {es ? "Semana " : "Week "}
+                  {w.curriculumWeek}
+                </span>
+                <span className="block text-[10px] font-medium">
+                  {formatWeekRange(w.weekStart, w.weekEnd, es)}
+                </span>
+              </button>
+            ))}
+          </div>
+        ) : null}
+
         {status === "ready" && summary && !summary.enrolled && !summary.observer ? (
           <div className="rounded-2xl border border-border bg-card p-4 text-sm text-muted-foreground">
             {es
