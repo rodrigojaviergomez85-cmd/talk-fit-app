@@ -43,8 +43,15 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
+    // Old page asking the new deploy for files it no longer has: refresh instead
+    // of showing a blank screen.
+    if (isStaleChunkError(error)) {
+      reloadOnceForStaleChunk();
+      return;
+    }
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
+
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
