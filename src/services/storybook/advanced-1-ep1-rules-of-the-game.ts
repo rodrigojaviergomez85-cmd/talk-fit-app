@@ -107,20 +107,20 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "id": "s2",
       "image": s2,
       "imageAlt": "The team watches Mr. Reed on a laptop video call in the office.",
-      "text": "Vale is nervous. Reed is direct: nobody buys a story; they buy what you can prove.",
-      "es": "Vale está nerviosa. Reed es directo: nadie compra una historia; compran lo que puedes demostrar.",
+      "text": "Vale sets the strategy. Reed agrees: nobody buys a story; they buy what you can prove.",
+      "es": "Vale marca la estrategia. Reed coincide: nadie compra una historia; compran lo que puedes demostrar.",
       "speaker": "vale",
       "cast": ["vale", "dani", "camila", "reed"],
       "lines": [
         {
           "speaker": "vale",
-          "text": "I have two weeks, and honestly, I am not sure where to start.",
-          "es": "Tengo dos semanas y, honestamente, no estoy segura de por dónde empezar.",
+          "text": "We have two weeks, so we lead with results: attendance, progress reports, and two client references.",
+          "es": "Tenemos dos semanas, así que empezamos con resultados: asistencia, reportes de progreso y dos referencias de clientes.",
         },
         {
           "speaker": "camila",
-          "text": "Start with your founder story. Nobody else can copy that.",
-          "es": "Empieza con tu historia como fundadora. Nadie más puede copiar eso.",
+          "text": "And your founder story. Nobody else can copy that.",
+          "es": "Y tu historia como fundadora. Nadie más puede copiar eso.",
         },
         {
           "speaker": "reed",
