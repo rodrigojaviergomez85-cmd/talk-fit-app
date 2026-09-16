@@ -26,8 +26,8 @@ export const ADVANCED1_EP14_THE_HOUR_ABOUT_MONEY: StorybookEpisode = {
       es: "Vale ganó la ronda de \"por qué Northline\" con los números de ellos.",
     },
     {
-      en: "Rosa rejected Crown and stayed.",
-      es: "Rosa rechazó a Crown y se quedó.",
+      en: "Lidia rejected Crown and stayed.",
+      es: "Lidia rechazó a Crown y se quedó.",
     },
     {
       en: "Now finance wants the price cut by a third.",
@@ -108,11 +108,11 @@ export const ADVANCED1_EP14_THE_HOUR_ABOUT_MONEY: StorybookEpisode = {
     {
       id: "s3",
       image: s3,
-      imageAlt: "Vale, Dani and Rosa list what they can give up and what they cannot.",
+      imageAlt: "Vale, Dani and Lidia list what they can give up and what they cannot.",
       text: "What can be given up, and what cannot.",
       es: "Qué se puede ceder y qué no.",
       speaker: "dani",
-      cast: ["vale", "dani", "rosa"],
+      cast: ["vale", "dani", "lidia"],
       lines: [
         {
           speaker: "dani",
@@ -125,7 +125,7 @@ export const ADVANCED1_EP14_THE_HOUR_ABOUT_MONEY: StorybookEpisode = {
           es: "Materiales impresos, el evento de lanzamiento y mis viajes. Eso es comodidad. A lo que no renuncio es al tamaño del grupo, porque arriba de doce los minutos hablados se derrumban.",
         },
         {
-          speaker: "rosa",
+          speaker: "lidia",
           text: "And Saturdays? My teachers already work five evenings.",
           es: "¿Y los sábados? Mis maestros ya trabajan cinco tardes.",
         },
