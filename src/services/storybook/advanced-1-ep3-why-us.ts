@@ -312,8 +312,8 @@ export const ADVANCED1_EP3_WHY_US: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "A weakness. In English. In front of nine competing academies. Wonderful.",
-          es: "Una debilidad. En inglés. Frente a nueve academias competidoras. Maravilloso.",
+          text: "A real weakness, in front of nine competing academies. Fine. I would rather be honest than perfect.",
+          es: "Una debilidad real, frente a nueve academias competidoras. Bien. Prefiero ser honesta que perfecta.",
         },
         {
           speaker: "reed",
