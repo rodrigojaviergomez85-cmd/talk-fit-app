@@ -22,6 +22,7 @@ import {
 
 const EMPTY: LeagueSummary = {
   enrolled: false,
+  observer: false,
   points: 0,
   hidden: false,
   rank: null,
