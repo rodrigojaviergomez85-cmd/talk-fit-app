@@ -199,13 +199,13 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "Right now, I am focused on my students. My background is teaching, and my strength is that I never give up.",
-          "es": "Ahora mismo estoy enfocada en mis estudiantes. Mi experiencia es enseñar, y mi fortaleza es que nunca me rindo.",
+          "text": "Weak version first: right now I am focused on my students, my background is teaching, and my strength is that I never give up.",
+          "es": "Primero la versión débil: ahora mismo estoy enfocada en mis estudiantes, mi experiencia es enseñar, y mi fortaleza es que nunca me rindo.",
         },
         {
           "speaker": "dani",
-          "text": "It was honest, Vale, but it sounded unsure. Stay focused and slow.",
-          "es": "Fue honesto, Vale, pero sonó inseguro. Mantente enfocada y despacio.",
+          "text": "It is honest, but it sounds unsure. There is no proof inside it.",
+          "es": "Es honesta, pero suena insegura. No hay ninguna prueba adentro.",
         },
       ],
       "words": [
