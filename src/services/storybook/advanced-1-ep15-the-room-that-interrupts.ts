@@ -22,16 +22,16 @@ export const ADVANCED1_EP15_THE_ROOM_THAT_INTERRUPTS: StorybookEpisode = {
   },
   previously: [
     {
-      en: "Vale negotiated an hour about money without saying \"no\".",
-      es: "Vale negoció una hora sobre dinero sin decir \"no\".",
+      en: "Vale protected class size and closed the price at nine per cent.",
+      es: "Vale protegió el tamaño del grupo y cerró el precio en nueve por ciento.",
     },
     {
-      en: "Friday's panel plans to interrupt her on purpose.",
-      es: "El panel del viernes planea interrumpirla a propósito.",
+      en: "Friday's panel includes two people she has not convinced.",
+      es: "El panel del viernes incluye a dos personas que no ha convencido.",
     },
     {
-      en: "Crown presents in the same room right after her.",
-      es: "Crown presenta en la misma sala justo después de ella.",
+      en: "And Crown presents in the same room, right after her.",
+      es: "Y Crown presenta en la misma sala, justo después de ella.",
     },
   ],
   reviewWords: [
