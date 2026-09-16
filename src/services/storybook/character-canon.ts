@@ -19,6 +19,7 @@ export const SEASON_MODULE_IDS = [
   "eagles-week-1", // S6
   "tigers", // S7
   "sharks", // S8
+  "advanced-1", // S9
 ] as const;
 
 export type SeasonModuleId = (typeof SEASON_MODULE_IDS)[number];
@@ -60,7 +61,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "young Salvadoran man, about 19-20 at first appearance",
     look: "medium-brown / light-medium tan skin, short curly black hair, clean-shaven, no glasses, adult proportions",
     outfit: "light blue shirt",
-    seasons: ["past-stories", "mixed-tenses", "eagles-week-1", "tigers", "sharks"],
+    seasons: ["past-stories", "mixed-tenses", "eagles-week-1", "tigers", "sharks", "advanced-1"],
     neverDo: [
       "Dani is male — never a woman",
       "always he/him — never she/her",
@@ -74,7 +75,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "young Afro-Latina woman, early 20s",
     look: "dark brown skin, shoulder-length curly black hair, adult proportions",
     outfit: "purple top",
-    seasons: ["basic-zero", "simple-future", "past-stories", "mixed-tenses", "eagles-week-1", "tigers", "sharks"],
+    seasons: ["basic-zero", "simple-future", "past-stories", "mixed-tenses", "eagles-week-1", "tigers", "sharks", "advanced-1"],
   },
   kat: {
     id: "kat",
@@ -191,7 +192,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "American man, about 55, international executive",
     look: "fair skin, short silver-gray hair, clean-shaven, stern face",
     outfit: "dark navy suit with a tie",
-    seasons: ["sharks"],
+    seasons: ["sharks", "advanced-1"],
   },
   lucia: {
     id: "lucia",
