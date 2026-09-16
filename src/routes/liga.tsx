@@ -99,29 +99,70 @@ function LeaguePage() {
     [sendReport],
   );
 
-  const load = useCallback(async () => {
-    try {
+  const loadFor = useCallback(
+    async (competitionId: string | null) => {
+      // The learner may already be ahead in the curriculum (day 6) while the
+      // calendar week they competed in is still running, so the week is chosen
+      // by competition, never by today's curriculum day.
       const journey = JourneyService.load();
       const next = JourneyService.nextPractice(journey);
       const moduleId = next?.moduleId ?? "basic-zero";
       const day = next?.day ?? 1;
-      const res = await loadSummary({ data: { moduleId, day } });
+      const res = await loadSummary({
+        data: competitionId ? { moduleId, day, competitionId } : { moduleId, day },
+      });
       setSummary(res);
-      if (res.enrolled && res.competitionId) {
+      setFull(false);
+      setRows([]);
+      setOffset(0);
+      setPreview([]);
+      setMyPosition(null);
+      if ((res.enrolled || res.observer) && res.competitionId) {
         const p = await loadPreview({ data: { competitionId: res.competitionId } });
         setPreview(p.rows);
         setMyPosition(p.myPosition);
         void signRows(p.rows);
       }
+      return res;
+    },
+    [loadPreview, loadSummary, signRows],
+  );
+
+  const load = useCallback(async () => {
+    try {
+      const list = await loadHistory({ data: undefined });
+      setHistory(list);
+      const current = await loadFor(null);
+      // Nothing for today's cohort: fall back to the running week, then to the
+      // most recent finished week so the learner can still see how it ended.
+      if (!current.enrolled && !current.observer && list.length) {
+        const fallback = list.find((w) => w.isCurrent) ?? list[0]!;
+        setSelected(fallback.competitionId);
+        await loadFor(fallback.competitionId);
+      } else {
+        setSelected(current.competitionId ?? null);
+      }
       setStatus("ready");
     } catch {
       setStatus("error");
     }
-  }, [loadPreview, loadSummary, signRows]);
+  }, [loadFor, loadHistory]);
 
   useEffect(() => {
     void load();
   }, [load]);
+
+  const selectWeek = useCallback(
+    async (competitionId: string) => {
+      setSelected(competitionId);
+      try {
+        await loadFor(competitionId);
+      } catch {
+        setStatus("error");
+      }
+    },
+    [loadFor],
+  );
 
   const openPage = useCallback(
     async (nextOffset: number) => {
