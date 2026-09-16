@@ -2,7 +2,13 @@ import { describe, expect, it } from "vitest";
 import {
   addDays,
   addMonths,
+  dateToKey,
+  daysBetween,
+  keyToDate,
+  MAX_RANGE_DAYS,
   monthBounds,
+  normalizeCustomRange,
+  rangeLabel,
   resolveRange,
   summarize,
   type DailyActivityDay,
@@ -57,5 +63,24 @@ describe("admin daily activity helpers", () => {
 
   it("handles an empty range", () => {
     expect(summarize([])).toEqual({ avgActive: null, bestDay: null, daysWithActivity: 0, totalPractices: 0 });
+  });
+});
+
+describe("custom range helpers", () => {
+  it("counts inclusive days", () => {
+    expect(daysBetween("2026-09-01", "2026-09-15")).toBe(15);
+    expect(daysBetween("2026-09-01", "2026-09-01")).toBe(1);
+  });
+
+  it("orders reversed picks and clamps long spans", () => {
+    expect(normalizeCustomRange("2026-09-15", "2026-09-01")).toEqual({ from: "2026-09-01", to: "2026-09-15" });
+    const clamped = normalizeCustomRange("2020-01-01", "2026-09-15");
+    expect(daysBetween(clamped.from, clamped.to)).toBe(MAX_RANGE_DAYS);
+    expect(clamped.to).toBe("2026-09-15");
+  });
+
+  it("formats the picked period and converts keys", () => {
+    expect(rangeLabel("2026-09-01", "2026-09-15", "es")).toContain("2026");
+    expect(dateToKey(keyToDate("2026-09-05"))).toBe("2026-09-05");
   });
 });
