@@ -107,20 +107,20 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "id": "s2",
       "image": s2,
       "imageAlt": "The team watches Mr. Reed on a laptop video call in the office.",
-      "text": "Vale is nervous. Reed is direct: nobody buys a story; they buy what you can prove.",
-      "es": "Vale está nerviosa. Reed es directo: nadie compra una historia; compran lo que puedes demostrar.",
+      "text": "Vale sets the strategy. Reed agrees: nobody buys a story; they buy what you can prove.",
+      "es": "Vale marca la estrategia. Reed coincide: nadie compra una historia; compran lo que puedes demostrar.",
       "speaker": "vale",
       "cast": ["vale", "dani", "camila", "reed"],
       "lines": [
         {
           "speaker": "vale",
-          "text": "I have two weeks, and honestly, I am not sure where to start.",
-          "es": "Tengo dos semanas y, honestamente, no estoy segura de por dónde empezar.",
+          "text": "We have two weeks, so we lead with results: attendance, progress reports, and two client references.",
+          "es": "Tenemos dos semanas, así que empezamos con resultados: asistencia, reportes de progreso y dos referencias de clientes.",
         },
         {
           "speaker": "camila",
-          "text": "Start with your founder story. Nobody else can copy that.",
-          "es": "Empieza con tu historia como fundadora. Nadie más puede copiar eso.",
+          "text": "And your founder story. Nobody else can copy that.",
+          "es": "Y tu historia como fundadora. Nadie más puede copiar eso.",
         },
         {
           "speaker": "reed",
@@ -187,8 +187,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "id": "s4",
       "image": s4,
       "imageAlt": "Camila pretends to be the committee and interviews Vale while Dani watches with a notebook.",
-      "text": "Camila plays the committee. Vale's first practice answer is honest, but weak.",
-      "es": "Camila hace de comité. La primera respuesta de práctica de Vale es honesta, pero débil.",
+      "text": "Camila plays the committee. Vale demonstrates the weak answer on purpose, so the team hears the difference.",
+      "es": "Camila hace de comité. Vale demuestra a propósito la respuesta débil, para que el equipo escuche la diferencia.",
       "speaker": "camila",
       "cast": ["vale", "dani", "camila"],
       "lines": [
@@ -199,13 +199,13 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "Right now, I am focused on my students. My background is teaching, and my strength is that I never give up.",
-          "es": "Ahora mismo estoy enfocada en mis estudiantes. Mi experiencia es enseñar, y mi fortaleza es que nunca me rindo.",
+          "text": "Weak version first: right now I am focused on my students, my background is teaching, and my strength is that I never give up.",
+          "es": "Primero la versión débil: ahora mismo estoy enfocada en mis estudiantes, mi experiencia es enseñar, y mi fortaleza es que nunca me rindo.",
         },
         {
           "speaker": "dani",
-          "text": "It was honest, Vale, but it sounded unsure. Stay focused and slow.",
-          "es": "Fue honesto, Vale, pero sonó inseguro. Mantente enfocada y despacio.",
+          "text": "It is honest, but it sounds unsure. There is no proof inside it.",
+          "es": "Es honesta, pero suena insegura. No hay ninguna prueba adentro.",
         },
       ],
       "words": [
@@ -239,8 +239,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "Now you sound like the founder of this academy. Confident and clear.",
-          "es": "Ahora sí suenas como la fundadora de esta academia. Segura y clara.",
+          "text": "That is the version the committee needs: confident and full of numbers.",
+          "es": "Esa es la versión que el comité necesita: segura y llena de números.",
         },
         {
           "speaker": "camila",
@@ -319,8 +319,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "Two weeks ago that answer terrified her. Today she had documents, numbers, and evidence.",
-          "es": "Hace dos semanas esa respuesta la aterrorizaba. Hoy tenía documentos, números y evidencia.",
+          "text": "That question terrified the other academies today. Vale answered with documents, numbers, and evidence.",
+          "es": "Esa pregunta aterrorizó hoy a las otras academias. Vale respondió con documentos, números y evidencia.",
         },
       ],
       "words": [
@@ -349,8 +349,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "lines": [
         {
           "speaker": "vale",
-          "text": "We did it. They asked for my introduction, and I did not freeze.",
-          "es": "Lo logramos. Me pidieron mi presentación y no me paralicé.",
+          "text": "We did it. They asked for a professional introduction, and our proof did the work.",
+          "es": "Lo logramos. Pidieron una presentación profesional, y nuestras pruebas hicieron el trabajo.",
         },
         {
           "speaker": "dani",
@@ -365,8 +365,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       ],
       "words": [
         {
-          "word": "freeze",
-          "es": "paralizarse; quedarse en blanco",
+          "word": "proof",
+          "es": "prueba; evidencia",
         },
         {
           "word": "step",

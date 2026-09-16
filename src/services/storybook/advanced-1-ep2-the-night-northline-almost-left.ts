@@ -65,8 +65,8 @@ export const ADVANCED1_EP2_NORTHLINE_NIGHT: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Good idea, but last time I told that story, I said and then, and then, and then ten times.",
-          es: "Buena idea, pero la última vez que conté esa historia, dije y luego, y luego, y luego diez veces.",
+          text: "Good idea. And I will not tell it as a list of and then, and then. A committee buys a movie, not a summary.",
+          es: "Buena idea. Y no la voy a contar como una lista de y luego, y luego. Un comité compra una película, no un resumen.",
         },
         {
           speaker: "dani",
@@ -96,8 +96,8 @@ export const ADVANCED1_EP2_NORTHLINE_NIGHT: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "And the grammar? I mix my past tenses when I get nervous.",
-          es: "¿Y la gramática? Mezclo mis pasados cuando me pongo nerviosa.",
+          text: "Exactly the four parts I teach. And the grammar rule my students always need here?",
+          es: "Exactamente las cuatro partes que yo enseño. ¿Y la regla de gramática que mis estudiantes siempre necesitan aquí?",
         },
         {
           speaker: "reed",
@@ -251,8 +251,8 @@ export const ADVANCED1_EP2_NORTHLINE_NIGHT: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "The past progressive painted the scene, and the simple past moved the story. Reed was right.",
-          es: "El pasado progresivo pintó la escena, y el pasado simple movió la historia. Reed tenía razón.",
+          text: "The past progressive painted the scene, and the simple past moved the story. That is what I train my students to do.",
+          es: "El pasado progresivo pintó la escena, y el pasado simple movió la historia. Eso es lo que entreno a mis estudiantes a hacer.",
         },
         {
           speaker: "camila",
