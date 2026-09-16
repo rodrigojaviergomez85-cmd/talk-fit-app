@@ -48,8 +48,15 @@ export function useLeagueDay(moduleId: string, day: number) {
   useEffect(() => {
     void refresh();
     const onFocus = () => void refresh();
+    const onVisible = () => {
+      if (document.visibilityState === "visible") void refresh();
+    };
     window.addEventListener("focus", onFocus);
-    return () => window.removeEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
   }, [refresh]);
 
   return { summary, awarded, failed, eligible, refresh, clearAwarded: () => setAwarded([]) };

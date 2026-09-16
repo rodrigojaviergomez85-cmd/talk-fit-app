@@ -476,6 +476,8 @@ const DICT = {
   ],
   "day.step1Label": ["PASO 1", "STEP 1"],
   "day.step2Label": ["PASO 2", "STEP 2"],
+  "day.nextDay": ["SIGUIENTE DÍA", "NEXT DAY"],
+  "day.moduleFinished": ["Terminaste este módulo", "You finished this module"],
   "story.goPractice": ["AHORA GRABA TUS AUDIOS", "NOW RECORD YOUR AUDIOS"],
   "day.weekDay": ["SEMANA {week} · DÍA {day} DE {total}", "WEEK {week} · DAY {day} OF {total}"],
   "exit.title": ["¿SEGURO QUE QUIERES SALIR?", "ARE YOU SURE YOU WANT TO EXIT?"],
