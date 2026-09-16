@@ -235,8 +235,8 @@ export const ADVANCED1_EP15_THE_ROOM_THAT_INTERRUPTS: StorybookEpisode = {
       lines: [
         {
           speaker: "camila",
-          text: "We went in with Elena's numbers, Rosa's classes and your mouth. That's the whole company.",
-          es: "Entramos con los números de Elena, las clases de Rosa y tu boca. Esa es toda la empresa.",
+          text: "We went in with Elena's numbers, Lidia's classes and your mouth. That's the whole company.",
+          es: "Entramos con los números de Elena, las clases de Lidia y tu boca. Esa es toda la empresa.",
         },
         {
           speaker: "dani",
@@ -258,14 +258,14 @@ export const ADVANCED1_EP15_THE_ROOM_THAT_INTERRUPTS: StorybookEpisode = {
     {
       id: "s8",
       image: s8,
-      imageAlt: "Rosa reminds Dani how much has changed in three weeks.",
-      text: "Rosa measures the change.",
-      es: "Rosa mide el cambio.",
-      speaker: "rosa",
-      cast: ["rosa", "vale", "dani"],
+      imageAlt: "Lidia reminds Dani how much has changed in three weeks.",
+      text: "Lidia measures the change.",
+      es: "Lidia mide el cambio.",
+      speaker: "lidia",
+      cast: ["lidia", "vale", "dani"],
       lines: [
         {
-          speaker: "rosa",
+          speaker: "lidia",
           text: "Three weeks ago you couldn't say why you left your last job without looking at the floor.",
           es: "Hace tres semanas no podías decir por qué dejaste tu último trabajo sin mirar al suelo.",
         },

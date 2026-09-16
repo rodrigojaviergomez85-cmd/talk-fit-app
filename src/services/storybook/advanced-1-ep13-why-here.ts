@@ -26,8 +26,8 @@ export const ADVANCED1_EP13_WHY_HERE: StorybookEpisode = {
       es: "Vale asumió el curso que cerró, con números que lo respaldan.",
     },
     {
-      en: "Crown's offer is still on Rosa's desk.",
-      es: "La oferta de Crown sigue en el escritorio de Rosa.",
+      en: "Crown's offer is still on Lidia's desk.",
+      es: "La oferta de Crown sigue en el escritorio de Lidia.",
     },
     {
       en: "Today the committee asks the question everyone answers badly: why us?",
@@ -139,14 +139,14 @@ export const ADVANCED1_EP13_WHY_HERE: StorybookEpisode = {
     {
       id: "s4",
       image: s4,
-      imageAlt: "Rosa stops Vale in the doorway with a question of her own.",
-      text: "Rosa asks her question first.",
-      es: "Rosa hace su pregunta primero.",
-      speaker: "rosa",
-      cast: ["rosa", "vale"],
+      imageAlt: "Lidia stops Vale in the doorway with a question of her own.",
+      text: "Lidia asks her question first.",
+      es: "Lidia hace su pregunta primero.",
+      speaker: "lidia",
+      cast: ["lidia", "vale"],
       lines: [
         {
-          speaker: "rosa",
+          speaker: "lidia",
           text: "Before you go in, answer mine. Why here, for you? You could have sold the method and stopped working years ago.",
           es: "Antes de que entres, responde la mía. ¿Por qué aquí, para ti? Pudiste vender el método y dejar de trabajar hace años.",
         },
@@ -156,7 +156,7 @@ export const ADVANCED1_EP13_WHY_HERE: StorybookEpisode = {
           es: "Porque un método que vendes le pertenece a quien lo compra. Un método que sigues enseñando se mantiene vivo y se sigue corrigiendo.",
         },
         {
-          speaker: "rosa",
+          speaker: "lidia",
           text: "Crown offered me money. You're offering me a method that keeps changing.",
           es: "Crown me ofreció dinero. Tú me ofreces un método que sigue cambiando.",
         },
@@ -227,14 +227,14 @@ export const ADVANCED1_EP13_WHY_HERE: StorybookEpisode = {
     {
       id: "s7",
       image: s7,
-      imageAlt: "Rosa tells Vale and Camila that she turned Crown down.",
-      text: "Rosa gives her answer.",
-      es: "Rosa da su respuesta.",
-      speaker: "rosa",
-      cast: ["rosa", "vale", "camila"],
+      imageAlt: "Lidia tells Vale and Camila that she turned Crown down.",
+      text: "Lidia gives her answer.",
+      es: "Lidia da su respuesta.",
+      speaker: "lidia",
+      cast: ["lidia", "vale", "camila"],
       lines: [
         {
-          speaker: "rosa",
+          speaker: "lidia",
           text: "I turned Crown down this morning. Not for you — for the fact that in two years here I've rewritten three of your lessons and you kept all three.",
           es: "Rechacé a Crown esta mañana. No por ti: por el hecho de que en dos años aquí reescribí tres de tus lecciones y las tres se quedaron.",
         },
@@ -266,8 +266,8 @@ export const ADVANCED1_EP13_WHY_HERE: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Same question, two rooms. Northline wanted to know why them; Rosa wanted to know why here.",
-          es: "La misma pregunta, dos salas. Northline quería saber por qué ellos; Rosa quería saber por qué aquí.",
+          text: "Same question, two rooms. Northline wanted to know why them; Lidia wanted to know why here.",
+          es: "La misma pregunta, dos salas. Northline quería saber por qué ellos; Lidia quería saber por qué aquí.",
         },
         {
           speaker: "vale",
@@ -405,7 +405,7 @@ export const ADVANCED1_EP13_WHY_HERE: StorybookEpisode = {
     "In three years ...",
   ],
   cliffhanger: {
-    en: "Rosa is staying, but tomorrow the finance team pushes on the price for a full hour.",
-    es: "Rosa se queda, pero mañana el equipo de finanzas presiona el precio durante una hora entera.",
+    en: "Lidia is staying, but tomorrow the finance team pushes on the price for a full hour.",
+    es: "Lidia se queda, pero mañana el equipo de finanzas presiona el precio durante una hora entera.",
   },
 };

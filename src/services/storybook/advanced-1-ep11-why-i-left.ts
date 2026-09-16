@@ -304,7 +304,7 @@ export const ADVANCED1_EP11_WHY_I_LEFT: StorybookEpisode = {
     {
       id: "s9",
       image: s9,
-      imageAlt: "Camila stops Vale at the door with news about an offer sent to Rosa.",
+      imageAlt: "Camila stops Vale at the door with news about an offer sent to Lidia.",
       text: "Crown didn't only send a letter.",
       es: "Crown no solo mandó una carta.",
       speaker: "camila",
@@ -312,13 +312,13 @@ export const ADVANCED1_EP11_WHY_I_LEFT: StorybookEpisode = {
       lines: [
         {
           speaker: "camila",
-          text: "Vale, before you go. Crown didn't only send a letter. They sent an offer — to Rosa.",
-          es: "Vale, antes de que te vayas. Crown no solo mandó una carta. Mandaron una oferta: a Rosa.",
+          text: "Vale, before you go. Crown didn't only send a letter. They sent an offer — to Lidia.",
+          es: "Vale, antes de que te vayas. Crown no solo mandó una carta. Mandaron una oferta: a Lidia.",
         },
         {
           speaker: "vale",
-          text: "Rosa teaches half of our adult groups. How much?",
-          es: "Rosa enseña la mitad de nuestros grupos de adultos. ¿Cuánto?",
+          text: "Lidia teaches half of our adult groups. How much?",
+          es: "Lidia enseña la mitad de nuestros grupos de adultos. ¿Cuánto?",
         },
         {
           speaker: "camila",
@@ -430,7 +430,7 @@ export const ADVANCED1_EP11_WHY_I_LEFT: StorybookEpisode = {
     "What I want next is ...",
   ],
   cliffhanger: {
-    en: "Crown has offered Rosa double her salary, and Rosa teaches half of the academy.",
-    es: "Crown le ofreció a Rosa el doble de su salario, y Rosa enseña la mitad de la academia.",
+    en: "Crown has offered Lidia double her salary, and Lidia teaches half of the academy.",
+    es: "Crown le ofreció a Lidia el doble de su salario, y Lidia enseña la mitad de la academia.",
   },
 };

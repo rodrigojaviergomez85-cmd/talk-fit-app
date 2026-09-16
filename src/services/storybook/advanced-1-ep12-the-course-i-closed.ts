@@ -26,8 +26,8 @@ export const ADVANCED1_EP12_THE_COURSE_I_CLOSED: StorybookEpisode = {
       es: "Vale respondió la pregunta personal sin atacar a nadie.",
     },
     {
-      en: "Crown offered Rosa double her salary.",
-      es: "Crown le ofreció a Rosa el doble de su salario.",
+      en: "Crown offered Lidia double her salary.",
+      es: "Crown le ofreció a Lidia el doble de su salario.",
     },
     {
       en: "And then the committee found a course Vale closed two years ago.",
@@ -242,14 +242,14 @@ export const ADVANCED1_EP12_THE_COURSE_I_CLOSED: StorybookEpisode = {
     {
       id: "s7",
       image: s7,
-      imageAlt: "Rosa finds Vale in the corridor to talk about Crown's offer.",
-      text: "Rosa says it before anyone else can.",
-      es: "Rosa lo dice antes que nadie.",
-      speaker: "rosa",
-      cast: ["rosa", "vale"],
+      imageAlt: "Lidia finds Vale in the corridor to talk about Crown's offer.",
+      text: "Lidia says it before anyone else can.",
+      es: "Lidia lo dice antes que nadie.",
+      speaker: "lidia",
+      cast: ["lidia", "vale"],
       lines: [
         {
-          speaker: "rosa",
+          speaker: "lidia",
           text: "Vale. You know about Crown's offer, don't you? I didn't want you to hear it from Camila.",
           es: "Vale. Sabes de la oferta de Crown, ¿verdad? No quería que lo supieras por Camila.",
         },
@@ -259,7 +259,7 @@ export const ADVANCED1_EP12_THE_COURSE_I_CLOSED: StorybookEpisode = {
           es: "También sé el número. Es una oferta justa y ahí la valdrías.",
         },
         {
-          speaker: "rosa",
+          speaker: "lidia",
           text: "That's not the answer I expected from my boss.",
           es: "Esa no es la respuesta que esperaba de mi jefa.",
         },
@@ -273,19 +273,19 @@ export const ADVANCED1_EP12_THE_COURSE_I_CLOSED: StorybookEpisode = {
     {
       id: "s8",
       image: s8,
-      imageAlt: "Vale asks Rosa one question while Dani listens from the doorway.",
+      imageAlt: "Vale asks Lidia one question while Dani listens from the doorway.",
       text: "One question, and then silence.",
       es: "Una pregunta, y luego silencio.",
       speaker: "vale",
-      cast: ["vale", "rosa", "dani"],
+      cast: ["vale", "lidia", "dani"],
       lines: [
         {
           speaker: "vale",
-          text: "I'm not going to talk you out of money, Rosa. I'm going to ask you one question and then leave you alone with it.",
-          es: "No te voy a convencer de rechazar dinero, Rosa. Te voy a hacer una pregunta y luego te dejo sola con ella.",
+          text: "I'm not going to talk you out of money, Lidia. I'm going to ask you one question and then leave you alone with it.",
+          es: "No te voy a convencer de rechazar dinero, Lidia. Te voy a hacer una pregunta y luego te dejo sola con ella.",
         },
         {
-          speaker: "rosa",
+          speaker: "lidia",
           text: "Ask it.",
           es: "Hazla.",
         },
@@ -407,8 +407,8 @@ export const ADVANCED1_EP12_THE_COURSE_I_CLOSED: StorybookEpisode = {
       variants: ["talk you out of", "talked out of", "talking out of"],
       es: "convencer a alguien de no hacer algo",
       kind: "idiom",
-      example: "I'm not going to talk you out of money, Rosa.",
-      exampleEs: "No te voy a convencer de rechazar dinero, Rosa.",
+      example: "I'm not going to talk you out of money, Lidia.",
+      exampleEs: "No te voy a convencer de rechazar dinero, Lidia.",
     },
     {
       phrase: "come out of",
@@ -430,7 +430,7 @@ export const ADVANCED1_EP12_THE_COURSE_I_CLOSED: StorybookEpisode = {
     "What I changed was ...",
   ],
   cliffhanger: {
-    en: "Rosa hasn't decided yet, and on Thursday the committee asks the hardest question: why Northline?",
-    es: "Rosa aún no decide, y el jueves el comité hace la pregunta más difícil: ¿por qué Northline?",
+    en: "Lidia hasn't decided yet, and on Thursday the committee asks the hardest question: why Northline?",
+    es: "Lidia aún no decide, y el jueves el comité hace la pregunta más difícil: ¿por qué Northline?",
   },
 };

@@ -249,9 +249,9 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     seasons: ["advanced-1"],
     neverDo: ["never drawn as Camila or Vale", "never drawn as a warm, smiling host"],
   },
-  rosa: {
-    id: "rosa",
-    name: "Rosa",
+  lidia: {
+    id: "lidia",
+    name: "Lidia",
     age: "Salvadoran woman in her mid-40s, senior teacher at Vale's academy",
     look: "medium tan skin, dark brown hair pulled back in a low bun, calm experienced face, adult proportions",
     outfit: "deep teal blazer over a grey top",
