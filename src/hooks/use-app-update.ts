@@ -83,13 +83,14 @@ export function useAppUpdate(): { updateReady: boolean; applyUpdate: () => void 
       reloadOnce();
     };
     const onRejection = (event: PromiseRejectionEvent) => {
-      const message = String((event.reason as Error | undefined)?.message ?? event.reason ?? "");
-      if (/dynamically imported module|Importing a module script failed/i.test(message)) {
-        reloadOnce();
-      }
+      if (isStaleChunkError(event.reason)) reloadOnce();
+    };
+    const onWindowError = (event: ErrorEvent) => {
+      if (isStaleChunkError(event.error ?? event.message)) reloadOnce();
     };
     window.addEventListener("vite:preloadError", onPreloadError);
     window.addEventListener("unhandledrejection", onRejection);
+    window.addEventListener("error", onWindowError);
 
     return () => {
       alive = false;
