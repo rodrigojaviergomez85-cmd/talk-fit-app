@@ -74,7 +74,7 @@ function LeaguePage() {
     }
   }, [from, fromDay]);
   const backTo = from && fromDay ? { moduleId: from, day: fromDay } : fallbackDay;
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const loadSummary = useServerFn(getMyLeagueSummary);
   const loadPreview = useServerFn(getLeaguePreview);
   const loadBoard = useServerFn(getLeagueBoard);
@@ -174,8 +174,15 @@ function LeaguePage() {
   }, [loadFor, loadHistory]);
 
   useEffect(() => {
+    // These server functions require a signed-in session; without one the
+    // bearer token is missing and the call fails with "Unauthorized".
+    if (authLoading) return;
+    if (!user) {
+      setStatus("error");
+      return;
+    }
     void load();
-  }, [load]);
+  }, [authLoading, user, load]);
 
   const selectWeek = useCallback(
     async (competitionId: string) => {
