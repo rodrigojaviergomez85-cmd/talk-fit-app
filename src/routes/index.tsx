@@ -37,7 +37,7 @@ function HomePage() {
   const [state, setState] = useState<JourneyState | null>(null);
   const [failed, setFailed] = useState(false);
   const navigate = useNavigate();
-  const { t, prefs } = useAppLang();
+  const { t, prefs, lang } = useAppLang();
   const { user, sync, loading: authLoading } = useAuth();
 
   const load = useCallback(() => {
@@ -86,7 +86,7 @@ function HomePage() {
     <AppShell hideHeader hideSync>
       <div className="space-y-5">
         <HomeGreeting />
-        <AvatarPrompt lang={prefs.lang === "en" ? "en" : "es"} />
+        <AvatarPrompt lang={lang === "en" ? "en" : "es"} />
         <CurrentModuleCard state={state} />
 
         {failed ? (
