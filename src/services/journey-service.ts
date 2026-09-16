@@ -17,6 +17,9 @@ const LEGACY_KEY = "fluency-reps:journey:v1";
 /** The three INTERMEDIATE modules that gate the whole ADVANCED family. */
 const INTERMEDIATE_MODULES: ModuleId[] = ["eagles-week-1", "tigers", "sharks"];
 
+/** The three ADVANCED modules: a parallel block, exactly like the intermediates. */
+const ADVANCED_MODULES: ModuleId[] = ["advanced-1", "advanced-2", "advanced-3"];
+
 
 export const emptyJourney: JourneyState = {
   days: {},
