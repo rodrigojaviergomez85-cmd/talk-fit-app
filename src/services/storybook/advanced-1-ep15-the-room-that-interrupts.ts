@@ -81,7 +81,7 @@ export const ADVANCED1_EP15_THE_ROOM_THAT_INTERRUPTS: StorybookEpisode = {
       words: [
         { word: "interrupt", es: "interrumpir" },
         { word: "restart", es: "reiniciar" },
-        { word: "lose the room", es: "perder a la audiencia" },
+        { word: "loses the room", es: "pierde a la audiencia" },
       ],
     },
     {
