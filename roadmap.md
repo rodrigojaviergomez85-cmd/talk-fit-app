@@ -1,3 +1,3 @@
-- [ ] Corregir portada e imágenes de Sharks 20 según cada escena.
-- [ ] Auditar reparto y personajes contra Sharks 10–15.
-- [ ] Normalizar imágenes y verificar episodio móvil/pruebas.
+- [x] Corregir portada e imágenes de Sharks 20 según cada escena.
+- [x] Auditar reparto y personajes contra Sharks 10–15.
+- [x] Normalizar imágenes y verificar episodio móvil/pruebas.
