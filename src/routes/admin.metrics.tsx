@@ -3,6 +3,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { ShieldCheck, RefreshCw } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { ActivityCalendar } from "@/components/fluency/ActivityCalendar";
 import { AdminAlertsBanner } from "@/components/fluency/AdminAlertsBanner";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { useAuth } from "@/lib/auth";
