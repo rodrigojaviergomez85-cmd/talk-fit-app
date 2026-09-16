@@ -4,7 +4,7 @@ import { ArrowRight, Trophy } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { claimDayRewards } from "@/lib/league.functions";
 import {
-  WEEKLY_GOAL,
+  
   dailyGoal,
   formatPoints,
   hasReward,
