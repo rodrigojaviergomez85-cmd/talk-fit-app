@@ -67,6 +67,36 @@ function LeaguePage() {
   const [myPosition, setMyPosition] = useState<number | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [openRules, setOpenRules] = useState(false);
+  const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
+  const [reported, setReported] = useState<string[]>([]);
+  const signPhotos = useServerFn(signAvatarPhotos);
+  const sendReport = useServerFn(reportAvatarPhoto);
+
+  const signRows = useCallback(
+    async (list: LeagueBoardRow[]) => {
+      const paths = list.map((r) => r.photo).filter((p): p is string => Boolean(p));
+      if (!paths.length) return;
+      try {
+        const signed = await signPhotos({ data: { paths } });
+        setPhotoUrls((prev) => ({ ...prev, ...signed }));
+      } catch {
+        /* photos simply fall back to avatar or initials */
+      }
+    },
+    [signPhotos],
+  );
+
+  const report = useCallback(
+    async (path: string) => {
+      setReported((prev) => (prev.includes(path) ? prev : [...prev, path]));
+      try {
+        await sendReport({ data: { path } });
+      } catch {
+        /* ignore */
+      }
+    },
+    [sendReport],
+  );
 
   const load = useCallback(async () => {
     try {
@@ -80,12 +110,13 @@ function LeaguePage() {
         const p = await loadPreview({ data: { competitionId: res.competitionId } });
         setPreview(p.rows);
         setMyPosition(p.myPosition);
+        void signRows(p.rows);
       }
       setStatus("ready");
     } catch {
       setStatus("error");
     }
-  }, [loadPreview, loadSummary]);
+  }, [loadPreview, loadSummary, signRows]);
 
   useEffect(() => {
     void load();
@@ -102,6 +133,7 @@ function LeaguePage() {
       setOffset(res.offset);
       setMyPosition(res.myPosition);
       setFull(true);
+      void signRows(res.rows);
     },
     [loadBoard, summary?.competitionId],
   );
