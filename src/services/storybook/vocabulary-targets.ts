@@ -25,6 +25,11 @@ export const ACTIVE_GOAL = 3500;
 
 /** 16 target units per episode: content words + phrasal verbs + one idiom. */
 export const EPISODE_VOCAB_BUDGET: Record<string, string[]> = {
+  "advanced1-ep1-rules-of-the-game": [
+    "committee", "compete", "spot", "founder", "introduction", "structure",
+    "background", "strength", "goal", "focused", "confident", "evidence",
+    "terrified", "welcome call", "follow up", "speak up",
+  ],
   "sharks-ep11-what-went-wrong": [
     "root cause", "untrained", "apology", "reschedule", "refund", "report",
     "blame", "reputation", "pause", "honest", "promise", "fault",

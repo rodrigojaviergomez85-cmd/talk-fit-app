@@ -158,6 +158,7 @@ import { SHARKS_EP17_THE_INVESTOR } from "./sharks-ep17-the-investor";
 import { SHARKS_EP18_SAY_NO_WITH_RESPECT } from "./sharks-ep18-say-no-with-respect";
 import { SHARKS_EP19_THE_REGIONAL_DEAL } from "./sharks-ep19-the-regional-deal";
 import { SHARKS_EP20_SHARKS_CLOSE_DEALS } from "./sharks-ep20-sharks-close-deals";
+import { ADVANCED1_EP1_RULES_OF_THE_GAME } from "./advanced-1-ep1-rules-of-the-game";
 import { expandSharksDialogue } from "./sharks-dialogue-expansions";
 import type { StorybookEpisode } from "./types";
 
@@ -323,6 +324,7 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
     SHARKS_EP18_SAY_NO_WITH_RESPECT,
     SHARKS_EP19_THE_REGIONAL_DEAL,
     SHARKS_EP20_SHARKS_CLOSE_DEALS,
+    ADVANCED1_EP1_RULES_OF_THE_GAME,
   ].map(expandSharksDialogue),
 ];
 

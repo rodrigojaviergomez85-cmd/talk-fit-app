@@ -16,6 +16,7 @@ import season5Cover from "@/assets/storybook/vale-s5-first-students/cover.jpg";
 import season6Cover from "@/assets/storybook/eagles-ep1-the-offer/cover.jpg";
 import season7Cover from "@/assets/storybook/tigers-ep1-a-decision-i-made/cover.jpg";
 import season8Cover from "@/assets/storybook/sharks-ep1-tell-the-story/cover.jpg";
+import season9Cover from "@/assets/storybook/advanced1-ep1-rules-of-the-game/cover.jpg";
 
 export type SeasonWeek = 1 | 2 | 3 | 4;
 
@@ -315,6 +316,39 @@ export const STORYBOOK_SEASONS: Season[] = [
       { day: 18, episodeId: "sharks-ep18-say-no-with-respect", teaser: { en: "Say no with respect", es: "Decir no con respeto" } },
       { day: 19, episodeId: "sharks-ep19-the-regional-deal", teaser: { en: "The regional deal", es: "El acuerdo regional" } },
       { day: 20, episodeId: "sharks-ep20-sharks-close-deals", teaser: { en: "Sharks close deals", es: "Los tiburones cierran tratos" } },
+    ],
+  },
+  {
+    moduleId: "advanced-1",
+    seasonNumber: 9,
+    title: { en: "Season 9 · Advanced 1", es: "Temporada 9 · Advanced 1" },
+    blurb: {
+      en: "Get hired: real conversations, professional introductions and the biggest decision of the academy.",
+      es: "Get hired: conversaciones reales, presentaciones profesionales y la decisión más grande de la academia.",
+    },
+    image: season9Cover,
+    imageAlt: { en: "Vale in her warm academy office in the morning", es: "Vale en su cálida oficina de la academia por la mañana" },
+    slots: [
+      { day: 1, episodeId: "advanced1-ep1-rules-of-the-game", teaser: { en: "The rules of the game", es: "Las reglas del juego" } },
+      { day: 2, episodeId: null, teaser: { en: "The night Northline almost left", es: "La noche que Northline casi se va" } },
+      { day: 3, episodeId: null, teaser: { en: "Why us?", es: "¿Por qué nosotros?" } },
+      { day: 4, episodeId: null, teaser: { en: "My honest weakness", es: "Mi debilidad honesta" } },
+      { day: 5, episodeId: null, teaser: { en: "Pressure round", es: "Ronda de presión" } },
+      { day: 6, episodeId: null, teaser: { en: "A heartbeat for the proposal", es: "Un latido por la propuesta" } },
+      { day: 7, episodeId: null, teaser: { en: "The numbers do not lie", es: "Los números no mienten" } },
+      { day: 8, episodeId: null, teaser: { en: "Dani vs. Camila", es: "Dani contra Camila" } },
+      { day: 9, episodeId: null, teaser: { en: "What the students really want", es: "Lo que los estudiantes realmente quieren" } },
+      { day: 10, episodeId: null, teaser: { en: "Four stories, one team", es: "Cuatro historias, un equipo" } },
+      { day: 11, episodeId: null, teaser: { en: "Why I left", es: "Por qué me fui" } },
+      { day: 12, episodeId: null, teaser: { en: "The teacher who left", es: "La maestra que se fue" } },
+      { day: 13, episodeId: null, teaser: { en: "Why us, why you", es: "Por qué nosotros, por qué tú" } },
+      { day: 14, episodeId: null, teaser: { en: "Dates, not ideas", es: "Fechas, no ideas" } },
+      { day: 15, episodeId: null, teaser: { en: "The hard round", es: "La ronda difícil" } },
+      { day: 16, episodeId: null, teaser: { en: "Camila takes the microphone", es: "Camila toma el micrófono" } },
+      { day: 17, episodeId: null, teaser: { en: "The unannounced visitor", es: "El visitante sin avisar" } },
+      { day: 18, episodeId: null, teaser: { en: "Ten seconds to think", es: "Diez segundos para pensar" } },
+      { day: 19, episodeId: null, teaser: { en: "Three hats in one hour", es: "Tres sombreros en una hora" } },
+      { day: 20, episodeId: null, teaser: { en: "The room where they decide", es: "La sala donde deciden" } },
     ],
   },
 ];
