@@ -121,8 +121,8 @@ export const ADVANCED1_EP4_MY_HONEST_WEAKNESS: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "Fine. Honest answer: cold numbers. What slows me down is a spreadsheet with no faces in it; when a report is only numbers, my brain falls asleep.",
-          es: "Bien. Respuesta honesta: los números fríos. Lo que me frena es una hoja de cálculo sin caras; cuando un reporte solo tiene números, mi cerebro se duerme.",
+          text: "Fine. Honest answer: cold numbers. What slows me down are spreadsheets with no faces in them; when a report is only numbers, my brain falls asleep.",
+          es: "Bien. Respuesta honesta: los números fríos. Lo que me frena son las hojas de cálculo sin caras; cuando un reporte solo tiene números, mi cerebro se duerme.",
         },
         {
           speaker: "camila",
