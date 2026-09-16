@@ -1,3 +1,4 @@
 - [x] Corregir portada e imágenes de Sharks 20 según cada escena.
 - [x] Auditar reparto y personajes contra Sharks 10–15.
 - [x] Normalizar imágenes y verificar episodio móvil/pruebas.
+- [ ] Advanced 1–3 plan de calidad: 20 ideas mes 1 aprobadas; guiones ep1–5 en revisión; luego 6–10, 11–15, 16–20, arte, auditoría, mes 2 y 3.
