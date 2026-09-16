@@ -59,7 +59,11 @@ function LeaguePage() {
   const loadBoard = useServerFn(getLeagueBoard);
   const toggleHidden = useServerFn(setLeagueHidden);
 
+  const loadHistory = useServerFn(getMyLeagueHistory);
+
   const [summary, setSummary] = useState<LeagueSummary | null>(null);
+  const [history, setHistory] = useState<LeagueWeekRef[]>([]);
+  const [selected, setSelected] = useState<string | null>(null);
   const [preview, setPreview] = useState<LeagueBoardRow[]>([]);
   const [full, setFull] = useState(false);
   const [offset, setOffset] = useState(0);
