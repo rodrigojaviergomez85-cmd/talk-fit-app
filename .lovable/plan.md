@@ -32,9 +32,10 @@ No hace falta empezar a registrar desde cero: la actividad ya queda guardada en 
 
 ## Detalles técnicos
 
-- Nueva función de base de datos `admin_daily_activity(_month date)` (security definer, verifica rol admin igual que `admin_engagement_metrics`), que devuelve un arreglo de días del mes con:
+- Nueva función de base de datos `admin_daily_activity(_from date, _to date)` (security definer, verifica rol admin igual que `admin_engagement_metrics`), que devuelve un arreglo de días del rango con:
   - `active_users`: unión distinta de usuarios de todas las fuentes
   - por fuente: `users` y `count`
+  El mismo RPC sirve para 7/15/30 días y para un mes completo; el front pasa el rango.
 - Fuentes y reglas de conteo (día local `America/El_Salvador`):
   - Prácticas: `practice_attempts` con `completed_at` no nulo y `module_id` que NO empieza con `review-`, agrupado por `local_day_key`
   - Review: mismas filas con `module_id like 'review-%'`
@@ -43,6 +44,6 @@ No hace falta empezar a registrar desde cero: la actividad ya queda guardada en 
   - Coach IA: `ai_coach_usage` con `period_type='day'` y `period_key` del día (`used` como total)
 - Server fn `getAdminDailyActivity` en `src/lib/admin-daily-activity.functions.ts` con `requireSupabaseAuth`, llamando el RPC (mismo patrón que `getAdminMetrics`).
 - Tipos y helpers en `src/lib/admin-daily-activity.ts`.
-- Componente `ActivityCalendar` en `src/components/fluency/` y montaje en `src/routes/admin.metrics.tsx`.
+- Componente `ActivityCalendar` en `src/components/fluency/`: fila de 7 cuadros + gráfica de línea (recharts, ya usado en el proyecto vía shadcn) con selector de rango, y panel de detalle del día; montado en `src/routes/admin.metrics.tsx`.
 - Índices de apoyo si faltan: `practice_attempts(local_day_key)`, `interview_attempts(local_day_key)`, `story_episode_views(last_opened_at)`.
 - Pruebas: helpers de agregación/formato de mes y una prueba de que el RPC rechaza a no-admin.
