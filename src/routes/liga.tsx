@@ -446,13 +446,13 @@ function LeaguePage() {
                 <div className="mt-2 space-y-1.5 text-xs leading-relaxed text-muted-foreground">
                   <p>
                     {es
-                      ? "150 puntos por la historia del día y 150 por la práctica de audios completa."
-                      : "150 points for the day's story and 150 for the complete audio practice."}
+                      ? "150 puntos por la historia del día (si hay episodio) y 150 por la práctica de audios completa."
+                      : "150 points for the day's story (when there is an episode) and 150 for the complete audio practice."}
                   </p>
                   <p>
                     {es
-                      ? `Cinco jornadas por semana: meta de ${formatPoints(WEEKLY_GOAL)} puntos.`
-                      : `Five sessions per week: a goal of ${formatPoints(WEEKLY_GOAL)} points.`}
+                      ? `Cinco jornadas por semana: meta de ${formatPoints(summary.attainableGoal || WEEKLY_GOAL)} puntos en esta semana.`
+                      : `Five sessions per week: a goal of ${formatPoints(summary.attainableGoal || WEEKLY_GOAL)} points this week.`}
                   </p>
                   <p>
                     {es
