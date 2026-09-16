@@ -1,17 +1,19 @@
 import { avatarSrc } from "@/lib/avatars";
 import { cn } from "@/lib/utils";
 
-/** Avatar image when the learner picked one, initials otherwise. */
+/** Approved photo when there is one, preset avatar next, initials otherwise. */
 export function LearnerAvatar({
   avatarId,
+  photoUrl,
   name,
   className,
 }: {
   avatarId?: string | null | undefined;
+  photoUrl?: string | null | undefined;
   name?: string | null | undefined;
   className?: string | undefined;
 }) {
-  const src = avatarSrc(avatarId);
+  const src = photoUrl || avatarSrc(avatarId);
   const initials = (name ?? "").trim().slice(0, 2) || "??";
   if (src) {
     return (

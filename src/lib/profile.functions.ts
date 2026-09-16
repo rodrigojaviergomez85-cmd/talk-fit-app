@@ -3,21 +3,66 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { AVATAR_IDS } from "@/lib/avatars";
 import { checkName } from "@/lib/profile-name";
 
-export type MyProfile = { displayName: string | null; avatarId: string | null; email: string | null };
+export type MyProfile = {
+  displayName: string | null;
+  avatarId: string | null;
+  email: string | null;
+  photoStatus?: "none" | "pending" | "approved" | "rejected" | "hidden";
+  photoUrl?: string | null;
+  photoRejectReason?: string | null;
+  promptSeen?: boolean;
+};
 
 export const getMyProfile = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<MyProfile> => {
     const { data } = await context.supabase
       .from("profiles")
-      .select("display_name, avatar_id, email")
+      .select(
+        "display_name, avatar_id, email, avatar_status, avatar_photo_path, avatar_reject_reason, avatar_prompt_seen_at",
+      )
       .eq("id", context.userId)
       .maybeSingle();
+
+    const row = (data ?? null) as {
+      display_name?: string | null;
+      avatar_id?: string | null;
+      email?: string | null;
+      avatar_status?: string | null;
+      avatar_photo_path?: string | null;
+      avatar_reject_reason?: string | null;
+      avatar_prompt_seen_at?: string | null;
+    } | null;
+
+    let photoUrl: string | null = null;
+    if (row?.avatar_photo_path) {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { data: signed } = await supabaseAdmin.storage
+        .from("avatars")
+        .createSignedUrl(row.avatar_photo_path, 60 * 60);
+      photoUrl = signed?.signedUrl ?? null;
+    }
+
     return {
-      displayName: (data as { display_name?: string | null } | null)?.display_name ?? null,
-      avatarId: (data as { avatar_id?: string | null } | null)?.avatar_id ?? null,
-      email: (data as { email?: string | null } | null)?.email ?? null,
+      displayName: row?.display_name ?? null,
+      avatarId: row?.avatar_id ?? null,
+      email: row?.email ?? null,
+      photoStatus: (row?.avatar_status as MyProfile["photoStatus"]) ?? "none",
+      photoUrl,
+      photoRejectReason: row?.avatar_reject_reason ?? null,
+      promptSeen: Boolean(row?.avatar_prompt_seen_at),
     };
+  });
+
+/** Marks the one-time "add a photo" invitation as already shown. */
+export const markAvatarPromptSeen = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<{ ok: boolean }> => {
+    await context.supabase
+      .from("profiles")
+      .update({ avatar_prompt_seen_at: new Date().toISOString() })
+      .eq("id", context.userId);
+    return { ok: true };
   });
 
 type UpdateInput = { displayName?: string; avatarId?: string };

@@ -55,6 +55,10 @@ export type LeagueBoardRow = {
   points: number;
   isMe: boolean;
   avatar?: string | null;
+  /** Private storage path of an approved photo; signed separately. */
+  photo?: string | null;
+  /** Signed URL filled in by the client after signing `photo`. */
+  photoUrl?: string | null;
 };
 
 /** Curriculum week (1-based) a curriculum day belongs to. */

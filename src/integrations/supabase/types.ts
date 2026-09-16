@@ -269,6 +269,36 @@ export type Database = {
         }
         Relationships: []
       }
+      avatar_reports: {
+        Row: {
+          created_at: string
+          id: string
+          owner_id: string
+          reason: string | null
+          reporter_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          owner_id: string
+          reason?: string | null
+          reporter_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          owner_id?: string
+          reason?: string | null
+          reporter_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       bug_reports: {
         Row: {
           area: string
@@ -953,6 +983,13 @@ export type Database = {
       profiles: {
         Row: {
           avatar_id: string | null
+          avatar_photo_path: string | null
+          avatar_prompt_seen_at: string | null
+          avatar_reject_reason: string | null
+          avatar_reviewed_at: string | null
+          avatar_status: string
+          avatar_upload_day: string | null
+          avatar_uploads_today: number
           created_at: string
           display_name: string | null
           email: string | null
@@ -960,6 +997,13 @@ export type Database = {
         }
         Insert: {
           avatar_id?: string | null
+          avatar_photo_path?: string | null
+          avatar_prompt_seen_at?: string | null
+          avatar_reject_reason?: string | null
+          avatar_reviewed_at?: string | null
+          avatar_status?: string
+          avatar_upload_day?: string | null
+          avatar_uploads_today?: number
           created_at?: string
           display_name?: string | null
           email?: string | null
@@ -967,6 +1011,13 @@ export type Database = {
         }
         Update: {
           avatar_id?: string | null
+          avatar_photo_path?: string | null
+          avatar_prompt_seen_at?: string | null
+          avatar_reject_reason?: string | null
+          avatar_reviewed_at?: string | null
+          avatar_status?: string
+          avatar_upload_day?: string | null
+          avatar_uploads_today?: number
           created_at?: string
           display_name?: string | null
           email?: string | null

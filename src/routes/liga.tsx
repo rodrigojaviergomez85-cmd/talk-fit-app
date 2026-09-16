@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, ChevronDown, Crosshair, Trophy } from "lucide-react";
+import { ArrowLeft, ChevronDown, Crosshair, Flag, Trophy } from "lucide-react";
+import { reportAvatarPhoto, signAvatarPhotos } from "@/lib/avatar-photo.functions";
 import { AppShell } from "@/components/fluency/AppShell";
 import { LearnerAvatar } from "@/components/fluency/LearnerAvatar";
 import { useAppLang } from "@/lib/i18n";
@@ -66,6 +67,36 @@ function LeaguePage() {
   const [myPosition, setMyPosition] = useState<number | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [openRules, setOpenRules] = useState(false);
+  const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
+  const [reported, setReported] = useState<string[]>([]);
+  const signPhotos = useServerFn(signAvatarPhotos);
+  const sendReport = useServerFn(reportAvatarPhoto);
+
+  const signRows = useCallback(
+    async (list: LeagueBoardRow[]) => {
+      const paths = list.map((r) => r.photo).filter((p): p is string => Boolean(p));
+      if (!paths.length) return;
+      try {
+        const signed = await signPhotos({ data: { paths } });
+        setPhotoUrls((prev) => ({ ...prev, ...signed }));
+      } catch {
+        /* photos simply fall back to avatar or initials */
+      }
+    },
+    [signPhotos],
+  );
+
+  const report = useCallback(
+    async (path: string) => {
+      setReported((prev) => (prev.includes(path) ? prev : [...prev, path]));
+      try {
+        await sendReport({ data: { path } });
+      } catch {
+        /* ignore */
+      }
+    },
+    [sendReport],
+  );
 
   const load = useCallback(async () => {
     try {
@@ -79,12 +110,13 @@ function LeaguePage() {
         const p = await loadPreview({ data: { competitionId: res.competitionId } });
         setPreview(p.rows);
         setMyPosition(p.myPosition);
+        void signRows(p.rows);
       }
       setStatus("ready");
     } catch {
       setStatus("error");
     }
-  }, [loadPreview, loadSummary]);
+  }, [loadPreview, loadSummary, signRows]);
 
   useEffect(() => {
     void load();
@@ -101,8 +133,9 @@ function LeaguePage() {
       setOffset(res.offset);
       setMyPosition(res.myPosition);
       setFull(true);
+      void signRows(res.rows);
     },
-    [loadBoard, summary?.competitionId],
+    [loadBoard, signRows, summary?.competitionId],
   );
 
   const goToMe = useCallback(() => {
@@ -214,9 +247,25 @@ function LeaguePage() {
                     }`}
                   >
                     <span className="w-8 shrink-0 text-[12px] font-bold text-muted-foreground">{row.rank}</span>
-                    <LearnerAvatar avatarId={row.avatar} name={row.name} className="size-7" />
+                    <LearnerAvatar
+                      avatarId={row.avatar}
+                      photoUrl={row.photo ? (photoUrls[row.photo] ?? null) : null}
+                      name={row.name}
+                      className="size-7"
+                    />
                     <span className="min-w-0 flex-1 truncate">{row.name}</span>
                     <span className="shrink-0 text-[12px] font-bold">{formatPoints(row.points)}</span>
+                    {row.photo && !row.isMe ? (
+                      <button
+                        type="button"
+                        aria-label={es ? "Reportar foto" : "Report photo"}
+                        disabled={reported.includes(row.photo)}
+                        onClick={() => void report(row.photo as string)}
+                        className="shrink-0 rounded-full p-1 text-muted-foreground disabled:opacity-40"
+                      >
+                        <Flag className="size-3.5" />
+                      </button>
+                    ) : null}
                   </li>
                 ))}
                 {!(full ? rows : preview).length ? (
