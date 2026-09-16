@@ -430,7 +430,7 @@ function LeaguePage() {
             </section>
 
             <label
-              hidden={!summary.enrolled}
+              hidden={!summary.enrolled || !isCurrentWeek}
               className="flex items-center justify-between rounded-2xl border border-border bg-card p-3 text-xs font-medium text-foreground"
             >
               <span>
