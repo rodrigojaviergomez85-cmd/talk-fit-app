@@ -79,11 +79,14 @@ export function LeagueDaySection({
   day,
   es,
   moduleLabel,
+  moduleId,
 }: {
   summary: LeagueSummary | null;
   day: number;
   es: boolean;
   moduleLabel: string;
+  /** Origin day so the league screen can send the learner back here. */
+  moduleId?: string;
 }) {
   const rewards = summary?.rewards ?? [];
   const dayPoints = pointsForDay(rewards, day);
