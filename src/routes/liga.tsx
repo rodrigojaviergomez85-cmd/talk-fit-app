@@ -135,7 +135,7 @@ function LeaguePage() {
       setFull(true);
       void signRows(res.rows);
     },
-    [loadBoard, summary?.competitionId],
+    [loadBoard, signRows, summary?.competitionId],
   );
 
   const goToMe = useCallback(() => {
