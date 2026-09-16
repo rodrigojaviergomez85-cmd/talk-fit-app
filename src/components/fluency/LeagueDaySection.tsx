@@ -142,6 +142,11 @@ export function LeagueDaySection({
             ) : (
               <span className="text-[13px] font-bold text-muted-foreground">
                 {es ? "Sin puesto todavía" : "No rank yet"}
+                {participants > 0 ? (
+                  <span className="block text-[11px] font-medium">
+                    {es ? `${participants} estudiantes compitiendo` : `${participants} students competing`}
+                  </span>
+                ) : null}
               </span>
             )}
           </span>

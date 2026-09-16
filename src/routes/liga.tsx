@@ -140,7 +140,7 @@ function LeaguePage() {
           </p>
         ) : null}
 
-        {status === "ready" && summary && !summary.enrolled ? (
+        {status === "ready" && summary && !summary.enrolled && !summary.observer ? (
           <div className="rounded-2xl border border-border bg-card p-4 text-sm text-muted-foreground">
             {es
               ? "La liga semanal todavía no está disponible para tu nivel y semana."
