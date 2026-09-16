@@ -13,6 +13,10 @@ import {
   getLeagueBoard,
   getLeaguePreview,
   getMyLeagueHistory,
+  getCohortLeagueSummary,
+  getLeagueBoard,
+  getLeaguePreview,
+  getMyLeagueHistory,
   getMyLeagueSummary,
   setLeagueHidden,
 } from "@/lib/league.functions";
@@ -81,6 +85,7 @@ function LeaguePage() {
   const toggleHidden = useServerFn(setLeagueHidden);
 
   const loadHistory = useServerFn(getMyLeagueHistory);
+  const loadCohortSummary = useServerFn(getCohortLeagueSummary);
 
   const [summary, setSummary] = useState<LeagueSummary | null>(null);
   const [history, setHistory] = useState<LeagueWeekRef[]>([]);
@@ -159,7 +164,7 @@ function LeaguePage() {
       }
       return res;
     },
-    [loadPreview, loadSummary, signRows],
+    [from, fromDay, loadCohortSummary, loadPreview, loadSummary, signRows],
   );
 
   const load = useCallback(async () => {
