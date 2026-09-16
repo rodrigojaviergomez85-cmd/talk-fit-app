@@ -1,13 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
+import type { DateRange } from "react-day-picker";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { getAdminDailyActivity } from "@/lib/admin-daily-activity.functions";
 import {
   addDays,
   addMonths,
+  dateToKey,
+  keyToDate,
   longDayLabel,
   monthLabel,
+  normalizeCustomRange,
+  rangeLabel,
   resolveRange,
   shortDayLabel,
   summarize,
