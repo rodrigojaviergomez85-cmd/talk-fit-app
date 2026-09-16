@@ -30,7 +30,7 @@ export const updateMyProfile = createServerFn({ method: "POST" })
     avatarId: typeof input?.avatarId === "string" ? input.avatarId.slice(0, 40) : undefined,
   }))
   .handler(async ({ data, context }): Promise<UpdateResult> => {
-    const patch: Record<string, string> = {};
+    const patch: { display_name?: string; avatar_id?: string } = {};
 
     if (data.displayName !== undefined) {
       const check = checkName(data.displayName);
