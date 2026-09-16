@@ -265,7 +265,7 @@ export function DayCompleteScreen({
             }
             className="min-h-[48px] w-full rounded-2xl bg-primary px-6 py-4 text-[15px] font-bold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98] motion-reduce:transition-none"
           >
-            {showEs ? "Continuar" : "Continue"}
+            {showEs ? "Volver a mi día" : "Back to my day"}
           </button>
         </div>
       </div>
