@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { Camera, Loader2, Smile } from "lucide-react";
 import { toSquareJpegDataUrl } from "@/lib/avatar-image";
-import { uploadMyPhoto } from "@/lib/avatar-photo.functions";
-import { getMyProfile, markAvatarPromptSeen } from "@/lib/profile.functions";
 import { useAuth } from "@/lib/auth";
 
 const TEXT = {
