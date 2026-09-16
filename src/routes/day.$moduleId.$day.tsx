@@ -323,6 +323,7 @@ function DayHubPage() {
             </p>
             <Link
               to="/liga"
+              search={{ from: data.moduleId, day: data.day }}
               className="flex min-h-[44px] items-center justify-center rounded-2xl border border-border bg-card px-4 text-[12px] font-extrabold uppercase tracking-[0.1em] text-foreground"
             >
               {t("day.seeMyLeagueWeek")}
