@@ -65,8 +65,8 @@ export const ADVANCED1_EP2_NORTHLINE_NIGHT: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Good idea, but last time I told that story, I said and then, and then, and then ten times.",
-          es: "Buena idea, pero la última vez que conté esa historia, dije y luego, y luego, y luego diez veces.",
+          text: "Good idea. And I will not tell it as a list of and then, and then. A committee buys a movie, not a summary.",
+          es: "Buena idea. Y no la voy a contar como una lista de y luego, y luego. Un comité compra una película, no un resumen.",
         },
         {
           speaker: "dani",
