@@ -133,9 +133,18 @@ function LeaguePage() {
       const next = JourneyService.nextPractice(journey);
       const moduleId = next?.moduleId ?? "basic-zero";
       const day = next?.day ?? 1;
-      const res = await loadSummary({
-        data: competitionId ? { moduleId, day, competitionId } : { moduleId, day },
-      });
+      // Opened from a day screen: show that module's league (read-only for
+      // admin / unlimited accounts that do not compete there).
+      let res: LeagueSummary | null = null;
+      if (!competitionId && from && fromDay && (from !== moduleId || fromDay !== day)) {
+        const cohort = await loadCohortSummary({ data: { moduleId: from, day: fromDay } });
+        if (cohort.enrolled || cohort.observer) res = cohort;
+      }
+      if (!res) {
+        res = await loadSummary({
+          data: competitionId ? { moduleId, day, competitionId } : { moduleId, day },
+        });
+      }
       setSummary(res);
       setFull(false);
       setRows([]);
