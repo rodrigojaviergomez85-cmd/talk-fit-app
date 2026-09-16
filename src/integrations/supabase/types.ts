@@ -952,18 +952,21 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_id: string | null
           created_at: string
           display_name: string | null
           email: string | null
           id: string
         }
         Insert: {
+          avatar_id?: string | null
           created_at?: string
           display_name?: string | null
           email?: string | null
           id: string
         }
         Update: {
+          avatar_id?: string | null
           created_at?: string
           display_name?: string | null
           email?: string | null
