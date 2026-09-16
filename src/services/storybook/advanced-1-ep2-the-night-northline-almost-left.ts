@@ -96,8 +96,8 @@ export const ADVANCED1_EP2_NORTHLINE_NIGHT: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "And the grammar? I mix my past tenses when I get nervous.",
-          es: "¿Y la gramática? Mezclo mis pasados cuando me pongo nerviosa.",
+          text: "Exactly the four parts I teach. And the grammar rule my students always need here?",
+          es: "Exactamente las cuatro partes que yo enseño. ¿Y la regla de gramática que mis estudiantes siempre necesitan aquí?",
         },
         {
           speaker: "reed",
