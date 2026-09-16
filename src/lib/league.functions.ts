@@ -104,6 +104,24 @@ export const getMyLeagueSummary = createServerFn({ method: "POST" })
     return shapeSummary(raw as RawSummary | null, data.moduleId, data.week);
   });
 
+/**
+ * Read-only summary for one cohort (module + curriculum day), never enrolling.
+ * Members get their real card; admin / unlimited accounts get observer mode;
+ * anybody else gets nothing so the UI keeps showing their own league.
+ */
+export const getCohortLeagueSummary = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(parseCohortInput)
+  .handler(async ({ data, context }): Promise<LeagueSummary> => {
+    if (!isLeagueCohort(data.moduleId, data.week)) return EMPTY;
+    const { data: raw, error } = await context.supabase.rpc("league_summary_for_cohort", {
+      _module_id: data.moduleId,
+      _curriculum_week: data.week,
+    });
+    if (error) return EMPTY;
+    return shapeSummary(raw as RawSummary | null, data.moduleId, data.week);
+  });
+
 /** Every weekly competition the learner belongs to, newest first. */
 export const getMyLeagueHistory = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
