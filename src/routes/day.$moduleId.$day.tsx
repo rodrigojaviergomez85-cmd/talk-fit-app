@@ -280,9 +280,17 @@ function DayHubPage() {
         ) : null}
 
         {showInactiveWeekNote ? (
-          <p className="text-center text-[11px] font-semibold italic text-muted-foreground">
-            {t("day.inactiveWeekNote")}
-          </p>
+          <div className="space-y-1.5">
+            <p className="text-center text-[11px] font-semibold italic text-muted-foreground">
+              {t("day.inactiveWeekNote")}
+            </p>
+            <Link
+              to="/liga"
+              className="flex min-h-[44px] items-center justify-center rounded-2xl border border-border bg-card px-4 text-[12px] font-extrabold uppercase tracking-[0.1em] text-foreground"
+            >
+              {t("day.seeMyLeagueWeek")}
+            </Link>
+          </div>
         ) : null}
 
         <LeagueRewardToast count={league.awarded.length} es={es} onDone={league.clearAwarded} />

@@ -12,17 +12,18 @@ import { CourseService } from "@/services/course-service";
 import {
   getLeagueBoard,
   getLeaguePreview,
+  getMyLeagueHistory,
   getMyLeagueSummary,
   setLeagueHidden,
 } from "@/lib/league.functions";
 import {
   WEEKLY_GOAL,
-  curriculumWeekForDay,
   formatPoints,
   formatWeekRange,
   progressPercent,
   type LeagueBoardRow,
   type LeagueSummary,
+  type LeagueWeekRef,
 } from "@/lib/league";
 
 /** Weekly league board: personal progress first, then the ranking. */
@@ -58,7 +59,11 @@ function LeaguePage() {
   const loadBoard = useServerFn(getLeagueBoard);
   const toggleHidden = useServerFn(setLeagueHidden);
 
+  const loadHistory = useServerFn(getMyLeagueHistory);
+
   const [summary, setSummary] = useState<LeagueSummary | null>(null);
+  const [history, setHistory] = useState<LeagueWeekRef[]>([]);
+  const [selected, setSelected] = useState<string | null>(null);
   const [preview, setPreview] = useState<LeagueBoardRow[]>([]);
   const [full, setFull] = useState(false);
   const [offset, setOffset] = useState(0);
@@ -98,29 +103,70 @@ function LeaguePage() {
     [sendReport],
   );
 
-  const load = useCallback(async () => {
-    try {
+  const loadFor = useCallback(
+    async (competitionId: string | null) => {
+      // The learner may already be ahead in the curriculum (day 6) while the
+      // calendar week they competed in is still running, so the week is chosen
+      // by competition, never by today's curriculum day.
       const journey = JourneyService.load();
       const next = JourneyService.nextPractice(journey);
       const moduleId = next?.moduleId ?? "basic-zero";
       const day = next?.day ?? 1;
-      const res = await loadSummary({ data: { moduleId, day } });
+      const res = await loadSummary({
+        data: competitionId ? { moduleId, day, competitionId } : { moduleId, day },
+      });
       setSummary(res);
-      if (res.enrolled && res.competitionId) {
+      setFull(false);
+      setRows([]);
+      setOffset(0);
+      setPreview([]);
+      setMyPosition(null);
+      if ((res.enrolled || res.observer) && res.competitionId) {
         const p = await loadPreview({ data: { competitionId: res.competitionId } });
         setPreview(p.rows);
         setMyPosition(p.myPosition);
         void signRows(p.rows);
       }
+      return res;
+    },
+    [loadPreview, loadSummary, signRows],
+  );
+
+  const load = useCallback(async () => {
+    try {
+      const list = await loadHistory({ data: undefined });
+      setHistory(list);
+      const current = await loadFor(null);
+      // Nothing for today's cohort: fall back to the running week, then to the
+      // most recent finished week so the learner can still see how it ended.
+      if (!current.enrolled && !current.observer && list.length) {
+        const fallback = list.find((w) => w.isCurrent) ?? list[0]!;
+        setSelected(fallback.competitionId);
+        await loadFor(fallback.competitionId);
+      } else {
+        setSelected(current.competitionId ?? null);
+      }
       setStatus("ready");
     } catch {
       setStatus("error");
     }
-  }, [loadPreview, loadSummary, signRows]);
+  }, [loadFor, loadHistory]);
 
   useEffect(() => {
     void load();
   }, [load]);
+
+  const selectWeek = useCallback(
+    async (competitionId: string) => {
+      setSelected(competitionId);
+      try {
+        await loadFor(competitionId);
+      } catch {
+        setStatus("error");
+      }
+    },
+    [loadFor],
+  );
 
   const openPage = useCallback(
     async (nextOffset: number) => {
@@ -142,6 +188,10 @@ function LeaguePage() {
     if (myPosition === null) return;
     void openPage(Math.floor(myPosition / PAGE_SIZE) * PAGE_SIZE);
   }, [myPosition, openPage]);
+
+  const activeId = selected ?? summary?.competitionId ?? null;
+  const selectedWeek = history.find((w) => w.competitionId === activeId) ?? null;
+  const isCurrentWeek = selectedWeek ? selectedWeek.isCurrent : !summary?.closed;
 
   const moduleLabel = summary?.moduleId
     ? (() => {
@@ -174,6 +224,31 @@ function LeaguePage() {
           </p>
         ) : null}
 
+        {status === "ready" && history.length > 1 ? (
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {history.map((w) => (
+              <button
+                key={w.competitionId}
+                type="button"
+                onClick={() => void selectWeek(w.competitionId)}
+                className={`shrink-0 rounded-2xl border px-3 py-2 text-left text-[11px] font-bold ${
+                  w.competitionId === activeId
+                    ? "border-primary bg-primary/10 text-foreground"
+                    : "border-border bg-card text-muted-foreground"
+                }`}
+              >
+                <span className="block">
+                  {es ? "Semana " : "Week "}
+                  {w.curriculumWeek}
+                </span>
+                <span className="block text-[10px] font-medium">
+                  {formatWeekRange(w.weekStart, w.weekEnd, es)}
+                </span>
+              </button>
+            ))}
+          </div>
+        ) : null}
+
         {status === "ready" && summary && !summary.enrolled && !summary.observer ? (
           <div className="rounded-2xl border border-border bg-card p-4 text-sm text-muted-foreground">
             {es
@@ -203,7 +278,13 @@ function LeaguePage() {
               <p className="mt-0.5 text-[11px] font-medium text-navy-foreground/70">
                 {summary.weekStart && summary.weekEnd
                   ? `${formatWeekRange(summary.weekStart, summary.weekEnd, es)} · ${
-                      es ? "cierra el domingo" : "closes Sunday"
+                      isCurrentWeek
+                        ? es
+                          ? "en curso, cierra el domingo"
+                          : "in progress, closes Sunday"
+                        : es
+                          ? "semana cerrada · resultado final"
+                          : "week closed · final result"
                     }`
                   : null}
               </p>
@@ -349,7 +430,7 @@ function LeaguePage() {
             </section>
 
             <label
-              hidden={!summary.enrolled}
+              hidden={!summary.enrolled || !isCurrentWeek}
               className="flex items-center justify-between rounded-2xl border border-border bg-card p-3 text-xs font-medium text-foreground"
             >
               <span>

@@ -9,6 +9,7 @@ import {
   type LeagueBoardRow,
   type LeagueReward,
   type LeagueSummary,
+  type LeagueWeekRef,
 } from "./league";
 
 /**
@@ -71,17 +72,29 @@ function shapeSummary(raw: RawSummary | null, moduleId: string, week: number): L
   };
 }
 
-function parseCohortInput(input: { moduleId?: string; day?: number }) {
+function parseCohortInput(input: { moduleId?: string; day?: number; competitionId?: string }) {
   const moduleId = String(input.moduleId ?? "").slice(0, 60);
   const day = Math.max(1, Math.min(200, Number(input.day ?? 1)));
-  return { moduleId, day, week: curriculumWeekForDay(day) };
+  const competitionId = input.competitionId ? String(input.competitionId).slice(0, 60) : "";
+  return { moduleId, day, week: curriculumWeekForDay(day), competitionId };
 }
 
-/** Card data: assignment, points, rank and this week's confirmed rewards. */
+/**
+ * Card data: assignment, points, rank and that week's confirmed rewards.
+ * With `competitionId` it reads one specific week (current or already closed);
+ * without it, the learner's cohort for the given module/day.
+ */
 export const getMyLeagueSummary = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(parseCohortInput)
   .handler(async ({ data, context }): Promise<LeagueSummary> => {
+    if (data.competitionId) {
+      const { data: raw, error } = await context.supabase.rpc("league_summary_by_competition", {
+        _competition_id: data.competitionId,
+      });
+      if (error) return EMPTY;
+      return shapeSummary(raw as RawSummary | null, data.moduleId, data.week);
+    }
     if (!isLeagueCohort(data.moduleId, data.week)) return EMPTY;
     const { data: raw, error } = await context.supabase.rpc("league_my_summary", {
       _module_id: data.moduleId,
@@ -89,6 +102,26 @@ export const getMyLeagueSummary = createServerFn({ method: "POST" })
     });
     if (error) return EMPTY;
     return shapeSummary(raw as RawSummary | null, data.moduleId, data.week);
+  });
+
+/** Every weekly competition the learner belongs to, newest first. */
+export const getMyLeagueHistory = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<LeagueWeekRef[]> => {
+    const { data: raw, error } = await context.supabase.rpc("league_my_competitions");
+    if (error || !Array.isArray(raw)) return [];
+    return (raw as Record<string, unknown>[]).map((r) => ({
+      competitionId: String(r["competitionId"] ?? ""),
+      moduleId: String(r["moduleId"] ?? ""),
+      curriculumWeek: Number(r["curriculumWeek"] ?? 1),
+      weekStart: String(r["weekStart"] ?? ""),
+      weekEnd: String(r["weekEnd"] ?? ""),
+      closed: Boolean(r["closed"]),
+      isCurrent: Boolean(r["isCurrent"]),
+      points: Number(r["points"] ?? 0),
+      rank: r["rank"] == null ? null : Number(r["rank"]),
+      participants: Number(r["participants"] ?? 0),
+    }));
   });
 
 /**
