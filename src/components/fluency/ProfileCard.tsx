@@ -73,12 +73,12 @@ export function ProfileCard({ lang }: { lang: "es" | "en" }) {
       if (res.ok && res.profile) {
         setProfile(res.profile);
         setName(res.profile.displayName ?? "");
-        setMsg({ kind: "ok", text: t.saved });
+        setMsg({ kind: "ok", key: "saved" });
       } else {
-        setMsg({ kind: "err", text: t[(res.error ?? "server") as keyof typeof t] as string });
+        setMsg({ kind: "err", key: res.error ?? "server" });
       }
     } catch {
-      setMsg({ kind: "err", text: t.server });
+      setMsg({ kind: "err", key: "server" });
     } finally {
       setBusy(false);
     }
@@ -87,7 +87,7 @@ export function ProfileCard({ lang }: { lang: "es" | "en" }) {
   const onSaveName = () => {
     const check = checkName(name);
     if (!check.ok) {
-      setMsg({ kind: "err", text: t[check.reason] });
+      setMsg({ kind: "err", key: check.reason });
       return;
     }
     void apply({ displayName: check.value });
