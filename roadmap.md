@@ -1,4 +1,4 @@
-- [ ] Regenerar Sharks 16–20 usando exclusivamente los modelos visuales jóvenes de Sharks 10–15.
-- [ ] Auditar edad, rostro, cabello, ropa y género de cada personaje.
-- [ ] Verificar correspondencia entre cada imagen y su escena.
-- [ ] Normalizar imágenes y ejecutar pruebas finales.
+- [x] Regenerar Sharks 16–20 usando exclusivamente los modelos visuales jóvenes de Sharks 10–15.
+- [x] Auditar edad, rostro, cabello, ropa y género de cada personaje.
+- [x] Verificar correspondencia entre cada imagen y su escena.
+- [x] Normalizar imágenes y ejecutar pruebas finales.
