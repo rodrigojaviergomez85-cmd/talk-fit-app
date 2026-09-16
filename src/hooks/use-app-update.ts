@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { APP_BUILD_ID } from "@/lib/build-id";
 import { isActivityBusy, subscribeActivity } from "@/lib/activity-lock";
+import { isStaleChunkError } from "@/lib/stale-chunk";
 
 const CHECK_MS = 120_000;
 const RELOAD_FLAG = "app-update-reloaded";
@@ -83,13 +84,14 @@ export function useAppUpdate(): { updateReady: boolean; applyUpdate: () => void 
       reloadOnce();
     };
     const onRejection = (event: PromiseRejectionEvent) => {
-      const message = String((event.reason as Error | undefined)?.message ?? event.reason ?? "");
-      if (/dynamically imported module|Importing a module script failed/i.test(message)) {
-        reloadOnce();
-      }
+      if (isStaleChunkError(event.reason)) reloadOnce();
+    };
+    const onWindowError = (event: ErrorEvent) => {
+      if (isStaleChunkError(event.error ?? event.message)) reloadOnce();
     };
     window.addEventListener("vite:preloadError", onPreloadError);
     window.addEventListener("unhandledrejection", onRejection);
+    window.addEventListener("error", onWindowError);
 
     return () => {
       alive = false;
@@ -98,6 +100,7 @@ export function useAppUpdate(): { updateReady: boolean; applyUpdate: () => void 
       window.removeEventListener("focus", onWake);
       window.removeEventListener("vite:preloadError", onPreloadError);
       window.removeEventListener("unhandledrejection", onRejection);
+      window.removeEventListener("error", onWindowError);
       unsubscribe();
     };
   }, []);
