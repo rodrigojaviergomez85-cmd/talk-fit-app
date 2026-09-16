@@ -120,7 +120,7 @@ export function StorybookPlayer({
     sceneRateRef.current = rate;
     setSceneRate(rate);
   };
-  const touchX = useRef<number | null>(null);
+  
 
   /** Module day this episode matches — used for the "record your audios" shortcut. */
   const practiceDay = useMemo(
