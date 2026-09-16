@@ -270,18 +270,18 @@ export const ADVANCED1_EP15_THE_ROOM_THAT_INTERRUPTS: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "We went in with Lucía.",
-          es: "Nosotros entramos con Lucía.",
+          text: "We went in with Elena.",
+          es: "Nosotros entramos con Elena.",
         },
         {
           speaker: "vale",
-          text: "And Lucía spoke for ninety seconds without a note. Whatever happens now, that part is already paid off.",
-          es: "Y Lucía habló noventa segundos sin una nota. Pase lo que pase ahora, esa parte ya rindió fruto.",
+          text: "And Elena spoke for ninety seconds without a note. Whatever happens now, that part is already paid off.",
+          es: "Y Elena habló noventa segundos sin una nota. Pase lo que pase ahora, esa parte ya rindió fruto.",
         },
         {
           speaker: "camila",
-          text: "If the contract goes to Crown, Lucía still keeps those ninety seconds. That's the part nobody can take back.",
-          es: "Si el contrato se va a Crown, Lucía se queda igual con esos noventa segundos. Esa es la parte que nadie puede quitar.",
+          text: "If the contract goes to Crown, Elena still keeps those ninety seconds. That's the part nobody can take back.",
+          es: "Si el contrato se va a Crown, Elena se queda igual con esos noventa segundos. Esa es la parte que nadie puede quitar.",
         },
       ],
       words: [
