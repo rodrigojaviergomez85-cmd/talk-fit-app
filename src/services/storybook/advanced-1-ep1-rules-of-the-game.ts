@@ -187,8 +187,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "id": "s4",
       "image": s4,
       "imageAlt": "Camila pretends to be the committee and interviews Vale while Dani watches with a notebook.",
-      "text": "Camila plays the committee. Vale's first practice answer is honest, but weak.",
-      "es": "Camila hace de comité. La primera respuesta de práctica de Vale es honesta, pero débil.",
+      "text": "Camila plays the committee. Vale demonstrates the weak answer on purpose, so the team hears the difference.",
+      "es": "Camila hace de comité. Vale demuestra a propósito la respuesta débil, para que el equipo escuche la diferencia.",
       "speaker": "camila",
       "cast": ["vale", "dani", "camila"],
       "lines": [
