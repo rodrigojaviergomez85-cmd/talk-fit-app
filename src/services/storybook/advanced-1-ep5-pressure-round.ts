@@ -59,8 +59,8 @@ export const ADVANCED1_EP5_PRESSURE_ROUND: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "Remember the rules of pressure: breathe, buy time politely, and answer the question they asked, not the one you feared.",
-          es: "Recuerden las reglas de la presión: respiren, ganen tiempo con cortesía, y respondan la pregunta que hicieron, no la que temían.",
+          text: "Remember the rules of pressure: breathe, buy time politely, and answer the question you were asked, not the one you were afraid of.",
+          es: "Recuerden las reglas de la presión: respiren, ganen tiempo con cortesía, y respondan la pregunta que les hicieron, no la que temían.",
         },
         {
           speaker: "dani",
@@ -69,8 +69,8 @@ export const ADVANCED1_EP5_PRESSURE_ROUND: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Simple phrases. That is a good question. Let me think for a second. If I understand correctly, you are asking...",
-          es: "Frases simples. Esa es una buena pregunta. Déjame pensar un segundo. Si entiendo bien, me preguntas...",
+          text: "With three phrases I have been teaching for years: that is a good question; let me think for a second; if I understand correctly, what you are asking is... If you use them, nobody hears a pause; they hear a professional.",
+          es: "Con tres frases que llevo años enseñando: esa es una buena pregunta; déjame pensar un segundo; si entiendo bien, lo que me preguntas es... Si las usas, nadie escucha una pausa; escuchan a un profesional.",
         },
       ],
       words: [
@@ -95,8 +95,8 @@ export const ADVANCED1_EP5_PRESSURE_ROUND: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "That is a direct question. Because our students speak from day one, and our completion rate is double the regional average.",
-          es: "Esa es una pregunta directa. Porque nuestros estudiantes hablan desde el día uno, y nuestra tasa de finalización es el doble del promedio regional.",
+          text: "That is a direct question. Because our students speak from day one, and our completion rate is double the regional average; that being said, the number is audited, not estimated.",
+          es: "Esa es una pregunta directa. Porque nuestros estudiantes hablan desde el día uno, y nuestra tasa de finalización es el doble del promedio regional; dicho eso, ese número está auditado, no estimado.",
         },
         {
           speaker: "reed",
@@ -131,8 +131,8 @@ export const ADVANCED1_EP5_PRESSURE_ROUND: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "One sentence: every number comes from a recorded student voice, not from a survey.",
-          es: "Una oración: cada número viene de una voz de estudiante grabada, no de una encuesta.",
+          text: "One sentence: every number is taken from a recorded student voice, not from a survey.",
+          es: "Una oración: cada número se toma de una voz de estudiante grabada, no de una encuesta.",
         },
       ],
       words: [
@@ -157,8 +157,8 @@ export const ADVANCED1_EP5_PRESSURE_ROUND: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "Let me think for a second. Last year, a schedule error left a group without a teacher for one day. I owned the mistake, called every family, and built a double-check system.",
-          es: "Déjame pensar un segundo. El año pasado, un error de horario dejó a un grupo sin maestro por un día. Asumí el error, llamé a cada familia, y construí un sistema de doble verificación.",
+          text: "Let me think for a second. Last year, a group was left without a teacher for a whole day because of a scheduling error I had approved. I owned the mistake, called every family, and built a double-check system; since then, no class has been missed.",
+          es: "Déjame pensar un segundo. El año pasado, un grupo se quedó sin maestro un día entero por un error de horario que yo había aprobado. Asumí el error, llamé a cada familia y construí un sistema de doble verificación; desde entonces, no se ha perdido ninguna clase.",
         },
         {
           speaker: "reed",
@@ -188,8 +188,8 @@ export const ADVANCED1_EP5_PRESSURE_ROUND: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "That is a fair question. Small means fast. An accountant means every dollar is measured. And my accent is proof of the method: I learned this language as an adult, exactly like our students do.",
-          es: "Esa es una pregunta justa. Pequeño significa rápido. Una contadora significa que cada dólar se mide. Y mi acento es prueba del método: aprendí este idioma de adulta, exactamente como nuestros estudiantes.",
+          text: "That is a fair question. Small means decisions are made in a day, not a quarter. An accountant means every dollar is measured before it is spent. And what you call an accent is proof of the method: I learned this language as an adult and I have been teaching it for eight years, which is exactly the road your employees would walk.",
+          es: "Esa es una pregunta justa. Pequeño significa que las decisiones se toman en un día, no en un trimestre. Una contadora significa que cada dólar se mide antes de gastarse. Y lo que usted llama acento es la prueba del método: aprendí este idioma de adulta y llevo ocho años enseñándolo, que es exactamente el camino que recorrerían sus empleados.",
         },
         {
           speaker: "reed",
@@ -219,13 +219,13 @@ export const ADVANCED1_EP5_PRESSURE_ROUND: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "Horrible. And useful. The interruption forced me to find the one sentence that matters.",
-          es: "Horrible. Y útil. La interrupción me obligó a encontrar la única oración que importa.",
+          text: "Horrible; however, it was useful. What the interruption did was force me to find the one sentence that actually matters.",
+          es: "Horrible; sin embargo, fue útil. Lo que hizo la interrupción fue obligarme a encontrar la única oración que de verdad importa.",
         },
         {
           speaker: "dani",
-          text: "Buying time worked. Let me think for a second gave me my whole answer.",
-          es: "Ganar tiempo funcionó. Déjame pensar un segundo me dio toda mi respuesta.",
+          text: "Buying time worked. If I had answered immediately, I would have rambled; those two seconds gave me my whole answer.",
+          es: "Ganar tiempo funcionó. Si hubiera respondido de inmediato, habría divagado; esos dos segundos me dieron toda mi respuesta.",
         },
       ],
       words: [
@@ -245,8 +245,8 @@ export const ADVANCED1_EP5_PRESSURE_ROUND: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "I noticed something. The faster your questions came, the shorter our answers became. Pressure removes decoration.",
-          es: "Noté algo. Mientras más rápido llegaban tus preguntas, más cortas se volvían nuestras respuestas. La presión quita la decoración.",
+          text: "I noticed something I want my students to hear: the faster your questions came, the shorter our answers became. What pressure removes is decoration, and what is left is the argument.",
+          es: "Noté algo que quiero que escuchen mis estudiantes: mientras más rápido llegaban tus preguntas, más cortas se volvían nuestras respuestas. Lo que la presión quita es la decoración, y lo que queda es el argumento.",
         },
         {
           speaker: "reed",
@@ -353,16 +353,16 @@ export const ADVANCED1_EP5_PRESSURE_ROUND: StorybookEpisode = {
     {
       id: "q2",
       afterScene: "s7",
-      questionEn: "Thirty seconds: a difficult recruiter says your English has an accent. Answer calmly and turn it into a strength.",
-      questionEs: "Treinta segundos: un reclutador difícil dice que tu inglés tiene acento. Responde con calma y conviértelo en fortaleza.",
+      questionEn: "Thirty seconds under pressure: a recruiter says your English has an accent. Buy time politely, accept the fact, and turn it into evidence of what you can do.",
+      questionEs: "Treinta segundos bajo presión: un reclutador dice que tu inglés tiene acento. Gana tiempo con cortesía, acepta el hecho y conviértelo en evidencia de lo que puedes hacer.",
       options: [
         { label: "I am ready to answer", emoji: "🎤" },
         { label: "I want to hear the example again", emoji: "👂" },
         { label: "I will practice later", emoji: "⏰" },
       ],
       answer: 0,
-      sayIt: "Yes, I have an accent, and it proves that I learned English as an adult.",
-      sayItEs: "Sí, tengo acento, y eso prueba que aprendí inglés de adulto.",
+      sayIt: "That is a fair question. Yes, I have an accent, and what it proves is that I learned English as an adult while I was working full time. If your team needed someone who understands that effort, I would be that person.",
+      sayItEs: "Esa es una pregunta justa. Sí, tengo acento, y lo que eso prueba es que aprendí inglés de adulto mientras trabajaba tiempo completo. Si su equipo necesitara a alguien que entienda ese esfuerzo, yo sería esa persona.",
       sayItAskEn: "Your English has an accent. Why should we choose you?",
       sayItAskEs: "Tu inglés tiene acento. ¿Por qué deberíamos elegirte?",
       sayItCheck: {

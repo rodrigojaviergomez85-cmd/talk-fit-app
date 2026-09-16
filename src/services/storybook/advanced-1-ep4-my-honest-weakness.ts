@@ -64,13 +64,13 @@ export const ADVANCED1_EP4_MY_HONEST_WEAKNESS: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "I was thinking I am a perfectionist.",
-          es: "Estaba pensando: soy perfeccionista.",
+          text: "If I wanted the easy route, I would say I am a perfectionist. But that answer has been used by every candidate since the nineties.",
+          es: "Si quisiera el camino fácil, diría que soy perfeccionista. Pero esa respuesta ha sido usada por todos los candidatos desde los noventa.",
         },
         {
           speaker: "camila",
-          text: "That is a strength wearing a costume. The committee has seen that costume a thousand times.",
-          es: "Esa es una fortaleza disfrazada. El comité ha visto ese disfraz mil veces.",
+          text: "Exactly; that is a strength wearing a costume, and that costume has been seen a thousand times by this committee.",
+          es: "Exacto; esa es una fortaleza disfrazada, y ese disfraz ha sido visto mil veces por este comité.",
         },
       ],
       words: [
@@ -95,13 +95,13 @@ export const ADVANCED1_EP4_MY_HONEST_WEAKNESS: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "So no costumes. A real one.",
-          es: "Entonces sin disfraces. Una real.",
+          text: "No costumes, then. That is the same rule I give my students: what convinces a listener is not the weakness itself but the plan attached to it.",
+          es: "Sin disfraces, entonces. Esa es la misma regla que les doy a mis estudiantes: lo que convence a quien escucha no es la debilidad en sí, sino el plan que va con ella.",
         },
         {
           speaker: "reed",
-          text: "Choose one that is true but not fatal. Nobody trusts a person with no weakness, and nobody hires a disaster.",
-          es: "Elige una que sea verdadera pero no fatal. Nadie confía en una persona sin debilidades, y nadie contrata un desastre.",
+          text: "Choose one that is true but not fatal. Nobody trusts a person with no weakness; however, nobody hires a disaster either.",
+          es: "Elige una que sea verdadera pero no fatal. Nadie confía en una persona sin debilidades; sin embargo, nadie contrata un desastre tampoco.",
         },
       ],
       words: [
@@ -121,8 +121,8 @@ export const ADVANCED1_EP4_MY_HONEST_WEAKNESS: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "Fine. Honest answer: cold numbers. Spreadsheets with no faces. When a report is only numbers, my brain falls asleep.",
-          es: "Bien. Respuesta honesta: los números fríos. Hojas de cálculo sin caras. Cuando un reporte solo tiene números, mi cerebro se duerme.",
+          text: "Fine. Honest answer: cold numbers. What slows me down is a spreadsheet with no faces in it; when a report is only numbers, my brain falls asleep.",
+          es: "Bien. Respuesta honesta: los números fríos. Lo que me frena es una hoja de cálculo sin caras; cuando un reporte solo tiene números, mi cerebro se duerme.",
         },
         {
           speaker: "camila",
@@ -131,8 +131,8 @@ export const ADVANCED1_EP4_MY_HONEST_WEAKNESS: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "It is real, but it is not fatal, because you built a system to back it up. That is the second part.",
-          es: "Es real, pero no es fatal, porque construiste un sistema para respaldarlo. Esa es la segunda parte.",
+          text: "It is real, although it is not fatal, because a system was built to back it up. That is the second part of the answer.",
+          es: "Es real, aunque no es fatal, porque se construyó un sistema para respaldarlo. Esa es la segunda parte de la respuesta.",
         },
       ],
       words: [
@@ -157,13 +157,13 @@ export const ADVANCED1_EP4_MY_HONEST_WEAKNESS: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "I review every financial report with Camila, and she translates the numbers into stories about students. And I am taking a course on reading data.",
-          es: "Reviso cada reporte financiero con Camila, y ella traduce los números en historias sobre estudiantes. Y estoy tomando un curso sobre lectura de datos.",
+          text: "Every financial report is reviewed with Camila, who translates the numbers into stories about students, and I have been taking a course on reading data since January.",
+          es: "Cada reporte financiero se revisa con Camila, que traduce los números en historias sobre estudiantes, y he estado tomando un curso de lectura de datos desde enero.",
         },
         {
           speaker: "vale",
-          text: "Last month I caught an error in the Mexico budget before anyone else. Small victory, but mine.",
-          es: "El mes pasado detecté un error en el presupuesto de México antes que nadie. Pequeña victoria, pero mía.",
+          text: "Last month I caught an error in the Mexico budget before anyone else did. If I had not been training myself, that error would have reached the board. Small victory, but mine.",
+          es: "El mes pasado detecté un error en el presupuesto de México antes que nadie. Si no me hubiera estado entrenando, ese error habría llegado al consejo. Pequeña victoria, pero mía.",
         },
       ],
       words: [
@@ -188,8 +188,8 @@ export const ADVANCED1_EP4_MY_HONEST_WEAKNESS: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Cold numbers. So I review every financial report with my teammate, who turns data into student stories, and I am taking a data course.",
-          es: "Los números fríos. Así que reviso cada reporte financiero con mi compañera, que convierte los datos en historias de estudiantes, y estoy tomando un curso de datos.",
+          text: "Cold numbers. What I have done about it is build a routine: every financial report is reviewed with a teammate who turns data into student stories, and I have been studying data analysis for six months.",
+          es: "Los números fríos. Lo que he hecho al respecto es construir una rutina: cada reporte financiero se revisa con una compañera que convierte los datos en historias de estudiantes, y llevo seis meses estudiando análisis de datos.",
         },
         {
           speaker: "camila",
@@ -224,8 +224,8 @@ export const ADVANCED1_EP4_MY_HONEST_WEAKNESS: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "So I review every financial report with my teammate, I take a data course, and last month I caught a budget error before anyone else.",
-          es: "Así que reviso cada reporte financiero con mi compañera, tomo un curso de datos, y el mes pasado detecté un error de presupuesto antes que nadie.",
+          text: "So every report is now reviewed with a teammate, I have been taking a data course since January, and last month a budget error was caught by me before anyone else saw it. Had I ignored this weakness, it would have cost us the Mexico launch.",
+          es: "Así que ahora cada reporte se revisa con una compañera, he estado tomando un curso de datos desde enero, y el mes pasado un error de presupuesto fue detectado por mí antes de que nadie lo viera. Si hubiera ignorado esta debilidad, nos habría costado el lanzamiento de México.",
         },
       ],
       words: [
@@ -250,8 +250,8 @@ export const ADVANCED1_EP4_MY_HONEST_WEAKNESS: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Perfectionism is not a weakness here. We are all beautifully imperfect, and we measure it.",
-          es: "El perfeccionismo no es una debilidad aquí. Todos somos bellamente imperfectos, y lo medimos.",
+          text: "Perfectionism is not a weakness; it is a costume. We are all imperfect, and what we do here is measure the gap and close it, which is exactly what I ask of every student.",
+          es: "El perfeccionismo no es una debilidad; es un disfraz. Todos somos imperfectos, y lo que hacemos aquí es medir la brecha y cerrarla, que es exactamente lo que le pido a cada estudiante.",
         },
         {
           speaker: "reed",
@@ -353,18 +353,18 @@ export const ADVANCED1_EP4_MY_HONEST_WEAKNESS: StorybookEpisode = {
     {
       id: "q2",
       afterScene: "s7",
-      questionEn: "Your turn: what is one of your weaknesses, and what are you doing about it?",
-      questionEs: "Tu turno: ¿cuál es una de tus debilidades y qué estás haciendo al respecto?",
+      questionEn: "Your turn: name a real weakness, what you have been doing about it, and the progress you can prove.",
+      questionEs: "Tu turno: nombra una debilidad real, qué has estado haciendo al respecto y el progreso que puedes demostrar.",
       options: [
         { label: "I am ready to answer", emoji: "🎤" },
         { label: "I want to hear the example again", emoji: "👂" },
         { label: "I will practice later", emoji: "⏰" },
       ],
       answer: 0,
-      sayIt: "My weakness is speaking fast when I am nervous, and I am practicing slow breathing.",
-      sayItEs: "Mi debilidad es hablar rápido cuando estoy nervioso, y estoy practicando respiración lenta.",
-      sayItAskEn: "What is your weakness, and what are you doing about it?",
-      sayItAskEs: "¿Cuál es tu debilidad y qué estás haciendo al respecto?",
+      sayIt: "My weakness is speaking too fast when I am nervous. I have been recording myself every morning, and although I am not perfect yet, my last presentation was understood by everyone in the room.",
+      sayItEs: "Mi debilidad es hablar demasiado rápido cuando estoy nervioso. He estado grabándome cada mañana y, aunque todavía no soy perfecto, mi última presentación fue entendida por todos en la sala.",
+      sayItAskEn: "What is your weakness, what have you been doing about it, and what progress can you prove?",
+      sayItAskEs: "¿Cuál es tu debilidad, qué has estado haciendo al respecto y qué progreso puedes demostrar?",
       sayItCheck: {
         target: "My weakness is *",
         altTargets: ["One of my weaknesses is *", "I am working on *"],

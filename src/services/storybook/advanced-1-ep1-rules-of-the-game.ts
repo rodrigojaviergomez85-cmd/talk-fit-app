@@ -84,8 +84,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "Four. And this committee does not give second chances, Vale; it is a big deal.",
-          "es": "Cuatro. Y este comité no da segundas oportunidades, Vale; es algo muy importante.",
+          "text": "Four. And what worries me is that this committee never gives second chances; if we lost this one, we would not get another invitation. It is a big deal.",
+          "es": "Cuatro. Y lo que me preocupa es que este comité nunca da segundas oportunidades; si perdiéramos esta, no recibiríamos otra invitación. Es algo muy importante.",
         },
       ],
       "words": [
@@ -124,8 +124,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
         },
         {
           "speaker": "reed",
-          "text": "Do not sell a story; sell what you can prove. The academies that win follow up with visits, documents, and numbers.",
-          "es": "No vendas una historia; vende lo que puedes demostrar. Las academias que ganan le dan seguimiento con visitas, documentos y números.",
+          "text": "Do not sell a story; sell what can be proved. What separates the winners is simple: the academies that win follow up with visits, documents, and numbers.",
+          "es": "No vendas una historia; vende lo que se puede demostrar. Lo que separa a los ganadores es simple: las academias que ganan le dan seguimiento con visitas, documentos y números.",
         },
       ],
       "words": [
@@ -164,8 +164,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "Structure before polish. That is exactly what I teach my students.",
-          "es": "Estructura antes que perfección. Eso es exactamente lo que le enseño a mis estudiantes.",
+          "text": "Structure before polish. That is exactly what I teach my students: if they follow those four steps, they never sound memorized, even when they are nervous.",
+          "es": "Estructura antes que perfección. Eso es exactamente lo que le enseño a mis estudiantes: si siguen esos cuatro pasos, nunca suenan memorizados, aunque estén nerviosos.",
         },
       ],
       "words": [
@@ -204,8 +204,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
         },
         {
           "speaker": "dani",
-          "text": "It is honest, but it sounds unsure. There is no proof inside it.",
-          "es": "Es honesta, pero suena insegura. No hay ninguna prueba adentro.",
+          "text": "It is honest; however, it sounds unsure, because nothing in it can be proved.",
+          "es": "Es honesta; sin embargo, suena insegura, porque nada de eso se puede demostrar.",
         },
       ],
       "words": [
@@ -234,13 +234,13 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "lines": [
         {
           "speaker": "vale",
-          "text": "My goal is to give your employees real English for real meetings. That is my goal.",
-          "es": "Mi meta es darles a sus empleados inglés real para reuniones reales. Esa es mi meta.",
+          "text": "What your employees need is not another grammar course but English they can use in real meetings. If this program were mine, they would be presenting in English within three months, and every hour would be measured.",
+          "es": "Lo que sus empleados necesitan no es otro curso de gramática, sino inglés que puedan usar en reuniones reales. Si este programa fuera mío, estarían presentando en inglés en tres meses, y cada hora estaría medida.",
         },
         {
           "speaker": "camila",
-          "text": "That is the version the committee needs: confident and full of numbers.",
-          "es": "Esa es la versión que el comité necesita: segura y llena de números.",
+          "text": "That is the version the committee needs: confident, specific, and backed by numbers.",
+          "es": "Esa es la versión que el comité necesita: segura, específica y respaldada por números.",
         },
         {
           "speaker": "camila",
@@ -309,8 +309,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "lines": [
         {
           "speaker": "vale",
-          "text": "Right now, I lead a small academy. My background is teaching. One strength is clear communication, and my goal is a strong program for your team.",
-          "es": "Ahora mismo dirijo una academia pequeña. Mi experiencia es la enseñanza. Una fortaleza es la comunicación clara, y mi meta es un programa sólido para su equipo.",
+          "text": "Right now I lead an academy where adults have been speaking English every single day for two years. My background is teaching; what I have built since then is a method, not a classroom. One strength is clear communication, and my goal is a program your team would actually finish.",
+          "es": "Ahora mismo dirijo una academia donde adultos han estado hablando inglés todos los días durante dos años. Mi experiencia es la enseñanza; lo que he construido desde entonces es un método, no un salón. Una fortaleza es la comunicación clara, y mi meta es un programa que su equipo sí terminaría.",
         },
         {
           "speaker": "narrator",
@@ -319,8 +319,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "That question terrified the other academies today. Vale answered with documents, numbers, and evidence.",
-          "es": "Esa pregunta aterrorizó hoy a las otras academias. Vale respondió con documentos, números y evidencia.",
+          "text": "They told me afterwards that no other academy had answered with documents. What made the difference was evidence, not confidence.",
+          "es": "Me dijeron después que ninguna otra academia había respondido con documentos. Lo que marcó la diferencia fue la evidencia, no la confianza.",
         },
       ],
       "words": [
@@ -329,8 +329,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
           "es": "presentación",
         },
         {
-          "word": "terrified",
-          "es": "aterrorizada; muerta de miedo",
+          "word": "afterwards",
+          "es": "después; más tarde",
         },
         {
           "word": "evidence",
@@ -389,8 +389,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "lines": [
         {
           "speaker": "camila",
-          "text": "Vale, the committee wrote. On Friday they do not want numbers; they want you.",
-          "es": "Vale, el comité escribió. El viernes no quieren números; te quieren a ti.",
+          "text": "Vale, the committee wrote. They said that on Friday they would not be asking for numbers; what they want is you.",
+          "es": "Vale, el comité escribió. Dijeron que el viernes no estarían pidiendo números; lo que quieren es a ti.",
         },
         {
           "speaker": "vale",
@@ -453,8 +453,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
     {
       "id": "q2",
       "afterScene": "s7",
-      "questionEn": "Your turn: introduce yourself. What are you doing right now, and what is your goal?",
-      "questionEs": "Tu turno: preséntate. ¿Qué estás haciendo ahora y cuál es tu meta?",
+      "questionEn": "Your turn: introduce yourself professionally. Say what you are doing now, one strength with proof, and the goal you are working towards.",
+      "questionEs": "Tu turno: preséntate profesionalmente. Di qué estás haciendo ahora, una fortaleza con prueba y la meta hacia la que trabajas.",
       "options": [
         {
           "label": "I am ready to answer",
@@ -470,10 +470,10 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
         },
       ],
       "answer": 0,
-      "sayIt": "Right now, I am focused on learning English because I want a better job.",
-      "sayItEs": "Ahora mismo estoy enfocado en aprender inglés porque quiero un mejor trabajo.",
-      "sayItAskEn": "What are you doing right now, and what is your goal?",
-      "sayItAskEs": "¿Qué estás haciendo ahora y cuál es tu meta?",
+      "sayIt": "Right now, I am working in customer service, and one of my strengths is staying calm; for example, last month I handled forty calls a day. What I am working towards is a position where English is used every day.",
+      "sayItEs": "Ahora mismo estoy trabajando en servicio al cliente, y una de mis fortalezas es mantener la calma; por ejemplo, el mes pasado atendí cuarenta llamadas al día. Hacia lo que trabajo es un puesto donde se use inglés todos los días.",
+      "sayItAskEn": "What are you doing right now, what is one strength with proof, and what is your goal?",
+      "sayItAskEs": "¿Qué estás haciendo ahora, cuál es una fortaleza con prueba y cuál es tu meta?",
       "sayItCheck": {
         "target": "Right now, I am *",
         "altTargets": [

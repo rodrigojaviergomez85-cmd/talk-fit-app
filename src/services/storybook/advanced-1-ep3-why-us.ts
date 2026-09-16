@@ -64,13 +64,13 @@ export const ADVANCED1_EP3_WHY_US: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "That question is a trap. If you say too little, you sound weak. If you say too much, you sound arrogant.",
-          es: "Esa pregunta es una trampa. Si dices muy poco, suenas débil. Si dices demasiado, suenas arrogante.",
+          text: "That question is a trap. If you said too little, you would sound weak; if you said too much, you would sound arrogant.",
+          es: "Esa pregunta es una trampa. Si dijeras muy poco, sonarías débil; si dijeras demasiado, sonarías arrogante.",
         },
         {
           speaker: "camila",
-          text: "Then I am in trouble, because I would say nothing. I do not have a strength like you two.",
-          es: "Entonces estoy en problemas, porque yo no diría nada. No tengo una fortaleza como ustedes dos.",
+          text: "Then I am in trouble, because if I were asked tomorrow, I would freeze. What I do not have is a strength I can name.",
+          es: "Entonces estoy en problemas, porque si me preguntaran mañana, me quedaría congelada. Lo que no tengo es una fortaleza que pueda nombrar.",
         },
       ],
       words: [
@@ -100,8 +100,8 @@ export const ADVANCED1_EP3_WHY_US: StorybookEpisode = {
         },
         {
           speaker: "reed",
-          text: "Do not bring up your job title; bring up one fact. Say I am good at this, and here is the proof. Facts are humble, opinions are arrogant.",
-          es: "No menciones tu puesto; menciona un hecho. Di soy buena en esto, y aquí está la prueba. Los hechos son humildes, las opiniones son arrogantes.",
+          text: "Do not bring up your job title; bring up one fact. What convinces a committee is not how confident you sound, but what can be measured. Facts are humble; opinions are arrogant.",
+          es: "No menciones tu puesto; menciona un hecho. Lo que convence a un comité no es qué tan segura suenas, sino lo que se puede medir. Los hechos son humildes; las opiniones son arrogantes.",
         },
       ],
       words: [
@@ -126,8 +126,8 @@ export const ADVANCED1_EP3_WHY_US: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Strength plus proof. Clean. Did you hear it, Camila?",
-          es: "Fortaleza más prueba. Limpio. ¿Lo escuchaste, Camila?",
+          text: "Strength plus proof, and nothing else. That is the version I make my students repeat until it sounds natural. Did you hear it, Camila?",
+          es: "Fortaleza más prueba, y nada más. Esa es la versión que hago repetir a mis estudiantes hasta que suena natural. ¿Lo escuchaste, Camila?",
         },
         {
           speaker: "camila",
@@ -157,13 +157,13 @@ export const ADVANCED1_EP3_WHY_US: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "Our students watch the videos twice when I edit them, because I cut out the boring parts and keep the real moments.",
-          es: "Nuestros estudiantes ven los videos dos veces cuando yo los edito, porque quito las partes aburridas y guardo los momentos reales.",
+          text: "The videos I edit are watched twice by our students, because I cut out the boring parts and keep the real moments. Since March, our completion rate has been rising every month.",
+          es: "Los videos que yo edito son vistos dos veces por nuestros estudiantes, porque quito las partes aburridas y guardo los momentos reales. Desde marzo, nuestra tasa de finalización ha estado subiendo cada mes.",
         },
         {
           speaker: "dani",
-          text: "That is not a small strength. That is the reason our method travels.",
-          es: "Esa no es una fortaleza pequeña. Es la razón por la que nuestro método viaja.",
+          text: "That is not a small strength. That is precisely why our method travels.",
+          es: "Esa no es una fortaleza pequeña. Es precisamente por eso que nuestro método viaja.",
         },
       ],
       words: [
@@ -188,8 +188,8 @@ export const ADVANCED1_EP3_WHY_US: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Because we do not sell English; we build speakers. Our students complete more speaking minutes than any traditional school in the region, and here is the data.",
-          es: "Porque no vendemos inglés; construimos hablantes. Nuestros estudiantes completan más minutos hablados que cualquier escuela tradicional de la región, y aquí están los datos.",
+          text: "Because we do not sell English; we build speakers. What we deliver is measured in speaking minutes, and more minutes are recorded here than in any traditional school in the region. If your employees joined tomorrow, they would be speaking in their first class, and the data would be sent to you every month.",
+          es: "Porque no vendemos inglés; construimos hablantes. Lo que entregamos se mide en minutos hablados, y aquí se graban más minutos que en cualquier escuela tradicional de la región. Si sus empleados entraran mañana, estarían hablando en su primera clase, y los datos les serían enviados cada mes.",
         },
         {
           speaker: "dani",
@@ -219,8 +219,8 @@ export const ADVANCED1_EP3_WHY_US: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "I coordinate operations in three countries, and last month not a single class was cancelled. I keep the machine running so teachers can teach.",
-          es: "Coordino operaciones en tres países, y el mes pasado ni una sola clase fue cancelada. Mantengo la máquina funcionando para que los maestros enseñen.",
+          text: "I coordinate operations in three countries, and last month not a single class was cancelled. What I do is keep the machine running so that teachers can teach.",
+          es: "Coordino operaciones en tres países, y el mes pasado ni una sola clase fue cancelada. Lo que hago es mantener la máquina funcionando para que los maestros puedan enseñar.",
         },
         {
           speaker: "narrator",
@@ -245,8 +245,8 @@ export const ADVANCED1_EP3_WHY_US: StorybookEpisode = {
       lines: [
         {
           speaker: "camila",
-          text: "I notice what students feel on camera, and I turn our method into videos people actually finish. Students watch my edits twice.",
-          es: "Noto lo que los estudiantes sienten frente a la cámara, y convierto nuestro método en videos que la gente sí termina. Los estudiantes ven mis ediciones dos veces.",
+          text: "I notice what students feel on camera, and I turn our method into videos people actually finish. My edits have been watched twice by most of our students; that being said, the credit belongs to the teachers I film.",
+          es: "Noto lo que los estudiantes sienten frente a la cámara, y convierto nuestro método en videos que la gente sí termina. Mis ediciones han sido vistas dos veces por la mayoría de nuestros estudiantes; dicho eso, el crédito es de los maestros que filmo.",
         },
         {
           speaker: "narrator",
@@ -281,13 +281,13 @@ export const ADVANCED1_EP3_WHY_US: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "I heard it. Yesterday I had no strength. Today I have a strength with proof.",
-          es: "Lo escuché. Ayer no tenía fortaleza. Hoy tengo una fortaleza con prueba.",
+          text: "I heard it. Yesterday I would have said I had nothing; today I have a strength with proof behind it.",
+          es: "Lo escuché. Ayer habría dicho que no tenía nada; hoy tengo una fortaleza con una prueba detrás.",
         },
         {
           speaker: "dani",
-          text: "That is the trick. The strength was always there. The words were missing.",
-          es: "Ese es el truco. La fortaleza siempre estuvo ahí. Faltaban las palabras.",
+          text: "That is the trick. The strength had always been there; what was missing were the words.",
+          es: "Ese es el truco. La fortaleza siempre había estado ahí; lo que faltaban eran las palabras.",
         },
       ],
       words: [
@@ -312,8 +312,8 @@ export const ADVANCED1_EP3_WHY_US: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "A real weakness, in front of nine competing academies. Fine. I would rather be honest than perfect.",
-          es: "Una debilidad real, frente a nueve academias competidoras. Bien. Prefiero ser honesta que perfecta.",
+          text: "A real weakness, in front of nine competing academies. Fine. Although it is risky, I would rather be honest than perfect; a leader who has never failed has never been tested.",
+          es: "Una debilidad real, frente a nueve academias competidoras. Bien. Aunque es arriesgado, prefiero ser honesta que perfecta; una líder que nunca ha fallado nunca ha sido puesta a prueba.",
         },
         {
           speaker: "reed",
@@ -350,18 +350,18 @@ export const ADVANCED1_EP3_WHY_US: StorybookEpisode = {
     {
       id: "q2",
       afterScene: "s7",
-      questionEn: "Your turn: what is one of your strengths? Prove it with one fact.",
-      questionEs: "Tu turno: ¿cuál es una de tus fortalezas? Pruébala con un hecho.",
+      questionEn: "Your turn: name one strength, prove it with one fact, and explain the value it would bring to a team.",
+      questionEs: "Tu turno: nombra una fortaleza, pruébala con un hecho y explica el valor que le daría a un equipo.",
       options: [
         { label: "I am ready to answer", emoji: "🎤" },
         { label: "I want to hear the example again", emoji: "👂" },
         { label: "I will practice later", emoji: "⏰" },
       ],
       answer: 0,
-      sayIt: "One of my strengths is consistency. I practiced English every day for sixty days.",
-      sayItEs: "Una de mis fortalezas es la constancia. Practiqué inglés todos los días durante sesenta días.",
-      sayItAskEn: "What is one of your strengths, and what is your proof?",
-      sayItAskEs: "¿Cuál es una de tus fortalezas y cuál es tu prueba?",
+      sayIt: "One of my strengths is consistency; I have been practising English every single day for sixty days. What that would bring to a team is someone who finishes what was started, even when nobody is watching.",
+      sayItEs: "Una de mis fortalezas es la constancia; he estado practicando inglés todos los días durante sesenta días. Lo que eso le daría a un equipo es alguien que termina lo que empezó, aunque nadie esté mirando.",
+      sayItAskEn: "What is one of your strengths, what is your proof, and what value would it bring?",
+      sayItAskEs: "¿Cuál es una de tus fortalezas, cuál es tu prueba y qué valor aportaría?",
       sayItCheck: {
         target: "One of my strengths is *",
         altTargets: ["My strength is *", "I am good at *"],
