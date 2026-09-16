@@ -7,6 +7,11 @@ import { globalExpressionMap } from "./expressions";
  * Spanish meaning. Hand-written: no runtime translation API.
  */
 export const BASE_GLOSSARY: Record<string, string> = {
+  'movie': 'película',
+  'unless': 'a menos que',
+  'though': 'aunque; sin embargo',
+  'paint': 'pintar; describir',
+  'however': 'sin embargo',
   'employee': 'empleado/a',
   'chance': 'oportunidad',
   'script': 'guion',
@@ -1866,6 +1871,7 @@ export const CONTRACTIONS: Record<string, string> = {
   "won't": "no va a (futuro negativo)",
   "can't": "no puede / no puedo",
   "couldn't": "no pudo / no podía",
+  "hadn't": "no había / no habías (negación en pasado perfecto)",
   "shouldn't": "no debería",
   "wouldn't": "no lo haría",
   "haven't": "no he / no han",
