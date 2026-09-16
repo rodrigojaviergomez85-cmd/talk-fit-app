@@ -163,8 +163,8 @@ export function StorybookPlayer({
     if (!seen.length) return;
     void (async () => {
       try {
-        const session = await getFreshSession();
-        if (!session) return; // signed-out: retry on a later visit
+        const { data } = await getFreshSession();
+        if (!data?.session) return; // signed-out: retry on a later visit
         window.localStorage.setItem(KEY, "1");
         await backfillStoryProgress({ data: { episodeIds: seen } });
       } catch {
@@ -180,8 +180,8 @@ export function StorybookPlayer({
       void (async () => {
         try {
           // Analytics is signed-in only; skip silently for signed-out readers.
-          const session = await getFreshSession();
-          if (!session) return;
+          const { data } = await getFreshSession();
+          if (!data?.session) return;
           await recordStoryEpisodeView({
             data: {
               episodeId: episode.id,
