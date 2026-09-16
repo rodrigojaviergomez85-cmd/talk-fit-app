@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeft, ArrowRight, Check, ChevronDown, ChevronLeft, ChevronUp, Library, Loader2, Pause, Play, RotateCcw, Sparkles, Star, Volume2, X } from "lucide-react";
 import { AudioPlayer } from "@/components/fluency/AudioPlayer";
 import { SlowWordPanel } from "@/components/fluency/SlowWordPanel";
@@ -75,6 +76,8 @@ export function StorybookPlayer({
 }) {
   const es = useAppLang().lang === "es";
   const navigate = useNavigate();
+  const recordEpisodeView = useServerFn(recordStoryEpisodeView);
+  const backfillProgress = useServerFn(backfillStoryProgress);
   const slides = useMemo(() => buildSlides(episode), [episode]);
   const coverBack = onCoverBack ?? (() => navigate({ to: "/natural-method/audiobooks" }));
   const nextEpisodeId = useMemo(() => getNextProducedEpisodeId(episode.id), [episode.id]);
@@ -166,12 +169,12 @@ export function StorybookPlayer({
         const { data } = await getFreshSession();
         if (!data?.session) return; // signed-out: retry on a later visit
         window.localStorage.setItem(KEY, "1");
-        await backfillStoryProgress({ data: { episodeIds: seen } });
+        await backfillProgress({ data: { episodeIds: seen } });
       } catch {
         window.localStorage.removeItem(KEY);
       }
     })();
-  }, []);
+  }, [backfillProgress]);
 
   // Record opening the episode and the furthest slide reached (debounced).
   useEffect(() => {
@@ -182,7 +185,7 @@ export function StorybookPlayer({
           // Analytics is signed-in only; skip silently for signed-out readers.
           const { data } = await getFreshSession();
           if (!data?.session) return;
-          await recordStoryEpisodeView({
+          await recordEpisodeView({
             data: {
               episodeId: episode.id,
               season: seasonNumber,
@@ -197,7 +200,7 @@ export function StorybookPlayer({
       })();
     }, 1200);
     return () => window.clearTimeout(timer);
-  }, [episode.id, seasonNumber, episodeNumber, idx, slide.kind]);
+  }, [episode.id, seasonNumber, episodeNumber, idx, slide.kind, recordEpisodeView]);
 
   const go = (next: number) => {
     setIdx(Math.min(total - 1, Math.max(0, next)));
