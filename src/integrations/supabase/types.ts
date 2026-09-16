@@ -1672,6 +1672,7 @@ export type Database = {
         Args: { _curriculum_week: number; _module_id: string }
         Returns: number
       }
+      league_backfill_rewards: { Args: never; Returns: number }
       league_board: {
         Args: { _competition_id: string; _limit?: number; _offset?: number }
         Returns: Json
