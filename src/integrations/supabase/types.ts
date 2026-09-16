@@ -881,6 +881,30 @@ export type Database = {
         }
         Relationships: []
       }
+      league_story_slots: {
+        Row: {
+          created_at: string
+          day: number
+          episode_id: string
+          min_scene_index: number
+          module_id: string
+        }
+        Insert: {
+          created_at?: string
+          day: number
+          episode_id: string
+          min_scene_index: number
+          module_id: string
+        }
+        Update: {
+          created_at?: string
+          day?: number
+          episode_id?: string
+          min_scene_index?: number
+          module_id?: string
+        }
+        Relationships: []
+      }
       practice_attempts: {
         Row: {
           completed_at: string | null
