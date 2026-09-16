@@ -7,9 +7,9 @@ export function LearnerAvatar({
   name,
   className,
 }: {
-  avatarId?: string | null;
-  name?: string | null;
-  className?: string;
+  avatarId?: string | null | undefined;
+  name?: string | null | undefined;
+  className?: string | undefined;
 }) {
   const src = avatarSrc(avatarId);
   const initials = (name ?? "").trim().slice(0, 2) || "??";
