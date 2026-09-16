@@ -1,0 +1,400 @@
+import type { StorybookEpisode } from "./types";
+import cover from "@/assets/storybook/advanced1-ep19-now-you-ask/cover.jpg";
+import s1 from "@/assets/storybook/advanced1-ep19-now-you-ask/s1.jpg";
+import s2 from "@/assets/storybook/advanced1-ep19-now-you-ask/s2.jpg";
+import s3 from "@/assets/storybook/advanced1-ep19-now-you-ask/s3.jpg";
+import s4 from "@/assets/storybook/advanced1-ep19-now-you-ask/s4.jpg";
+import s5 from "@/assets/storybook/advanced1-ep19-now-you-ask/s5.jpg";
+import s6 from "@/assets/storybook/advanced1-ep19-now-you-ask/s6.jpg";
+import s7 from "@/assets/storybook/advanced1-ep19-now-you-ask/s7.jpg";
+import s8 from "@/assets/storybook/advanced1-ep19-now-you-ask/s8.jpg";
+import s9 from "@/assets/storybook/advanced1-ep19-now-you-ask/s9.jpg";
+
+export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
+  id: "advanced1-ep19-now-you-ask",
+  moduleId: "advanced-1",
+  week: 4,
+  title: "Now you ask",
+  titleEs: "Ahora preguntas tú",
+  episodeLabel: {
+    en: "Advanced 1 · Episode 19",
+    es: "Advanced 1 · Episodio 19",
+  },
+  previously: [
+    {
+      en: "Vale turned down Crown's offer, with conditions.",
+      es: "Vale rechazó la oferta de Crown, con condiciones.",
+    },
+    {
+      en: "Barrett asked her to sit on the other side of the table.",
+      es: "Barrett le pidió sentarse del otro lado de la mesa.",
+    },
+    {
+      en: "Today Vale is the interviewer.",
+      es: "Hoy Vale es quien entrevista.",
+    },
+  ],
+  reviewWords: [
+    { word: "follow-up", es: "repregunta, seguimiento" },
+    { word: "discount", es: "descuento" },
+    { word: "evidence", es: "evidencia" },
+    { word: "attendance", es: "asistencia" },
+    { word: "supplier", es: "proveedor" },
+  ],
+  blurb: {
+    en: "Answering well gets you hired. Asking well gets you respected.",
+    es: "Responder bien te consigue el trabajo. Preguntar bien te consigue respeto.",
+  },
+  cover,
+  voice: "girl",
+  scenes: [
+    {
+      id: "s1",
+      image: s1,
+      imageAlt: "Barrett hands the interview over to Vale on Friday morning.",
+      text: "Friday, the chairs turned around.",
+      es: "Viernes, las sillas dadas vuelta.",
+      speaker: "barrett",
+      cast: ["barrett", "vale"],
+      lines: [
+        {
+          speaker: "barrett",
+          text: "Today you interview. Lidia and Dani apply for the pilot's client role, and I only watch.",
+          es: "Hoy tú entrevistas. Lidia y Dani aplican al puesto de cliente del piloto, y yo solo observo.",
+        },
+        {
+          speaker: "vale",
+          text: "Then I'll say the rule first: I'm not looking for confident answers. I'm looking for answers that survive a follow-up.",
+          es: "Entonces digo la regla primero: no busco respuestas seguras. Busco respuestas que sobrevivan una repregunta.",
+        },
+      ],
+      words: [
+        { word: "interview", es: "entrevistar" },
+        { word: "confident", es: "seguro" },
+        { word: "survive", es: "sobrevivir" },
+      ],
+    },
+    {
+      id: "s2",
+      image: s2,
+      imageAlt: "Lidia answers Vale's first client question.",
+      text: "Lidia's first answer.",
+      es: "La primera respuesta de Lidia.",
+      speaker: "vale",
+      cast: ["vale", "lidia"],
+      lines: [
+        {
+          speaker: "vale",
+          text: "A client writes that the pilot isn't working, three weeks in. What do you do before you reply?",
+          es: "Un cliente escribe que el piloto no funciona, a las tres semanas. ¿Qué haces antes de responder?",
+        },
+        {
+          speaker: "lidia",
+          text: "I check attendance and speaking minutes, because \"not working\" usually means one manager heard one complaint.",
+          es: "Reviso asistencia y minutos de habla, porque \"no funciona\" suele significar que un jefe escuchó una queja.",
+        },
+      ],
+      words: [
+        { word: "attendance", es: "asistencia" },
+        { word: "complaint", es: "queja" },
+        { word: "reply", es: "responder" },
+      ],
+    },
+    {
+      id: "s3",
+      image: s3,
+      imageAlt: "Vale digs deeper into Lidia's answer.",
+      text: "Digging.",
+      es: "Profundizando.",
+      speaker: "vale",
+      cast: ["vale", "lidia"],
+      lines: [
+        {
+          speaker: "vale",
+          text: "Good, but I want to dig into it. What if the data is fine and the manager is still angry?",
+          es: "Bien, pero quiero profundizar. ¿Y si los datos están bien y el jefe sigue molesto?",
+        },
+        {
+          speaker: "lidia",
+          text: "Then the data isn't the problem, and I'd stop defending it. I'd ask what he promised his own boss.",
+          es: "Entonces los datos no son el problema y dejaría de defenderlos. Preguntaría qué le prometió él a su propio jefe.",
+        },
+        {
+          speaker: "vale",
+          text: "That's the question behind the question, and it's the one that saves accounts.",
+          es: "Esa es la pregunta detrás de la pregunta, y es la que salva cuentas.",
+        },
+      ],
+      words: [
+        { word: "dig into", es: "profundizar en" },
+        { word: "the question behind the question", es: "la pregunta detrás de la pregunta" },
+        { word: "accounts", es: "cuentas, clientes" },
+      ],
+    },
+    {
+      id: "s4",
+      image: s4,
+      imageAlt: "Dani answers the discount question in the interview chair.",
+      text: "Dani's turn.",
+      es: "El turno de Dani.",
+      speaker: "vale",
+      cast: ["vale", "dani"],
+      lines: [
+        {
+          speaker: "vale",
+          text: "Same situation, different chair. The client asks for a discount instead of a fix.",
+          es: "Misma situación, otra silla. El cliente pide un descuento en vez de una solución.",
+        },
+        {
+          speaker: "dani",
+          text: "I'd say no to the discount and yes to a review meeting with numbers. A discount buys one quiet month and sells the idea that we failed.",
+          es: "Diría que no al descuento y que sí a una reunión de revisión con números. Un descuento compra un mes tranquilo y vende la idea de que fallamos.",
+        },
+      ],
+      words: [
+        { word: "discount", es: "descuento" },
+        { word: "review", es: "revisión" },
+        { word: "failed", es: "fallamos" },
+      ],
+    },
+    {
+      id: "s5",
+      image: s5,
+      imageAlt: "Vale argues the opposite position to test Dani.",
+      text: "Vale pushes.",
+      es: "Vale presiona.",
+      speaker: "vale",
+      cast: ["vale", "dani"],
+      lines: [
+        {
+          speaker: "vale",
+          text: "I'm going to argue against you for a minute, and I want you to hold your position or change it honestly. If we refuse every discount, we'll be the supplier that's technically right and commercially gone, because the person asking has a budget problem we didn't create and can't see. What I'd want from you is a third option: keep the price, change what's inside it. Give them two fewer teaching hours and one more measurement report, so the invoice stays the same and the value moves to where they're feeling pain. Now tell me why that's wrong.",
+          es: "Voy a argumentar en tu contra un minuto, y quiero que sostengas tu posición o la cambies con honestidad. Si rechazamos todo descuento, seremos el proveedor que tiene razón técnicamente y desaparece comercialmente, porque quien pide tiene un problema de presupuesto que no creamos y no vemos. Lo que querría de ti es una tercera opción: mantener el precio y cambiar lo que hay dentro. Darles dos horas de clase menos y un reporte de medición más, para que la factura siga igual y el valor se mueva a donde les duele. Ahora dime por qué eso está mal.",
+        },
+      ],
+      words: [
+        { word: "supplier", es: "proveedor" },
+        { word: "invoice", es: "factura" },
+        { word: "budget", es: "presupuesto" },
+      ],
+    },
+    {
+      id: "s6",
+      image: s6,
+      imageAlt: "Dani answers back and holds his position.",
+      text: "Dani answers back.",
+      es: "Dani responde.",
+      speaker: "dani",
+      cast: ["dani", "vale"],
+      lines: [
+        {
+          speaker: "dani",
+          text: "It isn't wrong, it's risky. Fewer hours in month one is exactly when students hold back from speaking, so we'd be cutting the thing that produces the result we're being judged on.",
+          es: "No está mal, es arriesgado. Menos horas en el mes uno es justo cuando los estudiantes se contienen de hablar, así que estaríamos cortando lo que produce el resultado por el que nos juzgan.",
+        },
+        {
+          speaker: "vale",
+          text: "Correct. And that's the answer I was waiting for.",
+          es: "Correcto. Y esa es la respuesta que esperaba.",
+        },
+      ],
+      words: [
+        { word: "hold back", es: "contenerse, no atreverse" },
+        { word: "risky", es: "arriesgado" },
+        { word: "judged", es: "juzgados" },
+      ],
+    },
+    {
+      id: "s7",
+      image: s7,
+      imageAlt: "Barrett interrupts once while Vale finishes with Lidia.",
+      text: "Barrett interrupts once.",
+      es: "Barrett interrumpe una vez.",
+      speaker: "barrett",
+      cast: ["barrett", "vale", "lidia"],
+      lines: [
+        {
+          speaker: "barrett",
+          text: "You're interviewing them better than we interviewed you.",
+          es: "Los estás entrevistando mejor de lo que nosotros te entrevistamos a ti.",
+        },
+        {
+          speaker: "vale",
+          text: "I've been on your side of the table for six years; I just wasn't being paid for it.",
+          es: "He estado de tu lado de la mesa seis años; solo que no me pagaban por eso.",
+        },
+        {
+          speaker: "vale",
+          text: "Lidia, last one. What would you say to the manager who's angry, in the first ten seconds of the call?",
+          es: "Lidia, la última. ¿Qué le dirías al jefe molesto, en los primeros diez segundos de la llamada?",
+        },
+        {
+          speaker: "lidia",
+          text: "That I've read his email twice and I'm not going to defend anything until he's told me what he needs by Friday.",
+          es: "Que leí su correo dos veces y no voy a defender nada hasta que me diga qué necesita para el viernes.",
+        },
+      ],
+      words: [
+        { word: "angry", es: "molesto, enojado" },
+        { word: "defend", es: "defender" },
+        { word: "email", es: "correo" },
+      ],
+    },
+    {
+      id: "s8",
+      image: s8,
+      imageAlt: "Camila brings news about the first pilot group while Vale turns to the class.",
+      text: "Your turn, and Camila at the door.",
+      es: "Tu turno, y Camila en la puerta.",
+      speaker: "vale",
+      cast: ["vale", "camila"],
+      lines: [
+        {
+          speaker: "vale",
+          text: "Your turn, and today you ask. Interview me about this pilot: three questions, and the third one has to be a follow-up on my answer.",
+          es: "Tu turno, y hoy preguntas tú. Entrevístame sobre este piloto: tres preguntas, y la tercera tiene que ser una repregunta a mi respuesta.",
+        },
+        {
+          speaker: "camila",
+          text: "The first pilot group is confirmed for Monday: nineteen adults, two countries, one of them on a bad connection.",
+          es: "El primer grupo del piloto está confirmado para el lunes: diecinueve adultos, dos países, uno con mala conexión.",
+        },
+        {
+          speaker: "vale",
+          text: "Then plan for the bad connection first. Everything else is easier than that.",
+          es: "Entonces planea primero para la mala conexión. Todo lo demás es más fácil que eso.",
+        },
+      ],
+      words: [
+        { word: "follow-up", es: "repregunta, seguimiento" },
+        { word: "confirmed", es: "confirmado" },
+        { word: "connection", es: "conexión" },
+      ],
+    },
+    {
+      id: "s9",
+      image: s9,
+      imageAlt: "Vale explains what the day was really about as Barrett announces Monday.",
+      text: "What Vale learned.",
+      es: "Lo que Vale aprendió.",
+      speaker: "vale",
+      cast: ["vale", "barrett"],
+      lines: [
+        {
+          speaker: "vale",
+          text: "Here's what today was really for. Answering well gets you hired; asking well gets you respected, and the two skills are not the same. When you ask, you have to read the room before you read your list — you notice who stopped talking, who looked at the manager before answering, who gave you an adjective instead of an example. If I'd only looked at my questions, I'd have chosen the person who sounded best. Having listened instead, I know which of you would tell me bad news on a Tuesday rather than a Friday, and that's the one thing a pilot can't survive without.",
+          es: "Esto es para lo que sirvió hoy en realidad. Responder bien te consigue el trabajo; preguntar bien te consigue respeto, y no son la misma habilidad. Cuando preguntas, tienes que leer el ambiente antes que tu lista: notas quién dejó de hablar, quién miró al jefe antes de responder, quién te dio un adjetivo en vez de un ejemplo. Si solo hubiera mirado mis preguntas, habría elegido a quien sonó mejor. Como escuché en cambio, sé cuál de ustedes me daría malas noticias un martes y no un viernes, y eso es lo único sin lo que un piloto no sobrevive.",
+        },
+        {
+          speaker: "barrett",
+          text: "Monday, then. The board will sit in on the first session, and they've asked to question you at the end of it.",
+          es: "El lunes, entonces. La junta estará en la primera sesión, y pidieron interrogarte al final.",
+        },
+      ],
+      words: [
+        { word: "read the room", es: "leer el ambiente" },
+        { word: "respected", es: "respetado" },
+        { word: "skills", es: "habilidades" },
+      ],
+    },
+  ],
+  quizzes: [
+    {
+      id: "q1",
+      afterScene: "s6",
+      questionEn: "Why does Dani say fewer teaching hours in month one is risky?",
+      questionEs: "¿Por qué dice Dani que menos horas de clase en el mes uno es arriesgado?",
+      options: [
+        { label: "Because that's when students hold back from speaking", emoji: "🤐" },
+        { label: "Because teachers earn less money", emoji: "💵" },
+        { label: "Because the invoice would change", emoji: "🧾" },
+      ],
+      answer: 0,
+      sayIt: "Because month one is exactly when students hold back from speaking.",
+      sayItEs: "Porque el mes uno es justo cuando los estudiantes se contienen de hablar.",
+      sayItCheck: {
+        target: "Because month one is exactly when students hold back from speaking",
+        altTargets: ["Students hold back from speaking", "Because students hold back"],
+      },
+    },
+    {
+      id: "q2",
+      afterScene: "s8",
+      questionEn: "Interview someone: ask three questions, and make the third a follow-up.",
+      questionEs: "Entrevista a alguien: haz tres preguntas y que la tercera sea una repregunta.",
+      options: [
+        { label: "I am ready to ask", emoji: "🎤" },
+        { label: "I want to hear the example again", emoji: "👂" },
+        { label: "I will practice later", emoji: "⏰" },
+      ],
+      answer: 0,
+      sayIt: "What does a good week look like in this job? Who decides when something isn't working? And when that happened last time, what did you change?",
+      sayItEs: "¿Cómo se ve una buena semana en este trabajo? ¿Quién decide cuándo algo no funciona? Y cuando pasó la última vez, ¿qué cambiaron?",
+      sayItAskEn: "Ask three questions. Start the third with \"And when that happened ...\".",
+      sayItAskEs: "Haz tres preguntas. Empieza la tercera con \"And when that happened …\".",
+      sayItCheck: {
+        target: "What *",
+        altTargets: ["Who *", "And when that happened *"],
+      },
+    },
+  ],
+  mindsetCard: {
+    afterScene: "s9",
+    phrase: "A good question opens a door an answer can't.",
+    es: "Una buena pregunta abre una puerta que una respuesta no puede.",
+  },
+  habitCard: {
+    afterScene: "s3",
+    phrase: "When an answer sounds good, I ask one more question.",
+    es: "Cuando una respuesta suena bien, hago una pregunta más.",
+    model: "vale",
+    modelActionEs: "Vale repreguntó hasta llegar a la pregunta detrás de la pregunta.",
+  },
+  expressions: [
+    {
+      phrase: "dig into",
+      variants: ["digs into", "dug into", "digging into"],
+      es: "profundizar en, investigar a fondo",
+      kind: "phrasal",
+      example: "Good, but I want to dig into it.",
+      exampleEs: "Bien, pero quiero profundizar.",
+    },
+    {
+      phrase: "hold back",
+      variants: ["holds back", "held back", "holding back"],
+      es: "contenerse, no atreverse",
+      kind: "phrasal",
+      example: "That is exactly when students hold back from speaking.",
+      exampleEs: "Es justo cuando los estudiantes se contienen de hablar.",
+    },
+    {
+      phrase: "read the room",
+      variants: ["reads the room", "reading the room"],
+      es: "leer el ambiente",
+      kind: "idiom",
+      example: "You have to read the room before you read your list.",
+      exampleEs: "Tienes que leer el ambiente antes que tu lista.",
+    },
+    {
+      phrase: "the question behind the question",
+      es: "la verdadera razón detrás de una pregunta",
+      kind: "idiom",
+      example: "That's the question behind the question, and it's the one that saves accounts.",
+      exampleEs: "Esa es la pregunta detrás de la pregunta, y es la que salva cuentas.",
+    },
+  ],
+  finaleSeconds: 30,
+  continuePrompt: {
+    en: "Thirty seconds: interview someone — three questions, and the third is a follow-up.",
+    es: "Treinta segundos: entrevista a alguien — tres preguntas, y la tercera es una repregunta.",
+  },
+  continueWith: [
+    "What does ... look like?",
+    "Who decides ...?",
+    "And when that happened, ...?",
+  ],
+  cliffhanger: {
+    en: "Monday: the first pilot session, with the board watching and questions at the end.",
+    es: "El lunes: la primera sesión del piloto, con la junta mirando y preguntas al final.",
+  },
+};
