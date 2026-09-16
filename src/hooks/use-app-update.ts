@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { APP_BUILD_ID } from "@/lib/build-id";
 import { isActivityBusy, subscribeActivity } from "@/lib/activity-lock";
+import { isStaleChunkError } from "@/lib/stale-chunk";
 
 const CHECK_MS = 120_000;
 const RELOAD_FLAG = "app-update-reloaded";
