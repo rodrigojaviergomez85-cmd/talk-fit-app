@@ -45,6 +45,31 @@ export const EPISODE_VOCAB_BUDGET: Record<string, string[]> = {
     "survey", "admitted", "failure", "calm", "accent", "decoration",
     "heartbeat", "interruption", "bet on", "turn into",
   ],
+  "advanced1-ep6-a-heartbeat-for-the-proposal": [
+    "heartbeat", "budgets", "retention", "decoration", "microphone", "risk",
+    "believable", "redesigned", "soul", "brave", "honesty", "survive",
+    "typo", "come up with", "hand in", "a bank wrote it",
+  ],
+  "advanced1-ep7-the-numbers-do-not-lie": [
+    "formula", "blame", "repair", "responsibility", "excuse", "audited",
+    "rebuilt", "warning", "spreadsheet", "uncomfortable", "figure", "founders",
+    "truth", "double-check", "pass through", "own the mistake",
+  ],
+  "advanced1-ep8-two-right-answers": [
+    "intensive", "trailer", "finance", "strategy", "damaged", "valuable",
+    "maintenance", "structure", "depth", "distinction", "propose", "intact",
+    "summary", "back down", "work out", "meet in the middle",
+  ],
+  "advanced1-ep9-in-their-own-words": [
+    "recorder", "complaint", "avoid", "supervisor", "bakery", "tourists",
+    "objections", "module", "freeze", "analysis", "behavioural", "interrupt",
+    "skipped", "turn down", "write down", "left outside",
+  ],
+  "advanced1-ep10-the-behavioural-round": [
+    "memorised", "follow-up", "immediately", "resigned", "timetable", "forgive",
+    "useless", "feedback", "timing", "discipline", "improvement", "structures",
+    "hidden", "keep up", "throw at", "on the short list",
+  ],
   "advanced1-ep1-rules-of-the-game": [
     "committee", "compete", "spot", "founder", "introduction", "structure",
     "background", "strength", "goal", "focused", "confident", "evidence",
