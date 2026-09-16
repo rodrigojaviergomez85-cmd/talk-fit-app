@@ -164,8 +164,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
         },
         {
           "speaker": "vale",
-          "text": "So I do not need perfect English; I need a clear order.",
-          "es": "Entonces no necesito un inglés perfecto; necesito un orden claro.",
+          "text": "Structure before polish. That is exactly what I teach my students.",
+          "es": "Estructura antes que perfección. Eso es exactamente lo que le enseño a mis estudiantes.",
         },
       ],
       "words": [
@@ -486,8 +486,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
   ],
   "mindsetCard": {
     "afterScene": "s7",
-    "phrase": "I do not need perfect English; I need a clear order.",
-    "es": "No necesito un inglés perfecto; necesito un orden claro.",
+    "phrase": "A clear structure beats a memorized script.",
+    "es": "Una estructura clara le gana a un guion memorizado.",
   },
   "habitCard": {
     "afterScene": "s3",
