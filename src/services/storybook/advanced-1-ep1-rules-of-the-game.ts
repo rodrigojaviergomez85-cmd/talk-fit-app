@@ -239,8 +239,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "Now you sound like the founder of this academy. Confident and clear.",
-          "es": "Ahora sí suenas como la fundadora de esta academia. Segura y clara.",
+          "text": "That is the version the committee needs: confident and full of numbers.",
+          "es": "Esa es la versión que el comité necesita: segura y llena de números.",
         },
         {
           "speaker": "camila",
