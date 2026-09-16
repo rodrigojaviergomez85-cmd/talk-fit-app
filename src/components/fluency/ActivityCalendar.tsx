@@ -288,6 +288,95 @@ export function ActivityCalendar({ es }: { es: boolean }) {
         </div>
       </div>
 
+      {/* 3. Custom period picker */}
+      <div className="mt-5 border-t border-border pt-4">
+        <h3 className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+          {es ? "Elegir periodo" : "Pick a period"}
+        </h3>
+        <div className="mt-2 flex flex-wrap items-center gap-2">
+          <Popover>
+            <PopoverTrigger asChild>
+              <button
+                type="button"
+                className="flex min-h-[40px] items-center gap-2 rounded-2xl border border-border px-3 text-[12px] font-bold text-foreground"
+              >
+                <CalendarDays className="size-4 text-primary" aria-hidden />
+                {customBounds
+                  ? rangeLabel(customBounds.from, customBounds.to, es ? "es" : "en")
+                  : es
+                    ? "Seleccionar fechas"
+                    : "Select dates"}
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="range"
+                defaultMonth={customBounds ? keyToDate(customBounds.from) : keyToDate(today)}
+                selected={picked}
+                onSelect={onPick}
+                disabled={{ after: keyToDate(today) }}
+                initialFocus
+                className="pointer-events-auto p-3"
+              />
+            </PopoverContent>
+          </Popover>
+          {customBounds ? (
+            <button
+              type="button"
+              onClick={() => {
+                setCustomBounds(null);
+                setPicked(undefined);
+              }}
+              className="min-h-[40px] rounded-2xl border border-border px-3 text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground"
+            >
+              {es ? "Limpiar" : "Clear"}
+            </button>
+          ) : null}
+        </div>
+
+        {customBounds ? (
+          <div aria-busy={customBusy}>
+            <div className="mt-3 grid grid-cols-4 gap-1.5 sm:grid-cols-7">
+              {customDays.map((d) => (
+                <Square
+                  key={`c-${d.day}`}
+                  day={d}
+                  selected={d.day === selected}
+                  max={maxCustom}
+                  es={es}
+                  onSelect={() => setSelected(d.day)}
+                />
+              ))}
+            </div>
+            <p className="mt-1 text-[11px] text-muted-foreground">
+              {es ? "Usuarios únicos por día en el periodo" : "Unique users per day in the period"}
+            </p>
+            <div className="mt-2 grid grid-cols-3 gap-2">
+              <div className="rounded-2xl bg-secondary/60 p-2 text-center">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                  {es ? "Promedio/día" : "Avg/day"}
+                </p>
+                <p className="text-[16px] font-black">{customSummary.avgActive ?? "—"}</p>
+              </div>
+              <div className="rounded-2xl bg-secondary/60 p-2 text-center">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                  {es ? "Mejor día" : "Best day"}
+                </p>
+                <p className="text-[16px] font-black">{customSummary.bestDay?.active_users ?? "—"}</p>
+              </div>
+              <div className="rounded-2xl bg-secondary/60 p-2 text-center">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                  {es ? "Días con actividad" : "Active days"}
+                </p>
+                <p className="text-[16px] font-black">{customSummary.daysWithActivity}</p>
+              </div>
+            </div>
+          </div>
+        ) : null}
+      </div>
+
+
+
       {/* 3. Day detail */}
       <div className="mt-4 space-y-1.5">
         <div className="flex items-baseline justify-between gap-2">
