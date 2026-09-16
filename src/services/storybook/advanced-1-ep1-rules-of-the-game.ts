@@ -349,8 +349,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "lines": [
         {
           "speaker": "vale",
-          "text": "We did it. They asked for my introduction, and I did not freeze.",
-          "es": "Lo logramos. Me pidieron mi presentación y no me paralicé.",
+          "text": "We did it. They asked for a professional introduction, and our proof did the work.",
+          "es": "Lo logramos. Pidieron una presentación profesional, y nuestras pruebas hicieron el trabajo.",
         },
         {
           "speaker": "dani",
