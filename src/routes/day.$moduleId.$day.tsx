@@ -82,13 +82,31 @@ function DayHubPage() {
   const [seen, setSeen] = useState(false);
 
   useEffect(() => {
-    setJourney(JourneyService.load());
-    if (data.episode) setSeen(isEpisodeSeen(data.episode.id));
+    const refresh = () => {
+      setJourney(JourneyService.load());
+      if (data.episode) setSeen(isEpisodeSeen(data.episode.id));
+    };
+    refresh();
+    const onVisible = () => {
+      if (document.visibilityState === "visible") refresh();
+    };
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      window.removeEventListener("focus", refresh);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
   }, [data.episode]);
 
   const episodeUnlocked =
     data.episode && journey ? isDayUnlocked(journey, data.moduleId, data.day) : false;
   const showStory = Boolean(data.episode && episodeUnlocked);
+
+  // The audios are the required activity: the next day opens only after them.
+  const dayDone = journey
+    ? JourneyService.isDayCompleted(journey, data.moduleId, data.day)
+    : false;
+  const nextDayOpen = dayDone || hasUnlimitedAccess();
 
   // Weekly league: server-confirmed points for this curriculum day.
   const league = useLeagueDay(data.moduleId, data.day);
