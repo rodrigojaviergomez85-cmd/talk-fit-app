@@ -4,15 +4,15 @@ import { ArrowRight, Trophy } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { claimDayRewards } from "@/lib/league.functions";
 import {
-  DAY_GOAL,
-  WEEKLY_GOAL,
+  
+  dailyGoal,
   formatPoints,
   hasReward,
   pointsForDay,
   progressPercent,
   type LeagueSummary,
 } from "@/lib/league";
-import { isLeagueCohort } from "@/lib/league-manifest";
+import { getStorySlot, isLeagueCohort } from "@/lib/league-manifest";
 import { curriculumWeekForDay } from "@/lib/league";
 
 /**
@@ -91,11 +91,15 @@ export function LeagueDaySection({
   const rewards = summary?.rewards ?? [];
   const dayPoints = pointsForDay(rewards, day);
   const points = summary?.points ?? 0;
-  const goal = summary?.attainableGoal || WEEKLY_GOAL;
   const week = summary?.curriculumWeek ?? curriculumWeekForDay(day);
   const rank = summary?.rank ?? null;
   const participants = summary?.participants ?? 0;
-  const bothDone = hasReward(rewards, day, "story") && hasReward(rewards, day, "practice");
+  // Audio-only days (no published story) are worth 150, not 300.
+  const hasStory = Boolean(moduleId && getStorySlot(moduleId, day));
+  const dayGoal = dailyGoal(hasStory);
+  const allDone =
+    hasReward(rewards, day, "practice") && (!hasStory || hasReward(rewards, day, "story"));
+
 
   return (
     <div className="space-y-3">
@@ -105,18 +109,24 @@ export function LeagueDaySection({
             {es ? "Tus puntos de hoy" : "Your points today"}
           </p>
           <p className="text-[11px] font-extrabold text-foreground">
-            {dayPoints} / {DAY_GOAL}
+            {dayPoints} / {dayGoal}
           </p>
         </div>
         <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-muted">
           <div
             className="h-full rounded-full bg-primary transition-[width] duration-500"
-            style={{ width: `${progressPercent(dayPoints, DAY_GOAL)}%` }}
+            style={{ width: `${progressPercent(dayPoints, dayGoal)}%` }}
           />
         </div>
-        {bothDone ? (
+        {allDone ? (
           <p className="mt-1.5 text-[11px] font-bold text-primary">
-            {es ? "¡Completaste ambas actividades!" : "You finished both activities!"}
+            {hasStory
+              ? es
+                ? "¡Completaste ambas actividades!"
+                : "You finished both activities!"
+              : es
+                ? "¡Completaste la actividad del día!"
+                : "You finished today's activity!"}
           </p>
         ) : null}
       </div>

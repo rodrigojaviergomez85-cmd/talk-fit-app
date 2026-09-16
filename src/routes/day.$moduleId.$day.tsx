@@ -18,9 +18,7 @@ import {
   LeagueRewardToast,
   useLeagueDay,
 } from "@/components/fluency/LeagueDaySection";
-import { getMyLeagueSummary } from "@/lib/league.functions";
-import { maxCohortWeekForModule } from "@/lib/league-manifest";
-import { curriculumWeekForDay, hasReward } from "@/lib/league";
+import { hasReward } from "@/lib/league";
 import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 import type { JourneyState, ModuleId } from "@/lib/types";
 
@@ -110,26 +108,9 @@ function DayHubPage() {
   const nextDayOpen = dayDone || hasUnlimitedAccess();
 
   // Weekly league: server-confirmed points for this curriculum day.
+  // Every module and curriculum week now competes, so there is no
+  // "week not active yet" state to flag here anymore.
   const league = useLeagueDay(data.moduleId, data.day);
-  // The student's active league week: the module's latest cohort week, read
-  // only (never claims points). Lets us flag days ahead of the active week.
-  const fetchLeague = useServerFn(getMyLeagueSummary);
-  const cohortWeek = maxCohortWeekForModule(data.moduleId);
-  const [enrolled, setEnrolled] = useState(false);
-  useEffect(() => {
-    if (!cohortWeek) return;
-    let alive = true;
-    void fetchLeague({ data: { moduleId: data.moduleId, day: (cohortWeek - 1) * 5 + 1 } })
-      .then((s) => {
-        if (alive) setEnrolled(s.enrolled || s.observer);
-      })
-      .catch(() => undefined);
-    return () => {
-      alive = false;
-    };
-  }, [fetchLeague, cohortWeek, data.moduleId]);
-  const weekOfDay = curriculumWeekForDay(data.day);
-  const showInactiveWeekNote = enrolled && cohortWeek > 0 && weekOfDay > cohortWeek;
 
   const rewards = league.summary?.rewards ?? [];
   const storyEarned = hasReward(rewards, data.day, "story");
@@ -316,20 +297,6 @@ function DayHubPage() {
           </Link>
         ) : null}
 
-        {showInactiveWeekNote ? (
-          <div className="space-y-1.5">
-            <p className="text-center text-[11px] font-semibold italic text-muted-foreground">
-              {t("day.inactiveWeekNote")}
-            </p>
-            <Link
-              to="/liga"
-              search={{ from: data.moduleId, day: data.day }}
-              className="flex min-h-[44px] items-center justify-center rounded-2xl border border-border bg-card px-4 text-[12px] font-extrabold uppercase tracking-[0.1em] text-foreground"
-            >
-              {t("day.seeMyLeagueWeek")}
-            </Link>
-          </div>
-        ) : null}
 
         <LeagueRewardToast count={league.awarded.length} es={es} onDone={league.clearAwarded} />
       </div>

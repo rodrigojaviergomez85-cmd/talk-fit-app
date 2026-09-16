@@ -4,6 +4,7 @@ import {
   WEEKLY_GOAL,
   attainableWeeklyGoal,
   curriculumWeekForDay,
+  dailyGoal,
   daysForWeek,
   formatWeekRange,
   hasReward,
@@ -14,7 +15,7 @@ import {
   progressPercent,
   type LeagueReward,
 } from "./league";
-import { LEAGUE_COHORTS, getStorySlot, isLeagueCohort } from "./league-manifest";
+import { LEAGUE_COHORTS, getLeagueCohort, getStorySlot, isLeagueCohort } from "./league-manifest";
 import { getStorybookEpisode } from "@/services/storybook";
 
 const reward = (day: number, activityType: "story" | "practice"): LeagueReward => ({
@@ -81,11 +82,30 @@ describe("liga semanal — reglas", () => {
   });
 });
 
-describe("liga semanal — cohorte piloto", () => {
-  it("only enables Basic Zero week 1", () => {
-    expect(isLeagueCohort("basic-zero", 1)).toBe(true);
-    expect(isLeagueCohort("basic-zero", 2)).toBe(false);
+describe("liga semanal — cohortes de todo el curso", () => {
+  const MODULES = [
+    "basic-zero",
+    "simple-future",
+    "simple-present",
+    "past-stories",
+    "mixed-tenses",
+    "eagles-week-1",
+    "tigers",
+    "sharks",
+    "advanced-1",
+    "advanced-2",
+    "advanced-3",
+  ];
+
+  it("enables every module and the four curriculum weeks", () => {
+    expect(LEAGUE_COHORTS).toHaveLength(MODULES.length * 4);
+    for (const moduleId of MODULES) {
+      for (let week = 1; week <= 4; week += 1) {
+        expect(isLeagueCohort(moduleId, week), `${moduleId} w${week}`).toBe(true);
+      }
+    }
     expect(isLeagueCohort("basic-two", 1)).toBe(false);
+    expect(isLeagueCohort("basic-zero", 5)).toBe(false);
   });
 
   it("matches the real episodes and their scene counts", () => {
@@ -98,8 +118,27 @@ describe("liga semanal — cohorte piloto", () => {
     }
   });
 
+  it("leaves modules without a season as audio-only weeks", () => {
+    for (const moduleId of ["advanced-2", "advanced-3"]) {
+      for (let week = 1; week <= 4; week += 1) {
+        expect(getLeagueCohort(moduleId, week)?.stories).toEqual([]);
+      }
+    }
+    // Audio-only weeks aim at five sessions × 150 points.
+    expect(attainableWeeklyGoal(0)).toBe(750);
+  });
+
   it("resolves the story slot from a curriculum day", () => {
     expect(getStorySlot("basic-zero", 3)?.episodeId).toBe("vale-who-is-he");
-    expect(getStorySlot("basic-zero", 7)).toBeUndefined();
+    expect(getStorySlot("basic-zero", 7)?.episodeId).toBe("vale-favorite-color");
+    expect(getStorySlot("tigers", 20)?.episodeId).toBe("tigers-ep20-defend-your-decision");
+    // Advanced 1 has no published episode past day 10 yet.
+    expect(getStorySlot("advanced-1", 11)).toBeUndefined();
+    expect(getStorySlot("advanced-2", 1)).toBeUndefined();
+  });
+
+  it("scores audio-only days as 150 and story days as 300", () => {
+    expect(dailyGoal(false)).toBe(150);
+    expect(dailyGoal(true)).toBe(300);
   });
 });
