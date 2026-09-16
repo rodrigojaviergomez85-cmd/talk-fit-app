@@ -49,6 +49,21 @@ export type LeagueSummary = {
   goalAttainable: boolean;
 };
 
+/** One weekly competition the learner belongs to (for the week selector). */
+export type LeagueWeekRef = {
+  competitionId: string;
+  moduleId: string;
+  curriculumWeek: number;
+  weekStart: string;
+  weekEnd: string;
+  closed: boolean;
+  /** True when this competition belongs to the running calendar week. */
+  isCurrent: boolean;
+  points: number;
+  rank: number | null;
+  participants: number;
+};
+
 export type LeagueBoardRow = {
   rank: number;
   name: string;
