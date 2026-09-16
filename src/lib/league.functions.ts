@@ -45,14 +45,16 @@ type RawSummary = {
   rank?: number | null;
   participants?: number;
   rewards?: LeagueReward[];
+  observer?: boolean;
 };
 
 function shapeSummary(raw: RawSummary | null, moduleId: string, week: number): LeagueSummary {
-  if (!raw?.enrolled) return EMPTY;
+  if (!raw?.enrolled && !raw?.observer) return EMPTY;
   const cohort = getLeagueCohort(raw.moduleId ?? moduleId, raw.curriculumWeek ?? week);
   const attainableGoal = attainableWeeklyGoal(cohort?.stories.length ?? 0);
   return {
-    enrolled: true,
+    enrolled: Boolean(raw.enrolled),
+    observer: Boolean(raw.observer),
     competitionId: raw.competitionId,
     moduleId: raw.moduleId,
     curriculumWeek: raw.curriculumWeek,
