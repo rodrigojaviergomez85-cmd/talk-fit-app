@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowLeft, ChevronDown, Crosshair, Trophy } from "lucide-react";
+import { ArrowLeft, ChevronDown, Crosshair, Flag, Trophy } from "lucide-react";
+import { reportAvatarPhoto, signAvatarPhotos } from "@/lib/avatar-photo.functions";
 import { AppShell } from "@/components/fluency/AppShell";
 import { LearnerAvatar } from "@/components/fluency/LearnerAvatar";
 import { useAppLang } from "@/lib/i18n";
