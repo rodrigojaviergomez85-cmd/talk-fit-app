@@ -3,6 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeft, ChevronDown, Crosshair, Trophy } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { LearnerAvatar } from "@/components/fluency/LearnerAvatar";
 import { useAppLang } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import { JourneyService } from "@/services/journey-service";
@@ -213,9 +214,7 @@ function LeaguePage() {
                     }`}
                   >
                     <span className="w-8 shrink-0 text-[12px] font-bold text-muted-foreground">{row.rank}</span>
-                    <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-muted text-[11px] font-extrabold uppercase">
-                      {row.name.slice(0, 2)}
-                    </span>
+                    <LearnerAvatar avatarId={row.avatar} name={row.name} className="size-7" />
                     <span className="min-w-0 flex-1 truncate">{row.name}</span>
                     <span className="shrink-0 text-[12px] font-bold">{formatPoints(row.points)}</span>
                   </li>

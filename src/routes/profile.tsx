@@ -4,6 +4,7 @@ import { ChevronRight, LogOut } from "lucide-react";
 import { ModuleHeading } from "@/components/fluency/ModuleHeading";
 import { clearPendingPlacement } from "@/services/preferences";
 import { AppShell } from "@/components/fluency/AppShell";
+import { ProfileCard } from "@/components/fluency/ProfileCard";
 import { MicTest } from "@/components/fluency/MicTest";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
@@ -68,6 +69,8 @@ function ProfilePage() {
   return (
     <AppShell title={t("account.title")}>
       <div className="space-y-5">
+        {userEmail ? <ProfileCard lang={esUi ? "es" : "en"} /> : null}
+
         <section className="grid grid-cols-2 gap-3">
           <Stat
             label={t("home.daysCompleted")}
