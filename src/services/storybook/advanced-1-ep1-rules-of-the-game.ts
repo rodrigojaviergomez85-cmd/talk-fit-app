@@ -319,8 +319,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "Two weeks ago that answer terrified her. Today she had documents, numbers, and evidence.",
-          "es": "Hace dos semanas esa respuesta la aterrorizaba. Hoy tenía documentos, números y evidencia.",
+          "text": "That question terrified the other academies today. Vale answered with documents, numbers, and evidence.",
+          "es": "Esa pregunta aterrorizó hoy a las otras academias. Vale respondió con documentos, números y evidencia.",
         },
       ],
       "words": [
