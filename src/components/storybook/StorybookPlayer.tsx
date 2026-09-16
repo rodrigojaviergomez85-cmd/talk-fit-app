@@ -546,7 +546,7 @@ function CoverSlide({ episode, es, onStart }: { episode: StorybookEpisode; es: b
           <Play className="size-5 fill-current" /> {es ? "Empezar" : "Start"}
         </button>
         <p className="text-center text-[12px] text-muted-foreground">
-          {es ? "Desliza o toca para pasar la página · toca cualquier palabra para ver su significado" : "Swipe or tap to turn the page · tap any word to see its meaning"}
+          {es ? "Toca para pasar la página · toca cualquier palabra para ver su significado" : "Tap to turn the page · tap any word to see its meaning"}
         </p>
         <p className="text-center text-[12px] font-bold text-muted-foreground">
           {es
