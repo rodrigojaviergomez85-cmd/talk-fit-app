@@ -91,11 +91,15 @@ export function LeagueDaySection({
   const rewards = summary?.rewards ?? [];
   const dayPoints = pointsForDay(rewards, day);
   const points = summary?.points ?? 0;
-  const goal = summary?.attainableGoal || WEEKLY_GOAL;
   const week = summary?.curriculumWeek ?? curriculumWeekForDay(day);
   const rank = summary?.rank ?? null;
   const participants = summary?.participants ?? 0;
-  const bothDone = hasReward(rewards, day, "story") && hasReward(rewards, day, "practice");
+  // Audio-only days (no published story) are worth 150, not 300.
+  const hasStory = Boolean(moduleId && getStorySlot(moduleId, day));
+  const dayGoal = dailyGoal(hasStory);
+  const allDone =
+    hasReward(rewards, day, "practice") && (!hasStory || hasReward(rewards, day, "story"));
+
 
   return (
     <div className="space-y-3">
