@@ -489,6 +489,13 @@ const DICT = {
   ],
   "day.seeMyLeagueWeek": ["VER MI SEMANA DE LIGA", "SEE MY LEAGUE WEEK"],
   "day.moduleFinished": ["Terminaste este módulo", "You finished this module"],
+  "day.lockedTitle": ["Día bloqueado", "Day locked"],
+  "day.lockedBody": [
+    "Completa los audios del Paso 2 de tu día actual para abrir este día.",
+    "Complete your current day's Step 2 audios to open this day.",
+  ],
+  "day.lockedCta": ["IR A MI DÍA ACTUAL", "GO TO MY CURRENT DAY"],
+  "day.lockedTag": ["Bloqueado", "Locked"],
   "story.goPractice": ["AHORA GRABA TUS AUDIOS", "NOW RECORD YOUR AUDIOS"],
   "day.weekDay": ["SEMANA {week} · DÍA {day} DE {total}", "WEEK {week} · DAY {day} OF {total}"],
   "exit.title": ["¿SEGURO QUE QUIERES SALIR?", "ARE YOU SURE YOU WANT TO EXIT?"],

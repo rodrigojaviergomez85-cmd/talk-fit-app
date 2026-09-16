@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Check, Clock, Mic } from "lucide-react";
+import { Check, Clock, Lock, Mic } from "lucide-react";
 import { TranslatableText } from "./TranslatableText";
 import type { CourseDay, ModuleId } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -172,12 +172,13 @@ function Meta({ icon, text }: { icon: React.ReactNode; text: string }) {
   );
 }
 
-/** Compact row used by the journey map. All days are always open. */
+/** Compact row used by the journey map. Future days stay locked. */
 export function JourneyDayRow({
   moduleId,
   day,
   completed,
   current,
+  unlocked = true,
 }: {
   moduleId: ModuleId;
   day: CourseDay;
@@ -185,33 +186,46 @@ export function JourneyDayRow({
   unlocked?: boolean;
   current: boolean;
 }) {
-  return (
-    <Link
-      to="/day/$moduleId/$day"
-      params={{ moduleId, day: String(day.day) }}
-      className="block"
+  const body = (
+    <div
+      className={cn(
+        "flex items-center gap-3 rounded-2xl border p-4 transition-colors",
+        completed && "border-success/30 bg-success/8",
+        !completed && current && "border-primary bg-primary/8",
+        !completed && !current && "border-border bg-card",
+        !unlocked && "opacity-60",
+      )}
     >
-      <div
+      <span
         className={cn(
-          "flex items-center gap-3 rounded-2xl border p-4 transition-colors",
-          completed && "border-success/30 bg-success/8",
-          !completed && current && "border-primary bg-primary/8",
-          !completed && !current && "border-border bg-card",
+          "flex size-9 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold",
+          completed
+            ? "bg-success text-success-foreground"
+            : current
+              ? "bg-primary text-primary-foreground"
+              : "bg-secondary text-muted-foreground",
         )}
       >
-        <span
-          className={cn(
-            "flex size-9 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold",
-            completed ? "bg-success text-success-foreground" : current ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground",
-          )}
-        >
-          {completed ? <Check className="size-4" /> : day.day}
-        </span>
-        <span className="min-w-0 flex-1">
-          <span className="block truncate text-[15px] font-bold tracking-tight">{day.topic}</span>
-          <span className="block truncate text-[12px] text-muted-foreground">{day.focus}</span>
-        </span>
+        {completed ? <Check className="size-4" /> : unlocked ? day.day : <Lock className="size-4" />}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-[15px] font-bold tracking-tight">{day.topic}</span>
+        <span className="block truncate text-[12px] text-muted-foreground">{day.focus}</span>
+      </span>
+    </div>
+  );
+
+  if (!unlocked) {
+    return (
+      <div aria-disabled="true" className="block cursor-not-allowed">
+        {body}
       </div>
+    );
+  }
+
+  return (
+    <Link to="/day/$moduleId/$day" params={{ moduleId, day: String(day.day) }} className="block">
+      {body}
     </Link>
   );
 }
