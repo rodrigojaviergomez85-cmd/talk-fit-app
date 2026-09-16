@@ -3,6 +3,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { ShieldCheck, RefreshCw } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { ActivityCalendar } from "@/components/fluency/ActivityCalendar";
 import { AdminAlertsBanner } from "@/components/fluency/AdminAlertsBanner";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { useAuth } from "@/lib/auth";
@@ -149,6 +150,9 @@ function MetricsPage() {
   return (
     <AppShell title={title}>
       <AdminAlertsBanner es={es} />
+      <div className="pb-4">
+        <ActivityCalendar es={es} />
+      </div>
       <div className="space-y-4 pb-8">
         <div className="flex items-center justify-between gap-2">
           <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary">

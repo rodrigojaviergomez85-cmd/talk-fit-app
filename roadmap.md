@@ -4,3 +4,4 @@
 - [ ] Advanced 1–3 plan de calidad: 20 ideas mes 1 aprobadas; guiones ep1–5 en revisión; luego 6–10, 11–15, 16–20, arte, auditoría, mes 2 y 3.
 - [x] Advanced 1 Episodio 1 (piloto): arte realista cinematográfico V1, 768x768 <250KB, guion aprobado, registrar temporada 9, pruebas y revisión móvil. Solo este episodio.
 - [x] Correcciones piloto Advanced 1 Ep1: frase de Vale con credibilidad de maestra, tarjeta de mentalidad actualizada, Reed fotorrealista consistente en s2/s3/s6/s7, glosario (polish), pruebas y verificación móvil.
+- [x] Calendario diario de actividad en /admin/metrics (7 días en cuadros, gráfica 7/15/30/mes, desglose por día)
