@@ -281,10 +281,12 @@ export const JourneyService = {
     // paths must run before the new Intermediate-completion gate.
     if (!aboveSavedLevel && JourneyService.completedCount(state, moduleId) > 0) return true;
     if (savedId && !aboveSavedLevel) return true;
-    // ADVANCED is CYCLICAL among itself (A1 / A2 / A3 are parallel entry points),
-    // but the whole family only opens once the three INTERMEDIATE modules
-    // (EAGLES, TIGERS, SHARKS) are complete.
+    // ADVANCED is a PARALLEL block, exactly like the intermediate one: a learner
+    // whose saved level is any of GET HIRED / HANDLE & SELL / THINK FAST has the
+    // three open at once. Otherwise the family only opens once the three
+    // INTERMEDIATE modules (EAGLES, TIGERS, SHARKS) are complete.
     if (modules[index]!.family === "advanced") {
+      if (savedId !== null && ADVANCED_MODULES.includes(savedId)) return true;
       return INTERMEDIATE_MODULES.every((id) => JourneyService.moduleComplete(state, id));
     }
 
