@@ -106,6 +106,11 @@ export function attainableWeeklyGoal(publishedStoryDays: number): number {
   return (DAYS_PER_WEEK + stories) * POINTS_PER_ACTIVITY;
 }
 
+/** Daily maximum: 300 with a story that day, 150 for audio-only days. */
+export function dailyGoal(hasStory: boolean): number {
+  return (hasStory ? 2 : 1) * POINTS_PER_ACTIVITY;
+}
+
 /** 0–100, clamped, for the compact progress bars. */
 export function progressPercent(points: number, goal: number): number {
   if (goal <= 0) return 0;
