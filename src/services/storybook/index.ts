@@ -163,6 +163,11 @@ import { ADVANCED1_EP2_NORTHLINE_NIGHT } from "./advanced-1-ep2-the-night-northl
 import { ADVANCED1_EP3_WHY_US } from "./advanced-1-ep3-why-us";
 import { ADVANCED1_EP4_MY_HONEST_WEAKNESS } from "./advanced-1-ep4-my-honest-weakness";
 import { ADVANCED1_EP5_PRESSURE_ROUND } from "./advanced-1-ep5-pressure-round";
+import { ADVANCED1_EP6_HEARTBEAT_PROPOSAL } from "./advanced-1-ep6-a-heartbeat-for-the-proposal";
+import { ADVANCED1_EP7_NUMBERS_DO_NOT_LIE } from "./advanced-1-ep7-the-numbers-do-not-lie";
+import { ADVANCED1_EP8_TWO_RIGHT_ANSWERS } from "./advanced-1-ep8-two-right-answers";
+import { ADVANCED1_EP9_IN_THEIR_OWN_WORDS } from "./advanced-1-ep9-in-their-own-words";
+import { ADVANCED1_EP10_BEHAVIOURAL_ROUND } from "./advanced-1-ep10-the-behavioural-round";
 import { expandSharksDialogue } from "./sharks-dialogue-expansions";
 import type { StorybookEpisode } from "./types";
 
@@ -333,6 +338,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   ADVANCED1_EP3_WHY_US,
   ADVANCED1_EP4_MY_HONEST_WEAKNESS,
   ADVANCED1_EP5_PRESSURE_ROUND,
+  ADVANCED1_EP6_HEARTBEAT_PROPOSAL,
+  ADVANCED1_EP7_NUMBERS_DO_NOT_LIE,
+  ADVANCED1_EP8_TWO_RIGHT_ANSWERS,
+  ADVANCED1_EP9_IN_THEIR_OWN_WORDS,
+  ADVANCED1_EP10_BEHAVIOURAL_ROUND,
   ].map(expandSharksDialogue),
 ];
 
