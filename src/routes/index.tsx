@@ -51,6 +51,16 @@ function HomePage() {
 
   useEffect(() => {
     load();
+    // Coming back from a finished practice must show the new day right away.
+    const onVisible = () => {
+      if (document.visibilityState === "visible") load();
+    };
+    window.addEventListener("focus", load);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      window.removeEventListener("focus", load);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
   }, [load]);
 
   // First-time learners see the intro + placement once; active learners never do.

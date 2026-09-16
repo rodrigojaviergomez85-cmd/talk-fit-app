@@ -496,6 +496,9 @@ export const JourneyService = {
       weekSeconds,
     };
     write(next);
+    // A cached cloud pull from before this completion would overwrite the day
+    // we just finished (Home would keep showing the old day for ~30s).
+    pullCache = null;
     return next;
   },
 

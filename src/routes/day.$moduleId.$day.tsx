@@ -21,6 +21,7 @@ import {
 import { getMyLeagueSummary } from "@/lib/league.functions";
 import { maxCohortWeekForModule } from "@/lib/league-manifest";
 import { curriculumWeekForDay, hasReward } from "@/lib/league";
+import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 import type { JourneyState, ModuleId } from "@/lib/types";
 
 /**
@@ -82,13 +83,31 @@ function DayHubPage() {
   const [seen, setSeen] = useState(false);
 
   useEffect(() => {
-    setJourney(JourneyService.load());
-    if (data.episode) setSeen(isEpisodeSeen(data.episode.id));
+    const refresh = () => {
+      setJourney(JourneyService.load());
+      if (data.episode) setSeen(isEpisodeSeen(data.episode.id));
+    };
+    refresh();
+    const onVisible = () => {
+      if (document.visibilityState === "visible") refresh();
+    };
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      window.removeEventListener("focus", refresh);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
   }, [data.episode]);
 
   const episodeUnlocked =
     data.episode && journey ? isDayUnlocked(journey, data.moduleId, data.day) : false;
   const showStory = Boolean(data.episode && episodeUnlocked);
+
+  // The audios are the required activity: the next day opens only after them.
+  const dayDone = journey
+    ? JourneyService.isDayCompleted(journey, data.moduleId, data.day)
+    : false;
+  const nextDayOpen = dayDone || hasUnlimitedAccess();
 
   // Weekly league: server-confirmed points for this curriculum day.
   const league = useLeagueDay(data.moduleId, data.day);
@@ -195,6 +214,11 @@ function DayHubPage() {
             <span className="flex flex-wrap items-center gap-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-navy-foreground/70">
               {t("day.required")}
               {league.eligible ? <LeaguePointsBadge earned={practiceEarned} es={es} /> : null}
+              {dayDone ? (
+                <span className="inline-flex items-center gap-0.5 text-primary">
+                  <Check className="size-3" aria-hidden="true" /> {t("day.completedTag")}
+                </span>
+              ) : null}
             </span>
             <span className="block text-[15px] font-extrabold leading-tight">{t("day.audiosTitle")}</span>
             <span className="block truncate text-xs font-medium text-navy-foreground/70">
@@ -214,14 +238,30 @@ function DayHubPage() {
         ) : null}
 
         {data.day < data.total ? (
-          <Link
-            to="/day/$moduleId/$day"
-            params={{ moduleId: data.moduleId, day: String(data.day + 1) }}
-            className="flex min-h-[48px] items-center justify-center gap-2 rounded-2xl border-2 border-navy bg-card px-4 text-[13px] font-extrabold uppercase tracking-[0.12em] text-navy transition-transform active:scale-[0.99]"
-          >
-            {t("day.nextDay")}
-            <ArrowRight className="size-4" aria-hidden="true" />
-          </Link>
+          nextDayOpen ? (
+            <Link
+              to="/day/$moduleId/$day"
+              params={{ moduleId: data.moduleId, day: String(data.day + 1) }}
+              className="flex min-h-[48px] items-center justify-center gap-2 rounded-2xl border-2 border-navy bg-card px-4 text-[13px] font-extrabold uppercase tracking-[0.12em] text-navy transition-transform active:scale-[0.99]"
+            >
+              {t("day.nextDay")}
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </Link>
+          ) : (
+            <div className="space-y-1.5">
+              <button
+                type="button"
+                disabled
+                className="flex min-h-[48px] w-full cursor-not-allowed items-center justify-center gap-2 rounded-2xl border-2 border-border bg-muted/40 px-4 text-[13px] font-extrabold uppercase tracking-[0.12em] text-muted-foreground"
+              >
+                {t("day.nextDay")}
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </button>
+              <p className="text-center text-[11px] font-semibold text-muted-foreground">
+                {t("day.nextDayLocked")}
+              </p>
+            </div>
+          )
         ) : (
           <p className="rounded-2xl border border-border bg-muted/40 px-4 py-3 text-center text-[12px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
             {t("day.moduleFinished")}

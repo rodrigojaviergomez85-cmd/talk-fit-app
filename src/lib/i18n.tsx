@@ -478,6 +478,11 @@ const DICT = {
   "day.step2Label": ["PASO 2", "STEP 2"],
   "day.nextDay": ["SIGUIENTE DÍA", "NEXT DAY"],
   "day.prevDay": ["DÍA ANTERIOR", "PREVIOUS DAY"],
+  "day.nextDayLocked": [
+    "Completa los audios de hoy para abrir el día siguiente",
+    "Complete today's audios to open the next day",
+  ],
+  "day.completedTag": ["Completado", "Completed"],
   "day.inactiveWeekNote": [
     "* Aún no puedes ganar puntos para esta semana, solo tu semana activa *",
     "* You can't earn points for this week yet, only for your active week *",
