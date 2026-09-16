@@ -9,6 +9,7 @@ import {
   type LeagueBoardRow,
   type LeagueReward,
   type LeagueSummary,
+  type LeagueWeekRef,
 } from "./league";
 
 /**
