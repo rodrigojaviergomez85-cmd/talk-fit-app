@@ -168,7 +168,11 @@ export const JourneyService = {
         return firstOfWeek ?? (prefs.startWeek - 1) * 5 + 1;
       }
     }
-    for (let day = 1; day <= total; day += 1) {
+    // Start from the first day this learner was actually assigned: a learner
+    // placed at week 3 never had days 1-10, so those gaps must not pin them
+    // back to day 1 after they finish day 11.
+    const from = JourneyService.startDay(state, moduleId);
+    for (let day = from; day <= total; day += 1) {
       if (!state.days[recordKey(moduleId, day)]) return day;
     }
     return total;
