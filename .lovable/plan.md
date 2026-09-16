@@ -1,40 +1,44 @@
-# Advanced 1 (Temporada 9) — Guiones a mano, Episodios 16–20
+# Comparación: guiones aprobados 11–15 vs episodios entregados
 
-Escribir a mano los 5 guiones finales de la temporada para tu revisión y aprobación. Nada de producción (arte, glosario, registro en la app) hasta que apruebes el documento.
+Comparé línea por línea el documento aprobado (`guion-advanced-1-episodios-11-15-v2.md`) contra los cinco episodios que están en la app. Los episodios 16–20 todavía no existen en la app, así que la comparación cubre 11–15.
 
-## Continuidad real desde el Episodio 15
+## Resultado
 
-El episodio 15 ya producido cierra así: **Vale sobrevivió a la ronda que interrumpe; la decisión llega el lunes y el comité le pide sus primeros noventa días por escrito.** El borrador viejo de 16–20 que está en Archivos se escribió antes de esa versión (arranca con Camila tomando el micrófono y otra situación del comité), así que se reescribe completo desde este punto.
+| Ep | Líneas guion | Líneas app | Coinciden | Diferencias |
+|----|--------------|------------|-----------|-------------|
+| 11 | 28 | 28 | 25 | 3 (solo nombres) |
+| 12 | 28 | 28 | 26 | 2 (solo nombres) |
+| 13 | 23 | 23 | 22 | 1 (solo nombres) |
+| 14 | 25 | 25 | 24 | 1 (solo nombres) |
+| 15 | 31 | **24** | **0** | Diálogo completamente distinto |
 
-Arco propuesto Semana 4 (días 16–20): el equipo convierte los noventa días en una historia profesional contable, enfrenta un escenario sorpresa del comité, preguntas fuera de guion, un cambio de papel en vivo (comité → cliente molesto → venta), y cierra con la simulación final donde llega la decisión.
+### Episodios 11 a 14: fieles, con cambios de nombre
 
-## Mapa episodio por episodio (foco = día de práctica)
+El diálogo es idéntico al aprobado. Las únicas diferencias son sustituciones de personajes que se hicieron durante la producción:
 
-| Ep | Día | Foco de currícula | Trama |
-|----|-----|-------------------|-------|
-| 16 | 16 | YOUR PROFESSIONAL STORY — PASADO → PRESENTE → FUTURO | El comité pide la historia completa del equipo; Vale la arma y Camila aporta la parte que Vale no ve |
-| 17 | 17 | COMPETENCY INTERVIEW — responder al escenario que salga | Escenario sorpresa: un piloto se cae a mitad de camino y hay que responder con evidencia, no con intención |
-| 18 | 18 | UNEXPECTED RECRUITER — respuesta · por qué · ejemplo, con 10 s para pensar | Preguntas raras y fuera de guion del comité; Crown intenta que Vale improvise mal |
-| 19 | 19 | ROLE SWITCH — cambiar de contexto sin congelarse | En vivo: de comité a cliente molesto a conversación de venta, sin perder el tono |
-| 20 | 20 | FINAL PRESSURE SIMULATION — ocho rondas y cierre | Llega la decisión: piloto internacional limitado aprobado; Dani asume México y se abre Advanced 2 |
+- **Nelson → Barrett** (ep 11 y 14)
+- **Elena → Lidia** (ep 11, 12 y 13)
+- **Lucía → Elena** en una línea del ep 12 ("Retention went from forty-one per cent…")
 
-## Hilo con Advanced 2 y Advanced 3 (plan maestro)
+Estas sustituciones se hicieron para evitar choques con personajes que ya existen en Sharks/Tigers, pero nunca se reflejaron en el documento aprobado, así que hoy guion y app no concuerdan.
 
-El episodio 20 no entrega una expansión mundial. Entrega **una oportunidad ganada y limitada**: piloto internacional aprobado con metas medibles, Dani liderando la operación de México, y un primer compromiso de servicio con clientes reales. Ese es exactamente el punto de entrada de **Advanced 2 (cumplir bajo presión: clientes, quejas, servicio, ventas)**, y deja sembrado lo que abre **Advanced 3 (alianzas, decisiones éticas, liderar sin guion; el interés de Dani por el servicio público)**.
+### Episodio 15: no corresponde al guion aprobado
 
-## Reglas de calidad (las mismas de los episodios 1–15 ya reescritos)
+Aquí sí hay un incumplimiento real:
 
-- 11 escenas conectadas, ~33 líneas de diálogo, 550–650 palabras habladas, casi todo diálogo tipo Friends.
-- **B2 real y verificable**: condicionales (2º y 3º), pasivas y reportadas, oraciones hendidas ("What matters is…"), conectores de matiz, y al menos dos turnos largos argumentativos por episodio.
-- Vale es maestra experimentada y empresaria; Dani y Camila son profesionales. **Solo el estudiante puede dudar o estar aprendiendo.**
-- Elenco y voces canónicos (Vale, Dani, Camila, Reed, Barrett, Elena, Lidia), sin colisiones de nombres con Sharks/Tigers; cast por escena declarado para que el arte y las voces sigan la consistencia aprobada en 1–15.
-- **2 phrasal verbs nuevos + 2 idioms/colocaciones nuevos por episodio**, marcados como expresión completa (se subrayan enteros y se traducen como unidad), con variantes y ejemplo dentro del diálogo, sin repetir los ya usados en 1–15.
-- Vocabulario: ~16 unidades nuevas B1–B2 y 10–20 recicladas por episodio, tomadas del vocabulario aprobado de la temporada.
-- Dos preguntas al estudiante por episodio: una de comprensión (opciones en orden aleatorio) y una abierta con ejemplo coherente; cierre grabado de 30 segundos.
-- Cliffhanger que conecta cada episodio con el siguiente; el 20 cierra la temporada y abre Advanced 2.
+- Ninguna de las 31 líneas aprobadas aparece en la app; el episodio tiene 24 líneas nuevas escritas aparte.
+- Queda corto: 484 palabras habladas contra 548 del guion y el mínimo de 550 de nuestra regla.
+- Escenas clave del guion se perdieron: la ronda "Why this contract, in thirty seconds, and I will interrupt you", la respuesta de la deserción en el mes dos, la ronda sobre el curso cerrado con condicional tercero, y la crítica del excolega.
 
-## Entrega
+## Qué propongo hacer
 
-Un documento nuevo en Archivos: `guion-advanced-1-episodios-16-20-v2.md`, con los 5 guiones completos (líneas en inglés con su apoyo en español, cast por escena, las dos preguntas, lista de expresiones, vocabulario nuevo/reciclado y cliffhanger). El archivo viejo se conserva sin tocar.
+1. **Reescribir el episodio 15 sobre el guion aprobado**: usar sus 31 líneas tal cual, completar hasta 33 líneas y 550–650 palabras dentro de las mismas 11 escenas, conservando el arte, las voces, el reparto y los identificadores actuales. Se revisan también sus dos preguntas, el glosario tocable, los 2 phrasal verbs + 2 idioms y el cierre de 30 segundos.
+2. **Cerrar la brecha de nombres en 11–14**: dejar en la app los nombres canónicos (Barrett y Lidia) y corregir el documento aprobado para que diga lo mismo, más la línea del ep 12 que debe nombrar a Lidia en vez de Elena. Así el guion vuelve a ser la fuente fiel de lo que ve el estudiante.
+3. **Verificación**: prueba automática que compare, episodio por episodio, cada línea de la app contra el guion aprobado, para que esto no vuelva a pasar en 16–20.
+4. Con 11–15 alineados, retomamos los guiones 16–20.
 
-Tras tu aprobación del documento, en un siguiente paso produzco los episodios (arte con el mismo estilo cinematográfico de 1–15, glosario, registro, QA).
+## Detalles técnicos
+
+- Reescritura en `src/services/storybook/advanced-1-ep15-the-room-that-interrupts.ts` (solo texto, `lines`, `words`, quizzes y expresiones; sin tocar imports de arte ni ids de escena).
+- Corrección del documento `/mnt/documents/guion-advanced-1-episodios-11-15-v2.md` en las 7 líneas con nombres desalineados.
+- Nueva prueba en `src/services/storybook/` que valide texto contra guion y los presupuestos de líneas/palabras; se ejecutan además las suites de storybook, consistencia de reparto y verificación de tipos.
