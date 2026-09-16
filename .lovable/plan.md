@@ -4,18 +4,25 @@ Un calendario mes por mes dentro de la pantalla de Métricas de admin que guarda
 
 ## Qué verá el admin
 
-Una sección nueva "Calendario de actividad" en `/admin/metrics`:
+Una sección nueva "Calendario de actividad" en `/admin/metrics`, en tres partes:
 
-- **Cuadrícula mensual** con un recuadro por día. Cada día muestra el número de estudiantes distintos que tuvieron cualquier actividad ese día, con intensidad de color según el volumen.
-- **Navegación** de mes anterior / siguiente (sin pasar del mes actual).
-- **Al tocar un día**, se abre el detalle con el desglose:
+**1. Últimos 7 días en cuadros pequeños**
+Una fila de 7 recuadros compactos (uno por día, el de hoy al final). Cada uno muestra la fecha corta y los estudiantes únicos activos de ese día.
+
+**2. Gráfica lineal con selector de rango**
+Debajo, una gráfica de línea de estudiantes activos por día, con botones para elegir: últimos 7 días, últimos 15, últimos 30, o mes por mes (con navegación de mes anterior / siguiente, sin pasar del mes actual).
+
+**3. Detalle del día**
+Al tocar un cuadro o un punto de la gráfica se abre el desglose de ese día:
   - Total de estudiantes únicos activos
   - Prácticas de módulos: estudiantes únicos + total de prácticas
   - El Mundo de Vale: estudiantes únicos + total de episodios abiertos
   - Simulador de entrevistas: estudiantes únicos + total de simulaciones
   - Review: estudiantes únicos + total de prácticas de review
   - Coach IA: estudiantes únicos + total de preguntas
-- **Resumen del mes** arriba: promedio de activos por día, mejor día, total de días con actividad.
+
+Además, un resumen del rango seleccionado: promedio de activos por día, mejor día y días con actividad.
+
 
 Los días se cuentan con la hora de El Salvador, igual que los topes diarios, para que coincidan con lo que vive el estudiante.
 
