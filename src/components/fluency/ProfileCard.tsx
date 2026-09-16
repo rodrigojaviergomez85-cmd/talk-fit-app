@@ -5,6 +5,7 @@ import { AVATARS } from "@/lib/avatars";
 import { NAME_MAX, checkName } from "@/lib/profile-name";
 import { getMyProfile, updateMyProfile, type MyProfile } from "@/lib/profile.functions";
 import { LearnerAvatar } from "@/components/fluency/LearnerAvatar";
+import { ProfilePhotoCard } from "@/components/fluency/ProfilePhotoCard";
 import { cn } from "@/lib/utils";
 
 const TEXT = {
@@ -98,6 +99,12 @@ export function ProfileCard({ lang }: { lang: "es" | "en" }) {
   return (
     <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
       <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{t.title}</p>
+
+      <ProfilePhotoCard
+        lang={lang}
+        profile={profile}
+        onChange={(patch) => setProfile((p) => (p ? { ...p, ...patch } : p))}
+      />
 
       <div className="flex items-center gap-3">
         <LearnerAvatar
