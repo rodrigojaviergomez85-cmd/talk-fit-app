@@ -110,26 +110,9 @@ function DayHubPage() {
   const nextDayOpen = dayDone || hasUnlimitedAccess();
 
   // Weekly league: server-confirmed points for this curriculum day.
+  // Every module and curriculum week now competes, so there is no
+  // "week not active yet" state to flag here anymore.
   const league = useLeagueDay(data.moduleId, data.day);
-  // The student's active league week: the module's latest cohort week, read
-  // only (never claims points). Lets us flag days ahead of the active week.
-  const fetchLeague = useServerFn(getMyLeagueSummary);
-  const cohortWeek = maxCohortWeekForModule(data.moduleId);
-  const [enrolled, setEnrolled] = useState(false);
-  useEffect(() => {
-    if (!cohortWeek) return;
-    let alive = true;
-    void fetchLeague({ data: { moduleId: data.moduleId, day: (cohortWeek - 1) * 5 + 1 } })
-      .then((s) => {
-        if (alive) setEnrolled(s.enrolled || s.observer);
-      })
-      .catch(() => undefined);
-    return () => {
-      alive = false;
-    };
-  }, [fetchLeague, cohortWeek, data.moduleId]);
-  const weekOfDay = curriculumWeekForDay(data.day);
-  const showInactiveWeekNote = enrolled && cohortWeek > 0 && weekOfDay > cohortWeek;
 
   const rewards = league.summary?.rewards ?? [];
   const storyEarned = hasReward(rewards, data.day, "story");
