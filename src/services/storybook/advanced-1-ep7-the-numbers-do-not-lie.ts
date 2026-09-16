@@ -69,8 +69,8 @@ export const ADVANCED1_EP7_NUMBERS_DO_NOT_LIE: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "I have been checking since six. The formula counted active students from the old list and the new one, so everybody who moved was counted twice.",
-          es: "Llevo revisando desde las seis. La fórmula contó estudiantes activos de la lista vieja y de la nueva, así que todo el que se cambió fue contado dos veces.",
+          text: "I have been double-checking every column since six. The formula counted active students from the old list and the new one, so everybody who moved was counted twice.",
+          es: "Llevo revisando dos veces cada columna desde las seis. La fórmula contó estudiantes activos de la lista vieja y de la nueva, así que todo el que se cambió fue contado dos veces.",
         },
       ],
       words: [
@@ -386,8 +386,8 @@ export const ADVANCED1_EP7_NUMBERS_DO_NOT_LIE: StorybookEpisode = {
       variants: ["double-checked", "double-checking", "double-checks"],
       es: "revisar dos veces",
       kind: "phrasal",
-      example: "Every attachment has been double-checked since then.",
-      exampleEs: "Cada adjunto se ha revisado dos veces desde entonces.",
+      example: "I have been double-checking every column since six.",
+      exampleEs: "Llevo revisando dos veces cada columna desde las seis.",
     },
     {
       phrase: "pass through",

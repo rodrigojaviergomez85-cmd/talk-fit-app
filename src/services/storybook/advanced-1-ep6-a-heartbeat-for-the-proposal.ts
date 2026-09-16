@@ -183,8 +183,8 @@ export const ADVANCED1_EP6_HEARTBEAT_PROPOSAL: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Action: the first lesson was redesigned in one weekend. Camila filmed short games, I scheduled the teachers, and four families agreed to test it.",
-          es: "Acción: la primera lección fue rediseñada en un fin de semana. Camila filmó juegos cortos, yo organicé a los maestros, y cuatro familias aceptaron probarla.",
+          text: "Action: we had one weekend to come up with a better opening, so the first lesson was redesigned. Camila filmed short games, I scheduled the teachers, and four families agreed to test it.",
+          es: "Acción: teníamos un fin de semana para idear una mejor apertura, así que la primera lección fue rediseñada. Camila filmó juegos cortos, yo organicé a los maestros, y cuatro familias aceptaron probarla.",
         },
         {
           speaker: "vale",

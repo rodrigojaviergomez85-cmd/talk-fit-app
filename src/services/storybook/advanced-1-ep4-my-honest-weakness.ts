@@ -397,8 +397,8 @@ export const ADVANCED1_EP4_MY_HONEST_WEAKNESS: StorybookEpisode = {
       variants: ["backs up", "backed up", "backing up"],
       es: "respaldar; apoyar",
       kind: "phrasal",
-      example: "You built a system to back it up.",
-      exampleEs: "Construiste un sistema para respaldarlo.",
+      example: "It is not fatal, because a system was built to back it up.",
+      exampleEs: "No es fatal, porque se construyó un sistema para respaldarlo.",
     },
     {
       phrase: "wear a costume",
