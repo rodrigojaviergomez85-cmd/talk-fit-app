@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, BookOpen, Check, Mic, Star } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Check, Lock, Mic, Star } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
@@ -134,6 +134,42 @@ function DayHubPage() {
   const rewards = league.summary?.rewards ?? [];
   const storyEarned = hasReward(rewards, data.day, "story");
   const practiceEarned = hasReward(rewards, data.day, "practice");
+
+  // Direct URL protection: a future day stays closed until the current day's
+  // audios are done. Test/admin accounts with unlimited access browse freely.
+  const dayAccessible =
+    !journey ||
+    hasUnlimitedAccess() ||
+    JourneyService.isDayUnlocked(journey, data.moduleId, data.day);
+
+  if (!dayAccessible) {
+    const currentDay = JourneyService.currentDay(journey, data.moduleId);
+    return (
+      <AppShell>
+        <div className="space-y-3 p-4 pb-6">
+          <Link
+            to="/"
+            className="inline-flex h-9 items-center gap-1.5 rounded-2xl border border-border px-3 text-[11px] font-bold uppercase tracking-[0.12em]"
+          >
+            <ArrowLeft className="size-4" aria-hidden="true" />
+            {t("home.backHome")}
+          </Link>
+          <div className="space-y-2 rounded-3xl border border-border bg-card p-6 text-center">
+            <Lock className="mx-auto size-6 text-muted-foreground" aria-hidden="true" />
+            <h1 className="text-base font-extrabold text-foreground">{t("day.lockedTitle")}</h1>
+            <p className="text-[13px] font-medium text-muted-foreground">{t("day.lockedBody")}</p>
+            <Link
+              to="/day/$moduleId/$day"
+              params={{ moduleId: data.moduleId, day: String(currentDay) }}
+              className="mt-2 flex min-h-[48px] items-center justify-center rounded-2xl bg-navy px-4 text-[13px] font-extrabold uppercase tracking-[0.12em] text-navy-foreground"
+            >
+              {t("day.lockedCta")}
+            </Link>
+          </div>
+        </div>
+      </AppShell>
+    );
+  }
 
   return (
     <AppShell>

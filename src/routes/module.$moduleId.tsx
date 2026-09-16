@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useAppLang, useT } from "@/lib/i18n";
 import { useVerbBank } from "@/hooks/use-verb-bank";
 import { PAST_VERBS, VerbBank } from "@/services/verb-bank";
+import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 
 export const Route = createFileRoute("/module/$moduleId")({
   beforeLoad: ({ params }) => {
@@ -330,12 +331,22 @@ function WeekSection({
                       </>
                     ) : current ? (
                       "Current"
-                    ) : (
+                    ) : unlocked ? (
                       "Up next"
+                    ) : (
+                      <>
+                        <Lock className="size-3" /> {t("day.lockedTag")}
+                      </>
                     )}
                   </span>
                 </div>
-                <JourneyDayRow moduleId={moduleId} day={item} completed={done} current={current} />
+                <JourneyDayRow
+                  moduleId={moduleId}
+                  day={item}
+                  completed={done}
+                  current={current}
+                  unlocked={unlocked}
+                />
                 {item.testReady ? <TestReadyCard moduleId={moduleId} day={item} dayCompleted={done} /> : null}
               </div>
             );
