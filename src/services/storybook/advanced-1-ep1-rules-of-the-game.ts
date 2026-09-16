@@ -486,8 +486,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
   ],
   "mindsetCard": {
     "afterScene": "s7",
-    "phrase": "I do not need perfect English; I need a clear order.",
-    "es": "No necesito un inglés perfecto; necesito un orden claro.",
+    "phrase": "A clear structure beats a memorized script.",
+    "es": "Una estructura clara le gana a un guion memorizado.",
   },
   "habitCard": {
     "afterScene": "s3",
