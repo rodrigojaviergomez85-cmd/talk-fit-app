@@ -102,7 +102,7 @@ function DayHubPage() {
     let alive = true;
     void fetchLeague({ data: { moduleId: data.moduleId, day: (cohortWeek - 1) * 5 + 1 } })
       .then((s) => {
-        if (alive) setEnrolled(s.enrolled);
+        if (alive) setEnrolled(s.enrolled || s.observer);
       })
       .catch(() => undefined);
     return () => {
