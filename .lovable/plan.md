@@ -1,37 +1,47 @@
-# Elevar Advanced 1 a nivel B2 real
+# Advanced 1 eps 1–5: auditoría de nivel y reescritura a B2
 
 ## Diagnóstico
 
-El inglés de Advanced 1 (episodios 1–5) es correcto y fluido, pero de nivel B1: oraciones cortas y simples, presente/pasado básico, poco matiz. Un estudiante que termina Advanced así habla bien, pero no llega a B2. La meta declarada del programa es terminar en B2 en 11 meses, y Advanced 1–3 son los últimos 3 meses: aquí es donde el salto debe ocurrir.
+El inglés de Advanced 1 (episodios 1–5) es correcto y fluido, pero de nivel B1: oraciones cortas, presente/pasado simple, poco matiz. Un estudiante que termina Advanced así habla bien, pero no llega a B2. Advanced es el último tramo del programa: aquí debe ocurrir el salto.
 
-## Reglas de nivel B2 por episodio (Advanced 1–3)
+## Alcance de este trabajo
 
-Cada episodio debe incluir, de forma natural dentro del diálogo:
+Solo episodios 1–5 de Advanced 1. Misma historia, mismas escenas, mismo arte, mismas voces y personajes. Solo sube el nivel del inglés y la exigencia de las preguntas del estudiante.
 
-- **Estructuras B2 obligatorias (mínimo 6 por episodio):** condicionales 2° y 3° ("if we had known", "I'd go with..."), voz pasiva ("the contract was signed"), reported speech ("she told me that..."), oraciones con "what... is..." ("what worries me is..."), wish/if only, present perfect continuous, phrasal verbs avanzados.
-- **Turnos largos:** al menos 2 turnos por episodio de 3–4 oraciones conectadas (opinión, argumento, mini-monólogo), sin narrador que los corte.
-- **Conectores de matiz:** although, even though, whereas, on the other hand, I'd argue that, to be fair, that being said, as long as, unless.
-- **Lenguaje abstracto:** opiniones, hipótesis, negociación, desacuerdo educado — no solo narración de eventos.
-- **Producción del estudiante más exigente:** las preguntas "tu turno" pasan de frases modelo a respuestas abiertas con estructura guía (ej. dar una opinión y justificarla); el monólogo final sube de 30s a respuestas de 45–60s en Advanced 2–3.
-- **Vocabulario:** mantener las reglas ya aprobadas (16 unidades nuevas B1–B2 + 10–20 recicladas, 2 phrasal verbs completos + 1 idiom/collocation por episodio), pero elevando la selección a unidades claramente B2.
+## Paso 1 — Auditoría
 
-Lo que NO cambia: Vale como maestra/empresaria segura, el formato Friends (casi todo diálogo), elenco y voces canónicas, quizzes con Say It, cliffhangers, estructura de 9 escenas, arte realista 768×768 <250 KB.
+Revisar escena por escena los 5 episodios y marcar, por episodio, qué falta de:
 
-## Trabajo por lotes
+- Condicionales 2° y 3° ("if we had known", "I'd go with...")
+- Voz pasiva ("the contract was signed")
+- Reported speech ("she told me that...")
+- Cleft sentences ("what worries me is...")
+- Present perfect continuous / wish / if only
+- Conectores de matiz: although, even though, whereas, on the other hand, I'd argue that, to be fair, that being said, unless, as long as
+- Turnos largos: 3–4 oraciones conectadas de opinión o argumento, sin narrador que las corte
+- Phrasal verbs avanzados y collocations de negocio
 
-1. **Auditoría de nivel de Advanced 1 (eps 1–5 ya producidos):** marcar qué estructuras B2 faltan en cada episodio.
-2. **Reescritura a mano de eps 1–5** para cumplir las reglas (misma historia, mismo arte; solo sube el nivel del inglés y de las preguntas del estudiante).
-3. **Guiones nuevos de eps 6–20 ya escritos:** revisarlos contra las reglas B2 y reescribir los que queden cortos antes de producir arte.
-4. **Advanced 2 y 3:** los guiones se escriben desde cero con estas reglas; en Advanced 3 se reduce el español de apoyo y las respuestas del estudiante son casi sin guía.
-5. **QA por lote:** test automático que cuente estructuras B2 por episodio (mínimo 6) y turnos largos (mínimo 2), además de los tests de vocabulario/glosario existentes.
+Resultado: una tabla corta por episodio con lo que falta, que te presento antes de reescribir.
 
-## Detalles técnicos
+## Paso 2 — Reescritura a mano, episodio por episodio
 
-- Episodios en `src/services/storybook/advanced-1-ep*.ts`; registro en `src/services/storybook/index.ts`.
-- El test de presupuesto de vocabulario ya existe; se añade un test de estructuras B2 (detección por patrones: would have, if + past perfect, pasivas, reported speech, conectores).
-- Grabación final: el tope de 30s recién implementado se mantiene en Advanced 1; se evalúa subir a 45s solo en Advanced 2–3 (cambio de un parámetro por temporada).
+Por cada episodio, y con revisión tuya entre uno y otro:
+
+- Mínimo 6 estructuras B2 integradas de forma natural en el diálogo
+- Al menos 2 turnos largos (3–4 oraciones conectadas)
+- Lenguaje abstracto: opinión, hipótesis, desacuerdo educado, negociación — no solo narración de hechos
+- Preguntas "tu turno": de repetir una frase modelo a dar una opinión y justificarla, con estructura guía y validación flexible
+- Glosario: cada palabra o expresión nueva con significado en español; phrasal verbs e idioms como expresión completa
+- Vale sigue sonando maestra experimentada y empresaria; las dudas son del estudiante
+- Traducciones al español revisadas línea por línea
 
 ## Verificación
 
-- Test nuevo de estructuras B2 + suite de Storybook (104 tests) + typecheck.
-- Revisión manual episodio por episodio antes de producir arte (igual que el proceso aprobado).
+- Test automático nuevo que cuente estructuras B2 (mínimo 6) y turnos largos (mínimo 2) por episodio
+- Suite de Storybook existente (104 tests), typecheck y carga de las rutas de los 5 episodios en móvil
+
+## Detalles técnicos
+
+- Archivos: `src/services/storybook/advanced-1-ep1..ep5-*.ts`
+- El nuevo test de nivel detecta patrones (would have, if + past perfect, pasivas, reported speech, conectores) y vive junto a los tests de Storybook
+- Sin cambios en arte, registro de temporada, límites diarios ni grabación final (tope de 30s se mantiene)
