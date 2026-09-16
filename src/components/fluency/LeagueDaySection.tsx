@@ -123,7 +123,7 @@ export function LeagueDaySection({
 
       <Link
         to="/liga"
-        search={moduleId ? { from: moduleId, day } : {}}
+        search={{ from: moduleId, day: moduleId ? day : undefined }}
         className="block rounded-2xl border border-border bg-card p-3.5 shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
       >
         <span className="flex items-center gap-2.5">

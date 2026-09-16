@@ -46,8 +46,8 @@ export const Route = createFileRoute("/liga")({
     ],
   }),
   validateSearch: (search: Record<string, unknown>) => {
-    const from = typeof search.from === "string" ? search.from : undefined;
-    const rawDay = Number(search.day);
+    const from = typeof search["from"] === "string" ? (search["from"] as string) : undefined;
+    const rawDay = Number(search["day"]);
     const day = Number.isFinite(rawDay) && rawDay > 0 ? Math.floor(rawDay) : undefined;
     return { from, day };
   },
