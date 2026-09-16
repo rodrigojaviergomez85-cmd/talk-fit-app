@@ -16,6 +16,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "../components/ui/sonner";
 import { AppUpdateWatcher } from "../components/fluency/AppUpdateWatcher";
 import { startServerDayWatcher } from "../services/server-day";
+import { isStaleChunkError, reloadOnceForStaleChunk } from "../lib/stale-chunk";
 
 function NotFoundComponent() {
   return (
