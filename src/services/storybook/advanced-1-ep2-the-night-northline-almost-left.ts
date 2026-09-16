@@ -251,8 +251,8 @@ export const ADVANCED1_EP2_NORTHLINE_NIGHT: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "The past progressive painted the scene, and the simple past moved the story. Reed was right.",
-          es: "El pasado progresivo pintó la escena, y el pasado simple movió la historia. Reed tenía razón.",
+          text: "The past progressive painted the scene, and the simple past moved the story. That is what I train my students to do.",
+          es: "El pasado progresivo pintó la escena, y el pasado simple movió la historia. Eso es lo que entreno a mis estudiantes a hacer.",
         },
         {
           speaker: "camila",
