@@ -100,6 +100,7 @@ export function useAppUpdate(): { updateReady: boolean; applyUpdate: () => void 
       window.removeEventListener("focus", onWake);
       window.removeEventListener("vite:preloadError", onPreloadError);
       window.removeEventListener("unhandledrejection", onRejection);
+      window.removeEventListener("error", onWindowError);
       unsubscribe();
     };
   }, []);
