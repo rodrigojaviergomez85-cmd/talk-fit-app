@@ -12,17 +12,18 @@ import { CourseService } from "@/services/course-service";
 import {
   getLeagueBoard,
   getLeaguePreview,
+  getMyLeagueHistory,
   getMyLeagueSummary,
   setLeagueHidden,
 } from "@/lib/league.functions";
 import {
   WEEKLY_GOAL,
-  curriculumWeekForDay,
   formatPoints,
   formatWeekRange,
   progressPercent,
   type LeagueBoardRow,
   type LeagueSummary,
+  type LeagueWeekRef,
 } from "@/lib/league";
 
 /** Weekly league board: personal progress first, then the ranking. */
