@@ -257,7 +257,12 @@ export function DayCompleteScreen({
         <div className="mx-auto w-full max-w-lg">
           <button
             type="button"
-            onClick={() => void navigate({ to: "/" })}
+            onClick={() =>
+              void navigate({
+                to: "/day/$moduleId/$day",
+                params: { moduleId, day: String(day.day) },
+              })
+            }
             className="min-h-[48px] w-full rounded-2xl bg-primary px-6 py-4 text-[15px] font-bold tracking-wide text-primary-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.98] motion-reduce:transition-none"
           >
             {showEs ? "Continuar" : "Continue"}
