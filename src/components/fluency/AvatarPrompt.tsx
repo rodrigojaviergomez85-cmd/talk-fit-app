@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { Camera, Loader2, Smile } from "lucide-react";
 import { toSquareJpegDataUrl } from "@/lib/avatar-image";
-import { uploadMyPhoto } from "@/lib/avatar-photo.functions";
-import { getMyProfile, markAvatarPromptSeen } from "@/lib/profile.functions";
 import { useAuth } from "@/lib/auth";
 
 const TEXT = {
@@ -28,30 +25,40 @@ const TEXT = {
 export function AvatarPrompt({ lang }: { lang: "es" | "en" }) {
   const t = TEXT[lang];
   const { user } = useAuth();
-  const loadProfile = useServerFn(getMyProfile);
-  const markSeen = useServerFn(markAvatarPromptSeen);
-  const upload = useServerFn(uploadMyPhoto);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
 
+  // The server functions load lazily: this optional card must never be able to
+  // break Home if its module fails to load.
   useEffect(() => {
     if (!user) return;
     let alive = true;
-    void loadProfile({})
-      .then((p) => {
+    void (async () => {
+      try {
+        const { getMyProfile } = await import("@/lib/profile.functions");
+        const p = await getMyProfile({});
         if (!alive) return;
         if (!p.promptSeen && !p.avatarId && !p.photoUrl) setOpen(true);
-      })
-      .catch(() => undefined);
+      } catch {
+        /* keep Home clean when the profile cannot be read */
+      }
+    })();
     return () => {
       alive = false;
     };
-  }, [loadProfile, user]);
+  }, [user]);
 
   const dismiss = () => {
     setOpen(false);
-    void markSeen({}).catch(() => undefined);
+    void (async () => {
+      try {
+        const { markAvatarPromptSeen } = await import("@/lib/profile.functions");
+        await markAvatarPromptSeen({});
+      } catch {
+        /* the prompt simply shows again next time */
+      }
+    })();
   };
 
   const pick = async (file: File | undefined) => {
@@ -59,7 +66,8 @@ export function AvatarPrompt({ lang }: { lang: "es" | "en" }) {
     setBusy(true);
     try {
       const dataUrl = await toSquareJpegDataUrl(file);
-      await upload({ data: { dataUrl } });
+      const { uploadMyPhoto } = await import("@/lib/avatar-photo.functions");
+      await uploadMyPhoto({ data: { dataUrl } });
     } catch {
       /* the profile page shows the detailed state */
     } finally {
