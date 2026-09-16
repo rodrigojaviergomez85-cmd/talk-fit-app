@@ -319,8 +319,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
         },
         {
           "speaker": "camila",
-          "text": "They told me afterwards that no other academy had answered with documents. What made the difference was evidence, not confidence.",
-          "es": "Me dijeron después que ninguna otra academia había respondido con documentos. Lo que marcó la diferencia fue la evidencia, no la confianza.",
+          "text": "They told me afterwards that the same question had terrified the other academies. What made the difference was evidence, not confidence.",
+          "es": "Me dijeron después que esa misma pregunta había aterrorizado a las otras academias. Lo que marcó la diferencia fue la evidencia, no la confianza.",
         },
       ],
       "words": [

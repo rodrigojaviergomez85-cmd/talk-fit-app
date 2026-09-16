@@ -100,8 +100,8 @@ export const ADVANCED1_EP3_WHY_US: StorybookEpisode = {
         },
         {
           speaker: "reed",
-          text: "Do not bring up your job title; bring up one fact. What convinces a committee is not how confident you sound, but what can be measured. Facts are humble; opinions are arrogant.",
-          es: "No menciones tu puesto; menciona un hecho. Lo que convence a un comité no es qué tan segura suenas, sino lo que se puede medir. Los hechos son humildes; las opiniones son arrogantes.",
+          text: "Do not bring up your job title; bring up one fact with the proof behind it. What convinces a committee is not how confident you sound, but what can be measured. Facts are humble; opinions are arrogant.",
+          es: "No menciones tu puesto; menciona un hecho con la prueba detrás. Lo que convence a un comité no es qué tan segura suenas, sino lo que se puede medir. Los hechos son humildes; las opiniones son arrogantes.",
         },
       ],
       words: [
