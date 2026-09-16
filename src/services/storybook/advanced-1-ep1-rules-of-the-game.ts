@@ -37,33 +37,23 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
   "reviewWords": [
     {
       "word": "deal",
-      "meaning": "trato; acuerdo",
-      "example": "This new contract could be the biggest deal of the year.",
-      "exampleEs": "Este nuevo contrato podría ser el trato más grande del año.",
+      "es": "trato; acuerdo",
     },
     {
       "word": "growth",
-      "meaning": "crecimiento",
-      "example": "Our growth depends on results, not on promises.",
-      "exampleEs": "Nuestro crecimiento depende de resultados, no de promesas.",
+      "es": "crecimiento",
     },
     {
       "word": "team",
-      "meaning": "equipo",
-      "example": "The whole team practiced the introduction together.",
-      "exampleEs": "Todo el equipo practicó la presentación junto.",
+      "es": "equipo",
     },
     {
       "word": "reputation",
-      "meaning": "reputación",
-      "example": "One good welcome call can protect our reputation.",
-      "exampleEs": "Una buena llamada de bienvenida puede proteger nuestra reputación.",
+      "es": "reputación",
     },
     {
       "word": "program",
-      "meaning": "programa",
-      "example": "The kids program opens in Mexico in April.",
-      "exampleEs": "El programa de niños abre en México en abril.",
+      "es": "programa",
     },
   ],
   "blurb": {
@@ -101,21 +91,15 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "words": [
         {
           "word": "committee",
-          "meaning": "comité",
-          "example": "An international committee needs English for its employees.",
-          "exampleEs": "Un comité internacional necesita inglés para sus empleados.",
+          "es": "comité",
         },
         {
           "word": "competing",
-          "meaning": "compitiendo",
-          "example": "My academy is competing for the program.",
-          "exampleEs": "Mi academia está compitiendo por el programa.",
+          "es": "compitiendo",
         },
         {
           "word": "spots",
-          "meaning": "lugares; plazas",
-          "example": "How many academies want those spots?",
-          "exampleEs": "¿Cuántas academias quieren esos lugares?",
+          "es": "lugares; plazas",
         },
       ],
     },
@@ -147,21 +131,15 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "words": [
         {
           "word": "founder",
-          "meaning": "fundadora",
-          "example": "Start with your founder story.",
-          "exampleEs": "Empieza con tu historia como fundadora.",
+          "es": "fundadora",
         },
         {
           "word": "prove",
-          "meaning": "demostrar; comprobar",
-          "example": "Sell what you can prove.",
-          "exampleEs": "Vende lo que puedes demostrar.",
+          "es": "demostrar; comprobar",
         },
         {
           "word": "numbers",
-          "meaning": "números; datos",
-          "example": "They follow up with visits, documents, and numbers.",
-          "exampleEs": "Le dan seguimiento con visitas, documentos y números.",
+          "es": "números; datos",
         },
       ],
     },
@@ -193,21 +171,15 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "words": [
         {
           "word": "structure",
-          "meaning": "estructura",
-          "example": "A professional introduction has structure, not a script.",
-          "exampleEs": "Una presentación profesional tiene estructura, no un guion.",
+          "es": "estructura",
         },
         {
           "word": "background",
-          "meaning": "experiencia; formación",
-          "example": "Say your now, your background, one strength, and one clear goal.",
-          "exampleEs": "Di tu presente, tu experiencia, una fortaleza y una meta clara.",
+          "es": "experiencia; formación",
         },
         {
           "word": "goal",
-          "meaning": "meta; objetivo",
-          "example": "Finish with one clear goal.",
-          "exampleEs": "Termina con una meta clara.",
+          "es": "meta; objetivo",
         },
       ],
     },
@@ -239,21 +211,15 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "words": [
         {
           "word": "strength",
-          "meaning": "fortaleza",
-          "example": "My strength is that I never give up.",
-          "exampleEs": "Mi fortaleza es que nunca me rindo.",
+          "es": "fortaleza",
         },
         {
           "word": "focused",
-          "meaning": "enfocada; concentrada",
-          "example": "Right now, I am focused on my students.",
-          "exampleEs": "Ahora mismo estoy enfocada en mis estudiantes.",
+          "es": "enfocada; concentrada",
         },
         {
           "word": "unsure",
-          "meaning": "inseguro; con dudas",
-          "example": "It sounded unsure.",
-          "exampleEs": "Sonó inseguro.",
+          "es": "inseguro; con dudas",
         },
       ],
     },
@@ -285,21 +251,15 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "words": [
         {
           "word": "confident",
-          "meaning": "segura; con confianza",
-          "example": "Confident and clear.",
-          "exampleEs": "Segura y clara.",
+          "es": "segura; con confianza",
         },
         {
           "word": "real",
-          "meaning": "real; verdadero",
-          "example": "Real English for real meetings.",
-          "exampleEs": "Inglés real para reuniones reales.",
+          "es": "real; verdadero",
         },
         {
           "word": "word",
-          "meaning": "palabra",
-          "example": "Let them hear every word.",
-          "exampleEs": "Que escuchen cada palabra.",
+          "es": "palabra",
         },
       ],
     },
@@ -326,21 +286,15 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "words": [
         {
           "word": "welcome",
-          "meaning": "bienvenida",
-          "example": "Welcome to the first welcome call.",
-          "exampleEs": "Bienvenidos a la primera llamada de bienvenida.",
+          "es": "bienvenida",
         },
         {
           "word": "introduce",
-          "meaning": "presentar(se)",
-          "example": "Can you introduce yourself professionally?",
-          "exampleEs": "¿Puedes presentarte profesionalmente?",
+          "es": "presentar(se)",
         },
         {
           "word": "professionally",
-          "meaning": "profesionalmente",
-          "example": "Introduce yourself professionally.",
-          "exampleEs": "Preséntate profesionalmente.",
+          "es": "profesionalmente",
         },
       ],
     },
@@ -372,21 +326,15 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "words": [
         {
           "word": "introduction",
-          "meaning": "presentación",
-          "example": "That was a professional introduction.",
-          "exampleEs": "Esa fue una presentación profesional.",
+          "es": "presentación",
         },
         {
           "word": "terrified",
-          "meaning": "aterrorizada; muerta de miedo",
-          "example": "Two weeks ago that answer terrified her.",
-          "exampleEs": "Hace dos semanas esa respuesta la aterrorizaba.",
+          "es": "aterrorizada; muerta de miedo",
         },
         {
           "word": "evidence",
-          "meaning": "evidencia; pruebas",
-          "example": "She had documents, numbers, and evidence.",
-          "exampleEs": "Tenía documentos, números y evidencia.",
+          "es": "evidencia; pruebas",
         },
       ],
     },
@@ -418,21 +366,15 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "words": [
         {
           "word": "freeze",
-          "meaning": "paralizarse; quedarse en blanco",
-          "example": "I did not freeze.",
-          "exampleEs": "No me paralicé.",
+          "es": "paralizarse; quedarse en blanco",
         },
         {
           "word": "step",
-          "meaning": "paso",
-          "example": "This was only step one.",
-          "exampleEs": "Esto fue solo el paso uno.",
+          "es": "paso",
         },
         {
           "word": "turn",
-          "meaning": "turno",
-          "example": "Your turn is coming.",
-          "exampleEs": "Tu turno se acerca.",
+          "es": "turno",
         },
       ],
     },
@@ -464,21 +406,15 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       "words": [
         {
           "word": "true",
-          "meaning": "verdadera; real",
-          "example": "One true story from your past.",
-          "exampleEs": "Una historia verdadera de tu pasado.",
+          "es": "verdadera; real",
         },
         {
           "word": "clearly",
-          "meaning": "con claridad",
-          "example": "Told clearly, in order.",
-          "exampleEs": "Contada con claridad, en orden.",
+          "es": "con claridad",
         },
         {
           "word": "order",
-          "meaning": "orden",
-          "example": "In order, with a beginning and an end.",
-          "exampleEs": "En orden, con un inicio y un final.",
+          "es": "orden",
         },
       ],
     },
