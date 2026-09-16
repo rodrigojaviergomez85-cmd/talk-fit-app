@@ -228,6 +228,23 @@ function DayHubPage() {
           </p>
         )}
 
+        {data.day > 1 ? (
+          <Link
+            to="/day/$moduleId/$day"
+            params={{ moduleId: data.moduleId, day: String(data.day - 1) }}
+            className="flex min-h-[48px] items-center justify-center gap-2 rounded-2xl border-2 border-navy bg-card px-4 text-[13px] font-extrabold uppercase tracking-[0.12em] text-navy transition-transform active:scale-[0.99]"
+          >
+            <ArrowLeft className="size-4" aria-hidden="true" />
+            {t("day.prevDay")}
+          </Link>
+        ) : null}
+
+        {showInactiveWeekNote ? (
+          <p className="text-center text-[11px] font-semibold italic text-muted-foreground">
+            {t("day.inactiveWeekNote")}
+          </p>
+        ) : null}
+
         <LeagueRewardToast count={league.awarded.length} es={es} onDone={league.clearAwarded} />
       </div>
     </AppShell>
