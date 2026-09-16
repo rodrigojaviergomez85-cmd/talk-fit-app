@@ -181,7 +181,7 @@ function DayHubPage() {
           <ArrowRight className="size-5 shrink-0" aria-hidden="true" />
         </Link>
 
-        {league.eligible && league.summary?.enrolled ? (
+        {league.eligible ? (
           <LeagueDaySection
             summary={league.summary}
             day={data.day}
