@@ -168,6 +168,11 @@ import { ADVANCED1_EP7_NUMBERS_DO_NOT_LIE } from "./advanced-1-ep7-the-numbers-d
 import { ADVANCED1_EP8_TWO_RIGHT_ANSWERS } from "./advanced-1-ep8-two-right-answers";
 import { ADVANCED1_EP9_IN_THEIR_OWN_WORDS } from "./advanced-1-ep9-in-their-own-words";
 import { ADVANCED1_EP10_BEHAVIOURAL_ROUND } from "./advanced-1-ep10-the-behavioural-round";
+import { ADVANCED1_EP11_WHY_I_LEFT } from "./advanced-1-ep11-why-i-left";
+import { ADVANCED1_EP12_THE_COURSE_I_CLOSED } from "./advanced-1-ep12-the-course-i-closed";
+import { ADVANCED1_EP13_WHY_HERE } from "./advanced-1-ep13-why-here";
+import { ADVANCED1_EP14_THE_HOUR_ABOUT_MONEY } from "./advanced-1-ep14-the-hour-about-money";
+import { ADVANCED1_EP15_THE_ROOM_THAT_INTERRUPTS } from "./advanced-1-ep15-the-room-that-interrupts";
 import { expandSharksDialogue } from "./sharks-dialogue-expansions";
 import type { StorybookEpisode } from "./types";
 
@@ -343,6 +348,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   ADVANCED1_EP8_TWO_RIGHT_ANSWERS,
   ADVANCED1_EP9_IN_THEIR_OWN_WORDS,
   ADVANCED1_EP10_BEHAVIOURAL_ROUND,
+  ADVANCED1_EP11_WHY_I_LEFT,
+  ADVANCED1_EP12_THE_COURSE_I_CLOSED,
+  ADVANCED1_EP13_WHY_HERE,
+  ADVANCED1_EP14_THE_HOUR_ABOUT_MONEY,
+  ADVANCED1_EP15_THE_ROOM_THAT_INTERRUPTS,
   ].map(expandSharksDialogue),
 ];
 

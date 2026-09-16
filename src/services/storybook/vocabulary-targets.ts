@@ -70,6 +70,21 @@ export const EPISODE_VOCAB_BUDGET: Record<string, string[]> = {
     "useless", "feedback", "timing", "discipline", "improvement", "structures",
     "hidden", "keep up", "throw at", "on the short list",
   ],
+  "advanced1-ep13-why-here": [
+    "finalists", "match", "value", "agents", "exit interviews", "research",
+    "pressure", "coincidence", "attrition", "replacing", "belongs",
+    "rounds", "raise", "approved", "stage", "finance",
+  ],
+  "advanced1-ep14-the-hour-about-money": [
+    "scope", "negotiation", "offended", "tied", "margin", "restructure",
+    "collapse", "scheduling", "quoted", "identical", "printed",
+    "available", "billed", "clause", "protects", "detail",
+  ],
+  "advanced1-ep15-the-room-that-interrupts": [
+    "restart", "nervous", "evidence", "pilot", "variable", "assuming",
+    "salary band", "candidates", "depends", "cohorts", "documented",
+    "record", "quiet", "slot", "decision", "summary",
+  ],
   "advanced1-ep1-rules-of-the-game": [
     "committee", "compete", "spot", "founder", "introduction", "structure",
     "background", "strength", "goal", "focused", "confident", "evidence",
