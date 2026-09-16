@@ -49,7 +49,7 @@ export function ProfileCard({ lang }: { lang: "es" | "en" }) {
   const [name, setName] = useState("");
   const [picking, setPicking] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [msg, setMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
+  const [msg, setMsg] = useState<{ kind: "ok" | "err"; key: keyof typeof TEXT.es } | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -167,7 +167,7 @@ export function ProfileCard({ lang }: { lang: "es" | "en" }) {
         <p className="text-[12px] text-muted-foreground">{t.note}</p>
         {msg ? (
           <p className={cn("text-[12px] font-semibold", msg.kind === "ok" ? "text-primary" : "text-destructive")}>
-            {msg.text}
+            {t[msg.key]}
           </p>
         ) : null}
       </div>
