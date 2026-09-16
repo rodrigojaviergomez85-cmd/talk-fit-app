@@ -173,6 +173,11 @@ import { ADVANCED1_EP12_THE_COURSE_I_CLOSED } from "./advanced-1-ep12-the-course
 import { ADVANCED1_EP13_WHY_HERE } from "./advanced-1-ep13-why-here";
 import { ADVANCED1_EP14_THE_HOUR_ABOUT_MONEY } from "./advanced-1-ep14-the-hour-about-money";
 import { ADVANCED1_EP15_THE_ROOM_THAT_INTERRUPTS } from "./advanced-1-ep15-the-room-that-interrupts";
+import { ADVANCED1_EP16_THE_NINETY_DAYS } from "./advanced-1-ep16-the-ninety-days";
+import { ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME } from "./advanced-1-ep17-show-me-dont-tell-me";
+import { ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR } from "./advanced-1-ep18-the-question-nobody-prepares-for";
+import { ADVANCED1_EP19_NOW_YOU_ASK } from "./advanced-1-ep19-now-you-ask";
+import { ADVANCED1_EP20_THE_LAST_ROOM } from "./advanced-1-ep20-the-last-room";
 import { expandSharksDialogue } from "./sharks-dialogue-expansions";
 import type { StorybookEpisode } from "./types";
 
@@ -353,6 +358,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   ADVANCED1_EP13_WHY_HERE,
   ADVANCED1_EP14_THE_HOUR_ABOUT_MONEY,
   ADVANCED1_EP15_THE_ROOM_THAT_INTERRUPTS,
+  ADVANCED1_EP16_THE_NINETY_DAYS,
+  ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME,
+  ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR,
+  ADVANCED1_EP19_NOW_YOU_ASK,
+  ADVANCED1_EP20_THE_LAST_ROOM,
   ].map(expandSharksDialogue),
 ];
 
