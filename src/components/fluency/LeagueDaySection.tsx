@@ -73,21 +73,31 @@ export function LeagueDaySection({
   es,
   moduleLabel,
 }: {
-  summary: LeagueSummary;
+  summary: LeagueSummary | null;
   day: number;
   es: boolean;
   moduleLabel: string;
 }) {
-  const dayPoints = pointsForDay(summary.rewards, day);
-  const goal = summary.attainableGoal || WEEKLY_GOAL;
-  const bothDone = hasReward(summary.rewards, day, "story") && hasReward(summary.rewards, day, "practice");
+  const rewards = summary?.rewards ?? [];
+  const dayPoints = pointsForDay(rewards, day);
+  const points = summary?.points ?? 0;
+  const goal = summary?.attainableGoal || WEEKLY_GOAL;
+  const week = summary?.curriculumWeek ?? curriculumWeekForDay(day);
+  const rank = summary?.rank ?? null;
+  const participants = summary?.participants ?? 0;
+  const bothDone = hasReward(rewards, day, "story") && hasReward(rewards, day, "practice");
 
   return (
     <div className="space-y-3">
       <div className="rounded-2xl border border-border bg-card p-3">
-        <p className="text-[11px] font-bold text-foreground">
-          {es ? "Puntos de esta jornada" : "Points for this session"}: {dayPoints} / {DAY_GOAL}
-        </p>
+        <div className="flex items-baseline justify-between gap-2">
+          <p className="text-[11px] font-bold text-muted-foreground">
+            {es ? "Tus puntos de hoy" : "Your points today"}
+          </p>
+          <p className="text-[11px] font-extrabold text-foreground">
+            {dayPoints} / {DAY_GOAL}
+          </p>
+        </div>
         <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-muted">
           <div
             className="h-full rounded-full bg-primary transition-[width] duration-500"
@@ -103,43 +113,48 @@ export function LeagueDaySection({
 
       <Link
         to="/liga"
-        className="block rounded-2xl bg-navy p-3.5 text-navy-foreground shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
+        className="block rounded-2xl border border-border bg-card p-3.5 shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
       >
-        <span className="flex items-center gap-2">
-          <Trophy className="size-5 text-primary" aria-hidden="true" />
-          <span className="text-[15px] font-extrabold">{es ? "Tu liga semanal" : "Your weekly league"}</span>
-        </span>
-        <span className="mt-0.5 block text-[11px] font-medium text-navy-foreground/70">
-          {moduleLabel} · {es ? "Semana " : "Week "}
-          {summary.curriculumWeek}
-        </span>
-        <span className="mt-2 block text-lg font-extrabold">
-          {formatPoints(summary.points)} / {formatPoints(goal)} pts
-        </span>
-        <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-navy-foreground/20">
-          <div
-            className="h-full rounded-full bg-primary transition-[width] duration-500"
-            style={{ width: `${progressPercent(summary.points, goal)}%` }}
-          />
-        </div>
-        <span className="mt-2 flex items-center justify-between text-[12px] font-bold">
-          <span>
-            {summary.rank
-              ? es
-                ? `Puesto ${summary.rank} de ${summary.participants}`
-                : `Rank ${summary.rank} of ${summary.participants}`
-              : es
-                ? "Sin puesto todavía"
-                : "No rank yet"}
+        <span className="flex items-center gap-2.5">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/15">
+            <Trophy className="size-5 text-primary" aria-hidden="true" />
           </span>
-          <span className="inline-flex items-center gap-1 text-primary">
-            {es ? "Ver mi liga" : "See my league"} <ArrowRight className="size-4" aria-hidden="true" />
+          <span className="min-w-0">
+            <span className="block text-[15px] font-extrabold text-foreground">
+              {es ? "Tu liga semanal" : "Your weekly league"}
+            </span>
+            <span className="block text-[11px] font-medium text-muted-foreground">
+              {moduleLabel} · {es ? "Semana " : "Week "}
+              {week}
+            </span>
           </span>
         </span>
-        <span className="mt-2 block text-[11px] font-medium text-navy-foreground/70">
-          {es
-            ? "¡Todavía estás a tiempo! Completa tus actividades pendientes antes del domingo."
-            : "There is still time! Finish your pending activities before Sunday."}
+
+        <span className="mt-2.5 flex items-baseline justify-between gap-2">
+          <span className="text-lg font-extrabold text-foreground">
+            {rank ? (
+              <>
+                #{rank}{" "}
+                <span className="text-[12px] font-bold text-muted-foreground">
+                  {es ? `de ${participants} estudiantes` : `of ${participants} students`}
+                </span>
+              </>
+            ) : (
+              <span className="text-[13px] font-bold text-muted-foreground">
+                {es ? "Sin puesto todavía" : "No rank yet"}
+              </span>
+            )}
+          </span>
+          <span className="shrink-0 text-lg font-extrabold text-foreground">
+            {formatPoints(points)} <span className="text-[12px] font-bold">pts</span>
+          </span>
+        </span>
+
+        <span className="mt-2.5 block border-t border-border pt-2.5">
+          <span className="flex items-center justify-between text-[13px] font-extrabold text-primary">
+            {es ? "Ver mi liga" : "See my league"}
+            <ArrowRight className="size-4" aria-hidden="true" />
+          </span>
         </span>
       </Link>
     </div>
