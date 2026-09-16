@@ -54,6 +54,7 @@ export type LeagueBoardRow = {
   name: string;
   points: number;
   isMe: boolean;
+  avatar?: string | null;
 };
 
 /** Curriculum week (1-based) a curriculum day belongs to. */
