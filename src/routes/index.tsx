@@ -6,6 +6,7 @@ import { CurrentModuleCard } from "@/components/fluency/CurrentModuleCard";
 import { NextModuleLocked } from "@/components/fluency/NextModuleLocked";
 import { HomeWeekCard } from "@/components/fluency/HomeWeekCard";
 import { HomeGreeting } from "@/components/fluency/HomeGreeting";
+import { AvatarPrompt } from "@/components/fluency/AvatarPrompt";
 import { Progression } from "@/services/progression";
 import { getPendingPlacement } from "@/services/preferences";
 
@@ -85,6 +86,7 @@ function HomePage() {
     <AppShell hideHeader hideSync>
       <div className="space-y-5">
         <HomeGreeting />
+        <AvatarPrompt lang={prefs.lang === "en" ? "en" : "es"} />
         <CurrentModuleCard state={state} />
 
         {failed ? (
