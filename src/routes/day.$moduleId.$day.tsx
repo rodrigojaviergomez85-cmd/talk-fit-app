@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, BookOpen, Check, Mic, Star } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
 import { CourseService } from "@/services/course-service";
@@ -17,7 +18,9 @@ import {
   LeagueRewardToast,
   useLeagueDay,
 } from "@/components/fluency/LeagueDaySection";
-import { hasReward } from "@/lib/league";
+import { getMyLeagueSummary } from "@/lib/league.functions";
+import { maxCohortWeekForModule } from "@/lib/league-manifest";
+import { curriculumWeekForDay, hasReward } from "@/lib/league";
 import type { JourneyState, ModuleId } from "@/lib/types";
 
 /**
