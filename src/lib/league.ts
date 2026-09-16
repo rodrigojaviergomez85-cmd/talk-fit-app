@@ -30,6 +30,8 @@ export type LeagueReward = {
 
 export type LeagueSummary = {
   enrolled: boolean;
+  /** Admin / unlimited accounts: they can look at the league but never score. */
+  observer: boolean;
   competitionId?: string | undefined;
   moduleId?: string | undefined;
   curriculumWeek?: number | undefined;

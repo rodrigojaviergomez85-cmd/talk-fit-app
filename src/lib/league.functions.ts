@@ -22,6 +22,7 @@ import {
 
 const EMPTY: LeagueSummary = {
   enrolled: false,
+  observer: false,
   points: 0,
   hidden: false,
   rank: null,
@@ -44,14 +45,16 @@ type RawSummary = {
   rank?: number | null;
   participants?: number;
   rewards?: LeagueReward[];
+  observer?: boolean;
 };
 
 function shapeSummary(raw: RawSummary | null, moduleId: string, week: number): LeagueSummary {
-  if (!raw?.enrolled) return EMPTY;
+  if (!raw?.enrolled && !raw?.observer) return EMPTY;
   const cohort = getLeagueCohort(raw.moduleId ?? moduleId, raw.curriculumWeek ?? week);
   const attainableGoal = attainableWeeklyGoal(cohort?.stories.length ?? 0);
   return {
-    enrolled: true,
+    enrolled: Boolean(raw.enrolled),
+    observer: Boolean(raw.observer),
     competitionId: raw.competitionId,
     moduleId: raw.moduleId,
     curriculumWeek: raw.curriculumWeek,
@@ -105,7 +108,8 @@ export const claimDayRewards = createServerFn({ method: "POST" })
       _curriculum_week: data.week,
     });
     const before = shapeSummary(rawBefore as RawSummary | null, data.moduleId, data.week);
-    if (!before.enrolled) return empty;
+    // Observers (admin / unlimited) can see the league but never score.
+    if (!before.enrolled) return { awarded: [] as LeagueActivityType[], summary: before };
 
     const awarded: LeagueActivityType[] = [];
 
