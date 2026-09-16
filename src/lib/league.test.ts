@@ -4,6 +4,7 @@ import {
   WEEKLY_GOAL,
   attainableWeeklyGoal,
   curriculumWeekForDay,
+  dailyGoal,
   daysForWeek,
   formatWeekRange,
   hasReward,
@@ -14,7 +15,7 @@ import {
   progressPercent,
   type LeagueReward,
 } from "./league";
-import { LEAGUE_COHORTS, getStorySlot, isLeagueCohort } from "./league-manifest";
+import { LEAGUE_COHORTS, getLeagueCohort, getStorySlot, isLeagueCohort } from "./league-manifest";
 import { getStorybookEpisode } from "@/services/storybook";
 
 const reward = (day: number, activityType: "story" | "practice"): LeagueReward => ({
