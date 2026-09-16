@@ -25,6 +25,26 @@ export const ACTIVE_GOAL = 3500;
 
 /** 16 target units per episode: content words + phrasal verbs + one idiom. */
 export const EPISODE_VOCAB_BUDGET: Record<string, string[]> = {
+  "advanced1-ep2-the-night-northline-almost-left": [
+    "success", "contract", "situation", "result", "lesson", "raining",
+    "report", "manager", "demo", "comparing", "signed", "convince",
+    "promise", "measure", "win back", "come up with",
+  ],
+  "advanced1-ep3-why-us": [
+    "trap", "weak", "arrogant", "value", "proof", "humble", "fact", "edit",
+    "boring", "cancelled", "hire", "role", "coordinate", "owners",
+    "bring up", "cut out",
+  ],
+  "advanced1-ep4-my-honest-weakness": [
+    "weakness", "perfectionist", "costume", "fatal", "disaster", "spreadsheet",
+    "budget", "brain", "financial", "course", "error", "honesty",
+    "imperfect", "victory", "fall asleep", "back up",
+  ],
+  "advanced1-ep5-pressure-round": [
+    "pressure", "breathe", "politely", "waste", "completion", "average",
+    "survey", "admitted", "failure", "calm", "accent", "decoration",
+    "heartbeat", "interruption", "bet on", "turn into",
+  ],
   "advanced1-ep1-rules-of-the-game": [
     "committee", "compete", "spot", "founder", "introduction", "structure",
     "background", "strength", "goal", "focused", "confident", "evidence",

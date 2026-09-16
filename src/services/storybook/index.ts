@@ -159,6 +159,10 @@ import { SHARKS_EP18_SAY_NO_WITH_RESPECT } from "./sharks-ep18-say-no-with-respe
 import { SHARKS_EP19_THE_REGIONAL_DEAL } from "./sharks-ep19-the-regional-deal";
 import { SHARKS_EP20_SHARKS_CLOSE_DEALS } from "./sharks-ep20-sharks-close-deals";
 import { ADVANCED1_EP1_RULES_OF_THE_GAME } from "./advanced-1-ep1-rules-of-the-game";
+import { ADVANCED1_EP2_NORTHLINE_NIGHT } from "./advanced-1-ep2-the-night-northline-almost-left";
+import { ADVANCED1_EP3_WHY_US } from "./advanced-1-ep3-why-us";
+import { ADVANCED1_EP4_MY_HONEST_WEAKNESS } from "./advanced-1-ep4-my-honest-weakness";
+import { ADVANCED1_EP5_PRESSURE_ROUND } from "./advanced-1-ep5-pressure-round";
 import { expandSharksDialogue } from "./sharks-dialogue-expansions";
 import type { StorybookEpisode } from "./types";
 
@@ -325,6 +329,10 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
     SHARKS_EP19_THE_REGIONAL_DEAL,
     SHARKS_EP20_SHARKS_CLOSE_DEALS,
     ADVANCED1_EP1_RULES_OF_THE_GAME,
+  ADVANCED1_EP2_NORTHLINE_NIGHT,
+  ADVANCED1_EP3_WHY_US,
+  ADVANCED1_EP4_MY_HONEST_WEAKNESS,
+  ADVANCED1_EP5_PRESSURE_ROUND,
   ].map(expandSharksDialogue),
 ];
 
