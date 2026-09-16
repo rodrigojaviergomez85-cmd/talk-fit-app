@@ -1,23 +1,31 @@
-# Episodio 8 (Advanced 1): que las tres expresiones sí se digan en el diálogo
+# Expresiones que se enseñan pero nunca se dicen (Advanced 1)
 
-## Problema confirmado
-La tarjeta final "Say it like a native" del episodio 8 enseña **back down**, **work out** y **meet in the middle**, pero ninguna de las tres aparece en las líneas del episodio. La regla del curso es que cada expresión la diga un personaje dentro de la historia.
+## Lo que encontré
+La tarjeta final "Say it like a native" enseña expresiones que deben haber sido dichas por un personaje dentro del episodio. Al revisar todos los episodios de El Mundo de Vale, solo Advanced 1 falla:
 
-## Qué se va a cambiar
-Se ajustan tres líneas de diálogo (misma historia, mismas imágenes, mismos personajes, mismo orden de escenas) para que cada expresión se use de forma natural, y las frases de ejemplo de la tarjeta final pasan a ser exactamente esas líneas.
+| Episodio | Expresión que nadie dice |
+|---|---|
+| 4 · My honest weakness | back up |
+| 6 · A heartbeat for the proposal | come up with |
+| 7 · The numbers do not lie | double-check |
+| 8 · Two right answers | back down, work out, meet in the middle |
+| 9 · In their own words | write down |
 
-1. **Escena 3 (Vale con las dos columnas) → "back down"**
-   Vale nombra que ninguno de los dos va a ceder frente al comité, justo antes de pedirles que describan el problema y no a la persona.
+Temporadas 1 a 5, Eagles, Tigers y Sharks están correctas.
 
-2. **Escena 5 (la tercera versión) → "work out"**
-   Vale presenta el plan combinado diciendo que resolvieron una tercera versión que mantiene ambos riesgos bajo control.
+## Cómo lo voy a arreglar
+Escribo a mano las líneas, una por una, sin tocar la historia, las imágenes, los personajes ni el orden de escenas. En cada caso reescribo una línea existente para que la expresión salga natural en boca del personaje correcto, y luego hago que la frase de ejemplo de la tarjeta final sea exactamente esa línea.
 
-3. **Escena 7 (presentación al comité) → "meet in the middle"**
-   Camila explica que llegaron a un punto medio sin perder lo que le importaba a cada uno.
+**Episodio 8** (el que reportaste):
+1. Escena 3 — Vale nombra que ninguno de los dos va a ceder frente al comité ("back down").
+2. Escena 5 — Vale presenta la tercera versión como algo que resolvieron entre todos ("work out").
+3. Escena 7 — Camila explica ante el comité que llegaron a un punto medio ("meet in the middle").
+
+**Episodios 4, 6, 7 y 9**: una línea reescrita en cada uno, en la escena donde la expresión tiene sentido real (respaldar una afirmación con datos, proponer una idea nueva, verificar cifras, anotar lo que dicen los estudiantes).
 
 ## Detalles técnicos
-- Archivo: `src/services/storybook/advanced-1-ep8-two-right-answers.ts`.
-- Se editan solo `text`/`es` de esas tres líneas y los campos `example`/`exampleEs` del bloque `expressions` para que coincidan palabra por palabra con el diálogo.
-- Se agregan las palabras nuevas a `words` de cada escena con su significado en español si hacen falta; se revisa `src/services/storybook/glossary.ts` para que todo token tenga significado.
-- Sin cambios en imágenes, quizzes, `sayIt`, casting, voces ni duración de grabación.
-- Verificación: suite de Storybook (incluida la prueba de expresiones/glosario), `tsgo` y carga de la ruta del episodio 8.
+- Archivos: `src/services/storybook/advanced-1-ep4-*.ts`, `ep6`, `ep7`, `ep8`, `ep9`.
+- Se editan solo `text`/`es` de las líneas elegidas y los `example`/`exampleEs` del bloque `expressions`, que quedarán idénticos al diálogo.
+- Palabras nuevas se agregan a `words` de la escena y, si falta algún token, a `src/services/storybook/glossary.ts`, para que todo siga teniendo significado al tocarlo.
+- Sin cambios en arte, quizzes, `sayIt`, casting, voces ni el tope de grabación de 30 segundos.
+- Verificación: suite de Storybook, `tsgo`, carga de las cinco rutas y un chequeo que confirme que cada expresión enseñada aparece en el diálogo de su episodio.
