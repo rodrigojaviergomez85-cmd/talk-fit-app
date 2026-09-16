@@ -7,6 +7,11 @@ import { globalExpressionMap } from "./expressions";
  * Spanish meaning. Hand-written: no runtime translation API.
  */
 export const BASE_GLOSSARY: Record<string, string> = {
+  'movie': 'película',
+  'unless': 'a menos que',
+  'though': 'aunque; sin embargo',
+  'paint': 'pintar; describir',
+  'however': 'sin embargo',
   'employee': 'empleado/a',
   'chance': 'oportunidad',
   'script': 'guion',
