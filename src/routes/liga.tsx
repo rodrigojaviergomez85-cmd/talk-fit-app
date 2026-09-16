@@ -278,7 +278,13 @@ function LeaguePage() {
               <p className="mt-0.5 text-[11px] font-medium text-navy-foreground/70">
                 {summary.weekStart && summary.weekEnd
                   ? `${formatWeekRange(summary.weekStart, summary.weekEnd, es)} · ${
-                      es ? "cierra el domingo" : "closes Sunday"
+                      isCurrentWeek
+                        ? es
+                          ? "en curso, cierra el domingo"
+                          : "in progress, closes Sunday"
+                        : es
+                          ? "semana cerrada · resultado final"
+                          : "week closed · final result"
                     }`
                   : null}
               </p>
