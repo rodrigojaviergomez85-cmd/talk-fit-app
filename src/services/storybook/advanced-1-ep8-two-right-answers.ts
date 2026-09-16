@@ -121,8 +121,8 @@ export const ADVANCED1_EP8_TWO_RIGHT_ANSWERS: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "New rule for this room: describe the problem, never the person. Dani, what are you protecting?",
-          es: "Regla nueva para esta sala: describe el problema, nunca a la persona. Dani, ¿qué estás protegiendo?",
+          text: "Neither of you is going to back down in front of the committee, so we settle it here. New rule for this room: describe the problem, never the person. Dani, what are you protecting?",
+          es: "Ninguno de los dos va a ceder frente al comité, así que lo resolvemos aquí. Regla nueva para esta sala: describe el problema, nunca a la persona. Dani, ¿qué estás protegiendo?",
         },
         {
           speaker: "dani",
@@ -183,8 +183,8 @@ export const ADVANCED1_EP8_TWO_RIGHT_ANSWERS: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "Here is the version I will defend. Four intensive weeks first, exactly as Dani designed them, so Northline sees progress fast.",
-          es: "Esta es la versión que voy a defender. Primero cuatro semanas intensivas, exactamente como Dani las diseñó, para que Northline vea progreso rápido.",
+          text: "We worked out a third version that keeps both risks under control. Four intensive weeks first, exactly as Dani designed them, so Northline sees progress fast.",
+          es: "Resolvimos una tercera versión que mantiene ambos riesgos bajo control. Primero cuatro semanas intensivas, exactamente como Dani las diseñó, para que Northline vea progreso rápido.",
         },
         {
           speaker: "vale",
@@ -255,8 +255,8 @@ export const ADVANCED1_EP8_TWO_RIGHT_ANSWERS: StorybookEpisode = {
         },
         {
           speaker: "camila",
-          text: "And we disagreed about the plan, never about each other. That distinction is trained here, not improvised.",
-          es: "Y estuvimos en desacuerdo sobre el plan, nunca entre nosotros. Esa distinción se entrena aquí, no se improvisa.",
+          text: "We met in the middle without losing what mattered to either of us. We disagreed about the plan, never about each other, and that distinction is trained here.",
+          es: "Llegamos a un punto medio sin perder lo que le importaba a cada uno. Estuvimos en desacuerdo sobre el plan, nunca entre nosotros, y esa distinción se entrena aquí.",
         },
       ],
       words: [
@@ -386,24 +386,24 @@ export const ADVANCED1_EP8_TWO_RIGHT_ANSWERS: StorybookEpisode = {
       variants: ["backed down", "backs down", "backing down"],
       es: "ceder; echarse para atrás",
       kind: "phrasal",
-      example: "Neither of them was going to back down in front of the committee.",
-      exampleEs: "Ninguno de los dos iba a ceder frente al comité.",
+      example: "Neither of you is going to back down in front of the committee.",
+      exampleEs: "Ninguno de los dos va a ceder frente al comité.",
     },
     {
       phrase: "work out",
       variants: ["worked out", "works out", "working out"],
       es: "resolver; salir bien",
       kind: "phrasal",
-      example: "We worked out a third version that kept both risks under control.",
-      exampleEs: "Resolvimos una tercera versión que mantuvo ambos riesgos bajo control.",
+      example: "We worked out a third version that keeps both risks under control.",
+      exampleEs: "Resolvimos una tercera versión que mantiene ambos riesgos bajo control.",
     },
     {
       phrase: "meet in the middle",
       variants: ["met in the middle", "meets in the middle"],
       es: "llegar a un punto medio",
       kind: "idiom",
-      example: "They met in the middle without losing what mattered to either of them.",
-      exampleEs: "Llegaron a un punto medio sin perder lo que le importaba a cada uno.",
+      example: "We met in the middle without losing what mattered to either of us.",
+      exampleEs: "Llegamos a un punto medio sin perder lo que le importaba a cada uno.",
     },
   ],
   finaleSeconds: 30,
