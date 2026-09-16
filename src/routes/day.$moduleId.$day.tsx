@@ -84,9 +84,7 @@ function DayHubPage() {
 
   useEffect(() => {
     const refresh = () => {
-      const st = JourneyService.load();
-      (window as any).__dbg = { keys: Object.keys(st.days), episode: Boolean(data.episode) };
-      setJourney(st);
+      setJourney(JourneyService.load());
       if (data.episode) setSeen(isEpisodeSeen(data.episode.id));
     };
     refresh();
