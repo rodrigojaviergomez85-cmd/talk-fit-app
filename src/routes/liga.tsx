@@ -45,6 +45,12 @@ export const Route = createFileRoute("/liga")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
+  validateSearch: (search: Record<string, unknown>) => {
+    const from = typeof search.from === "string" ? search.from : undefined;
+    const rawDay = Number(search.day);
+    const day = Number.isFinite(rawDay) && rawDay > 0 ? Math.floor(rawDay) : undefined;
+    return { from, day };
+  },
   component: LeaguePage,
 });
 
