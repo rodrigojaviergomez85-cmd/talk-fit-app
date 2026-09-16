@@ -1744,6 +1744,7 @@ export const BASE_GLOSSARY: Record<string, string> = {
   visitor: "visitante",
   vote: "voto / votar",
   vs: "contra",
+  world: "mundo",
   written: "escrito",
   accountant: "contador / contadora",
   asleep: "dormido",
