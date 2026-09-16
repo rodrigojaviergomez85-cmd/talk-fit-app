@@ -160,28 +160,41 @@ export function StorybookPlayer({
     const KEY = "storybook.synced.v1";
     if (window.localStorage.getItem(KEY)) return;
     const seen = getSeenEpisodes();
-    window.localStorage.setItem(KEY, "1");
     if (!seen.length) return;
-    void backfillStoryProgress({ data: { episodeIds: seen } }).catch(() => {
-      window.localStorage.removeItem(KEY);
-    });
+    void (async () => {
+      try {
+        const session = await getFreshSession();
+        if (!session) return; // signed-out: retry on a later visit
+        window.localStorage.setItem(KEY, "1");
+        await backfillStoryProgress({ data: { episodeIds: seen } });
+      } catch {
+        window.localStorage.removeItem(KEY);
+      }
+    })();
   }, []);
 
   // Record opening the episode and the furthest slide reached (debounced).
   useEffect(() => {
     if (typeof window === "undefined") return;
     const timer = window.setTimeout(() => {
-      void recordStoryEpisodeView({
-        data: {
-          episodeId: episode.id,
-          season: seasonNumber,
-          episodeNumber,
-          sceneIndex: idx,
-          completed: slide.kind === "finale",
-        },
-      }).catch(() => {
-        /* analytics only — never interrupt the story */
-      });
+      void (async () => {
+        try {
+          // Analytics is signed-in only; skip silently for signed-out readers.
+          const session = await getFreshSession();
+          if (!session) return;
+          await recordStoryEpisodeView({
+            data: {
+              episodeId: episode.id,
+              season: seasonNumber,
+              episodeNumber,
+              sceneIndex: idx,
+              completed: slide.kind === "finale",
+            },
+          });
+        } catch {
+          /* analytics only — never interrupt the story */
+        }
+      })();
     }, 1200);
     return () => window.clearTimeout(timer);
   }, [episode.id, seasonNumber, episodeNumber, idx, slide.kind]);
