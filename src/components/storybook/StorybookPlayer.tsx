@@ -1693,6 +1693,7 @@ function FinaleSlide({
 }) {
   const [recorded, setRecorded] = useState(false);
   const [take, setTake] = useState<Recording | null>(null);
+  const finaleMaxSeconds = Math.min(episode.finaleSeconds ?? 15, 30);
   const words = Object.entries(notebook);
 
   return (
