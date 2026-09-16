@@ -148,8 +148,15 @@ function LeaguePage() {
           </div>
         ) : null}
 
-        {status === "ready" && summary?.enrolled ? (
+        {status === "ready" && summary && (summary.enrolled || summary.observer) ? (
           <>
+            {summary.observer ? (
+              <div className="rounded-2xl border border-border bg-card p-3 text-xs font-medium text-muted-foreground">
+                {es
+                  ? "Estás viendo la liga como observador (cuenta sin límites o administrador): no sumas puntos ni apareces en la clasificación."
+                  : "You are viewing the league as an observer (unlimited or admin account): you do not earn points and do not appear in the leaderboard."}
+              </div>
+            ) : null}
             <header className="rounded-2xl bg-navy p-4 text-navy-foreground shadow-[var(--shadow-lift)]">
               <p className="flex items-center gap-2 text-[15px] font-extrabold">
                 <Trophy className="size-5 text-primary" aria-hidden="true" />
