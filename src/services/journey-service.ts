@@ -17,6 +17,9 @@ const LEGACY_KEY = "fluency-reps:journey:v1";
 /** The three INTERMEDIATE modules that gate the whole ADVANCED family. */
 const INTERMEDIATE_MODULES: ModuleId[] = ["eagles-week-1", "tigers", "sharks"];
 
+/** The three ADVANCED modules: a parallel block, exactly like the intermediates. */
+const ADVANCED_MODULES: ModuleId[] = ["advanced-1", "advanced-2", "advanced-3"];
+
 
 export const emptyJourney: JourneyState = {
   days: {},
@@ -278,10 +281,12 @@ export const JourneyService = {
     // paths must run before the new Intermediate-completion gate.
     if (!aboveSavedLevel && JourneyService.completedCount(state, moduleId) > 0) return true;
     if (savedId && !aboveSavedLevel) return true;
-    // ADVANCED is CYCLICAL among itself (A1 / A2 / A3 are parallel entry points),
-    // but the whole family only opens once the three INTERMEDIATE modules
-    // (EAGLES, TIGERS, SHARKS) are complete.
+    // ADVANCED is a PARALLEL block, exactly like the intermediate one: a learner
+    // whose saved level is any of GET HIRED / HANDLE & SELL / THINK FAST has the
+    // three open at once. Otherwise the family only opens once the three
+    // INTERMEDIATE modules (EAGLES, TIGERS, SHARKS) are complete.
     if (modules[index]!.family === "advanced") {
+      if (savedId !== null && ADVANCED_MODULES.includes(savedId)) return true;
       return INTERMEDIATE_MODULES.every((id) => JourneyService.moduleComplete(state, id));
     }
 

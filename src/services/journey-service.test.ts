@@ -92,4 +92,21 @@ describe("moduleComplete respects the learner's starting point", () => {
     });
     expect(JourneyService.isModuleUnlocked(state, "advanced-1")).toBe(false);
   });
+
+  it("opens the three Advanced modules when the saved level is any of them", () => {
+    // Placed straight into GET HIRED: HANDLE & SELL and THINK FAST are parallel
+    // entry points, not a ladder, so all three must be reachable.
+    stubPreferences({ initialPlacementModuleId: "advanced-1", currentModuleId: "advanced-1", startWeek: 1 });
+    const state = makeState({});
+    expect(JourneyService.isModuleUnlocked(state, "advanced-1")).toBe(true);
+    expect(JourneyService.isModuleUnlocked(state, "advanced-2")).toBe(true);
+    expect(JourneyService.isModuleUnlocked(state, "advanced-3")).toBe(true);
+  });
+
+  it("keeps Advanced locked for a learner saved in a lower level", () => {
+    stubPreferences({ initialPlacementModuleId: "basic-zero", currentModuleId: "basic-zero", startWeek: 1 });
+    const state = makeState({});
+    expect(JourneyService.isModuleUnlocked(state, "advanced-1")).toBe(false);
+    expect(JourneyService.isModuleUnlocked(state, "advanced-3")).toBe(false);
+  });
 });

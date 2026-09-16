@@ -50,7 +50,9 @@ function LevelPage() {
       setError(true);
       return;
     }
-    void navigate({ to: "/module/$moduleId", params: { moduleId: choice } });
+    // Home, not the module's day list: after changing level the learner should
+    // see "what do I do today?" already positioned in the new level.
+    void navigate({ to: "/" });
   };
 
   const currentModule = current ? CourseService.getModule(current) : null;
