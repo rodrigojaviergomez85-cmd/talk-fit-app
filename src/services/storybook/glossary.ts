@@ -616,6 +616,7 @@ export const BASE_GLOSSARY: Record<string, string> = {
   partners: "compañeros / parejas",
   part: "parte",
   practice: "practicar",
+  polish: "perfeccionar; pulir",
   process: "proceso",
   sees: "ve",
   twenty: "veinte",
