@@ -1756,6 +1756,7 @@ export type Database = {
         Returns: Json
       }
       league_board_preview: { Args: { _competition_id: string }; Returns: Json }
+      league_can_observe: { Args: { _user_id: string }; Returns: boolean }
       league_ensure_membership: {
         Args: { _curriculum_week: number; _module_id: string }
         Returns: string
