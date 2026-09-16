@@ -270,6 +270,7 @@ function DayHubPage() {
             day={data.day}
             es={es}
             moduleLabel={data.moduleLabel}
+            moduleId={data.moduleId}
           />
         ) : null}
 
