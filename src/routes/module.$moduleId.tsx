@@ -308,6 +308,10 @@ function WeekSection({
           {days.map((item) => {
             const done = JourneyService.isDayCompleted(state, moduleId, item.day);
             const current = !done && item.day === currentDay;
+            // Future days stay closed until today's audios are done; test
+            // accounts with unlimited access keep browsing freely.
+            const unlocked =
+              hasUnlimitedAccess() || JourneyService.isDayUnlocked(state, moduleId, item.day);
             return (
               <div key={item.day} className="space-y-1.5">
                 <div className="flex items-center justify-between gap-2">
