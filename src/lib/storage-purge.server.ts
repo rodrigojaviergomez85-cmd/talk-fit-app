@@ -81,7 +81,14 @@ export type PurgeResult = {
   takesTruncated: boolean;
   /** True when the finals queue stopped on its own limits and work remains. */
   finalsTruncated: boolean;
+  /** Run-level failures: these fail the job_runs row. */
   errors: string[];
+  /**
+   * Per-row problems (one file could not be deleted or stamped). The run keeps
+   * going and stays green: a single bad row must never stop retention for
+   * everyone else.
+   */
+  skipped: string[];
 };
 
 export type PurgeOptions = {
@@ -139,6 +146,7 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
   const now = options.now ?? new Date();
   const startedAt = clock();
   const errors: string[] = [];
+  const skipped: string[] = [];
 
   const result: PurgeResult = {
     ranAt: now.toISOString(),
@@ -153,6 +161,7 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
     takesTruncated: false,
     finalsTruncated: false,
     errors,
+    skipped,
   };
 
   const outOfBudget = () => clock() - startedAt >= budgetMs;
@@ -197,7 +206,7 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
     // belong to the row it came from, even if the database allowed it.
     const batch = classified.filter((rec) => {
       if (pathBelongsTo(rec.user_id, rec.storage_path)) return true;
-      errors.push(`OWNERSHIP MISMATCH: recording ${rec.id} path does not belong to user ${rec.user_id}`);
+      skipped.push(`OWNERSHIP MISMATCH: recording ${rec.id} path does not belong to user ${rec.user_id}`);
       return false;
     });
     result.candidates += batch.length;
@@ -292,7 +301,7 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
       // base path any more: it arrives as its own row with its own clock.
       const path = row.recording_path!;
       if (!pathBelongsTo(row.user_id, path)) {
-        errors.push(
+        skipped.push(
           `OWNERSHIP MISMATCH: day final ${row.module_id} day ${row.day} path does not belong to user ${row.user_id}`,
         );
         continue;
@@ -301,7 +310,7 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
         const { error: removeError } = await timed(admin.storage.from(BUCKET).remove([path]), "storage.remove");
         if (removeError) throw new Error(removeError.message);
       } catch (err) {
-        errors.push(`day final remove failed: ${message(err)}`);
+        skipped.push(`day final remove failed: ${message(err)}`);
         continue;
       }
       result.dayFinalDeletedFiles += 1;
@@ -326,7 +335,7 @@ export async function runPurge(admin: Admin, options: PurgeOptions = {}): Promis
         );
         if (markError) throw new Error(markError.message);
       } catch (err) {
-        errors.push(`day final mark failed: ${message(err)}`);
+        skipped.push(`day final mark failed: ${message(err)}`);
         continue;
       }
 

@@ -586,7 +586,11 @@ export const JourneyService = {
         recording_path: recordingPath,
         // A repeat's "-latest" object gets its OWN retention clock, so a
         // recording made today is never deleted with an old first completion.
-        ...(isRepeat && blob ? { latest_recorded_at: new Date().toISOString() } : {}),
+        // Fresh audio also CLEARS the matching purge stamp: the row may have
+        // been marked "already deleted" by retention days ago, and a stale
+        // stamp makes the Final Coach reject the brand-new audio as missing.
+        ...(isRepeat && blob ? { latest_recorded_at: new Date().toISOString(), latest_purged_at: null } : {}),
+        ...(!isRepeat && blob ? { recording_purged_at: null } : {}),
         self_assessment: record.selfAssessment ?? null,
         ...(record.repDurations ? { rep_durations: record.repDurations } : {}),
       },

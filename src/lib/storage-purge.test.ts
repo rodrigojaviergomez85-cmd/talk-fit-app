@@ -45,6 +45,8 @@ function fakeAdmin(opts: {
   dayFinals?: Row[][];
   removeError?: string;
   markError?: string;
+  /** Error returned when stamping a day_progress final row. */
+  dayMarkError?: string;
   /** Real delay applied to every storage remove call. */
   removeDelayMs?: number;
   /** Virtual milliseconds each call adds to the injected clock. */
@@ -78,6 +80,7 @@ function fakeAdmin(opts: {
           eq: () => ({
             eq: async () => {
               tick();
+              if (opts.dayMarkError) return { error: { message: opts.dayMarkError } };
               dayMarked.push(dayMarked.length);
               return { error: null };
             },
@@ -130,7 +133,9 @@ describe("runPurge", () => {
     expect(removed[0]).toEqual(["u1/a.webm"]);
     expect(marked[0]).toEqual(["a"]);
     expect(result.deletedFiles).toBe(1);
-    expect(result.errors.some((e) => e.startsWith("OWNERSHIP MISMATCH"))).toBe(true);
+    // Per-row problem: reported as skipped, the run itself stays green.
+    expect(result.skipped.some((e) => e.startsWith("OWNERSHIP MISMATCH"))).toBe(true);
+    expect(result.errors).toEqual([]);
   });
 
   it("skips a day final whose path is not owned by its user", async () => {
@@ -142,7 +147,22 @@ describe("runPurge", () => {
     expect(removed).toEqual([["u1/basic-zero-day-7.webm"]]);
     expect(result.dayFinalDeletedFiles).toBe(1);
     expect(result.dayFinalMarkedRows).toBe(1);
-    expect(result.errors.some((e) => e.startsWith("OWNERSHIP MISMATCH"))).toBe(true);
+    expect(result.skipped.some((e) => e.startsWith("OWNERSHIP MISMATCH"))).toBe(true);
+    expect(result.errors).toEqual([]);
+  });
+
+  it("a day final that cannot be stamped is skipped, not a failed run", async () => {
+    const { admin } = fakeAdmin({
+      recordings: [[]],
+      dayFinals: [[dayFinal(7)], []],
+      dayMarkError: "INVALID_COMPLETED_AT: out of window",
+    });
+    const result = await runPurge(admin as never, { now: NOW });
+
+    expect(result.dayFinalMarkedRows).toBe(0);
+    expect(result.skipped.some((e) => e.startsWith("day final mark failed"))).toBe(true);
+    // The run stays green: one bad row must not stop retention for everyone.
+    expect(result.errors).toEqual([]);
   });
 
   it("stops at maxTakes instead of draining the whole table", async () => {
