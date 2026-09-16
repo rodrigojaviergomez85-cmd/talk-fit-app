@@ -1951,6 +1951,8 @@ export const CONTRACTIONS: Record<string, string> = {
   "i'm": "yo soy / yo estoy",
   "i'll": "yo voy a / yo (futuro)",
   "i'd": "yo (condicional: yo would)",
+  "you'd": "tú (condicional: you would)",
+  "we'd": "nosotros (condicional: we would)",
   "i've": "yo he (ya hice)",
   "you're": "tú eres / tú estás",
   "you'll": "tú vas a",
