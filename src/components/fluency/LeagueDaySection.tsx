@@ -79,11 +79,14 @@ export function LeagueDaySection({
   day,
   es,
   moduleLabel,
+  moduleId,
 }: {
   summary: LeagueSummary | null;
   day: number;
   es: boolean;
   moduleLabel: string;
+  /** Origin day so the league screen can send the learner back here. */
+  moduleId?: string;
 }) {
   const rewards = summary?.rewards ?? [];
   const dayPoints = pointsForDay(rewards, day);
@@ -120,6 +123,7 @@ export function LeagueDaySection({
 
       <Link
         to="/liga"
+        search={{ from: moduleId, day: moduleId ? day : undefined }}
         className="block rounded-2xl border border-border bg-card p-3.5 shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
       >
         <span className="flex items-center gap-2.5">

@@ -45,6 +45,12 @@ export const Route = createFileRoute("/liga")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
+  validateSearch: (search: Record<string, unknown>) => {
+    const from = typeof search["from"] === "string" ? (search["from"] as string) : undefined;
+    const rawDay = Number(search["day"]);
+    const day = Number.isFinite(rawDay) && rawDay > 0 ? Math.floor(rawDay) : undefined;
+    return { from, day };
+  },
   component: LeaguePage,
 });
 
@@ -53,6 +59,21 @@ const PAGE_SIZE = 25;
 function LeaguePage() {
   const { lang } = useAppLang();
   const es = lang === "es";
+  const { from, day: fromDay } = Route.useSearch();
+  // Where "Back to my day" goes: the day we came from, else the learner's
+  // current day, else Home.
+  const [fallbackDay, setFallbackDay] = useState<{ moduleId: string; day: number } | null>(null);
+  useEffect(() => {
+    if (from && fromDay) return;
+    try {
+      const state = JourneyService.load();
+      const moduleId = JourneyService.currentModule(state);
+      setFallbackDay({ moduleId, day: JourneyService.currentDay(state, moduleId) });
+    } catch {
+      setFallbackDay(null);
+    }
+  }, [from, fromDay]);
+  const backTo = from && fromDay ? { moduleId: from, day: fromDay } : fallbackDay;
   const { user } = useAuth();
   const loadSummary = useServerFn(getMyLeagueSummary);
   const loadPreview = useServerFn(getLeaguePreview);
@@ -206,13 +227,24 @@ function LeaguePage() {
   return (
     <AppShell>
       <div className="space-y-3 p-4 pb-8">
-        <Link
-          to="/"
-          className="inline-flex h-9 items-center gap-1.5 rounded-2xl border border-border px-3 text-[11px] font-bold uppercase tracking-[0.12em]"
-        >
-          <ArrowLeft className="size-4" aria-hidden="true" />
-          {es ? "Volver a mi día" : "Back to my day"}
-        </Link>
+        {backTo ? (
+          <Link
+            to="/day/$moduleId/$day"
+            params={{ moduleId: backTo.moduleId as never, day: String(backTo.day) }}
+            className="inline-flex h-9 items-center gap-1.5 rounded-2xl border border-border px-3 text-[11px] font-bold uppercase tracking-[0.12em]"
+          >
+            <ArrowLeft className="size-4" aria-hidden="true" />
+            {es ? "Volver a mi día" : "Back to my day"}
+          </Link>
+        ) : (
+          <Link
+            to="/"
+            className="inline-flex h-9 items-center gap-1.5 rounded-2xl border border-border px-3 text-[11px] font-bold uppercase tracking-[0.12em]"
+          >
+            <ArrowLeft className="size-4" aria-hidden="true" />
+            {es ? "Volver a mi día" : "Back to my day"}
+          </Link>
+        )}
 
         {status === "loading" ? (
           <p className="py-10 text-center text-sm text-muted-foreground">{es ? "Cargando…" : "Loading…"}</p>
