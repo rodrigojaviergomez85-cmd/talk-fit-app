@@ -113,24 +113,24 @@ export const ADVANCED1_EP9_IN_THEIR_OWN_WORDS: StorybookEpisode = {
     {
       id: "s3",
       image: s3,
-      imageAlt: "Marco, a young man in a delivery company uniform, talks to Camila with a nervous laugh.",
-      text: "Marco has been promoted twice and refused once.",
-      es: "A Marco lo ascendieron dos veces y una vez lo rechazó.",
-      speaker: "marco",
-      cast: ["camila", "marco"],
+      imageAlt: "Nelson, a young man in a delivery company uniform, talks to Camila with a nervous laugh.",
+      text: "Nelson has been promoted twice and refused once.",
+      es: "A Nelson lo ascendieron dos veces y una vez lo rechazó.",
+      speaker: "nelson",
+      cast: ["camila", "nelson"],
       lines: [
         {
           speaker: "camila",
-          text: "Marco, your English is better than you think. What are you still afraid of?",
-          es: "Marco, tu inglés es mejor de lo que crees. ¿A qué le sigues teniendo miedo?",
+          text: "Nelson, your English is better than you think. What are you still afraid of?",
+          es: "Nelson, tu inglés es mejor de lo que crees. ¿A qué le sigues teniendo miedo?",
         },
         {
-          speaker: "marco",
+          speaker: "nelson",
           text: "The phone. In a meeting I can watch faces, but on a call I only hear a voice that never slows down, and my head goes empty.",
           es: "El teléfono. En una reunión puedo ver las caras, pero en una llamada solo escucho una voz que nunca baja la velocidad, y mi cabeza se queda vacía.",
         },
         {
-          speaker: "marco",
+          speaker: "nelson",
           text: "I turned down a supervisor job last year because of that. If calls had been part of my training, I would have said yes.",
           es: "Rechacé un puesto de supervisor el año pasado por eso. Si las llamadas hubieran sido parte de mi entrenamiento, habría dicho que sí.",
         },
@@ -214,8 +214,8 @@ export const ADVANCED1_EP9_IN_THEIR_OWN_WORDS: StorybookEpisode = {
       lines: [
         {
           speaker: "camila",
-          text: "Marco's fear is not unusual. I would add a weekly call module: no faces, no video, only voices.",
-          es: "El miedo de Marco no es raro. Yo agregaría un módulo semanal de llamadas: sin caras, sin video, solo voces.",
+          text: "Nelson's fear is not unusual. I would add a weekly call module: no faces, no video, only voices.",
+          es: "El miedo de Nelson no es raro. Yo agregaría un módulo semanal de llamadas: sin caras, sin video, solo voces.",
         },
         {
           speaker: "vale",
@@ -332,8 +332,8 @@ export const ADVANCED1_EP9_IN_THEIR_OWN_WORDS: StorybookEpisode = {
     {
       id: "q1",
       afterScene: "s5",
-      questionEn: "Why is Marco afraid of phone calls in English?",
-      questionEs: "¿Por qué Marco le tiene miedo a las llamadas en inglés?",
+      questionEn: "Why is Nelson afraid of phone calls in English?",
+      questionEs: "¿Por qué Nelson le tiene miedo a las llamadas en inglés?",
       options: [
         { label: "Because he cannot see faces and the voice never slows down", emoji: "📞" },
         { label: "Because he does not know enough vocabulary", emoji: "📕" },

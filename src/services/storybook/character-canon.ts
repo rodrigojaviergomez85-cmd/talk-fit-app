@@ -221,9 +221,9 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     seasons: ["advanced-1"],
     neverDo: ["never drawn as Vale or Camila"],
   },
-  marco: {
-    id: "marco",
-    name: "Marco",
+  nelson: {
+    id: "nelson",
+    name: "Nelson",
     age: "Salvadoran man, about 30, delivery company supervisor candidate and academy student",
     look: "medium-brown skin, short black hair, light stubble, friendly nervous face, adult proportions",
     outfit: "navy work polo with a company logo-free chest",
