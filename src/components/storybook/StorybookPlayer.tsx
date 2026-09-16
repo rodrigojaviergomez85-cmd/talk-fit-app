@@ -1693,6 +1693,7 @@ function FinaleSlide({
 }) {
   const [recorded, setRecorded] = useState(false);
   const [take, setTake] = useState<Recording | null>(null);
+  const finaleMaxSeconds = Math.min(episode.finaleSeconds ?? 15, 30);
   const words = Object.entries(notebook);
 
   return (
@@ -1756,14 +1757,14 @@ function FinaleSlide({
         </ul>
         <p className="text-[12px] font-bold uppercase tracking-[0.1em] opacity-80">
           {es
-            ? `Máximo ${episode.finaleSeconds ?? 15} segundos`
-            : `Max ${episode.finaleSeconds ?? 15} seconds`}
+            ? `Máximo ${finaleMaxSeconds} segundos`
+            : `Max ${finaleMaxSeconds} seconds`}
         </p>
         <VoiceRecorder
           onStart={() => AudioService.stop()}
-          label={take ? (es ? "GRABAR OTRA VEZ" : "RECORD AGAIN") : es ? "GRABAR MI PRESENTACIÓN" : "RECORD MY INTRO"}
+          label={take ? (es ? "GRABAR OTRA VEZ" : "RECORD AGAIN") : es ? "GRABAR MI RESPUESTA" : "RECORD MY ANSWER"}
           stopLabel={es ? "PARAR" : "STOP"}
-          maxSeconds={episode.finaleSeconds ?? 15}
+          maxSeconds={finaleMaxSeconds}
           countdown
           onComplete={(rec) => {
             setTake(rec);
