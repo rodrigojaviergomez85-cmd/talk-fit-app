@@ -300,7 +300,10 @@ function LeaguePage() {
               ) : null}
             </section>
 
-            <label className="flex items-center justify-between rounded-2xl border border-border bg-card p-3 text-xs font-medium text-foreground">
+            <label
+              hidden={!summary.enrolled}
+              className="flex items-center justify-between rounded-2xl border border-border bg-card p-3 text-xs font-medium text-foreground"
+            >
               <span>
                 {es ? "Ocultarme de la clasificación pública" : "Hide me from the public leaderboard"}
                 <span className="block text-[11px] text-muted-foreground">
