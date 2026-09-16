@@ -365,8 +365,8 @@ export const ADVANCED1_EP1_RULES_OF_THE_GAME: StorybookEpisode = {
       ],
       "words": [
         {
-          "word": "freeze",
-          "es": "paralizarse; quedarse en blanco",
+          "word": "proof",
+          "es": "prueba; evidencia",
         },
         {
           "word": "step",
