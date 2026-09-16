@@ -92,8 +92,8 @@ export const ADVANCED1_EP2_NORTHLINE_NIGHT: StorybookEpisode = {
       lines: [
         {
           speaker: "reed",
-          text: "Dani is right. A good story has four parts: setting, action, result, lesson. What makes a story convincing is not what happened — it is how you tell it.",
-          es: "Dani tiene razón. Una buena historia tiene cuatro partes: escena, acción, resultado, lección. Lo que hace convincente a una historia no es lo que pasó, sino cómo la cuentas.",
+          text: "Dani is right. A good story has four parts: situation, action, result, lesson. What makes a story convincing is not what happened — it is how you tell it.",
+          es: "Dani tiene razón. Una buena historia tiene cuatro partes: situación, acción, resultado, lección. Lo que hace convincente a una historia no es lo que pasó, sino cómo la cuentas.",
         },
         {
           speaker: "vale",
