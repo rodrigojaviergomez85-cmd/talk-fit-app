@@ -337,16 +337,6 @@ export function StorybookPlayer({
 
       <div
         className={cn("mt-3", immersive && "mt-0 flex min-h-0 flex-1 flex-col")}
-        onTouchStart={(e) => {
-          touchX.current = e.touches[0]?.clientX ?? null;
-        }}
-        onTouchEnd={(e) => {
-          if (touchX.current === null) return;
-          const delta = (e.changedTouches[0]?.clientX ?? 0) - touchX.current;
-          touchX.current = null;
-           if (delta < -48 && !advanceLocked) go(idx + 1);
-          else if (delta > 48) go(idx - 1);
-        }}
       >
         <div
           key={idx}
