@@ -2,7 +2,13 @@ import { describe, expect, it } from "vitest";
 import {
   addDays,
   addMonths,
+  dateToKey,
+  daysBetween,
+  keyToDate,
+  MAX_RANGE_DAYS,
   monthBounds,
+  normalizeCustomRange,
+  rangeLabel,
   resolveRange,
   summarize,
   type DailyActivityDay,
