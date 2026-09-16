@@ -157,8 +157,8 @@ export const ADVANCED1_EP5_PRESSURE_ROUND: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "Let me think for a second. Last year, a group was left without a teacher for a whole day because of a scheduling error I had approved. I owned the mistake, called every family, and built a double-check system; since then, no class has been missed.",
-          es: "Déjame pensar un segundo. El año pasado, un grupo se quedó sin maestro un día entero por un error de horario que yo había aprobado. Asumí el error, llamé a cada familia y construí un sistema de doble verificación; desde entonces, no se ha perdido ninguna clase.",
+          text: "Let me think for a second. Last year, a group was left without a teacher for a whole day because of a schedule error I had approved myself. I owned the mistake, called every family, and built a double-check system; since then, no class has been missed.",
+          es: "Déjame pensar un segundo. El año pasado, un grupo se quedó sin maestro un día entero por un error de horario que yo mismo había aprobado. Asumí el error, llamé a cada familia y construí un sistema de doble verificación; desde entonces, no se ha perdido ninguna clase.",
         },
         {
           speaker: "reed",
