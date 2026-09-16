@@ -10,9 +10,6 @@ import { useAuth } from "@/lib/auth";
 import { JourneyService } from "@/services/journey-service";
 import { CourseService } from "@/services/course-service";
 import {
-  getLeagueBoard,
-  getLeaguePreview,
-  getMyLeagueHistory,
   getCohortLeagueSummary,
   getLeagueBoard,
   getLeaguePreview,
