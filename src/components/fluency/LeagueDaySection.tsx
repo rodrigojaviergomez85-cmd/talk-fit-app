@@ -4,15 +4,15 @@ import { ArrowRight, Trophy } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { claimDayRewards } from "@/lib/league.functions";
 import {
-  DAY_GOAL,
   WEEKLY_GOAL,
+  dailyGoal,
   formatPoints,
   hasReward,
   pointsForDay,
   progressPercent,
   type LeagueSummary,
 } from "@/lib/league";
-import { isLeagueCohort } from "@/lib/league-manifest";
+import { getStorySlot, isLeagueCohort } from "@/lib/league-manifest";
 import { curriculumWeekForDay } from "@/lib/league";
 
 /**
