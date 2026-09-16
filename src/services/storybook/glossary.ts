@@ -2021,6 +2021,7 @@ export const CONTRACTIONS: Record<string, string> = {
   "they're": "ellos son / están",
   "they'll": "ellos van a",
   "they've": "ellos han",
+  "they'd": "ellos (condicional: they would)",
   "let's": "vamos a (hagamos)",
   "don't": "no (negación con do)",
   "doesn't": "no (negación con does)",
