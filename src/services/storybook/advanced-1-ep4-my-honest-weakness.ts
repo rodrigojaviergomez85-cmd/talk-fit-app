@@ -200,7 +200,7 @@ export const ADVANCED1_EP4_MY_HONEST_WEAKNESS: StorybookEpisode = {
       words: [
         { word: "teammate", es: "compañera de equipo" },
         { word: "data", es: "datos" },
-        { word: "victory", es: "victoria" },
+        { word: "hire", es: "contratar" },
       ],
     },
     {
@@ -231,7 +231,7 @@ export const ADVANCED1_EP4_MY_HONEST_WEAKNESS: StorybookEpisode = {
       words: [
         { word: "reports", es: "reportes; informes" },
         { word: "faces", es: "caras" },
-        { word: "honest", es: "honesta" },
+        { word: "budget", es: "presupuesto" },
       ],
     },
     {
