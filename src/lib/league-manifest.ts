@@ -44,6 +44,14 @@ export function isLeagueCohort(moduleId: string, curriculumWeek: number): boolea
   return Boolean(getLeagueCohort(moduleId, curriculumWeek));
 }
 
+/** Latest curriculum week that has a league cohort for this module (0 = none). */
+export function maxCohortWeekForModule(moduleId: string): number {
+  return LEAGUE_COHORTS.filter((c) => c.moduleId === moduleId).reduce(
+    (max, c) => Math.max(max, c.curriculumWeek),
+    0,
+  );
+}
+
 export function getStorySlot(moduleId: string, day: number): LeagueStorySlot | undefined {
   const week = Math.max(1, Math.ceil(day / 5));
   return getLeagueCohort(moduleId, week)?.stories.find((s) => s.day === day);
