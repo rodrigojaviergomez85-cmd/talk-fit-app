@@ -3,6 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeft, ChevronDown, Crosshair, Trophy } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { LearnerAvatar } from "@/components/fluency/LearnerAvatar";
 import { useAppLang } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import { JourneyService } from "@/services/journey-service";
