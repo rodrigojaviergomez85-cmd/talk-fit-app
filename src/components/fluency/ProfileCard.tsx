@@ -153,13 +153,13 @@ export function ProfileCard({ lang }: { lang: "es" | "en" }) {
             value={name}
             maxLength={NAME_MAX}
             onChange={(e) => setName(e.target.value)}
-            className="min-h-[48px] flex-1 rounded-2xl border border-border bg-background px-4 text-[15px] font-semibold"
+            className="min-h-[48px] w-full min-w-0 flex-1 rounded-2xl border border-border bg-background px-4 text-[15px] font-semibold"
           />
           <button
             type="button"
             disabled={busy || !dirty}
             onClick={onSaveName}
-            className="inline-flex min-h-[48px] items-center justify-center rounded-2xl bg-primary px-4 text-[12px] font-bold uppercase tracking-[0.12em] text-primary-foreground disabled:opacity-40"
+            className="inline-flex min-h-[48px] shrink-0 items-center justify-center rounded-2xl bg-primary px-3 text-[12px] font-bold uppercase tracking-[0.12em] text-primary-foreground disabled:opacity-40"
           >
             {busy ? <Loader2 className="size-4 animate-spin" /> : t.save}
           </button>
