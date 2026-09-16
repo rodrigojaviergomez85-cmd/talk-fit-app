@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, BookOpen, Check, Mic, Star } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
 import { CourseService } from "@/services/course-service";
@@ -17,7 +18,9 @@ import {
   LeagueRewardToast,
   useLeagueDay,
 } from "@/components/fluency/LeagueDaySection";
-import { hasReward } from "@/lib/league";
+import { getMyLeagueSummary } from "@/lib/league.functions";
+import { maxCohortWeekForModule } from "@/lib/league-manifest";
+import { curriculumWeekForDay, hasReward } from "@/lib/league";
 import type { JourneyState, ModuleId } from "@/lib/types";
 
 /**
@@ -89,6 +92,26 @@ function DayHubPage() {
 
   // Weekly league: server-confirmed points for this curriculum day.
   const league = useLeagueDay(data.moduleId, data.day);
+  // The student's active league week: the module's latest cohort week, read
+  // only (never claims points). Lets us flag days ahead of the active week.
+  const fetchLeague = useServerFn(getMyLeagueSummary);
+  const cohortWeek = maxCohortWeekForModule(data.moduleId);
+  const [enrolled, setEnrolled] = useState(false);
+  useEffect(() => {
+    if (!cohortWeek) return;
+    let alive = true;
+    void fetchLeague({ data: { moduleId: data.moduleId, day: (cohortWeek - 1) * 5 + 1 } })
+      .then((s) => {
+        if (alive) setEnrolled(s.enrolled || s.observer);
+      })
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, [fetchLeague, cohortWeek, data.moduleId]);
+  const weekOfDay = curriculumWeekForDay(data.day);
+  const showInactiveWeekNote = enrolled && cohortWeek > 0 && weekOfDay > cohortWeek;
+
   const rewards = league.summary?.rewards ?? [];
   const storyEarned = hasReward(rewards, data.day, "story");
   const practiceEarned = hasReward(rewards, data.day, "practice");
@@ -204,6 +227,23 @@ function DayHubPage() {
             {t("day.moduleFinished")}
           </p>
         )}
+
+        {data.day > 1 ? (
+          <Link
+            to="/day/$moduleId/$day"
+            params={{ moduleId: data.moduleId, day: String(data.day - 1) }}
+            className="flex min-h-[48px] items-center justify-center gap-2 rounded-2xl border-2 border-navy bg-card px-4 text-[13px] font-extrabold uppercase tracking-[0.12em] text-navy transition-transform active:scale-[0.99]"
+          >
+            <ArrowLeft className="size-4" aria-hidden="true" />
+            {t("day.prevDay")}
+          </Link>
+        ) : null}
+
+        {showInactiveWeekNote ? (
+          <p className="text-center text-[11px] font-semibold italic text-muted-foreground">
+            {t("day.inactiveWeekNote")}
+          </p>
+        ) : null}
 
         <LeagueRewardToast count={league.awarded.length} es={es} onDone={league.clearAwarded} />
       </div>
