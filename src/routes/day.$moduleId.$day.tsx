@@ -18,9 +18,7 @@ import {
   LeagueRewardToast,
   useLeagueDay,
 } from "@/components/fluency/LeagueDaySection";
-import { getMyLeagueSummary } from "@/lib/league.functions";
-import { maxCohortWeekForModule } from "@/lib/league-manifest";
-import { curriculumWeekForDay, hasReward } from "@/lib/league";
+import { hasReward } from "@/lib/league";
 import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 import type { JourneyState, ModuleId } from "@/lib/types";
 
