@@ -190,6 +190,21 @@ function DayHubPage() {
           />
         ) : null}
 
+        {data.day < data.total ? (
+          <Link
+            to="/day/$moduleId/$day"
+            params={{ moduleId: data.moduleId, day: String(data.day + 1) }}
+            className="flex min-h-[48px] items-center justify-center gap-2 rounded-2xl border-2 border-navy bg-card px-4 text-[13px] font-extrabold uppercase tracking-[0.12em] text-navy transition-transform active:scale-[0.99]"
+          >
+            {t("day.nextDay")}
+            <ArrowRight className="size-4" aria-hidden="true" />
+          </Link>
+        ) : (
+          <p className="rounded-2xl border border-border bg-muted/40 px-4 py-3 text-center text-[12px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+            {t("day.moduleFinished")}
+          </p>
+        )}
+
         <LeagueRewardToast count={league.awarded.length} es={es} onDone={league.clearAwarded} />
       </div>
     </AppShell>
