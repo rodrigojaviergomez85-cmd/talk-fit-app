@@ -67,10 +67,10 @@ export function ProfilePhotoCard({
       const dataUrl = await toSquareJpegDataUrl(file);
       const res = await upload({ data: { dataUrl } });
       if (res.ok) {
-        onChange({ photoStatus: res.status, photoUrl: res.photoUrl ?? null });
+        onChange({ photoStatus: res.status ?? "pending", photoUrl: res.photoUrl ?? null });
         setMsg(res.status === "approved" ? "approved" : "pending");
       } else {
-        onChange({ photoStatus: res.status ?? profile?.photoStatus });
+        onChange({ photoStatus: res.status ?? profile?.photoStatus ?? "none", photoUrl: null });
         setMsg(res.error === "rejected" ? "rejected" : (res.error ?? "server"));
       }
     } catch {
