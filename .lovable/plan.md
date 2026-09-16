@@ -4,6 +4,13 @@ Los estudiantes podrán subir su propia foto. Antes de que alguien la vea, una r
 
 La galería de avatares se queda: quien no quiera subir foto elige un avatar o deja sus iniciales.
 
+## Invitación al entrar (opcional)
+
+- La primera vez que alguien entra con Google (o crea su cuenta) y todavía no tiene foto ni avatar, aparece una pantalla corta: "Ponle cara a tu perfil" con dos botones, **Subir mi foto** y **Elegir un avatar**, más **Ahora no**.
+- Es totalmente opcional: al tocar "Ahora no" pasa directo a Inicio y todo funciona igual.
+- La invitación se muestra una sola vez; después solo se cambia desde Mi cuenta.
+- Sin foto ni avatar, la app sigue registrando y mostrando su nombre en la liga semanal exactamente como hoy, con las iniciales en el círculo.
+
 ## Cómo funciona para el estudiante
 
 1. En Mi cuenta toca "Cambiar foto" y elige entre **subir mi foto** o **elegir un avatar**.
