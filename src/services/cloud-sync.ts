@@ -96,6 +96,10 @@ export function buildRecordingUpsertRow(input: {
     storage_path: input.storagePath,
     mime_type: input.mimeType,
     source_turn_number: input.sourceTurnNumber,
+    // Fresh audio is never "already deleted". Retention may have stamped this
+    // row days ago (repeating an old day reuses the same take row), and a
+    // stale stamp makes the Final Coach reject the new audio as missing.
+    audio_purged_at: null,
   };
 }
 
@@ -181,15 +185,23 @@ export const CloudSync = {
       console.error("[cloud] clear final rep failed", clear.error.message);
       return false;
     }
-    const { error } = await supabase
+    // `.select("id")` is required: an UPDATE that matches NO row succeeds with
+    // no error. Without it the app would report a final take that does not
+    // exist and then ask the coach for feedback on missing audio.
+    const { data, error } = await supabase
       .from("recordings")
       .update({ is_final_rep: true })
       .eq("user_id", uid)
       .eq("module_id", moduleId)
       .eq("day", day)
-      .eq("take_number", takeNumber);
+      .eq("take_number", takeNumber)
+      .select("id");
     if (error) {
       console.error("[cloud] set final rep failed", error.message);
+      return false;
+    }
+    if (!data || data.length === 0) {
+      console.error("[cloud] set final rep matched no recording row", { moduleId, day, takeNumber });
       return false;
     }
     return true;
