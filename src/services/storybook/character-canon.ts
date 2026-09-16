@@ -258,6 +258,16 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     seasons: ["advanced-1"],
     neverDo: ["never drawn as Elena or Camila", "never drawn as a young student"],
   },
+  keller: {
+    id: "keller",
+    name: "Ms. Keller",
+    aka: ["Keller"],
+    age: "American woman in her early 40s, senior recruiter at Crown",
+    look: "fair skin with freckles, auburn hair in a straight shoulder-length cut, alert friendly-but-calculating face, adult proportions",
+    outfit: "burgundy blazer over a black top",
+    seasons: ["advanced-1"],
+    neverDo: ["never drawn as Barrett or Vale", "never drawn as a young student"],
+  },
   candidateM: {
     id: "candidateM",
     name: "Candidate",
