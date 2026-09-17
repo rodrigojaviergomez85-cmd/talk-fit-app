@@ -12,6 +12,7 @@ import { PracticeSessionService, setSessionScope } from "@/services/practice-ses
 import { setPreferencesScope } from "@/services/preferences";
 import { useAppLang } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
+import { useAppSettings } from "@/hooks/use-app-settings";
 import { CloudSync } from "@/services/cloud-sync";
 import { cn } from "@/lib/utils";
 
@@ -39,6 +40,7 @@ function ProfilePage() {
   const { t, lang, setLang, prefs, setPrefs } = useAppLang();
   const { signOut } = useAuth();
   const navigate = useNavigate();
+  const { billingEnabled, limitsEnabled } = useAppSettings();
   const esUi = lang === "es";
   const [state, setState] = useState<JourneyState>(emptyJourney);
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -161,14 +163,16 @@ function ProfilePage() {
             </p>
             <p className="text-[16px] font-bold">{userEmail}</p>
             <p className="text-[13px] text-muted-foreground">{t("account.syncNote")}</p>
-            {/* Consumo y facturación: solo con sesión iniciada. */}
-            <Link
-              to="/cuenta"
-              className="inline-flex min-h-[48px] w-full items-center justify-between rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
-            >
-              {esUi ? "Mi consumo y facturación" : "Usage & billing"}
-              <ChevronRight className="size-4 text-muted-foreground" />
-            </Link>
+            {/* Consumo y facturación: oculto cuando ni pagos ni límites están activos. */}
+            {billingEnabled || limitsEnabled ? (
+              <Link
+                to="/cuenta"
+                className="inline-flex min-h-[48px] w-full items-center justify-between rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
+              >
+                {esUi ? "Mi consumo y facturación" : "Usage & billing"}
+                <ChevronRight className="size-4 text-muted-foreground" />
+              </Link>
+            ) : null}
             <button
               type="button"
               onClick={() => void signOut()}
