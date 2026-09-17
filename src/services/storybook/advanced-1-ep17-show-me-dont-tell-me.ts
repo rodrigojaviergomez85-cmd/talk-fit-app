@@ -314,6 +314,16 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           text: "Then I'd teach the next session myself with her watching, and we'd compare what the students produced. Correction lands better when it's demonstrated rather than announced.",
           es: "Entonces daría yo la siguiente sesión con ella observando, y compararíamos lo que produjeron los estudiantes. La corrección cae mejor cuando se demuestra en vez de anunciarse.",
         },
+        {
+          speaker: "barrett",
+          text: "Vale, you're allowed one sentence. Is that how you would handle it?",
+          es: "Vale, tienes derecho a una frase. ¿Así lo manejarías tú?",
+        },
+        {
+          speaker: "vale",
+          text: "It's how I've handled it for six years, and she didn't learn that answer from me this morning.",
+          es: "Así lo he manejado durante seis años, y esa respuesta no la aprendió de mí esta mañana.",
+        },
       ],
       words: [
         { word: "rehearse", es: "ensayar" },
@@ -344,6 +354,16 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           speaker: "barrett",
           text: "That is not in either file.",
           es: "Eso no está en ninguno de los dos expedientes.",
+        },
+        {
+          speaker: "elena",
+          text: "It wouldn't be. Nobody writes down the call that keeps a student in the room.",
+          es: "No lo estaría. Nadie escribe la llamada que mantiene a un estudiante en el salón.",
+        },
+        {
+          speaker: "vale",
+          text: "Which is why we're asking for numbers and for the people behind them.",
+          es: "Por eso pedimos números y también a la gente detrás de ellos.",
         },
       ],
       words: [
