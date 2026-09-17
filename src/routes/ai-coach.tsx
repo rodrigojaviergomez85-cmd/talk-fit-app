@@ -164,7 +164,31 @@ function AiCoachPage() {
 
   return (
     <AppShell title={t("aiCoach.title")} subtitle={t("aiCoach.subtitle")} hideSync>
-      <div className="space-y-4">
+      <div className="mb-4 grid grid-cols-2 gap-2 rounded-2xl border border-border bg-card p-1">
+        {(
+          [
+            ["write", lang === "en" ? "Write" : "Escribir"],
+            ["live", lang === "en" ? "Talk live" : "Hablar en vivo"],
+          ] as const
+        ).map(([value, label]) => (
+          <button
+            key={value}
+            type="button"
+            onClick={() => setTab(value)}
+            className={`min-h-[44px] rounded-xl px-3 text-[13px] font-extrabold uppercase tracking-[0.12em] transition-colors ${
+              tab === value
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:bg-secondary"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {tab === "live" ? <LiveCoach /> : null}
+
+      <div className={tab === "live" ? "hidden" : "space-y-4"}>
         {counter ? (
           <p className="text-center text-[12px] font-semibold text-muted-foreground">{counter}</p>
         ) : null}
