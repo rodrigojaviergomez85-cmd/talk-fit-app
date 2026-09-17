@@ -33,7 +33,7 @@ const RANGES: { key: RangeKey; en: string; es: string }[] = [
 
 function emptyDay(day: string): DailyActivityDay {
   const zero = { users: 0, count: 0 };
-  return { day, active_users: 0, practice: zero, story: zero, interview: zero, review: zero, coach: zero };
+  return { day, active_users: 0, new_users: 0, practice: zero, story: zero, interview: zero, review: zero, coach: zero };
 }
 
 function Square({

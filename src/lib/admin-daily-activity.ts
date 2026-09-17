@@ -6,6 +6,7 @@ export type ActivitySource = { users: number; count: number };
 export type DailyActivityDay = {
   day: string; // YYYY-MM-DD (America/El_Salvador)
   active_users: number;
+  new_users: number;
   practice: ActivitySource;
   story: ActivitySource;
   interview: ActivitySource;
