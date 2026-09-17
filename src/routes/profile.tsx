@@ -40,7 +40,7 @@ function ProfilePage() {
   const { t, lang, setLang, prefs, setPrefs } = useAppLang();
   const { signOut } = useAuth();
   const navigate = useNavigate();
-  const { billingEnabled, limitsEnabled } = useAppSettings();
+  const { billingEnabled } = useAppSettings();
   const esUi = lang === "es";
   const [state, setState] = useState<JourneyState>(emptyJourney);
   const [userEmail, setUserEmail] = useState<string | null>(null);
