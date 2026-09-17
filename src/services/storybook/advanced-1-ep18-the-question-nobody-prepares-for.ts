@@ -374,6 +374,16 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           text: "Then I'll say it in the meeting, in one sentence, before it becomes three.",
           es: "Entonces lo diré en la reunión, en una frase, antes de que se vuelva tres.",
         },
+        {
+          speaker: "camila",
+          text: "Say it to Dani first. He heard the rumour before you finished the call.",
+          es: "Díselo a Dani primero. Él escuchó el rumor antes de que terminaras la llamada.",
+        },
+        {
+          speaker: "dani",
+          text: "I already asked her. I just didn't ask her in front of everyone.",
+          es: "Ya se lo pregunté. Solo que no se lo pregunté delante de todos.",
+        },
       ],
       words: [
         { word: "recognises", es: "reconoce" },
