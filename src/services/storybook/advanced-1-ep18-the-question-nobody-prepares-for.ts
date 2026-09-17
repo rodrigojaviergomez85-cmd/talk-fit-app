@@ -407,8 +407,18 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
         },
         {
           speaker: "vale",
-          text: "One more thing, and it matters more than the offer. Nobody in this office should hear news about this company from Crown before they hear it from me, so if you're ever asked something you can't answer, say that you don't decide it and that I'll call them today. That protects you and it protects us, and it costs nothing except a phone call I'd have had to make anyway.",
-          es: "Una cosa más, y importa más que la oferta. Nadie en esta oficina debería enterarse de algo de esta empresa por Crown antes que por mí, así que si alguna vez te preguntan algo que no puedes responder, di que tú no lo decides y que yo llamaré hoy. Eso te protege a ti y nos protege a nosotros, y no cuesta nada salvo una llamada que yo habría tenido que hacer igual.",
+          text: "One more thing, and it matters more than the offer. Nobody here should hear news about this company from Crown before they hear it from me.",
+          es: "Una cosa más, y importa más que la oferta. Nadie aquí debería enterarse de algo de esta empresa por Crown antes que por mí.",
+        },
+        {
+          speaker: "camila",
+          text: "And when a client asks us directly?",
+          es: "¿Y cuando un cliente nos pregunta directamente?",
+        },
+        {
+          speaker: "vale",
+          text: "Say you don't decide it and that I'll call them today. That protects you and it protects us.",
+          es: "Di que tú no lo decides y que yo los llamaré hoy. Eso te protege a ti y nos protege a nosotros.",
         },
         {
           speaker: "dani",
