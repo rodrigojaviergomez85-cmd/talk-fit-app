@@ -33,6 +33,7 @@ import { Route as AdminLimitesRouteImport } from './routes/admin.limites'
 import { Route as AdminMetricsRouteImport } from './routes/admin.metrics'
 import { Route as AdminStorageReportRouteImport } from './routes/admin.storage-report'
 import { Route as ApiAiCoachRouteImport } from './routes/api/ai-coach'
+import { Route as ApiCoachPracticeRouteImport } from './routes/api/coach-practice'
 import { Route as ApiFinalAudioCoachRouteImport } from './routes/api/final-audio-coach'
 import { Route as ApiFinalAudioCoachRetakeRouteImport } from './routes/api/final-audio-coach-retake'
 import { Route as ApiLiveCoachRouteImport } from './routes/api/live-coach'
@@ -187,6 +188,11 @@ const AdminStorageReportRoute = AdminStorageReportRouteImport.update({
 const ApiAiCoachRoute = ApiAiCoachRouteImport.update({
   id: '/api/ai-coach',
   path: '/api/ai-coach',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCoachPracticeRoute = ApiCoachPracticeRouteImport.update({
+  id: '/api/coach-practice',
+  path: '/api/coach-practice',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiFinalAudioCoachRoute = ApiFinalAudioCoachRouteImport.update({
@@ -400,6 +406,7 @@ export interface FileRoutesByFullPath {
   '/admin/metrics': typeof AdminMetricsRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/ai-coach': typeof ApiAiCoachRoute
+  '/api/coach-practice': typeof ApiCoachPracticeRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
   '/api/live-coach': typeof ApiLiveCoachRoute
@@ -461,6 +468,7 @@ export interface FileRoutesByTo {
   '/admin/metrics': typeof AdminMetricsRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/ai-coach': typeof ApiAiCoachRoute
+  '/api/coach-practice': typeof ApiCoachPracticeRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
   '/api/live-coach': typeof ApiLiveCoachRoute
@@ -522,6 +530,7 @@ export interface FileRoutesById {
   '/admin/metrics': typeof AdminMetricsRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/ai-coach': typeof ApiAiCoachRoute
+  '/api/coach-practice': typeof ApiCoachPracticeRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
   '/api/live-coach': typeof ApiLiveCoachRoute
@@ -585,6 +594,7 @@ export interface FileRouteTypes {
     | '/admin/metrics'
     | '/admin/storage-report'
     | '/api/ai-coach'
+    | '/api/coach-practice'
     | '/api/final-audio-coach'
     | '/api/final-audio-coach-retake'
     | '/api/live-coach'
@@ -646,6 +656,7 @@ export interface FileRouteTypes {
     | '/admin/metrics'
     | '/admin/storage-report'
     | '/api/ai-coach'
+    | '/api/coach-practice'
     | '/api/final-audio-coach'
     | '/api/final-audio-coach-retake'
     | '/api/live-coach'
@@ -706,6 +717,7 @@ export interface FileRouteTypes {
     | '/admin/metrics'
     | '/admin/storage-report'
     | '/api/ai-coach'
+    | '/api/coach-practice'
     | '/api/final-audio-coach'
     | '/api/final-audio-coach-retake'
     | '/api/live-coach'
@@ -768,6 +780,7 @@ export interface RootRouteChildren {
   AdminMetricsRoute: typeof AdminMetricsRoute
   AdminStorageReportRoute: typeof AdminStorageReportRoute
   ApiAiCoachRoute: typeof ApiAiCoachRoute
+  ApiCoachPracticeRoute: typeof ApiCoachPracticeRoute
   ApiFinalAudioCoachRoute: typeof ApiFinalAudioCoachRoute
   ApiFinalAudioCoachRetakeRoute: typeof ApiFinalAudioCoachRetakeRoute
   ApiLiveCoachRoute: typeof ApiLiveCoachRoute
@@ -969,6 +982,13 @@ declare module '@tanstack/react-router' {
       path: '/api/ai-coach'
       fullPath: '/api/ai-coach'
       preLoaderRoute: typeof ApiAiCoachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/coach-practice': {
+      id: '/api/coach-practice'
+      path: '/api/coach-practice'
+      fullPath: '/api/coach-practice'
+      preLoaderRoute: typeof ApiCoachPracticeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/final-audio-coach': {
@@ -1261,6 +1281,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminMetricsRoute: AdminMetricsRoute,
   AdminStorageReportRoute: AdminStorageReportRoute,
   ApiAiCoachRoute: ApiAiCoachRoute,
+  ApiCoachPracticeRoute: ApiCoachPracticeRoute,
   ApiFinalAudioCoachRoute: ApiFinalAudioCoachRoute,
   ApiFinalAudioCoachRetakeRoute: ApiFinalAudioCoachRetakeRoute,
   ApiLiveCoachRoute: ApiLiveCoachRoute,
