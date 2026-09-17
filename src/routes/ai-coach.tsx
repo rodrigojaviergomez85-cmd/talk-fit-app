@@ -211,7 +211,7 @@ function AiCoachPage() {
       {tab === "practice" ? <PracticeCoach /> : null}
 
 
-      <div className={tab === "live" ? "hidden" : "space-y-4"}>
+      <div className={tab === "write" ? "space-y-4" : "hidden"}>
         {counter ? (
           <p className="text-center text-[12px] font-semibold text-muted-foreground">{counter}</p>
         ) : null}
