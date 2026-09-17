@@ -149,6 +149,21 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           text: "That's the question behind the question, and it's the one that saves accounts.",
           es: "Esa es la pregunta detrás de la pregunta, y es la que salva cuentas.",
         },
+        {
+          speaker: "lidia",
+          text: "May I add one thing? I'd put his answer in writing the same afternoon.",
+          es: "¿Puedo agregar algo? Pondría su respuesta por escrito esa misma tarde.",
+        },
+        {
+          speaker: "vale",
+          text: "Why in writing?",
+          es: "¿Por qué por escrito?",
+        },
+        {
+          speaker: "lidia",
+          text: "Because angry people change what they asked for, and I'd rather be kind than right in month two.",
+          es: "Porque la gente molesta cambia lo que pidió, y prefiero ser amable que tener razón en el mes dos.",
+        },
       ],
       words: [
         { word: "dig into", es: "profundizar en" },
