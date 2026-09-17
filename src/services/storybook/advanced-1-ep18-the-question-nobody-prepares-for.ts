@@ -231,6 +231,21 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           text: "Off the top of my head, the grammar explanation. People who don't want to be there will tolerate speaking; they won't tolerate a lecture.",
           es: "Así de pronto, la explicación gramatical. La gente que no quiere estar ahí tolera hablar; no tolera una conferencia.",
         },
+        {
+          speaker: "keller",
+          text: "And if the client demands the grammar?",
+          es: "¿Y si el cliente exige la gramática?",
+        },
+        {
+          speaker: "vale",
+          text: "Then I give it to them in the correction, one sentence at a time, while they're already talking.",
+          es: "Entonces se la doy en la corrección, una frase a la vez, mientras ya están hablando.",
+        },
+        {
+          speaker: "keller",
+          text: "That's the answer I was hoping for, and it's also the one that makes you expensive.",
+          es: "Esa es la respuesta que esperaba, y también la que te hace cara.",
+        },
       ],
       words: [
         { word: "throw a curveball", es: "lanzar una pregunta inesperada" },
