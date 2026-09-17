@@ -207,6 +207,8 @@ function AiCoachPage() {
       </div>
 
       {tab === "live" ? <LiveCoach /> : null}
+      {tab === "practice" ? <PracticeCoach /> : null}
+
 
       <div className={tab === "live" ? "hidden" : "space-y-4"}>
         {counter ? (
