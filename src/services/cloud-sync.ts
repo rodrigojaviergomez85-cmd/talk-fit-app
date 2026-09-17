@@ -13,6 +13,7 @@ import {
 import type { ModuleId, Recording } from "@/lib/types";
 import type { TablesInsert } from "@/integrations/supabase/types";
 import { isModuleId } from "./course-service";
+import { switchLeagueLevel } from "@/lib/league.functions";
 
 /**
  * CloudSync — the backend is the source of truth for the pilot.
