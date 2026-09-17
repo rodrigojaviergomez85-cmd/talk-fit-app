@@ -88,6 +88,7 @@ export function summarize(days: DailyActivityDay[]): RangeSummary {
     bestDay: best,
     daysWithActivity: days.filter((d) => d.active_users > 0).length,
     totalPractices: days.reduce((acc, d) => acc + d.practice.count + d.review.count, 0),
+    totalNewUsers: days.reduce((acc, d) => acc + d.new_users, 0),
   };
 }
 

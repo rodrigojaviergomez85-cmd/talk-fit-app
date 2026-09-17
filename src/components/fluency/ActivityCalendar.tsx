@@ -291,6 +291,12 @@ export function ActivityCalendar({ es }: { es: boolean }) {
           <p className="text-[16px] font-black">{summary.daysWithActivity}</p>
         </div>
       </div>
+      <div className="mt-2 rounded-2xl bg-primary/10 p-2 text-center">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+          {es ? "Registros nuevos en el periodo" : "New signups in the period"}
+        </p>
+        <p className="text-[16px] font-black">{summary.totalNewUsers}</p>
+      </div>
 
       {/* 3. Custom period picker */}
       <div className="mt-5 border-t border-border pt-4">
