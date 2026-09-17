@@ -33,6 +33,7 @@ function LevelPage() {
   const navigate = useNavigate();
   const [current, setCurrent] = useState<ModuleId | null>(null);
   const [choice, setChoice] = useState<ModuleId | null>(null);
+  const [week, setWeek] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(false);
 
@@ -41,10 +42,10 @@ function LevelPage() {
   }, [prefs.currentModuleId]);
 
   const confirm = async () => {
-    if (!choice) return;
+    if (!choice || !week) return;
     setBusy(true);
     setError(false);
-    const ok = await CloudSync.changeLevel(choice);
+    const ok = await CloudSync.changeLevel(choice, week);
     setBusy(false);
     if (!ok) {
       setError(true);
@@ -53,6 +54,12 @@ function LevelPage() {
     // Home, not the module's day list: after changing level the learner should
     // see "what do I do today?" already positioned in the new level.
     void navigate({ to: "/" });
+  };
+
+  const cancel = () => {
+    setChoice(null);
+    setWeek(null);
+    setError(false);
   };
 
   const currentModule = current ? CourseService.getModule(current) : null;
