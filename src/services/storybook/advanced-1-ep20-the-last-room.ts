@@ -190,6 +190,21 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
           text: "Lidia teaches Monday, Dani runs the operation, and the measurement doesn't change. That's why the plan names people instead of naming me.",
           es: "Lidia enseña el lunes, Dani dirige la operación y la medición no cambia. Por eso el plan nombra personas en vez de nombrarme a mí.",
         },
+        {
+          speaker: "barrett",
+          text: "Crown would say you're protecting your own job with that answer.",
+          es: "Crown diría que con esa respuesta proteges tu propio puesto.",
+        },
+        {
+          speaker: "vale",
+          text: "Crown offered me a job three weeks ago. I said no, and the reason is sitting in this room teaching without me.",
+          es: "Crown me ofreció un puesto hace tres semanas. Dije que no, y la razón está en esta sala enseñando sin mí.",
+        },
+        {
+          speaker: "barrett",
+          text: "That's on the record now.",
+          es: "Eso queda en acta.",
+        },
       ],
       words: [
         { word: "teacher-dependent", es: "dependiente de la maestra" },
