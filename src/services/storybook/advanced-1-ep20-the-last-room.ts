@@ -435,7 +435,6 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
           text: "Then from tomorrow the hard part stops being the interview and starts being the work.",
           es: "Entonces desde mañana la parte difícil deja de ser la entrevista y empieza a ser el trabajo.",
         },
-      ],
         {
           speaker: "dani",
           text: "And when the region opens, somebody will have to defend it in public, without a script.",

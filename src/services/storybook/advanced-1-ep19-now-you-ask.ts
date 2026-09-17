@@ -82,6 +82,21 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           text: "Then don't protect him.",
           es: "Entonces no lo protejas.",
         },
+        {
+          speaker: "vale",
+          text: "He's outside pretending to read his notes. He's been holding the same page since seven.",
+          es: "Está afuera fingiendo que lee sus notas. Lleva con la misma página desde las siete.",
+        },
+        {
+          speaker: "barrett",
+          text: "Nervous or unprepared?",
+          es: "¿Nervioso o sin preparar?",
+        },
+        {
+          speaker: "vale",
+          text: "Nervous. Unprepared people sleep fine.",
+          es: "Nervioso. Los que no se preparan duermen bien.",
+        },
       ],
       words: [
         { word: "interview", es: "entrevistar" },
@@ -182,8 +197,18 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "Same situation, different chair. The client asks for a discount instead of a fix.",
-          es: "Misma situación, otra silla. El cliente pide un descuento en vez de una solución.",
+          text: "Sit down. Coffee's cold, the chair squeaks, and none of that is going to be my problem today.",
+          es: "Siéntate. El café está frío, la silla rechina, y nada de eso va a ser mi problema hoy.",
+        },
+        {
+          speaker: "dani",
+          text: "You're enjoying this.",
+          es: "Estás disfrutando esto.",
+        },
+        {
+          speaker: "vale",
+          text: "A little. Same situation, different chair: the client asks for a discount instead of a fix.",
+          es: "Un poco. Misma situación, otra silla: el cliente pide un descuento en vez de una solución.",
         },
         {
           speaker: "dani",
@@ -427,13 +452,23 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
         },
         {
           speaker: "barrett",
-          text: "And that's Dani.",
-          es: "Y ese es Dani.",
+          text: "And you already know which one that is.",
+          es: "Y ya sabes cuál de los dos es.",
         },
         {
           speaker: "vale",
-          text: "That's Dani. He just told a room full of people what he wants, which he'd never have done a year ago.",
-          es: "Ese es Dani. Acaba de decirle a una sala llena lo que quiere, algo que hace un año no habría hecho.",
+          text: "I do.",
+          es: "Sí.",
+        },
+        {
+          speaker: "barrett",
+          text: "You're not going to say it.",
+          es: "No lo vas a decir.",
+        },
+        {
+          speaker: "vale",
+          text: "Not until I've said it to them first. One of them rewrote his answers four times last night, and he deserves to hear it from my mouth, not from a rumour in the corridor.",
+          es: "No hasta habérselo dicho a ellos primero. Uno de los dos reescribió sus respuestas cuatro veces anoche, y merece oírlo de mi boca, no de un rumor en el pasillo.",
         },
         {
           speaker: "barrett",
