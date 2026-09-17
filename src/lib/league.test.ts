@@ -132,8 +132,8 @@ describe("liga semanal — cohortes de todo el curso", () => {
     expect(getStorySlot("basic-zero", 3)?.episodeId).toBe("vale-who-is-he");
     expect(getStorySlot("basic-zero", 7)?.episodeId).toBe("vale-favorite-color");
     expect(getStorySlot("tigers", 20)?.episodeId).toBe("tigers-ep20-defend-your-decision");
-    // Advanced 1 has no published episode past day 10 yet.
-    expect(getStorySlot("advanced-1", 11)).toBeUndefined();
+    // Advanced 1 is fully published (days 1-20).
+    expect(getStorySlot("advanced-1", 11)?.episodeId).toBeTruthy();
     expect(getStorySlot("advanced-2", 1)).toBeUndefined();
   });
 
