@@ -101,7 +101,36 @@ export const getMyLeagueSummary = createServerFn({ method: "POST" })
       _curriculum_week: data.week,
     });
     if (error) return EMPTY;
-    return shapeSummary(raw as RawSummary | null, data.moduleId, data.week);
+    let summary = shapeSummary(raw as RawSummary | null, data.moduleId, data.week);
+    // Self-healing: one membership exists per calendar week, so a learner who
+    // changed level mid-week (or whose switch call failed) stays stuck in the
+    // old cohort. When the requested cohort is the level actually saved on
+    // their account, move them now: the running week of the old cohort is
+    // dropped, exactly like "Cambiar mi nivel" does.
+    const mismatch =
+      summary.enrolled &&
+      (summary.moduleId !== data.moduleId || summary.curriculumWeek !== data.week);
+    if (mismatch) {
+      const { data: prefs } = await context.supabase
+        .from("user_preferences")
+        .select("current_module_id")
+        .eq("user_id", context.userId)
+        .maybeSingle();
+      if (prefs?.current_module_id === data.moduleId) {
+        const { error: switchError } = await context.supabase.rpc("league_switch_level", {
+          _module_id: data.moduleId,
+          _curriculum_week: data.week,
+        });
+        if (!switchError) {
+          const { data: fresh } = await context.supabase.rpc("league_my_summary", {
+            _module_id: data.moduleId,
+            _curriculum_week: data.week,
+          });
+          summary = shapeSummary(fresh as RawSummary | null, data.moduleId, data.week);
+        }
+      }
+    }
+    return summary;
   });
 
 /**
