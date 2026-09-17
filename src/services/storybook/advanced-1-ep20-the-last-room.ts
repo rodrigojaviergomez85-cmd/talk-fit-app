@@ -407,14 +407,35 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
       lines: [
         {
           speaker: "barrett",
-          text: "The board approves the pilot for three countries, twelve months, with quarterly review. Two conditions: Lidia stays in the classroom, and Camila's service team is funded separately, because what we saw this morning wasn't a language product, it was a service that happens to teach English. We'll close the loop in ninety days with the numbers you promised. Congratulations, Vale — although I suspect that from tomorrow the hard part stops being the interview and starts being the work.",
-          es: "La junta aprueba el piloto para tres países, doce meses, con revisión trimestral. Dos condiciones: Lidia se queda en el salón, y el equipo de servicio de Camila se financia aparte, porque lo que vimos esta mañana no fue un producto de idiomas, fue un servicio que además enseña inglés. Cerraremos el ciclo en noventa días con los números que prometiste. Felicidades, Vale, aunque sospecho que desde mañana la parte difícil deja de ser la entrevista y empieza a ser el trabajo.",
+          text: "The board approves the pilot for three countries, twelve months, with quarterly review.",
+          es: "La junta aprueba el piloto para tres países, doce meses, con revisión trimestral.",
         },
         {
           speaker: "vale",
-          text: "So that's the end of the hiring room. From Monday, Camila's team answers the clients, and that's a different kind of English — faster, kinder, and with somebody upset on the other end.",
-          es: "Así termina el cuarto de contratación. Desde el lunes, el equipo de Camila responde a los clientes, y ese es otro tipo de inglés: más rápido, más amable y con alguien molesto del otro lado.",
+          text: "Conditions?",
+          es: "¿Condiciones?",
         },
+        {
+          speaker: "barrett",
+          text: "Two. Lidia stays in the classroom, and Camila's service team is funded separately.",
+          es: "Dos. Lidia se queda en el salón, y el equipo de servicio de Camila se financia aparte.",
+        },
+        {
+          speaker: "vale",
+          text: "You just gave Camila the team she asked for.",
+          es: "Acabas de darle a Camila el equipo que pidió.",
+        },
+        {
+          speaker: "barrett",
+          text: "Because what we saw this morning wasn't a language product; it was a service that happens to teach English. We'll close the loop in ninety days with the numbers you promised.",
+          es: "Porque lo que vimos esta mañana no fue un producto de idiomas; fue un servicio que además enseña inglés. Cerraremos el ciclo en noventa días con los números que prometiste.",
+        },
+        {
+          speaker: "vale",
+          text: "Then from tomorrow the hard part stops being the interview and starts being the work.",
+          es: "Entonces desde mañana la parte difícil deja de ser la entrevista y empieza a ser el trabajo.",
+        },
+      ],
         {
           speaker: "dani",
           text: "And when the region opens, somebody will have to defend it in public, without a script.",
