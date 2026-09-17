@@ -190,6 +190,21 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           text: "I'd say no to the discount and yes to a review meeting with numbers. A discount buys one quiet month and sells the idea that we failed.",
           es: "Diría que no al descuento y que sí a una reunión de revisión con números. Un descuento compra un mes tranquilo y vende la idea de que fallamos.",
         },
+        {
+          speaker: "vale",
+          text: "You answered fast. Is that what you'd do, or what you think I'd do?",
+          es: "Respondiste rápido. ¿Eso harías tú, o lo que crees que yo haría?",
+        },
+        {
+          speaker: "dani",
+          text: "It's what I did in March, and I didn't tell you until the meeting was already booked.",
+          es: "Es lo que hice en marzo, y no te lo dije hasta que la reunión ya estaba agendada.",
+        },
+        {
+          speaker: "barrett",
+          text: "That's the first useful thing anyone has said today.",
+          es: "Eso es lo primero útil que alguien dice hoy.",
+        },
       ],
       words: [
         { word: "discount", es: "descuento" },
