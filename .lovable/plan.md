@@ -1,29 +1,39 @@
-# Arreglar "Hablar en vivo": el coach no escucha ni responde
+# Coach en vivo: avatar 2D, que te escuche de verdad y te corrija
 
-Hoy la sesión se conecta y el cronómetro corre, pero en iPhone el estudiante habla y no pasa nada: no hay saludo, no hay respuesta hablada y no hay corrección al final. El problema no es el permiso del micrófono; es cómo se envía y se reproduce el audio en el teléfono, y que el coach nunca empieza ni cierra la conversación.
+Hoy la pantalla es un círculo naranja: se conecta y corre el tiempo, pero el estudiante habla y no pasa nada — ni saludo, ni respuesta hablada, ni corrección. Además la interfaz no parece un coach. Este plan arregla las dos cosas.
 
-## Qué va a cambiar para el estudiante
+## 1. Avatar 2D del coach (recomendación)
 
-1. **El coach saluda primero.** Al tocar "Hablar en vivo", en 1–2 segundos el coach dice algo corto en inglés y hace una pregunta. Así se sabe que está en vivo.
-2. **Te escucha de verdad.** Se corrige el envío del audio desde el teléfono para que el modelo reciba la voz con la calidad que espera (hoy en iPhone llega distorsionada, por eso no contesta).
-3. **Se oye la respuesta.** Se desbloquea el sonido al tocar el botón y se reproduce a la velocidad correcta en iPhone.
-4. **Siempre hay feedback al final.** Al tocar "Terminar", antes de cerrar, el coach da un resumen corto en español con hasta 3 correcciones y una frase para practicar; queda en pantalla y también se escucha.
-5. **Avisos claros en vez de silencio.** Si no se detecta voz en ~15 segundos, o si se cae la conexión, aparece un mensaje ("No te estoy escuchando, revisa el micrófono") en vez de quedarse mudo.
-6. **Ves lo que dijiste.** El texto de tu turno y el del coach siguen apareciendo en pantalla durante la conversación (no se guarda nada).
+En vez del círculo, un retrato 2D de Vale (mismo estilo de El Mundo de Vale, para que sea la misma maestra que ya conocen), animado de forma simple y liviana para celular:
+
+- Cuatro estados visuales, cambiando la imagen y una animación suave: **escuchando** (respira, aro que late con tu voz), **pensando**, **hablando** (boca animada alternando 2–3 imágenes al ritmo del audio), **en pausa**.
+- Se hace con 4–5 ilustraciones optimizadas (768x768, JPG/PNG livianos) más animación por CSS, no video ni 3D: carga rápido en gama media y no consume datos extra.
+- Debajo del avatar: el tiempo restante, lo que tú dijiste y lo que dijo el coach, y el botón grande de terminar.
+
+Alternativa si prefieres algo más barato de producir: el mismo avatar pero una sola ilustración con aro de voz animado (sin boca). Puedo hacer la versión completa por defecto.
+
+## 2. Que te escuche y responda (la falla actual)
+
+- **El coach saluda primero**: al tocar, en 1–2 segundos dice una frase corta en inglés y hace una pregunta.
+- **Se corrige el envío de tu voz**: en iPhone el audio se está enviando con la velocidad equivocada, por eso el modelo no entiende nada y se queda callado. Se corrige para que llegue limpio.
+- **Se oye la respuesta**: se desbloquea el sonido al tocar el botón y se reproduce a la velocidad correcta en iPhone.
+- **Avisos en vez de silencio**: si no se detecta tu voz en ~15 segundos o se cae la conexión, aparece un mensaje claro.
+
+## 3. Correcciones cuando se escuchan errores
+
+- **Durante la conversación**: no interrumpe. Si cometes un error importante, el coach repite tu idea bien dicha de forma natural ("Ah, so you went to the meeting yesterday?") y sigue. Los errores se van guardando en la sesión.
+- **Al terminar**: antes de cerrar, el coach da (hablado y escrito) un resumen en español con hasta 3 correcciones — lo que dijiste, cómo se dice mejor y por qué — y una frase para practicar. Esto aparece siempre, aunque toques "Terminar" de golpe.
+- **Tarjeta de cierre en pantalla** con esas correcciones, para poder leerlas con calma. No se guarda la conversación; solo los minutos usados, como hoy.
 
 ## Detalle técnico
 
-Archivo principal: `src/components/fluency/LiveCoach.tsx`.
+- `src/components/fluency/LiveCoach.tsx`: remuestrear el micrófono al ritmo real del dispositivo hacia 16 kHz antes de enviar (Safari iOS ignora `sampleRate: 16000`); crear y `resume()` el contexto de salida dentro del gesto del tap y remuestrear el PCM de 24 kHz al ritmo real del contexto; saludo inicial con `sendClientContent`; al cerrar, pedir el resumen y esperar el `turnComplete` (máx ~8 s) antes de cerrar el socket; temporizador de silencio y errores visibles.
+- Nuevo `src/components/fluency/CoachAvatar.tsx` con los estados (idle/listening/thinking/speaking) y las ilustraciones nuevas en `src/assets/coach/`.
+- Instrucción del sistema ampliada: recast natural durante la charla, resumen bilingüe con hasta 3 correcciones al final.
+- Sin cambios en límites ni costos: 5 min por sesión, 15 min al día, lista privada en `src/routes/api/live-coach.ts`.
 
-- **Captura de audio:** hoy se crea `new AudioContext({ sampleRate: 16000 })` y se envían las muestras crudas como `audio/pcm;rate=16000`. Safari iOS ignora `sampleRate` y entrega 48 kHz, así que el modelo recibe audio a triple velocidad. Cambio: leer `ctx.sampleRate` real y remuestrear a 16 kHz en el cliente antes de `sendRealtimeInput`.
-- **Reproducción:** crear el `AudioContext` de salida y llamar `resume()` dentro del gesto del tap (antes de los `await`), y construir los buffers con la tasa real del contexto remuestreando el PCM de 24 kHz, en vez de asumir 24 kHz. Mantener la cola con `playHead` y el corte en `interrupted`.
-- **Saludo inicial:** tras `ai.live.connect`, enviar un `sendClientContent` con un turno de sistema breve que pida saludar y hacer una pregunta.
-- **Cierre con feedback:** en `stop()`, si la sesión está viva, enviar un turno de texto pidiendo el resumen en español, esperar hasta ~8 s el `turnComplete`, mostrar el texto y dejar terminar el audio; luego cerrar socket, micrófono y reportar segundos a `/api/live-coach` como hoy.
-- **Diagnóstico:** temporizador de silencio (sin `inputTranscription` ni nivel de micrófono) que muestra aviso; `onerror`/`onclose` muestran el motivo en vez de cerrar en silencio.
-- **Sin cambios de costos ni límites:** siguen los 5 min por sesión, 15 min al día y la lista privada en `src/routes/api/live-coach.ts`.
+## Verificación
 
-## Cómo se verifica
-
-- Prueba en el navegador del sandbox con micrófono simulado: confirmar saludo del coach, transcripción del turno, audio de respuesta y resumen final.
-- Prueba manual en tu iPhone (es el caso que falló): hablar una frase, escuchar respuesta, tocar "Terminar" y ver la corrección.
-- Confirmar que los segundos usados siguen quedando registrados.
+- Prueba automatizada en el sandbox: saludo, transcripción, audio de respuesta y tarjeta de correcciones al terminar.
+- Prueba manual en tu iPhone: hablar una frase con un error a propósito y confirmar recast + resumen final.
+- Confirmar que los minutos usados se siguen registrando.
