@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ChevronRight, ExternalLink, LogOut } from "lucide-react";
 import { ModuleHeading } from "@/components/fluency/ModuleHeading";
