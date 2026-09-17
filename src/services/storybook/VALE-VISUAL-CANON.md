@@ -4,10 +4,10 @@ Use Advanced 1 Episodes 1–5 and the approved user references as the only visua
 
 ## Fixed appearance
 
-- Salvadoran Latina woman, approximately 28–30 years old.
-- Clearly youthful, slim narrow oval face and delicate jawline.
+- Salvadoran Latina woman, approximately 24 years old.
+- Match the approved Episode 16 reference image (`image-201.png`): clearly youthful, slim oval face with soft cheeks and a delicate jawline.
 - Smooth warm light-medium tan skin; no heavy cheeks, age lines, or middle-aged facial features.
-- Long, straight black hair and brown eyes.
+- Long, straight black hair with a center part and brown eyes.
 - Confident, warm expression appropriate for an experienced English teacher and business owner.
 - Plain mustard-yellow blouse as her standard outfit. Do not add a black blazer or suit unless a future script explicitly requires it.
 
