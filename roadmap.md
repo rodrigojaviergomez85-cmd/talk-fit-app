@@ -25,3 +25,5 @@
 - [x] Verify Episode 9 cast, image format, mobile weight, and story-player loading
 - [x] Audit and correct canonical artwork for Advanced 1 Episode 10 using Episode 1 as the visual authority
 - [x] Verify Episode 10 cast, image format, mobile weight, and story-player assets
+- [x] Audit and correct canonical artwork for Advanced 1 Episode 11 using Episode 1 as the visual authority
+- [x] Verify Episode 11 cast, image format, mobile weight, and story-player assets
