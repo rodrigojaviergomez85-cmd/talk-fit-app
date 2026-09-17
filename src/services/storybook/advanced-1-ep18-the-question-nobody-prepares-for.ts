@@ -67,6 +67,26 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           text: "Then we prepare the only thing we can: how we sound when we don't know.",
           es: "Entonces preparamos lo único que podemos: cómo sonamos cuando no sabemos.",
         },
+        {
+          speaker: "dani",
+          text: "That works for you. I've been awake since four thinking they're calling to cancel.",
+          es: "Eso te funciona a ti. Yo llevo despierto desde las cuatro pensando que llaman a cancelar.",
+        },
+        {
+          speaker: "vale",
+          text: "Why would they cancel the week after they asked for a plan?",
+          es: "¿Por qué cancelarían la semana después de pedir un plan?",
+        },
+        {
+          speaker: "dani",
+          text: "Because I wrote half that plan, and if it falls, it falls on my name too.",
+          es: "Porque yo escribí la mitad de ese plan, y si se cae, se cae sobre mi nombre también.",
+        },
+        {
+          speaker: "vale",
+          text: "Good. That's what it feels like when the work is actually yours. Sit down.",
+          es: "Bien. Así se siente cuando el trabajo de verdad es tuyo. Siéntate.",
+        },
       ],
       words: [
         { word: "subject", es: "tema" },
@@ -98,6 +118,16 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           text: "We're building a regional training role, and your name came up twice. Would you consider leaving what you built?",
           es: "Estamos creando un puesto regional de formación, y tu nombre salió dos veces. ¿Considerarías dejar lo que construiste?",
         },
+        {
+          speaker: "vale",
+          text: "Came up twice. Who said it the second time?",
+          es: "Salió dos veces. ¿Quién lo dijo la segunda vez?",
+        },
+        {
+          speaker: "keller",
+          text: "A client of yours who sits on our board. That's usually the recommendation that counts.",
+          es: "Una clienta tuya que está en nuestro consejo. Esa suele ser la recomendación que cuenta.",
+        },
       ],
       words: [
         { word: "regional", es: "regional" },
@@ -124,6 +154,16 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           text: "Most people freeze up or fill the silence. Take the ten.",
           es: "La mayoría se bloquea o llena el silencio. Tómate los diez.",
         },
+        {
+          speaker: "vale",
+          text: "Before I use them, tell me one thing: is this a role, or is this a purchase?",
+          es: "Antes de usarlos, dime una cosa: ¿esto es un puesto o es una compra?",
+        },
+        {
+          speaker: "keller",
+          text: "That depends entirely on your ten seconds.",
+          es: "Eso depende por completo de tus diez segundos.",
+        },
       ],
       words: [
         { word: "freeze up", es: "bloquearse, paralizarse" },
@@ -142,8 +182,28 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
       lines: [
         {
           speaker: "vale",
-          text: "Here's my honest answer. I'd consider any role that puts the method in front of more people, so I'm not going to pretend the question offends me. What I wouldn't do is hand over a method I still teach to a company that would treat it as content, because the moment nobody corrects a student in week five, the whole thing stops working. So the question I'd ask you is the reverse of yours: would Crown buy the classroom, or only the slides? If it's the classroom, we should talk properly. If it's the slides, you'd be paying a lot for a file you could write yourselves.",
-          es: "Esta es mi respuesta honesta. Consideraría cualquier puesto que ponga el método frente a más gente, así que no voy a fingir que la pregunta me ofende. Lo que no haría es entregar un método que todavía enseño a una empresa que lo trataría como contenido, porque en el momento en que nadie corrige a un estudiante en la semana cinco, todo deja de funcionar. Así que mi pregunta es la inversa de la tuya: ¿Crown compraría el salón o solo las diapositivas? Si es el salón, deberíamos hablar en serio. Si son las diapositivas, estarían pagando mucho por un archivo que ustedes mismos podrían escribir.",
+          text: "Here's my honest answer. I'd consider any role that puts the method in front of more people, so I'm not going to pretend the question offends me. What I wouldn't do is hand over a method I still teach to a company that would treat it as content, because the moment nobody corrects a student in week five, the whole thing stops working.",
+          es: "Esta es mi respuesta honesta. Consideraría cualquier puesto que ponga el método frente a más gente, así que no voy a fingir que la pregunta me ofende. Lo que no haría es entregar un método que todavía enseño a una empresa que lo trataría como contenido, porque en el momento en que nadie corrige a un estudiante en la semana cinco, todo deja de funcionar.",
+        },
+        {
+          speaker: "keller",
+          text: "You assume we'd remove the teacher.",
+          es: "Asumes que quitaríamos a la maestra.",
+        },
+        {
+          speaker: "vale",
+          text: "Every buyer says they won't, and then the budget meeting arrives.",
+          es: "Todo comprador dice que no lo hará, y luego llega la reunión de presupuesto.",
+        },
+        {
+          speaker: "keller",
+          text: "Granted. So what's your question for me?",
+          es: "Concedido. Entonces, ¿cuál es tu pregunta para mí?",
+        },
+        {
+          speaker: "vale",
+          text: "The reverse of yours: would Crown buy the classroom, or only the slides? If it's the classroom, we should talk properly. If it's the slides, you'd be paying a lot for a file you could write yourselves.",
+          es: "La inversa de la tuya: ¿Crown compraría el salón o solo las diapositivas? Si es el salón, deberíamos hablar en serio. Si son las diapositivas, estarían pagando mucho por un archivo que ustedes mismos podrían escribir.",
         },
       ],
       words: [
@@ -170,6 +230,21 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           speaker: "vale",
           text: "Off the top of my head, the grammar explanation. People who don't want to be there will tolerate speaking; they won't tolerate a lecture.",
           es: "Así de pronto, la explicación gramatical. La gente que no quiere estar ahí tolera hablar; no tolera una conferencia.",
+        },
+        {
+          speaker: "keller",
+          text: "And if the client demands the grammar?",
+          es: "¿Y si el cliente exige la gramática?",
+        },
+        {
+          speaker: "vale",
+          text: "Then I give it to them in the correction, one sentence at a time, while they're already talking.",
+          es: "Entonces se la doy en la corrección, una frase a la vez, mientras ya están hablando.",
+        },
+        {
+          speaker: "keller",
+          text: "That's the answer I was hoping for, and it's also the one that makes you expensive.",
+          es: "Esa es la respuesta que esperaba, y también la que te hace cara.",
         },
       ],
       words: [
@@ -207,6 +282,26 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           text: "Then the price was never the question, and they'll have proved my point for me. What I'd be selling is six years of corrections, and that isn't a file they can copy.",
           es: "Entonces el precio nunca fue la pregunta, y me habrán dado la razón. Lo que estaría vendiendo son seis años de correcciones, y eso no es un archivo que puedan copiar.",
         },
+        {
+          speaker: "dani",
+          text: "Can I ask the selfish question?",
+          es: "¿Puedo hacer la pregunta egoísta?",
+        },
+        {
+          speaker: "vale",
+          text: "You've been holding it since nine o'clock. Ask it.",
+          es: "La llevas guardando desde las nueve. Hazla.",
+        },
+        {
+          speaker: "dani",
+          text: "If you go, what happens to me? I'm good here because you correct me twice a day.",
+          es: "Si te vas, ¿qué pasa conmigo? Soy bueno aquí porque me corriges dos veces al día.",
+        },
+        {
+          speaker: "vale",
+          text: "You're good here because you fix things at seven in the morning when nobody's watching. I'm not going anywhere, but stop making me the reason you're capable.",
+          es: "Eres bueno aquí porque arreglas cosas a las siete de la mañana cuando nadie mira. No me voy a ninguna parte, pero deja de hacerme la razón de que seas capaz.",
+        },
       ],
       words: [
         { word: "cheap", es: "barato" },
@@ -227,6 +322,16 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           speaker: "vale",
           text: "When a question surprises you, don't talk around it. Answer, say why, give one example, and close. Four moves, thirty seconds.",
           es: "Cuando una pregunta te sorprenda, no le des vueltas. Responde, di por qué, da un ejemplo y cierra. Cuatro movimientos, treinta segundos.",
+        },
+        {
+          speaker: "dani",
+          text: "And if I genuinely have no example?",
+          es: "¿Y si de verdad no tengo un ejemplo?",
+        },
+        {
+          speaker: "vale",
+          text: "Then say so and give the closest real one. Nobody trusts an example that arrives too fast.",
+          es: "Entonces dilo y da el más cercano que sea real. Nadie confía en un ejemplo que llega demasiado rápido.",
         },
         {
           speaker: "vale",
@@ -269,6 +374,16 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           text: "Then I'll say it in the meeting, in one sentence, before it becomes three.",
           es: "Entonces lo diré en la reunión, en una frase, antes de que se vuelva tres.",
         },
+        {
+          speaker: "camila",
+          text: "Say it to Dani first. He heard the rumour before you finished the call.",
+          es: "Díselo a Dani primero. Él escuchó el rumor antes de que terminaras la llamada.",
+        },
+        {
+          speaker: "dani",
+          text: "I already asked her. I just didn't ask her in front of everyone.",
+          es: "Ya se lo pregunté. Solo que no se lo pregunté delante de todos.",
+        },
       ],
       words: [
         { word: "recognises", es: "reconoce" },
@@ -292,13 +407,33 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
         },
         {
           speaker: "vale",
-          text: "One more thing, and it matters more than the offer. Nobody in this office should hear news about this company from Crown before they hear it from me, so if you're ever asked something you can't answer, say that you don't decide it and that I'll call them today. That protects you and it protects us, and it costs nothing except a phone call I'd have had to make anyway.",
-          es: "Una cosa más, y importa más que la oferta. Nadie en esta oficina debería enterarse de algo de esta empresa por Crown antes que por mí, así que si alguna vez te preguntan algo que no puedes responder, di que tú no lo decides y que yo llamaré hoy. Eso te protege a ti y nos protege a nosotros, y no cuesta nada salvo una llamada que yo habría tenido que hacer igual.",
+          text: "One more thing, and it matters more than the offer. Nobody here should hear news about this company from Crown before they hear it from me.",
+          es: "Una cosa más, y importa más que la oferta. Nadie aquí debería enterarse de algo de esta empresa por Crown antes que por mí.",
+        },
+        {
+          speaker: "camila",
+          text: "And when a client asks us directly?",
+          es: "¿Y cuando un cliente nos pregunta directamente?",
+        },
+        {
+          speaker: "vale",
+          text: "Say you don't decide it and that I'll call them today. That protects you and it protects us.",
+          es: "Di que tú no lo decides y que yo los llamaré hoy. Eso te protege a ti y nos protege a nosotros.",
         },
         {
           speaker: "dani",
           text: "Friday's session changed. Barrett wants you on the other side of the table, interviewing us.",
           es: "La sesión del viernes cambió. Barrett te quiere del otro lado de la mesa, entrevistándonos a nosotros.",
+        },
+        {
+          speaker: "vale",
+          text: "Us meaning you and Lidia.",
+          es: "Nosotros quiere decir tú y Lidia.",
+        },
+        {
+          speaker: "dani",
+          text: "Me and Lidia. And this time nobody's going to give me ten seconds.",
+          es: "Lidia y yo. Y esta vez nadie me va a dar diez segundos.",
         },
       ],
       words: [

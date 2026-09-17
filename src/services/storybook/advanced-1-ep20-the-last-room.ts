@@ -67,6 +67,21 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
           text: "Teach the class you'd teach if nobody were watching. They're here to see students speak, not to see us perform.",
           es: "Da la clase que darías si nadie mirara. Vinieron a ver estudiantes hablando, no a vernos actuar.",
         },
+        {
+          speaker: "lidia",
+          text: "Easy to say from the back of the room.",
+          es: "Fácil decirlo desde el fondo de la sala.",
+        },
+        {
+          speaker: "vale",
+          text: "I'm not at the back. I'm in the second row, and I'm not saying a word for fifty minutes.",
+          es: "No estoy al fondo. Estoy en la segunda fila, y no voy a decir una palabra en cincuenta minutos.",
+        },
+        {
+          speaker: "lidia",
+          text: "That's the first promise of yours I don't believe.",
+          es: "Esa es la primera promesa tuya que no me creo.",
+        },
       ],
       words: [
         { word: "pressure", es: "presión" },
@@ -92,6 +107,21 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
           speaker: "lidia",
           text: "Answer it the way we practised: answer, reason, example.",
           es: "Respóndela como practicamos: respuesta, razón, ejemplo.",
+        },
+        {
+          speaker: "elena",
+          text: "My hands are shaking.",
+          es: "Me tiemblan las manos.",
+        },
+        {
+          speaker: "lidia",
+          text: "Let them shake. Start with the answer and the rest will follow.",
+          es: "Que tiemblen. Empieza por la respuesta y lo demás viene solo.",
+        },
+        {
+          speaker: "elena",
+          text: "Yes, we do handle refunds — because the client calls us first, and last week I took six of those calls myself.",
+          es: "Sí, manejamos reembolsos, porque el cliente nos llama primero, y la semana pasada yo misma atendí seis de esas llamadas.",
         },
       ],
       words: [
@@ -119,6 +149,21 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
           text: "Nineteen adults who will be answering clients in English by March, and the measurements that prove it.",
           es: "Diecinueve adultos que estarán respondiéndole a clientes en inglés para marzo, y las mediciones que lo prueban.",
         },
+        {
+          speaker: "barrett",
+          text: "By March, or you hope by March?",
+          es: "¿Para marzo, o esperas que para marzo?",
+        },
+        {
+          speaker: "vale",
+          text: "By March. If it slips, you'll hear it from me in week six, not in month four.",
+          es: "Para marzo. Si se atrasa, lo sabrás por mí en la semana seis, no en el mes cuatro.",
+        },
+        {
+          speaker: "barrett",
+          text: "Write that down. Round two.",
+          es: "Anota eso. Ronda dos.",
+        },
       ],
       words: [
         { word: "measurements", es: "mediciones" },
@@ -144,6 +189,21 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
           speaker: "vale",
           text: "Lidia teaches Monday, Dani runs the operation, and the measurement doesn't change. That's why the plan names people instead of naming me.",
           es: "Lidia enseña el lunes, Dani dirige la operación y la medición no cambia. Por eso el plan nombra personas en vez de nombrarme a mí.",
+        },
+        {
+          speaker: "barrett",
+          text: "Crown would say you're protecting your own job with that answer.",
+          es: "Crown diría que con esa respuesta proteges tu propio puesto.",
+        },
+        {
+          speaker: "vale",
+          text: "Crown offered me a job three weeks ago. I said no, and the reason is sitting in this room teaching without me.",
+          es: "Crown me ofreció un puesto hace tres semanas. Dije que no, y la razón está en esta sala enseñando sin mí.",
+        },
+        {
+          speaker: "barrett",
+          text: "That's on the record now.",
+          es: "Eso queda en acta.",
         },
       ],
       words: [
@@ -171,6 +231,26 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
           text: "Only if we hire teachers in February, so the answer is yes with a date attached, not yes to be polite.",
           es: "Solo si contratamos maestros en febrero, así que la respuesta es sí con una fecha, no un sí por cortesía.",
         },
+        {
+          speaker: "reed",
+          text: "And if February is too early for our budget?",
+          es: "¿Y si febrero es muy pronto para nuestro presupuesto?",
+        },
+        {
+          speaker: "vale",
+          text: "Then June becomes September, and I'd rather tell you that today than apologise for it in July.",
+          es: "Entonces junio se vuelve septiembre, y prefiero decírtelo hoy que disculparme en julio.",
+        },
+        {
+          speaker: "reed",
+          text: "You've changed since the first time we met.",
+          es: "Has cambiado desde la primera vez que nos vimos.",
+        },
+        {
+          speaker: "vale",
+          text: "No. You're just hearing the same person with the budget in the room.",
+          es: "No. Solo estás oyendo a la misma persona con el presupuesto en la sala.",
+        },
       ],
       words: [
         { word: "step up", es: "dar el paso, subir de nivel" },
@@ -189,8 +269,38 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
       lines: [
         {
           speaker: "camila",
-          text: "My side is the part nobody asks about, so I'll say it before you do. In the first month, complaints go up, not down, because students are suddenly being asked to speak and some of them hate it. What we do is call every person who misses twice, in their language, within forty-eight hours. Last year that single habit carried over into the corporate groups and cut cancellations by a third, and it costs us nothing except the discipline to make the call when we're busy.",
-          es: "Mi parte es la que nadie pregunta, así que la digo antes de que lo hagan. En el primer mes las quejas suben, no bajan, porque de pronto les piden hablar y a algunos les molesta. Lo que hacemos es llamar a cada persona que falta dos veces, en su idioma, en menos de cuarenta y ocho horas. El año pasado ese solo hábito se trasladó a los grupos corporativos y redujo las cancelaciones en un tercio, y no nos cuesta nada salvo la disciplina de llamar cuando estamos ocupados.",
+          text: "My side is the part nobody asks about, so I'll say it before you do. In the first month, complaints go up, not down, because students are suddenly being asked to speak and some of them hate it.",
+          es: "Mi parte es la que nadie pregunta, así que la digo antes de que lo hagan. En el primer mes las quejas suben, no bajan, porque de pronto les piden hablar y a algunos les molesta.",
+        },
+        {
+          speaker: "barrett",
+          text: "You're telling a board that complaints will rise.",
+          es: "Le estás diciendo a una junta que las quejas van a subir.",
+        },
+        {
+          speaker: "camila",
+          text: "I'd rather tell you now than let you discover it in the quarterly report.",
+          es: "Prefiero decírtelo ahora que dejar que lo descubras en el reporte trimestral.",
+        },
+        {
+          speaker: "barrett",
+          text: "Then what do you do about it?",
+          es: "¿Y qué hacen al respecto?",
+        },
+        {
+          speaker: "camila",
+          text: "We call every person who misses twice, in their language, within forty-eight hours. Last year that single habit carried over into the corporate groups and cut cancellations by a third, and it costs nothing except the discipline to make the call when we're busy.",
+          es: "Llamamos a cada persona que falta dos veces, en su idioma, en menos de cuarenta y ocho horas. El año pasado ese solo hábito se trasladó a los grupos corporativos y redujo las cancelaciones en un tercio, y no cuesta nada salvo la disciplina de llamar cuando estamos ocupados.",
+        },
+        {
+          speaker: "barrett",
+          text: "Who makes those calls when you're in three countries?",
+          es: "¿Quién hace esas llamadas cuando estén en tres países?",
+        },
+        {
+          speaker: "camila",
+          text: "A team I haven't been given yet. That's my ask.",
+          es: "Un equipo que todavía no me han dado. Esa es mi petición.",
         },
       ],
       words: [
@@ -220,8 +330,23 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "I want to oversee several branches one day, and after that, I want to be part of the decisions that shape how the company operates. I know that sounds ambitious. I'm saying it anyway.",
-          es: "Quiero llegar a supervisar varias sedes algún día y, después, quiero formar parte de las decisiones que definen cómo funciona la empresa. Sé que suena ambicioso. Aun así, lo digo.",
+          text: "I want to oversee several branches one day, and after that, I want to be part of the decisions that shape how the company operates.",
+          es: "Quiero llegar a supervisar varias sedes algún día y, después, quiero formar parte de las decisiones que definen cómo funciona la empresa.",
+        },
+        {
+          speaker: "barrett",
+          text: "Most people say that in private.",
+          es: "La mayoría dice eso en privado.",
+        },
+        {
+          speaker: "dani",
+          text: "I know it sounds ambitious. I'm saying it anyway, because on Friday I learned that waiting to be noticed isn't a plan.",
+          es: "Sé que suena ambicioso. Aun así lo digo, porque el viernes aprendí que esperar a que te noten no es un plan.",
+        },
+        {
+          speaker: "barrett",
+          text: "Then we'll see whether you can do it with an upset client on the line.",
+          es: "Entonces veremos si puedes hacerlo con un cliente molesto en la línea.",
         },
       ],
       words: [
@@ -251,6 +376,16 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
         },
         {
           speaker: "vale",
+          text: "Did he understand you?",
+          es: "¿Te entendió?",
+        },
+        {
+          speaker: "elena",
+          text: "He asked me a second question. That's how I knew.",
+          es: "Me hizo una segunda pregunta. Así supe que sí.",
+        },
+        {
+          speaker: "vale",
           text: "That's the only measurement that was ever really mine.",
           es: "Esa es la única medición que de verdad fue mía.",
         },
@@ -272,14 +407,35 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
       lines: [
         {
           speaker: "barrett",
-          text: "The board approves the pilot for three countries, twelve months, with quarterly review. Two conditions: Lidia stays in the classroom, and Camila's service team is funded separately, because what we saw this morning wasn't a language product, it was a service that happens to teach English. We'll close the loop in ninety days with the numbers you promised. Congratulations, Vale — although I suspect that from tomorrow the hard part stops being the interview and starts being the work.",
-          es: "La junta aprueba el piloto para tres países, doce meses, con revisión trimestral. Dos condiciones: Lidia se queda en el salón, y el equipo de servicio de Camila se financia aparte, porque lo que vimos esta mañana no fue un producto de idiomas, fue un servicio que además enseña inglés. Cerraremos el ciclo en noventa días con los números que prometiste. Felicidades, Vale, aunque sospecho que desde mañana la parte difícil deja de ser la entrevista y empieza a ser el trabajo.",
+          text: "The board approves the pilot for three countries, twelve months, with quarterly review.",
+          es: "La junta aprueba el piloto para tres países, doce meses, con revisión trimestral.",
         },
         {
           speaker: "vale",
-          text: "So that's the end of the hiring room. From Monday, Camila's team answers the clients, and that's a different kind of English — faster, kinder, and with somebody upset on the other end.",
-          es: "Así termina el cuarto de contratación. Desde el lunes, el equipo de Camila responde a los clientes, y ese es otro tipo de inglés: más rápido, más amable y con alguien molesto del otro lado.",
+          text: "Conditions?",
+          es: "¿Condiciones?",
         },
+        {
+          speaker: "barrett",
+          text: "Two. Lidia stays in the classroom, and Camila's service team is funded separately.",
+          es: "Dos. Lidia se queda en el salón, y el equipo de servicio de Camila se financia aparte.",
+        },
+        {
+          speaker: "vale",
+          text: "You just gave Camila the team she asked for.",
+          es: "Acabas de darle a Camila el equipo que pidió.",
+        },
+        {
+          speaker: "barrett",
+          text: "Because what we saw this morning wasn't a language product; it was a service that happens to teach English. We'll close the loop in ninety days with the numbers you promised.",
+          es: "Porque lo que vimos esta mañana no fue un producto de idiomas; fue un servicio que además enseña inglés. Cerraremos el ciclo en noventa días con los números que prometiste.",
+        },
+        {
+          speaker: "vale",
+          text: "Then from tomorrow the hard part stops being the interview and starts being the work.",
+          es: "Entonces desde mañana la parte difícil deja de ser la entrevista y empieza a ser el trabajo.",
+        },
+      ],
         {
           speaker: "dani",
           text: "And when the region opens, somebody will have to defend it in public, without a script.",

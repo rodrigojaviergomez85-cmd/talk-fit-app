@@ -67,6 +67,21 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           text: "Then I'll say the rule first: I'm not looking for confident answers. I'm looking for answers that survive a follow-up.",
           es: "Entonces digo la regla primero: no busco respuestas seguras. Busco respuestas que sobrevivan una repregunta.",
         },
+        {
+          speaker: "barrett",
+          text: "One of them works for you every day. Will that make this harder or easier?",
+          es: "Uno de ellos trabaja contigo todos los días. ¿Eso lo hace más difícil o más fácil?",
+        },
+        {
+          speaker: "vale",
+          text: "Harder. I already know what Dani can do, so he has to prove it in front of you, not to me.",
+          es: "Más difícil. Ya sé lo que Dani puede hacer, así que tiene que probarlo frente a ti, no a mí.",
+        },
+        {
+          speaker: "barrett",
+          text: "Then don't protect him.",
+          es: "Entonces no lo protejas.",
+        },
       ],
       words: [
         { word: "interview", es: "entrevistar" },
@@ -92,6 +107,16 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           speaker: "lidia",
           text: "I check attendance and speaking minutes, because \"not working\" usually means one manager heard one complaint.",
           es: "Reviso asistencia y minutos de habla, porque \"no funciona\" suele significar que un jefe escuchó una queja.",
+        },
+        {
+          speaker: "vale",
+          text: "How long does that check take you?",
+          es: "¿Cuánto te toma esa revisión?",
+        },
+        {
+          speaker: "lidia",
+          text: "Twenty minutes, and I'd still answer the same day so the silence doesn't grow.",
+          es: "Veinte minutos, y aun así respondería el mismo día para que el silencio no crezca.",
         },
       ],
       words: [
@@ -124,6 +149,21 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           text: "That's the question behind the question, and it's the one that saves accounts.",
           es: "Esa es la pregunta detrás de la pregunta, y es la que salva cuentas.",
         },
+        {
+          speaker: "lidia",
+          text: "May I add one thing? I'd put his answer in writing the same afternoon.",
+          es: "¿Puedo agregar algo? Pondría su respuesta por escrito esa misma tarde.",
+        },
+        {
+          speaker: "vale",
+          text: "Why in writing?",
+          es: "¿Por qué por escrito?",
+        },
+        {
+          speaker: "lidia",
+          text: "Because angry people change what they asked for, and I'd rather be kind than right in month two.",
+          es: "Porque la gente molesta cambia lo que pidió, y prefiero ser amable que tener razón en el mes dos.",
+        },
       ],
       words: [
         { word: "dig into", es: "profundizar en" },
@@ -150,6 +190,21 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           text: "I'd say no to the discount and yes to a review meeting with numbers. A discount buys one quiet month and sells the idea that we failed.",
           es: "Diría que no al descuento y que sí a una reunión de revisión con números. Un descuento compra un mes tranquilo y vende la idea de que fallamos.",
         },
+        {
+          speaker: "vale",
+          text: "You answered fast. Is that what you'd do, or what you think I'd do?",
+          es: "Respondiste rápido. ¿Eso harías tú, o lo que crees que yo haría?",
+        },
+        {
+          speaker: "dani",
+          text: "It's what I did in March, and I didn't tell you until the meeting was already booked.",
+          es: "Es lo que hice en marzo, y no te lo dije hasta que la reunión ya estaba agendada.",
+        },
+        {
+          speaker: "vale",
+          text: "Then say that part next time first. A real week beats a clean opinion.",
+          es: "Entonces di esa parte primero la próxima vez. Una semana real vale más que una opinión limpia.",
+        },
       ],
       words: [
         { word: "discount", es: "descuento" },
@@ -168,8 +223,28 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "I'm going to argue against you for a minute, and I want you to hold your position or change it honestly. If we refuse every discount, we'll be the supplier that's technically right and commercially gone, because the person asking has a budget problem we didn't create and can't see. What I'd want from you is a third option: keep the price, change what's inside it. Give them two fewer teaching hours and one more measurement report, so the invoice stays the same and the value moves to where they're feeling pain. Now tell me why that's wrong.",
-          es: "Voy a argumentar en tu contra un minuto, y quiero que sostengas tu posición o la cambies con honestidad. Si rechazamos todo descuento, seremos el proveedor que tiene razón técnicamente y desaparece comercialmente, porque quien pide tiene un problema de presupuesto que no creamos y no vemos. Lo que querría de ti es una tercera opción: mantener el precio y cambiar lo que hay dentro. Darles dos horas de clase menos y un reporte de medición más, para que la factura siga igual y el valor se mueva a donde les duele. Ahora dime por qué eso está mal.",
+          text: "I'm going to argue against you for a minute. Hold your position or change it honestly.",
+          es: "Voy a argumentar en tu contra un minuto. Sostén tu posición o cámbiala con honestidad.",
+        },
+        {
+          speaker: "dani",
+          text: "Go ahead.",
+          es: "Adelante.",
+        },
+        {
+          speaker: "vale",
+          text: "If we refuse every discount, we'll be the supplier that's technically right and commercially gone, because the person asking has a budget problem we didn't create and can't see. What I'd want from you is a third option: keep the price, change what's inside it. Two fewer teaching hours, one more measurement report, so the invoice stays the same and the value moves to where they're feeling pain.",
+          es: "Si rechazamos todo descuento, seremos el proveedor que tiene razón técnicamente y desaparece comercialmente, porque quien pide tiene un problema de presupuesto que no creamos y no vemos. Lo que querría de ti es una tercera opción: mantener el precio y cambiar lo que hay dentro. Dos horas de clase menos, un reporte de medición más, para que la factura siga igual y el valor se mueva a donde les duele.",
+        },
+        {
+          speaker: "dani",
+          text: "You want me to agree with that.",
+          es: "Quieres que esté de acuerdo con eso.",
+        },
+        {
+          speaker: "vale",
+          text: "I want you to tell me why it's wrong.",
+          es: "Quiero que me digas por qué está mal.",
         },
       ],
       words: [
@@ -196,6 +271,26 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           speaker: "vale",
           text: "Correct. And that's the answer I was waiting for.",
           es: "Correcto. Y esa es la respuesta que esperaba.",
+        },
+        {
+          speaker: "dani",
+          text: "Can I say the part that isn't in the answer?",
+          es: "¿Puedo decir la parte que no está en la respuesta?",
+        },
+        {
+          speaker: "vale",
+          text: "Say it.",
+          es: "Dila.",
+        },
+        {
+          speaker: "dani",
+          text: "I want this role. Not because it pays more; because I'm tired of being the person who fixes things nobody sees.",
+          es: "Quiero este puesto. No porque pague más; porque estoy cansado de ser el que arregla cosas que nadie ve.",
+        },
+        {
+          speaker: "vale",
+          text: "Noted. And that is exactly the sentence you should have started with.",
+          es: "Anotado. Y esa es exactamente la frase con la que debiste empezar.",
         },
       ],
       words: [
@@ -233,6 +328,21 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           text: "That I've read his email twice and I'm not going to defend anything until he's told me what he needs by Friday.",
           es: "Que leí su correo dos veces y no voy a defender nada hasta que me diga qué necesita para el viernes.",
         },
+        {
+          speaker: "barrett",
+          text: "And if he needs something you can't give him?",
+          es: "¿Y si necesita algo que no le puedes dar?",
+        },
+        {
+          speaker: "lidia",
+          text: "Then I say so on the call, not in an email three days later.",
+          es: "Entonces lo digo en la llamada, no en un correo tres días después.",
+        },
+        {
+          speaker: "vale",
+          text: "Thank you both. Barrett, you can stop pretending you're only watching.",
+          es: "Gracias a los dos. Barrett, ya puedes dejar de fingir que solo observas.",
+        },
       ],
       words: [
         { word: "angry", es: "molesto, enojado" },
@@ -264,6 +374,21 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           text: "Then plan for the bad connection first. Everything else is easier than that.",
           es: "Entonces planea primero para la mala conexión. Todo lo demás es más fácil que eso.",
         },
+        {
+          speaker: "camila",
+          text: "Dani asked me not to tell you something, so I'm telling you anyway.",
+          es: "Dani me pidió que no te contara algo, así que te lo cuento igual.",
+        },
+        {
+          speaker: "vale",
+          text: "Go on.",
+          es: "Sigue.",
+        },
+        {
+          speaker: "camila",
+          text: "He rewrote his answers four times last night. He's never wanted anything this publicly before.",
+          es: "Reescribió sus respuestas cuatro veces anoche. Nunca había querido algo así de abiertamente.",
+        },
       ],
       words: [
         { word: "follow-up", es: "repregunta, seguimiento" },
@@ -281,9 +406,34 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
       cast: ["vale", "barrett"],
       lines: [
         {
+          speaker: "barrett",
+          text: "Before you tell me your decision, tell me what you were actually testing.",
+          es: "Antes de darme tu decisión, dime qué estabas probando en realidad.",
+        },
+        {
           speaker: "vale",
-          text: "Here's what today was really for. Answering well gets you hired; asking well gets you respected, and the two skills are not the same. When you ask, you have to read the room before you read your list — you notice who stopped talking, who looked at the manager before answering, who gave you an adjective instead of an example. If I'd only looked at my questions, I'd have chosen the person who sounded best. Having listened instead, I know which of you would tell me bad news on a Tuesday rather than a Friday, and that's the one thing a pilot can't survive without.",
-          es: "Esto es para lo que sirvió hoy en realidad. Responder bien te consigue el trabajo; preguntar bien te consigue respeto, y no son la misma habilidad. Cuando preguntas, tienes que leer el ambiente antes que tu lista: notas quién dejó de hablar, quién miró al jefe antes de responder, quién te dio un adjetivo en vez de un ejemplo. Si solo hubiera mirado mis preguntas, habría elegido a quien sonó mejor. Como escuché en cambio, sé cuál de ustedes me daría malas noticias un martes y no un viernes, y eso es lo único sin lo que un piloto no sobrevive.",
+          text: "Answering well gets you hired; asking well gets you respected, and the two skills are not the same. When you ask, you read the room before you read your list — who stopped talking, who looked at the manager first, who gave you an adjective instead of an example.",
+          es: "Responder bien te consigue el trabajo; preguntar bien te consigue respeto, y no son la misma habilidad. Cuando preguntas, lees el ambiente antes que tu lista: quién dejó de hablar, quién miró al jefe primero, quién te dio un adjetivo en vez de un ejemplo.",
+        },
+        {
+          speaker: "barrett",
+          text: "So who sounded best?",
+          es: "¿Y quién sonó mejor?",
+        },
+        {
+          speaker: "vale",
+          text: "Lidia. But I wasn't listening for that. I was listening for who would tell me bad news on a Tuesday instead of a Friday.",
+          es: "Lidia. Pero no escuchaba eso. Escuchaba quién me daría malas noticias un martes en vez de un viernes.",
+        },
+        {
+          speaker: "barrett",
+          text: "And that's Dani.",
+          es: "Y ese es Dani.",
+        },
+        {
+          speaker: "vale",
+          text: "That's Dani. He just told a room full of people what he wants, which he'd never have done a year ago.",
+          es: "Ese es Dani. Acaba de decirle a una sala llena lo que quiere, algo que hace un año no habría hecho.",
         },
         {
           speaker: "barrett",
