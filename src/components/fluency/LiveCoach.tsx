@@ -584,11 +584,11 @@ export function LiveCoach() {
           {phase === "live"
             ? coachState === "speaking"
               ? es
-                ? `Tu coach está hablando · ${mmss(remaining)}`
-                : `Your coach is talking · ${mmss(remaining)}`
+                ? "Tu coach está hablando"
+                : "Your coach is talking"
               : es
-                ? `Te escucha · ${mmss(remaining)}`
-                : `Listening to you · ${mmss(remaining)}`
+                ? "Te escucha"
+                : "Listening to you"
             : phase === "connecting"
               ? es
                 ? "Conectando…"
