@@ -905,6 +905,30 @@ export type Database = {
         }
         Relationships: []
       }
+      live_coach_sessions: {
+        Row: {
+          created_at: string
+          id: string
+          local_day: string
+          seconds: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          local_day: string
+          seconds?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          local_day?: string
+          seconds?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       practice_attempts: {
         Row: {
           completed_at: string | null
