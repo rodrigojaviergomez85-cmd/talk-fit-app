@@ -201,9 +201,9 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           es: "Es lo que hice en marzo, y no te lo dije hasta que la reunión ya estaba agendada.",
         },
         {
-          speaker: "barrett",
-          text: "That's the first useful thing anyone has said today.",
-          es: "Eso es lo primero útil que alguien dice hoy.",
+          speaker: "vale",
+          text: "Then say that part next time first. A real week beats a clean opinion.",
+          es: "Entonces di esa parte primero la próxima vez. Una semana real vale más que una opinión limpia.",
         },
       ],
       words: [
