@@ -223,8 +223,28 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "I'm going to argue against you for a minute, and I want you to hold your position or change it honestly. If we refuse every discount, we'll be the supplier that's technically right and commercially gone, because the person asking has a budget problem we didn't create and can't see. What I'd want from you is a third option: keep the price, change what's inside it. Give them two fewer teaching hours and one more measurement report, so the invoice stays the same and the value moves to where they're feeling pain. Now tell me why that's wrong.",
-          es: "Voy a argumentar en tu contra un minuto, y quiero que sostengas tu posición o la cambies con honestidad. Si rechazamos todo descuento, seremos el proveedor que tiene razón técnicamente y desaparece comercialmente, porque quien pide tiene un problema de presupuesto que no creamos y no vemos. Lo que querría de ti es una tercera opción: mantener el precio y cambiar lo que hay dentro. Darles dos horas de clase menos y un reporte de medición más, para que la factura siga igual y el valor se mueva a donde les duele. Ahora dime por qué eso está mal.",
+          text: "I'm going to argue against you for a minute. Hold your position or change it honestly.",
+          es: "Voy a argumentar en tu contra un minuto. Sostén tu posición o cámbiala con honestidad.",
+        },
+        {
+          speaker: "dani",
+          text: "Go ahead.",
+          es: "Adelante.",
+        },
+        {
+          speaker: "vale",
+          text: "If we refuse every discount, we'll be the supplier that's technically right and commercially gone, because the person asking has a budget problem we didn't create and can't see. What I'd want from you is a third option: keep the price, change what's inside it. Two fewer teaching hours, one more measurement report, so the invoice stays the same and the value moves to where they're feeling pain.",
+          es: "Si rechazamos todo descuento, seremos el proveedor que tiene razón técnicamente y desaparece comercialmente, porque quien pide tiene un problema de presupuesto que no creamos y no vemos. Lo que querría de ti es una tercera opción: mantener el precio y cambiar lo que hay dentro. Dos horas de clase menos, un reporte de medición más, para que la factura siga igual y el valor se mueva a donde les duele.",
+        },
+        {
+          speaker: "dani",
+          text: "You want me to agree with that.",
+          es: "Quieres que esté de acuerdo con eso.",
+        },
+        {
+          speaker: "vale",
+          text: "I want you to tell me why it's wrong.",
+          es: "Quiero que me digas por qué está mal.",
         },
       ],
       words: [
