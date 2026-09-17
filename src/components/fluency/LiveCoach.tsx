@@ -314,7 +314,8 @@ export function LiveCoach() {
       outAnalyserRef.current = outAnalyser;
 
       const waveform = new Uint8Array(outAnalyser.fftSize);
-      const followCoachVoice = () => {
+      let lastMouthUpdate = 0;
+      const followCoachVoice = (timestamp: number) => {
         outAnalyser.getByteTimeDomainData(waveform);
         let sum = 0;
         for (let i = 0; i < waveform.length; i += 1) {
@@ -322,8 +323,13 @@ export function LiveCoach() {
           sum += sample * sample;
         }
         const rms = Math.sqrt(sum / waveform.length);
-        // Lift normal speech into a useful 0–1 range while retaining silence.
-        setCoachLevel(Math.min(1, Math.max(0, (rms - 0.008) * 7.5)));
+        // About 20 updates per second looks responsive without forcing the
+        // whole live panel to render for every animation frame.
+        if (timestamp - lastMouthUpdate >= 50) {
+          lastMouthUpdate = timestamp;
+          // Lift normal speech into a useful 0–1 range while retaining silence.
+          setCoachLevel(Math.min(1, Math.max(0, (rms - 0.008) * 7.5)));
+        }
         mouthFrameRef.current = window.requestAnimationFrame(followCoachVoice);
       };
       mouthFrameRef.current = window.requestAnimationFrame(followCoachVoice);
@@ -349,6 +355,9 @@ export function LiveCoach() {
             : "You used today's minutes. Come back tomorrow.",
         );
         await outCtx.close().catch(() => undefined);
+        if (mouthFrameRef.current !== null) window.cancelAnimationFrame(mouthFrameRef.current);
+        mouthFrameRef.current = null;
+        outAnalyserRef.current = null;
         outCtxRef.current = null;
         setPhase("idle");
         return;
@@ -356,6 +365,9 @@ export function LiveCoach() {
       if (!res.ok || !body?.token) {
         setError(es ? "No se pudo conectar. Intenta otra vez." : "Could not connect. Try again.");
         await outCtx.close().catch(() => undefined);
+        if (mouthFrameRef.current !== null) window.cancelAnimationFrame(mouthFrameRef.current);
+        mouthFrameRef.current = null;
+        outAnalyserRef.current = null;
         outCtxRef.current = null;
         setPhase("idle");
         return;
@@ -505,6 +517,10 @@ export function LiveCoach() {
     } catch (err) {
       console.error("[live-coach]", err);
       await outCtxRef.current?.close().catch(() => undefined);
+      if (mouthFrameRef.current !== null) window.cancelAnimationFrame(mouthFrameRef.current);
+      mouthFrameRef.current = null;
+      outAnalyserRef.current = null;
+      setCoachLevel(0);
       outCtxRef.current = null;
       setError(
         es
