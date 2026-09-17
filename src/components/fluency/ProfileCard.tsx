@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Check, Loader2, Pencil } from "lucide-react";
+import { Check, ExternalLink, Loader2, Pencil } from "lucide-react";
 import { AVATARS } from "@/lib/avatars";
 import { NAME_MAX, checkName } from "@/lib/profile-name";
 import { getMyProfile, updateMyProfile, type MyProfile } from "@/lib/profile.functions";
@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 const TEXT = {
   es: {
     title: "MI PERFIL",
+    portal: "Mi Portal",
     name: "Nombre visible",
     save: "GUARDAR",
     saved: "Listo, se guardó tu perfil.",
@@ -26,6 +27,7 @@ const TEXT = {
   },
   en: {
     title: "MY PROFILE",
+    portal: "My Portal",
     name: "Display name",
     save: "SAVE",
     saved: "Your profile was saved.",
@@ -41,7 +43,7 @@ const TEXT = {
   },
 } as const;
 
-export function ProfileCard({ lang }: { lang: "es" | "en" }) {
+export function ProfileCard({ lang, email }: { lang: "es" | "en"; email?: string | null }) {
   const t = TEXT[lang];
   const load = useServerFn(getMyProfile);
   const save = useServerFn(updateMyProfile);
@@ -98,7 +100,20 @@ export function ProfileCard({ lang }: { lang: "es" | "en" }) {
 
   return (
     <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
-      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{t.title}</p>
+      <div className="flex items-center justify-between">
+        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{t.title}</p>
+        {email ? (
+          <a
+            href={`https://www.e4cclab.com/p/miperfil?correo=${encodeURIComponent(email)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 rounded-full border border-primary px-2.5 py-1 text-[11px] font-bold text-primary"
+          >
+            {t.portal}
+            <ExternalLink className="size-3" />
+          </a>
+        ) : null}
+      </div>
 
       <ProfilePhotoCard
         lang={lang}
