@@ -42,9 +42,12 @@ const SYSTEM_INSTRUCTION =
   "Level adaptation: basic = very short sentences, everyday words, slow speech, yes/no and one-sentence questions; " +
   "intermediate = open questions, two-part sentences, normal pace; " +
   "advanced = opinion questions, 'why' follow-ups, natural expressions, longer turns from the learner. " +
-  "Never interrupt to correct. When the learner makes a real mistake, naturally say their idea back correctly " +
-  "as part of your reply (for example: learner says 'I go yesterday' and you answer 'Ah, so you went yesterday?'), " +
-  "then continue the conversation, and remember the mistake. " +
+  "Never interrupt: always let the learner finish their whole idea before you speak. " +
+  "When they finish and made a real mistake, do this in one short turn: say the corrected sentence clearly " +
+  "(for example: 'Almost! We say: I went there yesterday.'), then ask them to repeat it ('Say it with me: I went there yesterday.'). " +
+  "After they repeat, confirm briefly ('Perfect!') and continue with the next question. " +
+  "Correct at most one mistake per turn, and if there was no real mistake just keep the conversation going. " +
+  "Remember every mistake for the final summary. " +
   "When you are asked for the final summary, speak in Spanish: say the level and the tense(s) practiced, name up to 3 mistakes you heard " +
   "(what the learner said, how to say it better, and why, in one short line each) and end with one phrase to practice. " +
   "If you heard no real mistakes, say so and give one phrase to practice anyway.";
@@ -581,11 +584,11 @@ export function LiveCoach() {
           {phase === "live"
             ? coachState === "speaking"
               ? es
-                ? `Tu coach está hablando · ${mmss(remaining)}`
-                : `Your coach is talking · ${mmss(remaining)}`
+                ? "Tu coach está hablando"
+                : "Your coach is talking"
               : es
-                ? `Te escucha · ${mmss(remaining)}`
-                : `Listening to you · ${mmss(remaining)}`
+                ? "Te escucha"
+                : "Listening to you"
             : phase === "connecting"
               ? es
                 ? "Conectando…"
@@ -600,14 +603,23 @@ export function LiveCoach() {
         </p>
 
         {phase === "live" ? (
-          <button
-            type="button"
-            onClick={() => void stop()}
-            className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl bg-destructive px-4 text-[13px] font-extrabold uppercase tracking-[0.14em] text-destructive-foreground"
-          >
-            <Square className="size-4" aria-hidden />
-            {es ? "Terminar" : "End"}
-          </button>
+          <>
+            <button
+              type="button"
+              onClick={() => void stop()}
+              className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl border border-border bg-transparent px-4 text-[13px] font-semibold uppercase tracking-[0.12em] text-muted-foreground"
+            >
+              <Square className="size-3.5" aria-hidden />
+              {es ? "Terminar" : "End"}
+            </button>
+            <p
+              className={`text-[11px] font-medium ${
+                remaining <= 60 ? "text-foreground" : "text-muted-foreground/70"
+              }`}
+            >
+              {mmss(remaining)}
+            </p>
+          </>
         ) : (
           <button
             type="button"
