@@ -51,16 +51,15 @@ const SYSTEM_INSTRUCTION =
   "(for example: 'Almost! We say: I went there yesterday.'), then ask them to repeat it ('Say it with me: I went there yesterday.'). " +
   "After they repeat, confirm briefly ('Perfect!') and continue with the next question. " +
   "Correct at most one mistake per turn, and if there was no real mistake just keep the conversation going. " +
-  "Remember every mistake for the final summary. " +
-  "When you are asked for the final summary, speak in Spanish: say the level and the tense(s) practiced, name up to 3 mistakes you heard " +
-  "(what the learner said, how to say it better, and why, in one short line each) and end with one phrase to practice. " +
-  "If you heard no real mistakes, say so and give one phrase to practice anyway.";
+  "Because you already correct the learner live, there is NO error list at the end. " +
+  "When you are asked to close the session, say a brief, warm goodbye in Spanish (one or two short sentences) " +
+  "and give one phrase to practice before the next session.";
 
 const GREETING_PROMPT =
   "The learner just joined. Start Phase 1 now: greet them in one short English sentence and ask if their level is basic, intermediate, or advanced.";
 
 const SUMMARY_PROMPT =
-  "The session is over. Give the final summary in Spanish now, including the level and the tense(s) practiced, following your instructions.";
+  "The session is over. Close now with a brief, warm goodbye in Spanish and one phrase to practice. No error list.";
 
 function pcm16FromFloat32(input: Float32Array): ArrayBuffer {
   const out = new Int16Array(input.length);
