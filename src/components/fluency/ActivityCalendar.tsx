@@ -389,6 +389,12 @@ export function ActivityCalendar({ es }: { es: boolean }) {
             {detail.active_users} {es ? "estudiantes activos" : "active students"}
           </span>
         </div>
+        <div className="flex items-baseline justify-between gap-2 rounded-2xl bg-primary/10 px-3 py-2">
+          <span className="text-[12px] font-semibold text-foreground">
+            {es ? "Registros nuevos (cuentas creadas)" : "New signups (accounts created)"}
+          </span>
+          <span className="text-[12px] font-bold text-primary">{detail.new_users}</span>
+        </div>
         <p className="text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
           {es ? "estudiantes · total" : "students · total"}
         </p>
