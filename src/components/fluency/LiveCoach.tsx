@@ -315,6 +315,8 @@ export function LiveCoach() {
 
       const waveform = new Uint8Array(outAnalyser.fftSize);
       let lastMouthUpdate = 0;
+      let envelope = 0;
+      let adaptivePeak = 0.08;
       const followCoachVoice = (timestamp: number) => {
         outAnalyser.getByteTimeDomainData(waveform);
         let sum = 0;
@@ -323,12 +325,18 @@ export function LiveCoach() {
           sum += sample * sample;
         }
         const rms = Math.sqrt(sum / waveform.length);
+        // Follow syllables quickly, then release gently through consonants and
+        // tiny pauses. The adaptive peak keeps quiet iPhone audio expressive.
+        envelope = rms > envelope ? envelope * 0.28 + rms * 0.72 : envelope * 0.78 + rms * 0.22;
+        adaptivePeak = Math.max(rms, adaptivePeak * 0.997);
         // About 20 updates per second looks responsive without forcing the
         // whole live panel to render for every animation frame.
         if (timestamp - lastMouthUpdate >= 50) {
           lastMouthUpdate = timestamp;
-          // Lift normal speech into a useful 0–1 range while retaining silence.
-          setCoachLevel(Math.min(1, Math.max(0, (rms - 0.008) * 7.5)));
+          const noiseFloor = 0.006;
+          const usablePeak = Math.max(0.035, adaptivePeak - noiseFloor);
+          const normalized = Math.max(0, envelope - noiseFloor) / usablePeak;
+          setCoachLevel(Math.min(1, normalized));
         }
         mouthFrameRef.current = window.requestAnimationFrame(followCoachVoice);
       };
