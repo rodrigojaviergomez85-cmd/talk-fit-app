@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Loader2, MessageCircle, Send } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { LiveCoach } from "@/components/fluency/LiveCoach";
+import { PracticeCoach } from "@/components/fluency/PracticeCoach";
 import { useAppLang } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { getFreshSession } from "@/lib/session-keeper";
@@ -54,7 +55,8 @@ function AiCoachPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [quota, setQuota] = useState<Quota | null>(null);
-  const [tab, setTab] = useState<"write" | "live">("write");
+  const [tab, setTab] = useState<"write" | "live" | "practice">("write");
+  const [practiceAllowed, setPracticeAllowed] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
@@ -77,6 +79,18 @@ function AiCoachPage() {
   useEffect(() => {
     inputRef.current?.focus();
     void refreshQuota();
+    // Private pilot: the turn-based practice tab only appears for allow-listed accounts.
+    void (async () => {
+      try {
+        const headers = await authHeaders();
+        if (!headers) return;
+        const res = await fetch("/api/coach-practice", { headers });
+        const body = (await res.json().catch(() => null)) as { allowed?: boolean } | null;
+        setPracticeAllowed(Boolean(body?.allowed));
+      } catch {
+        /* tab stays hidden */
+      }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -164,12 +178,19 @@ function AiCoachPage() {
 
   return (
     <AppShell title={t("aiCoach.title")} subtitle={t("aiCoach.subtitle")} hideSync>
-      <div className="mb-4 grid grid-cols-2 gap-2 rounded-2xl border border-border bg-card p-1">
+      <div
+        className={`mb-4 grid gap-2 rounded-2xl border border-border bg-card p-1 ${
+          practiceAllowed ? "grid-cols-3" : "grid-cols-2"
+        }`}
+      >
         {(
           [
             ["write", lang === "en" ? "Write" : "Escribir"],
             ["live", lang === "en" ? "Talk live" : "Hablar en vivo"],
-          ] as const
+            ...(practiceAllowed
+              ? ([["practice", lang === "en" ? "Practice" : "Práctica"]] as const)
+              : []),
+          ] as ReadonlyArray<readonly ["write" | "live" | "practice", string]>
         ).map(([value, label]) => (
           <button
             key={value}
@@ -187,8 +208,10 @@ function AiCoachPage() {
       </div>
 
       {tab === "live" ? <LiveCoach /> : null}
+      {tab === "practice" ? <PracticeCoach /> : null}
 
-      <div className={tab === "live" ? "hidden" : "space-y-4"}>
+
+      <div className={tab === "write" ? "space-y-4" : "hidden"}>
         {counter ? (
           <p className="text-center text-[12px] font-semibold text-muted-foreground">{counter}</p>
         ) : null}
