@@ -388,6 +388,16 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
         },
         {
           speaker: "barrett",
+          text: "You just argued against the candidate you're closest to. The committee will notice that.",
+          es: "Acabas de argumentar en contra del candidato con quien tienes más cercanía. El comité lo va a notar.",
+        },
+        {
+          speaker: "vale",
+          text: "Good. Then nobody can call this loyalty, and Dani keeps the part of the job he's actually best at.",
+          es: "Bien. Así nadie puede llamarlo lealtad, y Dani conserva la parte del trabajo en la que de verdad es mejor.",
+        },
+        {
+          speaker: "barrett",
           text: "Agreed. One more thing: Crown asked for a call tomorrow, and they didn't say what it's about.",
           es: "De acuerdo. Una cosa más: Crown pidió una llamada mañana, y no dijeron de qué se trata.",
         },
