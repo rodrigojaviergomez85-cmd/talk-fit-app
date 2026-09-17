@@ -202,7 +202,7 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
         { speaker: "dani", text: "I feel attacked, educated and seen.", es: "Me siento atacado, educado y entendido." },
       ],
       words: [
-        { word: "get through", es: "superar, salir adelante" },
+        { word: "got through", es: "superó, salió adelante" },
         { word: "give up", es: "renunciar a" },
         { word: "telenovela", es: "telenovela" },
       ],

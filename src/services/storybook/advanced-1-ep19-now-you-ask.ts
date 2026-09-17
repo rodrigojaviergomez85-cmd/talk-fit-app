@@ -201,7 +201,7 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
         { speaker: "vale", text: "That is the bridge. He is not becoming perfect; he is becoming responsible out loud.", es: "Ese es el puente. No se está volviendo perfecto; se está volviendo responsable en voz alta." },
       ],
       words: [
-        { word: "hide behind", es: "esconderse detrás de" },
+        { word: "hiding behind", es: "escondiéndose detrás de" },
         { word: "defend", es: "defender" },
         { word: "disagrees", es: "no está de acuerdo" },
       ],
