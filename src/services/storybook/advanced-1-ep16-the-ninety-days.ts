@@ -157,8 +157,38 @@ export const ADVANCED1_EP16_THE_NINETY_DAYS: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "I started with eleven adult students in a rented room, and I built the method from the ground up because nothing I could buy actually made people speak. For six years I taught, corrected, threw away what didn't work and kept what did. Today I run an academy with a real track record: fourteen teachers, three corporate clients, and attrition under nine percent. What I want next isn't a bigger classroom; it's the method running in three countries, taught by teachers I trained, measured by people who don't work for me.",
-          es: "Empecé con once estudiantes adultos en un cuarto alquilado, y construí el método desde cero porque nada de lo que podía comprar hacía hablar a la gente. Durante seis años enseñé, corregí, tiré lo que no funcionaba y me quedé con lo que sí. Hoy dirijo una academia con un historial real: catorce maestros, tres clientes corporativos y una deserción por debajo del nueve por ciento. Lo que quiero ahora no es un salón más grande; es el método operando en tres países, enseñado por maestros que yo formé y medido por gente que no trabaja para mí.",
+          text: "I started with eleven adult students in a rented room, and I built the method from the ground up because nothing I could buy actually made people speak.",
+          es: "Empecé con once estudiantes adultos en un cuarto alquilado, y construí el método desde cero porque nada de lo que podía comprar hacía hablar a la gente.",
+        },
+        {
+          speaker: "barrett",
+          text: "Six years ago. What did you keep from that room?",
+          es: "Hace seis años. ¿Qué te quedaste de ese cuarto?",
+        },
+        {
+          speaker: "vale",
+          text: "The habit of throwing away whatever didn't work. Today that room is an academy with a real track record: fourteen teachers, three corporate clients and attrition under nine percent.",
+          es: "La costumbre de tirar lo que no funcionaba. Hoy ese cuarto es una academia con un historial real: catorce maestros, tres clientes corporativos y una deserción por debajo del nueve por ciento.",
+        },
+        {
+          speaker: "barrett",
+          text: "And where does that take you next?",
+          es: "¿Y hacia dónde te lleva eso ahora?",
+        },
+        {
+          speaker: "vale",
+          text: "Not to a bigger classroom. To the method running in three countries, taught by teachers I trained.",
+          es: "No a un salón más grande. A que el método opere en tres países, enseñado por maestros que yo formé.",
+        },
+        {
+          speaker: "barrett",
+          text: "Measured by whom?",
+          es: "¿Medido por quién?",
+        },
+        {
+          speaker: "vale",
+          text: "By people who don't work for me. That's the only way the numbers mean anything.",
+          es: "Por gente que no trabaja para mí. Es la única forma de que los números signifiquen algo.",
         },
       ],
       words: [
