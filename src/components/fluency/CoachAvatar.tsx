@@ -56,7 +56,6 @@ export function CoachAvatar({ state, level = 0 }: { state: CoachState; level?: n
         width={512}
         height={512}
         loading="lazy"
-        className="relative size-32 rounded-full object-cover shadow-sm"
         className="coach-avatar-image relative size-32 rounded-full object-cover shadow-sm"
         data-active={state === "idle" ? "false" : "true"}
       />
