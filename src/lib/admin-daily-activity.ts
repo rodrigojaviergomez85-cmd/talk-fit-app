@@ -74,10 +74,12 @@ export type RangeSummary = {
   bestDay: DailyActivityDay | null;
   daysWithActivity: number;
   totalPractices: number;
+  totalNewUsers: number;
 };
 
 export function summarize(days: DailyActivityDay[]): RangeSummary {
-  if (days.length === 0) return { avgActive: null, bestDay: null, daysWithActivity: 0, totalPractices: 0 };
+  if (days.length === 0)
+    return { avgActive: null, bestDay: null, daysWithActivity: 0, totalPractices: 0, totalNewUsers: 0 };
   const total = days.reduce((acc, d) => acc + d.active_users, 0);
   let best: DailyActivityDay = days[0]!;
   for (const d of days) if (d.active_users > best.active_users) best = d;
