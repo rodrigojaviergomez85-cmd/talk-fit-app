@@ -231,6 +231,26 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
           text: "Only if we hire teachers in February, so the answer is yes with a date attached, not yes to be polite.",
           es: "Solo si contratamos maestros en febrero, así que la respuesta es sí con una fecha, no un sí por cortesía.",
         },
+        {
+          speaker: "reed",
+          text: "And if February is too early for our budget?",
+          es: "¿Y si febrero es muy pronto para nuestro presupuesto?",
+        },
+        {
+          speaker: "vale",
+          text: "Then June becomes September, and I'd rather tell you that today than apologise for it in July.",
+          es: "Entonces junio se vuelve septiembre, y prefiero decírtelo hoy que disculparme en julio.",
+        },
+        {
+          speaker: "reed",
+          text: "You've changed since the first time we met.",
+          es: "Has cambiado desde la primera vez que nos vimos.",
+        },
+        {
+          speaker: "vale",
+          text: "No. You're just hearing the same person with the budget in the room.",
+          es: "No. Solo estás oyendo a la misma persona con el presupuesto en la sala.",
+        },
       ],
       words: [
         { word: "step up", es: "dar el paso, subir de nivel" },
