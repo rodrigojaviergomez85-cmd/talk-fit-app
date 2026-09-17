@@ -82,6 +82,21 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           text: "Then don't protect him.",
           es: "Entonces no lo protejas.",
         },
+        {
+          speaker: "vale",
+          text: "He's outside pretending to read his notes. He's been holding the same page since seven.",
+          es: "Está afuera fingiendo que lee sus notas. Lleva con la misma página desde las siete.",
+        },
+        {
+          speaker: "barrett",
+          text: "Nervous or unprepared?",
+          es: "¿Nervioso o sin preparar?",
+        },
+        {
+          speaker: "vale",
+          text: "Nervous. Unprepared people sleep fine.",
+          es: "Nervioso. Los que no se preparan duermen bien.",
+        },
       ],
       words: [
         { word: "interview", es: "entrevistar" },
