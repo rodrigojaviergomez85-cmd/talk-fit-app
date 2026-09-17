@@ -69,4 +69,5 @@ Mantenemos 9 escenas, arte, glosario tocable, quizzes y grabación final de 30 s
 
 ## Siguiente paso
 
-Escribir el guion maestro de Advanced 2, episodios 1 al 5, para tu aprobación.
+1. Reescribir a mano los episodios 18, 19 y 20 de Advanced 1, cerrando el arco de Dani (misma trama y mismo arte).
+2. Escribir el guion maestro de Advanced 2, episodios 1 al 5, para tu aprobación.
