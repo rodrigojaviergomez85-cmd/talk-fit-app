@@ -1,6 +1,17 @@
-# Advanced 2 y 3: la historia de Dani
+# Cierre de Advanced 1 y puente a Advanced 2 y 3
 
-Advanced 1 termina con Dani quedándose en operaciones y con ambición propia. Advanced 2 y 3 lo convierten en el protagonista: dejamos de ver la empresa desde arriba (Vale) y la vemos desde abajo (Dani), que es donde vive nuestra audiencia joven.
+## Paso 1 — Terminar Advanced 1 (episodios 18, 19 y 20)
+
+Los tres ya existen, pero en el formato viejo: 32, 30 y 30 turnos de diálogo, contra 44 y 43 de los episodios 16 y 17 ya reescritos a mano. Se reescriben a mano con el mismo criterio: 34–44 turnos, ninguna escena de un solo hablante, máximo dos turnos largos, misma trama aprobada, mismo arte, mismas expresiones y quizzes.
+
+Además, estos tres se vuelven el puente emocional hacia Advanced 2:
+
+- **18–19 (entrevistas de Dani y Lidia)**: Dani ya no solo responde bien; se le ve queriendo algo, y dice qué parte del trabajo lo mueve y qué le da miedo.
+- **20 (cierre)**: Lidia toma la dirección del método, Dani se queda en operaciones y clientes, y termina con una ambición propia sin resolver. Ese deseo es el motor de Advanced 2.
+
+## Paso 2 — Advanced 2 y 3: la historia de Dani
+
+Advanced 1 termina con Dani en operaciones y con ambición propia. Advanced 2 y 3 lo convierten en protagonista: dejamos de ver la empresa desde arriba (Vale) y la vemos desde abajo (Dani), que es donde vive nuestra audiencia joven.
 
 Hoy no existe ningún guion ni episodio de Advanced 2 o 3: se escriben desde cero.
 
