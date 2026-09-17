@@ -29,6 +29,7 @@ Tu cuenta tiene el nivel guardado **Tigers**, pero tu única inscripción en la 
 ## Verificación
 
 - Consulta en base de datos antes/después del cambio de nivel: la membresía de Basic Zero semana en curso desaparece y aparece una de Tigers con 0 puntos.
-- Entrar a `/liga` desde un día de Tigers y desde el menú: siempre muestra Tigers de la semana correspondiente.
+- Entrar a `/liga` desde un día de Tigers y desde el menú: siempre muestra Tigers de la semana elegida.
+- Cambiar a Tigers eligiendo Semana 3: quedas inscrito en Tigers · Semana 3 y el día inicial es el 11.
 - Una semana cerrada anterior sigue visible en el selector de historial.
 - Pruebas de liga, verificación de tipos y revisión móvil de `/liga` y `/level`.
