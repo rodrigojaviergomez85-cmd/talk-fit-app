@@ -118,6 +118,16 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           text: "We're building a regional training role, and your name came up twice. Would you consider leaving what you built?",
           es: "Estamos creando un puesto regional de formación, y tu nombre salió dos veces. ¿Considerarías dejar lo que construiste?",
         },
+        {
+          speaker: "vale",
+          text: "Came up twice. Who said it the second time?",
+          es: "Salió dos veces. ¿Quién lo dijo la segunda vez?",
+        },
+        {
+          speaker: "keller",
+          text: "A client of yours who sits on our board. That's usually the recommendation that counts.",
+          es: "Una clienta tuya que está en nuestro consejo. Esa suele ser la recomendación que cuenta.",
+        },
       ],
       words: [
         { word: "regional", es: "regional" },
