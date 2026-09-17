@@ -149,6 +149,21 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
           text: "Nineteen adults who will be answering clients in English by March, and the measurements that prove it.",
           es: "Diecinueve adultos que estarán respondiéndole a clientes en inglés para marzo, y las mediciones que lo prueban.",
         },
+        {
+          speaker: "barrett",
+          text: "By March, or you hope by March?",
+          es: "¿Para marzo, o esperas que para marzo?",
+        },
+        {
+          speaker: "vale",
+          text: "By March. If it slips, you'll hear it from me in week six, not in month four.",
+          es: "Para marzo. Si se atrasa, lo sabrás por mí en la semana seis, no en el mes cuatro.",
+        },
+        {
+          speaker: "barrett",
+          text: "Write that down. Round two.",
+          es: "Anota eso. Ronda dos.",
+        },
       ],
       words: [
         { word: "measurements", es: "mediciones" },
