@@ -1776,6 +1776,10 @@ export type Database = {
         Args: { _curriculum_week: number; _module_id: string }
         Returns: Json
       }
+      league_switch_level: {
+        Args: { _curriculum_week: number; _module_id: string }
+        Returns: string
+      }
       league_week_start: { Args: { _ts?: string }; Returns: string }
       limits_enabled: { Args: never; Returns: boolean }
       log_ai_call: {

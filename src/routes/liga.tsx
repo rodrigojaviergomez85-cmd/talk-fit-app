@@ -130,11 +130,13 @@ function LeaguePage() {
     async (competitionId: string | null) => {
       // The learner may already be ahead in the curriculum (day 6) while the
       // calendar week they competed in is still running, so the week is chosen
-      // by competition, never by today's curriculum day.
+      // by competition, never by today's curriculum day. The cohort follows the
+      // level the learner is actually enrolled in (saved module), never the
+      // "next incomplete module" — that used to show Basic Zero to a learner
+      // who had already switched to Tigers.
       const journey = JourneyService.load();
-      const next = JourneyService.nextPractice(journey);
-      const moduleId = next?.moduleId ?? "basic-zero";
-      const day = next?.day ?? 1;
+      const moduleId = from ?? JourneyService.currentModule(journey);
+      const day = fromDay ?? JourneyService.currentDay(journey, moduleId as never);
       // Opened from a day screen: show that module's league (read-only for
       // admin / unlimited accounts that do not compete there).
       let res: LeagueSummary | null = null;

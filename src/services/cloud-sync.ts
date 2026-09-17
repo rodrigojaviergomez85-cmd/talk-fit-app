@@ -13,6 +13,7 @@ import {
 import type { ModuleId, Recording } from "@/lib/types";
 import type { TablesInsert } from "@/integrations/supabase/types";
 import { isModuleId } from "./course-service";
+import { switchLeagueLevel } from "@/lib/league.functions";
 
 /**
  * CloudSync — the backend is the source of truth for the pilot.
@@ -442,23 +443,35 @@ export const CloudSync = {
   },
 
   /**
-   * "Cambiar mi nivel": moves only the current module. Progress, recordings,
-   * sessions and the original placement are untouched.
+   * "Cambiar mi nivel": moves the current module and the week the learner is
+   * on. Progress, recordings and sessions are untouched, but the weekly league
+   * follows them: they leave the running week of their old cohort (those points
+   * are dropped) and are enrolled right away in the new module + week.
    */
-  async changeLevel(moduleId: ModuleId): Promise<boolean> {
+  async changeLevel(moduleId: ModuleId, startWeek = 1): Promise<boolean> {
     // Safety net for the ADVANCED ladder: Change Level never bypasses a locked prerequisite.
     const target = CourseService.getModule(moduleId);
     if (target.family === "advanced" && !JourneyService.isModuleUnlocked(JourneyService.load(), moduleId)) {
       console.warn("[placement] refused: module is locked", moduleId);
       return false;
     }
+    const week = Math.min(4, Math.max(1, Math.round(startWeek)));
     const uid = await userId();
     const prefs = loadPreferences();
     const now = new Date().toISOString();
     const count = prefs.placementChangeCount + 1;
     if (uid) {
       const { error } = await supabase.from("user_preferences").upsert(
-        { user_id: uid, current_module_id: moduleId, placement_changed_at: now, placement_change_count: count },
+        {
+          user_id: uid,
+          current_module_id: moduleId,
+          // The chosen week must position the learner inside the NEW module,
+          // so the placement anchor moves with the level change.
+          initial_placement_module_id: moduleId,
+          start_week: week,
+          placement_changed_at: now,
+          placement_change_count: count,
+        },
         { onConflict: "user_id" },
       );
       if (error) {
@@ -466,8 +479,23 @@ export const CloudSync = {
         return false;
       }
     }
-    writePreferencesLocal({ currentModuleId: moduleId, placementChangedAt: now, placementChangeCount: count });
+    writePreferencesLocal({
+      currentModuleId: moduleId,
+      initialPlacementModuleId: moduleId,
+      startWeek: week,
+      placementChangedAt: now,
+      placementChangeCount: count,
+    });
     JourneyService.invalidatePull();
+    if (uid) {
+      try {
+        await switchLeagueLevel({ data: { moduleId, curriculumWeek: week } });
+      } catch (err) {
+        // The level change itself succeeded; the league membership is also
+        // created lazily on the next completed activity.
+        console.warn("[league] switch level failed", err);
+      }
+    }
     return true;
   },
 

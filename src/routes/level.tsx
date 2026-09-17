@@ -33,6 +33,7 @@ function LevelPage() {
   const navigate = useNavigate();
   const [current, setCurrent] = useState<ModuleId | null>(null);
   const [choice, setChoice] = useState<ModuleId | null>(null);
+  const [week, setWeek] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(false);
 
@@ -41,10 +42,10 @@ function LevelPage() {
   }, [prefs.currentModuleId]);
 
   const confirm = async () => {
-    if (!choice) return;
+    if (!choice || !week) return;
     setBusy(true);
     setError(false);
-    const ok = await CloudSync.changeLevel(choice);
+    const ok = await CloudSync.changeLevel(choice, week);
     setBusy(false);
     if (!ok) {
       setError(true);
@@ -53,6 +54,12 @@ function LevelPage() {
     // Home, not the module's day list: after changing level the learner should
     // see "what do I do today?" already positioned in the new level.
     void navigate({ to: "/" });
+  };
+
+  const cancel = () => {
+    setChoice(null);
+    setWeek(null);
+    setError(false);
   };
 
   const currentModule = current ? CourseService.getModule(current) : null;
@@ -89,22 +96,52 @@ function LevelPage() {
             className="fixed inset-0 z-50 flex items-end justify-center bg-foreground/40 p-4 sm:items-center"
           >
             <div className="w-full max-w-md space-y-4 rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-lift)]">
-              <p className="text-[22px] font-extrabold tracking-tight">{t("place.confirmTitle")}</p>
+              <p className="text-[22px] font-extrabold tracking-tight">
+                {week ? t("place.confirmTitle") : t("place.weekTitle")}
+              </p>
               <ModuleHeading module={CourseService.getModule(choice)} className="text-left" />
-              <p className="text-[14px] font-semibold text-muted-foreground">{t("place.confirmBody")}</p>
+              {week ? (
+                <>
+                  <p className="text-[14px] font-semibold text-muted-foreground">
+                    {t("place.week").replace("{n}", String(week))}
+                  </p>
+                  <p className="text-[14px] font-semibold text-muted-foreground">{t("place.confirmBody")}</p>
+                  <p className="rounded-2xl bg-muted/50 px-4 py-3 text-[13px] font-semibold text-muted-foreground">
+                    {t("place.leagueResetWarning")}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    {[1, 2, 3, 4].map((w) => (
+                      <button
+                        key={w}
+                        type="button"
+                        onClick={() => setWeek(w)}
+                        className="min-h-[60px] rounded-2xl border border-border bg-card text-[16px] font-extrabold tracking-tight active:scale-[0.98]"
+                      >
+                        {t("place.week").replace("{n}", String(w))}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[13px] font-semibold text-muted-foreground">{t("place.weekBody")}</p>
+                </>
+              )}
               {error ? <p className="text-[13px] font-semibold text-destructive">{t("place.saveFailed")}</p> : null}
+              {week ? (
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => void confirm()}
+                  className="min-h-[52px] w-full rounded-2xl bg-primary px-5 text-[15px] font-bold tracking-wide text-primary-foreground active:scale-[0.98] disabled:opacity-50"
+                >
+                  {t("place.confirmCta")}
+                </button>
+              ) : null}
               <button
                 type="button"
                 disabled={busy}
-                onClick={() => void confirm()}
-                className="min-h-[52px] w-full rounded-2xl bg-primary px-5 text-[15px] font-bold tracking-wide text-primary-foreground active:scale-[0.98] disabled:opacity-50"
-              >
-                {t("place.confirmCta")}
-              </button>
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => setChoice(null)}
+                onClick={cancel}
                 className="min-h-[44px] w-full rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
               >
                 {t("account.cancel")}

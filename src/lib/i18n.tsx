@@ -147,6 +147,10 @@ const DICT = {
     "You'll start on that week's first day. Earlier days stay open in case you want to review them.",
   ],
   "place.week": ["Semana {n}", "Week {n}"],
+  "place.leagueResetWarning": [
+    "Saldrás de la liga de esta semana y perderás los puntos que llevas. Entrarás con 0 puntos en la liga del nivel y la semana que elegiste. Las semanas ya cerradas se conservan en tu historial.",
+    "You'll leave this week's league and lose the points you have. You'll start with 0 points in the league for the level and week you picked. Weeks already closed stay in your history.",
+  ],
   "action.tryAgain": ["INTENTAR DE NUEVO", "TRY AGAIN"],
   "action.loadMore": ["VER MÁS", "LOAD MORE"],
   "action.continuePractice": ["CONTINUAR PRÁCTICA", "CONTINUE PRACTICE"],
