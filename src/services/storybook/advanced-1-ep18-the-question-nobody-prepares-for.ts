@@ -425,6 +425,16 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           text: "Friday's session changed. Barrett wants you on the other side of the table, interviewing us.",
           es: "La sesión del viernes cambió. Barrett te quiere del otro lado de la mesa, entrevistándonos a nosotros.",
         },
+        {
+          speaker: "vale",
+          text: "Us meaning you and Lidia.",
+          es: "Nosotros quiere decir tú y Lidia.",
+        },
+        {
+          speaker: "dani",
+          text: "Me and Lidia. And this time nobody's going to give me ten seconds.",
+          es: "Lidia y yo. Y esta vez nadie me va a dar diez segundos.",
+        },
       ],
       words: [
         { word: "flattery", es: "halago" },
