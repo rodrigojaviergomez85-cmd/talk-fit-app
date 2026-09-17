@@ -67,6 +67,21 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           text: "Then I'll say the rule first: I'm not looking for confident answers. I'm looking for answers that survive a follow-up.",
           es: "Entonces digo la regla primero: no busco respuestas seguras. Busco respuestas que sobrevivan una repregunta.",
         },
+        {
+          speaker: "barrett",
+          text: "One of them works for you every day. Will that make this harder or easier?",
+          es: "Uno de ellos trabaja contigo todos los días. ¿Eso lo hace más difícil o más fácil?",
+        },
+        {
+          speaker: "vale",
+          text: "Harder. I already know what Dani can do, so he has to prove it in front of you, not to me.",
+          es: "Más difícil. Ya sé lo que Dani puede hacer, así que tiene que probarlo frente a ti, no a mí.",
+        },
+        {
+          speaker: "barrett",
+          text: "Then don't protect him.",
+          es: "Entonces no lo protejas.",
+        },
       ],
       words: [
         { word: "interview", es: "entrevistar" },
