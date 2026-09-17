@@ -54,13 +54,18 @@ function ProfilePage() {
       setPreferencesScope(session?.user.id ?? null);
       // Never keep another session's numbers on screen.
       JourneyService.invalidatePull();
-      if (session) void JourneyService.pull().then(setState).catch(() => undefined);
-      else setState(JourneyService.load());
+      if (session) {
+        // The saved level lives in the account: refresh it so this screen can
+        // never show a stale level from an older device cache.
+        void CloudSync.pullPreferences().catch(() => undefined);
+        void JourneyService.pull().then(setState).catch(() => undefined);
+      } else setState(JourneyService.load());
     });
     void supabase.auth.getUser().then(({ data }) => {
       setUserEmail(data.user?.email ?? null);
       setSessionScope(data.user?.id ?? null);
       setPreferencesScope(data.user?.id ?? null);
+      if (data.user) void CloudSync.pullPreferences().catch(() => undefined);
     });
     return () => sub.subscription.unsubscribe();
   }, []);
