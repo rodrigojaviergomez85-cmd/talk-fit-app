@@ -272,6 +272,26 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           text: "Correct. And that's the answer I was waiting for.",
           es: "Correcto. Y esa es la respuesta que esperaba.",
         },
+        {
+          speaker: "dani",
+          text: "Can I say the part that isn't in the answer?",
+          es: "¿Puedo decir la parte que no está en la respuesta?",
+        },
+        {
+          speaker: "vale",
+          text: "Say it.",
+          es: "Dila.",
+        },
+        {
+          speaker: "dani",
+          text: "I want this role. Not because it pays more; because I'm tired of being the person who fixes things nobody sees.",
+          es: "Quiero este puesto. No porque pague más; porque estoy cansado de ser el que arregla cosas que nadie ve.",
+        },
+        {
+          speaker: "vale",
+          text: "Noted. And that is exactly the sentence you should have started with.",
+          es: "Anotado. Y esa es exactamente la frase con la que debiste empezar.",
+        },
       ],
       words: [
         { word: "hold back", es: "contenerse, no atreverse" },
