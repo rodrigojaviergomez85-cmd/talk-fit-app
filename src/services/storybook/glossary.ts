@@ -276,6 +276,7 @@ export const BASE_GLOSSARY: Record<string, string> = {
   'recovery': 'recuperación',
   'growth': 'crecimiento',
   'coaching': 'acompañamiento',
+  'coaches': 'entrena, acompaña',
   'bar': 'estándar / barra',
   'scale': 'escala',
   'publish': 'publicar',
