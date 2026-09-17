@@ -1,5 +1,6 @@
 # Roadmap
 
+- [x] Add "Mi Portal" tab in Mi Cuenta → Mi Perfil that opens https://www.e4cclab.com/p/miperfil with the signed-in email as `correo`
 - [x] Correct canonical artwork for Advanced 1 Episodes 13–19 using Episodes 1–5 as references
 - [x] Optimize corrected images for mobile
 - [x] Run cast, asset, and storybook tests

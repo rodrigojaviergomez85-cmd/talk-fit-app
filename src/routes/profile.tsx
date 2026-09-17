@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ChevronRight, LogOut } from "lucide-react";
+import { ChevronRight, ExternalLink, LogOut } from "lucide-react";
 import { ModuleHeading } from "@/components/fluency/ModuleHeading";
 import { clearPendingPlacement } from "@/services/preferences";
 import { AppShell } from "@/components/fluency/AppShell";
@@ -184,6 +184,26 @@ function ProfilePage() {
         ) : (
           <AuthGate title={t("account.saveProgress")} />
         )}
+
+        <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+            {t("account.myPortal")}
+          </p>
+          <p className="text-[13px] text-muted-foreground">{t("account.myPortalBody")}</p>
+          {userEmail ? (
+            <a
+              href={`https://www.e4cclab.com/p/miperfil?correo=${encodeURIComponent(userEmail)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-[48px] w-full items-center justify-between rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
+            >
+              {t("account.myPortalCta")}
+              <ExternalLink className="size-4 text-muted-foreground" />
+            </a>
+          ) : (
+            <p className="text-[13px] text-muted-foreground">{t("account.myPortalDisabled")}</p>
+          )}
+        </section>
 
         <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
           <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
