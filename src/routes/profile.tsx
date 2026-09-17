@@ -76,6 +76,27 @@ function ProfilePage() {
   return (
     <AppShell title={t("account.title")}>
       <div className="space-y-5">
+        <div className="flex items-center justify-between">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.16em] text-foreground">
+            {t("account.profileTitle")}
+          </h2>
+          {userEmail ? (
+            <a
+              href={`https://www.e4cclab.com/p/miperfil?correo=${encodeURIComponent(userEmail)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-primary px-3 py-1.5 text-[12px] font-bold text-primary"
+            >
+              {t("account.myPortal")}
+              <ExternalLink className="size-3.5" />
+            </a>
+          ) : (
+            <span className="inline-flex items-center rounded-full border border-border px-3 py-1.5 text-[12px] font-bold text-muted-foreground">
+              {t("account.myPortal")}
+            </span>
+          )}
+        </div>
+
         {userEmail ? <ProfileCard lang={esUi ? "es" : "en"} /> : null}
 
         <section className="grid grid-cols-2 gap-3">
