@@ -282,6 +282,26 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           text: "Then the price was never the question, and they'll have proved my point for me. What I'd be selling is six years of corrections, and that isn't a file they can copy.",
           es: "Entonces el precio nunca fue la pregunta, y me habrán dado la razón. Lo que estaría vendiendo son seis años de correcciones, y eso no es un archivo que puedan copiar.",
         },
+        {
+          speaker: "dani",
+          text: "Can I ask the selfish question?",
+          es: "¿Puedo hacer la pregunta egoísta?",
+        },
+        {
+          speaker: "vale",
+          text: "You've been holding it since nine o'clock. Ask it.",
+          es: "La llevas guardando desde las nueve. Hazla.",
+        },
+        {
+          speaker: "dani",
+          text: "If you go, what happens to me? I'm good here because you correct me twice a day.",
+          es: "Si te vas, ¿qué pasa conmigo? Soy bueno aquí porque me corriges dos veces al día.",
+        },
+        {
+          speaker: "vale",
+          text: "You're good here because you fix things at seven in the morning when nobody's watching. I'm not going anywhere, but stop making me the reason you're capable.",
+          es: "Eres bueno aquí porque arreglas cosas a las siete de la mañana cuando nadie mira. No me voy a ninguna parte, pero deja de hacerme la razón de que seas capaz.",
+        },
       ],
       words: [
         { word: "cheap", es: "barato" },
