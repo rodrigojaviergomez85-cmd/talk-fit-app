@@ -374,6 +374,21 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           text: "Then plan for the bad connection first. Everything else is easier than that.",
           es: "Entonces planea primero para la mala conexión. Todo lo demás es más fácil que eso.",
         },
+        {
+          speaker: "camila",
+          text: "Dani asked me not to tell you something, so I'm telling you anyway.",
+          es: "Dani me pidió que no te contara algo, así que te lo cuento igual.",
+        },
+        {
+          speaker: "vale",
+          text: "Go on.",
+          es: "Sigue.",
+        },
+        {
+          speaker: "camila",
+          text: "He rewrote his answers four times last night. He's never wanted anything this publicly before.",
+          es: "Reescribió sus respuestas cuatro veces anoche. Nunca había querido algo así de abiertamente.",
+        },
       ],
       words: [
         { word: "follow-up", es: "repregunta, seguimiento" },
