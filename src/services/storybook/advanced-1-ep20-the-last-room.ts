@@ -330,8 +330,23 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "I want to oversee several branches one day, and after that, I want to be part of the decisions that shape how the company operates. I know that sounds ambitious. I'm saying it anyway.",
-          es: "Quiero llegar a supervisar varias sedes algún día y, después, quiero formar parte de las decisiones que definen cómo funciona la empresa. Sé que suena ambicioso. Aun así, lo digo.",
+          text: "I want to oversee several branches one day, and after that, I want to be part of the decisions that shape how the company operates.",
+          es: "Quiero llegar a supervisar varias sedes algún día y, después, quiero formar parte de las decisiones que definen cómo funciona la empresa.",
+        },
+        {
+          speaker: "barrett",
+          text: "Most people say that in private.",
+          es: "La mayoría dice eso en privado.",
+        },
+        {
+          speaker: "dani",
+          text: "I know it sounds ambitious. I'm saying it anyway, because on Friday I learned that waiting to be noticed isn't a plan.",
+          es: "Sé que suena ambicioso. Aun así lo digo, porque el viernes aprendí que esperar a que te noten no es un plan.",
+        },
+        {
+          speaker: "barrett",
+          text: "Then we'll see whether you can do it with an upset client on the line.",
+          es: "Entonces veremos si puedes hacerlo con un cliente molesto en la línea.",
         },
       ],
       words: [
