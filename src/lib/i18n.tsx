@@ -720,7 +720,6 @@ const DICT = {
     "We couldn't save this recording yet.",
   ],
   "account.title": ["Mi cuenta", "My Account"],
-  "account.profileTitle": ["MI PERFIL", "MY PROFILE"],
   "account.language": ["Idioma de la app", "App language"],
   "account.spanishSupport": ["Ayuda en español", "Spanish support"],
   "account.spanishSupportHelp": [
