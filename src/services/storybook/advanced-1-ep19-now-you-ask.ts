@@ -452,13 +452,23 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
         },
         {
           speaker: "barrett",
-          text: "And that's Dani.",
-          es: "Y ese es Dani.",
+          text: "And you already know which one that is.",
+          es: "Y ya sabes cuál de los dos es.",
         },
         {
           speaker: "vale",
-          text: "That's Dani. He just told a room full of people what he wants, which he'd never have done a year ago.",
-          es: "Ese es Dani. Acaba de decirle a una sala llena lo que quiere, algo que hace un año no habría hecho.",
+          text: "I do.",
+          es: "Sí.",
+        },
+        {
+          speaker: "barrett",
+          text: "You're not going to say it.",
+          es: "No lo vas a decir.",
+        },
+        {
+          speaker: "vale",
+          text: "Not until I've said it to them first. One of them rewrote his answers four times last night, and he deserves to hear it from my mouth, not from a rumour in the corridor.",
+          es: "No hasta habérselo dicho a ellos primero. Uno de los dos reescribió sus respuestas cuatro veces anoche, y merece oírlo de mi boca, no de un rumor en el pasillo.",
         },
         {
           speaker: "barrett",
