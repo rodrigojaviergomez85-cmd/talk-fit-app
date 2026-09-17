@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ChevronRight, LogOut } from "lucide-react";
+import { ChevronRight, ExternalLink, LogOut } from "lucide-react";
 import { ModuleHeading } from "@/components/fluency/ModuleHeading";
 import { clearPendingPlacement } from "@/services/preferences";
 import { AppShell } from "@/components/fluency/AppShell";
