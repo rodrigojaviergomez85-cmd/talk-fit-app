@@ -27,7 +27,6 @@ const DICT = {
   "nav.interviewLine2": ["ENTREVISTA", "SIMULATOR"],
   "nav.interviewAria": ["Simulador de entrevistas", "Interview simulator"],
 
-
   // AI Coach (chat)
   "aiCoach.title": ["AI Coach", "AI Coach"],
   "aiCoach.subtitle": [
@@ -71,20 +70,12 @@ const DICT = {
   ],
   "aiCoach.suggestionsTitle": ["Prueba con:", "Try asking:"],
   "aiCoach.suggestion1": ["¿Cuándo uso have o has?", "When do I use have or has?"],
-  "aiCoach.suggestion2": [
-    "¿Cómo digo «me tomó una hora» en inglés?",
-    "How do I say “it took me an hour” in English?",
-  ],
-  "aiCoach.suggestion3": [
-    "¿Cuál es la diferencia entre make y do?",
-    "What is the difference between make and do?",
-  ],
+  "aiCoach.suggestion2": ["¿Cómo digo «me tomó una hora» en inglés?", "How do I say “it took me an hour” in English?"],
+  "aiCoach.suggestion3": ["¿Cuál es la diferencia entre make y do?", "What is the difference between make and do?"],
 
   // Home quick menu
   "home.moreMenu": ["Ver ruta completa", "See full path"],
   "home.myProgress": ["Mi progreso y audios", "My progress and audio"],
-
-
 
   // Natural Method
   "natural.supportTitle": ["Tu cuaderno de vocabulario", "Your vocab notebook"],
@@ -92,7 +83,6 @@ const DICT = {
     "Tu cuaderno de vocabulario es tu mejor aliado. Aprendete de memoria los 100 verbos más comunes: no hay shortcut, es la base de todo. Meta: 10 verbos por día + 10 palabras nuevas sacadas de frases reales de tu serie, audiolibro o peli favorita. También domina los phrasal verbs e idioms del día a día. Y porfa, nada de estar viendo el cel con distracciones: apaga notificaciones y concéntrate, tu futuro vale mucho más. 💪🔥",
     "Your vocab notebook is your bestie. Memorize the 100 most common verbs: no shortcut, it's the foundation. Goal: 10 verbs a day + 10 new words from real phrases in your favorite show, audiobook, or movie. Also own the everyday phrasal verbs and idioms. And please, no getting distracted by your phone: turn off notifications and focus, your future is worth way more. 💪🔥",
   ],
-
 
   // Generic actions
   "action.start": ["EMPEZAR", "START"],
@@ -104,10 +94,7 @@ const DICT = {
   ],
   "dailyCap.backHome": ["VOLVER AL INICIO", "BACK HOME"],
   "dailyCap.indicator": ["PRÁCTICAS DE HOY", "PRACTICES TODAY"],
-  "dailyCap.remaining": [
-    "Te quedan {n} prácticas hoy.",
-    "You have {n} practices left today.",
-  ],
+  "dailyCap.remaining": ["Te quedan {n} prácticas hoy.", "You have {n} practices left today."],
   "dailyCap.remainingOne": ["Te queda 1 práctica hoy.", "You have 1 practice left today."],
   "repeatDay.done": ["✓ YA COMPLETASTE ESTE DÍA", "✓ YOU ALREADY COMPLETED THIS DAY"],
   "repeatDay.question": ["¿QUIERES PRACTICARLO OTRA VEZ?", "PRACTICE IT AGAIN?"],
@@ -248,10 +235,16 @@ const DICT = {
   "rep3.repeat": ["¿OTRA VEZ? · REPETIR SHADOWING", "AGAIN? · REPEAT SHADOWING"],
   "rep3.continue": ["CONTINUAR AL PASO 4", "CONTINUE TO STEP 4"],
   "rep3.listenOnce": ["Completá el audio una vez para continuar.", "Finish the audio once to continue."],
-  "rep3.noAi": ["🎧 Práctica sin IA · No hay evaluación automática.", "🎧 Practice without AI · No automatic evaluation."],
+  "rep3.noAi": [
+    "🎧 Práctica sin IA · No hay evaluación automática.",
+    "🎧 Practice without AI · No automatic evaluation.",
+  ],
   "rep4.title": ["HAZLO TUYO", "MAKE IT YOURS"],
   "rep4.instr": ["Responde con tu propia información.", "Answer with your own information."],
-  "rep4.noAi": ["🎙️ Práctica sin IA · No hay evaluación automática.", "🎙️ Practice without AI · No automatic evaluation."],
+  "rep4.noAi": [
+    "🎙️ Práctica sin IA · No hay evaluación automática.",
+    "🎙️ Practice without AI · No automatic evaluation.",
+  ],
   "rep4.done": ["¡BUEN TRABAJO, CAMPEÓN! 🔥", "NICE JOB, CHAMPION! 🔥"],
   "rep4.doneSub": ["Ya lo hiciste tuyo.", "You made it yours."],
   "rep4.continueRep5": ["CONTINUAR AL PASO 5", "CONTINUE TO STEP 5"],
@@ -262,10 +255,7 @@ const DICT = {
   ],
   "rep5.title": ["TU TURNO", "YOUR TURN"],
   "rep5.instr": ["Habla solo. Conecta 5 ideas o más.", "Speak alone. Connect 5 or more ideas."],
-  "rep5.takeSummary": [
-    "3 tomas obligatorias · 2 extras opcionales",
-    "3 required takes · 2 optional extras",
-  ],
+  "rep5.takeSummary": ["3 tomas obligatorias · 2 extras opcionales", "3 required takes · 2 optional extras"],
   "rep5.aiDisclaimer": [
     "La IA analizará tu Audio Final y puede cometer errores. Úsala como guía para mejorar.",
     "AI will analyze your Final Audio and may make mistakes. Use it as a guide to improve.",
@@ -294,10 +284,7 @@ const DICT = {
   "take.extra": ["EXTRA", "EXTRA"],
   "take.optional": ["OPCIONAL", "OPTIONAL"],
   "take.optionalShort": ["(opcional)", "(optional)"],
-  "take.optionalEmpty": [
-    "Toca grabar solo si quieres más práctica.",
-    "Tap record only if you want more practice.",
-  ],
+  "take.optionalEmpty": ["Toca grabar solo si quieres más práctica.", "Tap record only if you want more practice."],
   "take.ready": ["Listo para grabar", "Ready to record"],
   "take.time": ["TIEMPO", "TIME"],
   "take.sentences": ["ORACIONES", "SENTENCES"],
@@ -322,7 +309,6 @@ const DICT = {
   "power.title": ["POWER CHUNKS", "POWER CHUNKS"],
   "power.challenge": ["RETO", "CHALLENGE"],
   "power.toolbox": ["TU CAJA DE HERRAMIENTAS", "YOUR TOOLBOX"],
-
 
   // Status
   "status.current": ["ACTUAL", "CURRENT"],
@@ -380,10 +366,7 @@ const DICT = {
   ],
   "place.locked": ["BLOQUEADO", "LOCKED"],
   "place.sureTitle": ["¿ESTÁS SEGURO?", "ARE YOU SURE?"],
-  "place.sureBody": [
-    "¿Estás seguro de que tu nivel actual en E4CC es",
-    "Are you sure your current level at E4CC is",
-  ],
+  "place.sureBody": ["¿Estás seguro de que tu nivel actual en E4CC es", "Are you sure your current level at E4CC is"],
   "place.sureYes": ["SÍ, ESE ES MI NIVEL", "YES, THAT'S MY LEVEL"],
   "place.sureNo": ["ELEGIR OTRO", "CHOOSE ANOTHER"],
   "take.round": ["ROUND", "ROUND"],
@@ -409,7 +392,10 @@ const DICT = {
   "rep5.goalHigher": ["META: 8+ ORACIONES · MÁX 45 SEG", "GOAL: 8+ SENTENCES · MAX 45 SEC"],
   "take.answering": ["ESTÁS RESPONDIENDO", "YOU'RE ANSWERING"],
   "journey.title": ["🔥 60 DÍAS HABLANDO INGLÉS", "🔥 60 DAYS SPEAKING ENGLISH"],
-  "journey.sub": ["Escucha cómo empezó este camino y cómo hablas hoy.", "Hear how this journey started and how you speak today."],
+  "journey.sub": [
+    "Escucha cómo empezó este camino y cómo hablas hoy.",
+    "Hear how this journey started and how you speak today.",
+  ],
   "journey.start": ["ASÍ EMPEZÓ TU CAMINO", "HOW YOUR JOURNEY STARTED"],
   "journey.end": ["HOY", "TODAY"],
   "journey.days": ["DÍAS DE PRÁCTICA", "PRACTICE DAYS"],
@@ -436,7 +422,10 @@ const DICT = {
   "place.confirmCta": ["CAMBIAR NIVEL", "CHANGE LEVEL"],
   "place.saveFailed": ["No se pudo guardar tu nivel. Intenta de nuevo.", "We couldn't save your level. Try again."],
   "module.loadFailed": ["NO PUDIMOS CARGAR ESTE MÓDULO", "WE COULDN'T LOAD THIS MODULE"],
-  "module.loadFailedBody": ["Revisa tu conexión e inténtalo otra vez. Tu progreso está a salvo.", "Check your connection and try again. Your progress is safe."],
+  "module.loadFailedBody": [
+    "Revisa tu conexión e inténtalo otra vez. Tu progreso está a salvo.",
+    "Check your connection and try again. Your progress is safe.",
+  ],
   "module.retry": ["REINTENTAR", "RETRY"],
   "place.currentLevel": ["Tu nivel actual", "Your current level"],
   "prog.yourModule": ["TU MÓDULO ACTUAL", "YOUR CURRENT MODULE"],
@@ -538,8 +527,14 @@ const DICT = {
   "home.challengeProgress": ["{done} de 66 días completados", "{done} of 66 days completed"],
   "home.nextMilestoneIn": ["Te faltan {n} días para tu próximo logro.", "{n} days until your next achievement."],
   "home.challengeComplete": ["¡Completaste el reto de 66 días!", "You completed the 66-day challenge!"],
-  "home.practiceToday": ["Completa tu práctica de hoy y suma otro día.", "Complete today's practice and add another day."],
-  "home.keepPracticing": ["Sigue practicando para mantener viva tu constancia.", "Keep practicing to maintain your consistency."],
+  "home.practiceToday": [
+    "Completa tu práctica de hoy y suma otro día.",
+    "Complete today's practice and add another day.",
+  ],
+  "home.keepPracticing": [
+    "Sigue practicando para mantener viva tu constancia.",
+    "Keep practicing to maintain your consistency.",
+  ],
   "home.seeProgress": ["Ver progreso", "See progress"],
   "home.lockedTitle": ["MÓDULO BLOQUEADO", "MODULE LOCKED"],
   "home.lockedBody": [
@@ -548,7 +543,6 @@ const DICT = {
   ],
   "home.backToCurrent": ["IR A MI MÓDULO ACTUAL", "GO TO MY CURRENT MODULE"],
   "status.locked": ["🔒 BLOQUEADO", "🔒 LOCKED"],
-
 
   // Recordings
   "rec.title": ["Mis grabaciones", "My Recordings"],
@@ -589,7 +583,10 @@ const DICT = {
   "report.send": ["ENVIAR REPORTE", "SEND REPORT"],
   "report.sending": ["ENVIANDO…", "SENDING…"],
   "report.required": ["Escribe qué pasó antes de enviar.", "Write what happened before sending."],
-  "report.failed": ["No pudimos enviar tu reporte. Intenta de nuevo.", "We could not send your report. Please try again."],
+  "report.failed": [
+    "No pudimos enviar tu reporte. Intenta de nuevo.",
+    "We could not send your report. Please try again.",
+  ],
   "report.thanksTitle": ["¡GRACIAS!", "THANK YOU!"],
   "report.thanksBody": [
     "Recibimos tu reporte. Nos ayuda a mejorar la app para todos.",
@@ -639,7 +636,6 @@ const DICT = {
     "The audios expired. Your activity is still recorded.",
   ],
 
-
   // Progress
   "prog.thisWeek": ["Esta semana", "This week"],
   "prog.days": ["Días", "Days"],
@@ -673,7 +669,10 @@ const DICT = {
   "prog.lessThanMin": ["menos de 1 min", "less than 1 min"],
   "prog.listenAttempts": ["Escucha tus intentos", "Listen to your attempts"],
   "prog.compareSame": ["Compara tus audios de la misma práctica.", "Compare recordings from the same practice."],
-  "prog.compareAlt": ["Aún no tienes dos audios de la misma práctica. Mira tus grabaciones.", "You don't have two recordings from the same practice yet. See your recordings."],
+  "prog.compareAlt": [
+    "Aún no tienes dos audios de la misma práctica. Mira tus grabaciones.",
+    "You don't have two recordings from the same practice yet. See your recordings.",
+  ],
   "prog.firstAttempt": ["Primer intento", "First attempt"],
   "prog.latestAttempt": ["Más reciente", "Latest"],
   "prog.viewAudios": ["Ver mis audios", "See my recordings"],
@@ -715,10 +714,7 @@ const DICT = {
   "sync.ready": ["TUS DATOS ESTÁN LISTOS ✓", "YOUR DATA IS READY ✓"],
   "sync.failed": ["No pudimos sincronizar tu progreso.", "We couldn't sync your progress."],
   "sync.retry": ["REINTENTAR", "RETRY"],
-  "sync.takeFailed": [
-    "No pudimos guardar esta grabación todavía.",
-    "We couldn't save this recording yet.",
-  ],
+  "sync.takeFailed": ["No pudimos guardar esta grabación todavía.", "We couldn't save this recording yet."],
   "account.title": ["Mi cuenta", "My Account"],
   "account.language": ["Idioma de la app", "App language"],
   "account.spanishSupport": ["Ayuda en español", "Spanish support"],
@@ -740,16 +736,10 @@ const DICT = {
     "Your progress and recordings sync automatically.",
   ],
   "account.signOut": ["Cerrar sesión", "Sign out"],
-  "account.myPortal": ["Mi Portal", "My Portal"],
-  "account.myPortalBody": [
-    "Accede a tu portal de estudiante E4CC.",
-    "Access your E4CC student portal.",
-  ],
-  "account.myPortalCta": ["ABRIR MI PORTAL", "OPEN MY PORTAL"],
-  "account.myPortalDisabled": [
-    "Inicia sesión para abrir tu portal.",
-    "Sign in to open your portal.",
-  ],
+  "account.myPortal": ["PERFIL DE ESTUDIANTE", "STUDENT PROFILE"],
+  "account.myPortalBody": ["Accede a tu portal de estudiante E4CC.", "Access your E4CC student portal."],
+  "account.myPortalCta": ["ABRIR MI PERFIL DE ESTUDIANTE", "OPEN MY STUDENT PROFILE"],
+  "account.myPortalDisabled": ["Inicia sesión para abrir tu portal.", "Sign in to open your portal."],
   "account.saveProgress": ["Guarda tu progreso", "Save your progress"],
   "account.saveProgressBody": [
     "Opcional. Puedes practicar sin cuenta, pero al iniciar sesión tus grabaciones quedan protegidas.",
@@ -957,7 +947,10 @@ const DICT = {
   "tr.speakNow": ["¡HABLA AHORA!", "SPEAK NOW!"],
   "tr.passage": ["MENSAJE DEL CLIENTE", "CUSTOMER MESSAGE"],
   "tr.story": ["LA SITUACIÓN", "THE SITUATION"],
-  "tr.listenOnce": ["Escucha una vez. Luego cuéntalo con tus palabras.", "Listen once. Then retell it in your own words."],
+  "tr.listenOnce": [
+    "Escucha una vez. Luego cuéntalo con tus palabras.",
+    "Listen once. Then retell it in your own words.",
+  ],
   "tr.retellNow": ["AHORA CUÉNTALO", "NOW RETELL IT"],
   "tr.attempt": ["Intento", "Attempt"],
   "tr.saving": ["Guardando…", "Saving…"],
@@ -999,9 +992,7 @@ export function AppLangProvider({ children }: { children: ReactNode }) {
   const t = useCallback((key: TKey) => DICT[key][lang === "es" ? 0 : 1], [lang]);
 
   return (
-    <AppLangContext.Provider
-      value={{ lang, setLang: (next) => setPrefs({ appLanguage: next }), t, prefs, setPrefs }}
-    >
+    <AppLangContext.Provider value={{ lang, setLang: (next) => setPrefs({ appLanguage: next }), t, prefs, setPrefs }}>
       {children}
     </AppLangContext.Provider>
   );
