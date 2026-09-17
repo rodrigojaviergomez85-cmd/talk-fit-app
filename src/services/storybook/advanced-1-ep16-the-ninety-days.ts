@@ -235,8 +235,8 @@ export const ADVANCED1_EP16_THE_NINETY_DAYS: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "Your turn. Past, present, future, in ninety seconds. Don't apologise for what you haven't done yet; your studies, your projects and your English are experience.",
-          es: "Tu turno. Pasado, presente, futuro, en noventa segundos. No te disculpes por lo que aún no has hecho; tus estudios, tus proyectos y tu inglés son experiencia.",
+          text: "Now it's just you and me, so your turn. Past, present, future, in ninety seconds. Don't apologise for what you haven't done yet; your studies, your projects and your English are experience.",
+          es: "Ahora somos solo tú y yo, así que es tu turno. Pasado, presente, futuro, en noventa segundos. No te disculpes por lo que aún no has hecho; tus estudios, tus proyectos y tu inglés son experiencia.",
         },
         {
           speaker: "reed",
