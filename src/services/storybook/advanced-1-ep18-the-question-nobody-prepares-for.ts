@@ -182,8 +182,28 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
       lines: [
         {
           speaker: "vale",
-          text: "Here's my honest answer. I'd consider any role that puts the method in front of more people, so I'm not going to pretend the question offends me. What I wouldn't do is hand over a method I still teach to a company that would treat it as content, because the moment nobody corrects a student in week five, the whole thing stops working. So the question I'd ask you is the reverse of yours: would Crown buy the classroom, or only the slides? If it's the classroom, we should talk properly. If it's the slides, you'd be paying a lot for a file you could write yourselves.",
-          es: "Esta es mi respuesta honesta. Consideraría cualquier puesto que ponga el método frente a más gente, así que no voy a fingir que la pregunta me ofende. Lo que no haría es entregar un método que todavía enseño a una empresa que lo trataría como contenido, porque en el momento en que nadie corrige a un estudiante en la semana cinco, todo deja de funcionar. Así que mi pregunta es la inversa de la tuya: ¿Crown compraría el salón o solo las diapositivas? Si es el salón, deberíamos hablar en serio. Si son las diapositivas, estarían pagando mucho por un archivo que ustedes mismos podrían escribir.",
+          text: "Here's my honest answer. I'd consider any role that puts the method in front of more people, so I'm not going to pretend the question offends me. What I wouldn't do is hand over a method I still teach to a company that would treat it as content, because the moment nobody corrects a student in week five, the whole thing stops working.",
+          es: "Esta es mi respuesta honesta. Consideraría cualquier puesto que ponga el método frente a más gente, así que no voy a fingir que la pregunta me ofende. Lo que no haría es entregar un método que todavía enseño a una empresa que lo trataría como contenido, porque en el momento en que nadie corrige a un estudiante en la semana cinco, todo deja de funcionar.",
+        },
+        {
+          speaker: "keller",
+          text: "You assume we'd remove the teacher.",
+          es: "Asumes que quitaríamos a la maestra.",
+        },
+        {
+          speaker: "vale",
+          text: "Every buyer says they won't, and then the budget meeting arrives.",
+          es: "Todo comprador dice que no lo hará, y luego llega la reunión de presupuesto.",
+        },
+        {
+          speaker: "keller",
+          text: "Granted. So what's your question for me?",
+          es: "Concedido. Entonces, ¿cuál es tu pregunta para mí?",
+        },
+        {
+          speaker: "vale",
+          text: "The reverse of yours: would Crown buy the classroom, or only the slides? If it's the classroom, we should talk properly. If it's the slides, you'd be paying a lot for a file you could write yourselves.",
+          es: "La inversa de la tuya: ¿Crown compraría el salón o solo las diapositivas? Si es el salón, deberíamos hablar en serio. Si son las diapositivas, estarían pagando mucho por un archivo que ustedes mismos podrían escribir.",
         },
       ],
       words: [
