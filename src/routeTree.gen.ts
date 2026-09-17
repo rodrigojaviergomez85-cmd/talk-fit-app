@@ -35,6 +35,7 @@ import { Route as AdminStorageReportRouteImport } from './routes/admin.storage-r
 import { Route as ApiAiCoachRouteImport } from './routes/api/ai-coach'
 import { Route as ApiFinalAudioCoachRouteImport } from './routes/api/final-audio-coach'
 import { Route as ApiFinalAudioCoachRetakeRouteImport } from './routes/api/final-audio-coach-retake'
+import { Route as ApiLiveCoachRouteImport } from './routes/api/live-coach'
 import { Route as ApiRep2CorrectionRouteImport } from './routes/api/rep2-correction'
 import { Route as ApiSentenceCountRouteImport } from './routes/api/sentence-count'
 import { Route as ApiStorySayCheckRouteImport } from './routes/api/story-say-check'
@@ -199,6 +200,11 @@ const ApiFinalAudioCoachRetakeRoute =
     path: '/api/final-audio-coach-retake',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiLiveCoachRoute = ApiLiveCoachRouteImport.update({
+  id: '/api/live-coach',
+  path: '/api/live-coach',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiRep2CorrectionRoute = ApiRep2CorrectionRouteImport.update({
   id: '/api/rep2-correction',
   path: '/api/rep2-correction',
@@ -396,6 +402,7 @@ export interface FileRoutesByFullPath {
   '/api/ai-coach': typeof ApiAiCoachRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
+  '/api/live-coach': typeof ApiLiveCoachRoute
   '/api/rep2-correction': typeof ApiRep2CorrectionRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/story-say-check': typeof ApiStorySayCheckRoute
@@ -456,6 +463,7 @@ export interface FileRoutesByTo {
   '/api/ai-coach': typeof ApiAiCoachRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
+  '/api/live-coach': typeof ApiLiveCoachRoute
   '/api/rep2-correction': typeof ApiRep2CorrectionRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/story-say-check': typeof ApiStorySayCheckRoute
@@ -516,6 +524,7 @@ export interface FileRoutesById {
   '/api/ai-coach': typeof ApiAiCoachRoute
   '/api/final-audio-coach': typeof ApiFinalAudioCoachRoute
   '/api/final-audio-coach-retake': typeof ApiFinalAudioCoachRetakeRoute
+  '/api/live-coach': typeof ApiLiveCoachRoute
   '/api/rep2-correction': typeof ApiRep2CorrectionRoute
   '/api/sentence-count': typeof ApiSentenceCountRoute
   '/api/story-say-check': typeof ApiStorySayCheckRoute
@@ -578,6 +587,7 @@ export interface FileRouteTypes {
     | '/api/ai-coach'
     | '/api/final-audio-coach'
     | '/api/final-audio-coach-retake'
+    | '/api/live-coach'
     | '/api/rep2-correction'
     | '/api/sentence-count'
     | '/api/story-say-check'
@@ -638,6 +648,7 @@ export interface FileRouteTypes {
     | '/api/ai-coach'
     | '/api/final-audio-coach'
     | '/api/final-audio-coach-retake'
+    | '/api/live-coach'
     | '/api/rep2-correction'
     | '/api/sentence-count'
     | '/api/story-say-check'
@@ -697,6 +708,7 @@ export interface FileRouteTypes {
     | '/api/ai-coach'
     | '/api/final-audio-coach'
     | '/api/final-audio-coach-retake'
+    | '/api/live-coach'
     | '/api/rep2-correction'
     | '/api/sentence-count'
     | '/api/story-say-check'
@@ -758,6 +770,7 @@ export interface RootRouteChildren {
   ApiAiCoachRoute: typeof ApiAiCoachRoute
   ApiFinalAudioCoachRoute: typeof ApiFinalAudioCoachRoute
   ApiFinalAudioCoachRetakeRoute: typeof ApiFinalAudioCoachRetakeRoute
+  ApiLiveCoachRoute: typeof ApiLiveCoachRoute
   ApiRep2CorrectionRoute: typeof ApiRep2CorrectionRoute
   ApiSentenceCountRoute: typeof ApiSentenceCountRoute
   ApiStorySayCheckRoute: typeof ApiStorySayCheckRoute
@@ -970,6 +983,13 @@ declare module '@tanstack/react-router' {
       path: '/api/final-audio-coach-retake'
       fullPath: '/api/final-audio-coach-retake'
       preLoaderRoute: typeof ApiFinalAudioCoachRetakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/live-coach': {
+      id: '/api/live-coach'
+      path: '/api/live-coach'
+      fullPath: '/api/live-coach'
+      preLoaderRoute: typeof ApiLiveCoachRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/rep2-correction': {
@@ -1243,6 +1263,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAiCoachRoute: ApiAiCoachRoute,
   ApiFinalAudioCoachRoute: ApiFinalAudioCoachRoute,
   ApiFinalAudioCoachRetakeRoute: ApiFinalAudioCoachRetakeRoute,
+  ApiLiveCoachRoute: ApiLiveCoachRoute,
   ApiRep2CorrectionRoute: ApiRep2CorrectionRoute,
   ApiSentenceCountRoute: ApiSentenceCountRoute,
   ApiStorySayCheckRoute: ApiStorySayCheckRoute,
