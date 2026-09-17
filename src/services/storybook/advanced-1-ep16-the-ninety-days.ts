@@ -227,16 +227,16 @@ export const ADVANCED1_EP16_THE_NINETY_DAYS: StorybookEpisode = {
     {
       id: "s7",
       image: s7,
-      imageAlt: "Vale turns to the class while Reed's message appears on her screen.",
-      text: "Your turn, and Reed's message.",
-      es: "Tu turno, y el mensaje de Reed.",
+      imageAlt: "Vale speaks straight to you while Reed's message appears on her screen.",
+      text: "Vale coaches you, and Reed writes.",
+      es: "Vale te entrena a ti, y Reed escribe.",
       speaker: "vale",
       cast: ["vale", "reed"],
       lines: [
         {
           speaker: "vale",
-          text: "Your turn. Past, present, future, in ninety seconds. Don't apologise for what you haven't done yet; your studies, your projects and your English are experience.",
-          es: "Tu turno. Pasado, presente, futuro, en noventa segundos. No te disculpes por lo que aún no has hecho; tus estudios, tus proyectos y tu inglés son experiencia.",
+          text: "Now it's just you and me, so your turn. Past, present, future, in ninety seconds. Don't apologise for what you haven't done yet; your studies, your projects and your English are experience.",
+          es: "Ahora somos solo tú y yo, así que es tu turno. Pasado, presente, futuro, en noventa segundos. No te disculpes por lo que aún no has hecho; tus estudios, tus proyectos y tu inglés son experiencia.",
         },
         {
           speaker: "reed",
