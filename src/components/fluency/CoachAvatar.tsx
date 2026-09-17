@@ -19,19 +19,30 @@ export function CoachAvatar({ state, level = 0 }: { state: CoachState; level?: n
   const [mouthShape, setMouthShape] = useState<MouthShape>(0);
   const shapeRef = useRef<MouthShape>(0);
   const lastChangeRef = useRef(0);
+  const levelHistoryRef = useRef<number[]>([]);
 
   useEffect(() => {
     if (state !== "speaking") {
       shapeRef.current = 0;
+      levelHistoryRef.current = [];
       setMouthShape(0);
       return;
     }
 
+    // Short moving average (~3 samples) so the mouth doesn't flicker
+    // between shapes on fast syllables.
+    const history = levelHistoryRef.current;
+    history.push(level);
+    if (history.length > 3) history.shift();
+    const smoothLevel = history.reduce((sum, value) => sum + value, 0) / history.length;
+
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let next: MouthShape = 0;
-    if (level > 0.55) next = 3;
-    else if (level > 0.30) next = 2;
-    else if (level > 0.08) next = 1;
+    // The fully-open shape is reserved for real volume peaks; most speech
+    // stays in the small/medium shapes so the mouth never looks unnaturally wide.
+    if (smoothLevel > 0.78) next = 3;
+    else if (smoothLevel > 0.38) next = 2;
+    else if (smoothLevel > 0.10) next = 1;
 
     const now = performance.now();
     const minimumHold = reduceMotion ? 170 : next === 0 ? 85 : 65;
