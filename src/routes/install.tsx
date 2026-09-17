@@ -146,6 +146,13 @@ const STRINGS = {
     copyLink: "COPY LINK",
     copied: "COPIED!",
     continueBrowser: "CONTINUE IN BROWSER",
+    apkTitle: "SEEING “UNSAFE APP BLOCKED”?",
+    apkIntro:
+      "That warning appears when Fluency App was installed from a file shared on WhatsApp. That file no longer works and Android blocks it. Install from the browser instead:",
+    apkStep1: "Press and hold the old Fluency App icon and tap “Uninstall”.",
+    apkStep2: "Open Chrome and go to fluencye4cc.app/install",
+    apkStep3: "Install from this same page. No file download needed.",
+    apkNote: "It is the same app, with your account and your progress. Nothing is lost.",
   },
 } as const;
 
