@@ -189,7 +189,7 @@ function AiCoachPage() {
             ...(practiceAllowed
               ? ([["practice", lang === "en" ? "Practice" : "Práctica"]] as const)
               : []),
-          ] as ReadonlyArray<readonly [string, string]>
+          ] as ReadonlyArray<readonly ["write" | "live" | "practice", string]>
         ).map(([value, label]) => (
           <button
             key={value}
