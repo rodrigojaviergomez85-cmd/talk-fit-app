@@ -1,7 +1,6 @@
-- [x] Corregir portada e imágenes de Sharks 20 según cada escena.
-- [x] Auditar reparto y personajes contra Sharks 10–15.
-- [x] Normalizar imágenes y verificar episodio móvil/pruebas.
-- [ ] Advanced 1–3 plan de calidad: 20 ideas mes 1 aprobadas; guiones ep1–5 en revisión; luego 6–10, 11–15, 16–20, arte, auditoría, mes 2 y 3.
-- [x] Advanced 1 Episodio 1 (piloto): arte realista cinematográfico V1, 768x768 <250KB, guion aprobado, registrar temporada 9, pruebas y revisión móvil. Solo este episodio.
-- [x] Correcciones piloto Advanced 1 Ep1: frase de Vale con credibilidad de maestra, tarjeta de mentalidad actualizada, Reed fotorrealista consistente en s2/s3/s6/s7, glosario (polish), pruebas y verificación móvil.
-- [x] Calendario diario de actividad en /admin/metrics (7 días en cuadros, gráfica 7/15/30/mes, desglose por día)
+# Roadmap
+
+- [ ] Correct canonical artwork for Advanced 1 Episodes 13–19 using Episodes 1–5 as references
+- [ ] Optimize corrected images for mobile
+- [ ] Run cast, asset, and storybook tests
+- [ ] Verify Episodes 13–19 in the mobile story player
