@@ -322,8 +322,28 @@ export const ADVANCED1_EP16_THE_NINETY_DAYS: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "It's in. What I've sent them is not a promise; it's a set of dates with my name next to each one. If the numbers move, they keep the method and they keep me. If the numbers don't move by day ninety, they don't need to fire me — I'll bring the evidence to the meeting myself and tell them what I got wrong. That's the difference between someone who wants a contract and someone who wants the work to survive.",
-          es: "Está enviado. Lo que les mandé no es una promesa; es un conjunto de fechas con mi nombre al lado de cada una. Si los números se mueven, se quedan con el método y conmigo. Si no se mueven para el día noventa, no tienen que despedirme: yo misma llevaré la evidencia a la reunión y diré en qué me equivoqué. Esa es la diferencia entre alguien que quiere un contrato y alguien que quiere que el trabajo sobreviva.",
+          text: "It's in. What I've sent them is not a promise; it's a set of dates with my name next to each one.",
+          es: "Está enviado. Lo que les mandé no es una promesa; es un conjunto de fechas con mi nombre al lado de cada una.",
+        },
+        {
+          speaker: "dani",
+          text: "And if the numbers don't move by day ninety?",
+          es: "¿Y si los números no se mueven para el día noventa?",
+        },
+        {
+          speaker: "vale",
+          text: "Then they don't need to fire me. I'll bring the evidence to that meeting myself and tell them exactly what I got wrong.",
+          es: "Entonces no tienen que despedirme. Yo misma llevaré la evidencia a esa reunión y les diré exactamente en qué me equivoqué.",
+        },
+        {
+          speaker: "dani",
+          text: "Most people would have left that line out of the plan.",
+          es: "La mayoría habría dejado esa línea fuera del plan.",
+        },
+        {
+          speaker: "vale",
+          text: "That's the difference between wanting a contract and wanting the work to survive.",
+          es: "Esa es la diferencia entre querer un contrato y querer que el trabajo sobreviva.",
         },
         {
           speaker: "barrett",
