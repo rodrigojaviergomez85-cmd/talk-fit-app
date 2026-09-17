@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Loader2, MessageCircle, Send } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { LiveCoach } from "@/components/fluency/LiveCoach";
 import { useAppLang } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { getFreshSession } from "@/lib/session-keeper";
@@ -53,6 +54,7 @@ function AiCoachPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [quota, setQuota] = useState<Quota | null>(null);
+  const [tab, setTab] = useState<"write" | "live">("write");
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
@@ -162,7 +164,31 @@ function AiCoachPage() {
 
   return (
     <AppShell title={t("aiCoach.title")} subtitle={t("aiCoach.subtitle")} hideSync>
-      <div className="space-y-4">
+      <div className="mb-4 grid grid-cols-2 gap-2 rounded-2xl border border-border bg-card p-1">
+        {(
+          [
+            ["write", lang === "en" ? "Write" : "Escribir"],
+            ["live", lang === "en" ? "Talk live" : "Hablar en vivo"],
+          ] as const
+        ).map(([value, label]) => (
+          <button
+            key={value}
+            type="button"
+            onClick={() => setTab(value)}
+            className={`min-h-[44px] rounded-xl px-3 text-[13px] font-extrabold uppercase tracking-[0.12em] transition-colors ${
+              tab === value
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:bg-secondary"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {tab === "live" ? <LiveCoach /> : null}
+
+      <div className={tab === "live" ? "hidden" : "space-y-4"}>
         {counter ? (
           <p className="text-center text-[12px] font-semibold text-muted-foreground">{counter}</p>
         ) : null}
