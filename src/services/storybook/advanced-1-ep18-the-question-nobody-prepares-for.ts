@@ -217,7 +217,7 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
     {
       id: "s7",
       image: s7,
-      imageAlt: "Vale explains the four-move rule to her class.",
+      imageAlt: "Vale explains the four-move rule straight to you, with Dani listening.",
       text: "The rule, and your turn.",
       es: "La regla, y tu turno.",
       speaker: "vale",
