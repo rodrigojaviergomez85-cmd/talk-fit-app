@@ -328,6 +328,21 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           text: "That I've read his email twice and I'm not going to defend anything until he's told me what he needs by Friday.",
           es: "Que leí su correo dos veces y no voy a defender nada hasta que me diga qué necesita para el viernes.",
         },
+        {
+          speaker: "barrett",
+          text: "And if he needs something you can't give him?",
+          es: "¿Y si necesita algo que no le puedes dar?",
+        },
+        {
+          speaker: "lidia",
+          text: "Then I say so on the call, not in an email three days later.",
+          es: "Entonces lo digo en la llamada, no en un correo tres días después.",
+        },
+        {
+          speaker: "vale",
+          text: "Thank you both. Barrett, you can stop pretending you're only watching.",
+          es: "Gracias a los dos. Barrett, ya puedes dejar de fingir que solo observas.",
+        },
       ],
       words: [
         { word: "angry", es: "molesto, enojado" },
