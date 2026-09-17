@@ -740,6 +740,16 @@ const DICT = {
     "Your progress and recordings sync automatically.",
   ],
   "account.signOut": ["Cerrar sesión", "Sign out"],
+  "account.myPortal": ["Mi Portal", "My Portal"],
+  "account.myPortalBody": [
+    "Accede a tu portal de estudiante E4CC.",
+    "Access your E4CC student portal.",
+  ],
+  "account.myPortalCta": ["ABRIR MI PORTAL", "OPEN MY PORTAL"],
+  "account.myPortalDisabled": [
+    "Inicia sesión para abrir tu portal.",
+    "Sign in to open your portal.",
+  ],
   "account.saveProgress": ["Guarda tu progreso", "Save your progress"],
   "account.saveProgressBody": [
     "Opcional. Puedes practicar sin cuenta, pero al iniciar sesión tus grabaciones quedan protegidas.",
