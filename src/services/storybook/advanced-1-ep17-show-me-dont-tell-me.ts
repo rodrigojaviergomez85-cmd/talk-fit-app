@@ -155,6 +155,16 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           text: "Attrition went from twenty-two percent to seven, and it has stayed there for three cohorts.",
           es: "La deserción pasó de veintidós por ciento a siete, y se ha mantenido tres cohortes.",
         },
+        {
+          speaker: "barrett",
+          text: "Seven. Measured by whom?",
+          es: "Siete. ¿Medido por quién?",
+        },
+        {
+          speaker: "lidia",
+          text: "By the client's own attendance report, not by mine. If they had counted differently, the number would have been theirs to defend.",
+          es: "Por el reporte de asistencia del propio cliente, no por el mío. Si hubieran contado distinto, el número habría sido de ellos defenderlo.",
+        },
       ],
       words: [
         { word: "rebuilt", es: "reconstruí" },
@@ -181,6 +191,16 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           text: "Then judge the part that scales: I wrote what I did down, and four teachers repeated it without me in the room.",
           es: "Entonces juzga la parte que escala: escribí lo que hice, y cuatro maestros lo repitieron sin mí en el salón.",
         },
+        {
+          speaker: "barrett",
+          text: "Four teachers in one building is not eleven teachers in three countries.",
+          es: "Cuatro maestros en un edificio no son once maestros en tres países.",
+        },
+        {
+          speaker: "lidia",
+          text: "No, it isn't. But nothing travels across a border unless it has been written down first, and that part I've already done.",
+          es: "No, no lo son. Pero nada cruza una frontera si no se ha escrito antes, y esa parte ya la hice.",
+        },
       ],
       words: [
         { word: "point out", es: "señalar" },
@@ -198,9 +218,24 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
       cast: ["dani", "barrett"],
       lines: [
         {
+          speaker: "barrett",
+          text: "Your turn, Dani. Same rule: a situation, an action, a number.",
+          es: "Tu turno, Dani. La misma regla: una situación, una acción, un número.",
+        },
+        {
           speaker: "dani",
           text: "My evidence isn't a classroom, it's the week that nearly broke us. Northline moved two hundred people onto a new schedule with nine days' notice, and if we had said no, we would have lost the account that same month. I rebuilt the timetable in four days, negotiated three teachers onto evening hours instead of hiring strangers, and kept the cost increase at six percent. Nothing about that was heroic; it was planned badly by somebody else and rescued on paper by me. What it proves is that I can walk the talk when the week is ugly.",
           es: "Mi evidencia no es un salón, es la semana que casi nos quiebra. Northline movió a doscientas personas a un horario nuevo con nueve días de aviso, y si hubiéramos dicho que no, habríamos perdido la cuenta ese mismo mes. Reconstruí el horario en cuatro días, negocié tres maestros a horas de la noche en vez de contratar desconocidos, y mantuve el aumento de costo en seis por ciento. Nada de eso fue heroico; alguien más lo planeó mal y yo lo rescaté en papel. Lo que demuestra es que cumplo lo que digo cuando la semana es fea.",
+        },
+        {
+          speaker: "barrett",
+          text: "You said rescued on paper. What does that mean in practice?",
+          es: "Dijiste rescatado en papel. ¿Qué significa eso en la práctica?",
+        },
+        {
+          speaker: "dani",
+          text: "It means the students never noticed. The only people who had a bad week were the three of us who fixed it.",
+          es: "Significa que los estudiantes nunca lo notaron. Los únicos que tuvimos una mala semana fuimos los tres que lo arreglamos.",
         },
       ],
       words: [
@@ -227,6 +262,16 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           speaker: "dani",
           text: "We did, not the client. I'd rather explain a small loss than a broken promise.",
           es: "Nosotros, no el cliente. Prefiero explicar una pérdida pequeña que una promesa rota.",
+        },
+        {
+          speaker: "barrett",
+          text: "And if the same week happened in Guatemala, with nobody you know on the ground?",
+          es: "¿Y si la misma semana pasara en Guatemala, sin nadie conocido en el terreno?",
+        },
+        {
+          speaker: "dani",
+          text: "Then I'd lose the four days I saved here, so I'd build the reserve hours into the contract before anyone signs it.",
+          es: "Entonces perdería los cuatro días que gané aquí, así que metería las horas de reserva en el contrato antes de que alguien lo firme.",
         },
       ],
       words: [
