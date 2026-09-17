@@ -12,6 +12,7 @@ import { PracticeSessionService, setSessionScope } from "@/services/practice-ses
 import { setPreferencesScope } from "@/services/preferences";
 import { useAppLang } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
+import { useAppSettings } from "@/hooks/use-app-settings";
 import { CloudSync } from "@/services/cloud-sync";
 import { cn } from "@/lib/utils";
 
