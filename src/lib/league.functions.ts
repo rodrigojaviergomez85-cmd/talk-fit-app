@@ -122,6 +122,27 @@ export const getCohortLeagueSummary = createServerFn({ method: "POST" })
     return shapeSummary(raw as RawSummary | null, data.moduleId, data.week);
   });
 
+/**
+ * "Cambiar mi nivel": leaves the running week of the previous cohort (those
+ * points are intentionally dropped) and enrols the learner right away in the
+ * chosen module + curriculum week, so the board shows them with 0 points.
+ */
+export const switchLeagueLevel = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: { moduleId: string; curriculumWeek: number }) => ({
+    moduleId: String(input.moduleId ?? "").slice(0, 60),
+    curriculumWeek: Math.max(1, Math.min(4, Number(input.curriculumWeek ?? 1))),
+  }))
+  .handler(async ({ data, context }): Promise<{ ok: boolean; competitionId: string | null }> => {
+    if (!isLeagueCohort(data.moduleId, data.curriculumWeek)) return { ok: false, competitionId: null };
+    const { data: raw, error } = await context.supabase.rpc("league_switch_level", {
+      _module_id: data.moduleId,
+      _curriculum_week: data.curriculumWeek,
+    });
+    if (error) return { ok: false, competitionId: null };
+    return { ok: true, competitionId: (raw as string | null) ?? null };
+  });
+
 /** Every weekly competition the learner belongs to, newest first. */
 export const getMyLeagueHistory = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
