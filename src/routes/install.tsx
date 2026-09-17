@@ -451,6 +451,30 @@ function InstallPage() {
           </>
         )}
 
+        {env !== null && env !== "installed" && !justInstalled && !env.startsWith("ios") ? (
+          <section className="w-full rounded-2xl border border-border bg-card p-4 text-left shadow-card">
+            <div className="mb-2 flex items-start gap-2">
+              <ShieldAlert className="mt-0.5 size-5 shrink-0 text-primary" />
+              <h2 className="text-sm font-extrabold uppercase leading-5 tracking-wide text-foreground">{s.apkTitle}</h2>
+            </div>
+            <p className="mb-3 text-sm leading-6 text-muted-foreground">{s.apkIntro}</p>
+            <div className="flex w-full flex-col gap-2.5">
+              <StepRow n={1}>{s.apkStep1}</StepRow>
+              <StepRow n={2}>{s.apkStep2}</StepRow>
+              <StepRow n={3}>{s.apkStep3}</StepRow>
+            </div>
+            <p className="mt-3 text-xs font-semibold text-muted-foreground">{s.apkNote}</p>
+            <button
+              type="button"
+              onClick={copy}
+              className="mt-3 flex min-h-11 w-full items-center justify-center gap-2 rounded-2xl border border-border px-4 text-xs font-bold uppercase tracking-wide text-foreground"
+            >
+              {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+              {copied ? s.copied : s.copyLink}
+            </button>
+          </section>
+        ) : null}
+
         {/* Secondary actions */}
         <div className="mt-auto flex w-full flex-col items-center gap-4 pt-8">
           {env !== "desktop" && env !== "installed" && !justInstalled ? (
