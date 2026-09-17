@@ -11,3 +11,5 @@
 - [x] Verify Episode 2 artwork format, mobile weight, and story-player loading
 - [x] Audit and correct canonical artwork for Advanced 1 Episode 3 using Episode 1 as the visual authority
 - [x] Verify Episode 3 cast, image format, mobile weight, and story-player loading
+- [ ] Audit and correct canonical artwork for Advanced 1 Episode 4 using Episode 1 as the visual authority
+- [ ] Verify Episode 4 cast, image format, mobile weight, and story-player loading
