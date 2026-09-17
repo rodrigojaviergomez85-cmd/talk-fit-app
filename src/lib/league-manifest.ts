@@ -416,7 +416,13 @@ export const LEAGUE_COHORTS: LeagueCohort[] = [
   {
     moduleId: "advanced-1",
     curriculumWeek: 4,
-    stories: [],
+    stories: [
+      { day: 16, episodeId: "advanced1-ep16-the-ninety-days", minSceneIndex: 9 },
+      { day: 17, episodeId: "advanced1-ep17-show-me-dont-tell-me", minSceneIndex: 9 },
+      { day: 18, episodeId: "advanced1-ep18-the-question-nobody-prepares-for", minSceneIndex: 9 },
+      { day: 19, episodeId: "advanced1-ep19-now-you-ask", minSceneIndex: 9 },
+      { day: 20, episodeId: "advanced1-ep20-the-last-room", minSceneIndex: 9 },
+    ],
   },
   {
     moduleId: "advanced-2",
