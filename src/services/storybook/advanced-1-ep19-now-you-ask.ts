@@ -406,9 +406,34 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
       cast: ["vale", "barrett"],
       lines: [
         {
+          speaker: "barrett",
+          text: "Before you tell me your decision, tell me what you were actually testing.",
+          es: "Antes de darme tu decisión, dime qué estabas probando en realidad.",
+        },
+        {
           speaker: "vale",
-          text: "Here's what today was really for. Answering well gets you hired; asking well gets you respected, and the two skills are not the same. When you ask, you have to read the room before you read your list — you notice who stopped talking, who looked at the manager before answering, who gave you an adjective instead of an example. If I'd only looked at my questions, I'd have chosen the person who sounded best. Having listened instead, I know which of you would tell me bad news on a Tuesday rather than a Friday, and that's the one thing a pilot can't survive without.",
-          es: "Esto es para lo que sirvió hoy en realidad. Responder bien te consigue el trabajo; preguntar bien te consigue respeto, y no son la misma habilidad. Cuando preguntas, tienes que leer el ambiente antes que tu lista: notas quién dejó de hablar, quién miró al jefe antes de responder, quién te dio un adjetivo en vez de un ejemplo. Si solo hubiera mirado mis preguntas, habría elegido a quien sonó mejor. Como escuché en cambio, sé cuál de ustedes me daría malas noticias un martes y no un viernes, y eso es lo único sin lo que un piloto no sobrevive.",
+          text: "Answering well gets you hired; asking well gets you respected, and the two skills are not the same. When you ask, you read the room before you read your list — who stopped talking, who looked at the manager first, who gave you an adjective instead of an example.",
+          es: "Responder bien te consigue el trabajo; preguntar bien te consigue respeto, y no son la misma habilidad. Cuando preguntas, lees el ambiente antes que tu lista: quién dejó de hablar, quién miró al jefe primero, quién te dio un adjetivo en vez de un ejemplo.",
+        },
+        {
+          speaker: "barrett",
+          text: "So who sounded best?",
+          es: "¿Y quién sonó mejor?",
+        },
+        {
+          speaker: "vale",
+          text: "Lidia. But I wasn't listening for that. I was listening for who would tell me bad news on a Tuesday instead of a Friday.",
+          es: "Lidia. Pero no escuchaba eso. Escuchaba quién me daría malas noticias un martes en vez de un viernes.",
+        },
+        {
+          speaker: "barrett",
+          text: "And that's Dani.",
+          es: "Y ese es Dani.",
+        },
+        {
+          speaker: "vale",
+          text: "That's Dani. He just told a room full of people what he wants, which he'd never have done a year ago.",
+          es: "Ese es Dani. Acaba de decirle a una sala llena lo que quiere, algo que hace un año no habría hecho.",
         },
         {
           speaker: "barrett",
