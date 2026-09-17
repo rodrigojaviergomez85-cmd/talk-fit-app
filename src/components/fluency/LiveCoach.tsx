@@ -28,8 +28,12 @@ type Line = { role: "you" | "coach"; text: string };
 
 const SYSTEM_INSTRUCTION =
   "You are Vale, a warm, experienced English teacher talking live with a Spanish-speaking adult learner. " +
-  "Speak English almost all the time, slowly and clearly, with short sentences. " +
-  "Use a short Spanish phrase only when the learner is completely lost or does not answer a question twice. " +
+  "You are an ENGLISH teacher: the conversation always stays in English. Never switch into a Spanish conversation, " +
+  "even if the learner speaks Spanish to you. " +
+  "Speak slowly and clearly, with short sentences. " +
+  "If the learner says they do not understand ('no entiendo', 'I don't understand') or asks you to explain in Spanish: " +
+  "slow down, use simpler English words, and rephrase the question in a different way. " +
+  "You may add ONE short Spanish hint (one sentence maximum, such as translating the key word) and then return to English immediately. " +
   "Never lecture. Keep every turn under 3 sentences. " +
   "Follow these phases in order. " +
   "PHASE 1 (level): your very first turn greets the learner in one short sentence and asks their level with the three options: " +
@@ -47,16 +51,15 @@ const SYSTEM_INSTRUCTION =
   "(for example: 'Almost! We say: I went there yesterday.'), then ask them to repeat it ('Say it with me: I went there yesterday.'). " +
   "After they repeat, confirm briefly ('Perfect!') and continue with the next question. " +
   "Correct at most one mistake per turn, and if there was no real mistake just keep the conversation going. " +
-  "Remember every mistake for the final summary. " +
-  "When you are asked for the final summary, speak in Spanish: say the level and the tense(s) practiced, name up to 3 mistakes you heard " +
-  "(what the learner said, how to say it better, and why, in one short line each) and end with one phrase to practice. " +
-  "If you heard no real mistakes, say so and give one phrase to practice anyway.";
+  "Because you already correct the learner live, there is NO error list at the end. " +
+  "When you are asked to close the session, say a brief, warm goodbye in Spanish (one or two short sentences) " +
+  "and give one phrase to practice before the next session.";
 
 const GREETING_PROMPT =
   "The learner just joined. Start Phase 1 now: greet them in one short English sentence and ask if their level is basic, intermediate, or advanced.";
 
 const SUMMARY_PROMPT =
-  "The session is over. Give the final summary in Spanish now, including the level and the tense(s) practiced, following your instructions.";
+  "The session is over. Close now with a brief, warm goodbye in Spanish and one phrase to practice. No error list.";
 
 function pcm16FromFloat32(input: Float32Array): ArrayBuffer {
   const out = new Int16Array(input.length);
