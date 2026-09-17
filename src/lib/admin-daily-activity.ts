@@ -6,6 +6,7 @@ export type ActivitySource = { users: number; count: number };
 export type DailyActivityDay = {
   day: string; // YYYY-MM-DD (America/El_Salvador)
   active_users: number;
+  new_users: number;
   practice: ActivitySource;
   story: ActivitySource;
   interview: ActivitySource;
@@ -73,10 +74,12 @@ export type RangeSummary = {
   bestDay: DailyActivityDay | null;
   daysWithActivity: number;
   totalPractices: number;
+  totalNewUsers: number;
 };
 
 export function summarize(days: DailyActivityDay[]): RangeSummary {
-  if (days.length === 0) return { avgActive: null, bestDay: null, daysWithActivity: 0, totalPractices: 0 };
+  if (days.length === 0)
+    return { avgActive: null, bestDay: null, daysWithActivity: 0, totalPractices: 0, totalNewUsers: 0 };
   const total = days.reduce((acc, d) => acc + d.active_users, 0);
   let best: DailyActivityDay = days[0]!;
   for (const d of days) if (d.active_users > best.active_users) best = d;
@@ -85,6 +88,7 @@ export function summarize(days: DailyActivityDay[]): RangeSummary {
     bestDay: best,
     daysWithActivity: days.filter((d) => d.active_users > 0).length,
     totalPractices: days.reduce((acc, d) => acc + d.practice.count + d.review.count, 0),
+    totalNewUsers: days.reduce((acc, d) => acc + d.new_users, 0),
   };
 }
 

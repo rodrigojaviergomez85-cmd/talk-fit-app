@@ -33,7 +33,7 @@ const RANGES: { key: RangeKey; en: string; es: string }[] = [
 
 function emptyDay(day: string): DailyActivityDay {
   const zero = { users: 0, count: 0 };
-  return { day, active_users: 0, practice: zero, story: zero, interview: zero, review: zero, coach: zero };
+  return { day, active_users: 0, new_users: 0, practice: zero, story: zero, interview: zero, review: zero, coach: zero };
 }
 
 function Square({
@@ -64,6 +64,10 @@ function Square({
         {shortDayLabel(day.day, es ? "es" : "en")}
       </span>
       <span className="text-[17px] font-black leading-tight text-foreground">{day.active_users}</span>
+      <span className="text-[9px] font-semibold leading-tight text-muted-foreground">
+        {es ? "+" : "+"}
+        {day.new_users} {es ? "nuevos" : "new"}
+      </span>
     </button>
   );
 }
@@ -287,6 +291,12 @@ export function ActivityCalendar({ es }: { es: boolean }) {
           <p className="text-[16px] font-black">{summary.daysWithActivity}</p>
         </div>
       </div>
+      <div className="mt-2 rounded-2xl bg-primary/10 p-2 text-center">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+          {es ? "Registros nuevos en el periodo" : "New signups in the period"}
+        </p>
+        <p className="text-[16px] font-black">{summary.totalNewUsers}</p>
+      </div>
 
       {/* 3. Custom period picker */}
       <div className="mt-5 border-t border-border pt-4">
@@ -384,6 +394,12 @@ export function ActivityCalendar({ es }: { es: boolean }) {
           <span className="text-[12px] font-bold text-primary">
             {detail.active_users} {es ? "estudiantes activos" : "active students"}
           </span>
+        </div>
+        <div className="flex items-baseline justify-between gap-2 rounded-2xl bg-primary/10 px-3 py-2">
+          <span className="text-[12px] font-semibold text-foreground">
+            {es ? "Registros nuevos (cuentas creadas)" : "New signups (accounts created)"}
+          </span>
+          <span className="text-[12px] font-bold text-primary">{detail.new_users}</span>
         </div>
         <p className="text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
           {es ? "estudiantes · total" : "students · total"}

@@ -19,6 +19,7 @@ function day(key: string, active: number, practice = 0, review = 0): DailyActivi
   return {
     day: key,
     active_users: active,
+    new_users: 0,
     practice: { users: practice ? 1 : 0, count: practice },
     story: zero,
     interview: zero,
@@ -62,7 +63,7 @@ describe("admin daily activity helpers", () => {
   });
 
   it("handles an empty range", () => {
-    expect(summarize([])).toEqual({ avgActive: null, bestDay: null, daysWithActivity: 0, totalPractices: 0 });
+    expect(summarize([])).toEqual({ avgActive: null, bestDay: null, daysWithActivity: 0, totalPractices: 0, totalNewUsers: 0 });
   });
 });
 
