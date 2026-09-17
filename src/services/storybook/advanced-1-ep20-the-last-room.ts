@@ -67,6 +67,21 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
           text: "Teach the class you'd teach if nobody were watching. They're here to see students speak, not to see us perform.",
           es: "Da la clase que darías si nadie mirara. Vinieron a ver estudiantes hablando, no a vernos actuar.",
         },
+        {
+          speaker: "lidia",
+          text: "Easy to say from the back of the room.",
+          es: "Fácil decirlo desde el fondo de la sala.",
+        },
+        {
+          speaker: "vale",
+          text: "I'm not at the back. I'm in the second row, and I'm not saying a word for fifty minutes.",
+          es: "No estoy al fondo. Estoy en la segunda fila, y no voy a decir una palabra en cincuenta minutos.",
+        },
+        {
+          speaker: "lidia",
+          text: "That's the first promise of yours I don't believe.",
+          es: "Esa es la primera promesa tuya que no me creo.",
+        },
       ],
       words: [
         { word: "pressure", es: "presión" },
