@@ -376,6 +376,16 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
         },
         {
           speaker: "vale",
+          text: "Did he understand you?",
+          es: "¿Te entendió?",
+        },
+        {
+          speaker: "elena",
+          text: "He asked me a second question. That's how I knew.",
+          es: "Me hizo una segunda pregunta. Así supe que sí.",
+        },
+        {
+          speaker: "vale",
           text: "That's the only measurement that was ever really mine.",
           es: "Esa es la única medición que de verdad fue mía.",
         },
