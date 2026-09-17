@@ -67,6 +67,26 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           text: "Then we prepare the only thing we can: how we sound when we don't know.",
           es: "Entonces preparamos lo único que podemos: cómo sonamos cuando no sabemos.",
         },
+        {
+          speaker: "dani",
+          text: "That works for you. I've been awake since four thinking they're calling to cancel.",
+          es: "Eso te funciona a ti. Yo llevo despierto desde las cuatro pensando que llaman a cancelar.",
+        },
+        {
+          speaker: "vale",
+          text: "Why would they cancel the week after they asked for a plan?",
+          es: "¿Por qué cancelarían la semana después de pedir un plan?",
+        },
+        {
+          speaker: "dani",
+          text: "Because I wrote half that plan, and if it falls, it falls on my name too.",
+          es: "Porque yo escribí la mitad de ese plan, y si se cae, se cae sobre mi nombre también.",
+        },
+        {
+          speaker: "vale",
+          text: "Good. That's what it feels like when the work is actually yours. Sit down.",
+          es: "Bien. Así se siente cuando el trabajo de verdad es tuyo. Siéntate.",
+        },
       ],
       words: [
         { word: "subject", es: "tema" },
