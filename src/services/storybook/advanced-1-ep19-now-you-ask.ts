@@ -108,6 +108,16 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
           text: "I check attendance and speaking minutes, because \"not working\" usually means one manager heard one complaint.",
           es: "Reviso asistencia y minutos de habla, porque \"no funciona\" suele significar que un jefe escuchó una queja.",
         },
+        {
+          speaker: "vale",
+          text: "How long does that check take you?",
+          es: "¿Cuánto te toma esa revisión?",
+        },
+        {
+          speaker: "lidia",
+          text: "Twenty minutes, and I'd still answer the same day so the silence doesn't grow.",
+          es: "Veinte minutos, y aun así respondería el mismo día para que el silencio no crezca.",
+        },
       ],
       words: [
         { word: "attendance", es: "asistencia" },
