@@ -174,7 +174,7 @@ function AiCoachPage() {
           <button
             key={value}
             type="button"
-            onClick={() => setTab(value)}
+            onClick={() => { console.log("TABCLICK", value); setTab(value); }}
             className={`min-h-[44px] rounded-xl px-3 text-[13px] font-extrabold uppercase tracking-[0.12em] transition-colors ${
               tab === value
                 ? "bg-primary text-primary-foreground"
