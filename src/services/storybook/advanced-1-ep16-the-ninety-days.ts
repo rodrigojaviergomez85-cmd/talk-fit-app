@@ -227,9 +227,9 @@ export const ADVANCED1_EP16_THE_NINETY_DAYS: StorybookEpisode = {
     {
       id: "s7",
       image: s7,
-      imageAlt: "Vale turns to the class while Reed's message appears on her screen.",
-      text: "Your turn, and Reed's message.",
-      es: "Tu turno, y el mensaje de Reed.",
+      imageAlt: "Vale speaks straight to you while Reed's message appears on her screen.",
+      text: "Vale coaches you, and Reed writes.",
+      es: "Vale te entrena a ti, y Reed escribe.",
       speaker: "vale",
       cast: ["vale", "reed"],
       lines: [
