@@ -177,12 +177,19 @@ function AiCoachPage() {
 
   return (
     <AppShell title={t("aiCoach.title")} subtitle={t("aiCoach.subtitle")} hideSync>
-      <div className="mb-4 grid grid-cols-2 gap-2 rounded-2xl border border-border bg-card p-1">
+      <div
+        className={`mb-4 grid gap-2 rounded-2xl border border-border bg-card p-1 ${
+          practiceAllowed ? "grid-cols-3" : "grid-cols-2"
+        }`}
+      >
         {(
           [
             ["write", lang === "en" ? "Write" : "Escribir"],
             ["live", lang === "en" ? "Talk live" : "Hablar en vivo"],
-          ] as const
+            ...(practiceAllowed
+              ? ([["practice", lang === "en" ? "Practice" : "Práctica"]] as const)
+              : []),
+          ] as ReadonlyArray<readonly [string, string]>
         ).map(([value, label]) => (
           <button
             key={value}
