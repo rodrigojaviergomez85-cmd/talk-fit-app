@@ -72,6 +72,16 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           text: "I don't hate it. If I chose alone, the committee would call the choice loyalty rather than competence.",
           es: "No lo odio. Si eligiera sola, el comité llamaría lealtad a la elección en vez de competencia.",
         },
+        {
+          speaker: "barrett",
+          text: "You wrote the ninety days on Monday. Whoever sits in that chair has to survive them with you.",
+          es: "Escribiste los noventa días el lunes. Quien se siente en esa silla tiene que sobrevivirlos contigo.",
+        },
+        {
+          speaker: "vale",
+          text: "Which is exactly why I want them tested by you and not comforted by me.",
+          es: "Que es justamente por qué quiero que tú los pruebes y que yo no los consienta.",
+        },
       ],
       words: [
         { word: "loyalty", es: "lealtad" },
@@ -98,6 +108,21 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           text: "In other words, show me, don't tell me.",
           es: "En otras palabras, demuéstramelo, no me lo cuentes.",
         },
+        {
+          speaker: "barrett",
+          text: "Precisely. And if a number is missing, I'll ask who could verify the story.",
+          es: "Exacto. Y si falta un número, preguntaré quién podría verificar la historia.",
+        },
+        {
+          speaker: "vale",
+          text: "Then I'll sit at the end of the table and say nothing until you're finished.",
+          es: "Entonces me sentaré al final de la mesa y no diré nada hasta que termines.",
+        },
+        {
+          speaker: "barrett",
+          text: "I'll believe that when I see it. Send in the first one.",
+          es: "Eso lo creeré cuando lo vea. Que pase la primera.",
+        },
       ],
       words: [
         { word: "claim", es: "afirmación" },
@@ -105,6 +130,7 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
         { word: "competency", es: "por competencias" },
       ],
     },
+
     {
       id: "s3",
       image: s3,
@@ -128,6 +154,16 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           speaker: "lidia",
           text: "Attrition went from twenty-two percent to seven, and it has stayed there for three cohorts.",
           es: "La deserción pasó de veintidós por ciento a siete, y se ha mantenido tres cohortes.",
+        },
+        {
+          speaker: "barrett",
+          text: "Seven. Measured by whom?",
+          es: "Siete. ¿Medido por quién?",
+        },
+        {
+          speaker: "lidia",
+          text: "By the client's own attendance report, not by mine. If they had counted differently, the number would have been theirs to defend.",
+          es: "Por el reporte de asistencia del propio cliente, no por el mío. Si hubieran contado distinto, el número habría sido de ellos defenderlo.",
         },
       ],
       words: [
@@ -155,6 +191,16 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           text: "Then judge the part that scales: I wrote what I did down, and four teachers repeated it without me in the room.",
           es: "Entonces juzga la parte que escala: escribí lo que hice, y cuatro maestros lo repitieron sin mí en el salón.",
         },
+        {
+          speaker: "barrett",
+          text: "Four teachers in one building is not eleven teachers in three countries.",
+          es: "Cuatro maestros en un edificio no son once maestros en tres países.",
+        },
+        {
+          speaker: "lidia",
+          text: "No, it isn't. But nothing travels across a border unless it has been written down first, and that part I've already done.",
+          es: "No, no lo son. Pero nada cruza una frontera si no se ha escrito antes, y esa parte ya la hice.",
+        },
       ],
       words: [
         { word: "point out", es: "señalar" },
@@ -172,9 +218,24 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
       cast: ["dani", "barrett"],
       lines: [
         {
+          speaker: "barrett",
+          text: "Your turn, Dani. Same rule: a situation, an action, a number.",
+          es: "Tu turno, Dani. La misma regla: una situación, una acción, un número.",
+        },
+        {
           speaker: "dani",
           text: "My evidence isn't a classroom, it's the week that nearly broke us. Northline moved two hundred people onto a new schedule with nine days' notice, and if we had said no, we would have lost the account that same month. I rebuilt the timetable in four days, negotiated three teachers onto evening hours instead of hiring strangers, and kept the cost increase at six percent. Nothing about that was heroic; it was planned badly by somebody else and rescued on paper by me. What it proves is that I can walk the talk when the week is ugly.",
           es: "Mi evidencia no es un salón, es la semana que casi nos quiebra. Northline movió a doscientas personas a un horario nuevo con nueve días de aviso, y si hubiéramos dicho que no, habríamos perdido la cuenta ese mismo mes. Reconstruí el horario en cuatro días, negocié tres maestros a horas de la noche en vez de contratar desconocidos, y mantuve el aumento de costo en seis por ciento. Nada de eso fue heroico; alguien más lo planeó mal y yo lo rescaté en papel. Lo que demuestra es que cumplo lo que digo cuando la semana es fea.",
+        },
+        {
+          speaker: "barrett",
+          text: "You said rescued on paper. What does that mean in practice?",
+          es: "Dijiste rescatado en papel. ¿Qué significa eso en la práctica?",
+        },
+        {
+          speaker: "dani",
+          text: "It means the students never noticed. The only people who had a bad week were the three of us who fixed it.",
+          es: "Significa que los estudiantes nunca lo notaron. Los únicos que tuvimos una mala semana fuimos los tres que lo arreglamos.",
         },
       ],
       words: [
@@ -201,6 +262,16 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           speaker: "dani",
           text: "We did, not the client. I'd rather explain a small loss than a broken promise.",
           es: "Nosotros, no el cliente. Prefiero explicar una pérdida pequeña que una promesa rota.",
+        },
+        {
+          speaker: "barrett",
+          text: "And if the same week happened in Guatemala, with nobody you know on the ground?",
+          es: "¿Y si la misma semana pasara en Guatemala, sin nadie conocido en el terreno?",
+        },
+        {
+          speaker: "dani",
+          text: "Then I'd lose the four days I saved here, so I'd build the reserve hours into the contract before anyone signs it.",
+          es: "Entonces perdería los cuatro días que gané aquí, así que metería las horas de reserva en el contrato antes de que alguien lo firme.",
         },
       ],
       words: [
@@ -243,6 +314,16 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           text: "Then I'd teach the next session myself with her watching, and we'd compare what the students produced. Correction lands better when it's demonstrated rather than announced.",
           es: "Entonces daría yo la siguiente sesión con ella observando, y compararíamos lo que produjeron los estudiantes. La corrección cae mejor cuando se demuestra en vez de anunciarse.",
         },
+        {
+          speaker: "barrett",
+          text: "Vale, you're allowed one sentence. Is that how you would handle it?",
+          es: "Vale, tienes derecho a una frase. ¿Así lo manejarías tú?",
+        },
+        {
+          speaker: "vale",
+          text: "It's how I've handled it for six years, and she didn't learn that answer from me this morning.",
+          es: "Así lo he manejado durante seis años, y esa respuesta no la aprendió de mí esta mañana.",
+        },
       ],
       words: [
         { word: "rehearse", es: "ensayar" },
@@ -274,6 +355,16 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           text: "That is not in either file.",
           es: "Eso no está en ninguno de los dos expedientes.",
         },
+        {
+          speaker: "elena",
+          text: "It wouldn't be. Nobody writes down the call that keeps a student in the room.",
+          es: "No lo estaría. Nadie escribe la llamada que mantiene a un estudiante en el salón.",
+        },
+        {
+          speaker: "vale",
+          text: "Which is why we're asking for numbers and for the people behind them.",
+          es: "Por eso pedimos números y también a la gente detrás de ellos.",
+        },
       ],
       words: [
         { word: "situation", es: "situación" },
@@ -294,6 +385,16 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           speaker: "vale",
           text: "I'll say what I think, and then I'll stay quiet. Dani is the stronger operator, and if the pilot were only a logistics problem, this would be over. But the risk in three countries isn't the timetable; it's teachers drifting away from the method because nobody is watching the classroom. Lidia has already proved she can put her work into words other people can repeat, which is the only thing that stops this becoming a paper promise. So my recommendation is Lidia in the room and Dani behind the operation, and I'd rather lose that argument today than lose the pilot in month four.",
           es: "Voy a decir lo que pienso y después me callo. Dani es el mejor operador, y si el piloto fuera solo un problema logístico, esto estaría cerrado. Pero el riesgo en tres países no es el horario; son maestros alejándose del método porque nadie mira el salón. Lidia ya demostró que puede poner su trabajo en palabras que otros repiten, que es lo único que evita que esto se vuelva una promesa de papel. Así que mi recomendación es Lidia en el salón y Dani detrás de la operación, y prefiero perder ese argumento hoy que perder el piloto en el mes cuatro.",
+        },
+        {
+          speaker: "barrett",
+          text: "You just argued against the candidate you're closest to. The committee will notice that.",
+          es: "Acabas de argumentar en contra del candidato con quien tienes más cercanía. El comité lo va a notar.",
+        },
+        {
+          speaker: "vale",
+          text: "Good. Then nobody can call this loyalty, and Dani keeps the part of the job he's actually best at.",
+          es: "Bien. Así nadie puede llamarlo lealtad, y Dani conserva la parte del trabajo en la que de verdad es mejor.",
         },
         {
           speaker: "barrett",
