@@ -100,6 +100,7 @@ export function LiveCoach() {
   const [dailyLimit, setDailyLimit] = useState(15 * 60);
   const [remaining, setRemaining] = useState(0);
   const [level, setLevel] = useState(0);
+  const [coachLevel, setCoachLevel] = useState(0);
   const [lines, setLines] = useState<Line[]>([]);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -117,6 +118,8 @@ export function LiveCoach() {
   const nodeRef = useRef<ScriptProcessorNode | null>(null);
   const playHeadRef = useRef(0);
   const sourcesRef = useRef<AudioBufferSourceNode[]>([]);
+  const outAnalyserRef = useRef<AnalyserNode | null>(null);
+  const mouthFrameRef = useRef<number | null>(null);
   const startedAtRef = useRef(0);
   const endingRef = useRef(false);
   const heardVoiceRef = useRef(false);
@@ -205,6 +208,10 @@ export function LiveCoach() {
       summaryDoneRef.current = null;
 
       try {
+        if (mouthFrameRef.current !== null) window.cancelAnimationFrame(mouthFrameRef.current);
+        mouthFrameRef.current = null;
+        outAnalyserRef.current = null;
+        setCoachLevel(0);
         sourcesRef.current.forEach((source) => {
           try {
             source.stop();
@@ -300,6 +307,26 @@ export function LiveCoach() {
       await outCtx.resume().catch(() => undefined);
       outCtxRef.current = outCtx;
       playHeadRef.current = outCtx.currentTime;
+      const outAnalyser = outCtx.createAnalyser();
+      outAnalyser.fftSize = 512;
+      outAnalyser.smoothingTimeConstant = 0.68;
+      outAnalyser.connect(outCtx.destination);
+      outAnalyserRef.current = outAnalyser;
+
+      const waveform = new Uint8Array(outAnalyser.fftSize);
+      const followCoachVoice = () => {
+        outAnalyser.getByteTimeDomainData(waveform);
+        let sum = 0;
+        for (let i = 0; i < waveform.length; i += 1) {
+          const sample = ((waveform[i] ?? 128) - 128) / 128;
+          sum += sample * sample;
+        }
+        const rms = Math.sqrt(sum / waveform.length);
+        // Lift normal speech into a useful 0–1 range while retaining silence.
+        setCoachLevel(Math.min(1, Math.max(0, (rms - 0.008) * 7.5)));
+        mouthFrameRef.current = window.requestAnimationFrame(followCoachVoice);
+      };
+      mouthFrameRef.current = window.requestAnimationFrame(followCoachVoice);
     } catch {
       setError(es ? "No se pudo abrir el audio." : "Could not open audio.");
       setPhase("idle");
@@ -392,7 +419,9 @@ export function LiveCoach() {
               for (let i = 0; i < pcm.length; i += 1) channel[i] = (pcm[i] ?? 0) / 32768;
               const source = outCtx.createBufferSource();
               source.buffer = buffer;
-              source.connect(outCtx.destination);
+              const analyser = outAnalyserRef.current;
+              if (analyser) source.connect(analyser);
+              else source.connect(outCtx.destination);
               const startAt = Math.max(outCtx.currentTime, playHeadRef.current);
               source.start(startAt);
               playHeadRef.current = startAt + buffer.duration;
@@ -509,7 +538,10 @@ export function LiveCoach() {
       </p>
 
       <div className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-6">
-        <CoachAvatar state={avatarState} level={level} />
+        <CoachAvatar
+          state={avatarState}
+          level={avatarState === "speaking" ? coachLevel : level}
+        />
 
         <p className="text-[13px] font-semibold text-foreground">
           {phase === "live"
