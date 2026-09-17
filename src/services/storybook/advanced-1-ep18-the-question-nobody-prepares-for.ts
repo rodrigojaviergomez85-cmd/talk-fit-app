@@ -324,6 +324,16 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           es: "Cuando una pregunta te sorprenda, no le des vueltas. Responde, di por qué, da un ejemplo y cierra. Cuatro movimientos, treinta segundos.",
         },
         {
+          speaker: "dani",
+          text: "And if I genuinely have no example?",
+          es: "¿Y si de verdad no tengo un ejemplo?",
+        },
+        {
+          speaker: "vale",
+          text: "Then say so and give the closest real one. Nobody trusts an example that arrives too fast.",
+          es: "Entonces dilo y da el más cercano que sea real. Nadie confía en un ejemplo que llega demasiado rápido.",
+        },
+        {
           speaker: "vale",
           text: "Your turn, and you get ten seconds: if you could remove one thing from your current job or your studies, what would it be and why?",
           es: "Tu turno, y tienes diez segundos: si pudieras quitar una cosa de tu trabajo o tus estudios, ¿cuál sería y por qué?",
