@@ -101,6 +101,13 @@ const STRINGS = {
     copyLink: "COPIAR LINK",
     copied: "¡COPIADO!",
     continueBrowser: "CONTINUAR EN EL NAVEGADOR",
+    apkTitle: "¿TE APARECE “SE BLOQUEÓ LA APP NO SEGURA”?",
+    apkIntro:
+      "Ese aviso sale cuando instalaste Fluency App con un archivo que te pasaron por WhatsApp. Ese archivo ya no sirve y Android lo bloquea. Instálala desde el navegador, así:",
+    apkStep1: "Mantén presionado el ícono viejo de Fluency App y toca “Desinstalar”.",
+    apkStep2: "Abre Chrome y entra a fluencye4cc.app/install",
+    apkStep3: "Instala desde esta misma página. No necesitas descargar ningún archivo.",
+    apkNote: "Es la misma app, con tu cuenta y tu progreso. Nada se pierde.",
   },
   en: {
     title: "INSTALL FLUENCY APP",
