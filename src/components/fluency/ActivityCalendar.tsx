@@ -64,6 +64,10 @@ function Square({
         {shortDayLabel(day.day, es ? "es" : "en")}
       </span>
       <span className="text-[17px] font-black leading-tight text-foreground">{day.active_users}</span>
+      <span className="text-[9px] font-semibold leading-tight text-muted-foreground">
+        {es ? "+" : "+"}
+        {day.new_users} {es ? "nuevos" : "new"}
+      </span>
     </button>
   );
 }
