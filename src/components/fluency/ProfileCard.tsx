@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 const TEXT = {
   es: {
     title: "MI PERFIL",
+    portal: "Mi Portal",
     name: "Nombre visible",
     save: "GUARDAR",
     saved: "Listo, se guardó tu perfil.",
@@ -26,6 +27,7 @@ const TEXT = {
   },
   en: {
     title: "MY PROFILE",
+    portal: "My Portal",
     name: "Display name",
     save: "SAVE",
     saved: "Your profile was saved.",
@@ -107,7 +109,7 @@ export function ProfileCard({ lang, email }: { lang: "es" | "en"; email?: string
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 rounded-full border border-primary px-2.5 py-1 text-[11px] font-bold text-primary"
           >
-            {lang === "es" ? "Mi Portal" : "My Portal"}
+            {t.portal}
             <ExternalLink className="size-3" />
           </a>
         ) : null}
