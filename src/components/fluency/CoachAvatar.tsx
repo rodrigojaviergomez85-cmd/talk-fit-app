@@ -18,9 +18,16 @@ export function CoachAvatar({ state, level = 0 }: { state: CoachState; level?: n
       setMouthOpen(false);
       return;
     }
-    const timer = window.setInterval(() => setMouthOpen((v) => !v), 160);
-    return () => window.clearInterval(timer);
-  }, [state]);
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const threshold = reduceMotion ? 0.11 : mouthOpen ? 0.055 : 0.085;
+    const nextOpen = level >= threshold;
+    if (nextOpen === mouthOpen) return;
+
+    // A short hold smooths consonants and prevents rapid image flicker.
+    const timer = window.setTimeout(() => setMouthOpen(nextOpen), reduceMotion ? 180 : 75);
+    return () => window.clearTimeout(timer);
+  }, [level, mouthOpen, state]);
 
   const src =
     state === "speaking"
@@ -49,12 +56,14 @@ export function CoachAvatar({ state, level = 0 }: { state: CoachState; level?: n
         width={512}
         height={512}
         loading="lazy"
-        className="relative size-32 rounded-full object-cover shadow-sm"
-        style={{
-          animation: state === "idle" ? undefined : "coach-breathe 3.6s ease-in-out infinite",
-        }}
+        className="coach-avatar-image relative size-32 rounded-full object-cover shadow-sm"
+        data-active={state === "idle" ? "false" : "true"}
       />
-      <style>{`@keyframes coach-breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}`}</style>
+      <style>{`
+        @keyframes coach-breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+        .coach-avatar-image[data-active="true"]{animation:coach-breathe 3.6s ease-in-out infinite}
+        @media (prefers-reduced-motion:reduce){.coach-avatar-image[data-active="true"]{animation:none}}
+      `}</style>
     </div>
   );
 }
