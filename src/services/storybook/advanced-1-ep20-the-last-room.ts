@@ -269,8 +269,38 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
       lines: [
         {
           speaker: "camila",
-          text: "My side is the part nobody asks about, so I'll say it before you do. In the first month, complaints go up, not down, because students are suddenly being asked to speak and some of them hate it. What we do is call every person who misses twice, in their language, within forty-eight hours. Last year that single habit carried over into the corporate groups and cut cancellations by a third, and it costs us nothing except the discipline to make the call when we're busy.",
-          es: "Mi parte es la que nadie pregunta, así que la digo antes de que lo hagan. En el primer mes las quejas suben, no bajan, porque de pronto les piden hablar y a algunos les molesta. Lo que hacemos es llamar a cada persona que falta dos veces, en su idioma, en menos de cuarenta y ocho horas. El año pasado ese solo hábito se trasladó a los grupos corporativos y redujo las cancelaciones en un tercio, y no nos cuesta nada salvo la disciplina de llamar cuando estamos ocupados.",
+          text: "My side is the part nobody asks about, so I'll say it before you do. In the first month, complaints go up, not down, because students are suddenly being asked to speak and some of them hate it.",
+          es: "Mi parte es la que nadie pregunta, así que la digo antes de que lo hagan. En el primer mes las quejas suben, no bajan, porque de pronto les piden hablar y a algunos les molesta.",
+        },
+        {
+          speaker: "barrett",
+          text: "You're telling a board that complaints will rise.",
+          es: "Le estás diciendo a una junta que las quejas van a subir.",
+        },
+        {
+          speaker: "camila",
+          text: "I'd rather tell you now than let you discover it in the quarterly report.",
+          es: "Prefiero decírtelo ahora que dejar que lo descubras en el reporte trimestral.",
+        },
+        {
+          speaker: "barrett",
+          text: "Then what do you do about it?",
+          es: "¿Y qué hacen al respecto?",
+        },
+        {
+          speaker: "camila",
+          text: "We call every person who misses twice, in their language, within forty-eight hours. Last year that single habit carried over into the corporate groups and cut cancellations by a third, and it costs nothing except the discipline to make the call when we're busy.",
+          es: "Llamamos a cada persona que falta dos veces, en su idioma, en menos de cuarenta y ocho horas. El año pasado ese solo hábito se trasladó a los grupos corporativos y redujo las cancelaciones en un tercio, y no cuesta nada salvo la disciplina de llamar cuando estamos ocupados.",
+        },
+        {
+          speaker: "barrett",
+          text: "Who makes those calls when you're in three countries?",
+          es: "¿Quién hace esas llamadas cuando estén en tres países?",
+        },
+        {
+          speaker: "camila",
+          text: "A team I haven't been given yet. That's my ask.",
+          es: "Un equipo que todavía no me han dado. Esa es mi petición.",
         },
       ],
       words: [
