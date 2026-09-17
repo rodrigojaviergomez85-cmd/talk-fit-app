@@ -2,13 +2,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Loader2, Mic, Square } from "lucide-react";
 import { useAppLang } from "@/lib/i18n";
 import { getFreshSession } from "@/lib/session-keeper";
+import { CoachAvatar, type CoachState } from "@/components/fluency/CoachAvatar";
 
 /**
  * Live speaking practice with the AI coach.
  *
- * The browser records microphone audio as raw PCM, streams it to the live
- * model, and plays the spoken answer back. No conversation is stored: only the
- * number of seconds used is reported to the server when the session ends.
+ * The browser records microphone audio as raw PCM (resampled to 16 kHz from the
+ * device rate, because iOS Safari ignores a requested sample rate), streams it
+ * to the live model, and plays the spoken answer back. No conversation is
+ * stored: only the number of seconds used is reported when the session ends.
  */
 
 type Phase = "idle" | "connecting" | "live" | "ending";
@@ -29,9 +31,19 @@ const SYSTEM_INSTRUCTION =
   "Speak English almost all the time, slowly and clearly, with short sentences. " +
   "Use a short Spanish phrase only when the learner is completely lost. " +
   "Keep the conversation going with simple real-life questions; never lecture. " +
-  "Do not interrupt to correct small mistakes: keep a mental note and correct gently at the end. " +
+  "Never interrupt to correct. When the learner makes a real mistake, naturally say their idea back correctly " +
+  "as part of your reply (for example: learner says 'I go yesterday' and you answer 'Ah, so you went yesterday?'), " +
+  "then continue the conversation, and remember the mistake. " +
   "Keep every turn under 3 sentences. " +
-  "When the learner says the session is over, give a short, kind summary in Spanish with up to 3 corrections and one phrase to practice.";
+  "When you are asked for the final summary, speak in Spanish: name up to 3 mistakes you heard " +
+  "(what the learner said, how to say it better, and why, in one short line each) and end with one phrase to practice. " +
+  "If you heard no real mistakes, say so and give one phrase to practice anyway.";
+
+const GREETING_PROMPT =
+  "The learner just joined. Greet them in English in one short sentence and ask one easy question about their day. Start now.";
+
+const SUMMARY_PROMPT =
+  "The session is over. Give the final summary in Spanish now, following your instructions.";
 
 function pcm16FromFloat32(input: Float32Array): ArrayBuffer {
   const out = new Int16Array(input.length);
@@ -40,6 +52,22 @@ function pcm16FromFloat32(input: Float32Array): ArrayBuffer {
     out[i] = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
   }
   return out.buffer;
+}
+
+/** iOS Safari ignores a requested AudioContext sample rate, so downsample here. */
+function resampleTo16k(input: Float32Array, inputRate: number): Float32Array {
+  if (inputRate === 16000) return input;
+  const ratio = inputRate / 16000;
+  const length = Math.floor(input.length / ratio);
+  const out = new Float32Array(length);
+  for (let i = 0; i < length; i += 1) {
+    const position = i * ratio;
+    const index = Math.floor(position);
+    const next = Math.min(index + 1, input.length - 1);
+    const weight = position - index;
+    out[i] = (input[index] ?? 0) * (1 - weight) + (input[next] ?? 0) * weight;
+  }
+  return out;
 }
 
 function toBase64(buffer: ArrayBuffer): string {
@@ -73,11 +101,16 @@ export function LiveCoach() {
   const [remaining, setRemaining] = useState(0);
   const [level, setLevel] = useState(0);
   const [lines, setLines] = useState<Line[]>([]);
+  const [feedback, setFeedback] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [coachState, setCoachState] = useState<CoachState>("idle");
 
-  const sessionRef = useRef<{ close: () => void; sendRealtimeInput: (v: unknown) => void } | null>(
-    null,
-  );
+  const sessionRef = useRef<{
+    close: () => void;
+    sendRealtimeInput: (v: unknown) => void;
+    sendClientContent: (v: unknown) => void;
+  } | null>(null);
   const micCtxRef = useRef<AudioContext | null>(null);
   const outCtxRef = useRef<AudioContext | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -86,6 +119,10 @@ export function LiveCoach() {
   const sourcesRef = useRef<AudioBufferSourceNode[]>([]);
   const startedAtRef = useRef(0);
   const endingRef = useRef(false);
+  const heardVoiceRef = useRef(false);
+  const collectingSummaryRef = useRef(false);
+  const summaryTextRef = useRef("");
+  const summaryDoneRef = useRef<(() => void) | null>(null);
 
   async function authHeaders(): Promise<Record<string, string> | null> {
     const { data } = await getFreshSession();
@@ -115,60 +152,99 @@ export function LiveCoach() {
     void loadStatus();
   }, [loadStatus]);
 
-  /** Stops microphone, playback and the socket, then reports the time used. */
-  const stop = useCallback(async () => {
-    if (endingRef.current) return;
-    endingRef.current = true;
-    setPhase("ending");
+  /** Stops the mic, asks for the final corrections, then closes and reports time. */
+  const stop = useCallback(
+    async (options?: { skipSummary?: boolean }) => {
+      if (endingRef.current) return;
+      endingRef.current = true;
+      setPhase("ending");
+      setNotice(null);
 
-    const seconds = startedAtRef.current
-      ? Math.round((Date.now() - startedAtRef.current) / 1000)
-      : 0;
+      const seconds = startedAtRef.current
+        ? Math.round((Date.now() - startedAtRef.current) / 1000)
+        : 0;
 
-    try {
-      nodeRef.current?.disconnect();
-      streamRef.current?.getTracks().forEach((track) => track.stop());
-      sourcesRef.current.forEach((source) => {
-        try {
-          source.stop();
-        } catch {
-          /* already finished */
-        }
-      });
-      sourcesRef.current = [];
-      await micCtxRef.current?.close().catch(() => undefined);
-      await outCtxRef.current?.close().catch(() => undefined);
-      sessionRef.current?.close();
-    } catch {
-      /* closing is best effort */
-    }
-
-    sessionRef.current = null;
-    micCtxRef.current = null;
-    outCtxRef.current = null;
-    streamRef.current = null;
-    nodeRef.current = null;
-    startedAtRef.current = 0;
-    setLevel(0);
-
-    try {
-      const headers = await authHeaders();
-      if (headers) {
-        const res = await fetch("/api/live-coach", {
-          method: "POST",
-          headers,
-          body: JSON.stringify({ action: "end", seconds }),
-        });
-        const body = (await res.json().catch(() => null)) as { usedSeconds?: number } | null;
-        if (typeof body?.usedSeconds === "number") setUsedSeconds(body.usedSeconds);
+      // Stop sending audio first so the coach is not listening while it summarizes.
+      try {
+        nodeRef.current?.disconnect();
+        streamRef.current?.getTracks().forEach((track) => track.stop());
+        await micCtxRef.current?.close().catch(() => undefined);
+      } catch {
+        /* best effort */
       }
-    } catch {
-      /* the counter refreshes on the next visit */
-    }
+      micCtxRef.current = null;
+      nodeRef.current = null;
+      streamRef.current = null;
+      setLevel(0);
 
-    endingRef.current = false;
-    setPhase("idle");
-  }, []);
+      if (!options?.skipSummary && sessionRef.current && heardVoiceRef.current) {
+        try {
+          setCoachState("thinking");
+          collectingSummaryRef.current = true;
+          summaryTextRef.current = "";
+          sessionRef.current.sendClientContent({
+            turns: [{ role: "user", parts: [{ text: SUMMARY_PROMPT }] }],
+            turnComplete: true,
+          });
+          await new Promise<void>((resolve) => {
+            summaryDoneRef.current = resolve;
+            window.setTimeout(resolve, 14000);
+          });
+          // let the spoken summary finish playing
+          const out = outCtxRef.current;
+          if (out) {
+            const tail = Math.max(0, playHeadRef.current - out.currentTime);
+            await new Promise((resolve) => window.setTimeout(resolve, Math.min(tail, 25) * 1000));
+          }
+          if (summaryTextRef.current.trim()) setFeedback(summaryTextRef.current.trim());
+        } catch {
+          /* summary is best effort */
+        }
+      }
+      collectingSummaryRef.current = false;
+      summaryDoneRef.current = null;
+
+      try {
+        sourcesRef.current.forEach((source) => {
+          try {
+            source.stop();
+          } catch {
+            /* already finished */
+          }
+        });
+        sourcesRef.current = [];
+        await outCtxRef.current?.close().catch(() => undefined);
+        sessionRef.current?.close();
+      } catch {
+        /* closing is best effort */
+      }
+
+      sessionRef.current = null;
+      outCtxRef.current = null;
+      startedAtRef.current = 0;
+      heardVoiceRef.current = false;
+      setCoachState("idle");
+
+      try {
+        const headers = await authHeaders();
+        if (headers) {
+          const res = await fetch("/api/live-coach", {
+            method: "POST",
+            headers,
+            body: JSON.stringify({ action: "end", seconds }),
+          });
+          const body = (await res.json().catch(() => null)) as { usedSeconds?: number } | null;
+          if (typeof body?.usedSeconds === "number") setUsedSeconds(body.usedSeconds);
+        }
+      } catch {
+        /* the counter refreshes on the next visit */
+      }
+
+      endingRef.current = false;
+      setPhase("idle");
+    },
+    [],
+  );
 
   useEffect(() => {
     if (phase !== "live") return;
@@ -184,12 +260,30 @@ export function LiveCoach() {
     return () => window.clearInterval(timer);
   }, [phase, stop]);
 
-  useEffect(() => () => void stop(), [stop]);
+  // Tell the learner when we are not hearing anything at all.
+  useEffect(() => {
+    if (phase !== "live") return;
+    const timer = window.setTimeout(() => {
+      if (!heardVoiceRef.current) {
+        setNotice(
+          es
+            ? "No te estamos escuchando. Revisa el permiso del micrófono y habla más cerca."
+            : "We are not hearing you. Check microphone permission and speak closer.",
+        );
+      }
+    }, 15000);
+    return () => window.clearTimeout(timer);
+  }, [phase, es]);
+
+  useEffect(() => () => void stop({ skipSummary: true }), [stop]);
 
   async function start() {
     if (phase !== "idle") return;
     setError(null);
+    setNotice(null);
+    setFeedback(null);
     setLines([]);
+    heardVoiceRef.current = false;
 
     const headers = await authHeaders();
     if (!headers) {
@@ -198,6 +292,20 @@ export function LiveCoach() {
     }
 
     setPhase("connecting");
+
+    // Unlock audio inside the user gesture: iOS starts contexts suspended.
+    let outCtx: AudioContext;
+    try {
+      outCtx = new AudioContext();
+      await outCtx.resume().catch(() => undefined);
+      outCtxRef.current = outCtx;
+      playHeadRef.current = outCtx.currentTime;
+    } catch {
+      setError(es ? "No se pudo abrir el audio." : "Could not open audio.");
+      setPhase("idle");
+      return;
+    }
+
     try {
       const res = await fetch("/api/live-coach", {
         method: "POST",
@@ -213,11 +321,15 @@ export function LiveCoach() {
             ? "Ya usaste tus minutos de hoy. Vuelve mañana."
             : "You used today's minutes. Come back tomorrow.",
         );
+        await outCtx.close().catch(() => undefined);
+        outCtxRef.current = null;
         setPhase("idle");
         return;
       }
       if (!res.ok || !body?.token) {
         setError(es ? "No se pudo conectar. Intenta otra vez." : "Could not connect. Try again.");
+        await outCtx.close().catch(() => undefined);
+        outCtxRef.current = null;
         setPhase("idle");
         return;
       }
@@ -232,10 +344,6 @@ export function LiveCoach() {
         apiKey: body.token,
         httpOptions: { apiVersion: "v1alpha" },
       });
-
-      const outCtx = new AudioContext({ sampleRate: 24000 });
-      outCtxRef.current = outCtx;
-      playHeadRef.current = outCtx.currentTime;
 
       const session = await ai.live.connect({
         model: body.model ?? "gemini-3.8-live",
@@ -262,11 +370,14 @@ export function LiveCoach() {
 
             const userText = content?.inputTranscription?.text;
             if (userText) {
+              heardVoiceRef.current = true;
+              setNotice(null);
               setLines((prev) => appendLine(prev, "you", userText));
             }
             const coachText = content?.outputTranscription?.text;
             if (coachText) {
-              setLines((prev) => appendLine(prev, "coach", coachText));
+              if (collectingSummaryRef.current) summaryTextRef.current += coachText;
+              else setLines((prev) => appendLine(prev, "coach", coachText));
             }
 
             const parts = content?.modelTurn?.parts ?? [];
@@ -274,6 +385,8 @@ export function LiveCoach() {
               const data = part?.inlineData?.data;
               if (!data) continue;
               const pcm = fromBase64(data);
+              // Model audio is 24 kHz PCM; the buffer keeps that rate and the
+              // browser resamples it to whatever the device context uses.
               const buffer = outCtx.createBuffer(1, pcm.length, 24000);
               const channel = buffer.getChannelData(0);
               for (let i = 0; i < pcm.length; i += 1) channel[i] = (pcm[i] ?? 0) / 32768;
@@ -284,17 +397,26 @@ export function LiveCoach() {
               source.start(startAt);
               playHeadRef.current = startAt + buffer.duration;
               sourcesRef.current.push(source);
+              setCoachState("speaking");
               source.onended = () => {
                 sourcesRef.current = sourcesRef.current.filter((item) => item !== source);
+                if (sourcesRef.current.length === 0 && !endingRef.current) {
+                  setCoachState("listening");
+                }
               };
+            }
+
+            if (content?.turnComplete && collectingSummaryRef.current) {
+              summaryDoneRef.current?.();
+              summaryDoneRef.current = null;
             }
           },
           onerror: () => {
             setError(es ? "Se perdió la conexión." : "The connection dropped.");
-            void stop();
+            void stop({ skipSummary: true });
           },
           onclose: () => {
-            void stop();
+            void stop({ skipSummary: true });
           },
         },
       });
@@ -302,10 +424,13 @@ export function LiveCoach() {
       sessionRef.current = session as unknown as {
         close: () => void;
         sendRealtimeInput: (v: unknown) => void;
+        sendClientContent: (v: unknown) => void;
       };
 
-      const micCtx = new AudioContext({ sampleRate: 16000 });
+      const micCtx = new AudioContext();
+      await micCtx.resume().catch(() => undefined);
       micCtxRef.current = micCtx;
+      const micRate = micCtx.sampleRate;
       const source = micCtx.createMediaStreamSource(stream);
       const processor = micCtx.createScriptProcessor(4096, 1, 1);
       nodeRef.current = processor;
@@ -314,22 +439,44 @@ export function LiveCoach() {
         let peak = 0;
         for (let i = 0; i < input.length; i += 64) peak = Math.max(peak, Math.abs(input[i] ?? 0));
         setLevel(peak);
+        if (peak > 0.03) heardVoiceRef.current = true;
         try {
+          const resampled = resampleTo16k(input, micRate);
           sessionRef.current?.sendRealtimeInput({
-            audio: { data: toBase64(pcm16FromFloat32(input)), mimeType: "audio/pcm;rate=16000" },
+            audio: {
+              data: toBase64(pcm16FromFloat32(resampled)),
+              mimeType: "audio/pcm;rate=16000",
+            },
           });
         } catch {
           /* socket closing */
         }
       };
       source.connect(processor);
-      processor.connect(micCtx.destination);
+      // Keep the processor alive without echoing the mic back to the speaker.
+      const mute = micCtx.createGain();
+      mute.gain.value = 0;
+      processor.connect(mute);
+      mute.connect(micCtx.destination);
 
       startedAtRef.current = Date.now();
       setRemaining(body.sessionLimitSeconds ?? 300);
       setPhase("live");
+      setCoachState("thinking");
+
+      // The coach speaks first so the learner knows it is working.
+      try {
+        sessionRef.current.sendClientContent({
+          turns: [{ role: "user", parts: [{ text: GREETING_PROMPT }] }],
+          turnComplete: true,
+        });
+      } catch {
+        /* the learner can still speak first */
+      }
     } catch (err) {
       console.error("[live-coach]", err);
+      await outCtxRef.current?.close().catch(() => undefined);
+      outCtxRef.current = null;
       setError(
         es
           ? "Necesitamos permiso del micrófono para hablar en vivo."
@@ -349,8 +496,9 @@ export function LiveCoach() {
     );
   }
 
-  const scale = 1 + Math.min(0.35, level * 1.8);
   const leftToday = Math.max(0, dailyLimit - usedSeconds);
+  const avatarState: CoachState =
+    phase === "idle" ? "idle" : phase === "connecting" ? "thinking" : coachState;
 
   return (
     <div className="space-y-4">
@@ -361,33 +509,25 @@ export function LiveCoach() {
       </p>
 
       <div className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-6">
-        <div
-          className="flex size-32 items-center justify-center rounded-full bg-primary/15 transition-transform duration-100"
-          style={{ transform: `scale(${phase === "live" ? scale : 1})` }}
-          aria-hidden
-        >
-          <div className="flex size-20 items-center justify-center rounded-full bg-primary/80">
-            {phase === "connecting" || phase === "ending" ? (
-              <Loader2 className="size-7 animate-spin text-primary-foreground" />
-            ) : (
-              <Mic className="size-7 text-primary-foreground" />
-            )}
-          </div>
-        </div>
+        <CoachAvatar state={avatarState} level={level} />
 
         <p className="text-[13px] font-semibold text-foreground">
           {phase === "live"
-            ? es
-              ? `Habla con tu coach · ${mmss(remaining)}`
-              : `Talk to your coach · ${mmss(remaining)}`
+            ? coachState === "speaking"
+              ? es
+                ? `Tu coach está hablando · ${mmss(remaining)}`
+                : `Your coach is talking · ${mmss(remaining)}`
+              : es
+                ? `Te escucha · ${mmss(remaining)}`
+                : `Listening to you · ${mmss(remaining)}`
             : phase === "connecting"
               ? es
                 ? "Conectando…"
                 : "Connecting…"
               : phase === "ending"
                 ? es
-                  ? "Cerrando…"
-                  : "Closing…"
+                  ? "Preparando tus correcciones…"
+                  : "Preparing your corrections…"
                 : es
                   ? "Toca para empezar a hablar"
                   : "Tap to start talking"}
@@ -409,7 +549,11 @@ export function LiveCoach() {
             disabled={phase !== "idle" || leftToday <= 30}
             className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-[13px] font-extrabold uppercase tracking-[0.14em] text-primary-foreground disabled:opacity-50"
           >
-            <Mic className="size-4" aria-hidden />
+            {phase === "ending" ? (
+              <Loader2 className="size-4 animate-spin" aria-hidden />
+            ) : (
+              <Mic className="size-4" aria-hidden />
+            )}
             {es ? "Hablar en vivo" : "Talk live"}
           </button>
         )}
@@ -417,6 +561,23 @@ export function LiveCoach() {
 
       {error ? (
         <p className="text-center text-[13px] font-semibold text-destructive">{error}</p>
+      ) : null}
+
+      {notice ? (
+        <p className="rounded-2xl border border-border bg-secondary p-3 text-center text-[13px] font-semibold text-foreground">
+          {notice}
+        </p>
+      ) : null}
+
+      {feedback ? (
+        <div className="space-y-2 rounded-2xl border border-primary/40 bg-primary/5 p-4">
+          <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-primary">
+            {es ? "Tus correcciones" : "Your corrections"}
+          </p>
+          <p className="whitespace-pre-line text-[13px] leading-relaxed text-foreground">
+            {feedback}
+          </p>
+        </div>
       ) : null}
 
       {lines.length > 0 ? (
