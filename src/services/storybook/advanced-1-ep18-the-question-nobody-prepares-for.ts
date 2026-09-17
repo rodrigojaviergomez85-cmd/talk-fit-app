@@ -154,6 +154,16 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
           text: "Most people freeze up or fill the silence. Take the ten.",
           es: "La mayoría se bloquea o llena el silencio. Tómate los diez.",
         },
+        {
+          speaker: "vale",
+          text: "Before I use them, tell me one thing: is this a role, or is this a purchase?",
+          es: "Antes de usarlos, dime una cosa: ¿esto es un puesto o es una compra?",
+        },
+        {
+          speaker: "keller",
+          text: "That depends entirely on your ten seconds.",
+          es: "Eso depende por completo de tus diez segundos.",
+        },
       ],
       words: [
         { word: "freeze up", es: "bloquearse, paralizarse" },
