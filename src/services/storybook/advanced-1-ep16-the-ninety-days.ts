@@ -157,8 +157,38 @@ export const ADVANCED1_EP16_THE_NINETY_DAYS: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "I started with eleven adult students in a rented room, and I built the method from the ground up because nothing I could buy actually made people speak. For six years I taught, corrected, threw away what didn't work and kept what did. Today I run an academy with a real track record: fourteen teachers, three corporate clients, and attrition under nine percent. What I want next isn't a bigger classroom; it's the method running in three countries, taught by teachers I trained, measured by people who don't work for me.",
-          es: "Empecé con once estudiantes adultos en un cuarto alquilado, y construí el método desde cero porque nada de lo que podía comprar hacía hablar a la gente. Durante seis años enseñé, corregí, tiré lo que no funcionaba y me quedé con lo que sí. Hoy dirijo una academia con un historial real: catorce maestros, tres clientes corporativos y una deserción por debajo del nueve por ciento. Lo que quiero ahora no es un salón más grande; es el método operando en tres países, enseñado por maestros que yo formé y medido por gente que no trabaja para mí.",
+          text: "I started with eleven adult students in a rented room, and I built the method from the ground up because nothing I could buy actually made people speak.",
+          es: "Empecé con once estudiantes adultos en un cuarto alquilado, y construí el método desde cero porque nada de lo que podía comprar hacía hablar a la gente.",
+        },
+        {
+          speaker: "barrett",
+          text: "Six years ago. What did you keep from that room?",
+          es: "Hace seis años. ¿Qué te quedaste de ese cuarto?",
+        },
+        {
+          speaker: "vale",
+          text: "The habit of throwing away whatever didn't work. Today that room is an academy with a real track record: fourteen teachers, three corporate clients and attrition under nine percent.",
+          es: "La costumbre de tirar lo que no funcionaba. Hoy ese cuarto es una academia con un historial real: catorce maestros, tres clientes corporativos y una deserción por debajo del nueve por ciento.",
+        },
+        {
+          speaker: "barrett",
+          text: "And where does that take you next?",
+          es: "¿Y hacia dónde te lleva eso ahora?",
+        },
+        {
+          speaker: "vale",
+          text: "Not to a bigger classroom. To the method running in three countries, taught by teachers I trained.",
+          es: "No a un salón más grande. A que el método opere en tres países, enseñado por maestros que yo formé.",
+        },
+        {
+          speaker: "barrett",
+          text: "Measured by whom?",
+          es: "¿Medido por quién?",
+        },
+        {
+          speaker: "vale",
+          text: "By people who don't work for me. That's the only way the numbers mean anything.",
+          es: "Por gente que no trabaja para mí. Es la única forma de que los números signifiquen algo.",
         },
       ],
       words: [
@@ -216,6 +246,16 @@ export const ADVANCED1_EP16_THE_NINETY_DAYS: StorybookEpisode = {
           speaker: "vale",
           text: "Which is why your numbers are in the plan, not in a footnote. A pilot that wins the contract and loses the service is a pilot that failed.",
           es: "Por eso tus números están en el plan, no en una nota al pie. Un piloto que gana el contrato y pierde el servicio es un piloto fracasado.",
+        },
+        {
+          speaker: "camila",
+          text: "Then I want the service numbers reviewed every thirty days, not at the end.",
+          es: "Entonces quiero que los números de servicio se revisen cada treinta días, no al final.",
+        },
+        {
+          speaker: "vale",
+          text: "Every thirty days, and you present them yourself. They should hear that part from you, not from me.",
+          es: "Cada treinta días, y los presentas tú misma. Esa parte deben escucharla de ti, no de mí.",
         },
       ],
       words: [
@@ -292,8 +332,28 @@ export const ADVANCED1_EP16_THE_NINETY_DAYS: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "It's in. What I've sent them is not a promise; it's a set of dates with my name next to each one. If the numbers move, they keep the method and they keep me. If the numbers don't move by day ninety, they don't need to fire me — I'll bring the evidence to the meeting myself and tell them what I got wrong. That's the difference between someone who wants a contract and someone who wants the work to survive.",
-          es: "Está enviado. Lo que les mandé no es una promesa; es un conjunto de fechas con mi nombre al lado de cada una. Si los números se mueven, se quedan con el método y conmigo. Si no se mueven para el día noventa, no tienen que despedirme: yo misma llevaré la evidencia a la reunión y diré en qué me equivoqué. Esa es la diferencia entre alguien que quiere un contrato y alguien que quiere que el trabajo sobreviva.",
+          text: "It's in. What I've sent them is not a promise; it's a set of dates with my name next to each one.",
+          es: "Está enviado. Lo que les mandé no es una promesa; es un conjunto de fechas con mi nombre al lado de cada una.",
+        },
+        {
+          speaker: "dani",
+          text: "And if the numbers don't move by day ninety?",
+          es: "¿Y si los números no se mueven para el día noventa?",
+        },
+        {
+          speaker: "vale",
+          text: "Then they don't need to fire me. I'll bring the evidence to that meeting myself and tell them exactly what I got wrong.",
+          es: "Entonces no tienen que despedirme. Yo misma llevaré la evidencia a esa reunión y les diré exactamente en qué me equivoqué.",
+        },
+        {
+          speaker: "dani",
+          text: "Most people would have left that line out of the plan.",
+          es: "La mayoría habría dejado esa línea fuera del plan.",
+        },
+        {
+          speaker: "vale",
+          text: "That's the difference between wanting a contract and wanting the work to survive.",
+          es: "Esa es la diferencia entre querer un contrato y querer que el trabajo sobreviva.",
         },
         {
           speaker: "barrett",
