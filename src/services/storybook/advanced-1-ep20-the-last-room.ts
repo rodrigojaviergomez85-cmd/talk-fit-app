@@ -108,6 +108,21 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
           text: "Answer it the way we practised: answer, reason, example.",
           es: "Respóndela como practicamos: respuesta, razón, ejemplo.",
         },
+        {
+          speaker: "elena",
+          text: "My hands are shaking.",
+          es: "Me tiemblan las manos.",
+        },
+        {
+          speaker: "lidia",
+          text: "Let them shake. Start with the answer and the rest will follow.",
+          es: "Que tiemblen. Empieza por la respuesta y lo demás viene solo.",
+        },
+        {
+          speaker: "elena",
+          text: "Yes, we do handle refunds — because the client calls us first, and last week I took six of those calls myself.",
+          es: "Sí, manejamos reembolsos, porque el cliente nos llama primero, y la semana pasada yo misma atendí seis de esas llamadas.",
+        },
       ],
       words: [
         { word: "practised", es: "practicamos" },
