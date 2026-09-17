@@ -11,6 +11,7 @@ import {
   Download,
   Compass,
   Search,
+  ShieldAlert,
 } from "lucide-react";
 import { useAppLang } from "@/lib/i18n";
 import { isInstalledPwa } from "@/lib/pwa";
