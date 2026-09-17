@@ -603,14 +603,23 @@ export function LiveCoach() {
         </p>
 
         {phase === "live" ? (
-          <button
-            type="button"
-            onClick={() => void stop()}
-            className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl bg-destructive px-4 text-[13px] font-extrabold uppercase tracking-[0.14em] text-destructive-foreground"
-          >
-            <Square className="size-4" aria-hidden />
-            {es ? "Terminar" : "End"}
-          </button>
+          <>
+            <button
+              type="button"
+              onClick={() => void stop()}
+              className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl border border-border bg-transparent px-4 text-[13px] font-semibold uppercase tracking-[0.12em] text-muted-foreground"
+            >
+              <Square className="size-3.5" aria-hidden />
+              {es ? "Terminar" : "End"}
+            </button>
+            <p
+              className={`text-[11px] font-medium ${
+                remaining <= 60 ? "text-foreground" : "text-muted-foreground/70"
+              }`}
+            >
+              {mmss(remaining)}
+            </p>
+          </>
         ) : (
           <button
             type="button"
