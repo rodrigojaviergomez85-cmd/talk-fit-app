@@ -197,8 +197,18 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "Same situation, different chair. The client asks for a discount instead of a fix.",
-          es: "Misma situación, otra silla. El cliente pide un descuento en vez de una solución.",
+          text: "Sit down. Coffee's cold, the chair squeaks, and none of that is going to be my problem today.",
+          es: "Siéntate. El café está frío, la silla rechina, y nada de eso va a ser mi problema hoy.",
+        },
+        {
+          speaker: "dani",
+          text: "You're enjoying this.",
+          es: "Estás disfrutando esto.",
+        },
+        {
+          speaker: "vale",
+          text: "A little. Same situation, different chair: the client asks for a discount instead of a fix.",
+          es: "Un poco. Misma situación, otra silla: el cliente pide un descuento en vez de una solución.",
         },
         {
           speaker: "dani",
