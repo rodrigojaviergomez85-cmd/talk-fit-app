@@ -247,6 +247,16 @@ export const ADVANCED1_EP16_THE_NINETY_DAYS: StorybookEpisode = {
           text: "Which is why your numbers are in the plan, not in a footnote. A pilot that wins the contract and loses the service is a pilot that failed.",
           es: "Por eso tus números están en el plan, no en una nota al pie. Un piloto que gana el contrato y pierde el servicio es un piloto fracasado.",
         },
+        {
+          speaker: "camila",
+          text: "Then I want the service numbers reviewed every thirty days, not at the end.",
+          es: "Entonces quiero que los números de servicio se revisen cada treinta días, no al final.",
+        },
+        {
+          speaker: "vale",
+          text: "Every thirty days, and you present them yourself. They should hear that part from you, not from me.",
+          es: "Cada treinta días, y los presentas tú misma. Esa parte deben escucharla de ti, no de mí.",
+        },
       ],
       words: [
         { word: "building up to", es: "llegando poco a poco a" },
