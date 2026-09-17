@@ -461,7 +461,7 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
         },
       ],
       words: [
-        { word: "follow-up", es: "repregunta, seguimiento" },
+        { word: "script", es: "guion" },
         { word: "confirmed", es: "confirmado" },
         { word: "represented", es: "representados" },
       ],
