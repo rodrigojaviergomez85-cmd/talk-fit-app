@@ -11,6 +11,7 @@ import {
   Download,
   Compass,
   Search,
+  ShieldAlert,
 } from "lucide-react";
 import { useAppLang } from "@/lib/i18n";
 import { isInstalledPwa } from "@/lib/pwa";
@@ -101,6 +102,13 @@ const STRINGS = {
     copyLink: "COPIAR LINK",
     copied: "¡COPIADO!",
     continueBrowser: "CONTINUAR EN EL NAVEGADOR",
+    apkTitle: "¿TE APARECE “SE BLOQUEÓ LA APP NO SEGURA”?",
+    apkIntro:
+      "Ese aviso sale cuando instalaste Fluency App con un archivo que te pasaron por WhatsApp. Ese archivo ya no sirve y Android lo bloquea. Instálala desde el navegador, así:",
+    apkStep1: "Mantén presionado el ícono viejo de Fluency App y toca “Desinstalar”.",
+    apkStep2: "Abre Chrome y entra a fluencye4cc.app/install",
+    apkStep3: "Instala desde esta misma página. No necesitas descargar ningún archivo.",
+    apkNote: "Es la misma app, con tu cuenta y tu progreso. Nada se pierde.",
   },
   en: {
     title: "INSTALL FLUENCY APP",
@@ -139,6 +147,13 @@ const STRINGS = {
     copyLink: "COPY LINK",
     copied: "COPIED!",
     continueBrowser: "CONTINUE IN BROWSER",
+    apkTitle: "SEEING “UNSAFE APP BLOCKED”?",
+    apkIntro:
+      "That warning appears when Fluency App was installed from a file shared on WhatsApp. That file no longer works and Android blocks it. Install from the browser instead:",
+    apkStep1: "Press and hold the old Fluency App icon and tap “Uninstall”.",
+    apkStep2: "Open Chrome and go to fluencye4cc.app/install",
+    apkStep3: "Install from this same page. No file download needed.",
+    apkNote: "It is the same app, with your account and your progress. Nothing is lost.",
   },
 } as const;
 
@@ -435,6 +450,30 @@ function InstallPage() {
             </button>
           </>
         )}
+
+        {env !== null && env !== "installed" && !justInstalled && !env.startsWith("ios") ? (
+          <section className="w-full rounded-2xl border border-border bg-card p-4 text-left shadow-card">
+            <div className="mb-2 flex items-start gap-2">
+              <ShieldAlert className="mt-0.5 size-5 shrink-0 text-primary" />
+              <h2 className="text-sm font-extrabold uppercase leading-5 tracking-wide text-foreground">{s.apkTitle}</h2>
+            </div>
+            <p className="mb-3 text-sm leading-6 text-muted-foreground">{s.apkIntro}</p>
+            <div className="flex w-full flex-col gap-2.5">
+              <StepRow n={1}>{s.apkStep1}</StepRow>
+              <StepRow n={2}>{s.apkStep2}</StepRow>
+              <StepRow n={3}>{s.apkStep3}</StepRow>
+            </div>
+            <p className="mt-3 text-xs font-semibold text-muted-foreground">{s.apkNote}</p>
+            <button
+              type="button"
+              onClick={copy}
+              className="mt-3 flex min-h-11 w-full items-center justify-center gap-2 rounded-2xl border border-border px-4 text-xs font-bold uppercase tracking-wide text-foreground"
+            >
+              {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+              {copied ? s.copied : s.copyLink}
+            </button>
+          </section>
+        ) : null}
 
         {/* Secondary actions */}
         <div className="mt-auto flex w-full flex-col items-center gap-4 pt-8">
