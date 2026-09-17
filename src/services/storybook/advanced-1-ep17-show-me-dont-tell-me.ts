@@ -72,6 +72,16 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           text: "I don't hate it. If I chose alone, the committee would call the choice loyalty rather than competence.",
           es: "No lo odio. Si eligiera sola, el comité llamaría lealtad a la elección en vez de competencia.",
         },
+        {
+          speaker: "barrett",
+          text: "You wrote the ninety days on Monday. Whoever sits in that chair has to survive them with you.",
+          es: "Escribiste los noventa días el lunes. Quien se siente en esa silla tiene que sobrevivirlos contigo.",
+        },
+        {
+          speaker: "vale",
+          text: "Which is exactly why I want them tested by you and not comforted by me.",
+          es: "Que es justamente por qué quiero que tú los pruebes y que yo no los consienta.",
+        },
       ],
       words: [
         { word: "loyalty", es: "lealtad" },
@@ -98,6 +108,21 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
           text: "In other words, show me, don't tell me.",
           es: "En otras palabras, demuéstramelo, no me lo cuentes.",
         },
+        {
+          speaker: "barrett",
+          text: "Precisely. And if a number is missing, I'll ask who could verify the story.",
+          es: "Exacto. Y si falta un número, preguntaré quién podría verificar la historia.",
+        },
+        {
+          speaker: "vale",
+          text: "Then I'll sit at the end of the table and say nothing until you're finished.",
+          es: "Entonces me sentaré al final de la mesa y no diré nada hasta que termines.",
+        },
+        {
+          speaker: "barrett",
+          text: "I'll believe that when I see it. Send in the first one.",
+          es: "Eso lo creeré cuando lo vea. Que pase la primera.",
+        },
       ],
       words: [
         { word: "claim", es: "afirmación" },
@@ -105,6 +130,7 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
         { word: "competency", es: "por competencias" },
       ],
     },
+
     {
       id: "s3",
       image: s3,
