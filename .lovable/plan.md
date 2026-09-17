@@ -17,7 +17,8 @@ Tu cuenta tiene el nivel guardado **Tigers**, pero tu única inscripción en la 
 
 - **Nueva función de base de datos `league_switch_level(_module_id text, _curriculum_week smallint)`** (security definer): para el usuario autenticado borra sus `league_rewards` y `league_memberships` de todas las competencias **abiertas** (`closed = false`) que no sean la cohorte destino, y luego llama a `league_ensure_membership` para crear la membresía en el nuevo módulo/semana con 0 puntos. Las competencias cerradas no se tocan. Sin GRANT a `anon`.
 - **`src/lib/league.functions.ts`**: nueva función de servidor `switchLeagueLevel` con `requireSupabaseAuth` que valida la cohorte con `isLeagueCohort` y llama a la RPC.
-- **`src/services/cloud-sync.ts` → `changeLevel`**: tras guardar `current_module_id`, calcula el día inicial del alumno en el módulo destino (`JourneyService.startDay` / `currentDay`) y su semana de currículo, y llama a `switchLeagueLevel`. Si el usuario no está autenticado, se omite.
+- **`src/services/cloud-sync.ts` → `changeLevel(moduleId, startWeek)`**: acepta la semana elegida, la guarda en `user_preferences.start_week` junto con `current_module_id`, y llama a `switchLeagueLevel` con esa semana (día 1/6/11/16 según la semana). Si no hay sesión, se omite la parte de liga.
+- **`src/routes/level.tsx`**: tras elegir módulo, un segundo paso reutiliza el selector de semana del onboarding (`src/routes/onboarding.tsx`) antes del diálogo de confirmación; al confirmar navega a Inicio como hoy.
 - **`src/routes/liga.tsx`**:
   - `loadFor` deja de usar `JourneyService.nextPractice` como origen: usa `from`/`day` de la URL cuando existen y, si no, `JourneyService.currentModule` + su día actual (nivel guardado).
   - Se elimina la condición `(from !== moduleId || fromDay !== day)` que saltaba la consulta por cohorte; siempre se pide la cohorte pedida.
