@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Loader2, MessageCircle, Send } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { LiveCoach } from "@/components/fluency/LiveCoach";
+import { PracticeCoach } from "@/components/fluency/PracticeCoach";
 import { useAppLang } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { getFreshSession } from "@/lib/session-keeper";
