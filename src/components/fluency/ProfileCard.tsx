@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 const TEXT = {
   es: {
     title: "MI PERFIL",
-    portal: "Mi Portal",
+    portal: "PERFIL DE ESTUDIANTE",
     name: "Nombre visible",
     save: "GUARDAR",
     saved: "Listo, se guardó tu perfil.",
