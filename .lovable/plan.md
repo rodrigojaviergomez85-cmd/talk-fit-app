@@ -7,7 +7,8 @@ Tu cuenta tiene el nivel guardado **Tigers**, pero tu única inscripción en la 
 ## Qué va a quedar
 
 1. **La liga que se abre es la de tu nivel actual.** Al entrar desde un día de Tigers (o desde el menú), verás Tigers de esa semana, aunque todavía tengas 0 puntos, con la tabla de ese grupo. Nunca se cambiará sola a otro nivel.
-2. **Al cambiar de nivel te inscribes de inmediato en el nuevo.** Apenas confirmas el cambio, apareces en la tabla del nuevo nivel con 0 puntos y puedes empezar a sumar ese mismo día.
+2. **Al cambiar de nivel, la app te pregunta la semana.** Después de elegir el nivel en Mi Cuenta, aparece un paso para escoger Semana 1, 2, 3 o 4 (igual que en el registro inicial, días 1, 6, 11 o 16). Con eso quedas inscrito en la liga correcta de ese nivel.
+3. **Te inscribes de inmediato en el nuevo nivel.** Apenas confirmas, apareces en la tabla del nuevo nivel y semana con 0 puntos y puedes empezar a sumar ese mismo día.
 3. **Los puntos de la semana en curso del nivel anterior se borran.** Sales de esa liga y tus puntos de la semana desaparecen, tal como acordamos. Las semanas ya cerradas se conservan en el historial para consulta.
 4. **Aviso claro antes de confirmar.** La ventana de "Cambiar mi nivel" dirá que perderás los puntos de la liga de esta semana y que empezarás desde cero en el nivel nuevo.
 5. **Cuentas admin / sin límites** siguen pudiendo observar la liga de otros niveles en solo lectura, sin inscribirse ni sumar puntos.
