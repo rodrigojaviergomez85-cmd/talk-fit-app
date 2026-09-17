@@ -134,6 +134,9 @@ describe("liga semanal — cohortes de todo el curso", () => {
     expect(getStorySlot("tigers", 20)?.episodeId).toBe("tigers-ep20-defend-your-decision");
     // Advanced 1 is fully published (days 1-20).
     expect(getStorySlot("advanced-1", 11)?.episodeId).toBeTruthy();
+    expect(getStorySlot("advanced-1", 16)?.episodeId).toBe("advanced1-ep16-the-ninety-days");
+    expect(getStorySlot("advanced-1", 20)?.episodeId).toBe("advanced1-ep20-the-last-room");
+    expect(getLeagueCohort("advanced-1", 4)?.stories).toHaveLength(5);
     expect(getStorySlot("advanced-2", 1)).toBeUndefined();
   });
 
