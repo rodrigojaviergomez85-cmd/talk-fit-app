@@ -178,7 +178,13 @@ function AiCoachPage() {
       );
 
   return (
-    <AppShell title={t("aiCoach.title")} subtitle={liveActive ? undefined : t("aiCoach.subtitle")} hideSync hideHeader={liveActive} hideNav={liveActive}>
+    <AppShell
+      title={t("aiCoach.title")}
+      {...(!liveActive ? { subtitle: t("aiCoach.subtitle") } : {})}
+      hideSync
+      hideHeader={liveActive}
+      hideNav={liveActive}
+    >
       <div
         className={`${liveActive ? "hidden" : "mb-4 grid"} gap-2 rounded-2xl border border-border bg-card p-1 ${
           practiceAllowed ? "grid-cols-3" : "grid-cols-2"
