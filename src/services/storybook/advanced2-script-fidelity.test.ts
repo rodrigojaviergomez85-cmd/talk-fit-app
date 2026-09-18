@@ -26,6 +26,26 @@ const APPROVED_LINES: Record<string, string[]> = {
     "You didn't need me to. That's the whole point of the chair.",
     "It's not magic. It's about six hours.",
   ],
+  "advanced2-ep6-keller-at-the-door": [
+    "That's what fighting for her looks like when the other side didn't ask any.",
+    "Crown's offer is twenty percent more money to not go to university. She didn't ask me either.",
+  ],
+  "advanced2-ep7-value-first": [
+    "Price first sounds like a trick. Value first sounds like help. Watch one and then take one.",
+    "Two breakfasts is more than fifteen dollars where I live. Give me the balcony.",
+  ],
+  "advanced2-ep8-crown-or-here": [
+    "Nico said it first. I'm just repeating it to Bogotá.",
+    "He said Crown twice in one answer. Is that allowed?",
+  ],
+  "advanced2-ep9-too-expensive": [
+    "You don't win a price argument. Nobody does. You move the conversation to what the price buys.",
+    "Then you didn't win anything yet. Go eat.",
+  ],
+  "advanced2-ep10-dont-make-it-weird": [
+    "Don't. Make it. Weird. I'm staying. I told Keller this morning.",
+    "A summary is not a next step. I need the files. In Bogotá we don't grade summaries.",
+  ],
 };
 
 /** Characters must never name the course machinery inside the story. */
@@ -50,7 +70,7 @@ describe("Advanced 2 — fidelity to the approved scripts", () => {
     });
   }
 
-  it("no Advanced 2 week 1 character talks about the course from inside the story", () => {
+  it("no Advanced 2 character talks about the course from inside the story", () => {
     const ids = Object.keys(APPROVED_LINES);
     const episodes = STORYBOOK_EPISODES.filter((e) => ids.includes(e.id));
     expect(episodes.length).toBe(ids.length);

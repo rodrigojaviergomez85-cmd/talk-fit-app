@@ -2102,6 +2102,26 @@ export const BASE_GLOSSARY: Record<string, string> = {
   'mentorship': 'mentorías / guía',
   'threat': 'amenaza',
   'lighting': 'iluminación',
+  'husband': 'esposo',
+  'match': 'igualar (una oferta); coincidir',
+  'main': 'principal',
+  'weird': 'raro / incómodo',
+  'phone-plan': 'de plan telefónico',
+  'two-to-ten': 'de dos a diez (turno)',
+  'guest': 'huésped',
+  'mention': 'mencionar',
+  'flight': 'vuelo',
+  'thirty-minute': 'de treinta minutos',
+  'club': 'club',
+  'recommend': 'recomendar',
+  'university': 'universidad',
+  'nine-fifteen': 'nueve y quince',
+  'basic': 'básico',
+  'mijo': 'mijo (dicho en español, cariñoso)',
+  'mamá': 'mamá (dicho en español)',
+  'fifth': 'quinto; el cinco (del mes)',
+  'wife': 'esposa',
+  'um': 'um (muletilla de duda)',
 };
 
 
@@ -2261,6 +2281,7 @@ export const CONTRACTIONS: Record<string, string> = {
   "haven't": "no he / no han",
   "hasn't": "no ha",
   "doesnt": "no (negación con does)",
+  "he'll": "él va a (futuro)",
 };
 
 /** Frequent irregular past forms: [Spanish meaning, base form]. */
