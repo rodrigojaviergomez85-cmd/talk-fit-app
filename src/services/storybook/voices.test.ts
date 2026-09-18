@@ -3,13 +3,21 @@ import fs from "node:fs";
 import path from "node:path";
 import { STORYBOOK_EPISODES } from "./index";
 import { STORYBOOK_SEASONS } from "./seasons";
-import { speakerSound, canonicalSpeaker } from "./voices";
+import { speakerGain, speakerSound, canonicalSpeaker } from "./voices";
 import type { StorybookSpeaker } from "./types";
 
 const ASSETS = path.resolve(process.cwd(), "src/assets/storybook");
 const MAX_BYTES = 300_000;
 
 describe("storybook character voices", () => {
+  it("amplifies only Óscar and Mía", () => {
+    expect(speakerGain("oscar")).toBeGreaterThan(1);
+    expect(speakerGain("mia")).toBeGreaterThan(1);
+    expect(speakerGain("beto")).toBe(1);
+    expect(speakerGain("dylan")).toBe(1);
+    expect(speakerGain("vale")).toBe(1);
+  });
+
   it("no two characters inside the same season share the same voice", () => {
     for (const season of STORYBOOK_SEASONS) {
       const ids = season.slots.map((slot) => slot.episodeId).filter(Boolean) as string[];

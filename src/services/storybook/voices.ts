@@ -81,6 +81,12 @@ export function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
   return "story";
 }
 
+/** Extra playback gain for source voices whose generated audio is consistently quiet. */
+export function speakerGain(speaker: StorybookSpeaker | undefined): number {
+  if (speaker === "oscar" || speaker === "mia") return 1.8;
+  return 1;
+}
+
 /** Voice identity used for uniqueness checks: same voice + same tone = same sound. */
 export function speakerSound(speaker: StorybookSpeaker | undefined): string {
   return `${speakerVoice(speaker)}::${speakerTone(speaker)}`;

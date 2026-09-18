@@ -4,7 +4,7 @@
  */
 
 import { AudioService } from "@/services/audio-service";
-import { speakerTone, speakerVoice } from "./voices";
+import { speakerGain, speakerTone, speakerVoice } from "./voices";
 import type { StorybookLine } from "./types";
 
 export type DialogueOptions = {
@@ -46,6 +46,7 @@ export function startDialogue(
       rate: options.rate ?? 1,
       voice: speakerVoice(line.speaker),
       tone: speakerTone(line.speaker),
+      gain: speakerGain(line.speaker),
       allowBrowserFallback: false,
       onEnd: () => {
         if (cancelled) return;
