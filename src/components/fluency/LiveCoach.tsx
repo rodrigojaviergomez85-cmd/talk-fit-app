@@ -708,20 +708,18 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       }
     } catch (err) {
       console.error("[live-coach]", err);
-      await outCtxRef.current?.close().catch(() => undefined);
-      if (mouthFrameRef.current !== null) window.cancelAnimationFrame(mouthFrameRef.current);
-      mouthFrameRef.current = null;
-      outAnalyserRef.current = null;
-      setCoachLevel(0);
-      outCtxRef.current = null;
-      setError(
-        es
-          ? "Necesitamos permiso del micrófono para hablar en vivo."
-          : "We need microphone access to talk live.",
-      );
-      setPhase("idle");
+      const wasCancelled = cancelled();
+      await abandon();
+      if (!wasCancelled) {
+        setError(
+          es
+            ? "Necesitamos permiso del micrófono para hablar en vivo."
+            : "We need microphone access to talk live.",
+        );
+      }
     }
   }
+
 
   if (allowed === false) {
     return (
