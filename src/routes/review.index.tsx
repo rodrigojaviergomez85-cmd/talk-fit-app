@@ -23,6 +23,14 @@ function ReviewIndex() {
   return (
     <AppShell>
       <div className="space-y-4 p-4">
+        <Link
+          to="/practicar"
+          className="inline-flex items-center gap-1 text-xs font-extrabold uppercase text-primary"
+        >
+          <ChevronLeft className="size-4" aria-hidden="true" />
+          {showEs ? "Volver a Repaso" : "Back to Practice"}
+        </Link>
+
         <header>
           <h1 className="text-2xl font-extrabold text-foreground">Review</h1>
           <p className="text-sm text-muted-foreground">
