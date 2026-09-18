@@ -261,6 +261,25 @@ function ProfilePage() {
           </button>
         )}
 
+        {userEmail ? (
+          <section className="space-y-3 rounded-3xl border border-destructive/30 bg-card p-5 shadow-[var(--shadow-card)]">
+            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-destructive">
+              {esUi ? "Zona de riesgo" : "Danger zone"}
+            </p>
+            <p className="text-[13px] text-muted-foreground">
+              {esUi
+                ? "Elimina tu cuenta, tu correo, tu nombre y tus grabaciones. Es inmediato e irreversible."
+                : "Delete your account, email, name and recordings. Immediate and irreversible."}
+            </p>
+            <Link
+              to="/eliminar-cuenta"
+              className="inline-flex min-h-[48px] w-full items-center justify-center rounded-2xl bg-destructive px-5 text-[13px] font-bold uppercase tracking-[0.14em] text-destructive-foreground"
+            >
+              {esUi ? "Eliminar mi cuenta" : "Delete my account"}
+            </Link>
+          </section>
+        ) : null}
+
       </div>
     </AppShell>
   );

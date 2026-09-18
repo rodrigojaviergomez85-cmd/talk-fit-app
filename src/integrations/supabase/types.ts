@@ -404,6 +404,24 @@ export type Database = {
         }
         Relationships: []
       }
+      deletion_log: {
+        Row: {
+          deleted_at: string
+          email_sha256: string
+          id: string
+        }
+        Insert: {
+          deleted_at?: string
+          email_sha256: string
+          id?: string
+        }
+        Update: {
+          deleted_at?: string
+          email_sha256?: string
+          id?: string
+        }
+        Relationships: []
+      }
       final_audio_coach_feedback: {
         Row: {
           answered_task: string | null
@@ -1770,6 +1788,10 @@ export type Database = {
       admin_engagement_metrics: { Args: never; Returns: Json }
       admin_health_snapshot: { Args: never; Returns: Json }
       admin_story_metrics: { Args: never; Returns: Json }
+      anonymize_account: {
+        Args: { _email_sha256: string; _user_id: string }
+        Returns: string
+      }
       apply_admin_settings: {
         Args: {
           _admin_email: string
