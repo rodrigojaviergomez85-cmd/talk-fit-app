@@ -575,13 +575,24 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
             if (userText) {
               heardVoiceRef.current = true;
               setNotice(null);
-              setLines((prev) => appendLine(prev, "you", userText));
+              setTranscript((prev) =>
+                appendFragment(prev, { id: `you-${userTurnRef.current}`, role: "you", text: userText }),
+              );
             }
             const coachText = content?.outputTranscription?.text;
             if (coachText) {
               if (collectingSummaryRef.current) summaryTextRef.current += coachText;
-              else setLines((prev) => appendLine(prev, "coach", coachText));
+              else
+                setTranscript((prev) =>
+                  appendFragment(prev, {
+                    id: `coach-${coachTurnRef.current}`,
+                    role: "coach",
+                    kind: helpKindRef.current ?? "question",
+                    text: coachText,
+                  }),
+                );
             }
+
 
             const parts = content?.modelTurn?.parts ?? [];
              if (parts.length === 0 && !content?.turnComplete && !content?.inputTranscription) {
