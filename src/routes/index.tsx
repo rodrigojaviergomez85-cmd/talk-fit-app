@@ -143,6 +143,10 @@ function HomePage() {
           {t("report.betaShort")} ·{" "}
           <Link to="/report" className="font-bold text-primary underline underline-offset-2">
             {t("report.reportLink")}
+          </Link>{" "}
+          ·{" "}
+          <Link to="/soporte" className="font-bold text-primary underline underline-offset-2">
+            {lang === "es" ? "Soporte" : "Support"}
           </Link>
         </p>
       </div>
