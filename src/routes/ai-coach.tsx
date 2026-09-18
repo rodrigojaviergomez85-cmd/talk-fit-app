@@ -80,18 +80,24 @@ function AiCoachPage() {
   useEffect(() => {
     inputRef.current?.focus();
     void refreshQuota();
-    // Private pilot: the turn-based practice tab only appears for allow-listed accounts.
+    // Private pilot: the live and turn-based tabs only appear for allow-listed accounts.
     void (async () => {
       try {
         const headers = await authHeaders();
         if (!headers) return;
-        const res = await fetch("/api/coach-practice", { headers });
-        const body = (await res.json().catch(() => null)) as { allowed?: boolean } | null;
-        setPracticeAllowed(Boolean(body?.allowed));
+        const [practiceRes, liveRes] = await Promise.all([
+          fetch("/api/coach-practice", { headers }),
+          fetch("/api/live-coach", { headers }),
+        ]);
+        const practiceBody = (await practiceRes.json().catch(() => null)) as { allowed?: boolean } | null;
+        const liveBody = (await liveRes.json().catch(() => null)) as { allowed?: boolean } | null;
+        setPracticeAllowed(Boolean(practiceBody?.allowed));
+        setLiveAllowed(Boolean(liveBody?.allowed));
       } catch {
-        /* tab stays hidden */
+        /* tabs stay hidden */
       }
     })();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
