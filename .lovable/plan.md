@@ -1,39 +1,35 @@
-# Temporadas 10 y 11 de El mundo de Vale: solo la estructura
+# Paso 1 · Escucha — nuevo diseño (solo Basic Zero, Week 1)
 
-Registrar Advanced 2 (Temporada 10) y Advanced 3 (Temporada 11) con sus 20 huecos por temporada, sumar los cuatro personajes nuevos al canon con sus voces, y dejar instaladas las pruebas que van a exigir alineación con el día del curso. No se escribe ningún episodio.
+Rediseño visual de la pantalla de escucha que ves en la referencia: fondo claro, título grande, tarjeta azul marino con el reto del día y tarjeta durazno con el personaje y el reproductor. Solo aparece en Basic Zero, semana 1 (días 1–5), en el Paso 1. Todo lo demás del curso mantiene su apariencia actual.
 
-## 1. Las dos portadas
+## Qué verá el estudiante
 
-Dos imágenes cuadradas nuevas, mismo estilo del resto del storybook (768x768, JPG progresivo, menos de 250 KB):
+1. Encabezado compacto: flecha de volver, marca "fluency" y menú de tres puntos con "Siguiente paso" y "Salir" (los mismos botones que hoy, solo reubicados). Debajo: "Día 3 · Paso 1 de 5 · Escucha" con cinco segmentos de progreso, el primero activo.
+2. Título "Tu día, en inglés." con subrayado naranja decorativo y la línea "Primero escucha. Después, tú."
+3. Tarjeta azul marino "TU RETO" con la pregunta real del día, más "Traducir" y "Oír pregunta".
+4. Tarjeta durazno "Escucha a {personaje}" / "Una respuesta de ejemplo": avatar del personaje del día (iniciales si no hay imagen verificada), onda decorativa, tiempo y barra de avance reales, botón naranja grande "Escuchar ejemplo" y, debajo, "Ver texto".
+5. Al pie: "Continuar" (desactivado hasta que termine el ejemplo, con la ayuda "Escucha el ejemplo o salta por ahora") y el enlace "Saltar por ahora" siempre visible y funcional.
 
-- `src/assets/storybook/advanced-2-season/cover.jpg` — Dani con diadema de call center en el piso de Northline, de pie entre cubículos, agentes jóvenes al fondo, luz de tarde; un jefe que todavía toma llamadas.
-- `src/assets/storybook/advanced-3-season/cover.jpg` — Dani en un set improvisado de transmisión en vivo: teléfono en trípode, anillo de luz, responde preguntas sin papeles en la mano.
+## Qué se conserva sin cambios
 
-Canon de Dani en ambas: piel morena clara, pelo negro rizado corto, sin lentes, camisa celeste. Sin texto ni logos legibles. Son obligatorias: sin ellas las temporadas no compilan.
+- Pregunta, traducciones, frases del día, voz y personaje vienen del contenido actual de cada día (día 3 = Daniel, no Vale).
+- Mismo reproductor y mismo servicio de audio: cargar, pausar, reanudar, repetir, reintentar tras error y sin que suenen pregunta y ejemplo a la vez.
+- "Ver texto" muestra todas las frases en orden con sus traducciones y no reinicia el audio.
+- Ayuda global en español, confirmación al salir, reanudar sesión, avance desde el encabezado y las ayudas del día (Power Chunks, imagen de escena, tarjetas de verbos, tira de historia) cuando existan.
+- Sin grabación, micrófono, puntajes ni intentos en el Paso 1. La barra de progreso es indicador, no deslizador; "1×" es solo informativo.
 
-## 2. El diff de soporte (cuatro archivos)
+## Detalles técnicos
 
-Se aplica tal cual lo adjunto; ya verifiqué que el contexto de las cuatro secciones coincide con el proyecto actual.
-
-- `types.ts` — se suman `nico`, `julieta`, `oscar`, `estela` a la unión de hablantes.
-- `character-canon.ts` — `advanced-2` y `advanced-3` entran a la lista de temporadas; se crean los cuatro personajes; se extienden las temporadas permitidas de Dani, Camila, Tito, Morgan, Elena, Barrett, Lidia, Keller y Mía.
-- `voices.ts` — Nico: `youngMaleCalm` / `neutral`. Julieta: `female` / `earnest`. Óscar: `shyBoy` / `shy`. Doña Estela: `femaleMature` / `story`.
-- `seasons.ts` — importa las dos portadas y registra las temporadas 10 y 11, cada una con 20 huecos, `episodeId: null` y su avance en inglés y español.
-
-Reglas que se respetan: `mom` (mamá de Vale) no se agrega a las temporadas nuevas — la mamá de Dani es Doña Estela, personaje propio, para que no se repita el sonido dentro de una misma temporada. No se usa el nombre Rosa.
-
-## 3. Las dos pruebas nuevas de currículo
-
-`advanced2-curriculum-alignment.test.ts` y `advanced3-curriculum-alignment.test.ts` se copian tal cual a `src/services/storybook/`. Verifican 20 días exactos del 1 al 20 y que cada episodio publicado practique el marco de su propio día; los huecos se saltan, así que hoy pasan en verde y empiezan a exigir en cuanto salga el primer episodio.
-
-## 4. Regla de "no hablar del curso" ampliada
-
-En `advanced1-script-fidelity.test.ts`, la lista fija de cuatro episodios del cierre de Advanced 1 pasa a incluir además, de forma dinámica, todos los episodios de `advanced-2` y `advanced-3` registrados en el catálogo. Así la prohibición de decir "B2", "Advanced 2", "Advanced 3", "Your turn" o "framework" cubre las temporadas nuevas a medida que se publiquen, sin tocar las verificaciones existentes de Advanced 1.
-
-## 5. Fuera de alcance
-
-Ningún episodio, ningún arte de escena, ningún cambio a cursos, ruta de práctica, progreso, grabaciones, estrellas, puntos de liga ni glosario. El catálogo mostrará las dos temporadas según la lógica de desbloqueo existente, con sus veinte avances como próximamente.
+- Condición única de activación en `src/routes/practice.tsx`: `moduleId === "basic-zero" && day.week === 1 && stage === 1`. Aplica al encabezado, al fondo y al contenido; cualquier otro caso usa el render actual.
+- Nuevo componente de presentación `src/components/fluency/Week1ListenScreen.tsx`, que recibe `day`, `showEs`, `onNext` y reutiliza `AudioPlayer`, `TranslatableText`, `TextToggle`/`LineCard`, `PowerChunks`, `SceneImage`, `PastVerbCards`, `StoryStrip`. El estado `heard` / `showText` sigue igual que en `Rep1Listen` (solo `onEnd` del modelo marca `heard`).
+- Encabezado propio compacto (variante nueva, no se toca `RepProgress` para el resto de pantallas) con `onBack`, `onNext`, `onExit` ya existentes; los índices internos (`stage 0…5`, `total={6}`) no cambian, solo se dibujan cinco segmentos.
+- Nombre del personaje: se añade un campo opcional (p. ej. `speaker?: { name: string }`) en `CourseDay` y se rellena desde la `Person` ya definida en `src/services/basic-zero-course.ts` (Carlos, Sofia, Daniel, Valeria, Miguel). Sin imagen verificada se muestran iniciales; si no se resuelve el nombre, la tarjeta dice "Escucha el ejemplo".
+- Duración/posición desde el `onProgress` del reproductor; si no hay duración se muestra `--:--`. Onda decorativa con `aria-hidden`, sin análisis de audio.
+- Textos nuevos de interfaz mediante el sistema de traducciones del proyecto.
+- Colores mapeados a los tokens existentes (fondo cálido, navy, naranja, durazno, borde suave); no se alteran valores globales de tema.
 
 ## Verificación
 
-Suite completa de pruebas y chequeo de tipos. Al final informo archivos creados y modificados, y los nombres finales de las dos portadas.
+- Tipos y pruebas existentes del proyecto.
+- Capturas móviles a 360 / 390 / 430 px: estado inicial, texto abierto y traducción abierta.
+- Recorrido de los cinco días de Week 1 comprobando pregunta, personaje, voz y frases; y comprobación de que intro, pasos 2–5, Week 2 y otro módulo conservan su diseño actual.
