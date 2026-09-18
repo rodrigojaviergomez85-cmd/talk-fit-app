@@ -350,6 +350,9 @@ function ContactPage() {
             <Link to="/privacy-policy" className="text-primary-foreground underline underline-offset-4">
               {t.links.privacy}
             </Link>
+            <Link to="/mis-solicitudes" className="text-primary-foreground underline underline-offset-4">
+              {lang === "es" ? "Estado de mis solicitudes" : "My request status"}
+            </Link>
           </div>
           <p className="mt-4 flex items-center gap-1.5 text-xs opacity-70">
             <Mail className="h-3.5 w-3.5" /> {SUPPORT_EMAIL}
