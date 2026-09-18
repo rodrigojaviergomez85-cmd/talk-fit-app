@@ -63,6 +63,26 @@ const APPROVED_LINES: Record<string, string[]> = {
     "I wasn't missing words. I had all the words. I was missing five seconds.",
     "It's the room. Leave that chair where it is. Somebody's going to need it before I do.",
   ],
+  "advanced3-ep16-the-knock": [
+    "What I learned was that nobody asks the person they're helping to be worth it first.",
+    "I'm going to tell her it's paid.",
+  ],
+  "advanced3-ep17-three-years": [
+    "Three years ago I couldn't finish a sentence in this chair. I'm sitting in it.",
+    "Nobody's typing. Forty-one thousand people and nobody's typing.",
+  ],
+  "advanced3-ep18-monterrey": [
+    "The signature is mine.",
+    "I heard the alarm. I talked anyway.",
+  ],
+  "advanced3-ep19-what-i-didnt-say": [
+    "What I learned was that the thing I don't say doesn't disappear. It waits.",
+    "We're fine.",
+  ],
+  "advanced3-ep20-headset-on-again": [
+    "Thanks for calling Northline. How can I help you today?",
+    "...Window, please. I want to see where the bus goes.",
+  ],
 };
 
 const FORBIDDEN_IN_DIALOGUE = ["B2", "C1", "Advanced 2", "Advanced 3", "Your turn", "framework"];
