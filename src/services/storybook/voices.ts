@@ -41,6 +41,7 @@ export function speakerVoice(speaker: StorybookSpeaker | undefined): ModelVoice 
   if (speaker === "oscar") return "shyBoy";
   if (speaker === "estela") return "femaleMature";
   if (speaker === "caller") return "femaleMature";
+  if (speaker === "abril") return "femaleBright";
   if (speaker === "keller") return "femaleBright";
   if (speaker === "candidateM") return "youngMaleCalm";
   if (speaker === "candidateF") return "femaleBright";
@@ -74,6 +75,7 @@ export function speakerTone(speaker: StorybookSpeaker | undefined): ModelTone {
   if (speaker === "oscar") return "nervous";
   if (speaker === "estela") return "story";
   if (speaker === "caller") return "neutral";
+  if (speaker === "abril") return "shy";
   if (speaker === "keller") return "pro";
   if (speaker === "candidateM") return "neutral";
   if (speaker === "candidateF") return "neutral";
@@ -126,6 +128,7 @@ export function speakerName(speaker: StorybookSpeaker | undefined): string {
     oscar: "Óscar",
     estela: "Doña Estela",
     caller: "Customer",
+    abril: "Abril",
     keller: "Ms. Keller",
     candidateM: "Candidate",
     candidateF: "Candidate",

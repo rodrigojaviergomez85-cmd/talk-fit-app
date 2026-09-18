@@ -341,6 +341,15 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     seasons: ["advanced-2", "advanced-3"],
     neverDo: ["never confused with Vale's mother", "never drawn in an office"],
   },
+  abril: {
+    id: "abril",
+    name: "Abril",
+    age: "Salvadoran girl, 17, Nico's younger sister, new academy student",
+    look: "medium-brown skin, straight black hair in a heavy fringe like Nico's, small serious face, adult proportions, no makeup",
+    outfit: "plain white shirt and a school backpack",
+    seasons: ["advanced-3"],
+    neverDo: ["never drawn as a child", "never drawn with East Asian features", "never drawn in a Northline polo or headset"],
+  },
   caller: {
     id: "caller",
     name: "Customer",

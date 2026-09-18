@@ -216,6 +216,11 @@ import { ADVANCED3_EP12_BOGOTA_BLACKOUT } from "./advanced-3-ep12-bogota-blackou
 import { ADVANCED3_EP13_TEACH_THE_TEACHER } from "./advanced-3-ep13-teach-the-teacher";
 import { ADVANCED3_EP14_IF_YOU_HAD_TAKEN_CROWN } from "./advanced-3-ep14-if-you-had-taken-crown";
 import { ADVANCED3_EP15_WHY_PEOPLE_FREEZE } from "./advanced-3-ep15-why-people-freeze";
+import { ADVANCED3_EP16_THE_KNOCK } from "./advanced-3-ep16-the-knock";
+import { ADVANCED3_EP17_THREE_YEARS } from "./advanced-3-ep17-three-years";
+import { ADVANCED3_EP18_MONTERREY } from "./advanced-3-ep18-monterrey";
+import { ADVANCED3_EP19_WHAT_I_DIDNT_SAY } from "./advanced-3-ep19-what-i-didnt-say";
+import { ADVANCED3_EP20_HEADSET_ON_AGAIN } from "./advanced-3-ep20-headset-on-again";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_FIRST_DAY,
@@ -435,6 +440,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   ADVANCED3_EP13_TEACH_THE_TEACHER,
   ADVANCED3_EP14_IF_YOU_HAD_TAKEN_CROWN,
   ADVANCED3_EP15_WHY_PEOPLE_FREEZE,
+  ADVANCED3_EP16_THE_KNOCK,
+  ADVANCED3_EP17_THREE_YEARS,
+  ADVANCED3_EP18_MONTERREY,
+  ADVANCED3_EP19_WHAT_I_DIDNT_SAY,
+  ADVANCED3_EP20_HEADSET_ON_AGAIN,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
