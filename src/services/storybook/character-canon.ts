@@ -158,7 +158,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "American woman in her 40s, corporate client",
     look: "fair skin, chin-length blonde hair, professional confident face",
     outfit: "navy blazer",
-    seasons: ["eagles-week-1", "tigers"],
+    seasons: ["eagles-week-1", "tigers", "advanced-1"],
     neverDo: ["Morgan is a woman — always she/her, never drawn as a man"],
   },
   bryan: {
@@ -291,6 +291,16 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     look: "medium tan skin, dark brown hair tied back, calm mature face",
     outfit: "burgundy blouse",
     seasons: ["eagles-week-1"],
+  },
+  mia: {
+    id: "mia",
+    name: "Mía",
+    aka: ["Mia"],
+    age: "young Salvadoran woman, 20, Northline's first pilot agent",
+    look: "light-medium tan skin, short dyed-red hair, small hoop earrings, quick alert face, adult proportions",
+    outfit: "black Northline polo with a call-center headset around her neck",
+    seasons: ["advanced-1"],
+    neverDo: ["never drawn as a teenager", "never without the headset"],
   },
 };
 
