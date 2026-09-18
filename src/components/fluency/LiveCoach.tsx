@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { nextLiveAudioWindow } from "@/lib/live-audio";
 import { LiveSessionLifecycle } from "@/lib/live-session-lifecycle";
 import { appendFragment, emptyTranscript, type CoachKind, type LiveTranscript } from "@/lib/live-turns";
+import { HELP_PROMPTS, SUMMARY_PROMPT, buildOpeningPrompt, buildSystemInstruction } from "@/lib/live-coach-prompts";
 
 
 
@@ -36,41 +37,6 @@ type StartResponse = {
   sessionLimitSeconds?: number;
   error?: string;
 };
-
-const SYSTEM_INSTRUCTION =
-  "You are Vale, a warm, experienced English teacher talking live with a Spanish-speaking adult learner. " +
-  "You are an ENGLISH teacher: the conversation always stays in English. Never switch into a Spanish conversation, " +
-  "even if the learner speaks Spanish to you. " +
-  "Speak slowly and clearly, with short sentences. " +
-  "If the learner says they do not understand ('no entiendo', 'I don't understand') or asks you to explain in Spanish: " +
-  "slow down, use simpler English words, and rephrase the question in a different way. " +
-  "You may add ONE short Spanish hint (one sentence maximum, such as translating the key word) and then return to English immediately. " +
-  "Never lecture. Keep every turn under 3 sentences. " +
-  "Follow these phases in order. " +
-  "PHASE 1 (level): your very first turn greets the learner in one short sentence and asks their level with the three options: " +
-  "'basic, intermediate, or advanced?'. If they do not answer after two tries, say you will start at intermediate and move on. " +
-  "PHASE 2 (tense): once you know the level, ask in one short sentence what they want to practice: present, past, or future. " +
-  "If they do not choose after two tries, pick present and move on. " +
-  "PHASE 3 (practice): ask real-life questions that naturally require ONLY the chosen tense, adapted to the level, " +
-  "and react to their answers like a real conversation. " +
-  "PHASE 4 (switch): after about 5 or 6 exchanges, ask if they want to keep the same tense or change to another one, then continue. " +
-  "Level adaptation: basic = very short sentences, everyday words, slow speech, yes/no and one-sentence questions; " +
-  "intermediate = open questions, two-part sentences, normal pace; " +
-  "advanced = opinion questions, 'why' follow-ups, natural expressions, longer turns from the learner. " +
-  "Never interrupt: always let the learner finish their whole idea before you speak. " +
-  "When they finish and made a real mistake, do this in one short turn: say the corrected sentence clearly " +
-  "(for example: 'Almost! We say: I went there yesterday.'), then ask them to repeat it ('Say it with me: I went there yesterday.'). " +
-  "After they repeat, confirm briefly ('Perfect!') and continue with the next question. " +
-  "Correct at most one mistake per turn, and if there was no real mistake just keep the conversation going. " +
-  "Because you already correct the learner live, there is NO error list at the end. " +
-  "When you are asked to close the session, say a brief, warm goodbye in Spanish (one or two short sentences) " +
-  "and give one phrase to practice before the next session.";
-
-const GREETING_PROMPT =
-  "The learner just joined. Start Phase 1 now: greet them in one short English sentence and ask if their level is basic, intermediate, or advanced.";
-
-const SUMMARY_PROMPT =
-  "The session is over. Close now with a brief, warm goodbye in Spanish and one phrase to practice. No error list.";
 
 function pcm16FromFloat32(input: Float32Array): ArrayBuffer {
   const out = new Int16Array(input.length);
@@ -117,11 +83,6 @@ function mmss(total: number): string {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-const HELP_PROMPTS: Record<HelpKind, string> = {
-  spanish: "The learner tapped Help in Spanish. Briefly explain or translate your most recent question in one short Spanish sentence. Then invite a simple answer in English on the same topic. Do not change the topic.",
-  slow: "Repeat your most recent question now, using the exact same meaning and topic. Speak noticeably more slowly and clearly. Do not add a new question.",
-  idea: "Give the learner one very short English sentence starter or a few useful words for answering your most recent question. Do not complete the answer. Then wait.",
-};
 
 export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolean) => void }) {
   const { lang } = useAppLang();
@@ -146,6 +107,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   const currentModule = prefs.currentModuleId ? CourseService.getModule(prefs.currentModuleId) : null;
   const levelLabel = currentModule?.label ?? (es ? "Tu nivel" : "Your level");
   const topicLabel = currentModule?.subtitle ?? (es ? "Conversación real" : "Real conversation");
+  const coachContext = { level: currentModule?.label, focus: currentModule?.subtitle };
 
   const sessionRef = useRef<{
     close: () => void;
@@ -563,7 +525,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
         model: body.model ?? "gemini-3.8-live",
         config: {
           responseModalities: [Modality.AUDIO],
-          systemInstruction: SYSTEM_INSTRUCTION,
+          systemInstruction: buildSystemInstruction(coachContext),
           inputAudioTranscription: {},
           outputAudioTranscription: {},
         },
@@ -726,9 +688,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
 
       // The coach speaks first so the learner knows it is working.
       try {
-        const knownLevelPrompt = currentModule
-          ? `The learner's known curriculum level is ${currentModule.label}. Their current course focus is ${currentModule.subtitle}. Do not ask their level. Greet them briefly, mention today's focus naturally, and ask the first suitable English question.`
-          : GREETING_PROMPT;
+        const knownLevelPrompt = buildOpeningPrompt(coachContext);
         sessionRef.current.sendClientContent({
           turns: [{ role: "user", parts: [{ text: knownLevelPrompt }] }],
           turnComplete: true,
