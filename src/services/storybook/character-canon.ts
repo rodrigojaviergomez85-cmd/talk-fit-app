@@ -194,7 +194,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "American man, about 55, international executive",
     look: "fair skin, short silver-gray hair, clean-shaven, stern face",
     outfit: "dark navy suit with a tie",
-    seasons: ["sharks", "advanced-1"],
+    seasons: ["sharks", "advanced-1", "advanced-3"],
   },
   lucia: {
     id: "lucia",
@@ -202,7 +202,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "Guatemalan woman in her early 30s, experienced academic coordinator",
     look: "warm medium tan skin, straight dark brown shoulder-length hair, brown eyes, adult proportions",
     outfit: "forest green blouse and charcoal trousers",
-    seasons: ["sharks"],
+    seasons: ["sharks", "advanced-3"],
     neverDo: ["never drawn as Camila", "never drawn as a teenager or child"],
   },
   renata: {
@@ -328,7 +328,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "young Salvadoran man, 19, new Northline pilot agent",
     look: "medium-brown skin, short black hair, round face, nervous open expression, adult proportions",
     outfit: "black Northline polo one size too big, headset in his hand",
-    seasons: ["advanced-2"],
+    seasons: ["advanced-2", "advanced-3"],
     neverDo: ["never drawn as a child", "never drawn confident"],
   },
   estela: {
