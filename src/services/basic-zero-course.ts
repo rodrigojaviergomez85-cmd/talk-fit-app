@@ -1,4 +1,6 @@
 import type { CourseDay, ModelLine, PersonalPrompt } from "@/lib/types";
+import genericMaleAvatar from "@/assets/avatars/generic-male.jpg";
+import genericFemaleAvatar from "@/assets/avatars/generic-female.jpg";
 
 /**
  * BASIC ZERO — Month 1 (4 weeks · 20 days · 5 fluency reps per day).
