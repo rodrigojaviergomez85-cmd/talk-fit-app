@@ -1,35 +1,42 @@
-# Paso 1 · Escucha — nuevo diseño (solo Basic Zero, Week 1)
+# Avatares genéricos atractivos Gen Z para speakers de Basic Zero Week 1
 
-Rediseño visual de la pantalla de escucha que ves en la referencia: fondo claro, título grande, tarjeta azul marino con el reto del día y tarjeta durazno con el personaje y el reproductor. Solo aparece en Basic Zero, semana 1 (días 1–5), en el Paso 1. Todo lo demás del curso mantiene su apariencia actual.
+## Objetivo
+Reemplazar la "C" (fallback de iniciales) junto a "Escucha a Carlos" en el rediseño de Paso 1 · Escucha de Basic Zero Semana 1 por una imagen humana genérica atractiva para Gen Z, con variante mujer para speakers femeninos.
 
-## Qué verá el estudiante
+## Alcance
+- Solo Basic Zero Week 1 dentro del componente `Week1ListenScreen`.
+- No modificar el contenido curricular, diálogos, ni otros módulos.
+- Si un día ya tiene `avatarSrc` propio, se respeta; el avatar genérico es fallback por género cuando falta.
 
-1. Encabezado compacto: flecha de volver, marca "fluency" y menú de tres puntos con "Siguiente paso" y "Salir" (los mismos botones que hoy, solo reubicados). Debajo: "Día 3 · Paso 1 de 5 · Escucha" con cinco segmentos de progreso, el primero activo.
-2. Título "Tu día, en inglés." con subrayado naranja decorativo y la línea "Primero escucha. Después, tú."
-3. Tarjeta azul marino "TU RETO" con la pregunta real del día, más "Traducir" y "Oír pregunta".
-4. Tarjeta durazno "Escucha a {personaje}" / "Una respuesta de ejemplo": avatar del personaje del día (iniciales si no hay imagen verificada), onda decorativa, tiempo y barra de avance reales, botón naranja grande "Escuchar ejemplo" y, debajo, "Ver texto".
-5. Al pie: "Continuar" (desactivado hasta que termine el ejemplo, con la ayuda "Escucha el ejemplo o salta por ahora") y el enlace "Saltar por ahora" siempre visible y funcional.
+## Pasos
 
-## Qué se conserva sin cambios
+1. **Generar dos avatares genéricos**
+   - Hombre joven atractivo, estilo humano realista cálido, sin texto, sin fondo llamativo.
+   - Mujer joven atractiva, mismo estilo visual.
+   - Formato 768×768 px, JPG progresivo RGB, objetivo < 250 KB para móviles.
+   - Guardar en `src/assets/avatars/generic-male.jpg` y `src/assets/avatars/generic-female.jpg`.
 
-- Pregunta, traducciones, frases del día, voz y personaje vienen del contenido actual de cada día (día 3 = Daniel, no Vale).
-- Mismo reproductor y mismo servicio de audio: cargar, pausar, reanudar, repetir, reintentar tras error y sin que suenen pregunta y ejemplo a la vez.
-- "Ver texto" muestra todas las frases en orden con sus traducciones y no reinicia el audio.
-- Ayuda global en español, confirmación al salir, reanudar sesión, avance desde el encabezado y las ayudas del día (Power Chunks, imagen de escena, tarjetas de verbos, tira de historia) cuando existan.
-- Sin grabación, micrófono, puntajes ni intentos en el Paso 1. La barra de progreso es indicador, no deslizador; "1×" es solo informativo.
+2. **Conectar avatares a los personajes de Basic Zero Week 1**
+   - En `src/services/basic-zero-course.ts`, asignar `avatarSrc` a los objetos `Person` de Carlos, Sofía, Daniel, Valeria y Miguel (o a la construcción `speaker` de `week1Day`) según `gender`.
+   - Asegurar que la imagen masculina se use para Carlos/Daniel/Miguel y la femenina para Sofía/Valeria.
 
-## Detalles técnicos
+3. **Actualizar `Week1ListenScreen.tsx` para respetar fallback por género**
+   - El componente ya lee `speaker?.avatarSrc`; verificar que no haya lógica que fuerce iniciales cuando existe imagen.
+   - Si el día no define `speaker` o no tiene `avatarSrc`, mantener el fallback actual de iniciales (`initials(name)`) o agregar un fallback neutro (nota musical) solo si no hay speaker.
 
-- Condición única de activación en `src/routes/practice.tsx`: `moduleId === "basic-zero" && day.week === 1 && stage === 1`. Aplica al encabezado, al fondo y al contenido; cualquier otro caso usa el render actual.
-- Nuevo componente de presentación `src/components/fluency/Week1ListenScreen.tsx`, que recibe `day`, `showEs`, `onNext` y reutiliza `AudioPlayer`, `TranslatableText`, `TextToggle`/`LineCard`, `PowerChunks`, `SceneImage`, `PastVerbCards`, `StoryStrip`. El estado `heard` / `showText` sigue igual que en `Rep1Listen` (solo `onEnd` del modelo marca `heard`).
-- Encabezado propio compacto (variante nueva, no se toca `RepProgress` para el resto de pantallas) con `onBack`, `onNext`, `onExit` ya existentes; los índices internos (`stage 0…5`, `total={6}`) no cambian, solo se dibujan cinco segmentos.
-- Nombre del personaje: se añade un campo opcional (p. ej. `speaker?: { name: string }`) en `CourseDay` y se rellena desde la `Person` ya definida en `src/services/basic-zero-course.ts` (Carlos, Sofia, Daniel, Valeria, Miguel). Sin imagen verificada se muestran iniciales; si no se resuelve el nombre, la tarjeta dice "Escucha el ejemplo".
-- Duración/posición desde el `onProgress` del reproductor; si no hay duración se muestra `--:--`. Onda decorativa con `aria-hidden`, sin análisis de audio.
-- Textos nuevos de interfaz mediante el sistema de traducciones del proyecto.
-- Colores mapeados a los tokens existentes (fondo cálido, navy, naranja, durazno, borde suave); no se alteran valores globales de tema.
+4. **Verificar tipos y ajustar tipado si es necesario**
+   - `Speaker` en `src/lib/types.ts` ya debería soportar `avatarSrc`, `avatarAlt` y `name`; confirmar.
+   - Si `Speaker` no tiene `avatarSrc`, extenderlo.
 
-## Verificación
+5. **Pruebas y validación**
+   - TypeScript sin errores.
+   - Test unitario o actualización de `Week1ListenScreen.test.ts` para confirmar que el avatar se renderiza según el género del speaker.
+   - Playwright móvil (360/390/430 px) para verificar que "Escucha a Carlos" muestra la foto en lugar de "C" y que la imagen se carga correctamente.
+   - Revisar peso de las imágenes y que no superen 250 KB.
 
-- Tipos y pruebas existentes del proyecto.
-- Capturas móviles a 360 / 390 / 430 px: estado inicial, texto abierto y traducción abierta.
-- Recorrido de los cinco días de Week 1 comprobando pregunta, personaje, voz y frases; y comprobación de que intro, pasos 2–5, Week 2 y otro módulo conservan su diseño actual.
+## Entregables esperados
+- `src/assets/avatars/generic-male.jpg`
+- `src/assets/avatars/generic-female.jpg`
+- `src/services/basic-zero-course.ts` con `avatarSrc` en speakers de Week 1
+- `src/components/fluency/Week1ListenScreen.tsx` sin regresiones
+- Tests actualizados y capturas móviles de los días 1–5 de Basic Zero Week 1
