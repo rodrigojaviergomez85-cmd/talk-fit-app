@@ -308,10 +308,10 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     id: "nico",
     name: "Nico",
     age: "young Salvadoran man, 22, Northline night-shift agent and gamer",
-    look: "medium tan skin, straight black bowl-cut hair, calm unreadable face, no glasses, adult proportions",
+    look: "medium-brown skin, clearly Salvadoran features, straight black hair in a heavy fringe, calm unreadable face, no glasses, adult proportions",
     outfit: "black hoodie over the black Northline polo, headset around his neck",
     seasons: ["advanced-2", "advanced-3"],
-    neverDo: ["never drawn as a teenager", "never smiling widely", "never without the hoodie"],
+    neverDo: ["never drawn as a teenager", "never smiling widely", "never without the hoodie", "never drawn with East Asian features"],
   },
   julieta: {
     id: "julieta",
