@@ -191,6 +191,11 @@ import { ADVANCED2_EP7_VALUE_FIRST } from "./advanced-2-ep7-value-first";
 import { ADVANCED2_EP8_CROWN_OR_HERE } from "./advanced-2-ep8-crown-or-here";
 import { ADVANCED2_EP9_TOO_EXPENSIVE } from "./advanced-2-ep9-too-expensive";
 import { ADVANCED2_EP10_DONT_MAKE_IT_WEIRD } from "./advanced-2-ep10-dont-make-it-weird";
+import { ADVANCED2_EP11_BOGOTA_IS_WAITING } from "./advanced-2-ep11-bogota-is-waiting";
+import { ADVANCED2_EP12_ONE_STEP_AT_A_TIME } from "./advanced-2-ep12-one-step-at-a-time";
+import { ADVANCED2_EP13_NO_PHONES_ON_THE_FLOOR } from "./advanced-2-ep13-no-phones-on-the-floor";
+import { ADVANCED2_EP14_THE_LOBBY } from "./advanced-2-ep14-the-lobby";
+import { ADVANCED2_EP15_NOT_THIS_THURSDAY } from "./advanced-2-ep15-not-this-thursday";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_FIRST_DAY,
@@ -385,6 +390,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   ADVANCED2_EP8_CROWN_OR_HERE,
   ADVANCED2_EP9_TOO_EXPENSIVE,
   ADVANCED2_EP10_DONT_MAKE_IT_WEIRD,
+  ADVANCED2_EP11_BOGOTA_IS_WAITING,
+  ADVANCED2_EP12_ONE_STEP_AT_A_TIME,
+  ADVANCED2_EP13_NO_PHONES_ON_THE_FLOOR,
+  ADVANCED2_EP14_THE_LOBBY,
+  ADVANCED2_EP15_NOT_THIS_THURSDAY,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
