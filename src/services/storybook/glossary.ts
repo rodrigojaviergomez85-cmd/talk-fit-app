@@ -1453,7 +1453,6 @@ export const BASE_GLOSSARY: Record<string, string> = {
   card: "tarjeta",
   clothes: "ropa",
   collects: "colecciona / recoge",
-  complains: "se queja",
   directly: "directamente",
   ever: "alguna vez",
   fifteen: "quince",
