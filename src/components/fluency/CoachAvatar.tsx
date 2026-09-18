@@ -15,7 +15,7 @@ const mouthFrames = [mouthSmallImg, mouthMediumImg, mouthOpenImg] as const;
  * plus three layered mouth shapes. Only the mouth area is revealed, so the face
  * stays perfectly still while the mouth follows the audio level.
  */
-export function CoachAvatar({ state, level = 0 }: { state: CoachState; level?: number }) {
+export function CoachAvatar({ state, level = 0, compact = false }: { state: CoachState; level?: number; compact?: boolean }) {
   const [mouthShape, setMouthShape] = useState<MouthShape>(0);
   const shapeRef = useRef<MouthShape>(0);
   const lastChangeRef = useRef(0);
@@ -56,7 +56,7 @@ export function CoachAvatar({ state, level = 0 }: { state: CoachState; level?: n
   const ringScale = state === "listening" ? 1 + Math.min(0.28, level * 1.6) : 1;
 
   return (
-    <div className="relative flex size-40 items-center justify-center">
+    <div className={`relative flex items-center justify-center ${compact ? "size-24" : "size-36"}`}>
       <div
         className="absolute inset-0 rounded-full bg-primary/20 transition-transform duration-100"
         style={{ transform: `scale(${ringScale})` }}
@@ -66,7 +66,7 @@ export function CoachAvatar({ state, level = 0 }: { state: CoachState; level?: n
         <div className="absolute inset-1 animate-pulse rounded-full bg-primary/25" aria-hidden />
       ) : null}
       <div
-        className="coach-avatar-image relative size-32 overflow-hidden rounded-full shadow-sm"
+        className={`coach-avatar-image relative overflow-hidden rounded-full shadow-sm ${compact ? "size-[88px]" : "size-28"}`}
         data-active={state === "listening" ? "true" : "false"}
       >
         <img
