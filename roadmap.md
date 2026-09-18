@@ -36,5 +36,5 @@
 - [x] Redesign AI Coach Hablar en vivo from the approved reference
 - [x] Connect real Spanish help, slow repeat, hint, microphone pause, and history
 - [x] Consolidate bottom navigation into five destinations with a Practicar hub
-- [ ] Add live-coach regression tests and verify mobile layouts
+- [x] Add live-coach regression tests and verify mobile layouts
 
