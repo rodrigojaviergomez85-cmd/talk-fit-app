@@ -57,6 +57,8 @@ function AiCoachPage() {
   const [quota, setQuota] = useState<Quota | null>(null);
   const [tab, setTab] = useState<"write" | "live" | "practice">("write");
   const [practiceAllowed, setPracticeAllowed] = useState(false);
+  const [liveAllowed, setLiveAllowed] = useState(false);
+
   const [liveActive, setLiveActive] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
@@ -80,18 +82,24 @@ function AiCoachPage() {
   useEffect(() => {
     inputRef.current?.focus();
     void refreshQuota();
-    // Private pilot: the turn-based practice tab only appears for allow-listed accounts.
+    // Private pilot: the live and turn-based tabs only appear for allow-listed accounts.
     void (async () => {
       try {
         const headers = await authHeaders();
         if (!headers) return;
-        const res = await fetch("/api/coach-practice", { headers });
-        const body = (await res.json().catch(() => null)) as { allowed?: boolean } | null;
-        setPracticeAllowed(Boolean(body?.allowed));
+        const [practiceRes, liveRes] = await Promise.all([
+          fetch("/api/coach-practice", { headers }),
+          fetch("/api/live-coach", { headers }),
+        ]);
+        const practiceBody = (await practiceRes.json().catch(() => null)) as { allowed?: boolean } | null;
+        const liveBody = (await liveRes.json().catch(() => null)) as { allowed?: boolean } | null;
+        setPracticeAllowed(Boolean(practiceBody?.allowed));
+        setLiveAllowed(Boolean(liveBody?.allowed));
       } catch {
-        /* tab stays hidden */
+        /* tabs stay hidden */
       }
     })();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -187,17 +195,22 @@ function AiCoachPage() {
     >
       <div
         className={`${liveActive ? "hidden" : "mb-4 grid"} gap-2 rounded-2xl border border-border bg-card p-1 ${
-          practiceAllowed ? "grid-cols-3" : "grid-cols-2"
+          practiceAllowed && liveAllowed
+            ? "grid-cols-3"
+            : practiceAllowed || liveAllowed
+              ? "grid-cols-2"
+              : "grid-cols-1"
         }`}
       >
         {(
           [
             ["write", lang === "en" ? "Chat" : "Chat"],
-            ["live", lang === "en" ? "Talk" : "Hablar"],
+            ...(liveAllowed ? ([["live", lang === "en" ? "Talk" : "Hablar"]] as const) : []),
             ...(practiceAllowed
               ? ([["practice", lang === "en" ? "Practice" : "Práctica"]] as const)
               : []),
           ] as ReadonlyArray<readonly ["write" | "live" | "practice", string]>
+
         ).map(([value, label]) => (
           <button
             key={value}
