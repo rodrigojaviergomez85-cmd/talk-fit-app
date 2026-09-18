@@ -186,13 +186,21 @@ function AiCoachPage() {
       );
 
   return (
-    <AppShell
-      title={t("aiCoach.title")}
-      {...(!liveActive ? { subtitle: t("aiCoach.subtitle") } : {})}
-      hideSync
-      hideHeader={liveActive}
-      hideNav={liveActive}
-    >
+    <AppShell hideSync hideHeader hideNav={liveActive}>
+      {/* Single compact header for AI Coach: before, during and after a live
+          call. During the call LiveCoach renders its own compact header with
+          the real remaining time and the exit button, so this one hides. */}
+      {!liveActive ? (
+        <header className="mb-4 flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-primary">Fluency</p>
+            <h1 className="truncate text-[23px] font-extrabold text-foreground">{t("aiCoach.title")}</h1>
+          </div>
+          {counter ? (
+            <p className="shrink-0 text-right text-[12px] font-semibold text-muted-foreground">{counter}</p>
+          ) : null}
+        </header>
+      ) : null}
       <div
         className={`${liveActive ? "hidden" : "mb-4 grid"} gap-2 rounded-2xl border border-border bg-card p-1 ${
           practiceAllowed && liveAllowed
