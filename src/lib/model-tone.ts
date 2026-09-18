@@ -16,7 +16,21 @@ import type { RolePlayTurn } from "@/lib/types";
  *  - pro:      confident American corporate professional, sitcom-real conversational delivery
  *  - sly:      aggressive, smooth-talking rival salesman with a suspicious edge (BigTalk's Bryan)
  */
-export type ModelTone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy" | "earnest" | "warm" | "pro" | "sly";
+export type ModelTone =
+  | "coach"
+  | "neutral"
+  | "tense"
+  | "playful"
+  | "story"
+  | "cheerful"
+  | "youthful"
+  | "shy"
+  | "nervous"
+  | "bright"
+  | "earnest"
+  | "warm"
+  | "pro"
+  | "sly";
 
 const AUTHORITY = /recruiter|reclutador|interviewer|entrevistador|manager|gerente|hiring|hr\b/i;
 const CUSTOMER = /customer|cliente|caller/i;
