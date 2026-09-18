@@ -200,33 +200,92 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     void loadStatus();
   }, [loadStatus]);
 
+  /** Frees the microphone: processor node, tracks and its audio context. */
+  const releaseMic = useCallback(async () => {
+    try {
+      nodeRef.current?.disconnect();
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      await micCtxRef.current?.close().catch(() => undefined);
+    } catch {
+      /* best effort */
+    }
+    micCtxRef.current = null;
+    nodeRef.current = null;
+    streamRef.current = null;
+    micPausedRef.current = false;
+    setLevel(0);
+    setMicPaused(false);
+  }, []);
+
+  /** Frees playback: mouth animation, queued sources, gains and output context. */
+  const releasePlayback = useCallback(async () => {
+    try {
+      if (mouthFrameRef.current !== null) window.cancelAnimationFrame(mouthFrameRef.current);
+      mouthFrameRef.current = null;
+      outAnalyserRef.current = null;
+      sourcesRef.current.forEach((source) => {
+        try {
+          source.stop();
+        } catch {
+          /* already finished */
+        }
+      });
+      sourcesRef.current = [];
+      sourceGainsRef.current.forEach((gain) => gain.disconnect());
+      sourceGainsRef.current = [];
+      await outCtxRef.current?.close().catch(() => undefined);
+    } catch {
+      /* best effort */
+    }
+    outCtxRef.current = null;
+    setCoachLevel(0);
+  }, []);
+
+  /** Closes the live connection. */
+  const releaseSession = useCallback(() => {
+    try {
+      sessionRef.current?.close();
+    } catch {
+      /* already closed */
+    }
+    sessionRef.current = null;
+  }, []);
+
   /** Stops the mic, asks for the final corrections, then closes and reports time. */
   const stop = useCallback(
     async (options?: { skipSummary?: boolean }) => {
-      if (!startedAtRef.current && !sessionRef.current) return;
-      if (endingRef.current || finalizedRef.current) return;
+      const life = lifeRef.current;
+      if (!life.busy && !startedAtRef.current && !sessionRef.current) return;
+      if (endingRef.current) return;
       endingRef.current = true;
-      setPhase("ending");
-      setNotice(null);
 
       const seconds = startedAtRef.current
         ? Math.round((Date.now() - startedAtRef.current) / 1000)
         : 0;
 
-      // Stop sending audio first so the coach is not listening while it summarizes.
-      try {
-        nodeRef.current?.disconnect();
-        streamRef.current?.getTracks().forEach((track) => track.stop());
-        await micCtxRef.current?.close().catch(() => undefined);
-      } catch {
-        /* best effort */
+      // Cancelling a start that never went live: drop everything and reset.
+      if (!startedAtRef.current) {
+        await life.releaseAll();
+        collectingSummaryRef.current = false;
+        summaryDoneRef.current = null;
+        heardVoiceRef.current = false;
+        endingRef.current = false;
+        setNotice(null);
+        setCoachState("idle");
+        setPhase("idle");
+        return;
       }
-      micCtxRef.current = null;
-      nodeRef.current = null;
-      streamRef.current = null;
-      setLevel(0);
-      micPausedRef.current = false;
-      setMicPaused(false);
+
+      if (finalizedRef.current) {
+        endingRef.current = false;
+        return;
+      }
+
+      setPhase("ending");
+      setNotice(null);
+
+      // Stop sending audio first so the coach is not listening while it summarizes.
+      await releaseMic();
 
       if (!options?.skipSummary && sessionRef.current && heardVoiceRef.current) {
         try {
@@ -255,33 +314,14 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       collectingSummaryRef.current = false;
       summaryDoneRef.current = null;
 
-      try {
-        if (mouthFrameRef.current !== null) window.cancelAnimationFrame(mouthFrameRef.current);
-        mouthFrameRef.current = null;
-        outAnalyserRef.current = null;
-        setCoachLevel(0);
-        sourcesRef.current.forEach((source) => {
-          try {
-            source.stop();
-          } catch {
-            /* already finished */
-          }
-        });
-        sourcesRef.current = [];
-        sourceGainsRef.current.forEach((gain) => gain.disconnect());
-        sourceGainsRef.current = [];
-        await outCtxRef.current?.close().catch(() => undefined);
-        sessionRef.current?.close();
-      } catch {
-        /* closing is best effort */
-      }
+      await life.releaseAll();
 
-      sessionRef.current = null;
-      outCtxRef.current = null;
       startedAtRef.current = 0;
       heardVoiceRef.current = false;
       setCoachState("idle");
 
+      // Usage is reported exactly once per live session.
+      finalizedRef.current = true;
       try {
         const headers = await authHeaders();
         if (headers) {
@@ -297,12 +337,12 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
         /* the counter refreshes on the next visit */
       }
 
-       finalizedRef.current = true;
        endingRef.current = false;
        setPhase("done");
     },
-    [],
+    [releaseMic, releasePlayback, releaseSession],
   );
+
 
   useEffect(() => {
     if (phase !== "live") return;
