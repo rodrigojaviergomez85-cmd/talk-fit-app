@@ -22,6 +22,7 @@ import { PastVerbCards } from "@/components/fluency/PastVerbCards";
 import { StoryStrip } from "@/components/fluency/StoryStrip";
 import { TodaysPastVerbs } from "@/components/fluency/TodaysPastVerbs";
 import { MicTest, isMicChecked } from "@/components/fluency/MicTest";
+import { Week1ListenScreen, isWeek1ListenPilot } from "@/components/fluency/Week1ListenScreen";
 
 import { DayCompleteScreen } from "@/components/fluency/DayCompleteScreen";
 import {
@@ -739,6 +740,33 @@ function PracticeFlow({ module }: { module: LoadedModule }) {
 
   const title = REP_TITLES[stage] ?? REP_TITLES[0]!;
   const showPracticeVisuals = practiceImageIsEssential(day);
+  const useWeek1ListenDesign = isWeek1ListenPilot(moduleId, day, stage);
+
+  if (useWeek1ListenDesign) {
+    return (
+      <SpanishProvider value={showEs}>
+        {confirmExit ? (
+          <ExitDialog
+            showEs={esUi}
+            onCancel={() => setConfirmExit(false)}
+            onExit={() => {
+              AudioService.stop();
+              PracticeSessionService.clear(moduleId, dayNumber);
+              void navigate({ to: "/day/$moduleId/$day", params: { moduleId, day: String(dayNumber) } });
+            }}
+          />
+        ) : null}
+        <Week1ListenScreen
+          day={day}
+          spanishSupport={showEs}
+          onSpanishSupportChange={setShowEs}
+          onBack={goBack}
+          onNext={goForward}
+          onExit={() => setConfirmExit(true)}
+        />
+      </SpanishProvider>
+    );
+  }
 
   return (
     <SpanishProvider value={showEs}>
