@@ -53,7 +53,7 @@ function DeleteAccountPage() {
   }
 
   function goToCreateAccount() {
-    void navigate({ to: "/auth" });
+    void navigate({ to: "/onboarding" });
   }
 
   async function reauthenticate(): Promise<boolean> {
