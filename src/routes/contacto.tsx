@@ -151,7 +151,7 @@ function ContactPage() {
   }, []);
 
   const validate = () => {
-    const next: Record<string, string> = {};
+    const next: FieldErrors = {};
     if (!nombre.trim()) next.nombre = t.errors.name;
     if (!EMAIL_RE.test(email.trim())) next.email = t.errors.email;
     if (!categoria) next.categoria = t.errors.category;
