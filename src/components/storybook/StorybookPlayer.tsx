@@ -14,7 +14,7 @@ import { isStoryAdvanceLocked } from "@/lib/storybook-advance";
 import { AudioService } from "@/services/audio-service";
 import { supabase } from "@/integrations/supabase/client";
 import { getSeason, getNextProducedEpisodeId, getProducedEpisodeIds } from "@/services/storybook";
-import { speakerVoice, speakerTone, speakerName } from "@/services/storybook/voices";
+import { speakerGain, speakerVoice, speakerTone, speakerName } from "@/services/storybook/voices";
 import { speakDialogue, startDialogue, type DialogueController } from "@/services/storybook/dialogue-audio";
 import { markEpisodeSeen, getSeenEpisodes } from "@/services/storybook/storybook-progress";
 import { STORYBOOK_SEASONS } from "@/services/storybook/seasons";
@@ -225,6 +225,7 @@ export function StorybookPlayer({
         rate: 1,
         voice: speakerVoice(slide.scene.speaker),
         tone: speakerTone(slide.scene.speaker),
+        gain: speakerGain(slide.scene.speaker),
         allowBrowserFallback: false,
       });
     }

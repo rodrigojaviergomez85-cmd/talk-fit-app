@@ -15,6 +15,8 @@ type AudioVoice = ModelVoice;
 
 export type SpeakOptions = {
   rate?: number;
+  /** Playback amplification. Values above 1 use Web Audio gain when available. */
+  gain?: number;
   voice?: ModelVoice | undefined;
   /** Delivery tone: coach (default), neutral (recruiter), tense (frustrated customer). */
   tone?: ModelTone | undefined;
@@ -184,6 +186,7 @@ function speakWithBrowser(text: string, options: SpeakOptions): () => void {
   const utterance = new SpeechSynthesisUtterance(text);
   // Keep Vale's fallback delivery natural while giving it a gently youthful lift.
   utterance.rate = options.rate ?? 1;
+  utterance.volume = Math.min(1, Math.max(0, options.gain ?? 1));
   utterance.pitch = options.voice === "girl" ? 1.2 : options.voice === "femaleBright" ? 1.1 : options.voice === "femaleMature" ? 0.96 : options.voice === "shyBoy" ? 1.15 : options.voice === "teenBoy" ? 1.12 : options.voice === "elder" ? 0.92 : options.voice === "youngMaleCalm" ? 1.12 : options.voice === "youngMale" ? 1.08 : 1;
   utterance.lang = "en-US";
   const selected = pickVoice(options.voice ?? "neutral");
@@ -229,6 +232,7 @@ export const AudioService = {
     let cancelled = false;
     let stopFallback: (() => void) | null = null;
     let element: HTMLAudioElement | null = null;
+    let audioContext: AudioContext | null = null;
 
     void loadModelAudio(
       text,
@@ -241,6 +245,28 @@ export const AudioService = {
         const audio = new Audio(url);
         audio.playbackRate = options.rate ?? 1;
         audio.preservesPitch = true;
+        const requestedGain = Math.max(0, options.gain ?? 1);
+        if (requestedGain <= 1) {
+          audio.volume = requestedGain;
+        } else {
+          try {
+            const AudioContextClass =
+              window.AudioContext ??
+              (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+            if (AudioContextClass) {
+              audioContext = new AudioContextClass();
+              const source = audioContext.createMediaElementSource(audio);
+              const gainNode = audioContext.createGain();
+              gainNode.gain.value = requestedGain;
+              source.connect(gainNode);
+              gainNode.connect(audioContext.destination);
+              if (audioContext.state === "suspended") void audioContext.resume().catch(() => undefined);
+            }
+          } catch {
+            // If Web Audio is unavailable, keep normal element playback.
+            audio.volume = 1;
+          }
+        }
         element = audio;
         currentAudio = audio;
         audio.onplay = () => options.onStart?.();
@@ -252,11 +278,15 @@ export const AudioService = {
         };
         audio.onended = () => {
           if (currentAudio === audio) currentAudio = null;
+          void audioContext?.close().catch(() => undefined);
+          audioContext = null;
           if (cancelled) return;
           options.onEnd?.();
         };
         audio.onerror = () => {
           if (currentAudio === audio) currentAudio = null;
+          void audioContext?.close().catch(() => undefined);
+          audioContext = null;
           if (cancelled) return;
           // A failed clip is not a finished clip: only fall back to onEnd when
           // the caller has no error handling of its own.
@@ -294,6 +324,8 @@ export const AudioService = {
         element.currentTime = 0;
         if (currentAudio === element) currentAudio = null;
       }
+      void audioContext?.close().catch(() => undefined);
+      audioContext = null;
     };
     latestSpeakCancel = cancel;
     activeInterrupt = options.onInterrupt ?? null;

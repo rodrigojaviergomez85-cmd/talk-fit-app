@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-type SpeakOptions = { onEnd?: () => void };
+type SpeakOptions = { onEnd?: () => void; gain?: number };
 type SpeakCall = [text: string, options: SpeakOptions];
 
 const speakMock = vi.fn<(text: string, options: SpeakOptions) => () => void>(() => () => undefined);
@@ -21,6 +21,11 @@ const lines: StorybookLine[] = [
   { speaker: "vale", text: "Line one.", es: "Uno." },
   { speaker: "dani", text: "Line two.", es: "Dos." },
   { speaker: "narrator", text: "Line three.", es: "Tres." },
+];
+
+const quietVoiceLines: StorybookLine[] = [
+  { speaker: "oscar", text: "Oscar line.", es: "Óscar." },
+  { speaker: "mia", text: "Mia line.", es: "Mía." },
 ];
 
 function spokenText(index: number): string {
@@ -81,6 +86,16 @@ describe("startDialogue single-line playback", () => {
     finishLine(0);
     await vi.runAllTimersAsync();
     expect(speakMock).toHaveBeenCalledTimes(1);
+    vi.useRealTimers();
+  });
+
+  it("applies real playback gain to Óscar and Mía", async () => {
+    startDialogue(quietVoiceLines, { startAt: 0 });
+    await vi.runAllTimersAsync();
+    expect((speakMock.mock.calls[0] as SpeakCall)[1].gain).toBe(1.8);
+    finishLine(0);
+    await vi.runAllTimersAsync();
+    expect((speakMock.mock.calls[1] as SpeakCall)[1].gain).toBe(1.8);
     vi.useRealTimers();
   });
 });
