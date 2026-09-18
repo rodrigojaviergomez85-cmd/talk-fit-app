@@ -95,15 +95,18 @@ describe("Advanced 1 — fidelity to the approved scripts", () => {
       expect(words).toBeLessThanOrEqual(680);
     });
 
-    it(`${episodeId} ships two phrasal verbs and two idioms`, () => {
+    it(`${episodeId} ships its four highlighted expressions`, () => {
       const expressions = episode?.expressions ?? [];
-      expect(expressions.filter((e) => e.kind === "phrasal").length).toBeGreaterThanOrEqual(2);
-      expect(expressions.filter((e) => e.kind === "idiom").length).toBeGreaterThanOrEqual(2);
+      const budget = EXPRESSION_BUDGET[episodeId] ?? { phrasal: 2, idiom: 2 };
+      expect(expressions.filter((e) => e.kind === "phrasal").length).toBeGreaterThanOrEqual(budget.phrasal);
+      expect(expressions.filter((e) => e.kind === "idiom").length).toBeGreaterThanOrEqual(budget.idiom);
+      expect(expressions.length).toBeGreaterThanOrEqual(4);
     });
   }
 
   it("no Advanced 1 character talks about the course from inside the story", () => {
-    const episodes = STORYBOOK_EPISODES.filter((e) => e.moduleId === "advanced-1");
+    const episodes = STORYBOOK_EPISODES.filter((e) => NO_COURSE_TALK_EPISODES.includes(e.id));
+    expect(episodes.length).toBe(NO_COURSE_TALK_EPISODES.length);
     expect(episodes.length).toBeGreaterThan(0);
     for (const episode of episodes) {
       const spoken = episode.scenes.flatMap((s) => (s.lines ?? []).map((l) => l.text));
