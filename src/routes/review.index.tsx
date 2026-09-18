@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, BriefcaseBusiness, GraduationCap, Layers3 } from "lucide-react";
+import { ArrowRight, ChevronLeft, GraduationCap, Layers3 } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
 
@@ -23,6 +23,14 @@ function ReviewIndex() {
   return (
     <AppShell>
       <div className="space-y-4 p-4">
+        <Link
+          to="/practicar"
+          className="inline-flex items-center gap-1 text-xs font-extrabold uppercase text-primary"
+        >
+          <ChevronLeft className="size-4" aria-hidden="true" />
+          {showEs ? "Volver a Repaso" : "Back to Practice"}
+        </Link>
+
         <header>
           <h1 className="text-2xl font-extrabold text-foreground">Review</h1>
           <p className="text-sm text-muted-foreground">
@@ -65,22 +73,6 @@ function ReviewIndex() {
             <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
           </Link>
 
-          <Link
-            to="/review/interview-simulators"
-            className="flex min-h-[132px] items-center gap-4 rounded-2xl border border-border bg-card p-5 transition hover:border-primary"
-          >
-            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <BriefcaseBusiness className="size-6" aria-hidden="true" />
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-xl font-extrabold text-foreground">Interview Simulator</span>
-              <span className="block text-sm text-muted-foreground">Simulador de entrevistas</span>
-              <span className="mt-2 block text-xs font-extrabold uppercase text-primary">
-                {showEs ? "B4 · Intermediate · Advanced" : "B4 · Intermediate · Advanced"}
-              </span>
-            </span>
-            <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
-          </Link>
         </div>
       </div>
     </AppShell>
