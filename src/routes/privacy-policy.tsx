@@ -1,6 +1,8 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
+import { LegalFooter } from "@/components/fluency/LegalFooter";
 import { useAppLang } from "@/lib/i18n";
+import { AUDIO_FINAL_RETENTION_DAYS, LEGAL_EFFECTIVE_DATE, SUPPORT_EMAIL } from "@/lib/legal";
 
 export const Route = createFileRoute("/privacy-policy")({
   head: () => ({
@@ -83,14 +85,19 @@ function PrivacyPolicyPage() {
         <section className="space-y-5 rounded-3xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
           <p className="text-[13px] font-semibold text-muted-foreground">
             {es
-              ? "Fecha efectiva: 10 de septiembre de 2026"
-              : "Effective date: September 10, 2026"}
+              ? `Fecha efectiva: ${LEGAL_EFFECTIVE_DATE.es}`
+              : `Effective date: ${LEGAL_EFFECTIVE_DATE.en}`}
           </p>
 
           {es ? <SpanishContent /> : <EnglishContent />}
 
-          <p className="pt-4 text-[12px] text-muted-foreground">
-            © 2026 Fluency App. {es ? "Todos los derechos reservados." : "All rights reserved."}
+          <div className="pt-4">
+            <LegalFooter current="privacidad" />
+          </div>
+
+          <p className="pt-2 text-[12px] text-muted-foreground">
+            © 2026 E4CC Global · Fluency App.{" "}
+            {es ? "Todos los derechos reservados." : "All rights reserved."}
           </p>
         </section>
       </main>
@@ -121,8 +128,18 @@ function EnglishContent() {
             device-generated identifiers.
           </li>
           <li>
+            <strong>Profile photo (optional):</strong> if you choose to upload one, it is stored in
+            private storage and automatically reviewed by an AI safety check before it becomes
+            visible. You can remove it at any time.
+          </li>
+          <li>
+            <strong>Support messages:</strong> the name, email and message you send through the
+            contact form, so we can reply.
+          </li>
+          <li>
             <strong>Device data:</strong> device type, operating system, app version, and coarse
-            location inferred from IP (for analytics and diagnostics).
+            location inferred from IP (for analytics and diagnostics). We never access your camera
+            roll without your action, and we never collect GPS location.
           </li>
         </ul>
       </PolicySection>
@@ -136,17 +153,22 @@ function EnglishContent() {
         </ul>
       </PolicySection>
 
-      <PolicySection title="4. Voice recordings and AI">
+      <PolicySection title="4. Voice recordings, AI and retention">
         Your practice recordings are sent to secure AI speech services for transcription and
-        feedback. We do not use your recordings for advertising. Final audio samples are processed
-        by our AI coach and stored only as long as needed for review inside the app. Transcripts are
-        not stored permanently.
+        feedback. We do not use them for advertising and we do not use them to train our own models.
+        Retention is automatic: intermediate takes are deleted a few hours after practice, and final
+        audio is deleted automatically {AUDIO_FINAL_RETENTION_DAYS} days after it is recorded. Full
+        transcripts are not stored; we keep only the short quoted fragment the coach needs to explain
+        a correction, together with your score and progress.
       </PolicySection>
 
-      <PolicySection title="5. Data sharing">
-        We do not sell your data. We only share information with trusted cloud and AI service
-        providers (for hosting, authentication, transcription, and analytics) and with legal
-        authorities when required by applicable law.
+      <PolicySection title="5. Data sharing and AI providers">
+        We do not sell your data. We share the minimum needed with our service providers:{" "}
+        <strong>Supabase</strong> (hosting, authentication, database and private audio storage),{" "}
+        <strong>Groq</strong> (speech transcription of your recordings) and the{" "}
+        <strong>Lovable AI Gateway</strong>, which routes requests to OpenAI models for coaching
+        feedback, generated speech and profile-photo safety review. We also share information with
+        legal authorities when required by applicable law.
       </PolicySection>
 
       <PolicySection title="6. Data security">
@@ -164,12 +186,16 @@ function EnglishContent() {
         You can access, update, or delete your account and data, request a copy of your data, and
         withdraw consent for optional features at any time. Email us at{" "}
         <a
-          href="mailto:privacy@fluencye4cc.app"
+          href={`mailto:${SUPPORT_EMAIL}`}
           className="font-semibold text-primary underline underline-offset-2"
         >
-          privacy@fluencye4cc.app
-        </a>
-        .
+          {SUPPORT_EMAIL}
+        </a>{" "}
+        — the same address handles support and privacy requests — or use the{" "}
+        <Link to="/contacto" className="font-semibold text-primary underline underline-offset-2">
+          contact form
+        </Link>
+        . We reply Monday to Friday within 2 business days.
       </PolicySection>
 
       <PolicySection title="9. Changes to this policy">
@@ -204,8 +230,18 @@ function SpanishContent() {
             identificadores generados por el dispositivo.
           </li>
           <li>
+            <strong>Foto de perfil (opcional):</strong> si decides subir una, se guarda en
+            almacenamiento privado y pasa por una revisión automática de seguridad con IA antes de
+            mostrarse. Puedes quitarla cuando quieras.
+          </li>
+          <li>
+            <strong>Mensajes de soporte:</strong> el nombre, correo y mensaje que envías por el
+            formulario de contacto, para poder responderte.
+          </li>
+          <li>
             <strong>Datos del dispositivo:</strong> tipo de dispositivo, sistema operativo, versión
-            de la app y ubicación aproximada desde IP (para análisis y diagnóstico).
+            de la app y ubicación aproximada desde IP (para análisis y diagnóstico). No accedemos a
+            tus fotos sin que tú lo hagas y nunca recogemos ubicación GPS.
           </li>
         </ul>
       </PolicySection>
@@ -219,17 +255,23 @@ function SpanishContent() {
         </ul>
       </PolicySection>
 
-      <PolicySection title="4. Grabaciones de voz e IA">
+      <PolicySection title="4. Grabaciones de voz, IA y conservación">
         Tus grabaciones se envían a servicios seguros de voz e IA para transcripción y
-        retroalimentación. No usamos tus audios para publicidad. Las muestras de audio final se
-        procesan con nuestro coach de IA y se almacenan solo el tiempo necesario para revisarlas
-        dentro de la app. Las transcripciones no se guardan permanentemente.
+        retroalimentación. No las usamos para publicidad ni para entrenar modelos propios. El borrado
+        es automático: las tomas intermedias se eliminan pocas horas después de la práctica y el
+        audio final se elimina automáticamente a los {AUDIO_FINAL_RETENTION_DAYS} días de grabarse.
+        No guardamos la transcripción completa; solo conservamos la cita corta que el coach necesita
+        para explicarte una corrección, junto con tu puntaje y tu progreso.
       </PolicySection>
 
-      <PolicySection title="5. Compartir datos">
-        No vendemos tus datos. Solo compartimos información con proveedores de nube e IA de
-        confianza (para hosting, autenticación, transcripción y análisis) y con autoridades legales
-        cuando la ley aplicable lo requiera.
+      <PolicySection title="5. Compartir datos y proveedores de IA">
+        No vendemos tus datos. Compartimos lo mínimo necesario con nuestros proveedores:{" "}
+        <strong>Supabase</strong> (hosting, autenticación, base de datos y almacenamiento privado de
+        audio), <strong>Groq</strong> (transcripción de tus grabaciones) y el{" "}
+        <strong>Lovable AI Gateway</strong>, que envía las solicitudes a modelos de OpenAI para la
+        retroalimentación del coach, las voces generadas y la revisión de seguridad de la foto de
+        perfil. También compartimos información con autoridades legales cuando la ley aplicable lo
+        requiera.
       </PolicySection>
 
       <PolicySection title="6. Seguridad de datos">
@@ -244,15 +286,19 @@ function SpanishContent() {
       </PolicySection>
 
       <PolicySection title="8. Tus derechos">
-        Podés acceder, actualizar o eliminar tu cuenta y datos, solicitar una copia de tus datos y
-        retirar el consentimiento para funciones opcionales en cualquier momento. Escribinos a{" "}
+        Puedes acceder, actualizar o eliminar tu cuenta y tus datos, solicitar una copia y retirar el
+        consentimiento para funciones opcionales en cualquier momento. Escríbenos a{" "}
         <a
-          href="mailto:privacy@fluencye4cc.app"
+          href={`mailto:${SUPPORT_EMAIL}`}
           className="font-semibold text-primary underline underline-offset-2"
         >
-          privacy@fluencye4cc.app
-        </a>
-        .
+          {SUPPORT_EMAIL}
+        </a>{" "}
+        — el mismo correo atiende soporte y privacidad — o usa el{" "}
+        <Link to="/contacto" className="font-semibold text-primary underline underline-offset-2">
+          formulario de contacto
+        </Link>
+        . Respondemos de lunes a viernes en un máximo de 2 días hábiles.
       </PolicySection>
 
       <PolicySection title="9. Cambios a esta política">

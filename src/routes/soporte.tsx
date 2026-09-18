@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { ChevronDown, Mail } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { LegalFooter } from "@/components/fluency/LegalFooter";
 import { APP_BUILD_ID } from "@/lib/build-id";
+import { useAppLang } from "@/lib/i18n";
+import { SUPPORT_EMAIL } from "@/lib/legal";
 import { cn } from "@/lib/utils";
 
-const SUPPORT_EMAIL = "desarrollo.aplicaciones@e4ccglobal.com";
-const LANG_KEY = "fluency-support-lang";
 const PLATFORM_KEY = "fluency-support-platform";
 
 type Lang = "es" | "en";
@@ -27,7 +28,7 @@ const COPY = {
     faq: [
       {
         q: "La app no graba mi voz",
-        a: "Revisa en tu teléfono: Ajustes > Fluency App > Micrófono y activa el permiso. Después cierra la app por completo y vuelve a abrirla.",
+        a: "En iPhone: Ajustes > Fluency App > Micrófono y activa el permiso. En Android: Ajustes > Aplicaciones > Fluency App > Permisos > Micrófono > Permitir. Después cierra la app por completo y vuelve a abrirla.",
       },
       {
         q: "No escucho el audio",
@@ -78,7 +79,7 @@ const COPY = {
     faq: [
       {
         q: "The app doesn't record my voice",
-        a: "On your phone go to Settings > Fluency App > Microphone and enable the permission. Then fully close the app and open it again.",
+        a: "On iPhone: Settings > Fluency App > Microphone and enable the permission. On Android: Settings > Apps > Fluency App > Permissions > Microphone > Allow. Then fully close the app and open it again.",
       },
       {
         q: "I can't hear the audio",
@@ -138,11 +139,6 @@ export const Route = createFileRoute("/soporte")({
   component: SupportPage,
 });
 
-function readLang(): Lang {
-  if (typeof window === "undefined") return "es";
-  return window.localStorage.getItem(LANG_KEY) === "en" ? "en" : "es";
-}
-
 function readPlatform(): Platform {
   if (typeof window === "undefined") return "ios";
   const stored = window.localStorage.getItem(PLATFORM_KEY);
@@ -150,18 +146,11 @@ function readPlatform(): Platform {
 }
 
 function SupportPage() {
-  const [lang, setLang] = useState<Lang>(() => readLang());
+  const { lang, setLang } = useAppLang();
   const [platform, setPlatform] = useState<Platform>(() => readPlatform());
-  const c = COPY[lang];
+  const c = COPY[lang as Lang];
 
-  const pick = (next: Lang) => {
-    setLang(next);
-    try {
-      window.localStorage.setItem(LANG_KEY, next);
-    } catch {
-      /* private mode */
-    }
-  };
+  const pick = (next: Lang) => setLang(next);
 
   const pickPlatform = (next: Platform) => {
     setPlatform(next);
@@ -276,20 +265,7 @@ function SupportPage() {
         </section>
 
         <footer className="space-y-3 pb-2 pt-1 text-center">
-          <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[12px] font-bold">
-            <Link to="/privacy-policy" className="text-primary underline underline-offset-2">
-              {lang === "es" ? "Política de privacidad" : "Privacy policy"}
-            </Link>
-            <Link to="/terminos" className="text-primary underline underline-offset-2">
-              {lang === "es" ? "Términos" : "Terms"}
-            </Link>
-            <Link to="/eliminar-cuenta" className="text-primary underline underline-offset-2">
-              {lang === "es" ? "Eliminar cuenta" : "Delete account"}
-            </Link>
-            <Link to="/contacto" className="text-primary underline underline-offset-2">
-              {lang === "es" ? "Contacto" : "Contact"}
-            </Link>
-          </nav>
+          <LegalFooter current="soporte" />
           <p className="text-[11px] text-muted-foreground">
             {c.version} {APP_BUILD_ID}
           </p>

@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { CheckCircle2, Loader2, Mail, Send } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { LegalFooter } from "@/components/fluency/LegalFooter";
 import { supabase } from "@/integrations/supabase/client";
 import { APP_BUILD_ID } from "@/lib/build-id";
+import { useAppLang } from "@/lib/i18n";
+import { SUPPORT_EMAIL } from "@/lib/legal";
 import { cn } from "@/lib/utils";
 
-const SUPPORT_EMAIL = "desarrollo.aplicaciones@e4ccglobal.com";
 const LANG_KEY = "fluency-support-lang";
 
 type Lang = "es" | "en";
@@ -107,11 +109,8 @@ export const Route = createFileRoute("/contacto")({
 });
 
 function ContactPage() {
-  const [lang, setLang] = useState<Lang>(() => {
-    if (typeof window === "undefined") return "es";
-    return (window.localStorage.getItem(LANG_KEY) as Lang) || "es";
-  });
-  const t = COPY[lang];
+  const { lang, setLang } = useAppLang();
+  const t = COPY[lang as Lang];
 
   const [userId, setUserId] = useState<string | null>(null);
   const [nombre, setNombre] = useState("");
@@ -130,9 +129,6 @@ function ContactPage() {
   const [sentId, setSentId] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
 
-  useEffect(() => {
-    window.localStorage.setItem(LANG_KEY, lang);
-  }, [lang]);
 
   useEffect(() => {
     let active = true;
@@ -356,6 +352,9 @@ function ContactPage() {
           <p className="mt-4 flex items-center gap-1.5 text-xs opacity-70">
             <Mail className="h-3.5 w-3.5" /> {SUPPORT_EMAIL}
           </p>
+          <div className="mt-5 border-t border-primary-foreground/20 pt-4">
+            <LegalFooter current="contacto" tone="dark" />
+          </div>
         </section>
       </main>
     </AppShell>
