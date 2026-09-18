@@ -148,6 +148,14 @@ function ProfilePage() {
             {esUi ? "Soporte" : "Support"} <ChevronRight className="size-4 text-muted-foreground" />
           </Link>
 
+          <Link
+            to="/mis-solicitudes"
+            className="inline-flex min-h-[48px] w-full items-center justify-between rounded-2xl border border-border px-4 text-[12px] font-bold uppercase tracking-[0.14em]"
+          >
+            {esUi ? "Estado de mis solicitudes" : "My request status"}{" "}
+            <ChevronRight className="size-4 text-muted-foreground" />
+          </Link>
+
         </section>
 
         <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
