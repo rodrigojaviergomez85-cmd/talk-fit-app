@@ -46,7 +46,7 @@ export const ADVANCED1_EP19_NOW_YOU_ASK: StorybookEpisode = {
     es: "Quien dirija el piloto va a entrevistar, calmar a un cliente enojado y vender un cupo el mismo día. Así que la entrevista son tres sillas. El cliente al teléfono ya llamó tres veces, y lo que quiere cambiar es a Lidia.",
   },
   cover,
-  voice: "male",
+  voice: "girl",
   scenes: [
     {
       id: "s1",
