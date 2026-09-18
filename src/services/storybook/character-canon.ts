@@ -341,7 +341,17 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     seasons: ["advanced-2", "advanced-3"],
     neverDo: ["never confused with Vale's mother", "never drawn in an office"],
   },
+  caller: {
+    id: "caller",
+    name: "Customer",
+    age: "adult customer on the phone, never seen",
+    look: "never drawn; only a voice on the line",
+    outfit: "never drawn; only a voice on the line",
+    seasons: ["advanced-2", "advanced-3"],
+    neverDo: ["never drawn in any scene", "never given a face or a name"],
+  },
 };
+
 
 /** Canon entry for a speaker, or undefined for the narrator. */
 export function characterCanon(speaker: StorybookSpeaker): CharacterCanon | undefined {
