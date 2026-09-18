@@ -12,6 +12,8 @@ import { loadPreferences } from "@/services/preferences";
 import { cn } from "@/lib/utils";
 import { nextLiveAudioWindow } from "@/lib/live-audio";
 import { LiveSessionLifecycle } from "@/lib/live-session-lifecycle";
+import { appendFragment, emptyTranscript, type CoachKind, type LiveTranscript } from "@/lib/live-turns";
+
 
 
 /**
@@ -134,7 +136,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   const [remaining, setRemaining] = useState(0);
   const [level, setLevel] = useState(0);
   const [coachLevel, setCoachLevel] = useState(0);
-  const [lines, setLines] = useState<Line[]>([]);
+  const [transcript, setTranscript] = useState<LiveTranscript>(emptyTranscript);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -640,9 +642,15 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
               summaryDoneRef.current = null;
             }
              if (content?.turnComplete && !collectingSummaryRef.current) {
+               // A completed model turn closes both sides: the next fragments
+               // belong to new messages, even from the same speaker.
+               coachTurnRef.current += 1;
+               userTurnRef.current += 1;
+               helpKindRef.current = null;
                setHelpLoading(null);
                if (sourcesRef.current.length === 0 && !micPausedRef.current) setCoachState("listening");
              }
+
           },
           onerror: () => {
             setError(es ? "Se perdió la conexión." : "The connection dropped.");
