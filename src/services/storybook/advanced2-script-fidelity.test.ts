@@ -46,6 +46,26 @@ const APPROVED_LINES: Record<string, string[]> = {
     "Don't. Make it. Weird. I'm staying. I told Keller this morning.",
     "A summary is not a next step. I need the files. In Bogotá we don't grade summaries.",
   ],
+  "advanced2-ep11-bogota-is-waiting": [
+    "One apology. Good. Now the facts.",
+    "That last part is not a fact. That's a reason for me to feel sorry for you. Take it out.",
+  ],
+  "advanced2-ep12-one-step-at-a-time": [
+    "You said one. Then you waited. Waiting is the part. One step at a time. You know this.",
+    "The other guy did all the steps at once. I only did one.",
+  ],
+  "advanced2-ep13-no-phones-on-the-floor": [
+    "The rule is about the screens. It says 'phones' because it can't tell the difference.",
+    "That's a not yet.",
+  ],
+  "advanced2-ep14-the-lobby": [
+    "That's the point of counting. If she sees it, it's waiting. If she doesn't, it's listening.",
+    "Then she's been waiting a long time for somebody to.",
+  ],
+  "advanced2-ep15-not-this-thursday": [
+    "Not this Thursday.",
+    "She's said no to you every week for two years. You just called it homework.",
+  ],
 };
 
 /** Characters must never name the course machinery inside the story. */
