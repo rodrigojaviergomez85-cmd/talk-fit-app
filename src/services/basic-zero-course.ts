@@ -527,7 +527,11 @@ function week1Day(day: number, p: Person, topic: string, topicEs: string): Cours
     rep5: SELF_Q,
     rep5Tips: SELF_TIPS,
     speakerVoice: p.gender === "f" ? "female" : "male",
-    speaker: { name: p.name },
+    speaker: {
+      name: p.name,
+      avatarSrc: p.gender === "f" ? genericFemaleAvatar : genericMaleAvatar,
+      avatarAlt: `Foto de ${p.name}`,
+    },
   });
 }
 
