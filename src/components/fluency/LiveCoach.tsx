@@ -498,8 +498,8 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       };
       mouthFrameRef.current = window.requestAnimationFrame(followCoachVoice);
     } catch {
-      setError(es ? "No se pudo abrir el audio." : "Could not open audio.");
-      setPhase("idle");
+      await abandon();
+      if (!cancelled()) setError(es ? "No se pudo abrir el audio." : "Could not open audio.");
       return;
     }
 
@@ -510,6 +510,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
         body: JSON.stringify({ action: "start" }),
       });
       const body = (await res.json().catch(() => null)) as StartResponse | null;
+      if (cancelled()) return;
 
       if (res.status === 429 || body?.error === "daily_limit") {
         setUsedSeconds(body?.usedSeconds ?? usedSeconds);
@@ -518,22 +519,12 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
             ? "Ya usaste tus minutos de hoy. Vuelve mañana."
             : "You used today's minutes. Come back tomorrow.",
         );
-        await outCtx.close().catch(() => undefined);
-        if (mouthFrameRef.current !== null) window.cancelAnimationFrame(mouthFrameRef.current);
-        mouthFrameRef.current = null;
-        outAnalyserRef.current = null;
-        outCtxRef.current = null;
-        setPhase("idle");
+        await abandon();
         return;
       }
       if (!res.ok || !body?.token) {
         setError(es ? "No se pudo conectar. Intenta otra vez." : "Could not connect. Try again.");
-        await outCtx.close().catch(() => undefined);
-        if (mouthFrameRef.current !== null) window.cancelAnimationFrame(mouthFrameRef.current);
-        mouthFrameRef.current = null;
-        outAnalyserRef.current = null;
-        outCtxRef.current = null;
-        setPhase("idle");
+        await abandon();
         return;
       }
 
@@ -541,6 +532,13 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
         audio: { echoCancellation: true, noiseSuppression: true },
       });
       streamRef.current = stream;
+      // If the learner left while the permission dialog was open, the stream
+      // is released right away instead of staying on.
+      if (!life.register(attempt, releaseMic)) {
+        streamRef.current = null;
+        return;
+      }
+
 
       const { GoogleGenAI, Modality } = await import("@google/genai");
       const ai = new GoogleGenAI({
