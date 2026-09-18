@@ -10,6 +10,7 @@ import { Message, MessageContent } from "@/components/ai-elements/message";
 import { CourseService } from "@/services/course-service";
 import { loadPreferences } from "@/services/preferences";
 import { cn } from "@/lib/utils";
+import { nextLiveAudioWindow } from "@/lib/live-audio";
 
 /**
  * Live speaking practice with the AI coach.
@@ -155,6 +156,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   const nodeRef = useRef<ScriptProcessorNode | null>(null);
   const playHeadRef = useRef(0);
   const sourcesRef = useRef<AudioBufferSourceNode[]>([]);
+  const sourceGainsRef = useRef<GainNode[]>([]);
   const outAnalyserRef = useRef<AnalyserNode | null>(null);
   const mouthFrameRef = useRef<number | null>(null);
   const startedAtRef = useRef(0);
@@ -266,6 +268,8 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
           }
         });
         sourcesRef.current = [];
+        sourceGainsRef.current.forEach((gain) => gain.disconnect());
+        sourceGainsRef.current = [];
         await outCtxRef.current?.close().catch(() => undefined);
         sessionRef.current?.close();
       } catch {
@@ -336,13 +340,13 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     if (!context || phase !== "live") return;
     try {
       if (micPaused) {
-        await context.resume();
+        streamRef.current?.getAudioTracks().forEach((track) => { track.enabled = true; });
         micPausedRef.current = false;
         setMicPaused(false);
         setCoachState("listening");
       } else {
-        await context.suspend();
         micPausedRef.current = true;
+        streamRef.current?.getAudioTracks().forEach((track) => { track.enabled = false; });
         setMicPaused(true);
         setCoachState("idle");
         setLevel(0);
@@ -500,6 +504,8 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
                 }
               });
               sourcesRef.current = [];
+              sourceGainsRef.current.forEach((gain) => gain.disconnect());
+              sourceGainsRef.current = [];
               playHeadRef.current = outCtx.currentTime;
             }
 
@@ -530,16 +536,26 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
               for (let i = 0; i < pcm.length; i += 1) channel[i] = (pcm[i] ?? 0) / 32768;
               const source = outCtx.createBufferSource();
               source.buffer = buffer;
+               const gain = outCtx.createGain();
               const analyser = outAnalyserRef.current;
-              if (analyser) source.connect(analyser);
-              else source.connect(outCtx.destination);
-              const startAt = Math.max(outCtx.currentTime, playHeadRef.current);
+               source.connect(gain);
+               if (analyser) gain.connect(analyser);
+               else gain.connect(outCtx.destination);
+               const window = nextLiveAudioWindow(outCtx.currentTime, playHeadRef.current, buffer.duration);
+               const { startAt, endAt, fadeSeconds } = window;
+               gain.gain.setValueAtTime(0, startAt);
+               gain.gain.linearRampToValueAtTime(1, startAt + fadeSeconds);
+               gain.gain.setValueAtTime(1, Math.max(startAt + fadeSeconds, endAt - fadeSeconds));
+               gain.gain.linearRampToValueAtTime(0, endAt);
               source.start(startAt);
-              playHeadRef.current = startAt + buffer.duration;
+               playHeadRef.current = endAt;
               sourcesRef.current.push(source);
+               sourceGainsRef.current.push(gain);
               setCoachState("speaking");
               source.onended = () => {
                 sourcesRef.current = sourcesRef.current.filter((item) => item !== source);
+                 sourceGainsRef.current = sourceGainsRef.current.filter((item) => item !== gain);
+                 gain.disconnect();
                 if (sourcesRef.current.length === 0 && !endingRef.current) {
                   setCoachState("listening");
                 }
@@ -579,6 +595,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       const processor = micCtx.createScriptProcessor(4096, 1, 1);
       nodeRef.current = processor;
       processor.onaudioprocess = (event) => {
+         if (micPausedRef.current) return;
         const input = event.inputBuffer.getChannelData(0);
         let peak = 0;
         for (let i = 0; i < input.length; i += 64) peak = Math.max(peak, Math.abs(input[i] ?? 0));
