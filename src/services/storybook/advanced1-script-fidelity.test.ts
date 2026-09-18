@@ -32,7 +32,26 @@ const APPROVED_LINES: Record<string, string[]> = {
     "She just argued our side of the table better than we did.",
     "Monday you tell them your whole professional story — past, present and future — in ninety seconds, with no questions and no help.",
   ],
+  "advanced1-ep17-show-me-dont-tell-me": [
+    "Don't tell me you're good under pressure. Show me a Tuesday.",
+    "Sixty people called. Thirty-one enrolled, and the other twenty-nine got a call back within a day. I checked the list myself.",
+  ],
+  "advanced1-ep18-the-question-nobody-prepares-for": [
+    "This is the part of the interview nobody prepares for.",
+    "Lidia's the better teacher. Everyone knows that. He's the one who'd notice if I stopped coming.",
+  ],
+  "advanced1-ep19-now-you-ask": [
+    "You've called three times and you're talking to the fourth person. That ends now.",
+    "Then I'd be selling you a voice instead of a result, and you'd notice in month two.",
+  ],
+  "advanced1-ep20-the-last-room": [
+    "It's where I learned English out loud with strangers staring at me.",
+    "You built a teacher who can lose you. That's the whole job, Vale.",
+  ],
 };
+
+/** Characters must never name the course machinery inside the story. */
+const FORBIDDEN_IN_DIALOGUE = ["B2", "Advanced 2", "Advanced 3", "Your turn", "framework"];
 
 describe("Advanced 1 — fidelity to the approved scripts", () => {
   for (const [episodeId, lines] of Object.entries(APPROVED_LINES)) {
