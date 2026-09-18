@@ -25,6 +25,8 @@ export type SpeakOptions = {
   onProgress?: (current: number, duration: number) => void;
   /** Audio could not be produced or played at all. */
   onError?: () => void;
+  /** Browser speech is noticeably robotic; story dialogue disables this fallback. */
+  allowBrowserFallback?: boolean;
 };
 
 function pickVoice(voice: ModelVoice): SpeechSynthesisVoice | undefined {
@@ -55,6 +57,17 @@ async function currentAccessToken(): Promise<string | null> {
   try {
     const { getFreshSession } = await import("@/lib/session-keeper");
     const { data } = await getFreshSession();
+    return data.session?.access_token ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** Force one token renewal after the voice endpoint rejects an otherwise present session. */
+async function refreshedAccessToken(): Promise<string | null> {
+  try {
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { data } = await supabase.auth.refreshSession();
     return data.session?.access_token ?? null;
   } catch {
     return null;
@@ -96,14 +109,19 @@ async function writeCachedBlob(key: string, blob: Blob): Promise<void> {
   }
 }
 
+class TtsRequestError extends Error {
+  constructor(readonly status: number) {
+    super(`TTS ${status}`);
+  }
+}
+
 async function fetchClip(text: string, voice: AudioVoice | undefined, tone: ModelTone, token: string): Promise<Blob> {
   const response = await fetch("/api/tts", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
     body: JSON.stringify({ text, voice: voice ?? "neutral", tone }),
   });
-  if (response.status === 401) noSessionUntil = Date.now() + NO_SESSION_BACKOFF_MS;
-  if (!response.ok) throw new Error(`TTS ${response.status}`);
+  if (!response.ok) throw new TtsRequestError(response.status);
   return response.blob();
 }
 
@@ -125,6 +143,16 @@ async function loadModelAudio(text: string, voice?: AudioVoice, tone: ModelTone 
     try {
       blob = await fetchClip(text, voice, tone, token);
     } catch (error) {
+      if (error instanceof TtsRequestError && error.status === 401) {
+        const renewedToken = await refreshedAccessToken();
+        if (!renewedToken) {
+          noSessionUntil = Date.now() + NO_SESSION_BACKOFF_MS;
+          throw error;
+        }
+        blob = await fetchClip(text, voice, tone, renewedToken);
+        void writeCachedBlob(key, blob);
+        return URL.createObjectURL(blob);
+      }
       // One silent retry: a single flaky mobile request should not break the voice.
       if (Date.now() < noSessionUntil) throw error;
       blob = await fetchClip(text, voice, tone, token);
@@ -225,19 +253,21 @@ export const AudioService = {
         };
         void audio.play().catch(() => {
           if (cancelled) return;
-          if (typeof window !== "undefined" && "speechSynthesis" in window) {
+          if (options.allowBrowserFallback !== false && typeof window !== "undefined" && "speechSynthesis" in window) {
             stopFallback = speakWithBrowser(text, options);
           } else {
             options.onError?.();
+            options.onEnd?.();
           }
         });
       })
       .catch(() => {
         if (cancelled) return;
-        if (typeof window !== "undefined" && "speechSynthesis" in window) {
+        if (options.allowBrowserFallback !== false && typeof window !== "undefined" && "speechSynthesis" in window) {
           stopFallback = speakWithBrowser(text, options);
         } else {
           options.onError?.();
+          options.onEnd?.();
         }
       });
 
