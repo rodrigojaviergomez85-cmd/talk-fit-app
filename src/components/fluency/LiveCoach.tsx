@@ -832,7 +832,20 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
         <p lang="en" className="mt-2 min-h-[3.2em] text-[clamp(1.35rem,6vw,1.75rem)] font-extrabold leading-[1.27] text-foreground" aria-live="polite">
           {currentCoachText || (phase === "connecting" ? (es ? "Preparando tu conversación…" : "Preparing your conversation…") : (es ? "Vale te saludará en un momento." : "Vale will greet you in a moment."))}
         </p>
+        {transcript.spanish ? (
+          <p className="mt-3 rounded-xl bg-secondary px-3 py-2 text-[13px] leading-snug text-foreground">
+            <span className="font-bold text-primary">{es ? "En español: " : "In Spanish: "}</span>
+            {transcript.spanish}
+          </p>
+        ) : null}
+        {transcript.idea ? (
+          <p lang="en" className="mt-2 rounded-xl bg-secondary px-3 py-2 text-[13px] leading-snug text-foreground">
+            <span className="font-bold text-primary">{es ? "Pista: " : "Hint: "}</span>
+            {transcript.idea}
+          </p>
+        ) : null}
       </div>
+
 
       <div className="mt-3 grid grid-cols-3 gap-2" aria-label={es ? "Ayuda para responder" : "Help answering"}>
         {([
