@@ -11,7 +11,21 @@
  */
 import type { AiLogMeta } from "./ai-call-log.server";
 
-export type Tone = "coach" | "neutral" | "tense" | "playful" | "story" | "cheerful" | "youthful" | "shy" | "earnest" | "warm" | "pro" | "sly";
+export type Tone =
+  | "coach"
+  | "neutral"
+  | "tense"
+  | "playful"
+  | "story"
+  | "cheerful"
+  | "youthful"
+  | "shy"
+  | "nervous"
+  | "bright"
+  | "earnest"
+  | "warm"
+  | "pro"
+  | "sly";
 export type RequestedVoice = "neutral" | "female" | "femaleBright" | "femaleMature" | "male" | "girl" | "boss" | "youngMale" | "youngMaleCalm" | "shyBoy" | "teenBoy" | "elder";
 
 /** Normalised request: `voice` is the provider voice selected below. */
@@ -42,7 +56,22 @@ export const VOICE_MAP: Record<RequestedVoice, string> = {
   /** Older, kind neighbourhood man — storybook characters like don Tito; distinct from Luis. */
   elder: "ballad",
 };
-export const TONES: readonly Tone[] = ["coach", "neutral", "tense", "playful", "story", "cheerful", "youthful", "shy", "earnest", "warm", "pro", "sly"];
+export const TONES: readonly Tone[] = [
+  "coach",
+  "neutral",
+  "tense",
+  "playful",
+  "story",
+  "cheerful",
+  "youthful",
+  "shy",
+  "nervous",
+  "bright",
+  "earnest",
+  "warm",
+  "pro",
+  "sly",
+];
 
 const TONE_INSTRUCTIONS: Record<Tone, string> = {
   coach:
@@ -61,6 +90,10 @@ const TONE_INSTRUCTIONS: Record<Tone, string> = {
     "Speak as Dylan, a friendly young man around 20 years old. Sound unmistakably youthful, light, relaxed and confident—never deep, mature, elderly or authoritative. Use an easy conversational rhythm, warm natural intonation and a subtle smile, like a young Canadian talking casually with friends on a video call. Keep him clearly distinct from Mateo: calmer and more laid-back, not highly energetic or exuberant. Do not sound robotic, monotone, flat, raspy, stern, announcer-like or over-enunciated.",
   shy:
     "Speak as Beto, a shy and gentle 17-year-old boy. The voice must sound unmistakably young, soft and light—never deep, mature, adult, elderly or authoritative. Use a timid, slightly hesitant delivery with a higher, boyish pitch, quiet warmth, small nervous pauses and a gentle rising intonation, like a shy teenager gathering courage to speak. Keep a natural, slightly careful conversational pace. Keep him clearly distinct from Mateo (not energetic or exuberant) and from Dylan (not laid-back or confident): Beto is softer, quieter and more unsure, though he gains a little confidence when encouraged. Do not sound robotic, monotone, flat, raspy, stern, announcer-like or over-enunciated.",
+  nervous:
+    "Speak as Óscar, a nervous but eager 19-year-old Salvadoran man on one of his first days at a call center. Speak at full, normal conversational volume and projection — clearly audible, never whispered, never breathy, never trailing off. The nervousness shows in a slightly quick, uneven rhythm and small honest hesitations, not in low volume. Sound unmistakably young and adult-male, warm and sincere. Keep him clearly distinct from Beto (Óscar is louder and not timid), from Mateo (not exuberant) and from Dylan (not laid-back). Natural everyday American English accent. Do not sound robotic, monotone, flat, raspy, stern, announcer-like or over-enunciated.",
+  bright:
+    "Speak as Mía, a sharp, quick 20-year-old Salvadoran woman who trains call-center agents. The voice must sound unmistakably feminine and young — bright, clear and confident, with real presence. Speak at full, normal conversational volume and projection: never soft, never whispered, never breathy or laid-back. Use direct, lively intonation, quick responsive pacing and small natural pauses, like a young woman who knows her job and says what she thinks. Natural everyday American English accent. Do not sound masculine, childish, sing-song, robotic, monotone, flat, announcer-like or over-enunciated.",
   earnest:
     "Speak as Dani, an earnest, motivated 16-year-old student. The voice must sound unmistakably young and boyish, sincere and a little eager—never deep, mature, adult, elderly or authoritative. Use warm, honest intonation, a slightly careful pace with small thoughtful pauses, and gentle rising energy when he is proud or excited. Keep him clearly distinct from Beto (not timid or unsure), from Mateo (not exuberant) and from Dylan (not laid-back). Do not sound robotic, monotone, flat, raspy, stern, announcer-like or over-enunciated.",
   pro:
