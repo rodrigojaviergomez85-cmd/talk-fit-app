@@ -201,6 +201,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   /** Stops the mic, asks for the final corrections, then closes and reports time. */
   const stop = useCallback(
     async (options?: { skipSummary?: boolean }) => {
+      if (!startedAtRef.current && !sessionRef.current) return;
       if (endingRef.current || finalizedRef.current) return;
       endingRef.current = true;
       setPhase("ending");
@@ -367,7 +368,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   }
 
   async function start() {
-    if (phase !== "idle") return;
+    if (phase !== "idle" && phase !== "done") return;
     setError(null);
     setNotice(null);
     setFeedback(null);
