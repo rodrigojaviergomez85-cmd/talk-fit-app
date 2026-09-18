@@ -46,6 +46,7 @@ export function startDialogue(
       rate: options.rate ?? 1,
       voice: speakerVoice(line.speaker),
       tone: speakerTone(line.speaker),
+      allowBrowserFallback: false,
       onEnd: () => {
         if (cancelled) return;
         // Small human beat between replies, like a real conversation.

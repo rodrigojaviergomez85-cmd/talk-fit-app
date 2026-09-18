@@ -225,13 +225,14 @@ export function StorybookPlayer({
         rate: 1,
         voice: speakerVoice(slide.scene.speaker),
         tone: speakerTone(slide.scene.speaker),
+        allowBrowserFallback: false,
       });
     }
     if (slide.kind === "quiz") {
       // Guaranteed listening: the question always plays on its own, even if the
       // learner arrives fast. A short delay lets the previous audio fully stop.
       const timer = setTimeout(() => {
-        if (alive) AudioService.speak(slide.quiz.questionEn, { voice: episode.voice, tone: speakerTone("vale") });
+        if (alive) AudioService.speak(slide.quiz.questionEn, { voice: episode.voice, tone: speakerTone("vale"), allowBrowserFallback: false });
       }, 120);
       return () => {
         alive = false;
@@ -239,11 +240,12 @@ export function StorybookPlayer({
         AudioService.stop();
       };
     }
-    if (slide.kind === "mindset" && episode.mindsetCard) AudioService.speak(episode.mindsetCard.phrase, { voice: episode.voice, tone: speakerTone("vale") });
+    if (slide.kind === "mindset" && episode.mindsetCard) AudioService.speak(episode.mindsetCard.phrase, { voice: episode.voice, tone: speakerTone("vale"), allowBrowserFallback: false });
     if (slide.kind === "habit" && episode.habitCard)
       AudioService.speak(episode.habitCard.phrase, {
         voice: speakerVoice(episode.habitCard.model),
         tone: speakerTone(episode.habitCard.model),
+        allowBrowserFallback: false,
       });
     return () => {
       alive = false;
@@ -1001,7 +1003,7 @@ export function SceneSlide({
       speakDialogue(dialogue, { rate: speed, onLine: setActiveLine });
       return;
     }
-    AudioService.speak(scene.text, { rate: speed, voice: speakerVoice(scene.speaker), tone: speakerTone(scene.speaker) });
+    AudioService.speak(scene.text, { rate: speed, voice: speakerVoice(scene.speaker), tone: speakerTone(scene.speaker), allowBrowserFallback: false });
   };
 
   return (
@@ -1050,6 +1052,7 @@ export function SceneSlide({
                         rate,
                         voice: speakerVoice(line.speaker),
                         tone: speakerTone(line.speaker),
+                        allowBrowserFallback: false,
                         onEnd: () => setActiveLine(null),
                       });
                     }}
@@ -1571,6 +1574,7 @@ function HabitSlide({
           AudioService.speak(habit.phrase, {
             voice: speakerVoice(habit.model),
             tone: speakerTone(habit.model),
+            allowBrowserFallback: false,
           })
         }
         className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-2 text-sm font-bold text-foreground"
@@ -1643,7 +1647,7 @@ function NativesSlide({
               </div>
               <button
                 type="button"
-                onClick={() => AudioService.speak(expression.example, { voice: "female", tone: "story" })}
+                onClick={() => AudioService.speak(expression.example, { voice: "female", tone: "story", allowBrowserFallback: false })}
                 className="inline-flex shrink-0 items-center gap-1 rounded-full bg-secondary px-3 py-2 text-xs font-bold text-foreground"
               >
                 <Volume2 className="size-4 text-primary" /> {es ? "Oír" : "Listen"}
