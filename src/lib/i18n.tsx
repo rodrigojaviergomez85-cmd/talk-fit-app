@@ -16,7 +16,7 @@ import {
 const DICT = {
   // Navigation
   "nav.home": ["INICIO", "HOME"],
-  "nav.practice": ["PRÁCTICA", "PRACTICE"],
+  "nav.practice": ["REPASO", "PRACTICE"],
   "nav.progress": ["PROGRESO", "PROGRESS"],
   "nav.recordings": ["GRABACIONES", "RECORDINGS"],
   "nav.review": ["REVIEW", "REVIEW"],
