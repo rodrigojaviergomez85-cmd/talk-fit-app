@@ -172,6 +172,10 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   const finalizedRef = useRef(false);
   const micPausedRef = useRef(false);
   const lifeRef = useRef<LiveSessionLifecycle>(new LiveSessionLifecycle());
+  const coachTurnRef = useRef(0);
+  const userTurnRef = useRef(0);
+  const helpKindRef = useRef<CoachKind | null>(null);
+
 
 
   useEffect(() => {
@@ -406,6 +410,9 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     if (phase !== "live" || helpLoading || !sessionRef.current) return;
     setHelpLoading(kind);
     setCoachState("thinking");
+    // The coach answer that follows is a side help, not a new practice question.
+    coachTurnRef.current += 1;
+    helpKindRef.current = kind === "spanish" ? "spanish" : kind === "idea" ? "idea" : "slow";
     try {
       sessionRef.current.sendClientContent({
         turns: [{ role: "user", parts: [{ text: HELP_PROMPTS[kind] }] }],
@@ -413,9 +420,11 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       });
     } catch {
       setHelpLoading(null);
+      helpKindRef.current = null;
       setError(es ? "No pude pedir esa ayuda. Intenta otra vez." : "I couldn't request that help. Try again.");
     }
   }
+
 
   async function start() {
     const life = lifeRef.current;
