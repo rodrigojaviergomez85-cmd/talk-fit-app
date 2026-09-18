@@ -211,6 +211,11 @@ import { ADVANCED3_EP7_APP_OR_ROOM } from "./advanced-3-ep7-app-or-room";
 import { ADVANCED3_EP8_NICO_WANTS_TO_QUIT } from "./advanced-3-ep8-nico-wants-to-quit";
 import { ADVANCED3_EP9_MIAMI_OR_HERE } from "./advanced-3-ep9-miami-or-here";
 import { ADVANCED3_EP10_A_MEME_NOT_A_DIRECTOR } from "./advanced-3-ep10-a-meme-not-a-director";
+import { ADVANCED3_EP11_THE_SMALL_ROOM } from "./advanced-3-ep11-the-small-room";
+import { ADVANCED3_EP12_BOGOTA_BLACKOUT } from "./advanced-3-ep12-bogota-blackout";
+import { ADVANCED3_EP13_TEACH_THE_TEACHER } from "./advanced-3-ep13-teach-the-teacher";
+import { ADVANCED3_EP14_IF_YOU_HAD_TAKEN_CROWN } from "./advanced-3-ep14-if-you-had-taken-crown";
+import { ADVANCED3_EP15_WHY_PEOPLE_FREEZE } from "./advanced-3-ep15-why-people-freeze";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_FIRST_DAY,
@@ -425,6 +430,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   ADVANCED3_EP8_NICO_WANTS_TO_QUIT,
   ADVANCED3_EP9_MIAMI_OR_HERE,
   ADVANCED3_EP10_A_MEME_NOT_A_DIRECTOR,
+  ADVANCED3_EP11_THE_SMALL_ROOM,
+  ADVANCED3_EP12_BOGOTA_BLACKOUT,
+  ADVANCED3_EP13_TEACH_THE_TEACHER,
+  ADVANCED3_EP14_IF_YOU_HAD_TAKEN_CROWN,
+  ADVANCED3_EP15_WHY_PEOPLE_FREEZE,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {

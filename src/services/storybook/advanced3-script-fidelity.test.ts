@@ -43,6 +43,26 @@ const APPROVED_LINES: Record<string, string[]> = {
     "I'd rather be corrected in this room than trusted with the wrong number in three.",
     "I didn't need to.",
   ],
+  "advanced3-ep11-the-small-room": [
+    "I didn't put the chairs in a circle for you. I did it because I couldn't see your face from the front, and I needed to know if you'd come back a third time.",
+    "I still stand by the door. When someone else is teaching, I still can't come in.",
+  ],
+  "advanced3-ep12-bogota-blackout": [
+    "I heard that. We can do forty minutes on a phone. We did it in week one.",
+    "I'm required to read it to you. I'm not required to agree.",
+  ],
+  "advanced3-ep13-teach-the-teacher": [
+    "Then you'll be the first one here who never froze.",
+    "I'm not asking you to give it back. Give me the strength to do what I have to do tomorrow. And if I fall, to get up.",
+  ],
+  "advanced3-ep14-if-you-had-taken-crown": [
+    "Especially now.",
+    "Not without the room. And the room is Vale's.",
+  ],
+  "advanced3-ep15-why-people-freeze": [
+    "I wasn't missing words. I had all the words. I was missing five seconds.",
+    "It's the room. Leave that chair where it is. Somebody's going to need it before I do.",
+  ],
 };
 
 const FORBIDDEN_IN_DIALOGUE = ["B2", "C1", "Advanced 2", "Advanced 3", "Your turn", "framework"];
