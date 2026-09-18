@@ -1,57 +1,27 @@
-# Episodio 19 de Advanced 1 — reescritura con conflicto real
+# Cierre de Advanced 1: episodios 17 a 20
 
-## Qué noté al leerlo completo
+Integrar los cuatro guiones ya escritos que subiste, hacer los cambios de soporte que pide el documento, generar el arte nuevo y dejar las pruebas en verde. No se toca ni una línea de diálogo de los guiones.
 
-Tienes razón: el episodio se siente perdido. Los problemas concretos:
+## Qué cambia en la historia
 
-1. **No hay conflicto.** Nadie quiere algo que otro le niegue. Son nueve escenas de gente elogiándose.
-2. **Los chistes tapan la historia.** "Parkour emocional", "taza", "asambleas escolares": comentarios simpáticos, pero sin tensión detrás suenan a relleno.
-3. **Dani repite el episodio 18.** Su "minuto honesto" (tengo miedo del título) ya pasó; aquí solo se repite.
-4. **Lidia está desperdiciada.** Aparece dos veces, dice frases de apoyo y desaparece, aunque es la mejor maestra del equipo.
-5. **La escena 8 es una hoja de ruta, no una escena.** Dani anuncia literalmente qué pasará en Advanced 2 y 3. Eso rompe la historia.
-6. **Camila entra y sale.** Trae un tema de dinero que nadie resuelve ni vuelve a mencionar.
+Los episodios 17 a 20 actuales terminan con el contrato de 10 millones, Dani nombrado director y Vale como CEO. Los guiones nuevos cuentan otra cosa: un piloto aprobado, un comité que elige entre Dani y Lidia, una agente nueva llamada Mía, y un cierre en el salón original. Reemplazar los cuatro archivos sustituye ese final anterior por completo. Los episodios 1 a 16 no se tocan.
 
-## La historia nueva que propongo (tu idea)
+## Trabajo
 
-**"La maestra que no suena como ellos"**
+1. **Guiones.** Copiar tal cual los cuatro archivos subidos sobre los existentes. Los identificadores, los nombres exportados y las rutas de imágenes no cambian, así que el registro de temporadas y el índice siguen funcionando.
 
-Un padre de familia —cliente corporativo de Northline— pide por escrito que a su grupo lo enseñe "un maestro nativo". Nombra a Lidia: dice que su inglés tiene acento y que por eso quiere cambio de maestra. Todo esto pasa en el primer día de Lidia bajo el contrato nuevo, y frente a sus propios estudiantes, que se enteran.
+2. **Personaje nuevo: Mía.** Agregarla al canon de personajes (mujer salvadoreña de 20 años, adulta, pelo corto teñido de rojo, aretes de argolla, polo negro de Northline con diadema de call center al cuello, nunca dibujada como adolescente ni sin la diadema), habilitarla como hablante y darle voz femenina brillante con tono juvenil. Morgan vuelve en el episodio 19 como la clienta corporativa: se habilita para esta temporada y su tono pasa de profesional a tenso.
 
-Por qué funciona:
+3. **Glosario.** Agregar las 23 palabras nuevas, los nombres propios de Mía, las dos contracciones y la forma irregular indicados en el documento, para que todas las palabras tocables tengan traducción.
 
-- **Duele de verdad** para la audiencia: casi todos nuestros estudiantes creen en secreto que su acento los descalifica. Ver que a la mejor maestra le pasa lo mismo, y que gana, es el mensaje entero de la app.
-- **Lidia deja de ser decorado.** Ella se defiende sola, con datos de sus estudiantes, sin pedir permiso y sin disculparse por su acento.
-- **Dani por fin tiene un problema de jefe.** Como Director de Operaciones, puede ceder ante el cliente que paga o sostener a su maestra. Elige, y le cuesta.
-- **Vale no rescata.** Observa. Es lo que hace una CEO cuando su equipo tiene que crecer.
-- **La currícula encaja sin forzar:** el día 19 practica repreguntar y defender con evidencia. Aquí eso no es un ejercicio; es cómo Lidia se salva.
+4. **Títulos del calendario.** Actualizar los cuatro avances de los días 17 a 20 con los títulos nuevos.
 
-### Recorrido de las 9 escenas
+5. **Arte.** Generar portada más nueve escenas por episodio (40 imágenes) siguiendo el reparto y la descripción de cada escena, con el canon visual ya aprobado de la temporada: Vale joven de 24, Dani con su pelo rizado fijo, Camila, Barrett, Reed, Lidia, Morgan y Mía nueva. Locaciones: oficina de la academia de noche, sala de reuniones de Northline, pasillo de Northline, salón vacío de noche, calle de noche con bus, estacionamiento al amanecer, gradas de entrada y el salón pequeño con sillas en círculo. Mismo formato móvil ligero que el resto de la temporada.
 
-| Escena | Qué pasa |
-|---|---|
-| 1 | Llega el correo del cliente. Dani lo lee en voz alta y el salón se queda mudo. |
-| 2 | Lidia dice que ya lo había escuchado antes, en otros trabajos. No llora, se enoja bien. |
-| 3 | Elena y los estudiantes reaccionan: "¿entonces yo tampoco sirvo?" Ahí se vuelve personal para el público. |
-| 4 | Dani y Camila: el cliente representa dinero real. Decidir tiene costo. |
-| 5 | Vale le pasa el problema a Dani: "es tu llamada, no la mía". |
-| 6 | Lidia prepara su respuesta con evidencia: resultados, grabaciones, minutos hablados por estudiante. |
-| 7 | La llamada con el cliente. Lidia responde repreguntando con propósito, sin pelear. |
-| 8 | El cliente no se disculpa, pero se queda. Victoria incómoda y realista. |
-| 9 | El salón cambia de energía. Cierre que deja el episodio 20 servido. |
+6. **Protección del guion.** Registrar en la prueba de fidelidad las ocho líneas clave indicadas, y agregar una regla nueva: ningún personaje de Advanced 1 puede decir "B2", "Advanced 2", "Advanced 3", "Your turn" ni "framework".
 
-## Lo que no cambia
+7. **Verificación.** Correr la suite completa de pruebas y revisar en vista móvil el episodio 18 para confirmar que Mía aparece con su nombre y su voz.
 
-- Las nueve imágenes y sus descripciones (la nueva trama ocurre en los mismos lugares: salón, oficina, llamada).
-- Nivel B2 real: condicionales, pasiva, reported speech, conectores de contraste, máximo dos turnos largos.
-- Las cuatro expresiones completas aprobadas (`scale up`, `hide behind`, `break the ice`, `for the record`) se conservan pero ahora dicen algo: `hide behind` pasa a ser lo que Dani no hace, no un chiste.
-- Los dos quizzes, el "Say It", la grabación de 30 segundos, las tarjetas de mentalidad y hábito.
-- Canon de personajes: Vale CEO, Dani Director de Operaciones, Camila gerente financiera, Lidia maestra experimentada. Solo el estudiante duda.
-- Glosario: agrego cualquier palabra nueva para que las pruebas pasen.
+## Nota técnica
 
-## Tono Gen Z, pero con propósito
-
-El humor se queda, solo que ahora sale de la tensión y no la reemplaza: frases cortas, interrupciones, alguien que se corrige solo, y un momento humano fuera del trabajo. Quito los chistes que no llevan a nada.
-
-## Verificación
-
-Pruebas de historias, glosario, reparto y voces; TypeScript; y abrir la ruta del episodio 19 en móvil.
+Archivos tocados: los cuatro episodios de Advanced 1 en `src/services/storybook/`, más `types.ts`, `character-canon.ts`, `voices.ts`, `glossary.ts`, `seasons.ts` (solo teasers 17–20), `advanced1-script-fidelity.test.ts` y las carpetas de imágenes `src/assets/storybook/advanced1-ep17…20`. Sin llamadas de IA en tiempo de uso, sin reinicio de progreso, grabaciones, estrellas ni puntos de liga.
