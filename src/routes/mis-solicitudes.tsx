@@ -46,7 +46,7 @@ function MyRequestsPage() {
   const load = useCallback(async () => {
     setError(null);
     try {
-      setRows(await list({ data: {} }));
+      setRows(await list());
     } catch {
       setError(es ? "No se pudieron cargar tus solicitudes." : "Could not load your requests.");
     }

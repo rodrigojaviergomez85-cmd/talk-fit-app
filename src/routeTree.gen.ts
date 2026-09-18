@@ -19,6 +19,7 @@ import { Route as GramaticaRouteImport } from './routes/gramatica'
 import { Route as InstallRouteImport } from './routes/install'
 import { Route as LevelRouteImport } from './routes/level'
 import { Route as LigaRouteImport } from './routes/liga'
+import { Route as MisSolicitudesRouteImport } from './routes/mis-solicitudes'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as PracticarRouteImport } from './routes/practicar'
 import { Route as PracticeRouteImport } from './routes/practice'
@@ -37,6 +38,7 @@ import { Route as AdminBugReportsRouteImport } from './routes/admin.bug-reports'
 import { Route as AdminCourseAudioRouteImport } from './routes/admin.course-audio'
 import { Route as AdminLimitesRouteImport } from './routes/admin.limites'
 import { Route as AdminMetricsRouteImport } from './routes/admin.metrics'
+import { Route as AdminSoporteRouteImport } from './routes/admin.soporte'
 import { Route as AdminStorageReportRouteImport } from './routes/admin.storage-report'
 import { Route as ApiAiCoachRouteImport } from './routes/api/ai-coach'
 import { Route as ApiCoachPracticeRouteImport } from './routes/api/coach-practice'
@@ -124,6 +126,11 @@ const LevelRoute = LevelRouteImport.update({
 const LigaRoute = LigaRouteImport.update({
   id: '/liga',
   path: '/liga',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MisSolicitudesRoute = MisSolicitudesRouteImport.update({
+  id: '/mis-solicitudes',
+  path: '/mis-solicitudes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -214,6 +221,11 @@ const AdminLimitesRoute = AdminLimitesRouteImport.update({
 const AdminMetricsRoute = AdminMetricsRouteImport.update({
   id: '/admin/metrics',
   path: '/admin/metrics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSoporteRoute = AdminSoporteRouteImport.update({
+  id: '/admin/soporte',
+  path: '/admin/soporte',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminStorageReportRoute = AdminStorageReportRouteImport.update({
@@ -428,6 +440,7 @@ export interface FileRoutesByFullPath {
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
   '/liga': typeof LigaRoute
+  '/mis-solicitudes': typeof MisSolicitudesRoute
   '/onboarding': typeof OnboardingRoute
   '/practicar': typeof PracticarRoute
   '/practice': typeof PracticeRoute
@@ -446,6 +459,7 @@ export interface FileRoutesByFullPath {
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/limites': typeof AdminLimitesRoute
   '/admin/metrics': typeof AdminMetricsRoute
+  '/admin/soporte': typeof AdminSoporteRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/ai-coach': typeof ApiAiCoachRoute
   '/api/coach-practice': typeof ApiCoachPracticeRoute
@@ -496,6 +510,7 @@ export interface FileRoutesByTo {
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
   '/liga': typeof LigaRoute
+  '/mis-solicitudes': typeof MisSolicitudesRoute
   '/onboarding': typeof OnboardingRoute
   '/practicar': typeof PracticarRoute
   '/practice': typeof PracticeRoute
@@ -514,6 +529,7 @@ export interface FileRoutesByTo {
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/limites': typeof AdminLimitesRoute
   '/admin/metrics': typeof AdminMetricsRoute
+  '/admin/soporte': typeof AdminSoporteRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/ai-coach': typeof ApiAiCoachRoute
   '/api/coach-practice': typeof ApiCoachPracticeRoute
@@ -564,6 +580,7 @@ export interface FileRoutesById {
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
   '/liga': typeof LigaRoute
+  '/mis-solicitudes': typeof MisSolicitudesRoute
   '/onboarding': typeof OnboardingRoute
   '/practicar': typeof PracticarRoute
   '/practice': typeof PracticeRoute
@@ -582,6 +599,7 @@ export interface FileRoutesById {
   '/admin/course-audio': typeof AdminCourseAudioRoute
   '/admin/limites': typeof AdminLimitesRoute
   '/admin/metrics': typeof AdminMetricsRoute
+  '/admin/soporte': typeof AdminSoporteRoute
   '/admin/storage-report': typeof AdminStorageReportRoute
   '/api/ai-coach': typeof ApiAiCoachRoute
   '/api/coach-practice': typeof ApiCoachPracticeRoute
@@ -634,6 +652,7 @@ export interface FileRouteTypes {
     | '/install'
     | '/level'
     | '/liga'
+    | '/mis-solicitudes'
     | '/onboarding'
     | '/practicar'
     | '/practice'
@@ -652,6 +671,7 @@ export interface FileRouteTypes {
     | '/admin/course-audio'
     | '/admin/limites'
     | '/admin/metrics'
+    | '/admin/soporte'
     | '/admin/storage-report'
     | '/api/ai-coach'
     | '/api/coach-practice'
@@ -702,6 +722,7 @@ export interface FileRouteTypes {
     | '/install'
     | '/level'
     | '/liga'
+    | '/mis-solicitudes'
     | '/onboarding'
     | '/practicar'
     | '/practice'
@@ -720,6 +741,7 @@ export interface FileRouteTypes {
     | '/admin/course-audio'
     | '/admin/limites'
     | '/admin/metrics'
+    | '/admin/soporte'
     | '/admin/storage-report'
     | '/api/ai-coach'
     | '/api/coach-practice'
@@ -769,6 +791,7 @@ export interface FileRouteTypes {
     | '/install'
     | '/level'
     | '/liga'
+    | '/mis-solicitudes'
     | '/onboarding'
     | '/practicar'
     | '/practice'
@@ -787,6 +810,7 @@ export interface FileRouteTypes {
     | '/admin/course-audio'
     | '/admin/limites'
     | '/admin/metrics'
+    | '/admin/soporte'
     | '/admin/storage-report'
     | '/api/ai-coach'
     | '/api/coach-practice'
@@ -838,6 +862,7 @@ export interface RootRouteChildren {
   InstallRoute: typeof InstallRoute
   LevelRoute: typeof LevelRoute
   LigaRoute: typeof LigaRoute
+  MisSolicitudesRoute: typeof MisSolicitudesRoute
   OnboardingRoute: typeof OnboardingRoute
   PracticarRoute: typeof PracticarRoute
   PracticeRoute: typeof PracticeRoute
@@ -856,6 +881,7 @@ export interface RootRouteChildren {
   AdminCourseAudioRoute: typeof AdminCourseAudioRoute
   AdminLimitesRoute: typeof AdminLimitesRoute
   AdminMetricsRoute: typeof AdminMetricsRoute
+  AdminSoporteRoute: typeof AdminSoporteRoute
   AdminStorageReportRoute: typeof AdminStorageReportRoute
   ApiAiCoachRoute: typeof ApiAiCoachRoute
   ApiCoachPracticeRoute: typeof ApiCoachPracticeRoute
@@ -962,6 +988,13 @@ declare module '@tanstack/react-router' {
       path: '/liga'
       fullPath: '/liga'
       preLoaderRoute: typeof LigaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mis-solicitudes': {
+      id: '/mis-solicitudes'
+      path: '/mis-solicitudes'
+      fullPath: '/mis-solicitudes'
+      preLoaderRoute: typeof MisSolicitudesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -1088,6 +1121,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/metrics'
       fullPath: '/admin/metrics'
       preLoaderRoute: typeof AdminMetricsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/soporte': {
+      id: '/admin/soporte'
+      path: '/admin/soporte'
+      fullPath: '/admin/soporte'
+      preLoaderRoute: typeof AdminSoporteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/storage-report': {
@@ -1387,6 +1427,7 @@ const rootRouteChildren: RootRouteChildren = {
   InstallRoute: InstallRoute,
   LevelRoute: LevelRoute,
   LigaRoute: LigaRoute,
+  MisSolicitudesRoute: MisSolicitudesRoute,
   OnboardingRoute: OnboardingRoute,
   PracticarRoute: PracticarRoute,
   PracticeRoute: PracticeRoute,
@@ -1405,6 +1446,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminCourseAudioRoute: AdminCourseAudioRoute,
   AdminLimitesRoute: AdminLimitesRoute,
   AdminMetricsRoute: AdminMetricsRoute,
+  AdminSoporteRoute: AdminSoporteRoute,
   AdminStorageReportRoute: AdminStorageReportRoute,
   ApiAiCoachRoute: ApiAiCoachRoute,
   ApiCoachPracticeRoute: ApiCoachPracticeRoute,
