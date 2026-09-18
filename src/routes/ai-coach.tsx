@@ -57,6 +57,8 @@ function AiCoachPage() {
   const [quota, setQuota] = useState<Quota | null>(null);
   const [tab, setTab] = useState<"write" | "live" | "practice">("write");
   const [practiceAllowed, setPracticeAllowed] = useState(false);
+  const [liveAllowed, setLiveAllowed] = useState(false);
+
   const [liveActive, setLiveActive] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
