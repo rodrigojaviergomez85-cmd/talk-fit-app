@@ -1,4 +1,6 @@
 import type { CourseDay, ModelLine, PersonalPrompt } from "@/lib/types";
+import genericMaleAvatar from "@/assets/avatars/generic-male.jpg";
+import genericFemaleAvatar from "@/assets/avatars/generic-female.jpg";
 
 /**
  * BASIC ZERO — Month 1 (4 weeks · 20 days · 5 fluency reps per day).
@@ -525,7 +527,11 @@ function week1Day(day: number, p: Person, topic: string, topicEs: string): Cours
     rep5: SELF_Q,
     rep5Tips: SELF_TIPS,
     speakerVoice: p.gender === "f" ? "female" : "male",
-    speaker: { name: p.name },
+    speaker: {
+      name: p.name,
+      avatarSrc: p.gender === "f" ? genericFemaleAvatar : genericMaleAvatar,
+      avatarAlt: `Foto de ${p.name}`,
+    },
   });
 }
 
