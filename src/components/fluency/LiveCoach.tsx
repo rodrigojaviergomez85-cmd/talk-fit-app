@@ -164,6 +164,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   const summaryTextRef = useRef("");
   const summaryDoneRef = useRef<(() => void) | null>(null);
   const finalizedRef = useRef(false);
+  const micPausedRef = useRef(false);
 
   useEffect(() => {
     onActiveChange?.(phase === "connecting" || phase === "live" || phase === "ending");
@@ -221,6 +222,8 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       nodeRef.current = null;
       streamRef.current = null;
       setLevel(0);
+      micPausedRef.current = false;
+      setMicPaused(false);
 
       if (!options?.skipSummary && sessionRef.current && heardVoiceRef.current) {
         try {
@@ -333,10 +336,12 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     try {
       if (micPaused) {
         await context.resume();
+        micPausedRef.current = false;
         setMicPaused(false);
         setCoachState("listening");
       } else {
         await context.suspend();
+        micPausedRef.current = true;
         setMicPaused(true);
         setCoachState("idle");
         setLevel(0);
@@ -369,6 +374,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     setLines([]);
     setHistoryOpen(false);
     setMicPaused(false);
+    micPausedRef.current = false;
     setHelpLoading(null);
     finalizedRef.current = false;
     heardVoiceRef.current = false;
@@ -545,7 +551,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
             }
              if (content?.turnComplete && !collectingSummaryRef.current) {
                setHelpLoading(null);
-               if (sourcesRef.current.length === 0 && !micPaused) setCoachState("listening");
+               if (sourcesRef.current.length === 0 && !micPausedRef.current) setCoachState("listening");
              }
           },
           onerror: () => {
@@ -603,8 +609,11 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
 
       // The coach speaks first so the learner knows it is working.
       try {
+        const knownLevelPrompt = currentModule
+          ? `The learner's known curriculum level is ${currentModule.label}. Their current course focus is ${currentModule.subtitle}. Do not ask their level. Greet them briefly, mention today's focus naturally, and ask the first suitable English question.`
+          : GREETING_PROMPT;
         sessionRef.current.sendClientContent({
-          turns: [{ role: "user", parts: [{ text: GREETING_PROMPT }] }],
+          turns: [{ role: "user", parts: [{ text: knownLevelPrompt }] }],
           turnComplete: true,
         });
       } catch {

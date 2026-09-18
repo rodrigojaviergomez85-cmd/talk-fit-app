@@ -57,6 +57,7 @@ function AiCoachPage() {
   const [quota, setQuota] = useState<Quota | null>(null);
   const [tab, setTab] = useState<"write" | "live" | "practice">("write");
   const [practiceAllowed, setPracticeAllowed] = useState(false);
+  const [liveActive, setLiveActive] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
@@ -177,16 +178,16 @@ function AiCoachPage() {
       );
 
   return (
-    <AppShell title={t("aiCoach.title")} subtitle={t("aiCoach.subtitle")} hideSync>
+    <AppShell title={t("aiCoach.title")} subtitle={liveActive ? undefined : t("aiCoach.subtitle")} hideSync hideHeader={liveActive} hideNav={liveActive}>
       <div
-        className={`mb-4 grid gap-2 rounded-2xl border border-border bg-card p-1 ${
+        className={`${liveActive ? "hidden" : "mb-4 grid"} gap-2 rounded-2xl border border-border bg-card p-1 ${
           practiceAllowed ? "grid-cols-3" : "grid-cols-2"
         }`}
       >
         {(
           [
-            ["write", lang === "en" ? "Write" : "Escribir"],
-            ["live", lang === "en" ? "Talk live" : "Hablar en vivo"],
+            ["write", lang === "en" ? "Chat" : "Chat"],
+            ["live", lang === "en" ? "Talk" : "Hablar"],
             ...(practiceAllowed
               ? ([["practice", lang === "en" ? "Practice" : "Práctica"]] as const)
               : []),
@@ -196,7 +197,7 @@ function AiCoachPage() {
             key={value}
             type="button"
             onClick={() => setTab(value)}
-            className={`min-h-[44px] rounded-xl px-3 text-[13px] font-extrabold uppercase tracking-[0.12em] transition-colors ${
+            className={`min-h-[44px] rounded-xl px-3 text-[13px] font-bold transition-colors ${
               tab === value
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-secondary"
@@ -207,7 +208,7 @@ function AiCoachPage() {
         ))}
       </div>
 
-      {tab === "live" ? <LiveCoach /> : null}
+      {tab === "live" ? <LiveCoach onActiveChange={setLiveActive} /> : null}
       {tab === "practice" ? <PracticeCoach /> : null}
 
 
