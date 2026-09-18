@@ -11,6 +11,8 @@ import { CourseService } from "@/services/course-service";
 import { loadPreferences } from "@/services/preferences";
 import { cn } from "@/lib/utils";
 import { nextLiveAudioWindow } from "@/lib/live-audio";
+import { LiveSessionLifecycle } from "@/lib/live-session-lifecycle";
+
 
 /**
  * Live speaking practice with the AI coach.
@@ -167,6 +169,8 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   const summaryDoneRef = useRef<(() => void) | null>(null);
   const finalizedRef = useRef(false);
   const micPausedRef = useRef(false);
+  const lifeRef = useRef<LiveSessionLifecycle>(new LiveSessionLifecycle());
+
 
   useEffect(() => {
     onActiveChange?.(phase === "connecting" || phase === "live" || phase === "ending");
