@@ -211,7 +211,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "Mexican woman in her late 30s, polished education entrepreneur",
     look: "light-medium olive skin, long wavy dark brown hair, sharp brown eyes, adult proportions",
     outfit: "crimson blazer over a cream blouse",
-    seasons: ["sharks"],
+    seasons: ["sharks", "advanced-3"],
     neverDo: ["never drawn as Vale or Camila", "never drawn as a teenager or child"],
   },
   marta: {
