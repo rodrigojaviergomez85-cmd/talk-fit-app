@@ -197,7 +197,7 @@ function AiCoachPage() {
             <h1 className="truncate text-[23px] font-extrabold text-foreground">{t("aiCoach.title")}</h1>
           </div>
           {counter ? (
-            <p className="shrink-0 text-right text-[12px] font-semibold text-muted-foreground">{counter}</p>
+            <p className="max-w-[46%] text-right text-[12px] font-semibold leading-snug text-muted-foreground">{counter}</p>
           ) : null}
         </header>
       ) : null}
@@ -240,9 +240,6 @@ function AiCoachPage() {
 
 
       <div className={tab === "write" ? "space-y-4" : "hidden"}>
-        {counter ? (
-          <p className="text-center text-[12px] font-semibold text-muted-foreground">{counter}</p>
-        ) : null}
 
         {turns.length === 0 && !limitReached ? (
           <div className="rounded-2xl border border-border bg-card p-4">
