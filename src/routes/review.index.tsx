@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, BriefcaseBusiness, GraduationCap, Layers3 } from "lucide-react";
+import { ArrowRight, ChevronLeft, GraduationCap, Layers3 } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
 
