@@ -7,6 +7,29 @@ import { globalExpressionMap } from "./expressions";
  * Spanish meaning. Hand-written: no runtime translation API.
  */
 export const BASE_GLOSSARY: Record<string, string> = {
+  'call-back': 'llamada de vuelta / devolución de llamada',
+  'forty-second': 'de cuarenta segundos',
+  'thirty-one': 'treinta y uno',
+  'twenty-nine': 'veintinueve',
+  'feet': 'pies',
+  'redoing': 'repitiendo / volviendo a hacer',
+  'october': 'octubre',
+  'jefe': 'jefe (dicho en español, con ironía)',
+  'nicer': 'más bonito / más agradable',
+  'guard': 'guardia (off guard: desprevenido)',
+  'knock': 'toque (a la puerta) / tocar',
+  'electric': 'eléctrica',
+  'fifty-three': 'cincuenta y tres',
+  'lack': 'falta (de algo)',
+  'résumé': 'currículum',
+  'stare': 'mirar fijamente',
+  'accent': 'acento',
+  'animal': 'animal',
+  'forty-two': 'cuarenta y dos',
+  'overall': 'en general / en conjunto',
+  'rent': 'renta / alquiler',
+  'fault': 'culpa',
+  'charge': 'cobro / cargo',
   'adorable': 'adorable',
   'avoiding': 'evitando',
   'brain': 'cerebro',
@@ -2066,6 +2089,9 @@ export const BASE_GLOSSARY: Record<string, string> = {
 
 /** Character, place and language names used across the seasons. */
 export const PROPER_NOUNS: Record<string, string> = {
+  mía: "Mía (nombre de persona)",
+  mia: "Mía (nombre de persona)",
+  "mía's": "de Mía",
   vale: "Vale (nombre de persona)",
   valeria: "Valeria (nombre completo de Vale)",
   "vale's": "de Vale",
@@ -2156,6 +2182,8 @@ export const PROPER_NOUNS: Record<string, string> = {
 
 /** Contractions keep their apostrophe after normalizeWord. */
 export const CONTRACTIONS: Record<string, string> = {
+  "who'd": "quién (condicional: who would)",
+  "why'd": "por qué (why did)",
   "i'm": "yo soy / yo estoy",
   "i'll": "yo voy a / yo (futuro)",
   "i'd": "yo (condicional: yo would)",
@@ -2212,6 +2240,7 @@ export const CONTRACTIONS: Record<string, string> = {
 
 /** Frequent irregular past forms: [Spanish meaning, base form]. */
 export const IRREGULAR_PAST: Record<string, [string, string]> = {
+  fell: ["cayó / caí (fall back on: apoyarse en)", "fall"],
   said: ["dijo / dije", "say"],
   went: ["fue / fui", "go"],
   came: ["vino / vine", "come"],

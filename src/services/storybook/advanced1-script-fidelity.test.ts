@@ -32,6 +32,41 @@ const APPROVED_LINES: Record<string, string[]> = {
     "She just argued our side of the table better than we did.",
     "Monday you tell them your whole professional story — past, present and future — in ninety seconds, with no questions and no help.",
   ],
+  "advanced1-ep17-show-me-dont-tell-me": [
+    "Don't tell me you're good under pressure. Show me a Tuesday.",
+    "Sixty people called. Thirty-one enrolled, and the other twenty-nine got a call back within a day. I checked the list myself.",
+  ],
+  "advanced1-ep18-the-question-nobody-prepares-for": [
+    "This is the part of the interview nobody prepares for.",
+    "Lidia's the better teacher. Everyone knows that. He's the one who'd notice if I stopped coming.",
+  ],
+  "advanced1-ep19-now-you-ask": [
+    "You've called three times and you're talking to the fourth person. That ends now.",
+    "Then I'd be selling you a voice instead of a result, and you'd notice in month two.",
+  ],
+  "advanced1-ep20-the-last-room": [
+    "It's where I learned English out loud with strangers staring at me.",
+    "You built a teacher who can lose you. That's the whole job, Vale.",
+  ],
+};
+
+/** Characters must never name the course machinery inside the story. */
+const FORBIDDEN_IN_DIALOGUE = ["B2", "Advanced 2", "Advanced 3", "Your turn", "framework"];
+
+/** Episodes written under the "no course talk inside the story" rule (week 4 closing arc). */
+const NO_COURSE_TALK_EPISODES = [
+  "advanced1-ep17-show-me-dont-tell-me",
+  "advanced1-ep18-the-question-nobody-prepares-for",
+  "advanced1-ep19-now-you-ask",
+  "advanced1-ep20-the-last-room",
+];
+
+/**
+ * Highlighted-expression budget. Default is 2 phrasal verbs + 2 idioms; the
+ * season finale ships 1 phrasal + 3 idioms by script design, same total of 4.
+ */
+const EXPRESSION_BUDGET: Record<string, { phrasal: number; idiom: number }> = {
+  "advanced1-ep20-the-last-room": { phrasal: 1, idiom: 3 },
 };
 
 describe("Advanced 1 — fidelity to the approved scripts", () => {
@@ -60,10 +95,26 @@ describe("Advanced 1 — fidelity to the approved scripts", () => {
       expect(words).toBeLessThanOrEqual(680);
     });
 
-    it(`${episodeId} ships two phrasal verbs and two idioms`, () => {
+    it(`${episodeId} ships its four highlighted expressions`, () => {
       const expressions = episode?.expressions ?? [];
-      expect(expressions.filter((e) => e.kind === "phrasal").length).toBeGreaterThanOrEqual(2);
-      expect(expressions.filter((e) => e.kind === "idiom").length).toBeGreaterThanOrEqual(2);
+      const budget = EXPRESSION_BUDGET[episodeId] ?? { phrasal: 2, idiom: 2 };
+      expect(expressions.filter((e) => e.kind === "phrasal").length).toBeGreaterThanOrEqual(budget.phrasal);
+      expect(expressions.filter((e) => e.kind === "idiom").length).toBeGreaterThanOrEqual(budget.idiom);
+      expect(expressions.length).toBeGreaterThanOrEqual(4);
     });
   }
+
+  it("no Advanced 1 character talks about the course from inside the story", () => {
+    const episodes = STORYBOOK_EPISODES.filter((e) => NO_COURSE_TALK_EPISODES.includes(e.id));
+    expect(episodes.length).toBe(NO_COURSE_TALK_EPISODES.length);
+    expect(episodes.length).toBeGreaterThan(0);
+    for (const episode of episodes) {
+      const spoken = episode.scenes.flatMap((s) => (s.lines ?? []).map((l) => l.text));
+      for (const text of spoken) {
+        for (const banned of FORBIDDEN_IN_DIALOGUE) {
+          expect(text.includes(banned), `${episode.id}: "${banned}" in "${text}"`).toBe(false);
+        }
+      }
+    }
+  });
 });
