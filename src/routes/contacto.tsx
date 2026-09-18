@@ -14,7 +14,6 @@ type Lang = "es" | "en";
 const CATEGORIES = [
   { value: "problema-tecnico", es: "Problema técnico", en: "Technical issue" },
   { value: "pregunta-cuenta", es: "Pregunta sobre mi cuenta", en: "Question about my account" },
-  { value: "facturacion", es: "Facturación", en: "Billing" },
   { value: "privacidad", es: "Privacidad y datos", en: "Privacy and data" },
   { value: "otro", es: "Otro", en: "Other" },
 ] as const;
