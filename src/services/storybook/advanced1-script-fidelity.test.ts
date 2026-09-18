@@ -53,6 +53,22 @@ const APPROVED_LINES: Record<string, string[]> = {
 /** Characters must never name the course machinery inside the story. */
 const FORBIDDEN_IN_DIALOGUE = ["B2", "Advanced 2", "Advanced 3", "Your turn", "framework"];
 
+/** Episodes written under the "no course talk inside the story" rule (week 4 closing arc). */
+const NO_COURSE_TALK_EPISODES = [
+  "advanced1-ep17-show-me-dont-tell-me",
+  "advanced1-ep18-the-question-nobody-prepares-for",
+  "advanced1-ep19-now-you-ask",
+  "advanced1-ep20-the-last-room",
+];
+
+/**
+ * Highlighted-expression budget. Default is 2 phrasal verbs + 2 idioms; the
+ * season finale ships 1 phrasal + 3 idioms by script design, same total of 4.
+ */
+const EXPRESSION_BUDGET: Record<string, { phrasal: number; idiom: number }> = {
+  "advanced1-ep20-the-last-room": { phrasal: 1, idiom: 3 },
+};
+
 describe("Advanced 1 — fidelity to the approved scripts", () => {
   for (const [episodeId, lines] of Object.entries(APPROVED_LINES)) {
     const episode = STORYBOOK_EPISODES.find((e) => e.id === episodeId);
