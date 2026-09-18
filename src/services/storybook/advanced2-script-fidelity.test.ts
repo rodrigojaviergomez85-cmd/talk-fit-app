@@ -70,7 +70,7 @@ describe("Advanced 2 — fidelity to the approved scripts", () => {
     });
   }
 
-  it("no Advanced 2 week 1 character talks about the course from inside the story", () => {
+  it("no Advanced 2 character talks about the course from inside the story", () => {
     const ids = Object.keys(APPROVED_LINES);
     const episodes = STORYBOOK_EPISODES.filter((e) => ids.includes(e.id));
     expect(episodes.length).toBe(ids.length);
