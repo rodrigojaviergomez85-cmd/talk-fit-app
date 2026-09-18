@@ -2281,6 +2281,7 @@ export const CONTRACTIONS: Record<string, string> = {
   "haven't": "no he / no han",
   "hasn't": "no ha",
   "doesnt": "no (negación con does)",
+  "he'll": "él va a (futuro)",
 };
 
 /** Frequent irregular past forms: [Spanish meaning, base form]. */
