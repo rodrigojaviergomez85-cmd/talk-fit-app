@@ -556,6 +556,48 @@ export type Database = {
           },
         ]
       }
+      grammar_quiz_attempts: {
+        Row: {
+          answers: Json
+          completed_at: string
+          correct: number
+          created_at: string
+          day: number
+          id: string
+          module_id: string
+          passed: boolean
+          total: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          completed_at?: string
+          correct?: number
+          created_at?: string
+          day: number
+          id?: string
+          module_id: string
+          passed?: boolean
+          total?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          completed_at?: string
+          correct?: number
+          created_at?: string
+          day?: number
+          id?: string
+          module_id?: string
+          passed?: boolean
+          total?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       habit_practice_days: {
         Row: {
           created_at: string

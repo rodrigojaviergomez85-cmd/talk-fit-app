@@ -15,6 +15,13 @@
       "when": 1789672741973,
       "tag": "0001_add_new_signups_to_admin_daily_activity",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789755489888,
+      "tag": "0002_grammar_quiz_step3",
+      "breakpoints": true
     }
   ]
 }

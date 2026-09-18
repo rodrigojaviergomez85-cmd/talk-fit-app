@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { getLeagueCohort, getStorySlot, isLeagueCohort } from "./league-manifest";
+import { grammarDaysInWeek, hasGrammarQuiz } from "./grammar-quiz-manifest";
 import {
   attainableWeeklyGoal,
   curriculumWeekForDay,
@@ -52,7 +53,10 @@ type RawSummary = {
 function shapeSummary(raw: RawSummary | null, moduleId: string, week: number): LeagueSummary {
   if (!raw?.enrolled && !raw?.observer) return EMPTY;
   const cohort = getLeagueCohort(raw.moduleId ?? moduleId, raw.curriculumWeek ?? week);
-  const attainableGoal = attainableWeeklyGoal(cohort?.stories.length ?? 0);
+  const attainableGoal = attainableWeeklyGoal(
+    cohort?.stories.length ?? 0,
+    grammarDaysInWeek(raw.moduleId ?? moduleId, raw.curriculumWeek ?? week),
+  );
   return {
     enrolled: Boolean(raw.enrolled),
     observer: Boolean(raw.observer),
@@ -207,6 +211,18 @@ export const claimDayRewards = createServerFn({ method: "POST" })
       _min_scene_index: 0,
     });
     if ((practiceRes as { status?: string } | null)?.status === "awarded") awarded.push("practice");
+
+    // Paso 3 · Gramática (piloto): la base de datos exige un intento aprobado.
+    if (hasGrammarQuiz(data.moduleId, data.day)) {
+      const { data: grammarRes } = await context.supabase.rpc("league_award", {
+        _activity_type: "grammar",
+        _module_id: data.moduleId,
+        _day: data.day,
+        _activity_key: `${data.moduleId}:grammar-${data.day}`,
+        _min_scene_index: 0,
+      });
+      if ((grammarRes as { status?: string } | null)?.status === "awarded") awarded.push("grammar");
+    }
 
     if (!awarded.length) return { awarded, summary: before };
 

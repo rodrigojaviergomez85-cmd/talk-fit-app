@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AiCoachRouteImport } from './routes/ai-coach'
 import { Route as CoachCheckRouteImport } from './routes/coach-check'
 import { Route as CuentaRouteImport } from './routes/cuenta'
+import { Route as GramaticaRouteImport } from './routes/gramatica'
 import { Route as InstallRouteImport } from './routes/install'
 import { Route as LevelRouteImport } from './routes/level'
 import { Route as LigaRouteImport } from './routes/liga'
@@ -89,6 +90,11 @@ const CoachCheckRoute = CoachCheckRouteImport.update({
 const CuentaRoute = CuentaRouteImport.update({
   id: '/cuenta',
   path: '/cuenta',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GramaticaRoute = GramaticaRouteImport.update({
+  id: '/gramatica',
+  path: '/gramatica',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InstallRoute = InstallRouteImport.update({
@@ -392,6 +398,7 @@ export interface FileRoutesByFullPath {
   '/ai-coach': typeof AiCoachRoute
   '/coach-check': typeof CoachCheckRoute
   '/cuenta': typeof CuentaRoute
+  '/gramatica': typeof GramaticaRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
   '/liga': typeof LigaRoute
@@ -455,6 +462,7 @@ export interface FileRoutesByTo {
   '/ai-coach': typeof AiCoachRoute
   '/coach-check': typeof CoachCheckRoute
   '/cuenta': typeof CuentaRoute
+  '/gramatica': typeof GramaticaRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
   '/liga': typeof LigaRoute
@@ -518,6 +526,7 @@ export interface FileRoutesById {
   '/ai-coach': typeof AiCoachRoute
   '/coach-check': typeof CoachCheckRoute
   '/cuenta': typeof CuentaRoute
+  '/gramatica': typeof GramaticaRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
   '/liga': typeof LigaRoute
@@ -583,6 +592,7 @@ export interface FileRouteTypes {
     | '/ai-coach'
     | '/coach-check'
     | '/cuenta'
+    | '/gramatica'
     | '/install'
     | '/level'
     | '/liga'
@@ -646,6 +656,7 @@ export interface FileRouteTypes {
     | '/ai-coach'
     | '/coach-check'
     | '/cuenta'
+    | '/gramatica'
     | '/install'
     | '/level'
     | '/liga'
@@ -708,6 +719,7 @@ export interface FileRouteTypes {
     | '/ai-coach'
     | '/coach-check'
     | '/cuenta'
+    | '/gramatica'
     | '/install'
     | '/level'
     | '/liga'
@@ -772,6 +784,7 @@ export interface RootRouteChildren {
   AiCoachRoute: typeof AiCoachRoute
   CoachCheckRoute: typeof CoachCheckRoute
   CuentaRoute: typeof CuentaRoute
+  GramaticaRoute: typeof GramaticaRoute
   InstallRoute: typeof InstallRoute
   LevelRoute: typeof LevelRoute
   LigaRoute: typeof LigaRoute
@@ -855,6 +868,13 @@ declare module '@tanstack/react-router' {
       path: '/cuenta'
       fullPath: '/cuenta'
       preLoaderRoute: typeof CuentaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gramatica': {
+      id: '/gramatica'
+      path: '/gramatica'
+      fullPath: '/gramatica'
+      preLoaderRoute: typeof GramaticaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/install': {
@@ -1281,6 +1301,7 @@ const rootRouteChildren: RootRouteChildren = {
   AiCoachRoute: AiCoachRoute,
   CoachCheckRoute: CoachCheckRoute,
   CuentaRoute: CuentaRoute,
+  GramaticaRoute: GramaticaRoute,
   InstallRoute: InstallRoute,
   LevelRoute: LevelRoute,
   LigaRoute: LigaRoute,

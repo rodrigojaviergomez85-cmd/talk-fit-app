@@ -20,7 +20,7 @@ export const WEEKLY_GOAL = DAY_GOAL * DAYS_PER_WEEK; // 1500
 /** Institutional timezone for competition weeks (same one practice caps use). */
 export const LEAGUE_TIMEZONE = "America/El_Salvador";
 
-export type LeagueActivityType = "story" | "practice";
+export type LeagueActivityType = "story" | "practice" | "grammar";
 
 export type LeagueReward = {
   activityType: LeagueActivityType;
@@ -100,15 +100,19 @@ export function hasReward(rewards: LeagueReward[], day: number, type: LeagueActi
   return rewards.some((r) => r.day === day && r.activityType === type);
 }
 
-/** Weekly maximum when only some story episodes exist for the cohort. */
-export function attainableWeeklyGoal(publishedStoryDays: number): number {
+/**
+ * Weekly maximum when only some story episodes exist for the cohort.
+ * `grammarDays` is the piloted third activity (Paso 3 · Gramática).
+ */
+export function attainableWeeklyGoal(publishedStoryDays: number, grammarDays = 0): number {
   const stories = Math.max(0, Math.min(DAYS_PER_WEEK, publishedStoryDays));
-  return (DAYS_PER_WEEK + stories) * POINTS_PER_ACTIVITY;
+  const grammar = Math.max(0, Math.min(DAYS_PER_WEEK, grammarDays));
+  return (DAYS_PER_WEEK + stories + grammar) * POINTS_PER_ACTIVITY;
 }
 
-/** Daily maximum: 300 with a story that day, 150 for audio-only days. */
-export function dailyGoal(hasStory: boolean): number {
-  return (hasStory ? 2 : 1) * POINTS_PER_ACTIVITY;
+/** Daily maximum: 150 per available activity that day (audios, story, grammar). */
+export function dailyGoal(hasStory: boolean, hasGrammar = false): number {
+  return (1 + (hasStory ? 1 : 0) + (hasGrammar ? 1 : 0)) * POINTS_PER_ACTIVITY;
 }
 
 /** 0–100, clamped, for the compact progress bars. */

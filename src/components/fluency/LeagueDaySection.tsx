@@ -13,6 +13,7 @@ import {
   type LeagueSummary,
 } from "@/lib/league";
 import { getStorySlot, isLeagueCohort } from "@/lib/league-manifest";
+import { hasGrammarQuiz } from "@/lib/grammar-quiz-manifest";
 import { curriculumWeekForDay } from "@/lib/league";
 
 /**
@@ -96,9 +97,12 @@ export function LeagueDaySection({
   const participants = summary?.participants ?? 0;
   // Audio-only days (no published story) are worth 150, not 300.
   const hasStory = Boolean(moduleId && getStorySlot(moduleId, day));
-  const dayGoal = dailyGoal(hasStory);
+  const hasGrammar = Boolean(moduleId && hasGrammarQuiz(moduleId, day));
+  const dayGoal = dailyGoal(hasStory, hasGrammar);
   const allDone =
-    hasReward(rewards, day, "practice") && (!hasStory || hasReward(rewards, day, "story"));
+    hasReward(rewards, day, "practice") &&
+    (!hasStory || hasReward(rewards, day, "story")) &&
+    (!hasGrammar || hasReward(rewards, day, "grammar"));
 
 
   return (
