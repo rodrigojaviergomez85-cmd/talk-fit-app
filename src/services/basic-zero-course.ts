@@ -429,6 +429,7 @@ type DayInput = {
   rep5: { question: string; questionEs: string };
   rep5Tips: { en: string; es: string };
   speakerVoice: "female" | "male";
+  speaker?: CourseDay["speaker"];
   challenges?: CourseDay["challenges"];
 };
 
@@ -469,6 +470,7 @@ function makeDay(input: DayInput): CourseDay {
     rep5Prompt: input.rep5,
     rep5Tips: input.rep5Tips,
     speakerVoice: input.speakerVoice,
+    ...(input.speaker ? { speaker: input.speaker } : {}),
     modelExample: {
       text: input.lines.map((l) => l.text).join(" "),
       es: input.lines.map((l) => l.es).join(" "),
@@ -523,6 +525,7 @@ function week1Day(day: number, p: Person, topic: string, topicEs: string): Cours
     rep5: SELF_Q,
     rep5Tips: SELF_TIPS,
     speakerVoice: p.gender === "f" ? "female" : "male",
+    speaker: { name: p.name },
   });
 }
 
@@ -544,6 +547,7 @@ function week2Day(day: number, p: Person, topic: string, topicEs: string): Cours
     rep5: SELF_Q,
     rep5Tips: SELF_TIPS_FLUENCY,
     speakerVoice: p.gender === "f" ? "female" : "male",
+    speaker: { name: p.name },
   });
 }
 
@@ -565,6 +569,7 @@ function week3Day(day: number, p: Person, topic: string, topicEs: string): Cours
     rep5: OTHER_Q,
     rep5Tips: OTHER_TIPS,
     speakerVoice: p.gender === "f" ? "female" : "male",
+    speaker: { name: p.name },
   });
 }
 
@@ -586,6 +591,7 @@ function week4Day(day: number, p: Person, topic: string, topicEs: string): Cours
     rep5: OTHER_Q,
     rep5Tips: OTHER_TIPS_FLUENCY,
     speakerVoice: p.gender === "f" ? "female" : "male",
+    speaker: { name: p.name },
   });
 }
 

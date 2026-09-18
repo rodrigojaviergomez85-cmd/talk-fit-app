@@ -18,6 +18,10 @@ type AudioPlayerProps = {
   onEnd?: () => void;
   /** Fired when the learner presses play (not on resume). */
   onStart?: () => void;
+  /** Optional presentation hooks; playback still belongs exclusively to AudioPlayer/AudioService. */
+  onProgress?: (position: number, duration: number) => void;
+  onStatusChange?: (status: Status) => void;
+  showProgress?: boolean;
   /** Changing this value starts playback, including when the selected rate did not change. */
   playRequest?: number;
   className?: string;
@@ -43,6 +47,9 @@ export function AudioPlayer({
   variant = "primary",
   onEnd,
   onStart,
+  onProgress,
+  onStatusChange,
+  showProgress: showBuiltInProgress = true,
   playRequest,
   className,
 }: AudioPlayerProps) {
@@ -54,6 +61,10 @@ export function AudioPlayer({
   const es = useAppLang().lang === "es";
 
   useEffect(() => () => stopRef.current?.(), []);
+
+  useEffect(() => {
+    onStatusChange?.(status);
+  }, [onStatusChange, status]);
 
   // A new text/rate resets the player.
   useEffect(() => {
@@ -77,6 +88,7 @@ export function AudioPlayer({
       onProgress: (position, total) => {
         setCurrent(position);
         if (total > 0) setDuration(total);
+        onProgress?.(position, total);
       },
       onEnd: () => {
         setStatus("ended");
@@ -179,7 +191,7 @@ export function AudioPlayer({
         {buttonLabel}
       </button>
 
-      {showProgress ? (
+      {showBuiltInProgress && showProgress ? (
         <div className="mt-2 flex items-center gap-2" role="group" aria-label={es ? "Progreso del audio" : "Audio progress"}>
           <span className="shrink-0 text-[11px] font-bold tabular-nums text-muted-foreground">
             {clock(current)} / {clock(duration)}
