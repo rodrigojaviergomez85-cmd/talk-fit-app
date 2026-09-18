@@ -1466,6 +1466,45 @@ export type Database = {
         }
         Relationships: []
       }
+      support_tickets: {
+        Row: {
+          app_version: string | null
+          categoria: string
+          created_at: string
+          email: string
+          estado: string
+          id: string
+          mensaje: string
+          nombre: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          app_version?: string | null
+          categoria: string
+          created_at?: string
+          email: string
+          estado?: string
+          id?: string
+          mensaje: string
+          nombre: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          app_version?: string | null
+          categoria?: string
+          created_at?: string
+          email?: string
+          estado?: string
+          id?: string
+          mensaje?: string
+          nombre?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       test_ready_progress: {
         Row: {
           attempts: number
