@@ -201,6 +201,11 @@ import { ADVANCED2_EP17_ONE_TO_ONE } from "./advanced-2-ep17-one-to-one";
 import { ADVANCED2_EP18_MIA_TEACHES } from "./advanced-2-ep18-mia-teaches";
 import { ADVANCED2_EP19_THE_AUDIT } from "./advanced-2-ep19-the-audit";
 import { ADVANCED2_EP20_DAY_NINETY } from "./advanced-2-ep20-day-ninety";
+import { ADVANCED3_EP1_TWO_MILLION } from "./advanced-3-ep1-two-million";
+import { ADVANCED3_EP2_THE_COMMENTS } from "./advanced-3-ep2-the-comments";
+import { ADVANCED3_EP3_MIAMI_SIX_MONTHS } from "./advanced-3-ep3-miami-six-months";
+import { ADVANCED3_EP4_MIAS_NIGHT } from "./advanced-3-ep4-mias-night";
+import { ADVANCED3_EP5_THE_LIVESTREAM } from "./advanced-3-ep5-the-livestream";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_FIRST_DAY,
@@ -405,6 +410,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   ADVANCED2_EP18_MIA_TEACHES,
   ADVANCED2_EP19_THE_AUDIT,
   ADVANCED2_EP20_DAY_NINETY,
+  ADVANCED3_EP1_TWO_MILLION,
+  ADVANCED3_EP2_THE_COMMENTS,
+  ADVANCED3_EP3_MIAMI_SIX_MONTHS,
+  ADVANCED3_EP4_MIAS_NIGHT,
+  ADVANCED3_EP5_THE_LIVESTREAM,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
