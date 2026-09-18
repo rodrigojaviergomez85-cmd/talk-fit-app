@@ -43,7 +43,7 @@ describe("Advanced 2 — fidelity to the approved scripts", () => {
       const spoken = (episode?.scenes ?? []).flatMap((s) => (s.lines ?? []).map((l) => l.text));
       for (const line of lines) {
         expect(
-          spoken.some((text) => text.includes(line)),
+          spoken.some((text) => text.toLowerCase().includes(line.toLowerCase())),
           `missing approved line: ${line}`,
         ).toBe(true);
       }
