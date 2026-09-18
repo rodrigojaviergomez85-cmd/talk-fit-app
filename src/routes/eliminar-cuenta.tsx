@@ -165,8 +165,8 @@ function DeleteAccountPage() {
             </ul>
             <p className="mt-1.5">
               {es
-                ? "No podrás volver a entrar ni recuperar la cuenta."
-                : "You will not be able to sign in again or recover the account."}
+                ? "No podrás recuperar esta cuenta, pero puedes volver cuando quieras creando una cuenta nueva."
+                : "You won't be able to recover this account, but you can come back anytime by creating a new one."}
             </p>
           </div>
 
