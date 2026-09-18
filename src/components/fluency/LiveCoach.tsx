@@ -416,7 +416,19 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   }
 
   async function start() {
+    const life = lifeRef.current;
     if (phase !== "idle" && phase !== "done") return;
+    // Block duplicate starts before the first await.
+    const attempt = life.begin();
+    if (attempt === null) return;
+
+    /** True once "X"/"Terminar" cancelled this attempt. */
+    const cancelled = () => !life.isCurrent(attempt);
+    const abandon = async () => {
+      await life.releaseAll();
+      if (!endingRef.current) setPhase("idle");
+    };
+
     setError(null);
     setNotice(null);
     setFeedback(null);
@@ -427,22 +439,30 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     setHelpLoading(null);
     finalizedRef.current = false;
     heardVoiceRef.current = false;
+    setPhase("connecting");
 
     const headers = await authHeaders();
+    if (cancelled()) return;
     if (!headers) {
+      await life.releaseAll();
       setError(es ? "Inicia sesión para hablar en vivo." : "Sign in to talk live.");
+      setPhase("idle");
       return;
     }
-
-    setPhase("connecting");
 
     // Unlock audio inside the user gesture: iOS starts contexts suspended.
     let outCtx: AudioContext;
     try {
       outCtx = new AudioContext();
-      await outCtx.resume().catch(() => undefined);
       outCtxRef.current = outCtx;
+      life.register(attempt, releasePlayback);
+      await outCtx.resume().catch(() => undefined);
+      if (cancelled()) {
+        await abandon();
+        return;
+      }
       playHeadRef.current = outCtx.currentTime;
+
       const outAnalyser = outCtx.createAnalyser();
       outAnalyser.fftSize = 512;
       outAnalyser.smoothingTimeConstant = 0.68;
