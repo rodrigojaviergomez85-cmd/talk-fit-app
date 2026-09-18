@@ -37,8 +37,6 @@ type StartResponse = {
   error?: string;
 };
 
-type Line = { role: "you" | "coach"; text: string };
-
 const SYSTEM_INSTRUCTION =
   "You are Vale, a warm, experienced English teacher talking live with a Spanish-speaking adult learner. " +
   "You are an ENGLISH teacher: the conversation always stays in English. Never switch into a Spanish conversation, " +
@@ -885,15 +883,4 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       <p className="mt-2 text-center text-[11px] text-muted-foreground">{es ? "La conversación no se guarda. Solo contamos los minutos usados." : "The conversation is not saved. We only count the minutes used."}</p>
     </section>
   );
-}
-
-/** Live transcripts arrive in fragments; join them into one line per speaker. */
-function appendLine(prev: Line[], role: Line["role"], text: string): Line[] {
-  const last = prev[prev.length - 1];
-  if (last && last.role === role) {
-    const merged = [...prev];
-    merged[merged.length - 1] = { role, text: `${last.text}${text}` };
-    return merged;
-  }
-  return [...prev, { role, text }];
 }
