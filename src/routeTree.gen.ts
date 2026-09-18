@@ -17,6 +17,7 @@ import { Route as InstallRouteImport } from './routes/install'
 import { Route as LevelRouteImport } from './routes/level'
 import { Route as LigaRouteImport } from './routes/liga'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as PracticarRouteImport } from './routes/practicar'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as ProfileRouteImport } from './routes/profile'
@@ -108,6 +109,11 @@ const LigaRoute = LigaRouteImport.update({
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PracticarRoute = PracticarRouteImport.update({
+  id: '/practicar',
+  path: '/practicar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PracticeRoute = PracticeRouteImport.update({
@@ -390,6 +396,7 @@ export interface FileRoutesByFullPath {
   '/level': typeof LevelRoute
   '/liga': typeof LigaRoute
   '/onboarding': typeof OnboardingRoute
+  '/practicar': typeof PracticarRoute
   '/practice': typeof PracticeRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
@@ -452,6 +459,7 @@ export interface FileRoutesByTo {
   '/level': typeof LevelRoute
   '/liga': typeof LigaRoute
   '/onboarding': typeof OnboardingRoute
+  '/practicar': typeof PracticarRoute
   '/practice': typeof PracticeRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
@@ -514,6 +522,7 @@ export interface FileRoutesById {
   '/level': typeof LevelRoute
   '/liga': typeof LigaRoute
   '/onboarding': typeof OnboardingRoute
+  '/practicar': typeof PracticarRoute
   '/practice': typeof PracticeRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
@@ -578,6 +587,7 @@ export interface FileRouteTypes {
     | '/level'
     | '/liga'
     | '/onboarding'
+    | '/practicar'
     | '/practice'
     | '/privacy-policy'
     | '/profile'
@@ -640,6 +650,7 @@ export interface FileRouteTypes {
     | '/level'
     | '/liga'
     | '/onboarding'
+    | '/practicar'
     | '/practice'
     | '/privacy-policy'
     | '/profile'
@@ -701,6 +712,7 @@ export interface FileRouteTypes {
     | '/level'
     | '/liga'
     | '/onboarding'
+    | '/practicar'
     | '/practice'
     | '/privacy-policy'
     | '/profile'
@@ -764,6 +776,7 @@ export interface RootRouteChildren {
   LevelRoute: typeof LevelRoute
   LigaRoute: typeof LigaRoute
   OnboardingRoute: typeof OnboardingRoute
+  PracticarRoute: typeof PracticarRoute
   PracticeRoute: typeof PracticeRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ProfileRoute: typeof ProfileRoute
@@ -870,6 +883,13 @@ declare module '@tanstack/react-router' {
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/practicar': {
+      id: '/practicar'
+      path: '/practicar'
+      fullPath: '/practicar'
+      preLoaderRoute: typeof PracticarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/practice': {
@@ -1265,6 +1285,7 @@ const rootRouteChildren: RootRouteChildren = {
   LevelRoute: LevelRoute,
   LigaRoute: LigaRoute,
   OnboardingRoute: OnboardingRoute,
+  PracticarRoute: PracticarRoute,
   PracticeRoute: PracticeRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ProfileRoute: ProfileRoute,

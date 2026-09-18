@@ -1,8 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Loader2, Mic, Square } from "lucide-react";
+import { ChevronDown, Clock3, Gauge, Languages, Lightbulb, Loader2, Mic, MicOff, PhoneOff, RotateCcw, X } from "lucide-react";
 import { useAppLang } from "@/lib/i18n";
 import { getFreshSession } from "@/lib/session-keeper";
 import { CoachAvatar, type CoachState } from "@/components/fluency/CoachAvatar";
+import { Button } from "@/components/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Conversation, ConversationContent, ConversationScrollButton } from "@/components/ai-elements/conversation";
+import { Message, MessageContent } from "@/components/ai-elements/message";
+import { CourseService } from "@/services/course-service";
+import { loadPreferences } from "@/services/preferences";
+import { cn } from "@/lib/utils";
 
 /**
  * Live speaking practice with the AI coach.
@@ -13,7 +20,8 @@ import { CoachAvatar, type CoachState } from "@/components/fluency/CoachAvatar";
  * stored: only the number of seconds used is reported when the session ends.
  */
 
-type Phase = "idle" | "connecting" | "live" | "ending";
+type Phase = "idle" | "connecting" | "live" | "ending" | "done";
+type HelpKind = "spanish" | "slow" | "idea";
 
 type StartResponse = {
   token?: string;
@@ -106,7 +114,13 @@ function mmss(total: number): string {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-export function LiveCoach() {
+const HELP_PROMPTS: Record<HelpKind, string> = {
+  spanish: "The learner tapped Help in Spanish. Briefly explain or translate your most recent question in one short Spanish sentence. Then invite a simple answer in English on the same topic. Do not change the topic.",
+  slow: "Repeat your most recent question now, using the exact same meaning and topic. Speak noticeably more slowly and clearly. Do not add a new question.",
+  idea: "Give the learner one very short English sentence starter or a few useful words for answering your most recent question. Do not complete the answer. Then wait.",
+};
+
+export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolean) => void }) {
   const { lang } = useAppLang();
   const es = lang !== "en";
 
@@ -122,6 +136,13 @@ export function LiveCoach() {
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [coachState, setCoachState] = useState<CoachState>("idle");
+  const [micPaused, setMicPaused] = useState(false);
+  const [helpLoading, setHelpLoading] = useState<HelpKind | null>(null);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const prefs = loadPreferences();
+  const currentModule = prefs.currentModuleId ? CourseService.getModule(prefs.currentModuleId) : null;
+  const levelLabel = currentModule?.label ?? (es ? "Tu nivel" : "Your level");
+  const topicLabel = currentModule?.subtitle ?? (es ? "Conversación real" : "Real conversation");
 
   const sessionRef = useRef<{
     close: () => void;
@@ -142,6 +163,11 @@ export function LiveCoach() {
   const collectingSummaryRef = useRef(false);
   const summaryTextRef = useRef("");
   const summaryDoneRef = useRef<(() => void) | null>(null);
+  const finalizedRef = useRef(false);
+
+  useEffect(() => {
+    onActiveChange?.(phase === "connecting" || phase === "live" || phase === "ending");
+  }, [onActiveChange, phase]);
 
   async function authHeaders(): Promise<Record<string, string> | null> {
     const { data } = await getFreshSession();
@@ -174,7 +200,7 @@ export function LiveCoach() {
   /** Stops the mic, asks for the final corrections, then closes and reports time. */
   const stop = useCallback(
     async (options?: { skipSummary?: boolean }) => {
-      if (endingRef.current) return;
+      if (endingRef.current || finalizedRef.current) return;
       endingRef.current = true;
       setPhase("ending");
       setNotice(null);
@@ -263,8 +289,9 @@ export function LiveCoach() {
         /* the counter refreshes on the next visit */
       }
 
-      endingRef.current = false;
-      setPhase("idle");
+       finalizedRef.current = true;
+       endingRef.current = false;
+       setPhase("done");
     },
     [],
   );
@@ -300,12 +327,50 @@ export function LiveCoach() {
 
   useEffect(() => () => void stop({ skipSummary: true }), [stop]);
 
+  async function toggleMicrophone() {
+    const context = micCtxRef.current;
+    if (!context || phase !== "live") return;
+    try {
+      if (micPaused) {
+        await context.resume();
+        setMicPaused(false);
+        setCoachState("listening");
+      } else {
+        await context.suspend();
+        setMicPaused(true);
+        setCoachState("idle");
+        setLevel(0);
+      }
+    } catch {
+      setError(es ? "No se pudo cambiar el micrófono." : "Could not change the microphone.");
+    }
+  }
+
+  function requestHelp(kind: HelpKind) {
+    if (phase !== "live" || helpLoading || !sessionRef.current) return;
+    setHelpLoading(kind);
+    setCoachState("thinking");
+    try {
+      sessionRef.current.sendClientContent({
+        turns: [{ role: "user", parts: [{ text: HELP_PROMPTS[kind] }] }],
+        turnComplete: true,
+      });
+    } catch {
+      setHelpLoading(null);
+      setError(es ? "No pude pedir esa ayuda. Intenta otra vez." : "I couldn't request that help. Try again.");
+    }
+  }
+
   async function start() {
     if (phase !== "idle") return;
     setError(null);
     setNotice(null);
     setFeedback(null);
     setLines([]);
+    setHistoryOpen(false);
+    setMicPaused(false);
+    setHelpLoading(null);
+    finalizedRef.current = false;
     heardVoiceRef.current = false;
 
     const headers = await authHeaders();
@@ -417,7 +482,7 @@ export function LiveCoach() {
           outputAudioTranscription: {},
         },
         callbacks: {
-          onmessage: (message: any) => {
+           onmessage: (message: any) => {
             const content = message?.serverContent;
             if (content?.interrupted) {
               sourcesRef.current.forEach((source) => {
@@ -444,6 +509,9 @@ export function LiveCoach() {
             }
 
             const parts = content?.modelTurn?.parts ?? [];
+             if (parts.length === 0 && !content?.turnComplete && !content?.inputTranscription) {
+               setCoachState("thinking");
+             }
             for (const part of parts) {
               const data = part?.inlineData?.data;
               if (!data) continue;
@@ -475,6 +543,10 @@ export function LiveCoach() {
               summaryDoneRef.current?.();
               summaryDoneRef.current = null;
             }
+             if (content?.turnComplete && !collectingSummaryRef.current) {
+               setHelpLoading(null);
+               if (sourcesRef.current.length === 0 && !micPaused) setCoachState("listening");
+             }
           },
           onerror: () => {
             setError(es ? "Se perdió la conexión." : "The connection dropped.");
@@ -567,7 +639,19 @@ export function LiveCoach() {
 
   const leftToday = Math.max(0, dailyLimit - usedSeconds);
   const avatarState: CoachState =
-    phase === "idle" ? "idle" : phase === "connecting" ? "thinking" : coachState;
+    phase === "idle" || phase === "done" ? "idle" : phase === "connecting" ? "thinking" : coachState;
+  const currentCoachText = [...lines].reverse().find((line) => line.role === "coach")?.text.trim() ?? "";
+  const statusText = phase === "connecting"
+    ? (es ? "Conectando…" : "Connecting…")
+    : phase === "ending"
+      ? (es ? "Cerrando conversación…" : "Ending conversation…")
+      : micPaused
+        ? (es ? "Micrófono en pausa" : "Microphone paused")
+        : coachState === "speaking"
+          ? (es ? "Tu coach está hablando" : "Your coach is talking")
+          : coachState === "thinking"
+            ? (es ? "Preparando respuesta…" : "Preparing response…")
+            : (es ? "Tu turno. Te escucho." : "Your turn. I'm listening.");
 
   return (
     <div className="space-y-4">
