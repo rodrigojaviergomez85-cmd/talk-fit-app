@@ -181,19 +181,35 @@ async function admin() {
   return (await import("@/integrations/supabase/client.server")).supabaseAdmin;
 }
 
-/** Downloads the clip when it exists. Never throws. */
+/** Retry delays for transient storage failures (502/503/504, network blips). */
+export const LOOKUP_RETRY_DELAYS_MS: readonly number[] = [250, 750];
+
+/**
+ * Downloads the clip when it exists. Never throws.
+ * A transient storage failure (gateway/network) is retried a couple of times
+ * before giving up, so a single 502 from storage does not surface as a 503.
+ */
 export async function lookupClip(key: string): Promise<Lookup> {
-  try {
-    const sb = await admin();
-    const { data, error } = await sb.storage.from(BUCKET).download(key);
-    if (data && !error) return { status: "hit", audio: await data.arrayBuffer() };
-    if (isObjectNotFound(error)) return { status: "miss" };
-    console.warn(`[course-audio] STORAGE FAILURE key=${key} ${describeError(error)}`);
-    return { status: "error" };
-  } catch (error) {
-    console.warn(`[course-audio] STORAGE FAILURE (thrown) key=${key} ${error instanceof Error ? error.message : "unknown"}`);
-    return { status: "error" };
+  const attempts = LOOKUP_RETRY_DELAYS_MS.length + 1;
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    if (attempt > 0) {
+      await new Promise((resolve) => setTimeout(resolve, LOOKUP_RETRY_DELAYS_MS[attempt - 1]));
+    }
+    try {
+      const sb = await admin();
+      const { data, error } = await sb.storage.from(BUCKET).download(key);
+      if (data && !error) return { status: "hit", audio: await data.arrayBuffer() };
+      if (isObjectNotFound(error)) return { status: "miss" };
+      console.warn(
+        `[course-audio] STORAGE FAILURE key=${key} attempt=${attempt + 1} ${describeError(error)}`,
+      );
+    } catch (error) {
+      console.warn(
+        `[course-audio] STORAGE FAILURE (thrown) key=${key} attempt=${attempt + 1} ${error instanceof Error ? error.message : "unknown"}`,
+      );
+    }
   }
+  return { status: "error" };
 }
 
 /**
