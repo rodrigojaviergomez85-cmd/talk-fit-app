@@ -33,3 +33,8 @@
 - [x] Verify Episode 13 cast, image format, mobile weight, and story-player assets
 - [x] Audit and correct canonical artwork for Advanced 1 Episode 14 using Episode 1 as the visual authority
 - [x] Verify Episode 14 cast, image format, mobile weight, and story-player assets
+- [ ] Redesign AI Coach Hablar en vivo from the approved reference
+- [ ] Connect real Spanish help, slow repeat, hint, microphone pause, and history
+- [ ] Consolidate bottom navigation into five destinations with a Practicar hub
+- [ ] Add live-coach regression tests and verify mobile layouts
+
