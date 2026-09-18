@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AiCoachRouteImport } from './routes/ai-coach'
 import { Route as CoachCheckRouteImport } from './routes/coach-check'
+import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as CuentaRouteImport } from './routes/cuenta'
+import { Route as EliminarCuentaRouteImport } from './routes/eliminar-cuenta'
 import { Route as GramaticaRouteImport } from './routes/gramatica'
 import { Route as InstallRouteImport } from './routes/install'
 import { Route as LevelRouteImport } from './routes/level'
@@ -26,7 +28,9 @@ import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as RecordingsRouteImport } from './routes/recordings'
 import { Route as ReportRouteImport } from './routes/report'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SoporteRouteImport } from './routes/soporte'
 import { Route as SprintRouteImport } from './routes/sprint'
+import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
 import { Route as AdminAlertasRouteImport } from './routes/admin.alertas'
 import { Route as AdminBugReportsRouteImport } from './routes/admin.bug-reports'
@@ -87,9 +91,19 @@ const CoachCheckRoute = CoachCheckRouteImport.update({
   path: '/coach-check',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactoRoute = ContactoRouteImport.update({
+  id: '/contacto',
+  path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CuentaRoute = CuentaRouteImport.update({
   id: '/cuenta',
   path: '/cuenta',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EliminarCuentaRoute = EliminarCuentaRouteImport.update({
+  id: '/eliminar-cuenta',
+  path: '/eliminar-cuenta',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GramaticaRoute = GramaticaRouteImport.update({
@@ -157,9 +171,19 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SoporteRoute = SoporteRouteImport.update({
+  id: '/soporte',
+  path: '/soporte',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SprintRoute = SprintRouteImport.update({
   id: '/sprint',
   path: '/sprint',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TerminosRoute = TerminosRouteImport.update({
+  id: '/terminos',
+  path: '/terminos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VerbBankRoute = VerbBankRouteImport.update({
@@ -397,7 +421,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ai-coach': typeof AiCoachRoute
   '/coach-check': typeof CoachCheckRoute
+  '/contacto': typeof ContactoRoute
   '/cuenta': typeof CuentaRoute
+  '/eliminar-cuenta': typeof EliminarCuentaRoute
   '/gramatica': typeof GramaticaRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
@@ -411,7 +437,9 @@ export interface FileRoutesByFullPath {
   '/recordings': typeof RecordingsRoute
   '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/soporte': typeof SoporteRoute
   '/sprint': typeof SprintRoute
+  '/terminos': typeof TerminosRoute
   '/verb-bank': typeof VerbBankRoute
   '/admin/alertas': typeof AdminAlertasRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
@@ -461,7 +489,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai-coach': typeof AiCoachRoute
   '/coach-check': typeof CoachCheckRoute
+  '/contacto': typeof ContactoRoute
   '/cuenta': typeof CuentaRoute
+  '/eliminar-cuenta': typeof EliminarCuentaRoute
   '/gramatica': typeof GramaticaRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
@@ -475,7 +505,9 @@ export interface FileRoutesByTo {
   '/recordings': typeof RecordingsRoute
   '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/soporte': typeof SoporteRoute
   '/sprint': typeof SprintRoute
+  '/terminos': typeof TerminosRoute
   '/verb-bank': typeof VerbBankRoute
   '/admin/alertas': typeof AdminAlertasRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
@@ -525,7 +557,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/ai-coach': typeof AiCoachRoute
   '/coach-check': typeof CoachCheckRoute
+  '/contacto': typeof ContactoRoute
   '/cuenta': typeof CuentaRoute
+  '/eliminar-cuenta': typeof EliminarCuentaRoute
   '/gramatica': typeof GramaticaRoute
   '/install': typeof InstallRoute
   '/level': typeof LevelRoute
@@ -539,7 +573,9 @@ export interface FileRoutesById {
   '/recordings': typeof RecordingsRoute
   '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/soporte': typeof SoporteRoute
   '/sprint': typeof SprintRoute
+  '/terminos': typeof TerminosRoute
   '/verb-bank': typeof VerbBankRoute
   '/admin/alertas': typeof AdminAlertasRoute
   '/admin/bug-reports': typeof AdminBugReportsRoute
@@ -591,7 +627,9 @@ export interface FileRouteTypes {
     | '/'
     | '/ai-coach'
     | '/coach-check'
+    | '/contacto'
     | '/cuenta'
+    | '/eliminar-cuenta'
     | '/gramatica'
     | '/install'
     | '/level'
@@ -605,7 +643,9 @@ export interface FileRouteTypes {
     | '/recordings'
     | '/report'
     | '/reset-password'
+    | '/soporte'
     | '/sprint'
+    | '/terminos'
     | '/verb-bank'
     | '/admin/alertas'
     | '/admin/bug-reports'
@@ -655,7 +695,9 @@ export interface FileRouteTypes {
     | '/'
     | '/ai-coach'
     | '/coach-check'
+    | '/contacto'
     | '/cuenta'
+    | '/eliminar-cuenta'
     | '/gramatica'
     | '/install'
     | '/level'
@@ -669,7 +711,9 @@ export interface FileRouteTypes {
     | '/recordings'
     | '/report'
     | '/reset-password'
+    | '/soporte'
     | '/sprint'
+    | '/terminos'
     | '/verb-bank'
     | '/admin/alertas'
     | '/admin/bug-reports'
@@ -718,7 +762,9 @@ export interface FileRouteTypes {
     | '/'
     | '/ai-coach'
     | '/coach-check'
+    | '/contacto'
     | '/cuenta'
+    | '/eliminar-cuenta'
     | '/gramatica'
     | '/install'
     | '/level'
@@ -732,7 +778,9 @@ export interface FileRouteTypes {
     | '/recordings'
     | '/report'
     | '/reset-password'
+    | '/soporte'
     | '/sprint'
+    | '/terminos'
     | '/verb-bank'
     | '/admin/alertas'
     | '/admin/bug-reports'
@@ -783,7 +831,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AiCoachRoute: typeof AiCoachRoute
   CoachCheckRoute: typeof CoachCheckRoute
+  ContactoRoute: typeof ContactoRoute
   CuentaRoute: typeof CuentaRoute
+  EliminarCuentaRoute: typeof EliminarCuentaRoute
   GramaticaRoute: typeof GramaticaRoute
   InstallRoute: typeof InstallRoute
   LevelRoute: typeof LevelRoute
@@ -797,7 +847,9 @@ export interface RootRouteChildren {
   RecordingsRoute: typeof RecordingsRoute
   ReportRoute: typeof ReportRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SoporteRoute: typeof SoporteRoute
   SprintRoute: typeof SprintRoute
+  TerminosRoute: typeof TerminosRoute
   VerbBankRoute: typeof VerbBankRoute
   AdminAlertasRoute: typeof AdminAlertasRoute
   AdminBugReportsRoute: typeof AdminBugReportsRoute
@@ -863,11 +915,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CoachCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contacto': {
+      id: '/contacto'
+      path: '/contacto'
+      fullPath: '/contacto'
+      preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cuenta': {
       id: '/cuenta'
       path: '/cuenta'
       fullPath: '/cuenta'
       preLoaderRoute: typeof CuentaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/eliminar-cuenta': {
+      id: '/eliminar-cuenta'
+      path: '/eliminar-cuenta'
+      fullPath: '/eliminar-cuenta'
+      preLoaderRoute: typeof EliminarCuentaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gramatica': {
@@ -961,11 +1027,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/soporte': {
+      id: '/soporte'
+      path: '/soporte'
+      fullPath: '/soporte'
+      preLoaderRoute: typeof SoporteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sprint': {
       id: '/sprint'
       path: '/sprint'
       fullPath: '/sprint'
       preLoaderRoute: typeof SprintRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terminos': {
+      id: '/terminos'
+      path: '/terminos'
+      fullPath: '/terminos'
+      preLoaderRoute: typeof TerminosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/verb-bank': {
@@ -1300,7 +1380,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AiCoachRoute: AiCoachRoute,
   CoachCheckRoute: CoachCheckRoute,
+  ContactoRoute: ContactoRoute,
   CuentaRoute: CuentaRoute,
+  EliminarCuentaRoute: EliminarCuentaRoute,
   GramaticaRoute: GramaticaRoute,
   InstallRoute: InstallRoute,
   LevelRoute: LevelRoute,
@@ -1314,7 +1396,9 @@ const rootRouteChildren: RootRouteChildren = {
   RecordingsRoute: RecordingsRoute,
   ReportRoute: ReportRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SoporteRoute: SoporteRoute,
   SprintRoute: SprintRoute,
+  TerminosRoute: TerminosRoute,
   VerbBankRoute: VerbBankRoute,
   AdminAlertasRoute: AdminAlertasRoute,
   AdminBugReportsRoute: AdminBugReportsRoute,
