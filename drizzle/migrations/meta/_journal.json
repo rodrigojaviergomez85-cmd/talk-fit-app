@@ -57,6 +57,13 @@
       "when": 1789765349621,
       "tag": "0007_anonymize_account_random_id",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1789765973925,
+      "tag": "0008_anonymize_account_no_ban",
+      "breakpoints": true
     }
   ]
 }

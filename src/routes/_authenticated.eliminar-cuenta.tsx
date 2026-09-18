@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { deleteMyAccount } from "@/lib/delete-account.functions";
 
-export const Route = createFileRoute("/eliminar-cuenta")({
+export const Route = createFileRoute("/_authenticated/eliminar-cuenta")({
   head: () => ({
     meta: [
       { title: "Eliminar cuenta — Fluency App" },
