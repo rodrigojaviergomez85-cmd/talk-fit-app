@@ -43,6 +43,13 @@
       "when": 1789762183828,
       "tag": "0005_account_anonymization",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1789762714902,
+      "tag": "0006_anonymize_account_crypt_path",
+      "breakpoints": true
     }
   ]
 }
