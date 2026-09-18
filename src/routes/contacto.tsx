@@ -120,7 +120,13 @@ function ContactPage() {
   const [emailLocked, setEmailLocked] = useState(false);
   const [categoria, setCategoria] = useState("");
   const [mensaje, setMensaje] = useState("");
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  interface FieldErrors {
+    nombre?: string;
+    email?: string;
+    categoria?: string;
+    mensaje?: string;
+  }
+  const [errors, setErrors] = useState<FieldErrors>({});
   const [sending, setSending] = useState(false);
   const [sentId, setSentId] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
