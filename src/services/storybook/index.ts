@@ -206,6 +206,11 @@ import { ADVANCED3_EP2_THE_COMMENTS } from "./advanced-3-ep2-the-comments";
 import { ADVANCED3_EP3_MIAMI_SIX_MONTHS } from "./advanced-3-ep3-miami-six-months";
 import { ADVANCED3_EP4_MIAS_NIGHT } from "./advanced-3-ep4-mias-night";
 import { ADVANCED3_EP5_THE_LIVESTREAM } from "./advanced-3-ep5-the-livestream";
+import { ADVANCED3_EP6_THE_ACCENT_QUESTION } from "./advanced-3-ep6-the-accent-question";
+import { ADVANCED3_EP7_APP_OR_ROOM } from "./advanced-3-ep7-app-or-room";
+import { ADVANCED3_EP8_NICO_WANTS_TO_QUIT } from "./advanced-3-ep8-nico-wants-to-quit";
+import { ADVANCED3_EP9_MIAMI_OR_HERE } from "./advanced-3-ep9-miami-or-here";
+import { ADVANCED3_EP10_A_MEME_NOT_A_DIRECTOR } from "./advanced-3-ep10-a-meme-not-a-director";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_FIRST_DAY,
@@ -415,6 +420,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   ADVANCED3_EP3_MIAMI_SIX_MONTHS,
   ADVANCED3_EP4_MIAS_NIGHT,
   ADVANCED3_EP5_THE_LIVESTREAM,
+  ADVANCED3_EP6_THE_ACCENT_QUESTION,
+  ADVANCED3_EP7_APP_OR_ROOM,
+  ADVANCED3_EP8_NICO_WANTS_TO_QUIT,
+  ADVANCED3_EP9_MIAMI_OR_HERE,
+  ADVANCED3_EP10_A_MEME_NOT_A_DIRECTOR,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {
