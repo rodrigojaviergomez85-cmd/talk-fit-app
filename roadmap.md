@@ -37,4 +37,5 @@
 - [x] Connect real Spanish help, slow repeat, hint, microphone pause, and history
 - [x] Consolidate bottom navigation into five destinations with a Practicar hub
 - [x] Add live-coach regression tests and verify mobile layouts
+- [x] Remove clicks/beeps from AI Coach streamed voice and microphone pause transitions
 
