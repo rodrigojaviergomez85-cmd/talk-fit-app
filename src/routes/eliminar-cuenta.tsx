@@ -48,6 +48,14 @@ function DeleteAccountPage() {
 
   const canSubmit = word.trim().toUpperCase() === CONFIRM_WORD && (isGoogle || password.length >= 6) && !busy;
 
+  function goHome() {
+    void navigate({ to: "/" });
+  }
+
+  function goToCreateAccount() {
+    void navigate({ to: "/onboarding" });
+  }
+
   async function reauthenticate(): Promise<boolean> {
     if (!email) return false;
     if (isGoogle) {
@@ -100,22 +108,35 @@ function DeleteAccountPage() {
   if (done) {
     return (
       <AppShell title={es ? "Cuenta eliminada" : "Account deleted"}>
-        <div className="space-y-4 rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-card)]">
-          <p className="text-[18px] font-extrabold tracking-tight">
-            {es ? "Tu cuenta fue eliminada." : "Your account has been deleted."}
-          </p>
-          <p className="text-[14px] leading-relaxed text-muted-foreground">
-            {es
-              ? "Tu acceso, tu correo, tu nombre, tus grabaciones y tus transcripciones ya no existen. Gracias por practicar con nosotros."
-              : "Your access, email, name, recordings and transcripts are gone. Thank you for practising with us."}
-          </p>
-          <button
-            type="button"
-            onClick={() => void navigate({ to: "/" })}
-            className="min-h-[48px] w-full rounded-2xl bg-primary px-5 text-[13px] font-bold uppercase tracking-[0.14em] text-primary-foreground"
-          >
-            {es ? "Cerrar" : "Close"}
-          </button>
+        <div className="space-y-5 rounded-3xl bg-card p-6 text-center shadow-[var(--shadow-card)]">
+          <div className="space-y-2">
+            <p className="text-[18px] font-extrabold tracking-tight">
+              {es ? "Nos da mucha pena que te vayas" : "We're sad to see you go"}
+            </p>
+            <p className="text-[14px] leading-relaxed text-muted-foreground">
+              {es
+                ? "Tu cuenta y tus datos personales ya no existen. Puedes volver cuando quieras: solo crea una cuenta nueva y empezamos desde cero."
+                : "Your account and personal data are gone. You can come back whenever you want: just create a new account and we'll start from scratch."}
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <button
+              type="button"
+              onClick={() => void goToCreateAccount()}
+              className="min-h-[52px] w-full rounded-2xl bg-primary px-5 text-[13px] font-bold uppercase tracking-[0.14em] text-primary-foreground"
+            >
+              {es ? "Crear una cuenta nueva" : "Create a new account"}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => void goHome()}
+              className="min-h-[48px] w-full rounded-2xl border border-border px-5 text-[13px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
+            >
+              {es ? "Cerrar" : "Close"}
+            </button>
+          </div>
         </div>
       </AppShell>
     );
@@ -144,8 +165,8 @@ function DeleteAccountPage() {
             </ul>
             <p className="mt-1.5">
               {es
-                ? "No podrás volver a entrar ni recuperar la cuenta."
-                : "You will not be able to sign in again or recover the account."}
+                ? "No podrás recuperar esta cuenta, pero puedes volver cuando quieras creando una cuenta nueva."
+                : "You won't be able to recover this account, but you can come back anytime by creating a new one."}
             </p>
           </div>
 
