@@ -44,7 +44,7 @@ const COPY = {
       },
       {
         q: "Quiero eliminar mi cuenta",
-        a: "Puedes solicitar la eliminación de tu cuenta y tus datos desde nuestra página de eliminación de cuenta.",
+        a: "Puedes eliminar tu cuenta y tus datos personales desde la app, al instante, en Mi Cuenta → Zona de riesgo.",
         link: { to: "/eliminar-cuenta", label: "Eliminar mi cuenta" },
       },
     ],
@@ -95,7 +95,7 @@ const COPY = {
       },
       {
         q: "I want to delete my account",
-        a: "You can request deletion of your account and data from our account deletion page.",
+        a: "You can delete your account and personal data from inside the app, instantly, in My Account → Danger zone.",
         link: { to: "/eliminar-cuenta", label: "Delete my account" },
       },
     ],
