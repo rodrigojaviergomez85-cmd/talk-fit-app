@@ -2188,6 +2188,21 @@ export const BASE_GLOSSARY: Record<string, string> = {
   'recent': 'reciente',
   'tutor': 'tutor',
   'napkin': 'servilleta',
+  'reply': 'respuesta',
+  'cousin': 'primo / prima',
+  'view': 'opinión; vista',
+  'hundredth': 'centésimo (el número cien)',
+  'channel': 'canal',
+  'expires': 'vence',
+  'rows': 'filas',
+  'strikes': 'tacha',
+  'delete': 'borrar',
+  'folded': 'doblado',
+  'degree': 'título universitario',
+  'views': 'vistas',
+  'podcast': 'podcast',
+  'meme': 'meme',
+  'seventeen': 'diecisiete',
 };
 
 
