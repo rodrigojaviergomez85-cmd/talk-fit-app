@@ -186,6 +186,11 @@ import { ADVANCED2_EP2_THREE_CHANGES_OF_MIND } from "./advanced-2-ep2-three-chan
 import { ADVANCED2_EP3_NINETY_DAYS } from "./advanced-2-ep3-ninety-days";
 import { ADVANCED2_EP4_THE_LINE_ITEM } from "./advanced-2-ep4-the-line-item";
 import { ADVANCED2_EP5_THE_REMITTANCE } from "./advanced-2-ep5-the-remittance";
+import { ADVANCED2_EP6_KELLER_AT_THE_DOOR } from "./advanced-2-ep6-keller-at-the-door";
+import { ADVANCED2_EP7_VALUE_FIRST } from "./advanced-2-ep7-value-first";
+import { ADVANCED2_EP8_CROWN_OR_HERE } from "./advanced-2-ep8-crown-or-here";
+import { ADVANCED2_EP9_TOO_EXPENSIVE } from "./advanced-2-ep9-too-expensive";
+import { ADVANCED2_EP10_DONT_MAKE_IT_WEIRD } from "./advanced-2-ep10-dont-make-it-weird";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_FIRST_DAY,
