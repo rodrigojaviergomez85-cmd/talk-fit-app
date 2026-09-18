@@ -12,6 +12,8 @@ import { loadPreferences } from "@/services/preferences";
 import { cn } from "@/lib/utils";
 import { nextLiveAudioWindow } from "@/lib/live-audio";
 import { LiveSessionLifecycle } from "@/lib/live-session-lifecycle";
+import { appendFragment, emptyTranscript, type CoachKind, type LiveTranscript } from "@/lib/live-turns";
+
 
 
 /**
@@ -34,8 +36,6 @@ type StartResponse = {
   sessionLimitSeconds?: number;
   error?: string;
 };
-
-type Line = { role: "you" | "coach"; text: string };
 
 const SYSTEM_INSTRUCTION =
   "You are Vale, a warm, experienced English teacher talking live with a Spanish-speaking adult learner. " +
@@ -134,7 +134,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   const [remaining, setRemaining] = useState(0);
   const [level, setLevel] = useState(0);
   const [coachLevel, setCoachLevel] = useState(0);
-  const [lines, setLines] = useState<Line[]>([]);
+  const [transcript, setTranscript] = useState<LiveTranscript>(emptyTranscript);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -170,6 +170,10 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   const finalizedRef = useRef(false);
   const micPausedRef = useRef(false);
   const lifeRef = useRef<LiveSessionLifecycle>(new LiveSessionLifecycle());
+  const coachTurnRef = useRef(0);
+  const userTurnRef = useRef(0);
+  const helpKindRef = useRef<CoachKind | null>(null);
+
 
 
   useEffect(() => {
@@ -404,6 +408,9 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     if (phase !== "live" || helpLoading || !sessionRef.current) return;
     setHelpLoading(kind);
     setCoachState("thinking");
+    // The coach answer that follows is a side help, not a new practice question.
+    coachTurnRef.current += 1;
+    helpKindRef.current = kind === "spanish" ? "spanish" : kind === "idea" ? "idea" : "slow";
     try {
       sessionRef.current.sendClientContent({
         turns: [{ role: "user", parts: [{ text: HELP_PROMPTS[kind] }] }],
@@ -411,9 +418,11 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       });
     } catch {
       setHelpLoading(null);
+      helpKindRef.current = null;
       setError(es ? "No pude pedir esa ayuda. Intenta otra vez." : "I couldn't request that help. Try again.");
     }
   }
+
 
   async function start() {
     const life = lifeRef.current;
@@ -432,7 +441,11 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     setError(null);
     setNotice(null);
     setFeedback(null);
-    setLines([]);
+    setTranscript(emptyTranscript);
+    coachTurnRef.current = 0;
+    userTurnRef.current = 0;
+    helpKindRef.current = null;
+
     setHistoryOpen(false);
     setMicPaused(false);
     micPausedRef.current = false;
@@ -575,13 +588,24 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
             if (userText) {
               heardVoiceRef.current = true;
               setNotice(null);
-              setLines((prev) => appendLine(prev, "you", userText));
+              setTranscript((prev) =>
+                appendFragment(prev, { id: `you-${userTurnRef.current}`, role: "you", text: userText }),
+              );
             }
             const coachText = content?.outputTranscription?.text;
             if (coachText) {
               if (collectingSummaryRef.current) summaryTextRef.current += coachText;
-              else setLines((prev) => appendLine(prev, "coach", coachText));
+              else
+                setTranscript((prev) =>
+                  appendFragment(prev, {
+                    id: `coach-${coachTurnRef.current}`,
+                    role: "coach",
+                    kind: helpKindRef.current ?? "question",
+                    text: coachText,
+                  }),
+                );
             }
+
 
             const parts = content?.modelTurn?.parts ?? [];
              if (parts.length === 0 && !content?.turnComplete && !content?.inputTranscription) {
@@ -629,9 +653,15 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
               summaryDoneRef.current = null;
             }
              if (content?.turnComplete && !collectingSummaryRef.current) {
+               // A completed model turn closes both sides: the next fragments
+               // belong to new messages, even from the same speaker.
+               coachTurnRef.current += 1;
+               userTurnRef.current += 1;
+               helpKindRef.current = null;
                setHelpLoading(null);
                if (sourcesRef.current.length === 0 && !micPausedRef.current) setCoachState("listening");
              }
+
           },
           onerror: () => {
             setError(es ? "Se perdió la conexión." : "The connection dropped.");
@@ -734,7 +764,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   const leftToday = Math.max(0, dailyLimit - usedSeconds);
   const avatarState: CoachState =
     phase === "idle" || phase === "done" ? "idle" : phase === "connecting" ? "thinking" : coachState;
-  const currentCoachText = [...lines].reverse().find((line) => line.role === "coach")?.text.trim() ?? "";
+  const currentCoachText = transcript.question.trim();
   const statusText = phase === "connecting"
     ? (es ? "Conectando…" : "Connecting…")
     : phase === "ending"
@@ -800,7 +830,20 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
         <p lang="en" className="mt-2 min-h-[3.2em] text-[clamp(1.35rem,6vw,1.75rem)] font-extrabold leading-[1.27] text-foreground" aria-live="polite">
           {currentCoachText || (phase === "connecting" ? (es ? "Preparando tu conversación…" : "Preparing your conversation…") : (es ? "Vale te saludará en un momento." : "Vale will greet you in a moment."))}
         </p>
+        {transcript.spanish ? (
+          <p className="mt-3 rounded-xl bg-secondary px-3 py-2 text-[13px] leading-snug text-foreground">
+            <span className="font-bold text-primary">{es ? "En español: " : "In Spanish: "}</span>
+            {transcript.spanish}
+          </p>
+        ) : null}
+        {transcript.idea ? (
+          <p lang="en" className="mt-2 rounded-xl bg-secondary px-3 py-2 text-[13px] leading-snug text-foreground">
+            <span className="font-bold text-primary">{es ? "Pista: " : "Hint: "}</span>
+            {transcript.idea}
+          </p>
+        ) : null}
       </div>
+
 
       <div className="mt-3 grid grid-cols-3 gap-2" aria-label={es ? "Ayuda para responder" : "Help answering"}>
         {([
@@ -831,7 +874,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
         <CollapsibleContent>
           <Conversation className="max-h-56 rounded-xl bg-secondary/60">
             <ConversationContent className="gap-3 p-3">
-              {lines.map((line, index) => <Message key={`${line.role}-${index}`} from={line.role === "you" ? "user" : "assistant"}><span className="text-[11px] font-bold text-muted-foreground">{line.role === "you" ? (es ? "Tú" : "You") : "Vale"}</span><MessageContent className="text-[13px] leading-relaxed">{line.text}</MessageContent></Message>)}
+              {transcript.turns.map((line, index) => <Message key={`${line.id}-${index}`} from={line.role === "you" ? "user" : "assistant"}><span className="text-[11px] font-bold text-muted-foreground">{line.role === "you" ? (es ? "Tú" : "You") : "Vale"}</span><MessageContent className="text-[13px] leading-relaxed">{line.text}</MessageContent></Message>)}
             </ConversationContent>
             <ConversationScrollButton />
           </Conversation>
@@ -840,15 +883,4 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       <p className="mt-2 text-center text-[11px] text-muted-foreground">{es ? "La conversación no se guarda. Solo contamos los minutos usados." : "The conversation is not saved. We only count the minutes used."}</p>
     </section>
   );
-}
-
-/** Live transcripts arrive in fragments; join them into one line per speaker. */
-function appendLine(prev: Line[], role: Line["role"], text: string): Line[] {
-  const last = prev[prev.length - 1];
-  if (last && last.role === role) {
-    const merged = [...prev];
-    merged[merged.length - 1] = { role, text: `${last.text}${text}` };
-    return merged;
-  }
-  return [...prev, { role, text }];
 }
