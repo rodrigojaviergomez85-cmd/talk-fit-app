@@ -217,6 +217,12 @@ function SupportPage() {
             <Mail className="size-4" aria-hidden /> {c.contactCta}
           </a>
           <p className="text-[12px] text-muted-foreground">{c.contactNote}</p>
+          <Link
+            to="/mis-solicitudes"
+            className="inline-flex min-h-[48px] w-full items-center justify-center rounded-2xl border border-border px-5 text-[13px] font-bold uppercase tracking-[0.14em]"
+          >
+            {lang === "es" ? "Ver estado de mis solicitudes" : "Check my request status"}
+          </Link>
         </section>
 
         <section className="space-y-3">
