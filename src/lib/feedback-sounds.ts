@@ -94,3 +94,11 @@ export function playCorrectFeedbackSound() {
     { at: 0.1, freq: 392, dur: 0.2, peak: 0.07, type: "sine" }, // G4
   ]);
 }
+
+/** WRONG — short low double note. Never harsh: it marks the miss, it doesn't punish. */
+export function playWrongFeedbackSound() {
+  playNotes([
+    { at: 0, freq: 233.08, dur: 0.16, peak: 0.1, type: "triangle" }, // Bb3
+    { at: 0.12, freq: 174.61, dur: 0.26, peak: 0.09, type: "triangle" }, // F3
+  ]);
+}

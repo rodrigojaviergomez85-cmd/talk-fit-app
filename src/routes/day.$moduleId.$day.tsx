@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, BookOpen, Check, Lock, Mic, Star } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Check, ClipboardCheck, Lock, Mic, Star } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell } from "@/components/fluency/AppShell";
 import { useAppLang } from "@/lib/i18n";
@@ -19,6 +19,7 @@ import {
   useLeagueDay,
 } from "@/components/fluency/LeagueDaySection";
 import { hasReward } from "@/lib/league";
+import { hasGrammarQuiz } from "@/lib/grammar-quiz-manifest";
 import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 import type { JourneyState, ModuleId } from "@/lib/types";
 
@@ -115,6 +116,9 @@ function DayHubPage() {
   const rewards = league.summary?.rewards ?? [];
   const storyEarned = hasReward(rewards, data.day, "story");
   const practiceEarned = hasReward(rewards, data.day, "practice");
+  // Paso 3 · Gramática: piloto por módulo/día.
+  const showGrammar = hasGrammarQuiz(data.moduleId, data.day);
+  const grammarEarned = hasReward(rewards, data.day, "grammar");
 
   // Direct URL protection: a future day stays closed until the current day's
   // audios are done. Test/admin accounts with unlimited access browse freely.
@@ -244,6 +248,44 @@ function DayHubPage() {
           </span>
           <ArrowRight className="size-5 shrink-0" aria-hidden="true" />
         </Link>
+
+        {showGrammar ? (
+          <>
+            <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+              {es ? "PASO 3 · GRAMÁTICA" : "STEP 3 · GRAMMAR"}
+            </span>
+            <Link
+              to="/gramatica"
+              search={{ module: data.moduleId, day: data.day }}
+              className="flex items-center gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-[var(--shadow-lift)] transition-transform active:scale-[0.99]"
+            >
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+                <ClipboardCheck className="size-5" aria-hidden="true" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="flex flex-wrap items-center gap-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-muted-foreground">
+                  {es ? "20 EJERCICIOS" : "20 ITEMS"}
+                  {league.eligible ? <LeaguePointsBadge earned={grammarEarned} es={es} /> : null}
+                  {grammarEarned ? (
+                    <span className="inline-flex items-center gap-0.5 text-primary">
+                      <Check className="size-3" aria-hidden="true" /> {t("day.completedTag")}
+                    </span>
+                  ) : null}
+                </span>
+                <span className="block text-[15px] font-extrabold leading-tight text-foreground">
+                  {es ? "Gramática del día" : "Grammar of the day"}
+                </span>
+                <span className="block truncate text-xs font-medium text-muted-foreground">
+                  {es
+                    ? "Opción múltiple, encuentra el error y ordena la oración."
+                    : "Multiple choice, find the mistake and rearrange the sentence."}
+                </span>
+              </span>
+              <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
+            </Link>
+          </>
+        ) : null}
+
 
         {league.eligible ? (
           <LeagueDaySection
