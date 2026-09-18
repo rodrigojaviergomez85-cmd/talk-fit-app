@@ -207,6 +207,7 @@ export function Week1ListenScreen({
                 alt={speaker.avatarAlt ?? speaker.name}
                 width={72}
                 height={72}
+                loading="lazy"
                 className="size-[68px] shrink-0 rounded-full object-cover"
               />
             ) : (
