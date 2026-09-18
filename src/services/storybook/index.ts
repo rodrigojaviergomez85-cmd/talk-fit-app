@@ -181,6 +181,12 @@ import { ADVANCED1_EP20_THE_LAST_ROOM } from "./advanced-1-ep20-the-last-room";
 import { expandSharksDialogue } from "./sharks-dialogue-expansions";
 import type { StorybookEpisode } from "./types";
 
+import { ADVANCED2_EP1_HEADSET_ON } from "./advanced-2-ep1-headset-on";
+import { ADVANCED2_EP2_THREE_CHANGES_OF_MIND } from "./advanced-2-ep2-three-changes-of-mind";
+import { ADVANCED2_EP3_NINETY_DAYS } from "./advanced-2-ep3-ninety-days";
+import { ADVANCED2_EP4_THE_LINE_ITEM } from "./advanced-2-ep4-the-line-item";
+import { ADVANCED2_EP5_THE_REMITTANCE } from "./advanced-2-ep5-the-remittance";
+
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_FIRST_DAY,
   VALE_FIRST_CALL,
@@ -364,6 +370,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   ADVANCED1_EP19_NOW_YOU_ASK,
   ADVANCED1_EP20_THE_LAST_ROOM,
   ].map(expandSharksDialogue),
+  ADVANCED2_EP1_HEADSET_ON,
+  ADVANCED2_EP2_THREE_CHANGES_OF_MIND,
+  ADVANCED2_EP3_NINETY_DAYS,
+  ADVANCED2_EP4_THE_LINE_ITEM,
+  ADVANCED2_EP5_THE_REMITTANCE,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {

@@ -7,6 +7,25 @@ import { globalExpressionMap } from "./expressions";
  * Spanish meaning. Hand-written: no runtime translation API.
  */
 export const BASE_GLOSSARY: Record<string, string> = {
+  'fifty-one': 'cincuenta y uno',
+  'touch': 'tocar',
+  'load': 'cargar',
+  'fun': 'divertido',
+  'sticky': 'adhesivo (sticky note: papelito adhesivo)',
+  'confirmation': 'confirmación',
+  'trade': 'intercambio, trato',
+  'soften': 'suavizar',
+  'fifteenth': 'el quince (día)',
+  'flag': 'marcar, señalar',
+  'log': 'registrar (log off: desconectarse)',
+  'twenty-four-year-old': 'de veinticuatro años',
+  'fintech': 'fintech (empresa de tecnología financiera)',
+  'seventy-eight': 'setenta y ocho',
+  'thirteen': 'trece',
+  'eight-oh-six': 'las ocho cero seis',
+  'audit': 'auditoría',
+  'cancelled': 'canceló',
+  'complains': 'se queja',
   'call-back': 'llamada de vuelta / devolución de llamada',
   'forty-second': 'de cuarenta segundos',
   'thirty-one': 'treinta y uno',
@@ -1434,7 +1453,6 @@ export const BASE_GLOSSARY: Record<string, string> = {
   card: "tarjeta",
   clothes: "ropa",
   collects: "colecciona / recoge",
-  complains: "se queja",
   directly: "directamente",
   ever: "alguna vez",
   fifteen: "quince",
@@ -2089,6 +2107,13 @@ export const BASE_GLOSSARY: Record<string, string> = {
 
 /** Character, place and language names used across the seasons. */
 export const PROPER_NOUNS: Record<string, string> = {
+  nico: "Nico (nombre de persona)",
+  julieta: "Julieta (nombre de persona)",
+  "óscar": "Óscar (nombre de persona)",
+  "óscar's": "de Óscar",
+  oscar: "Óscar (nombre de persona)",
+  manila: "Manila (ciudad de Filipinas)",
+  estela: "Doña Estela (mamá de Dani)",
   mía: "Mía (nombre de persona)",
   mia: "Mía (nombre de persona)",
   "mía's": "de Mía",
