@@ -48,6 +48,14 @@ function DeleteAccountPage() {
 
   const canSubmit = word.trim().toUpperCase() === CONFIRM_WORD && (isGoogle || password.length >= 6) && !busy;
 
+  function goHome() {
+    void navigate({ to: "/" });
+  }
+
+  function goToCreateAccount() {
+    void navigate({ to: "/auth" });
+  }
+
   async function reauthenticate(): Promise<boolean> {
     if (!email) return false;
     if (isGoogle) {
