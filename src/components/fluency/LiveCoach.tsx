@@ -648,10 +648,17 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
         sendRealtimeInput: (v: unknown) => void;
         sendClientContent: (v: unknown) => void;
       };
+      // A connection that opens after the learner cancelled closes right away.
+      if (!life.register(attempt, releaseSession)) return;
 
       const micCtx = new AudioContext();
-      await micCtx.resume().catch(() => undefined);
       micCtxRef.current = micCtx;
+      await micCtx.resume().catch(() => undefined);
+      if (cancelled()) {
+        await abandon();
+        return;
+      }
+
       const micRate = micCtx.sampleRate;
       const source = micCtx.createMediaStreamSource(stream);
       const processor = micCtx.createScriptProcessor(4096, 1, 1);
