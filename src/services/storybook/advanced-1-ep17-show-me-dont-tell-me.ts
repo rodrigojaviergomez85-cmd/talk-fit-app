@@ -46,7 +46,7 @@ export const ADVANCED1_EP17_SHOW_ME_DONT_TELL_ME: StorybookEpisode = {
     es: "Dos candidatos, las mismas tres preguntas y una repregunta escondida. Barrett no quiere oír que Dani resuelve problemas. Quiere un martes.",
   },
   cover,
-  voice: "male",
+  voice: "girl",
   scenes: [
     {
       id: "s1",

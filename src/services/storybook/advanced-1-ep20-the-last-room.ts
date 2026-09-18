@@ -46,7 +46,7 @@ export const ADVANCED1_EP20_THE_LAST_ROOM: StorybookEpisode = {
     es: "Una sala, ocho preguntas, los dos candidatos, sin notas. El salón donde Dani no podía terminar una frase es donde Barrett elige, Lidia contesta una llamada de Crown, y Vale regala lo único que nunca pensó regalar.",
   },
   cover,
-  voice: "male",
+  voice: "girl",
   scenes: [
     {
       id: "s1",

@@ -46,7 +46,7 @@ export const ADVANCED1_EP18_THE_QUESTION_NOBODY_PREPARES_FOR: StorybookEpisode =
     es: "Sin sala, sin comité, sin aviso. Barrett está en el estacionamiento a las 6:50 a.m. con tres preguntas sin respuesta correcta, y una chica de veinte años con diadema a la que le van a hacer la más difícil.",
   },
   cover,
-  voice: "male",
+  voice: "girl",
   scenes: [
     {
       id: "s1",
