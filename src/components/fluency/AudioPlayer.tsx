@@ -23,6 +23,8 @@ type AudioPlayerProps = {
   resumeLabel?: string;
   /** Accessible name used while paused; defaults to the play announcement. */
   resumeAriaLabel?: string;
+  /** Accessible name for the idle button, so screen readers hear which clip it plays. */
+  playAriaLabel?: string;
   onEnd?: () => void;
   /** Fired when the learner presses play (not on resume). */
   onStart?: () => void;
@@ -55,6 +57,7 @@ export function AudioPlayer({
   variant = "primary",
   resumeLabel,
   resumeAriaLabel,
+  playAriaLabel,
   onEnd,
   onStart,
   onProgress,
@@ -215,10 +218,8 @@ export function AudioPlayer({
               ? "Pausar audio"
               : "Pause audio"
             : status === "paused"
-              ? (resumeAriaLabel ?? (es ? "Reproducir audio" : "Play audio"))
-              : es
-                ? "Reproducir audio"
-                : "Play audio"
+              ? (resumeAriaLabel ?? playAriaLabel ?? (es ? "Reproducir audio" : "Play audio"))
+              : (playAriaLabel ?? (es ? "Reproducir audio" : "Play audio"))
         }
         className={cn(
           "inline-flex w-full items-center justify-center gap-2 rounded-2xl font-semibold tracking-wide transition-all active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",

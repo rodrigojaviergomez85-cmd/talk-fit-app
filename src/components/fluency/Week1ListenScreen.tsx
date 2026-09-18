@@ -132,6 +132,7 @@ function ChallengeCard({ day }: { day: CourseDay }) {
         <AudioPlayer
           text={day.rep5Prompt.question}
           label={t("listen.hearQuestion")}
+          playAriaLabel={t("listen.hearQuestion")}
           resumeLabel={t("listen.resumeAudio")}
           resumeAriaLabel={t("listen.resumeAudioAria")}
           variant="navy"
@@ -247,6 +248,7 @@ export function Week1ListenScreen({
           <AudioPlayer
             text={modelText}
             label={t("listen.hearExample")}
+            playAriaLabel={t("listen.hearExample")}
             resumeLabel={t("listen.resumeAudio")}
             resumeAriaLabel={t("listen.resumeAudioAria")}
             voice={day.speakerVoice}
