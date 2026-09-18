@@ -11,7 +11,7 @@ export type StorybookWord = {
 };
 
 /** Who speaks the scene line — drives the per-character TTS voice. */
-export type StorybookSpeaker = "narrator" | "vale" | "boss" | "kat" | "dylan" | "mateo" | "luis" | "camila" | "ana" | "beto" | "mom" | "tito" | "dani" | "morgan" | "bryan" | "sofia" | "herrera" | "reed" | "lucia" | "renata" | "marta" | "nelson" | "elena" | "barrett" | "lidia" | "keller" | "candidateM" | "candidateF" | "candidateHotel" | "mia";
+export type StorybookSpeaker = "narrator" | "vale" | "boss" | "kat" | "dylan" | "mateo" | "luis" | "camila" | "ana" | "beto" | "mom" | "tito" | "dani" | "morgan" | "bryan" | "sofia" | "herrera" | "reed" | "lucia" | "renata" | "marta" | "nelson" | "elena" | "barrett" | "lidia" | "keller" | "candidateM" | "candidateF" | "candidateHotel" | "mia" | "nico" | "julieta" | "oscar" | "estela";
 
 /**
  * One conversational reply inside a scene (sitcom-style dialogue, B1→B2 seasons).

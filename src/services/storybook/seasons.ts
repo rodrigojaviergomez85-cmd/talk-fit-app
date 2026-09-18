@@ -16,6 +16,8 @@ import season5Cover from "@/assets/storybook/vale-s5-first-students/cover.jpg";
 import season6Cover from "@/assets/storybook/eagles-ep1-the-offer/cover.jpg";
 import season7Cover from "@/assets/storybook/tigers-ep1-a-decision-i-made/cover.jpg";
 import season8Cover from "@/assets/storybook/sharks-ep1-tell-the-story/cover.jpg";
+import season10Cover from "@/assets/storybook/advanced-2-season/cover.jpg";
+import season11Cover from "@/assets/storybook/advanced-3-season/cover.jpg";
 import season9Cover from "@/assets/storybook/advanced1-ep1-rules-of-the-game/cover.jpg";
 
 export type SeasonWeek = 1 | 2 | 3 | 4;
@@ -349,6 +351,72 @@ export const STORYBOOK_SEASONS: Season[] = [
       { day: 18, episodeId: "advanced1-ep18-the-question-nobody-prepares-for", teaser: { en: "The question nobody prepares for", es: "La pregunta que nadie prepara" } },
       { day: 19, episodeId: "advanced1-ep19-now-you-ask", teaser: { en: "Three chairs", es: "Tres sillas" } },
       { day: 20, episodeId: "advanced1-ep20-the-last-room", teaser: { en: "The last room", es: "La última sala" } },
+    ],
+  },
+  {
+    moduleId: "advanced-2",
+    seasonNumber: 10,
+    title: { en: "Season 10 · Advanced 2", es: "Temporada 10 · Advanced 2" },
+    blurb: {
+      en: "The floor: Dani takes real calls with twenty agents, and in ninety days Northline audits every one of them.",
+      es: "El piso: Dani toma llamadas reales con veinte agentes, y en noventa días Northline los audita a todos.",
+    },
+    image: season10Cover,
+    imageAlt: { en: "Dani on the Northline floor with a headset", es: "Dani en el piso de Northline con una diadema" },
+    slots: [
+      { day: 1, episodeId: null, teaser: { en: "Headset on", es: "Diadema puesta" } },
+      { day: 2, episodeId: null, teaser: { en: "Three changes of mind", es: "Tres cambios de opinión" } },
+      { day: 3, episodeId: null, teaser: { en: "Ninety days", es: "Noventa días" } },
+      { day: 4, episodeId: null, teaser: { en: "The line item", es: "La línea de la factura" } },
+      { day: 5, episodeId: null, teaser: { en: "The remittance", es: "La remesa" } },
+      { day: 6, episodeId: null, teaser: { en: "Keller at the door", es: "Keller en la puerta" } },
+      { day: 7, episodeId: null, teaser: { en: "Value first", es: "Primero el valor" } },
+      { day: 8, episodeId: null, teaser: { en: "Crown or here", es: "Crown o aquí" } },
+      { day: 9, episodeId: null, teaser: { en: "Too expensive", es: "Es muy caro" } },
+      { day: 10, episodeId: null, teaser: { en: "Don't make it weird", es: "No lo hagas raro" } },
+      { day: 11, episodeId: null, teaser: { en: "Bogotá is waiting", es: "Bogotá está esperando" } },
+      { day: 12, episodeId: null, teaser: { en: "One step at a time", es: "Un paso a la vez" } },
+      { day: 13, episodeId: null, teaser: { en: "No phones on the floor", es: "Sin celulares en el piso" } },
+      { day: 14, episodeId: null, teaser: { en: "The lobby", es: "El lobby" } },
+      { day: 15, episodeId: null, teaser: { en: "Not this Thursday", es: "Este jueves no" } },
+      { day: 16, episodeId: null, teaser: { en: "Nico hung up", es: "Nico colgó" } },
+      { day: 17, episodeId: null, teaser: { en: "One to one", es: "Uno a uno" } },
+      { day: 18, episodeId: null, teaser: { en: "Mía teaches", es: "Mía enseña" } },
+      { day: 19, episodeId: null, teaser: { en: "The audit", es: "La auditoría" } },
+      { day: 20, episodeId: null, teaser: { en: "Day ninety", es: "Día noventa" } },
+    ],
+  },
+  {
+    moduleId: "advanced-3",
+    seasonNumber: 11,
+    title: { en: "Season 11 · Advanced 3", es: "Temporada 11 · Advanced 3" },
+    blurb: {
+      en: "Beyond the script: a clip makes Dani famous, and everyone wants to put words in his mouth.",
+      es: "Fuera del guion: un clip vuelve famoso a Dani, y todos quieren ponerle palabras.",
+    },
+    image: season11Cover,
+    imageAlt: { en: "Dani answering questions with no script", es: "Dani respondiendo preguntas sin guion" },
+    slots: [
+      { day: 1, episodeId: null, teaser: { en: "Two million", es: "Dos millones" } },
+      { day: 2, episodeId: null, teaser: { en: "The comments", es: "Los comentarios" } },
+      { day: 3, episodeId: null, teaser: { en: "Miami, six months", es: "Miami, seis meses" } },
+      { day: 4, episodeId: null, teaser: { en: "Mía's night", es: "La noche de Mía" } },
+      { day: 5, episodeId: null, teaser: { en: "The livestream", es: "El en vivo" } },
+      { day: 6, episodeId: null, teaser: { en: "The accent question", es: "La pregunta del acento" } },
+      { day: 7, episodeId: null, teaser: { en: "App or room", es: "La app o el salón" } },
+      { day: 8, episodeId: null, teaser: { en: "Nico wants to quit", es: "Nico quiere renunciar" } },
+      { day: 9, episodeId: null, teaser: { en: "Miami or here", es: "Miami o aquí" } },
+      { day: 10, episodeId: null, teaser: { en: "A meme, not a director", es: "Un meme, no un director" } },
+      { day: 11, episodeId: null, teaser: { en: "The small room", es: "El salón pequeño" } },
+      { day: 12, episodeId: null, teaser: { en: "Bogotá, blackout", es: "Bogotá, apagón" } },
+      { day: 13, episodeId: null, teaser: { en: "Teach the teacher", es: "Enseñarle al que enseña" } },
+      { day: 14, episodeId: null, teaser: { en: "If you had taken Crown", es: "Si hubieras aceptado Crown" } },
+      { day: 15, episodeId: null, teaser: { en: "Why people freeze", es: "Por qué la gente se congela" } },
+      { day: 16, episodeId: null, teaser: { en: "The knock", es: "El toque en la puerta" } },
+      { day: 17, episodeId: null, teaser: { en: "Three years", es: "Tres años" } },
+      { day: 18, episodeId: null, teaser: { en: "Monterrey", es: "Monterrey" } },
+      { day: 19, episodeId: null, teaser: { en: "What I didn't say", es: "Lo que no dije" } },
+      { day: 20, episodeId: null, teaser: { en: "Headset on, again", es: "La diadema, otra vez" } },
     ],
   },
 ];

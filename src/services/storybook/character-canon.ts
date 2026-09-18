@@ -20,6 +20,8 @@ export const SEASON_MODULE_IDS = [
   "tigers", // S7
   "sharks", // S8
   "advanced-1", // S9
+  "advanced-2", // S10
+  "advanced-3", // S11
 ] as const;
 
 export type SeasonModuleId = (typeof SEASON_MODULE_IDS)[number];
@@ -61,7 +63,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "young Salvadoran man, about 19-20 at first appearance",
     look: "medium-brown / light-medium tan skin, short curly black hair, clean-shaven, no glasses, adult proportions",
     outfit: "light blue shirt",
-    seasons: ["past-stories", "mixed-tenses", "eagles-week-1", "tigers", "sharks", "advanced-1"],
+    seasons: ["past-stories", "mixed-tenses", "eagles-week-1", "tigers", "sharks", "advanced-1", "advanced-2", "advanced-3"],
     neverDo: [
       "Dani is male — never a woman",
       "always he/him — never she/her",
@@ -75,7 +77,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "young Afro-Latina woman, early 20s",
     look: "dark brown skin, shoulder-length curly black hair, adult proportions",
     outfit: "purple top",
-    seasons: ["basic-zero", "simple-future", "past-stories", "mixed-tenses", "eagles-week-1", "tigers", "sharks", "advanced-1"],
+    seasons: ["basic-zero", "simple-future", "past-stories", "mixed-tenses", "eagles-week-1", "tigers", "sharks", "advanced-1", "advanced-2", "advanced-3"],
   },
   kat: {
     id: "kat",
@@ -150,7 +152,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "Salvadoran man in his 70s, neighborhood elder",
     look: "light tan weathered skin, white mustache, kind wrinkled face",
     outfit: "flat cap and a cream guayabera",
-    seasons: ["simple-present", "eagles-week-1", "tigers", "sharks"],
+    seasons: ["simple-present", "eagles-week-1", "tigers", "sharks", "advanced-2", "advanced-3"],
   },
   morgan: {
     id: "morgan",
@@ -158,7 +160,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "American woman in her 40s, corporate client",
     look: "fair skin, chin-length blonde hair, professional confident face",
     outfit: "navy blazer",
-    seasons: ["eagles-week-1", "tigers", "advanced-1"],
+    seasons: ["eagles-week-1", "tigers", "advanced-1", "advanced-2", "advanced-3"],
     neverDo: ["Morgan is a woman — always she/her, never drawn as a man"],
   },
   bryan: {
@@ -236,7 +238,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "Salvadoran woman about 50, bakery owner and academy student",
     look: "light-medium tan skin, short wavy gray-streaked dark hair, calm confident face, adult proportions",
     outfit: "cream apron over a rust-coloured blouse",
-    seasons: ["advanced-1"],
+    seasons: ["advanced-1", "advanced-2", "advanced-3"],
     neverDo: ["never drawn as a young woman"],
   },
   barrett: {
@@ -246,7 +248,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "American woman in her mid-40s, Northline hiring committee member",
     look: "fair skin, dark brown hair in a sharp bob, rimless glasses, cool evaluating face, adult proportions",
     outfit: "charcoal grey suit jacket over a white shirt",
-    seasons: ["advanced-1"],
+    seasons: ["advanced-1", "advanced-2", "advanced-3"],
     neverDo: ["never drawn as Camila or Vale", "never drawn as a warm, smiling host"],
   },
   lidia: {
@@ -255,7 +257,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "Salvadoran woman in her mid-40s, senior teacher at Vale's academy",
     look: "medium tan skin, dark brown hair pulled back in a low bun, calm experienced face, adult proportions",
     outfit: "deep teal blazer over a grey top",
-    seasons: ["advanced-1"],
+    seasons: ["advanced-1", "advanced-2", "advanced-3"],
     neverDo: ["never drawn as Elena or Camila", "never drawn as a young student"],
   },
   keller: {
@@ -265,7 +267,7 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "American woman in her early 40s, senior recruiter at Crown",
     look: "fair skin with freckles, auburn hair in a straight shoulder-length cut, alert friendly-but-calculating face, adult proportions",
     outfit: "burgundy blazer over a black top",
-    seasons: ["advanced-1"],
+    seasons: ["advanced-1", "advanced-2", "advanced-3"],
     neverDo: ["never drawn as Barrett or Vale", "never drawn as a young student"],
   },
   candidateM: {
@@ -299,8 +301,45 @@ export const CHARACTER_CANON: Record<Exclude<StorybookSpeaker, "narrator">, Char
     age: "young Salvadoran woman, 20, Northline's first pilot agent",
     look: "light-medium tan skin, short dyed-red hair, small hoop earrings, quick alert face, adult proportions",
     outfit: "black Northline polo with a call-center headset around her neck",
-    seasons: ["advanced-1"],
+    seasons: ["advanced-1", "advanced-2", "advanced-3"],
     neverDo: ["never drawn as a teenager", "never without the headset"],
+  },
+  nico: {
+    id: "nico",
+    name: "Nico",
+    age: "young Salvadoran man, 22, Northline night-shift agent and gamer",
+    look: "medium tan skin, straight black bowl-cut hair, calm unreadable face, no glasses, adult proportions",
+    outfit: "black hoodie over the black Northline polo, headset around his neck",
+    seasons: ["advanced-2", "advanced-3"],
+    neverDo: ["never drawn as a teenager", "never smiling widely", "never without the hoodie"],
+  },
+  julieta: {
+    id: "julieta",
+    name: "Julieta",
+    age: "Colombian woman, 24, Northline quality analyst in Bogota",
+    look: "light-medium tan skin, long dark brown hair tied back, attentive focused face, adult proportions",
+    outfit: "white shirt with a Northline lanyard, always seen on a video call screen",
+    seasons: ["advanced-2", "advanced-3"],
+    neverDo: ["never drawn in the San Salvador office until the final episode", "never drawn as a student"],
+  },
+  oscar: {
+    id: "oscar",
+    name: "Óscar",
+    age: "young Salvadoran man, 19, new Northline pilot agent",
+    look: "medium-brown skin, short black hair, round face, nervous open expression, adult proportions",
+    outfit: "black Northline polo one size too big, headset in his hand",
+    seasons: ["advanced-2"],
+    neverDo: ["never drawn as a child", "never drawn confident"],
+  },
+  estela: {
+    id: "estela",
+    name: "Doña Estela",
+    aka: ["Estela"],
+    age: "Salvadoran woman in her 50s, Dani's mother",
+    look: "medium-brown skin, black hair with gray streaks in a low bun, kind tired eyes, adult proportions",
+    outfit: "simple green blouse with a cardigan",
+    seasons: ["advanced-2", "advanced-3"],
+    neverDo: ["never confused with Vale's mother", "never drawn in an office"],
   },
 };
 

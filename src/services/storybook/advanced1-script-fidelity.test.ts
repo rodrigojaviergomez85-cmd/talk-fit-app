@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { STORYBOOK_EPISODES } from "./index";
+import { STORYBOOK_SEASONS } from "./seasons";
 
 /**
  * Guardrail: Advanced 1 episodes must keep the dialogue that was approved in the
@@ -54,11 +55,23 @@ const APPROVED_LINES: Record<string, string[]> = {
 const FORBIDDEN_IN_DIALOGUE = ["B2", "Advanced 2", "Advanced 3", "Your turn", "framework"];
 
 /** Episodes written under the "no course talk inside the story" rule (week 4 closing arc). */
-const NO_COURSE_TALK_EPISODES = [
+const NO_COURSE_TALK_EPISODES_ADV1 = [
   "advanced1-ep17-show-me-dont-tell-me",
   "advanced1-ep18-the-question-nobody-prepares-for",
   "advanced1-ep19-now-you-ask",
   "advanced1-ep20-the-last-room",
+];
+
+/**
+ * Every published Advanced 2 / Advanced 3 episode joins the rule automatically:
+ * as soon as a season-10/11 slot gets an episodeId, its dialogue can never say
+ * "B2", "Advanced 2", "Advanced 3", "Your turn" or "framework".
+ */
+const NO_COURSE_TALK_EPISODES = [
+  ...NO_COURSE_TALK_EPISODES_ADV1,
+  ...STORYBOOK_SEASONS.filter((s) => s.moduleId === "advanced-2" || s.moduleId === "advanced-3")
+    .flatMap((s) => s.slots.map((slot) => slot.episodeId))
+    .filter((id): id is string => id !== null),
 ];
 
 /**
