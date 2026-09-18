@@ -166,21 +166,21 @@ function ContactPage() {
     if (!validate()) return;
     setSending(true);
     try {
-      const { data, error } = await supabase
-        .from("support_tickets")
-        .insert({
-          user_id: userId,
-          nombre: nombre.trim(),
-          email: email.trim(),
-          categoria,
-          mensaje: mensaje.trim(),
-          app_version: APP_BUILD_ID,
-          user_agent: navigator.userAgent,
-        })
-        .select("id")
-        .single();
+      // El id se genera aquí: los visitantes sin sesión pueden insertar pero no
+      // leer, así que no podemos pedir el id de vuelta con un select.
+      const id = crypto.randomUUID();
+      const { error } = await supabase.from("support_tickets").insert({
+        id,
+        user_id: userId,
+        nombre: nombre.trim(),
+        email: email.trim(),
+        categoria,
+        mensaje: mensaje.trim(),
+        app_version: APP_BUILD_ID,
+        user_agent: navigator.userAgent,
+      });
       if (error) throw error;
-      setSentId(data.id);
+      setSentId(id);
     } catch {
       setFailed(true);
     } finally {
