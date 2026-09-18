@@ -196,6 +196,11 @@ import { ADVANCED2_EP12_ONE_STEP_AT_A_TIME } from "./advanced-2-ep12-one-step-at
 import { ADVANCED2_EP13_NO_PHONES_ON_THE_FLOOR } from "./advanced-2-ep13-no-phones-on-the-floor";
 import { ADVANCED2_EP14_THE_LOBBY } from "./advanced-2-ep14-the-lobby";
 import { ADVANCED2_EP15_NOT_THIS_THURSDAY } from "./advanced-2-ep15-not-this-thursday";
+import { ADVANCED2_EP16_NICO_HUNG_UP } from "./advanced-2-ep16-nico-hung-up";
+import { ADVANCED2_EP17_ONE_TO_ONE } from "./advanced-2-ep17-one-to-one";
+import { ADVANCED2_EP18_MIA_TEACHES } from "./advanced-2-ep18-mia-teaches";
+import { ADVANCED2_EP19_THE_AUDIT } from "./advanced-2-ep19-the-audit";
+import { ADVANCED2_EP20_DAY_NINETY } from "./advanced-2-ep20-day-ninety";
 
 export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   VALE_FIRST_DAY,
@@ -395,6 +400,11 @@ export const STORYBOOK_EPISODES: StorybookEpisode[] = [
   ADVANCED2_EP13_NO_PHONES_ON_THE_FLOOR,
   ADVANCED2_EP14_THE_LOBBY,
   ADVANCED2_EP15_NOT_THIS_THURSDAY,
+  ADVANCED2_EP16_NICO_HUNG_UP,
+  ADVANCED2_EP17_ONE_TO_ONE,
+  ADVANCED2_EP18_MIA_TEACHES,
+  ADVANCED2_EP19_THE_AUDIT,
+  ADVANCED2_EP20_DAY_NINETY,
 ];
 
 export function getStorybookEpisode(id: string): StorybookEpisode | undefined {

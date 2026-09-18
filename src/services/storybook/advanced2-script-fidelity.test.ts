@@ -66,6 +66,26 @@ const APPROVED_LINES: Record<string, string[]> = {
     "Not this Thursday.",
     "She's said no to you every week for two years. You just called it homework.",
   ],
+  "advanced2-ep16-nico-hung-up": [
+    "You left out what you think.",
+    "Two paragraphs. Facts first. Opinion second, marked as opinion. That's how it goes upstairs.",
+  ],
+  "advanced2-ep17-one-to-one": [
+    "It's my one-to-one, jefe. Let me say my numbers.",
+    "My goal for next month is four. One more sentence. The one after I'm right.",
+  ],
+  "advanced2-ep18-mia-teaches": [
+    "That's the part I'm going to write in your file. Not the mistake. The three seconds after.",
+    "You got step three wrong and fifteen people learned it anyway. Friday's fine.",
+  ],
+  "advanced2-ep19-the-audit": [
+    "That was day one. Show me day eighty-nine.",
+    "Don't take those calls for them. Not tomorrow. That's the only note I have for you, and it's not on the sheet.",
+  ],
+  "advanced2-ep20-day-ninety": [
+    "The pilot audits. The club doesn't. Tuesday at seven, the room is still empty and the chair is still yours. Bring your cousin. In three months you take this audit again, and I don't take the call for you then either.",
+    "Not the floor one. This one. Him, in an office, saying the kid did the right thing. No screens. Just a jefe.",
+  ],
 };
 
 /** Characters must never name the course machinery inside the story. */
