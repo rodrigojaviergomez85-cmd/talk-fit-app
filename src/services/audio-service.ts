@@ -25,6 +25,11 @@ export type SpeakOptions = {
   onProgress?: (current: number, duration: number) => void;
   /** Audio could not be produced or played at all. */
   onError?: () => void;
+  /**
+   * Playback was cut short by another clip (or a global stop) rather than by
+   * the caller itself. Never fires for a normal end, pause or self-cancel.
+   */
+  onInterrupt?: () => void;
   /** Browser speech is noticeably robotic; story dialogue disables this fallback. */
   allowBrowserFallback?: boolean;
 };
@@ -51,6 +56,8 @@ const audioCache = new Map<string, Promise<string>>();
 let currentAudio: HTMLAudioElement | null = null;
 /** Cancels the latest in-flight speak() (model clip still downloading or playing). */
 let latestSpeakCancel: (() => void) | null = null;
+/** Tells the current owner that its playback was taken over by someone else. */
+let activeInterrupt: (() => void) | null = null;
 
 /** Current learner access token, or null when signed out. Never throws. */
 async function currentAccessToken(): Promise<string | null> {
@@ -245,11 +252,16 @@ export const AudioService = {
         };
         audio.onended = () => {
           if (currentAudio === audio) currentAudio = null;
+          if (cancelled) return;
           options.onEnd?.();
         };
         audio.onerror = () => {
           if (currentAudio === audio) currentAudio = null;
-          options.onEnd?.();
+          if (cancelled) return;
+          // A failed clip is not a finished clip: only fall back to onEnd when
+          // the caller has no error handling of its own.
+          if (options.onError) options.onError();
+          else options.onEnd?.();
         };
         void audio.play().catch(() => {
           if (cancelled) return;
@@ -274,6 +286,8 @@ export const AudioService = {
     const cancel = () => {
       cancelled = true;
       if (latestSpeakCancel === cancel) latestSpeakCancel = null;
+      // A self-cancel is not an interruption: the owner already knows.
+      if (activeInterrupt === options.onInterrupt) activeInterrupt = null;
       stopFallback?.();
       if (element) {
         element.pause();
@@ -282,6 +296,7 @@ export const AudioService = {
       }
     };
     latestSpeakCancel = cancel;
+    activeInterrupt = options.onInterrupt ?? null;
     return cancel;
   },
 
@@ -324,9 +339,14 @@ export const AudioService = {
 
   stop() {
     if (typeof window === "undefined") return;
+    // The owner of the clip we are about to kill must learn it was cut short,
+    // so its button, indicator and announcement stop claiming it is playing.
+    const notifyInterrupted = activeInterrupt;
+    activeInterrupt = null;
     // Cancel an in-flight speak() so a still-downloading clip never starts later.
     latestSpeakCancel?.();
     latestSpeakCancel = null;
+    notifyInterrupted?.();
     if (currentAudio) {
       currentAudio.pause();
       currentAudio.currentTime = 0;

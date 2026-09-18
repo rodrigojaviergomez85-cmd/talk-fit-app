@@ -1,6 +1,9 @@
 import type { CourseDay, ModelLine, PersonalPrompt } from "@/lib/types";
-import genericMaleAvatar from "@/assets/avatars/generic-male.jpg";
-import genericFemaleAvatar from "@/assets/avatars/generic-female.jpg";
+import carlosAvatar from "@/assets/avatars/bz-carlos.jpg";
+import sofiaAvatar from "@/assets/avatars/bz-sofia.jpg";
+import danielAvatar from "@/assets/avatars/bz-daniel.jpg";
+import valeriaAvatar from "@/assets/avatars/bz-valeria.jpg";
+import miguelAvatar from "@/assets/avatars/bz-miguel.jpg";
 
 /**
  * BASIC ZERO — Month 1 (4 weeks · 20 days · 5 fluency reps per day).
@@ -40,6 +43,8 @@ type Person = {
   relation?: string;
   relationEs?: string;
   gender?: "m" | "f";
+  /** Stable portrait for this character; the same face every time they appear. */
+  avatar?: string;
   /** Third-person variants used only when talking ABOUT this person (Weeks 3–4). */
   colorWhyOther?: string;
   colorWhyOtherEs?: string;
@@ -279,6 +284,7 @@ function otherPromptsFluency(id: string, day: number): PersonalPrompt[] {
 /* --------------------------------- People -------------------------------- */
 
 const carlos: Person = {
+  avatar: carlosAvatar,
   gender: "m",
   name: "Carlos", age: 22, country: "El Salvador", countryEs: "El Salvador", city: "San Salvador",
   color: "blue", colorEs: "azul", colorWhy: "it is calm", colorWhyEs: "es tranquilo",
@@ -292,6 +298,7 @@ const carlos: Person = {
 };
 
 const sofia: Person = {
+  avatar: sofiaAvatar,
   gender: "f",
   name: "Sofia", age: 28, country: "Mexico", countryEs: "México", city: "Guadalajara",
   color: "green", colorEs: "verde", colorWhy: "it makes me happy", colorWhyEs: "me hace feliz",
@@ -305,6 +312,7 @@ const sofia: Person = {
 };
 
 const daniel: Person = {
+  avatar: danielAvatar,
   gender: "m",
   name: "Daniel", age: 35, country: "Colombia", countryEs: "Colombia", city: "Medellín",
   color: "red", colorEs: "rojo", colorWhy: "it gives me energy", colorWhyEs: "me da energía",
@@ -317,6 +325,7 @@ const daniel: Person = {
 };
 
 const valeria: Person = {
+  avatar: valeriaAvatar,
   gender: "f",
   name: "Valeria", age: 19, country: "Peru", countryEs: "Perú", city: "Lima",
   color: "yellow", colorEs: "amarillo", colorWhy: "it is bright", colorWhyEs: "es brillante",
@@ -329,6 +338,7 @@ const valeria: Person = {
 };
 
 const miguel: Person = {
+  avatar: miguelAvatar,
   gender: "m",
   name: "Miguel", age: 41, country: "Guatemala", countryEs: "Guatemala", city: "Antigua",
   color: "black", colorEs: "negro", colorWhy: "it is elegant", colorWhyEs: "es elegante",
@@ -529,8 +539,8 @@ function week1Day(day: number, p: Person, topic: string, topicEs: string): Cours
     speakerVoice: p.gender === "f" ? "female" : "male",
     speaker: {
       name: p.name,
-      avatarSrc: p.gender === "f" ? genericFemaleAvatar : genericMaleAvatar,
-      avatarAlt: `Foto de ${p.name}`,
+      ...(p.avatar ? { avatarSrc: p.avatar } : {}),
+      avatarAlt: `${p.name}, ${p.age}, ${p.country}`,
     },
   });
 }

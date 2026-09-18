@@ -14,7 +14,15 @@ type AudioPlayerProps = {
   /** Delivery tone: coach (default), neutral (recruiter), tense (frustrated customer). */
   tone?: ModelTone | undefined;
   size?: "sm" | "md" | "lg";
-  variant?: "primary" | "navy" | "ghost";
+  variant?: "primary" | "navy" | "ghost" | "listen";
+  /**
+   * Label shown while paused. Defaults to CONTINUAR / RESUME; the Week 1
+   * listening screen passes "Reanudar audio" so it never reads like the
+   * button that moves to the next exercise.
+   */
+  resumeLabel?: string;
+  /** Accessible name used while paused; defaults to the play announcement. */
+  resumeAriaLabel?: string;
   onEnd?: () => void;
   /** Fired when the learner presses play (not on resume). */
   onStart?: () => void;
@@ -45,6 +53,8 @@ export function AudioPlayer({
   tone,
   size = "md",
   variant = "primary",
+  resumeLabel,
+  resumeAriaLabel,
   onEnd,
   onStart,
   onProgress,
@@ -58,6 +68,10 @@ export function AudioPlayer({
   const [duration, setDuration] = useState(0);
   const stopRef = useRef<(() => void) | null>(null);
   const initialPlayRequestRef = useRef(playRequest);
+  /** Only the newest playback attempt may update this player. */
+  const attemptRef = useRef(0);
+  /** True between a play request and its first real playback event. */
+  const pendingRef = useRef(false);
   const es = useAppLang().lang === "es";
 
   useEffect(() => () => stopRef.current?.(), []);
@@ -68,6 +82,8 @@ export function AudioPlayer({
 
   // A new text/rate resets the player.
   useEffect(() => {
+    attemptRef.current += 1;
+    pendingRef.current = false;
     stopRef.current?.();
     AudioService.stop();
     stopRef.current = null;
@@ -77,6 +93,12 @@ export function AudioPlayer({
   }, [text, rate, tone]);
 
   const start = () => {
+    // A second tap while a clip is still loading must not request it twice.
+    if (pendingRef.current) return;
+    pendingRef.current = true;
+    const attempt = attemptRef.current + 1;
+    attemptRef.current = attempt;
+    const isCurrent = () => attemptRef.current === attempt;
     setStatus("loading");
     setCurrent(0);
     onStart?.();
@@ -84,17 +106,38 @@ export function AudioPlayer({
       rate,
       voice,
       tone,
-      onStart: () => setStatus("playing"),
+      onStart: () => {
+        if (!isCurrent()) return;
+        pendingRef.current = false;
+        setStatus("playing");
+      },
       onProgress: (position, total) => {
+        if (!isCurrent()) return;
         setCurrent(position);
         if (total > 0) setDuration(total);
         onProgress?.(position, total);
       },
       onEnd: () => {
+        if (!isCurrent()) return;
+        pendingRef.current = false;
         setStatus("ended");
         onEnd?.();
       },
-      onError: () => setStatus("error"),
+      onError: () => {
+        if (!isCurrent()) return;
+        pendingRef.current = false;
+        setStatus("error");
+      },
+      onInterrupt: () => {
+        // Another clip took over: this player goes back to the start instead of
+        // pretending it is still playing or can be resumed.
+        if (!isCurrent()) return;
+        attemptRef.current += 1;
+        pendingRef.current = false;
+        stopRef.current = null;
+        setStatus("idle");
+        setCurrent(0);
+      },
     });
   };
 
@@ -107,6 +150,8 @@ export function AudioPlayer({
     if (status === "playing") {
       if (AudioService.pause()) setStatus("paused");
       else {
+        attemptRef.current += 1;
+        pendingRef.current = false;
         stopRef.current?.();
         AudioService.stop();
         setStatus("idle");
@@ -135,9 +180,7 @@ export function AudioPlayer({
           ? "PAUSA"
           : "PAUSE"
         : status === "paused"
-          ? es
-            ? "CONTINUAR"
-            : "RESUME"
+          ? (resumeLabel ?? (es ? "CONTINUAR" : "RESUME"))
           : status === "ended"
             ? es
               ? "ESCUCHAR OTRA VEZ"
@@ -167,16 +210,26 @@ export function AudioPlayer({
         type="button"
         onClick={toggle}
         aria-label={
-          status === "playing" ? (es ? "Pausar audio" : "Pause audio") : es ? "Reproducir audio" : "Play audio"
+          status === "playing"
+            ? es
+              ? "Pausar audio"
+              : "Pause audio"
+            : status === "paused"
+              ? (resumeAriaLabel ?? (es ? "Reproducir audio" : "Play audio"))
+              : es
+                ? "Reproducir audio"
+                : "Play audio"
         }
         className={cn(
-          "inline-flex w-full items-center justify-center gap-2 rounded-2xl font-semibold tracking-wide transition-all active:scale-[0.98]",
+          "inline-flex w-full items-center justify-center gap-2 rounded-2xl font-semibold tracking-wide transition-all active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
           size === "sm" && "min-h-[44px] px-4 py-2.5 text-sm",
           size === "md" && "min-h-[48px] px-5 py-3.5 text-[15px]",
           size === "lg" && "min-h-[56px] px-6 py-5 text-base",
           variant === "primary" && "bg-primary text-primary-foreground shadow-[var(--shadow-lift)] hover:brightness-105",
           variant === "navy" && "bg-navy text-navy-foreground hover:bg-navy-soft",
           variant === "ghost" && "border border-border bg-card text-foreground hover:bg-secondary",
+          // Week 1 listening design: orange surface with navy text and icon.
+          variant === "listen" && "bg-primary text-navy shadow-[var(--shadow-lift)] hover:brightness-105",
         )}
       >
         {busy ? (

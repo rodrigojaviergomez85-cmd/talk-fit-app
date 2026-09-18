@@ -23,13 +23,16 @@ describe("Basic Zero Week 1 listening pilot", () => {
     ]);
   });
 
-  it("renders a generic avatar for every Week 1 speaker based on gender", () => {
+  it("gives every Week 1 character their own portrait", () => {
     const week1 = BASIC_ZERO_DAYS.slice(0, 5);
     expect(week1.every((day) => day.speaker?.avatarSrc && day.speaker.avatarAlt)).toBe(true);
-    expect(week1[0]!.speaker?.avatarSrc).toMatch(/generic-male/);
-    expect(week1[1]!.speaker?.avatarSrc).toMatch(/generic-female/);
-    expect(week1[2]!.speaker?.avatarSrc).toMatch(/generic-male/);
-    expect(week1[3]!.speaker?.avatarSrc).toMatch(/generic-female/);
-    expect(week1[4]!.speaker?.avatarSrc).toMatch(/generic-male/);
+    const sources = week1.map((day) => day.speaker?.avatarSrc ?? "");
+    expect(new Set(sources).size).toBe(5);
+    expect(sources[0]).toMatch(/bz-carlos/);
+    expect(sources[1]).toMatch(/bz-sofia/);
+    expect(sources[2]).toMatch(/bz-daniel/);
+    expect(sources[3]).toMatch(/bz-valeria/);
+    expect(sources[4]).toMatch(/bz-miguel/);
+    expect(sources.every((src) => !/generic-(male|female)/.test(src))).toBe(true);
   });
 });
