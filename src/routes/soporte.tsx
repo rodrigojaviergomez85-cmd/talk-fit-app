@@ -189,7 +189,12 @@ function SupportPage() {
           </p>
           <div className="space-y-2">
             {c.faq.map((item) => (
-              <Faq key={item.q} q={item.q} a={item.a} link={item.link} />
+              <Faq
+                key={item.q}
+                q={item.q}
+                a={item.a}
+                link={"link" in item ? item.link : undefined}
+              />
             ))}
           </div>
         </section>
