@@ -17,7 +17,8 @@ export type CoachKind = "question" | "spanish" | "idea" | "slow";
 export type Turn = {
   id: string;
   role: TurnRole;
-  kind?: CoachKind;
+  kind?: CoachKind | undefined;
+
   text: string;
 };
 
@@ -42,7 +43,7 @@ export const emptyTranscript: LiveTranscript = {
 export type Fragment = {
   id: string;
   role: TurnRole;
-  kind?: CoachKind;
+  kind?: CoachKind | undefined;
   text: string;
 };
 
