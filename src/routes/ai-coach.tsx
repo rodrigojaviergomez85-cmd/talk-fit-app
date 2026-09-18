@@ -195,17 +195,22 @@ function AiCoachPage() {
     >
       <div
         className={`${liveActive ? "hidden" : "mb-4 grid"} gap-2 rounded-2xl border border-border bg-card p-1 ${
-          practiceAllowed ? "grid-cols-3" : "grid-cols-2"
+          practiceAllowed && liveAllowed
+            ? "grid-cols-3"
+            : practiceAllowed || liveAllowed
+              ? "grid-cols-2"
+              : "grid-cols-1"
         }`}
       >
         {(
           [
             ["write", lang === "en" ? "Chat" : "Chat"],
-            ["live", lang === "en" ? "Talk" : "Hablar"],
+            ...(liveAllowed ? ([["live", lang === "en" ? "Talk" : "Hablar"]] as const) : []),
             ...(practiceAllowed
               ? ([["practice", lang === "en" ? "Practice" : "Práctica"]] as const)
               : []),
           ] as ReadonlyArray<readonly ["write" | "live" | "practice", string]>
+
         ).map(([value, label]) => (
           <button
             key={value}
