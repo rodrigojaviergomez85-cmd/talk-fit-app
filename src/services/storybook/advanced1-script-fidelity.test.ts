@@ -85,4 +85,17 @@ describe("Advanced 1 — fidelity to the approved scripts", () => {
       expect(expressions.filter((e) => e.kind === "idiom").length).toBeGreaterThanOrEqual(2);
     });
   }
+
+  it("no Advanced 1 character talks about the course from inside the story", () => {
+    const episodes = STORYBOOK_EPISODES.filter((e) => e.moduleId === "advanced-1");
+    expect(episodes.length).toBeGreaterThan(0);
+    for (const episode of episodes) {
+      const spoken = episode.scenes.flatMap((s) => (s.lines ?? []).map((l) => l.text));
+      for (const text of spoken) {
+        for (const banned of FORBIDDEN_IN_DIALOGUE) {
+          expect(text.includes(banned), `${episode.id}: "${banned}" in "${text}"`).toBe(false);
+        }
+      }
+    }
+  });
 });
