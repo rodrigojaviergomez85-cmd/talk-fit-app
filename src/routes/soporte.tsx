@@ -7,8 +7,10 @@ import { cn } from "@/lib/utils";
 
 const SUPPORT_EMAIL = "desarrollo.aplicaciones@e4ccglobal.com";
 const LANG_KEY = "fluency-support-lang";
+const PLATFORM_KEY = "fluency-support-platform";
 
 type Lang = "es" | "en";
+type Platform = "ios" | "android";
 
 const COPY = {
   es: {
@@ -46,11 +48,20 @@ const COPY = {
       },
     ],
     reqTitle: "Requisitos",
-    reqs: [
-      "iOS 15 o posterior",
-      "Conexión a internet",
-      "Micrófono con permiso concedido",
-    ],
+    reqTabs: { ios: "iOS", android: "Android" },
+    reqs: {
+      ios: [
+        "iOS 15 o posterior",
+        "Conexión a internet",
+        "Micrófono con permiso concedido",
+      ],
+      android: [
+        "Android 8.0 (Oreo) o posterior",
+        "Conexión a internet",
+        "Micrófono con permiso concedido",
+        "Google Play Services actualizados",
+      ],
+    },
     version: "Versión",
   },
   en: {
@@ -88,11 +99,20 @@ const COPY = {
       },
     ],
     reqTitle: "Requirements",
-    reqs: [
-      "iOS 15 or later",
-      "Internet connection",
-      "Microphone with permission granted",
-    ],
+    reqTabs: { ios: "iOS", android: "Android" },
+    reqs: {
+      ios: [
+        "iOS 15 or later",
+        "Internet connection",
+        "Microphone with permission granted",
+      ],
+      android: [
+        "Android 8.0 (Oreo) or later",
+        "Internet connection",
+        "Microphone with permission granted",
+        "Google Play Services up to date",
+      ],
+    },
     version: "Version",
   },
 } as const;
@@ -123,14 +143,30 @@ function readLang(): Lang {
   return window.localStorage.getItem(LANG_KEY) === "en" ? "en" : "es";
 }
 
+function readPlatform(): Platform {
+  if (typeof window === "undefined") return "ios";
+  const stored = window.localStorage.getItem(PLATFORM_KEY);
+  return stored === "android" ? "android" : "ios";
+}
+
 function SupportPage() {
   const [lang, setLang] = useState<Lang>(() => readLang());
+  const [platform, setPlatform] = useState<Platform>(() => readPlatform());
   const c = COPY[lang];
 
   const pick = (next: Lang) => {
     setLang(next);
     try {
       window.localStorage.setItem(LANG_KEY, next);
+    } catch {
+      /* private mode */
+    }
+  };
+
+  const pickPlatform = (next: Platform) => {
+    setPlatform(next);
+    try {
+      window.localStorage.setItem(PLATFORM_KEY, next);
     } catch {
       /* private mode */
     }
@@ -203,8 +239,31 @@ function SupportPage() {
           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
             {c.reqTitle}
           </p>
+          <div
+            className="inline-flex w-full rounded-full border border-border bg-muted p-1"
+            role="tablist"
+            aria-label={c.reqTitle}
+          >
+            {(["ios", "android"] as const).map((p) => (
+              <button
+                key={p}
+                type="button"
+                role="tab"
+                aria-selected={platform === p}
+                onClick={() => pickPlatform(p)}
+                className={cn(
+                  "flex-1 rounded-full py-2 text-[13px] font-bold uppercase tracking-[0.12em] transition-colors",
+                  platform === p
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {c.reqTabs[p]}
+              </button>
+            ))}
+          </div>
           <ul className="list-disc space-y-1.5 pl-5 text-[14px] text-muted-foreground">
-            {c.reqs.map((r) => (
+            {c.reqs[platform].map((r) => (
               <li key={r}>{r}</li>
             ))}
           </ul>
