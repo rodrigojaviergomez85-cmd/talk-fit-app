@@ -443,7 +443,11 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     setError(null);
     setNotice(null);
     setFeedback(null);
-    setLines([]);
+    setTranscript(emptyTranscript);
+    coachTurnRef.current = 0;
+    userTurnRef.current = 0;
+    helpKindRef.current = null;
+
     setHistoryOpen(false);
     setMicPaused(false);
     micPausedRef.current = false;
@@ -762,7 +766,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   const leftToday = Math.max(0, dailyLimit - usedSeconds);
   const avatarState: CoachState =
     phase === "idle" || phase === "done" ? "idle" : phase === "connecting" ? "thinking" : coachState;
-  const currentCoachText = [...lines].reverse().find((line) => line.role === "coach")?.text.trim() ?? "";
+  const currentCoachText = transcript.question.trim();
   const statusText = phase === "connecting"
     ? (es ? "Conectando…" : "Connecting…")
     : phase === "ending"
@@ -859,7 +863,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
         <CollapsibleContent>
           <Conversation className="max-h-56 rounded-xl bg-secondary/60">
             <ConversationContent className="gap-3 p-3">
-              {lines.map((line, index) => <Message key={`${line.role}-${index}`} from={line.role === "you" ? "user" : "assistant"}><span className="text-[11px] font-bold text-muted-foreground">{line.role === "you" ? (es ? "Tú" : "You") : "Vale"}</span><MessageContent className="text-[13px] leading-relaxed">{line.text}</MessageContent></Message>)}
+              {transcript.turns.map((line, index) => <Message key={`${line.id}-${index}`} from={line.role === "you" ? "user" : "assistant"}><span className="text-[11px] font-bold text-muted-foreground">{line.role === "you" ? (es ? "Tú" : "You") : "Vale"}</span><MessageContent className="text-[13px] leading-relaxed">{line.text}</MessageContent></Message>)}
             </ConversationContent>
             <ConversationScrollButton />
           </Conversation>
