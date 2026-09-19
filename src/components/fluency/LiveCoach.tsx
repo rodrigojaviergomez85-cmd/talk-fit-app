@@ -191,6 +191,12 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     nodeRef.current = null;
     streamRef.current = null;
     micPausedRef.current = false;
+    talkingRef.current = false;
+    if (talkTimeoutRef.current !== null) {
+      window.clearTimeout(talkTimeoutRef.current);
+      talkTimeoutRef.current = null;
+    }
+    setTalking(false);
     setLevel(0);
     setMicPaused(false);
   }, []);
