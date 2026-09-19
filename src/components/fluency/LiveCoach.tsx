@@ -888,14 +888,67 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       {notice ? <p className="mt-3 rounded-xl bg-secondary p-3 text-center text-[13px] font-semibold text-foreground">{notice}</p> : null}
       {error ? <div className="mt-3 rounded-xl bg-coach-end p-3 text-center text-[13px] font-semibold text-coach-end-foreground"><p>{error}</p><Button variant="ghost" className="mt-1 h-9" onClick={() => { setError(null); void stop({ skipSummary: true }); }}>{es ? "Volver" : "Back"}</Button></div> : null}
 
-      <p className="mt-5 text-center text-[13px] font-medium text-muted-foreground">{micPaused ? (es ? "Retoma cuando estés listo" : "Resume when you're ready") : (es ? "El micrófono está abierto" : "The microphone is open")}</p>
-      <div className="mt-2 grid grid-cols-[minmax(0,1fr)_70px] gap-3">
-        <Button onClick={() => void toggleMicrophone()} disabled={phase !== "live"} className="h-[54px] rounded-[17px] bg-coach-action font-bold text-coach-action-foreground">
-          {micPaused ? <Mic aria-hidden /> : <MicOff aria-hidden />}{micPaused ? (es ? "Activar micrófono" : "Turn on microphone") : (es ? "Pausar micrófono" : "Pause microphone")}
+      <p className="mt-5 text-center text-[13px] font-medium text-muted-foreground">
+        {micPaused
+          ? (es ? "Micrófono en pausa. Actívalo para seguir." : "Microphone paused. Turn it on to continue.")
+          : talking
+            ? (es ? "Suelta para que Vale responda" : "Release and Vale will answer")
+            : (es ? "Mantén apretado el micrófono mientras hablas" : "Hold the microphone while you speak")}
+      </p>
+      <div className="mt-2 flex items-center justify-center gap-5">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => void toggleMicrophone()}
+          disabled={phase !== "live"}
+          className="size-12 rounded-full bg-card"
+          aria-label={micPaused ? (es ? "Activar micrófono" : "Turn on microphone") : (es ? "Pausar micrófono" : "Pause microphone")}
+        >
+          {micPaused ? <Mic aria-hidden /> : <MicOff aria-hidden />}
         </Button>
-        <Button onClick={() => void stop()} disabled={phase === "ending"} className="h-[54px] rounded-[17px] bg-coach-end text-coach-end-foreground hover:bg-coach-end" aria-label={es ? "Terminar conversación" : "End conversation"}>{phase === "ending" ? <Loader2 className="animate-spin" aria-hidden /> : <PhoneOff aria-hidden />}</Button>
+        <button
+          type="button"
+          disabled={phase !== "live" || micPaused}
+          onPointerDown={(event) => {
+            event.preventDefault();
+            startTalking();
+          }}
+          onPointerUp={stopTalking}
+          onPointerCancel={stopTalking}
+          onPointerLeave={stopTalking}
+          onContextMenu={(event) => event.preventDefault()}
+          onKeyDown={(event) => {
+            if (event.code === "Space" && !event.repeat) {
+              event.preventDefault();
+              startTalking();
+            }
+          }}
+          onKeyUp={(event) => {
+            if (event.code === "Space") {
+              event.preventDefault();
+              stopTalking();
+            }
+          }}
+          className={cn(
+            "flex size-20 touch-none items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-card)] transition-transform select-none",
+            talking && "scale-110 ring-4 ring-primary/30",
+            (phase !== "live" || micPaused) && "opacity-50",
+          )}
+          aria-label={es ? "Mantén apretado para hablar" : "Hold to talk"}
+          aria-pressed={talking}
+        >
+          <Mic className="size-8" aria-hidden />
+        </button>
+        <Button
+          size="icon"
+          onClick={() => void stop()}
+          disabled={phase === "ending"}
+          className="size-12 rounded-full bg-coach-end text-coach-end-foreground hover:bg-coach-end"
+          aria-label={es ? "Terminar conversación" : "End conversation"}
+        >
+          {phase === "ending" ? <Loader2 className="animate-spin" aria-hidden /> : <PhoneOff aria-hidden />}
+        </Button>
       </div>
-      <p className="mt-1 text-right text-[11px] text-muted-foreground">{es ? "Terminar" : "End"}</p>
 
       <Collapsible open={historyOpen} onOpenChange={setHistoryOpen} className="mt-3 border-t border-border pt-1">
         <CollapsibleTrigger asChild><Button variant="ghost" className="h-11 w-full justify-between px-1 text-[12px] text-muted-foreground"><span>{es ? "Ver conversación" : "View conversation"}</span><ChevronDown className={cn("transition-transform", historyOpen && "rotate-180")} aria-hidden /></Button></CollapsibleTrigger>
