@@ -176,7 +176,15 @@ function RetentionCards({ es, enabled }: { es: boolean; enabled: boolean }) {
                       <td
                         key={k}
                         className="rounded-md px-1 py-1 text-center"
-                        style={p === null ? undefined : { backgroundColor: `hsl(var(--primary) / ${cellIntensity(p)})` }}
+                        style={
+                          p === null
+                            ? undefined
+                            : {
+                                backgroundColor: `color-mix(in oklch, var(--primary) ${Math.round(
+                                  cellIntensity(p) * 100,
+                                )}%, transparent)`,
+                              }
+                        }
                       >
                         <span className="block font-bold tabular-nums">{p === null ? "—" : `${p}%`}</span>
                         {p === null ? null : (
