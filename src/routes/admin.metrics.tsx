@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
 import { ShieldCheck, RefreshCw } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
 import { ActivityCalendar } from "@/components/fluency/ActivityCalendar";
@@ -11,10 +12,21 @@ import { useAppLang } from "@/lib/i18n";
 import { isAdmin } from "@/lib/storage-report.functions";
 import { getAdminMetrics } from "@/lib/admin-metrics.functions";
 import { fmtNum, fmtPct, pct, type AdminMetrics } from "@/lib/admin-metrics";
+import { getRetentionCohorts } from "@/lib/admin-retention.functions";
+import {
+  cellIntensity,
+  northStarPct,
+  weekLabel,
+  windowPct,
+  RETENTION_WINDOW_KEYS,
+  RETENTION_WINDOW_LABELS,
+  type RetentionData,
+} from "@/lib/admin-retention";
 import { getStoryMetrics } from "@/lib/story-analytics.functions";
 import type { StoryMetrics } from "@/lib/story-analytics";
 import { getAdminCostCenter } from "@/lib/admin-cost-center.functions";
 import { estimateCosts, fmtUsd, type AdminCostCenter } from "@/lib/admin-cost-center";
+
 
 /** Admin-only engagement dashboard. Not linked from learner navigation. */
 export const Route = createFileRoute("/admin/metrics")({
