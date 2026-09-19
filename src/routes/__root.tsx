@@ -17,6 +17,7 @@ import { Toaster } from "../components/ui/sonner";
 import { AppUpdateWatcher } from "../components/fluency/AppUpdateWatcher";
 import { startServerDayWatcher } from "../services/server-day";
 import { isStaleChunkError, reloadOnceForStaleChunk } from "../lib/stale-chunk";
+import { registerServiceWorker, syncPushSubscription } from "../lib/push";
 
 function NotFoundComponent() {
   return (
