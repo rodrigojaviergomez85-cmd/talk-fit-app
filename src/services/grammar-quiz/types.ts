@@ -49,6 +49,8 @@ export type GrammarQuiz = {
   day: number;
   title: Bilingual;
   items: GrammarItem[];
+  /** Aciertos mínimos para ganar los puntos. Por defecto GRAMMAR_PASS_SCORE. */
+  passScore?: number;
 };
 
 export const GRAMMAR_ITEMS_PER_QUIZ = 20;

@@ -60,7 +60,7 @@ export const submitGrammarQuiz = createServerFn({ method: "POST" })
       else wrong.push(item.id);
     }
     const total = quiz.items.length;
-    const passed = correct >= GRAMMAR_PASS_SCORE;
+    const passed = correct >= (quiz.passScore ?? GRAMMAR_PASS_SCORE);
 
     await context.supabase.from("grammar_quiz_attempts").insert({
       user_id: context.userId,
