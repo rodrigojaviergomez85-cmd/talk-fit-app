@@ -42,7 +42,54 @@ export type RearrangeItem = BaseItem & {
   promptEs: string;
 };
 
-export type GrammarItem = MultipleChoiceItem | FindMistakeItem | RearrangeItem;
+/**
+ * B2 LAB · Hablar con reloj (estilo TOEFL iBT). El valor de la respuesta es
+ * la cantidad de segundos grabados; cuenta como correcto cuando llega a
+ * `minSeconds`. `required` obliga a grabar antes de poder enviar el quiz.
+ */
+export type SpeakItem = BaseItem & {
+  kind: "speak";
+  prompt: string;
+  promptEs: string;
+  /** Frases guía que se muestran mientras habla. */
+  template: string[];
+  prepSeconds: number;
+  speakSeconds: number;
+  minSeconds: number;
+  required: boolean;
+};
+
+export type GrammarItem = MultipleChoiceItem | FindMistakeItem | RearrangeItem | SpeakItem;
+
+/** B2 LAB · Contexto que se muestra antes de un bloque de ítems. */
+export type LabContext =
+  | {
+      kind: "reading";
+      title: string;
+      titleEs: string;
+      /** Párrafos. Los marcadores [A]…[D] de inserción viven dentro del texto. */
+      paragraphs: string[];
+    }
+  | {
+      kind: "listening";
+      title: string;
+      titleEs: string;
+      /** Turnos en orden, cada uno con su voz (mismo formato que Test Ready). */
+      parts: { voice: "female" | "male"; text: string }[];
+      /** Reproducciones permitidas antes de bloquear el audio. */
+      plays: number;
+    };
+
+/** B2 LAB · Bloque del quiz: contexto opcional + los ítems que le pertenecen. */
+export type LabSection = {
+  id: string;
+  label: Bilingual;
+  instruction: Bilingual;
+  context?: LabContext;
+  /** Segundos para la sección; al llegar a cero se avanza y lo no contestado cuenta como fallado. */
+  timeLimitSec?: number;
+  itemIds: string[];
+};
 
 export type GrammarQuiz = {
   moduleId: string;
@@ -51,6 +98,10 @@ export type GrammarQuiz = {
   items: GrammarItem[];
   /** Aciertos mínimos para ganar los puntos. Por defecto GRAMMAR_PASS_SCORE. */
   passScore?: number;
+  /** B2 LAB · Secciones en orden. Si existe, la pantalla las recorre una por una. */
+  sections?: LabSection[];
+  /** B2 LAB · Bandas para el resultado (de mayor a menor `min`). */
+  bands?: { min: number; label: Bilingual }[];
 };
 
 export const GRAMMAR_ITEMS_PER_QUIZ = 20;
@@ -90,4 +141,16 @@ export function rearrange(
   promptEs = "Ordena la oración.",
 ): RearrangeItem {
   return { kind: "rearrange", id, pieces, answer, explain, promptEs };
+}
+
+export function speak(
+  id: string,
+  prompt: string,
+  promptEs: string,
+  template: string[],
+  timing: { prepSeconds: number; speakSeconds: number; minSeconds: number },
+  explain: Bilingual,
+  required = true,
+): SpeakItem {
+  return { kind: "speak", id, prompt, promptEs, template, ...timing, required, explain };
 }

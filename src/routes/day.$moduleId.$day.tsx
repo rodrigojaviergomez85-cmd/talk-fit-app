@@ -19,7 +19,7 @@ import {
   useLeagueDay,
 } from "@/components/fluency/LeagueDaySection";
 import { hasReward } from "@/lib/league";
-import { hasGrammarQuiz } from "@/lib/grammar-quiz-manifest";
+import { LAB_DAY_META, grammarItemCount, hasGrammarQuiz, isLabDay } from "@/lib/grammar-quiz-manifest";
 import { hasUnlimitedAccess } from "@/lib/unlimited-access";
 import type { JourneyState, ModuleId } from "@/lib/types";
 
@@ -119,6 +119,10 @@ function DayHubPage() {
   // Paso 3 · Gramática: piloto por módulo/día.
   const showGrammar = hasGrammarQuiz(data.moduleId, data.day);
   const grammarEarned = hasReward(rewards, data.day, "grammar");
+  // B2 Lab: mismo motor, otra tarjeta (lectura, listening, estructura y speaking).
+  const isLab = isLabDay(data.moduleId, data.day);
+  const labMeta = LAB_DAY_META[data.moduleId]?.[data.day];
+  const grammarItems = grammarItemCount(data.moduleId, data.day);
 
   // Direct URL protection: a future day stays closed until the current day's
   // audios are done. Test/admin accounts with unlimited access browse freely.
@@ -252,7 +256,13 @@ function DayHubPage() {
         {showGrammar ? (
           <>
             <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              {es ? "PASO 3 · GRAMÁTICA" : "STEP 3 · GRAMMAR"}
+              {isLab
+                ? es
+                  ? "PASO 3 · B2 LAB"
+                  : "STEP 3 · B2 LAB"
+                : es
+                  ? "PASO 3 · GRAMÁTICA"
+                  : "STEP 3 · GRAMMAR"}
             </span>
             <Link
               to="/gramatica"
@@ -264,7 +274,7 @@ function DayHubPage() {
               </span>
               <span className="min-w-0 flex-1">
                 <span className="flex flex-wrap items-center gap-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-muted-foreground">
-                  {es ? "20 EJERCICIOS" : "20 ITEMS"}
+                  {grammarItems} {es ? "EJERCICIOS" : "ITEMS"}
                   {league.eligible ? <LeaguePointsBadge earned={grammarEarned} es={es} /> : null}
                   {grammarEarned ? (
                     <span className="inline-flex items-center gap-0.5 text-primary">
@@ -273,12 +283,16 @@ function DayHubPage() {
                   ) : null}
                 </span>
                 <span className="block text-[15px] font-extrabold leading-tight text-foreground">
-                  {es ? "Gramática del día" : "Grammar of the day"}
+                  {labMeta ? (es ? labMeta.es : labMeta.en) : es ? "Gramática del día" : "Grammar of the day"}
                 </span>
                 <span className="block truncate text-xs font-medium text-muted-foreground">
-                  {es
-                    ? "Opción múltiple, encuentra el error y ordena la oración."
-                    : "Multiple choice, find the mistake and rearrange the sentence."}
+                  {isLab
+                    ? es
+                      ? "Lectura, listening, estructura y speaking con reloj"
+                      : "Timed reading, listening, structure and speaking"
+                    : es
+                      ? "Opción múltiple, encuentra el error y ordena la oración."
+                      : "Multiple choice, find the mistake and rearrange the sentence."}
                 </span>
               </span>
               <ArrowRight className="size-5 shrink-0 text-primary" aria-hidden="true" />
