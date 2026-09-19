@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { GRAMMAR_QUIZZES, GRAMMAR_ITEMS_PER_QUIZ, GRAMMAR_PASS_SCORE, getGrammarQuiz } from "./index";
 import { isItemCorrect } from "@/lib/grammar-quiz.functions";
-import { grammarDaysInWeek, hasGrammarQuiz } from "@/lib/grammar-quiz-manifest";
+import { grammarDaysInWeek, hasGrammarQuiz, LAB_DAY_META } from "@/lib/grammar-quiz-manifest";
 import { attainableWeeklyGoal, dailyGoal } from "@/lib/league";
 
 describe("paso 3 · gramática — banco de ítems", () => {
@@ -98,6 +98,25 @@ describe("paso 3 · gramática — banco de ítems", () => {
     expect(getGrammarQuiz("eagles-week-1", 6)).toBeUndefined();
     expect(getGrammarQuiz("eagles-week-1", 4)!.items.filter((i) => i.kind === "speak")).toHaveLength(1);
     expect(getGrammarQuiz("eagles-week-1", 5)!.bands!.map((b) => b.min)).toEqual([13, 10, 0]);
+  });
+
+  it("LAB_DAY_META coincide con los quizzes", () => {
+    for (const [moduleId, days] of Object.entries(LAB_DAY_META)) {
+      for (const [dayStr, meta] of Object.entries(days)) {
+        const day = Number(dayStr);
+        const quiz = getGrammarQuiz(moduleId, day);
+        expect(quiz, `${moduleId} day ${day} missing in GRAMMAR_QUIZZES`).toBeDefined();
+        expect(quiz!.sections, `${moduleId} day ${day} must have sections`).toBeDefined();
+        expect(quiz!.items.length, `${moduleId} day ${day} item count`).toBe(meta.items);
+        expect(quiz!.title.en, `${moduleId} day ${day} title.en`).toBe(meta.en);
+        expect(quiz!.title.es, `${moduleId} day ${day} title.es`).toBe(meta.es);
+      }
+    }
+    for (const quiz of GRAMMAR_QUIZZES) {
+      if (!quiz.sections) continue;
+      const meta = LAB_DAY_META[quiz.moduleId]?.[quiz.day];
+      expect(meta, `${quiz.moduleId} day ${quiz.day} missing in LAB_DAY_META`).toBeDefined();
+    }
   });
 
   it("califica hablar por segundos grabados", () => {
