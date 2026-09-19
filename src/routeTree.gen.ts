@@ -75,6 +75,7 @@ import { Route as NaturalMethodVerbsListRouteImport } from './routes/natural-met
 import { Route as NaturalMethodVerbsPhrasalRouteImport } from './routes/natural-method.verbs.phrasal'
 import { Route as ReviewModuleIdIndexRouteImport } from './routes/review.$moduleId.index'
 import { Route as ReviewModuleIdPracticeRouteImport } from './routes/review.$moduleId.$practice'
+import { Route as ApiPublicHooksPracticeRemindersRouteImport } from './routes/api/public/hooks/practice-reminders'
 import { Route as ApiPublicHooksPruneAiLogRouteImport } from './routes/api/public/hooks/prune-ai-log'
 import { Route as ApiPublicHooksPurgeAudioRouteImport } from './routes/api/public/hooks/purge-audio'
 import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe/webhook'
@@ -417,6 +418,12 @@ const ReviewModuleIdPracticeRoute = ReviewModuleIdPracticeRouteImport.update({
   path: '/review/$moduleId/$practice',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicHooksPracticeRemindersRoute =
+  ApiPublicHooksPracticeRemindersRouteImport.update({
+    id: '/api/public/hooks/practice-reminders',
+    path: '/api/public/hooks/practice-reminders',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicHooksPruneAiLogRoute =
   ApiPublicHooksPruneAiLogRouteImport.update({
     id: '/api/public/hooks/prune-ai-log',
@@ -501,6 +508,7 @@ export interface FileRoutesByFullPath {
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/natural-method/verbs/': typeof NaturalMethodVerbsIndexRoute
   '/review/$moduleId/': typeof ReviewModuleIdIndexRoute
+  '/api/public/hooks/practice-reminders': typeof ApiPublicHooksPracticeRemindersRoute
   '/api/public/hooks/prune-ai-log': typeof ApiPublicHooksPruneAiLogRoute
   '/api/public/hooks/purge-audio': typeof ApiPublicHooksPurgeAudioRoute
   '/api/public/stripe/webhook': typeof ApiPublicStripeWebhookRoute
@@ -570,6 +578,7 @@ export interface FileRoutesByTo {
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/natural-method/verbs': typeof NaturalMethodVerbsIndexRoute
   '/review/$moduleId': typeof ReviewModuleIdIndexRoute
+  '/api/public/hooks/practice-reminders': typeof ApiPublicHooksPracticeRemindersRoute
   '/api/public/hooks/prune-ai-log': typeof ApiPublicHooksPruneAiLogRoute
   '/api/public/hooks/purge-audio': typeof ApiPublicHooksPurgeAudioRoute
   '/api/public/stripe/webhook': typeof ApiPublicStripeWebhookRoute
@@ -642,6 +651,7 @@ export interface FileRoutesById {
   '/review/$moduleId/$practice': typeof ReviewModuleIdPracticeRoute
   '/natural-method/verbs/': typeof NaturalMethodVerbsIndexRoute
   '/review/$moduleId/': typeof ReviewModuleIdIndexRoute
+  '/api/public/hooks/practice-reminders': typeof ApiPublicHooksPracticeRemindersRoute
   '/api/public/hooks/prune-ai-log': typeof ApiPublicHooksPruneAiLogRoute
   '/api/public/hooks/purge-audio': typeof ApiPublicHooksPurgeAudioRoute
   '/api/public/stripe/webhook': typeof ApiPublicStripeWebhookRoute
@@ -714,6 +724,7 @@ export interface FileRouteTypes {
     | '/review/$moduleId/$practice'
     | '/natural-method/verbs/'
     | '/review/$moduleId/'
+    | '/api/public/hooks/practice-reminders'
     | '/api/public/hooks/prune-ai-log'
     | '/api/public/hooks/purge-audio'
     | '/api/public/stripe/webhook'
@@ -783,6 +794,7 @@ export interface FileRouteTypes {
     | '/review/$moduleId/$practice'
     | '/natural-method/verbs'
     | '/review/$moduleId'
+    | '/api/public/hooks/practice-reminders'
     | '/api/public/hooks/prune-ai-log'
     | '/api/public/hooks/purge-audio'
     | '/api/public/stripe/webhook'
@@ -854,6 +866,7 @@ export interface FileRouteTypes {
     | '/review/$moduleId/$practice'
     | '/natural-method/verbs/'
     | '/review/$moduleId/'
+    | '/api/public/hooks/practice-reminders'
     | '/api/public/hooks/prune-ai-log'
     | '/api/public/hooks/purge-audio'
     | '/api/public/stripe/webhook'
@@ -921,6 +934,7 @@ export interface RootRouteChildren {
   NaturalMethodCuentoStoryIdRoute: typeof NaturalMethodCuentoStoryIdRoute
   ReviewModuleIdPracticeRoute: typeof ReviewModuleIdPracticeRoute
   ReviewModuleIdIndexRoute: typeof ReviewModuleIdIndexRoute
+  ApiPublicHooksPracticeRemindersRoute: typeof ApiPublicHooksPracticeRemindersRoute
   ApiPublicHooksPruneAiLogRoute: typeof ApiPublicHooksPruneAiLogRoute
   ApiPublicHooksPurgeAudioRoute: typeof ApiPublicHooksPurgeAudioRoute
   ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
@@ -1390,6 +1404,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReviewModuleIdPracticeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/practice-reminders': {
+      id: '/api/public/hooks/practice-reminders'
+      path: '/api/public/hooks/practice-reminders'
+      fullPath: '/api/public/hooks/practice-reminders'
+      preLoaderRoute: typeof ApiPublicHooksPracticeRemindersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/hooks/prune-ai-log': {
       id: '/api/public/hooks/prune-ai-log'
       path: '/api/public/hooks/prune-ai-log'
@@ -1504,6 +1525,7 @@ const rootRouteChildren: RootRouteChildren = {
   NaturalMethodCuentoStoryIdRoute: NaturalMethodCuentoStoryIdRoute,
   ReviewModuleIdPracticeRoute: ReviewModuleIdPracticeRoute,
   ReviewModuleIdIndexRoute: ReviewModuleIdIndexRoute,
+  ApiPublicHooksPracticeRemindersRoute: ApiPublicHooksPracticeRemindersRoute,
   ApiPublicHooksPruneAiLogRoute: ApiPublicHooksPruneAiLogRoute,
   ApiPublicHooksPurgeAudioRoute: ApiPublicHooksPurgeAudioRoute,
   ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
