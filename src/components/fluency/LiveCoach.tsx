@@ -101,6 +101,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   const [error, setError] = useState<string | null>(null);
   const [coachState, setCoachState] = useState<CoachState>("idle");
   const [micPaused, setMicPaused] = useState(false);
+  const [talking, setTalking] = useState(false);
   const [helpLoading, setHelpLoading] = useState<HelpKind | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
   const prefs = loadPreferences();
@@ -135,6 +136,13 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   const coachTurnRef = useRef(0);
   const userTurnRef = useRef(0);
   const helpKindRef = useRef<CoachKind | null>(null);
+  // Push-to-talk: audio only leaves the device while the learner holds the
+  // button, so silence is never billed by the live model.
+  const talkingRef = useRef(false);
+  const talkTimeoutRef = useRef<number | null>(null);
+
+  /** Longest single spoken turn before the app ends it for the learner. */
+  const MAX_TALK_SECONDS = 60;
 
 
 
@@ -183,6 +191,12 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     nodeRef.current = null;
     streamRef.current = null;
     micPausedRef.current = false;
+    talkingRef.current = false;
+    if (talkTimeoutRef.current !== null) {
+      window.clearTimeout(talkTimeoutRef.current);
+      talkTimeoutRef.current = null;
+    }
+    setTalking(false);
     setLevel(0);
     setMicPaused(false);
   }, []);
@@ -335,8 +349,8 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       if (!heardVoiceRef.current) {
         setNotice(
           es
-            ? "No te estamos escuchando. Revisa el permiso del micrófono y habla más cerca."
-            : "We are not hearing you. Check microphone permission and speak closer.",
+            ? "No te estamos escuchando. Mantén apretado el botón del micrófono mientras hablas."
+            : "We are not hearing you. Hold the microphone button while you speak.",
         );
       }
     }, 15000);
@@ -353,8 +367,10 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
         streamRef.current?.getAudioTracks().forEach((track) => { track.enabled = true; });
         micPausedRef.current = false;
         setMicPaused(false);
-        setCoachState("listening");
+        setCoachState(talkingRef.current ? "listening" : "idle");
       } else {
+        // Pausing mid-turn ends the spoken turn so nothing hangs.
+        if (talkingRef.current) stopTalking();
         micPausedRef.current = true;
         streamRef.current?.getAudioTracks().forEach((track) => { track.enabled = false; });
         setMicPaused(true);
@@ -364,6 +380,46 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     } catch {
       setError(es ? "No se pudo cambiar el micrófono." : "Could not change the microphone.");
     }
+  }
+
+  /** Push-to-talk: start streaming mic audio while the button is held. */
+  function startTalking() {
+    if (phase !== "live" || micPausedRef.current || talkingRef.current || !sessionRef.current) return;
+    // Interrupt whatever the coach is saying so the learner can answer now.
+    sourcesRef.current.forEach((source) => {
+      try {
+        source.stop();
+      } catch {
+        /* already stopped */
+      }
+    });
+    sourcesRef.current = [];
+    sourceGainsRef.current.forEach((gain) => gain.disconnect());
+    sourceGainsRef.current = [];
+    playHeadRef.current = outCtxRef.current?.currentTime ?? 0;
+    talkingRef.current = true;
+    setTalking(true);
+    setCoachState("listening");
+    // Safety cap: a stuck finger never turns into an open-ended bill.
+    talkTimeoutRef.current = window.setTimeout(() => stopTalking(), MAX_TALK_SECONDS * 1000);
+  }
+
+  /** Releasing the button ends the turn so the coach answers right away. */
+  function stopTalking() {
+    if (!talkingRef.current) return;
+    talkingRef.current = false;
+    if (talkTimeoutRef.current !== null) {
+      window.clearTimeout(talkTimeoutRef.current);
+      talkTimeoutRef.current = null;
+    }
+    setTalking(false);
+    setLevel(0);
+    try {
+      sessionRef.current?.sendRealtimeInput({ audioStreamEnd: true });
+    } catch {
+      /* socket closing */
+    }
+    if (!endingRef.current && !collectingSummaryRef.current) setCoachState("thinking");
   }
 
   function requestHelp(kind: HelpKind) {
@@ -528,6 +584,10 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
           systemInstruction: buildSystemInstruction(coachContext),
           inputAudioTranscription: {},
           outputAudioTranscription: {},
+          // Push-to-talk: the app marks turns itself (hold to talk, release to
+          // end), so server-side voice activity detection stays off and no
+          // silence is billed.
+          realtimeInputConfig: { automaticActivityDetection: { disabled: true } },
         },
         callbacks: {
            onmessage: (message: any) => {
@@ -574,6 +634,9 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
                setCoachState("thinking");
              }
             for (const part of parts) {
+              // While the learner holds the talk button they interrupted the
+              // coach: drop any of its audio still arriving.
+              if (talkingRef.current) continue;
               const data = part?.inlineData?.data;
               if (!data) continue;
               const pcm = fromBase64(data);
@@ -604,9 +667,9 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
                 sourcesRef.current = sourcesRef.current.filter((item) => item !== source);
                  sourceGainsRef.current = sourceGainsRef.current.filter((item) => item !== gain);
                  gain.disconnect();
-                if (sourcesRef.current.length === 0 && !endingRef.current) {
-                  setCoachState("listening");
-                }
+                 if (sourcesRef.current.length === 0 && !endingRef.current) {
+                   setCoachState(talkingRef.current ? "listening" : "idle");
+                 }
               };
             }
 
@@ -621,7 +684,8 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
                userTurnRef.current += 1;
                helpKindRef.current = null;
                setHelpLoading(null);
-               if (sourcesRef.current.length === 0 && !micPausedRef.current) setCoachState("listening");
+               if (sourcesRef.current.length === 0 && !micPausedRef.current)
+                 setCoachState(talkingRef.current ? "listening" : "idle");
              }
 
           },
@@ -656,7 +720,12 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       const processor = micCtx.createScriptProcessor(4096, 1, 1);
       nodeRef.current = processor;
       processor.onaudioprocess = (event) => {
-         if (micPausedRef.current) return;
+        // Push-to-talk: nothing (not even silence) is sent unless the learner
+        // is holding the talk button.
+        if (micPausedRef.current || !talkingRef.current) {
+          setLevel(0);
+          return;
+        }
         const input = event.inputBuffer.getChannelData(0);
         let peak = 0;
         for (let i = 0; i < input.length; i += 64) peak = Math.max(peak, Math.abs(input[i] ?? 0));
@@ -735,7 +804,9 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
           ? (es ? "Tu coach está hablando" : "Your coach is talking")
           : coachState === "thinking"
             ? (es ? "Preparando respuesta…" : "Preparing response…")
-            : (es ? "Tu turno. Te escucho." : "Your turn. I'm listening.");
+            : talking
+              ? (es ? "Te escucho… suelta para enviar" : "Listening… release to send")
+              : (es ? "Tu turno. Mantén apretado para hablar." : "Your turn. Hold to talk.");
 
   if (phase === "idle" || phase === "done") {
     return (
@@ -820,14 +891,67 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       {notice ? <p className="mt-3 rounded-xl bg-secondary p-3 text-center text-[13px] font-semibold text-foreground">{notice}</p> : null}
       {error ? <div className="mt-3 rounded-xl bg-coach-end p-3 text-center text-[13px] font-semibold text-coach-end-foreground"><p>{error}</p><Button variant="ghost" className="mt-1 h-9" onClick={() => { setError(null); void stop({ skipSummary: true }); }}>{es ? "Volver" : "Back"}</Button></div> : null}
 
-      <p className="mt-5 text-center text-[13px] font-medium text-muted-foreground">{micPaused ? (es ? "Retoma cuando estés listo" : "Resume when you're ready") : (es ? "El micrófono está abierto" : "The microphone is open")}</p>
-      <div className="mt-2 grid grid-cols-[minmax(0,1fr)_70px] gap-3">
-        <Button onClick={() => void toggleMicrophone()} disabled={phase !== "live"} className="h-[54px] rounded-[17px] bg-coach-action font-bold text-coach-action-foreground">
-          {micPaused ? <Mic aria-hidden /> : <MicOff aria-hidden />}{micPaused ? (es ? "Activar micrófono" : "Turn on microphone") : (es ? "Pausar micrófono" : "Pause microphone")}
+      <p className="mt-5 text-center text-[13px] font-medium text-muted-foreground">
+        {micPaused
+          ? (es ? "Micrófono en pausa. Actívalo para seguir." : "Microphone paused. Turn it on to continue.")
+          : talking
+            ? (es ? "Suelta para que Vale responda" : "Release and Vale will answer")
+            : (es ? "Mantén apretado el micrófono mientras hablas" : "Hold the microphone while you speak")}
+      </p>
+      <div className="mt-2 flex items-center justify-center gap-5">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => void toggleMicrophone()}
+          disabled={phase !== "live"}
+          className="size-12 rounded-full bg-card"
+          aria-label={micPaused ? (es ? "Activar micrófono" : "Turn on microphone") : (es ? "Pausar micrófono" : "Pause microphone")}
+        >
+          {micPaused ? <Mic aria-hidden /> : <MicOff aria-hidden />}
         </Button>
-        <Button onClick={() => void stop()} disabled={phase === "ending"} className="h-[54px] rounded-[17px] bg-coach-end text-coach-end-foreground hover:bg-coach-end" aria-label={es ? "Terminar conversación" : "End conversation"}>{phase === "ending" ? <Loader2 className="animate-spin" aria-hidden /> : <PhoneOff aria-hidden />}</Button>
+        <button
+          type="button"
+          disabled={phase !== "live" || micPaused}
+          onPointerDown={(event) => {
+            event.preventDefault();
+            startTalking();
+          }}
+          onPointerUp={stopTalking}
+          onPointerCancel={stopTalking}
+          onPointerLeave={stopTalking}
+          onContextMenu={(event) => event.preventDefault()}
+          onKeyDown={(event) => {
+            if (event.code === "Space" && !event.repeat) {
+              event.preventDefault();
+              startTalking();
+            }
+          }}
+          onKeyUp={(event) => {
+            if (event.code === "Space") {
+              event.preventDefault();
+              stopTalking();
+            }
+          }}
+          className={cn(
+            "flex size-20 touch-none items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-card)] transition-transform select-none",
+            talking && "scale-110 ring-4 ring-primary/30",
+            (phase !== "live" || micPaused) && "opacity-50",
+          )}
+          aria-label={es ? "Mantén apretado para hablar" : "Hold to talk"}
+          aria-pressed={talking}
+        >
+          <Mic className="size-8" aria-hidden />
+        </button>
+        <Button
+          size="icon"
+          onClick={() => void stop()}
+          disabled={phase === "ending"}
+          className="size-12 rounded-full bg-coach-end text-coach-end-foreground hover:bg-coach-end"
+          aria-label={es ? "Terminar conversación" : "End conversation"}
+        >
+          {phase === "ending" ? <Loader2 className="animate-spin" aria-hidden /> : <PhoneOff aria-hidden />}
+        </Button>
       </div>
-      <p className="mt-1 text-right text-[11px] text-muted-foreground">{es ? "Terminar" : "End"}</p>
 
       <Collapsible open={historyOpen} onOpenChange={setHistoryOpen} className="mt-3 border-t border-border pt-1">
         <CollapsibleTrigger asChild><Button variant="ghost" className="h-11 w-full justify-between px-1 text-[12px] text-muted-foreground"><span>{es ? "Ver conversación" : "View conversation"}</span><ChevronDown className={cn("transition-transform", historyOpen && "rotate-180")} aria-hidden /></Button></CollapsibleTrigger>
