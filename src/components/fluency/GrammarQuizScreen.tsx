@@ -10,7 +10,7 @@ import {
 } from "@/services/grammar-quiz";
 import { isItemCorrect, submitGrammarQuiz } from "@/lib/grammar-quiz.functions";
 import {
-  playCorrectFeedbackSound,
+  playGoodFeedbackSound,
   playWrongFeedbackSound,
   unlockFeedbackAudio,
 } from "@/lib/feedback-sounds";
@@ -72,7 +72,7 @@ export function GrammarQuizScreen({
     if (!item || checked) return;
     unlockFeedbackAudio();
     const correct = isItemCorrect(item, value);
-    if (correct) playCorrectFeedbackSound();
+    if (correct) playGoodFeedbackSound();
     else playWrongFeedbackSound();
     setAnswers((prev) => ({ ...prev, [item.id]: value }));
     setChecked({ correct, value });
