@@ -101,6 +101,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   const [error, setError] = useState<string | null>(null);
   const [coachState, setCoachState] = useState<CoachState>("idle");
   const [micPaused, setMicPaused] = useState(false);
+  const [talking, setTalking] = useState(false);
   const [helpLoading, setHelpLoading] = useState<HelpKind | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
   const prefs = loadPreferences();
@@ -135,6 +136,13 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
   const coachTurnRef = useRef(0);
   const userTurnRef = useRef(0);
   const helpKindRef = useRef<CoachKind | null>(null);
+  // Push-to-talk: audio only leaves the device while the learner holds the
+  // button, so silence is never billed by the live model.
+  const talkingRef = useRef(false);
+  const talkTimeoutRef = useRef<number | null>(null);
+
+  /** Longest single spoken turn before the app ends it for the learner. */
+  const MAX_TALK_SECONDS = 60;
 
 
 
