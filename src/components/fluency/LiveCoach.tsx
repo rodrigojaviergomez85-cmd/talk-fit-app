@@ -556,6 +556,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       });
       const body = (await res.json().catch(() => null)) as StartResponse | null;
       if (cancelled()) return;
+      if (body?.unlimited) setUnlimited(true);
 
       if (res.status === 429 || body?.error === "daily_limit") {
         setUsedSeconds(body?.usedSeconds ?? usedSeconds);
@@ -839,11 +840,15 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
         <div className="mt-5 rounded-[20px] border border-border bg-card p-4 text-left shadow-[var(--shadow-card)]">
           <p className="text-[12px] font-bold text-primary">{es ? `Para tu nivel · ${levelLabel}` : `For your level · ${levelLabel}`}</p>
           <h3 className="mt-1 text-lg font-extrabold text-foreground">{topicLabel}</h3>
-          <p className="mt-1 text-[13px] text-muted-foreground">{es ? `${mmss(leftToday)} disponibles hoy` : `${mmss(leftToday)} available today`}</p>
+          <p className="mt-1 text-[13px] text-muted-foreground">
+            {unlimited
+              ? (es ? "Minutos ilimitados" : "Unlimited minutes")
+              : (es ? `${mmss(leftToday)} disponibles hoy` : `${mmss(leftToday)} available today`)}
+          </p>
         </div>
         {feedback ? <div className="mt-4 rounded-2xl border border-border bg-card p-4 text-left"><p className="text-xs font-bold text-primary">{es ? "Cierre de Vale" : "Vale's closing"}</p><p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-foreground">{feedback}</p></div> : null}
         {error ? <p className="mt-4 text-[13px] font-semibold text-destructive">{error}</p> : null}
-        <Button onClick={() => void start()} disabled={leftToday <= 30} className="mt-5 h-[54px] w-full rounded-2xl bg-primary text-[15px] font-bold text-primary-foreground">
+        <Button onClick={() => void start()} disabled={!unlimited && leftToday <= 30} className="mt-5 h-[54px] w-full rounded-2xl bg-primary text-[15px] font-bold text-primary-foreground">
           {phase === "done" ? <RotateCcw aria-hidden /> : <Mic aria-hidden />}
           {phase === "done" ? (es ? "Volver a hablar" : "Talk again") : (es ? "Empezar a hablar" : "Start talking")}
         </Button>
