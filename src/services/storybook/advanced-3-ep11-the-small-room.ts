@@ -90,8 +90,13 @@ export const ADVANCED3_EP11_THE_SMALL_ROOM: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "I used to put the chairs in rows. Six rows of four. I used to talk for fifty minutes and the students used to write. I didn't use to let anyone speak until week three, because I thought speaking too early made mistakes permanent.",
-          es: "Antes ponía las sillas en filas. Seis filas de cuatro. Hablaba cincuenta minutos y los estudiantes escribían. No dejaba hablar a nadie hasta la semana tres, porque creía que hablar demasiado pronto hacía permanentes los errores.",
+          text: "I used to put the chairs in rows. Six rows of four. I used to talk for fifty minutes and the students used to write.",
+          es: "Antes ponía las sillas en filas. Seis filas de cuatro. Hablaba cincuenta minutos y los estudiantes escribían.",
+        },
+        {
+          speaker: "vale",
+          text: "I didn't use to let anyone speak until week three, because I thought speaking too early made mistakes permanent.",
+          es: "No dejaba hablar a nadie hasta la semana tres, porque creía que hablar demasiado pronto hacía permanentes los errores.",
         },
         {
           speaker: "dani",
@@ -121,8 +126,13 @@ export const ADVANCED3_EP11_THE_SMALL_ROOM: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "What changed was a Tuesday. A student came in late, sat in the last row, and when I asked his name he opened his mouth and nothing came out. Twenty-three people turned around to look. He came back Wednesday. That's the whole story.",
-          es: "Lo que cambió fue un martes. Un estudiante entró tarde, se sentó en la última fila, y cuando le pregunté su nombre abrió la boca y no salió nada. Veintitrés personas se voltearon a mirarlo. Volvió el miércoles. Esa es toda la historia.",
+          text: "What changed was a Tuesday. A student came in late, sat in the last row, and when I asked his name he opened his mouth and nothing came out.",
+          es: "Lo que cambió fue un martes. Un estudiante entró tarde, se sentó en la última fila, y cuando le pregunté su nombre abrió la boca y no salió nada.",
+        },
+        {
+          speaker: "vale",
+          text: "Twenty-three people turned around to look. He came back Wednesday. That's the whole story.",
+          es: "Veintitrés personas se voltearon a mirarlo. Volvió el miércoles. Esa es toda la historia.",
         },
         {
           speaker: "dani",
@@ -131,8 +141,13 @@ export const ADVANCED3_EP11_THE_SMALL_ROOM: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "That was you. I didn't put the chairs in a circle for you. I did it because I couldn't see your face from the front, and I needed to know if you'd come back a third time.",
-          es: "Ese eras vos. No puse las sillas en círculo por vos. Lo hice porque no podía ver tu cara desde el frente, y necesitaba saber si ibas a volver una tercera vez.",
+          text: "That was you.",
+          es: "Ese eras vos.",
+        },
+        {
+          speaker: "vale",
+          text: "I didn't put the chairs in a circle for you. I did it because I couldn't see your face from the front, and I needed to know if you'd come back a third time.",
+          es: "No puse las sillas en círculo por vos. Lo hice porque no podía ver tu cara desde el frente, y necesitaba saber si ibas a volver una tercera vez.",
         },
       ],
       words: [
@@ -152,8 +167,13 @@ export const ADVANCED3_EP11_THE_SMALL_ROOM: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "Now nobody sits in the back, because there is no back. Now they speak on day one, badly, and I write nothing down. The result is that they still pass the tests, and they can also order the coffee. Three hundred students. One chair.",
-          es: "Ahora nadie se sienta atrás, porque no hay atrás. Ahora hablan el día uno, mal, y yo no anoto nada. El resultado es que siguen pasando los exámenes, y también pueden pedir el café. Trescientos estudiantes. Una silla.",
+          text: "Now nobody sits in the back, because there is no back. Now they speak on day one, badly, and I write nothing down.",
+          es: "Ahora nadie se sienta atrás, porque no hay atrás. Ahora hablan el día uno, mal, y yo no anoto nada.",
+        },
+        {
+          speaker: "vale",
+          text: "The result is that they still pass the tests, and they can also order the coffee. Three hundred students. One chair.",
+          es: "El resultado es que siguen pasando los exámenes, y también pueden pedir el café. Trescientos estudiantes. Una silla.",
         },
         {
           speaker: "dani",
@@ -214,8 +234,18 @@ export const ADVANCED3_EP11_THE_SMALL_ROOM: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "What changed was a call on my first day on the floor. I translated, the customer hung up, and I lost him in four minutes. After that, I decided to count five seconds and say the wrong thing instead of the late thing. Now I count, then I answer in the language the question came in. The result is that I make more mistakes and lose fewer customers.",
-          es: "Lo que cambió fue una llamada en mi primer día en el piso. Traduje, el cliente colgó, y lo perdí en cuatro minutos. Después de eso, decidí contar cinco segundos y decir lo incorrecto en vez de lo tardío. Ahora cuento, y luego respondo en el idioma en que vino la pregunta. El resultado es que cometo más errores y pierdo menos clientes.",
+          text: "What changed was a call on my first day on the floor. I translated, the customer hung up, and I lost him in four minutes.",
+          es: "Lo que cambió fue una llamada en mi primer día en el piso. Traduje, el cliente colgó, y lo perdí en cuatro minutos.",
+        },
+        {
+          speaker: "dani",
+          text: "After that, I decided to count five seconds and say the wrong thing instead of the late thing. Now I count, then I answer in the language the question came in.",
+          es: "Después de eso, decidí contar cinco segundos y decir lo incorrecto en vez de lo tardío. Ahora cuento, y luego respondo en el idioma en que vino la pregunta.",
+        },
+        {
+          speaker: "dani",
+          text: "The result is that I make more mistakes and lose fewer customers.",
+          es: "El resultado es que cometo más errores y pierdo menos clientes.",
         },
         {
           speaker: "vale",
@@ -245,8 +275,13 @@ export const ADVANCED3_EP11_THE_SMALL_ROOM: StorybookEpisode = {
       lines: [
         {
           speaker: "camila",
-          text: "Second cohort in Bogotá, forty agents, eight a.m. tomorrow, you on the big screen from here, Julieta in the room. Slides are approved. Legal approved them on Friday, before the vote. I'm not asking what that means.",
-          es: "Segunda cohorte en Bogotá, cuarenta agentes, ocho de la mañana, vos en la pantalla grande desde aquí, Julieta en la sala. Las diapositivas están aprobadas. Legal las aprobó el viernes, antes del voto. No estoy preguntando qué significa eso.",
+          text: "Second cohort in Bogotá, forty agents, eight a.m. tomorrow, you on the big screen from here, Julieta in the room. Slides are approved. Legal approved them on Friday, before the vote.",
+          es: "Segunda cohorte en Bogotá, cuarenta agentes, ocho de la mañana, vos en la pantalla grande desde aquí, Julieta en la sala. Las diapositivas están aprobadas. Legal las aprobó el viernes, antes del voto.",
+        },
+        {
+          speaker: "camila",
+          text: "I'm not asking what that means.",
+          es: "No estoy preguntando qué significa eso.",
         },
         {
           speaker: "dani",

@@ -59,8 +59,13 @@ export const ADVANCED3_EP13_TEACH_THE_TEACHER: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Basically, the pilot is suspended, in three countries, starting now. First, there's no Thursday block this week, and no class until legal closes the clip. Then your jobs continue exactly as they are; nobody loses a desk. After that, I don't know. If something goes wrong on a call, you call me. Same number.",
-          es: "Básicamente, el piloto queda suspendido, en tres países, desde ahora. Primero, no hay bloque del jueves esta semana, ni clase hasta que legal cierre lo del clip. Luego, sus trabajos siguen exactamente igual; nadie pierde un escritorio. Después de eso, no sé. Si algo sale mal en una llamada, me llaman. Mismo número.",
+          text: "Basically, the pilot is suspended, in three countries, starting now. First, there's no Thursday block this week, and no class until legal closes the clip.",
+          es: "Básicamente, el piloto queda suspendido, en tres países, desde ahora. Primero, no hay bloque del jueves esta semana, ni clase hasta que legal cierre lo del clip.",
+        },
+        {
+          speaker: "dani",
+          text: "Then your jobs continue exactly as they are; nobody loses a desk. After that, I don't know. If something goes wrong on a call, you call me. Same number.",
+          es: "Luego, sus trabajos siguen exactamente igual; nadie pierde un escritorio. Después de eso, no sé. Si algo sale mal en una llamada, me llaman. Mismo número.",
         },
         {
           speaker: "mia",
@@ -121,8 +126,13 @@ export const ADVANCED3_EP13_TEACH_THE_TEACHER: StorybookEpisode = {
       lines: [
         {
           speaker: "reed",
-          text: "Legal needs, for the file, a description of how your method works. From zero. In English, because I don't speak Spanish and I've never sat in a class. The file is what decides whether this comes back. I'm not here to be convinced. I'm here to write it down correctly.",
-          es: "Legal necesita, para el expediente, una descripción de cómo funciona su método. Desde cero. En inglés, porque yo no hablo español y nunca me he sentado en una clase. El expediente es lo que decide si esto vuelve. No estoy aquí para que me convenzan. Estoy aquí para anotarlo correctamente.",
+          text: "Legal needs, for the file, a description of how your method works. From zero. In English, because I don't speak Spanish and I've never sat in a class.",
+          es: "Legal necesita, para el expediente, una descripción de cómo funciona su método. Desde cero. En inglés, porque yo no hablo español y nunca me he sentado en una clase.",
+        },
+        {
+          speaker: "reed",
+          text: "The file is what decides whether this comes back. I'm not here to be convinced. I'm here to write it down correctly.",
+          es: "El expediente es lo que decide si esto vuelve. No estoy aquí para que me convenzan. Estoy aquí para anotarlo correctamente.",
         },
         {
           speaker: "dani",
@@ -152,8 +162,28 @@ export const ADVANCED3_EP13_TEACH_THE_TEACHER: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Basically, it's for one thing: getting a person to speak when they're afraid. Not to speak well. To speak. First, an agent gets a real case with a customer who won't say what's wrong. Then they have five seconds to answer, out loud, in front of one other person, and they're allowed to answer badly. After that, the other person tells them what they heard, not what was wrong. We repeat that every Thursday for ninety days. In the end, an outside auditor listens to real calls and counts.",
-          es: "Básicamente, sirve para una cosa: lograr que una persona hable cuando tiene miedo. No que hable bien. Que hable. Primero, un agente recibe un caso real con un cliente que no dice qué le pasa. Luego tiene cinco segundos para responder, en voz alta, frente a otra persona, y se le permite responder mal. Después de eso, la otra persona le dice qué escuchó, no qué estuvo mal. Repetimos eso cada jueves durante noventa días. Al final, un auditor externo escucha llamadas reales y cuenta.",
+          text: "Basically, it's for one thing: getting a person to speak when they're afraid. Not to speak well. To speak.",
+          es: "Básicamente, sirve para una cosa: lograr que una persona hable cuando tiene miedo. No que hable bien. Que hable.",
+        },
+        {
+          speaker: "dani",
+          text: "First, an agent gets a real case with a customer who won't say what's wrong.",
+          es: "Primero, un agente recibe un caso real con un cliente que no dice qué le pasa.",
+        },
+        {
+          speaker: "dani",
+          text: "Then they have five seconds to answer, out loud, in front of one other person, and they're allowed to answer badly.",
+          es: "Luego tiene cinco segundos para responder, en voz alta, frente a otra persona, y se le permite responder mal.",
+        },
+        {
+          speaker: "dani",
+          text: "After that, the other person tells them what they heard, not what was wrong. We repeat that every Thursday for ninety days.",
+          es: "Después de eso, la otra persona le dice qué escuchó, no qué estuvo mal. Repetimos eso cada jueves durante noventa días.",
+        },
+        {
+          speaker: "dani",
+          text: "In the end, an outside auditor listens to real calls and counts.",
+          es: "Al final, un auditor externo escucha llamadas reales y cuenta.",
         },
         {
           speaker: "reed",
@@ -219,8 +249,13 @@ export const ADVANCED3_EP13_TEACH_THE_TEACHER: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "If that happens, they do the same five seconds they did with you, except the customer is waiting. Then they say the wrong thing out loud and fix it in the next sentence. Frozen loses the customer. Wrong doesn't.",
-          es: "Si eso pasa, hacen los mismos cinco segundos que hicieron con usted, solo que el cliente está esperando. Luego dicen lo incorrecto en voz alta y lo corrigen en la siguiente frase. Congelado pierde al cliente. Equivocado no.",
+          text: "If that happens, they do the same five seconds they did with you, except the customer is waiting.",
+          es: "Si eso pasa, hacen los mismos cinco segundos que hicieron con usted, solo que el cliente está esperando.",
+        },
+        {
+          speaker: "dani",
+          text: "Then they say the wrong thing out loud and fix it in the next sentence. Frozen loses the customer. Wrong doesn't.",
+          es: "Luego dicen lo incorrecto en voz alta y lo corrigen en la siguiente frase. Congelado pierde al cliente. Equivocado no.",
         },
         {
           speaker: "mia",

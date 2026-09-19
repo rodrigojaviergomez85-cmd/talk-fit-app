@@ -121,8 +121,18 @@ export const ADVANCED3_EP5_THE_LIVESTREAM: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "Let me think. That one starts with 'tell us about a time', so it's a story. Day one of this floor, 9:40 in the morning. A customer described a problem and I filled in what broke before she finished. She hung up at 3:58. What I learned was to take five seconds before I answer. I still count them.",
-          es: "Déjame pensar. Esa empieza con 'cuéntanos de una vez', así que es una historia. Día uno de este piso, 9:40 de la mañana. Una clienta describió un problema y yo completé qué se había roto antes de que terminara. Colgó a las 3:58. Lo que aprendí fue tomar cinco segundos antes de contestar. Todavía los cuento.",
+          text: "Let me think. That one starts with 'tell us about a time', so it's a story. Day one of this floor, 9:40 in the morning.",
+          es: "Déjame pensar. Esa empieza con 'cuéntanos de una vez', así que es una historia. Día uno de este piso, 9:40 de la mañana.",
+        },
+        {
+          speaker: "dani",
+          text: "A customer described a problem and I filled in what broke before she finished. She hung up at 3:58. What I learned was to take five seconds before I answer.",
+          es: "Una clienta describió un problema y yo completé qué se había roto antes de que terminara. Colgó a las 3:58. Lo que aprendí fue tomar cinco segundos antes de contestar.",
+        },
+        {
+          speaker: "dani",
+          text: "I still count them.",
+          es: "Todavía los cuento.",
         },
       ],
       words: [
@@ -147,8 +157,18 @@ export const ADVANCED3_EP5_THE_LIVESTREAM: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "Interesting question. That's a 'what do you think', so it's an opinion, and I'll give you the position first. The way I see it, an app is for the repetitions and a room is for the fear. You can practice a phrase two hundred times alone. You can't practice being afraid alone. I'll say more about that next week, when someone asks me on purpose.",
-          es: "Interesante pregunta. Es un 'qué piensas', así que es una opinión, y les doy la posición primero. Como yo lo veo, una app es para las repeticiones y un salón es para el miedo. Puedes practicar una frase doscientas veces solo. No puedes practicar tener miedo solo. Diré más de eso la próxima semana, cuando alguien me lo pregunte a propósito.",
+          text: "Interesting question. That's a 'what do you think', so it's an opinion, and I'll give you the position first.",
+          es: "Interesante pregunta. Es un 'qué piensas', así que es una opinión, y les doy la posición primero.",
+        },
+        {
+          speaker: "dani",
+          text: "The way I see it, an app is for the repetitions and a room is for the fear. You can practice a phrase two hundred times alone.",
+          es: "Como yo lo veo, una app es para las repeticiones y un salón es para el miedo. Puedes practicar una frase doscientas veces solo.",
+        },
+        {
+          speaker: "dani",
+          text: "You can't practice being afraid alone. I'll say more about that next week, when someone asks me on purpose.",
+          es: "No puedes practicar tener miedo solo. Diré más de eso la próxima semana, cuando alguien me lo pregunte a propósito.",
         },
         {
           speaker: "mia",
@@ -178,8 +198,13 @@ export const ADVANCED3_EP5_THE_LIVESTREAM: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "That's a 'what would you do', so it's hypothetical: choice, why, consequence. And I'm going to do something I don't usually do, which is not answer it today. Somebody's going to ask me that in a room with no chat, and she deserves the first version. Óscar, ask me again in two weeks.",
-          es: "Es un 'qué harías', así que es hipotética: elección, porqué, consecuencia. Y voy a hacer algo que no suelo hacer, que es no contestarla hoy. Alguien me la va a hacer en una sala sin chat, y ella merece la primera versión. Óscar, pregúntamelo otra vez en dos semanas.",
+          text: "That's a 'what would you do', so it's hypothetical: choice, why, consequence. And I'm going to do something I don't usually do, which is not answer it today.",
+          es: "Es un 'qué harías', así que es hipotética: elección, porqué, consecuencia. Y voy a hacer algo que no suelo hacer, que es no contestarla hoy.",
+        },
+        {
+          speaker: "dani",
+          text: "Somebody's going to ask me that in a room with no chat, and she deserves the first version. Óscar, ask me again in two weeks.",
+          es: "Alguien me la va a hacer en una sala sin chat, y ella merece la primera versión. Óscar, pregúntamelo otra vez en dos semanas.",
         },
         {
           speaker: "mia",
@@ -214,8 +239,13 @@ export const ADVANCED3_EP5_THE_LIVESTREAM: StorybookEpisode = {
         },
         {
           speaker: "nico",
-          text: "That's a 'how has something changed', so it's a reflection. Day one I said one sentence per call. Day ninety I said four. Looking back, the one that changed everything was the sentence after I'm right. Now I say it. That's the whole change. I'm not the kid.",
-          es: "Es un 'cómo ha cambiado algo', así que es una reflexión. El día uno decía una frase por llamada. El día noventa dije cuatro. Mirando atrás, la que lo cambió todo fue la frase después de tener razón. Ahora la digo. Ese es todo el cambio. No soy el muchacho.",
+          text: "That's a 'how has something changed', so it's a reflection. Day one I said one sentence per call. Day ninety I said four.",
+          es: "Es un 'cómo ha cambiado algo', así que es una reflexión. El día uno decía una frase por llamada. El día noventa dije cuatro.",
+        },
+        {
+          speaker: "nico",
+          text: "Looking back, the one that changed everything was the sentence after I'm right. Now I say it. That's the whole change. I'm not the kid.",
+          es: "Mirando atrás, la que lo cambió todo fue la frase después de tener razón. Ahora la digo. Ese es todo el cambio. No soy el muchacho.",
         },
         {
           speaker: "dani",

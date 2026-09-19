@@ -135,8 +135,13 @@ export const ADVANCED3_EP1_TWO_MILLION: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "It was a normal Monday morning, a week ago. At 10:44 an agent ended a call with an abusive customer, after two warnings. What happened was that Ms. Barrett asked me for the incident report in her office, and I gave it: facts in one paragraph, my opinion in another, marked as opinion.",
-          es: "Era un lunes normal por la mañana, hace una semana. A las 10:44 un agente terminó una llamada con un cliente abusivo, después de dos advertencias. Lo que pasó fue que Ms. Barrett me pidió el reporte del incidente en su oficina, y lo di: hechos en un párrafo, mi opinión en otro, marcada como opinión.",
+          text: "It was a normal Monday morning, a week ago. At 10:44 an agent ended a call with an abusive customer, after two warnings. What happened was that Ms.",
+          es: "Era un lunes normal por la mañana, hace una semana. A las 10:44 un agente terminó una llamada con un cliente abusivo, después de dos advertencias. Lo que pasó fue que Ms.",
+        },
+        {
+          speaker: "dani",
+          text: "Barrett asked me for the incident report in her office, and I gave it: facts in one paragraph, my opinion in another, marked as opinion.",
+          es: "Barrett me pidió el reporte del incidente en su oficina, y lo di: hechos en un párrafo, mi opinión en otro, marcada como opinión.",
         },
         {
           speaker: "reed",
@@ -145,8 +150,13 @@ export const ADVANCED3_EP1_TWO_MILLION: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "At first I didn't know it existed. I found out this morning at 6:40, when my mother sent it to me with the words 'is this you'. In the end, it shows a Northline manager saying an agent did the right thing. That's the only sentence in it.",
-          es: "Al principio no sabía que existía. Me enteré esta mañana a las 6:40, cuando mi mamá me lo mandó con las palabras '¿este eres tú?'. Al final, muestra a un gerente de Northline diciendo que un agente hizo lo correcto. Esa es la única frase que tiene.",
+          text: "At first I didn't know it existed. I found out this morning at 6:40, when my mother sent it to me with the words 'is this you'.",
+          es: "Al principio no sabía que existía. Me enteré esta mañana a las 6:40, cuando mi mamá me lo mandó con las palabras '¿este eres tú?'.",
+        },
+        {
+          speaker: "dani",
+          text: "In the end, it shows a Northline manager saying an agent did the right thing. That's the only sentence in it.",
+          es: "Al final, muestra a un gerente de Northline diciendo que un agente hizo lo correcto. Esa es la única frase que tiene.",
         },
       ],
       words: [
@@ -171,8 +181,13 @@ export const ADVANCED3_EP1_TWO_MILLION: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "An agent, through the glass, from outside the office. No customer screens are in it. I'm not going to say her name until I've talked to her, and I'll give it to you in writing today.",
-          es: "Una agente, a través del vidrio, desde afuera de la oficina. No hay pantallas de clientes. No voy a decir su nombre hasta que haya hablado con ella, y se lo doy por escrito hoy.",
+          text: "An agent, through the glass, from outside the office. No customer screens are in it.",
+          es: "Una agente, a través del vidrio, desde afuera de la oficina. No hay pantallas de clientes.",
+        },
+        {
+          speaker: "dani",
+          text: "I'm not going to say her name until I've talked to her, and I'll give it to you in writing today.",
+          es: "No voy a decir su nombre hasta que haya hablado con ella, y se lo doy por escrito hoy.",
         },
         {
           speaker: "reed",

@@ -90,8 +90,18 @@ export const ADVANCED3_EP3_MIAMI_SIX_MONTHS: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "The plan is simple: two weeks in each city, one shift on the phones in each, and one person in each city who runs the floor when I leave. In the first month, Mía runs San Salvador. By the third month, Bogotá has its own Mía; Julieta already has two candidates. By the sixth, Monterrey does. I'm also going to record every training session so I can hear my own mistakes.",
-          es: "El plan es simple: dos semanas en cada ciudad, un turno en los teléfonos en cada una, y una persona en cada ciudad que maneje el piso cuando yo me vaya. En el primer mes, Mía maneja San Salvador. Para el tercer mes, Bogotá tiene su propia Mía; Julieta ya tiene dos candidatas. Para el sexto, Monterrey también. También voy a grabar cada sesión de entrenamiento para oír mis propios errores.",
+          text: "The plan is simple: two weeks in each city, one shift on the phones in each, and one person in each city who runs the floor when I leave.",
+          es: "El plan es simple: dos semanas en cada ciudad, un turno en los teléfonos en cada una, y una persona en cada ciudad que maneje el piso cuando yo me vaya.",
+        },
+        {
+          speaker: "dani",
+          text: "In the first month, Mía runs San Salvador. By the third month, Bogotá has its own Mía; Julieta already has two candidates. By the sixth, Monterrey does.",
+          es: "En el primer mes, Mía maneja San Salvador. Para el tercer mes, Bogotá tiene su propia Mía; Julieta ya tiene dos candidatas. Para el sexto, Monterrey también.",
+        },
+        {
+          speaker: "dani",
+          text: "I'm also going to record every training session so I can hear my own mistakes.",
+          es: "También voy a grabar cada sesión de entrenamiento para oír mis propios errores.",
         },
         {
           speaker: "barrett",
@@ -131,8 +141,13 @@ export const ADVANCED3_EP3_MIAMI_SIX_MONTHS: StorybookEpisode = {
         },
         {
           speaker: "barrett",
-          text: "That's not a reason. That's a schedule with a hole in it. The difficult part won't be Bogotá or Monterrey; it'll be month four, when you're tired and nobody's watching. A plan without a why doesn't survive month four.",
-          es: "Eso no es una razón. Es un cronograma con un hueco. La parte difícil no va a ser Bogotá ni Monterrey; va a ser el mes cuatro, cuando esté cansado y nadie esté mirando. Un plan sin porqué no sobrevive el mes cuatro.",
+          text: "That's not a reason. That's a schedule with a hole in it. The difficult part won't be Bogotá or Monterrey; it'll be month four, when you're tired and nobody's watching.",
+          es: "Eso no es una razón. Es un cronograma con un hueco. La parte difícil no va a ser Bogotá ni Monterrey; va a ser el mes cuatro, cuando esté cansado y nadie esté mirando.",
+        },
+        {
+          speaker: "barrett",
+          text: "A plan without a why doesn't survive month four.",
+          es: "Un plan sin porqué no sobrevive el mes cuatro.",
         },
         {
           speaker: "dani",

@@ -90,8 +90,13 @@ export const ADVANCED3_EP7_APP_OR_ROOM: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Sixty-one days. So let me start again. On one hand, the app does the repetitions better than any of us. Two hundred times the same phrase, at three in the morning, with nobody getting tired and nobody judging. It costs almost nothing and it never has a bad day.",
-          es: "Sesenta y un días. Entonces empiezo otra vez. Por un lado, la app hace las repeticiones mejor que cualquiera de nosotros. Doscientas veces la misma frase, a las tres de la mañana, sin que nadie se canse ni juzgue. Cuesta casi nada y nunca tiene un mal día.",
+          text: "Sixty-one days. So let me start again. On one hand, the app does the repetitions better than any of us.",
+          es: "Sesenta y un días. Entonces empiezo otra vez. Por un lado, la app hace las repeticiones mejor que cualquiera de nosotros.",
+        },
+        {
+          speaker: "dani",
+          text: "Two hundred times the same phrase, at three in the morning, with nobody getting tired and nobody judging. It costs almost nothing and it never has a bad day.",
+          es: "Doscientas veces la misma frase, a las tres de la mañana, sin que nadie se canse ni juzgue. Cuesta casi nada y nunca tiene un mal día.",
         },
         {
           speaker: "reed",
@@ -116,8 +121,18 @@ export const ADVANCED3_EP7_APP_OR_ROOM: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "On the other hand, nobody freezes in front of an app. You freeze in front of a person. The app can't see your hands shake, it can't hold your arm, and it can't tell you you're wrong in a voice you'll remember on Thursday. There's also the question of who you're afraid of: agents don't fail with the app. They fail with a person.",
-          es: "Por otro lado, nadie se congela frente a una app. Te congelas frente a una persona. La app no puede ver que te tiemblan las manos, no puede sostenerte el brazo, y no puede decirte que estás mal con una voz que vas a recordar el jueves. También está la cuestión de a quién le tienes miedo: los agentes no fallan con la app. Fallan con una persona.",
+          text: "On the other hand, nobody freezes in front of an app. You freeze in front of a person.",
+          es: "Por otro lado, nadie se congela frente a una app. Te congelas frente a una persona.",
+        },
+        {
+          speaker: "dani",
+          text: "The app can't see your hands shake, it can't hold your arm, and it can't tell you you're wrong in a voice you'll remember on Thursday.",
+          es: "La app no puede ver que te tiemblan las manos, no puede sostenerte el brazo, y no puede decirte que estás mal con una voz que vas a recordar el jueves.",
+        },
+        {
+          speaker: "dani",
+          text: "There's also the question of who you're afraid of: agents don't fail with the app. They fail with a person.",
+          es: "También está la cuestión de a quién le tienes miedo: los agentes no fallan con la app. Fallan con una persona.",
         },
         {
           speaker: "reed",
@@ -142,8 +157,13 @@ export const ADVANCED3_EP7_APP_OR_ROOM: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Personally, I think the best answer is somewhere in the middle. The app for the repetitions, the room for the fear. Not half the classes: the half of every class that's repetition goes to the app, and the half that's a person goes to a person. Same trainers, twice the floors.",
-          es: "Personalmente, pienso que la mejor respuesta está en algún punto del medio. La app para las repeticiones, el salón para el miedo. No la mitad de las clases: la mitad de cada clase que es repetición va a la app, y la mitad que es una persona va a una persona. Los mismos entrenadores, el doble de pisos.",
+          text: "Personally, I think the best answer is somewhere in the middle. The app for the repetitions, the room for the fear.",
+          es: "Personalmente, pienso que la mejor respuesta está en algún punto del medio. La app para las repeticiones, el salón para el miedo.",
+        },
+        {
+          speaker: "dani",
+          text: "Not half the classes: the half of every class that's repetition goes to the app, and the half that's a person goes to a person. Same trainers, twice the floors.",
+          es: "No la mitad de las clases: la mitad de cada clase que es repetición va a la app, y la mitad que es una persona va a una persona. Los mismos entrenadores, el doble de pisos.",
         },
         {
           speaker: "reed",
@@ -214,8 +234,13 @@ export const ADVANCED3_EP7_APP_OR_ROOM: StorybookEpisode = {
       lines: [
         {
           speaker: "camila",
-          text: "Half the hours to the app, half to people. It costs less than Reed's version, because the app half is almost free and the people half is the same people. Reed didn't expect it to be cheaper.",
-          es: "La mitad de las horas a la app, la mitad a personas. Cuesta menos que la versión de Reed, porque la mitad de la app es casi gratis y la mitad de personas son las mismas personas. Reed no esperaba que fuera más barato.",
+          text: "Half the hours to the app, half to people. It costs less than Reed's version, because the app half is almost free and the people half is the same people.",
+          es: "La mitad de las horas a la app, la mitad a personas. Cuesta menos que la versión de Reed, porque la mitad de la app es casi gratis y la mitad de personas son las mismas personas.",
+        },
+        {
+          speaker: "camila",
+          text: "Reed didn't expect it to be cheaper.",
+          es: "Reed no esperaba que fuera más barato.",
         },
         {
           speaker: "dani",
@@ -291,8 +316,13 @@ export const ADVANCED3_EP7_APP_OR_ROOM: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "Nine years ago I stood in a doorway like this one while you froze in front of a man with a badge. You said one sentence. It was wrong. It was the best one I'd heard all year.",
-          es: "Hace nueve años estuve parada en una puerta como esta mientras te congelabas frente a un hombre con gafete. Dijiste una frase. Estaba mal. Fue la mejor frase que había oído en todo el año.",
+          text: "Nine years ago I stood in a doorway like this one while you froze in front of a man with a badge. You said one sentence. It was wrong.",
+          es: "Hace nueve años estuve parada en una puerta como esta mientras te congelabas frente a un hombre con gafete. Dijiste una frase. Estaba mal.",
+        },
+        {
+          speaker: "vale",
+          text: "It was the best one I'd heard all year.",
+          es: "Fue la mejor frase que había oído en todo el año.",
         },
         {
           speaker: "dani",
@@ -425,7 +455,7 @@ export const ADVANCED3_EP7_APP_OR_ROOM: StorybookEpisode = {
       variants: ["a reflex", "out of reflex"],
       es: "por reflejo, sin pensar",
       kind: "idiom",
-      example: "Tomorrow I want to tell you something and I want you to not say no by reflex.",
+      example: "Tomorrow I want to tell you something, and I want you to not say no by reflex.",
       exampleEs: "Mañana quiero decirte algo y quiero que no digas que no por reflejo.",
     },
   ],

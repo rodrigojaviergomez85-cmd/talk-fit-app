@@ -126,8 +126,13 @@ export const ADVANCED3_EP16_THE_KNOCK: StorybookEpisode = {
       lines: [
         {
           speaker: "vale",
-          text: "The Northline contract is suspended. That was forty percent of this building. I have ninety-three applications, three teachers, and a bank that reads the news. I gave my first scholarship in this doorway and I can't give one this month.",
-          es: "El contrato de Northline está suspendido. Eso era el cuarenta por ciento de este edificio. Tengo noventa y tres solicitudes, tres maestros, y un banco que lee las noticias. Di mi primera beca en esta puerta y este mes no puedo dar una.",
+          text: "The Northline contract is suspended. That was forty percent of this building. I have ninety-three applications, three teachers, and a bank that reads the news.",
+          es: "El contrato de Northline está suspendido. Eso era el cuarenta por ciento de este edificio. Tengo noventa y tres solicitudes, tres maestros, y un banco que lee las noticias.",
+        },
+        {
+          speaker: "vale",
+          text: "I gave my first scholarship in this doorway and I can't give one this month.",
+          es: "Di mi primera beca en esta puerta y este mes no puedo dar una.",
         },
         {
           speaker: "dani",
@@ -152,8 +157,28 @@ export const ADVANCED3_EP16_THE_KNOCK: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Something that taught me a lot was my second month here. I couldn't pay. I came in on a Monday to tell you I was leaving, and you said the invoice had been lost. I found it a year later in a drawer in the office, with 'paid' on it in your handwriting. I've had it in my wallet since. What I learned was that nobody asks the person they're helping to be worth it first. You didn't ask me. The reason it matters is that she knocked. Knocking is the audit. Now I sign it.",
-          es: "Algo que me enseñó mucho fue mi segundo mes aquí. No podía pagar. Vine un lunes a decirte que me iba, y me dijiste que la factura se había perdido. La encontré un año después en un cajón de la oficina, con 'pagado' en tu letra. La tengo en la billetera desde entonces. Lo que aprendí fue que nadie le pide a la persona que está ayudando que primero valga la pena. Vos no me lo pediste. La razón por la que importa es que ella tocó la puerta. Tocar la puerta es la auditoría. Ahora la firmo yo.",
+          text: "Something that taught me a lot was my second month here. I couldn't pay.",
+          es: "Algo que me enseñó mucho fue mi segundo mes aquí. No podía pagar.",
+        },
+        {
+          speaker: "dani",
+          text: "I came in on a Monday to tell you I was leaving, and you said the invoice had been lost.",
+          es: "Vine un lunes a decirte que me iba, y me dijiste que la factura se había perdido.",
+        },
+        {
+          speaker: "dani",
+          text: "I found it a year later in a drawer in the office, with 'paid' on it in your handwriting. I've had it in my wallet since.",
+          es: "La encontré un año después en un cajón de la oficina, con 'pagado' en tu letra. La tengo en la billetera desde entonces.",
+        },
+        {
+          speaker: "dani",
+          text: "What I learned was that nobody asks the person they're helping to be worth it first. You didn't ask me. The reason it matters is that she knocked. Knocking is the audit.",
+          es: "Lo que aprendí fue que nadie le pide a la persona que está ayudando que primero valga la pena. Vos no me lo pediste. La razón por la que importa es que ella tocó la puerta. Tocar la puerta es la auditoría.",
+        },
+        {
+          speaker: "dani",
+          text: "Now I sign it.",
+          es: "Ahora la firmo yo.",
         },
         {
           speaker: "vale",
@@ -224,8 +249,13 @@ export const ADVANCED3_EP16_THE_KNOCK: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "That was your chair. This is your chair. Óscar, Abril. Abril, Óscar. He froze in an audit; you froze at the door for six seconds before you knocked, I watched you through the glass. Two students, no pilot, no slides. Class starts.",
-          es: "Esa era tu silla. Esta es tu silla. Óscar, Abril. Abril, Óscar. Él se congeló en una auditoría; vos te congelaste en la puerta seis segundos antes de tocar, te vi por el vidrio. Dos estudiantes, sin piloto, sin diapositivas. Empieza la clase.",
+          text: "That was your chair. This is your chair. Óscar, Abril. Abril, Óscar.",
+          es: "Esa era tu silla. Esta es tu silla. Óscar, Abril. Abril, Óscar.",
+        },
+        {
+          speaker: "dani",
+          text: "He froze in an audit; you froze at the door for six seconds before you knocked, I watched you through the glass. Two students, no pilot, no slides. Class starts.",
+          es: "Él se congeló en una auditoría; vos te congelaste en la puerta seis segundos antes de tocar, te vi por el vidrio. Dos estudiantes, sin piloto, sin diapositivas. Empieza la clase.",
         },
         {
           speaker: "abril",
@@ -290,8 +320,13 @@ export const ADVANCED3_EP16_THE_KNOCK: StorybookEpisode = {
       lines: [
         {
           speaker: "barrett",
-          text: "Reed, Sunday, 4:12 p.m.: 'The file describes a method that works and a director who signed a schedule in Monterrey without asking Monterrey. Hearing Wednesday, nine a.m. Bring the finance person. Bring the stool.' He wrote 'bring the stool', Dani. I read it three times.",
-          es: "Reed, domingo, 4:12 p.m.: 'El expediente describe un método que funciona y un director que firmó un horario en Monterrey sin preguntarle a Monterrey. Audiencia el miércoles, nueve a.m. Traigan a la persona de finanzas. Traigan el banco'. Escribió 'traigan el banco', Dani. Lo leí tres veces.",
+          text: "Reed, Sunday, 4:12 p.m.: 'The file describes a method that works and a director who signed a schedule in Monterrey without asking Monterrey.'",
+          es: "Reed, domingo, 4:12 p.m.: 'El expediente describe un método que funciona y un director que firmó un horario en Monterrey sin preguntarle a Monterrey'.",
+        },
+        {
+          speaker: "barrett",
+          text: "'Hearing Wednesday, nine a.m. Bring the finance person. Bring the stool.' He wrote 'bring the stool', Dani. I read it three times.",
+          es: "'Audiencia el miércoles, nueve a.m. Traigan a la persona de finanzas. Traigan el banco'. Escribió 'traigan el banco', Dani. Lo leí tres veces.",
         },
         {
           speaker: "dani",

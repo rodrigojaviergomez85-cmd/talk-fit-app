@@ -131,8 +131,13 @@ export const ADVANCED3_EP17_THREE_YEARS: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "Since then, I've rehearsed on bus 42 out loud, every day, with strangers staring. I took a headset. I lost my first call in four minutes. I taught the people who trained me. I've also started counting five seconds before I answer, which my mother says makes me slow at dinner.",
-          es: "Desde entonces, he ensayado en el bus 42 en voz alta, todos los días, con desconocidos mirándome. Tomé una diadema. Perdí mi primera llamada en cuatro minutos. Le enseñé a la gente que me entrenó. También empecé a contar cinco segundos antes de responder, lo cual, según mi mamá, me hace lento en la cena.",
+          text: "Since then, I've rehearsed on bus 42 out loud, every day, with strangers staring. I took a headset. I lost my first call in four minutes.",
+          es: "Desde entonces, he ensayado en el bus 42 en voz alta, todos los días, con desconocidos mirándome. Tomé una diadema. Perdí mi primera llamada en cuatro minutos.",
+        },
+        {
+          speaker: "dani",
+          text: "I taught the people who trained me. I've also started counting five seconds before I answer, which my mother says makes me slow at dinner.",
+          es: "Le enseñé a la gente que me entrenó. También empecé a contar cinco segundos antes de responder, lo cual, según mi mamá, me hace lento en la cena.",
         },
       ],
       words: [
@@ -162,8 +167,18 @@ export const ADVANCED3_EP17_THREE_YEARS: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "That's you, and you're in the room. A board told me I was a meme, and they were right about the meme part. And two weeks ago a lawyer suspended the thing I built, and I had to say it to seventeen people in four sentences. I'm not going to make that sound smaller than it was.",
-          es: "Ese sos vos, y estás en el salón. Una junta me dijo que era un meme, y tenían razón en la parte del meme. Y hace dos semanas un abogado suspendió lo que construí, y tuve que decírselo a diecisiete personas en cuatro frases. No voy a hacer que eso suene más pequeño de lo que fue.",
+          text: "That's you, and you're in the room. A board told me I was a meme, and they were right about the meme part.",
+          es: "Ese sos vos, y estás en el salón. Una junta me dijo que era un meme, y tenían razón en la parte del meme.",
+        },
+        {
+          speaker: "dani",
+          text: "And two weeks ago a lawyer suspended the thing I built, and I had to say it to seventeen people in four sentences.",
+          es: "Y hace dos semanas un abogado suspendió lo que construí, y tuve que decírselo a diecisiete personas en cuatro frases.",
+        },
+        {
+          speaker: "dani",
+          text: "I'm not going to make that sound smaller than it was.",
+          es: "No voy a hacer que eso suene más pequeño de lo que fue.",
         },
       ],
       words: [
@@ -183,8 +198,23 @@ export const ADVANCED3_EP17_THREE_YEARS: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Every time, somebody picked me up, and none of them made a speech. Vale moved a chair so she could see my face. Lidia played me my worst call and didn't let me say 'but'. Nico put his hand on my arm in a room where I was about to talk. Mía changed the way she says 'jefe'. Camila corrected my number in front of a board. And my mother asked if I ate, and then, on the worst night, asked if I'd prayed.",
-          es: "Cada vez, alguien me levantó, y ninguno hizo un discurso. Vale movió una silla para poder ver mi cara. Lidia me puso mi peor llamada y no me dejó decir 'pero'. Nico me puso la mano en el brazo en una sala donde estaba por hablar. Mía cambió la forma en que dice 'jefe'. Camila corrigió mi número frente a una junta. Y mi mamá me preguntó si había comido, y después, la peor noche, si había orado.",
+          text: "Every time, somebody picked me up, and none of them made a speech. Vale moved a chair so she could see my face.",
+          es: "Cada vez, alguien me levantó, y ninguno hizo un discurso. Vale movió una silla para poder ver mi cara.",
+        },
+        {
+          speaker: "dani",
+          text: "Lidia played me my worst call and didn't let me say 'but'. Nico put his hand on my arm in a room where I was about to talk.",
+          es: "Lidia me puso mi peor llamada y no me dejó decir 'pero'. Nico me puso la mano en el brazo en una sala donde estaba por hablar.",
+        },
+        {
+          speaker: "dani",
+          text: "Mía changed the way she says 'jefe'. Camila corrected my number in front of a board.",
+          es: "Mía cambió la forma en que dice 'jefe'. Camila corrigió mi número frente a una junta.",
+        },
+        {
+          speaker: "dani",
+          text: "And my mother asked if I ate, and then, on the worst night, asked if I'd prayed.",
+          es: "Y mi mamá me preguntó si había comido, y después, la peor noche, si había orado.",
         },
         {
           speaker: "mia",
@@ -214,8 +244,13 @@ export const ADVANCED3_EP17_THREE_YEARS: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "When I can't, I take bus 42 home. I count five seconds, and if five isn't enough I ask for strength, not results. Then I eat, because somebody asks. Then I get up. That's not a method. It's just the order I do it in.",
-          es: "Cuando no puedo más, tomo el bus 42 a la casa. Cuento cinco segundos, y si cinco no alcanzan pido fuerza, no resultados. Luego como, porque alguien pregunta. Luego me levanto. No es un método. Es solo el orden en que lo hago.",
+          text: "When I can't, I take bus 42 home. I count five seconds, and if five isn't enough I ask for strength, not results. Then I eat, because somebody asks.",
+          es: "Cuando no puedo más, tomo el bus 42 a la casa. Cuento cinco segundos, y si cinco no alcanzan pido fuerza, no resultados. Luego como, porque alguien pregunta.",
+        },
+        {
+          speaker: "dani",
+          text: "Then I get up. That's not a method. It's just the order I do it in.",
+          es: "Luego me levanto. No es un método. Es solo el orden en que lo hago.",
         },
         {
           speaker: "nico",
@@ -240,8 +275,18 @@ export const ADVANCED3_EP17_THREE_YEARS: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Now I can say what I think in a room that doesn't want to hear it. I still need to improve at not translating when I'm scared; it comes back. Next, the room. Not Miami, not Crown. Whatever happens tomorrow with the lawyer, there's a chair in this room with a girl in it who knocked yesterday. The real change is that I don't wait to be ready anymore. That was two minutes. Nico, stop it.",
-          es: "Ahora puedo decir lo que pienso en una sala que no lo quiere oír. Todavía necesito mejorar en no traducir cuando tengo miedo; vuelve. Lo siguiente, el salón. No Miami, no Crown. Pase lo que pase mañana con el abogado, hay una silla en este salón con una muchacha que tocó la puerta ayer. El cambio real es que ya no espero a estar listo. Eso fueron dos minutos. Nico, cortá.",
+          text: "Now I can say what I think in a room that doesn't want to hear it. I still need to improve at not translating when I'm scared; it comes back.",
+          es: "Ahora puedo decir lo que pienso en una sala que no lo quiere oír. Todavía necesito mejorar en no traducir cuando tengo miedo; vuelve.",
+        },
+        {
+          speaker: "dani",
+          text: "Next, the room. Not Miami, not Crown. Whatever happens tomorrow with the lawyer, there's a chair in this room with a girl in it who knocked yesterday.",
+          es: "Lo siguiente, el salón. No Miami, no Crown. Pase lo que pase mañana con el abogado, hay una silla en este salón con una muchacha que tocó la puerta ayer.",
+        },
+        {
+          speaker: "dani",
+          text: "The real change is that I don't wait to be ready anymore. That was two minutes. Nico, stop it.",
+          es: "El cambio real es que ya no espero a estar listo. Eso fueron dos minutos. Nico, cortá.",
         },
         {
           speaker: "abril",
@@ -379,8 +424,8 @@ export const ADVANCED3_EP17_THREE_YEARS: StorybookEpisode = {
       variants: ["got up", "gets up", "getting up"],
       es: "levantarse",
       kind: "phrasal",
-      example: "Then I eat, because somebody asks. Then I get up.",
-      exampleEs: "Luego como, porque alguien pregunta. Luego me levanto.",
+      example: "Then I get up. That's not a method.",
+      exampleEs: "Luego me levanto. No es un método.",
     },
     {
       phrase: "make a speech",
