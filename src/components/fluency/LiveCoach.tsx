@@ -952,8 +952,8 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
             }
           }}
           className={cn(
-            "flex size-20 touch-none items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-card)] transition-transform select-none",
-            talking && "scale-110 ring-4 ring-primary/30",
+            "flex size-20 touch-none items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-card)] transition-all duration-200 select-none",
+            talking && "scale-125 ring-8 ring-primary/40 shadow-[0_0_50px] shadow-primary/70 brightness-110",
             (phase !== "live" || micPaused) && "opacity-50",
           )}
           aria-label={es ? "Mantén apretado para hablar" : "Hold to talk"}
