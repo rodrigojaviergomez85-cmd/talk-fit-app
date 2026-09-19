@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Check, RotateCcw, Trophy, X } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
@@ -11,6 +11,7 @@ import {
 import { isItemCorrect, submitGrammarQuiz } from "@/lib/grammar-quiz.functions";
 import {
   playGoodFeedbackSound,
+  playVictorySound,
   playWrongFeedbackSound,
   unlockFeedbackAudio,
 } from "@/lib/feedback-sounds";
@@ -41,6 +42,13 @@ export function GrammarQuizScreen({
   const [result, setResult] = useState<null | { correct: number; total: number; passed: boolean; awarded: boolean; wrong: string[]; canRetry: boolean }>(null);
   const [sending, setSending] = useState(false);
   const [failedToSend, setFailedToSend] = useState(false);
+
+  useEffect(() => {
+    if (result?.passed) {
+      unlockFeedbackAudio();
+      playVictorySound();
+    }
+  }, [result?.passed]);
 
   const item = round[index];
   const isRetry = round.length !== quiz.items.length;
