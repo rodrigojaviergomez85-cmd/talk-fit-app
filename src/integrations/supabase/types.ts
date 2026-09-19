@@ -1787,6 +1787,7 @@ export type Database = {
       }
       admin_engagement_metrics: { Args: never; Returns: Json }
       admin_health_snapshot: { Args: never; Returns: Json }
+      admin_retention_cohorts: { Args: never; Returns: Json }
       admin_story_metrics: { Args: never; Returns: Json }
       anonymize_account: {
         Args: { _email_sha256: string; _user_id: string }
