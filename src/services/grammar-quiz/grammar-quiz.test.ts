@@ -5,14 +5,24 @@ import { grammarDaysInWeek, hasGrammarQuiz } from "@/lib/grammar-quiz-manifest";
 import { attainableWeeklyGoal, dailyGoal } from "@/lib/league";
 
 describe("paso 3 · gramática — banco de ítems", () => {
-  it("cubre Basic Zero, Basic 3 y Basic 4 completos, días 1 a 20, con 20 ítems cada uno", () => {
-    expect(GRAMMAR_QUIZZES).toHaveLength(60);
-    for (const moduleId of ["basic-zero", "past-stories", "mixed-tenses"]) {
+  it("cubre Basic 3 y Basic 4 completos (días 1 a 20) y Basic Zero días 6 a 20", () => {
+    expect(GRAMMAR_QUIZZES).toHaveLength(55);
+    for (const moduleId of ["past-stories", "mixed-tenses"]) {
       for (const day of Array.from({ length: 20 }, (_, i) => i + 1)) {
         const quiz = getGrammarQuiz(moduleId, day);
         expect(quiz, `${moduleId} day ${day}`).toBeDefined();
         expect(quiz!.items).toHaveLength(GRAMMAR_ITEMS_PER_QUIZ);
+        expect(quiz!.passScore).toBeUndefined();
       }
+    }
+    for (const day of Array.from({ length: 15 }, (_, i) => i + 6)) {
+      const quiz = getGrammarQuiz("basic-zero", day);
+      expect(quiz, `basic-zero day ${day}`).toBeDefined();
+      expect(quiz!.items).toHaveLength(10);
+      expect(quiz!.passScore).toBe(7);
+    }
+    for (const day of [1, 2, 3, 4, 5]) {
+      expect(getGrammarQuiz("basic-zero", day)).toBeUndefined();
     }
     expect(getGrammarQuiz("past-stories", 21)).toBeUndefined();
     expect(getGrammarQuiz("mixed-tenses", 21)).toBeUndefined();
@@ -48,7 +58,7 @@ describe("paso 3 · gramática — banco de ítems", () => {
         }
       }
     }
-    expect(ids.size).toBe(1200);
+    expect(ids.size).toBe(950);
   });
 
   it("califica cada formato contra la respuesta fija", () => {
@@ -68,10 +78,14 @@ describe("paso 3 · gramática — banco de ítems", () => {
     }
   });
 
-  it("aprueba con 16 de 20", () => {
+  it("aprueba con 16 de 20 (7 de 10 en Basic Zero)", () => {
     expect(GRAMMAR_PASS_SCORE).toBe(16);
     expect(15 >= GRAMMAR_PASS_SCORE).toBe(false);
     expect(16 >= GRAMMAR_PASS_SCORE).toBe(true);
+    const bz = getGrammarQuiz("basic-zero", 6)!;
+    expect(bz.passScore).toBe(7);
+    expect(6 >= (bz.passScore ?? GRAMMAR_PASS_SCORE)).toBe(false);
+    expect(7 >= (bz.passScore ?? GRAMMAR_PASS_SCORE)).toBe(true);
   });
 });
 
@@ -85,7 +99,9 @@ describe("paso 3 · gramática — liga", () => {
     expect(hasGrammarQuiz("mixed-tenses", 1)).toBe(true);
     expect(hasGrammarQuiz("mixed-tenses", 20)).toBe(true);
     expect(hasGrammarQuiz("mixed-tenses", 21)).toBe(false);
-    expect(hasGrammarQuiz("basic-zero", 1)).toBe(true);
+    expect(hasGrammarQuiz("basic-zero", 1)).toBe(false);
+    expect(hasGrammarQuiz("basic-zero", 5)).toBe(false);
+    expect(hasGrammarQuiz("basic-zero", 6)).toBe(true);
     expect(hasGrammarQuiz("basic-zero", 20)).toBe(true);
     expect(hasGrammarQuiz("basic-zero", 21)).toBe(false);
     expect(grammarDaysInWeek("past-stories", 1)).toBe(5);
@@ -95,7 +111,8 @@ describe("paso 3 · gramática — liga", () => {
     expect(grammarDaysInWeek("past-stories", 5)).toBe(0);
     expect(grammarDaysInWeek("mixed-tenses", 1)).toBe(5);
     expect(grammarDaysInWeek("mixed-tenses", 4)).toBe(5);
-    expect(grammarDaysInWeek("basic-zero", 1)).toBe(5);
+    expect(grammarDaysInWeek("basic-zero", 1)).toBe(0);
+    expect(grammarDaysInWeek("basic-zero", 2)).toBe(5);
     expect(grammarDaysInWeek("basic-zero", 4)).toBe(5);
   });
 
