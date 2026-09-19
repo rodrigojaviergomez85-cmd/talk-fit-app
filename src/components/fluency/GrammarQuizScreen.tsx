@@ -10,7 +10,7 @@ import {
 } from "@/services/grammar-quiz";
 import { isItemCorrect, submitGrammarQuiz } from "@/lib/grammar-quiz.functions";
 import {
-  playCorrectFeedbackSound,
+  playGoodFeedbackSound,
   playWrongFeedbackSound,
   unlockFeedbackAudio,
 } from "@/lib/feedback-sounds";

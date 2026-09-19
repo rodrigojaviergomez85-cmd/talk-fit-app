@@ -46,10 +46,20 @@ type Note = {
 };
 
 function playNotes(notes: Note[]) {
+  void playNotesWhenReady(notes);
+}
+
+async function playNotesWhenReady(notes: Note[]) {
   try {
     const c = getContext();
     if (!c) return;
-    if (c.state === "suspended") void c.resume().catch(() => undefined);
+    if (c.state === "suspended") {
+      try {
+        await c.resume();
+      } catch {
+        return; // browser blocked audio — stay silent
+      }
+    }
     if (c.state !== "running") return; // browser blocked audio — stay silent
     const now = c.currentTime + 0.01;
     for (const n of notes) {
