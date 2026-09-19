@@ -1,3 +1,8 @@
+import { EAGLES_LAB_DAY_1 } from "./eagles-lab-day-1";
+import { EAGLES_LAB_DAY_2 } from "./eagles-lab-day-2";
+import { EAGLES_LAB_DAY_3 } from "./eagles-lab-day-3";
+import { EAGLES_LAB_DAY_4 } from "./eagles-lab-day-4";
+import { EAGLES_LAB_DAY_5 } from "./eagles-lab-day-5";
 import { SIMPLE_FUTURE_DAY_1 } from "./simple-future-day-1";
 import { SIMPLE_FUTURE_DAY_2 } from "./simple-future-day-2";
 import { SIMPLE_FUTURE_DAY_3 } from "./simple-future-day-3";
@@ -118,6 +123,11 @@ export const GRAMMAR_QUIZZES: GrammarQuiz[] = [
   BASIC_ZERO_DAY_18,
   BASIC_ZERO_DAY_19,
   BASIC_ZERO_DAY_20,
+  EAGLES_LAB_DAY_1,
+  EAGLES_LAB_DAY_2,
+  EAGLES_LAB_DAY_3,
+  EAGLES_LAB_DAY_4,
+  EAGLES_LAB_DAY_5,
   SIMPLE_FUTURE_DAY_1,
   SIMPLE_FUTURE_DAY_2,
   SIMPLE_FUTURE_DAY_3,

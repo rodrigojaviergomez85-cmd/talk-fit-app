@@ -33,6 +33,10 @@ export function isItemCorrect(item: GrammarItem, value: number | string[] | unde
     if (!Array.isArray(value) || value.length !== item.answer.length) return false;
     return item.answer.every((piece, i) => piece === value[i]);
   }
+  if (item.kind === "speak") {
+    // Segundos grabados (el cliente los manda; el mínimo es la única condición).
+    return typeof value === "number" && Number.isFinite(value) && value >= item.minSeconds;
+  }
   return typeof value === "number" && value === item.answer;
 }
 

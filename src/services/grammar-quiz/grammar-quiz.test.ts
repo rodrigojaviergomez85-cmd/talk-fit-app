@@ -6,7 +6,7 @@ import { attainableWeeklyGoal, dailyGoal } from "@/lib/league";
 
 describe("paso 3 · gramática — banco de ítems", () => {
   it("cubre Basic 1–4 completos (días 1 a 20) y Basic Zero días 6 a 20", () => {
-    expect(GRAMMAR_QUIZZES).toHaveLength(95);
+    expect(GRAMMAR_QUIZZES).toHaveLength(100);
     for (const moduleId of ["simple-future", "simple-present", "past-stories", "mixed-tenses"]) {
       for (const day of Array.from({ length: 20 }, (_, i) => i + 1)) {
         const quiz = getGrammarQuiz(moduleId, day);
@@ -31,8 +31,9 @@ describe("paso 3 · gramática — banco de ítems", () => {
     expect(getGrammarQuiz("simple-present", 21)).toBeUndefined();
   });
 
-  it("mezcla los tres formatos en cada día", () => {
+  it("mezcla los tres formatos en cada día de gramática", () => {
     for (const quiz of GRAMMAR_QUIZZES) {
+      if (quiz.sections) continue; // B2 Lab: cada día tiene su propio formato.
       const kinds = new Set(quiz.items.map((i) => i.kind));
       expect(kinds).toEqual(new Set(["mc", "mistake", "rearrange"]));
     }
@@ -54,13 +55,58 @@ describe("paso 3 · gramática — banco de ítems", () => {
           expect(item.answer).toBeGreaterThanOrEqual(0);
           expect(item.words[item.answer]).toBeTruthy();
           expect(item.correction).toBeTruthy();
+        } else if (item.kind === "speak") {
+          expect(item.minSeconds).toBeGreaterThan(0);
+          expect(item.minSeconds).toBeLessThanOrEqual(item.speakSeconds);
+          expect(item.template.length).toBeGreaterThan(0);
         } else {
           expect([...item.pieces].sort()).toEqual([...item.answer].sort());
           expect(item.pieces).not.toEqual(item.answer);
         }
       }
     }
-    expect(ids.size).toBe(1750);
+    expect(ids.size).toBe(1807);
+  });
+
+  it("B2 Lab · Eagles semana 1: secciones que cubren todos los ítems, 4 opciones, hablar obligatorio", () => {
+    const expected: Record<number, { items: number; pass: number; kinds: string[] }> = {
+      1: { items: 10, pass: 7, kinds: ["reading"] },
+      2: { items: 10, pass: 7, kinds: ["listening"] },
+      3: { items: 16, pass: 12, kinds: [] },
+      4: { items: 7, pass: 6, kinds: ["reading", "listening"] },
+      5: { items: 14, pass: 10, kinds: ["reading", "listening"] },
+    };
+    for (const day of [1, 2, 3, 4, 5]) {
+      const quiz = getGrammarQuiz("eagles-week-1", day);
+      expect(quiz, `eagles-week-1 day ${day}`).toBeDefined();
+      expect(quiz!.items).toHaveLength(expected[day]!.items);
+      expect(quiz!.passScore).toBe(expected[day]!.pass);
+      expect(quiz!.sections).toBeDefined();
+      const covered = quiz!.sections!.flatMap((s) => s.itemIds);
+      expect([...covered].sort()).toEqual(quiz!.items.map((i) => i.id).sort());
+      expect(new Set(covered).size).toBe(covered.length);
+      const contexts = quiz!.sections!.map((s) => s.context?.kind).filter(Boolean) as string[];
+      expect(contexts).toEqual(expected[day]!.kinds);
+      for (const item of quiz!.items) {
+        if (item.kind === "mc") expect(item.options).toHaveLength(4);
+        if (item.kind === "speak") expect(item.required).toBe(true);
+      }
+      for (const section of quiz!.sections!) {
+        if (section.context?.kind === "listening") expect(section.context.plays).toBe(2);
+      }
+    }
+    expect(getGrammarQuiz("eagles-week-1", 6)).toBeUndefined();
+    expect(getGrammarQuiz("eagles-week-1", 4)!.items.filter((i) => i.kind === "speak")).toHaveLength(1);
+    expect(getGrammarQuiz("eagles-week-1", 5)!.bands!.map((b) => b.min)).toEqual([13, 10, 0]);
+  });
+
+  it("califica hablar por segundos grabados", () => {
+    const item = getGrammarQuiz("eagles-week-1", 4)!.items.find((i) => i.kind === "speak")!;
+    expect(item.kind).toBe("speak");
+    expect(isItemCorrect(item, 40)).toBe(true);
+    expect(isItemCorrect(item, 39)).toBe(false);
+    expect(isItemCorrect(item, undefined)).toBe(false);
+    expect(isItemCorrect(item, ["40"])).toBe(false);
   });
 
   it("califica cada formato contra la respuesta fija", () => {
@@ -72,7 +118,7 @@ describe("paso 3 · gramática — banco de ítems", () => {
       } else if (item.kind === "mistake") {
         expect(isItemCorrect(item, item.answer)).toBe(true);
         expect(isItemCorrect(item, item.answer === 0 ? 1 : 0)).toBe(false);
-      } else {
+      } else if (item.kind === "rearrange") {
         expect(isItemCorrect(item, item.answer)).toBe(true);
         expect(isItemCorrect(item, item.pieces)).toBe(false);
         expect(isItemCorrect(item, item.answer.slice(0, 2))).toBe(false);
@@ -104,6 +150,9 @@ describe("paso 3 · gramática — liga", () => {
     expect(hasGrammarQuiz("basic-zero", 1)).toBe(false);
     expect(hasGrammarQuiz("basic-zero", 5)).toBe(false);
     expect(hasGrammarQuiz("basic-zero", 6)).toBe(true);
+    expect(hasGrammarQuiz("eagles-week-1", 1)).toBe(true);
+    expect(hasGrammarQuiz("eagles-week-1", 5)).toBe(true);
+    expect(hasGrammarQuiz("eagles-week-1", 6)).toBe(false);
     expect(hasGrammarQuiz("basic-zero", 20)).toBe(true);
     expect(hasGrammarQuiz("basic-zero", 21)).toBe(false);
     expect(hasGrammarQuiz("simple-future", 1)).toBe(true);
@@ -121,6 +170,8 @@ describe("paso 3 · gramática — liga", () => {
     expect(grammarDaysInWeek("mixed-tenses", 4)).toBe(5);
     expect(grammarDaysInWeek("basic-zero", 1)).toBe(0);
     expect(grammarDaysInWeek("basic-zero", 2)).toBe(5);
+    expect(grammarDaysInWeek("eagles-week-1", 1)).toBe(5);
+    expect(grammarDaysInWeek("eagles-week-1", 2)).toBe(0);
     expect(grammarDaysInWeek("basic-zero", 4)).toBe(5);
     expect(grammarDaysInWeek("simple-future", 1)).toBe(5);
     expect(grammarDaysInWeek("simple-future", 4)).toBe(5);

@@ -1,13 +1,16 @@
 import { hasGrammarQuiz } from "@/lib/grammar-quiz-manifest";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, Check, RotateCcw, Trophy, X } from "lucide-react";
+import { ArrowLeft, Check, Headphones, RotateCcw, Timer, Trophy, X } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { AppShell } from "@/components/fluency/AppShell";
+import { VoiceRecorder } from "@/components/fluency/VoiceRecorder";
+import { AudioService } from "@/services/audio-service";
 import {
   GRAMMAR_PASS_SCORE,
   type GrammarItem,
   type GrammarQuiz,
+  type LabSection,
 } from "@/services/grammar-quiz";
 import { isItemCorrect, submitGrammarQuiz } from "@/lib/grammar-quiz.functions";
 import {
@@ -19,10 +22,14 @@ import {
 import { cn } from "@/lib/utils";
 
 type Answers = Record<string, number | string[]>;
+type Step = { section: LabSection; item?: GrammarItem };
 
 /**
- * PASO 3 · GRAMÁTICA — 20 ítems del día, con sonido y explicación inmediata.
- * La nota final y los puntos de la liga los decide el servidor.
+ * PASO 3 — ítems del día, con sonido y explicación inmediata.
+ * Los quizzes de gramática recorren ítems planos; los del B2 Lab traen
+ * `sections` y se recorren sección por sección (lectura, listening,
+ * estructura, speaking) con su reloj. La nota final y los puntos de la liga
+ * los decide el servidor.
  */
 export function GrammarQuizScreen({
   quiz,
@@ -37,12 +44,13 @@ export function GrammarQuizScreen({
 }) {
   const submit = useServerFn(submitGrammarQuiz);
   const [answers, setAnswers] = useState<Answers>({});
-  const [round, setRound] = useState<GrammarItem[]>(quiz.items);
+  const [roundIds, setRoundIds] = useState<string[] | null>(null);
   const [index, setIndex] = useState(0);
   const [checked, setChecked] = useState<null | { correct: boolean; value: number | string[] }>(null);
   const [result, setResult] = useState<null | { correct: number; total: number; passed: boolean; awarded: boolean; wrong: string[]; canRetry: boolean }>(null);
   const [sending, setSending] = useState(false);
   const [failedToSend, setFailedToSend] = useState(false);
+  const [listenDone, setListenDone] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (result?.passed) {
@@ -51,10 +59,77 @@ export function GrammarQuizScreen({
     }
   }, [result?.passed]);
 
-  const item = round[index];
-  const isRetry = round.length !== quiz.items.length;
+  const isRetry = roundIds !== null;
   const isPilot = hasGrammarQuiz(moduleId, day);
   const passScore = quiz.passScore ?? GRAMMAR_PASS_SCORE;
+  const isLab = Boolean(quiz.sections?.length);
+
+  const steps = useMemo<Step[]>(() => {
+    const keep = roundIds ? new Set(roundIds) : null;
+    const byId = new Map(quiz.items.map((i) => [i.id, i] as const));
+    const list: Step[] = [];
+    if (quiz.sections?.length) {
+      for (const section of quiz.sections) {
+        const items = section.itemIds
+          .map((id) => byId.get(id))
+          .filter((i): i is GrammarItem => Boolean(i) && (!keep || keep.has(i!.id)));
+        if (items.length) for (const item of items) list.push({ section, item });
+        else if (!keep && section.itemIds.length === 0) list.push({ section });
+      }
+      return list;
+    }
+    const flat: LabSection = {
+      id: "all",
+      label: { en: "Grammar", es: "Gramática" },
+      instruction: { en: "", es: "" },
+      itemIds: quiz.items.map((i) => i.id),
+    };
+    for (const item of quiz.items) {
+      if (keep && !keep.has(item.id)) continue;
+      list.push({ section: flat, item });
+    }
+    return list;
+  }, [quiz, roundIds]);
+
+  const sectionOrder = useMemo(() => {
+    const ids: string[] = [];
+    for (const step of steps) if (!ids.includes(step.section.id)) ids.push(step.section.id);
+    return ids;
+  }, [steps]);
+
+  const step = steps[index];
+  const section = step?.section;
+  const item = step?.item;
+
+  /* ---- reloj por sección (no por ítem) ---- */
+  const [remaining, setRemaining] = useState<number | null>(null);
+  const sectionId = section?.id ?? "";
+  const limit = section?.timeLimitSec;
+  useEffect(() => {
+    setRemaining(limit ?? null);
+  }, [sectionId, limit]);
+
+  const skipSection = useCallback(() => {
+    const next = steps.findIndex((s, i) => i > index && s.section.id !== sectionId);
+    setChecked(null);
+    if (next >= 0) setIndex(next);
+  }, [steps, index, sectionId]);
+
+  const skipRef = useRef(skipSection);
+  skipRef.current = skipSection;
+  const finishRef = useRef<() => void>(() => undefined);
+
+  useEffect(() => {
+    if (remaining === null || result) return;
+    if (remaining <= 0) {
+      const more = steps.some((s, i) => i > index && s.section.id !== sectionId);
+      if (more) skipRef.current();
+      else finishRef.current();
+      return;
+    }
+    const id = setTimeout(() => setRemaining((r) => (r === null ? null : r - 1)), 1000);
+    return () => clearTimeout(id);
+  }, [remaining, result, steps, index, sectionId]);
 
   const send = useCallback(
     async (all: Answers) => {
@@ -78,6 +153,12 @@ export function GrammarQuizScreen({
     [submit, moduleId, day],
   );
 
+  const answersRef = useRef(answers);
+  answersRef.current = answers;
+  finishRef.current = () => {
+    void send(answersRef.current);
+  };
+
   const answer = (value: number | string[]) => {
     if (!item || checked) return;
     unlockFeedbackAudio();
@@ -90,7 +171,7 @@ export function GrammarQuizScreen({
 
   const next = () => {
     setChecked(null);
-    if (index + 1 < round.length) {
+    if (index + 1 < steps.length) {
       setIndex(index + 1);
       return;
     }
@@ -98,28 +179,42 @@ export function GrammarQuizScreen({
   };
 
   const retryWrong = () => {
-    const wrongIds = new Set(result?.wrong ?? []);
-    const again = quiz.items.filter((i) => wrongIds.has(i.id));
-    if (!again.length) return;
-    setRound(again);
+    const wrongIds = (result?.wrong ?? []).filter((id) => quiz.items.some((i) => i.id === id));
+    if (!wrongIds.length) return;
+    setRoundIds(wrongIds);
     setIndex(0);
     setChecked(null);
+    setListenDone({});
     setResult(null);
   };
 
   if (result) {
+    const band = quiz.bands?.find((b) => result.correct >= b.min);
+    const breakdown = (quiz.sections ?? [])
+      .filter((s) => s.itemIds.length > 0)
+      .map((s) => {
+        const missed = s.itemIds.filter((id) => result.wrong.includes(id)).length;
+        return `${es ? s.label.es : s.label.en} ${s.itemIds.length - missed}/${s.itemIds.length}`;
+      });
+
     return (
       <AppShell>
         <div className="space-y-4 p-4 pb-8">
           <BackLink moduleId={moduleId} day={day} es={es} />
           <div className="space-y-3 rounded-3xl border border-border bg-card p-6 text-center">
             <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-              {es ? "Gramática del día" : "Grammar of the day"}
+              {isLab ? "B2 Lab" : es ? "Gramática del día" : "Grammar of the day"}
             </p>
+            {band ? (
+              <p className="text-xl font-extrabold text-primary">{es ? band.label.es : band.label.en}</p>
+            ) : null}
             <p className="text-4xl font-extrabold text-foreground">
               {result.correct}
               <span className="text-xl text-muted-foreground"> / {result.total}</span>
             </p>
+            {breakdown.length ? (
+              <p className="text-[12px] font-bold text-muted-foreground">{breakdown.join(" · ")}</p>
+            ) : null}
             {result.passed ? (
               <>
                 <p className="text-sm font-bold text-primary">
@@ -155,9 +250,10 @@ export function GrammarQuizScreen({
                 {result.wrong.map((id) => {
                   const missed = quiz.items.find((i) => i.id === id);
                   if (!missed) return null;
+                  const solution = correctAnswerText(missed);
                   return (
                     <div key={id} className="rounded-2xl border border-border bg-background p-3">
-                      <p className="text-[13px] font-bold text-foreground">{correctAnswerText(missed)}</p>
+                      {solution ? <p className="text-[13px] font-bold text-foreground">{solution}</p> : null}
                       <p className="mt-1 text-[12px] font-medium text-muted-foreground">
                         {es ? missed.explain.es : missed.explain.en}
                       </p>
@@ -184,7 +280,12 @@ export function GrammarQuizScreen({
     );
   }
 
-  if (!item) return null;
+  if (!step || !section) return null;
+
+  const listening = section.context?.kind === "listening" ? section.context : null;
+  const reading = section.context?.kind === "reading" ? section.context : null;
+  const waitingForAudio = Boolean(listening) && !listenDone[section.id];
+  const sectionNumber = sectionOrder.indexOf(section.id) + 1;
 
   return (
     <AppShell>
@@ -193,7 +294,7 @@ export function GrammarQuizScreen({
 
         <header>
           <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-            {es ? "PASO 3 · GRAMÁTICA" : "STEP 3 · GRAMMAR"}
+            {isLab ? (es ? "PASO 3 · B2 LAB" : "STEP 3 · B2 LAB") : es ? "PASO 3 · GRAMÁTICA" : "STEP 3 · GRAMMAR"}
             {isRetry ? (es ? " · REPASO" : " · RETRY") : null}
           </p>
           <h1 className="mt-0.5 text-lg font-extrabold leading-tight text-foreground">
@@ -203,18 +304,67 @@ export function GrammarQuizScreen({
             <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
               <div
                 className="h-full rounded-full bg-primary transition-[width] duration-300"
-                style={{ width: `${Math.round((index / round.length) * 100)}%` }}
+                style={{ width: `${Math.round((index / steps.length) * 100)}%` }}
               />
             </div>
             <span className="text-[11px] font-extrabold text-muted-foreground">
-              {index + 1}/{round.length}
+              {index + 1}/{steps.length}
             </span>
           </div>
         </header>
 
-        <ItemView item={item} checked={checked} onAnswer={answer} es={es} isPilot={isPilot} />
+        {isLab ? (
+          <div className="space-y-1 rounded-2xl border border-border bg-muted/40 p-3">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-foreground">
+                {es ? section.label.es : section.label.en}
+                <span className="ml-1.5 font-bold text-muted-foreground">
+                  {es
+                    ? `sección ${sectionNumber} de ${sectionOrder.length}`
+                    : `section ${sectionNumber} of ${sectionOrder.length}`}
+                </span>
+              </p>
+              {remaining !== null ? (
+                <span
+                  className={cn(
+                    "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[12px] font-extrabold tabular-nums",
+                    remaining <= 30 ? "bg-destructive/15 text-destructive" : "bg-background text-foreground",
+                  )}
+                >
+                  <Timer className="size-3.5" aria-hidden="true" />
+                  {clock(remaining)}
+                </span>
+              ) : null}
+            </div>
+            <p className="text-[12px] font-medium text-muted-foreground">
+              {es ? section.instruction.es : section.instruction.en}
+            </p>
+          </div>
+        ) : null}
 
-        {checked ? (
+        {reading ? <ReadingPanel key={section.id} context={reading} es={es} /> : null}
+        {listening ? (
+          <ListeningPanel
+            key={`${section.id}-${isRetry ? "retry" : "first"}`}
+            context={listening}
+            es={es}
+            onFirstEnd={() => setListenDone((prev) => ({ ...prev, [section.id]: true }))}
+          />
+        ) : null}
+
+        {item ? (
+          <div className={cn(waitingForAudio && "pointer-events-none opacity-40")}>
+            <ItemView item={item} checked={checked} onAnswer={answer} es={es} isPilot={isPilot} />
+          </div>
+        ) : null}
+
+        {waitingForAudio ? (
+          <p className="text-center text-[12px] font-semibold text-muted-foreground">
+            {es ? "Escucha el audio para responder." : "Listen to the audio to answer."}
+          </p>
+        ) : null}
+
+        {checked && item ? (
           <div
             role="status"
             className={cn(
@@ -241,9 +391,9 @@ export function GrammarQuizScreen({
             </p>
             {!checked.correct ? (
               <>
-                <p className="mt-1 text-[13px] font-bold text-foreground">
-                  {correctAnswerText(item)}
-                </p>
+                {correctAnswerText(item) ? (
+                  <p className="mt-1 text-[13px] font-bold text-foreground">{correctAnswerText(item)}</p>
+                ) : null}
                 <p className="mt-1 text-[12px] font-medium text-muted-foreground">
                   {es ? item.explain.es : item.explain.en}
                 </p>
@@ -260,11 +410,11 @@ export function GrammarQuizScreen({
 
         <button
           type="button"
-          disabled={!checked || sending}
+          disabled={(item ? !checked : false) || sending}
           onClick={next}
           className="flex min-h-[52px] w-full items-center justify-center rounded-2xl bg-navy px-4 text-[13px] font-extrabold uppercase tracking-[0.12em] text-navy-foreground disabled:opacity-40"
         >
-          {index + 1 < round.length
+          {index + 1 < steps.length
             ? es
               ? "Siguiente"
               : "Next"
@@ -279,6 +429,11 @@ export function GrammarQuizScreen({
       </div>
     </AppShell>
   );
+}
+
+function clock(seconds: number): string {
+  const total = Math.max(0, seconds);
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
 }
 
 function BackLink({ moduleId, day, es }: { moduleId: string; day: number; es: boolean }) {
@@ -301,7 +456,120 @@ function correctAnswerText(item: GrammarItem): string {
     words[item.answer] = item.correction;
     return words.join(" ");
   }
+  if (item.kind === "speak") return "";
   return item.answer.join(" ");
+}
+
+/** B2 LAB · Texto de lectura, numerado y colapsable para que quepa en móvil. */
+function ReadingPanel({
+  context,
+  es,
+}: {
+  context: Extract<NonNullable<LabSection["context"]>, { kind: "reading" }>;
+  es: boolean;
+}) {
+  const [open, setOpen] = useState(true);
+  return (
+    <div className="space-y-2 rounded-3xl border border-border bg-card p-4">
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-[13px] font-extrabold text-foreground">{es ? context.titleEs : context.title}</p>
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          className="rounded-full border border-border px-3 py-1 text-[11px] font-bold uppercase tracking-[0.1em] text-foreground"
+        >
+          {open ? (es ? "Ocultar texto" : "Hide text") : es ? "Ver texto" : "Show text"}
+        </button>
+      </div>
+      {open ? (
+        <div className="space-y-2">
+          {context.paragraphs.map((paragraph, i) => (
+            <div key={i} className="flex gap-2">
+              <span className="w-4 shrink-0 pt-0.5 text-[11px] font-extrabold text-muted-foreground">{i + 1}</span>
+              <p className="text-[14px] leading-relaxed text-foreground">{markers(paragraph)}</p>
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+/** Muestra [A]…[D] como cuadritos resaltados, sin quitarlos del texto. */
+function markers(text: string) {
+  return text.split(/(\[[A-D]\])/g).map((chunk, i) =>
+    /^\[[A-D]\]$/.test(chunk) ? (
+      <span
+        key={i}
+        className="mx-0.5 inline-flex items-center rounded-md border border-primary/40 bg-primary/10 px-1 text-[12px] font-extrabold text-primary"
+      >
+        {chunk}
+      </span>
+    ) : (
+      <span key={i}>{chunk}</span>
+    ),
+  );
+}
+
+/** B2 LAB · Audio de dos voces, en orden, con reproducciones limitadas. */
+function ListeningPanel({
+  context,
+  es,
+  onFirstEnd,
+}: {
+  context: Extract<NonNullable<LabSection["context"]>, { kind: "listening" }>;
+  es: boolean;
+  onFirstEnd: () => void;
+}) {
+  const [plays, setPlays] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const stopRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => () => stopRef.current?.(), []);
+
+  const play = () => {
+    if (playing || plays >= context.plays) return;
+    setPlaying(true);
+    setPlays((p) => p + 1);
+    let i = 0;
+    const speakNext = () => {
+      const part = context.parts[i];
+      if (!part) {
+        setPlaying(false);
+        stopRef.current = null;
+        onFirstEnd();
+        return;
+      }
+      i += 1;
+      stopRef.current = AudioService.speak(part.text, {
+        voice: part.voice,
+        tone: "neutral",
+        onEnd: speakNext,
+      });
+    };
+    speakNext();
+  };
+
+  const left = context.plays - plays;
+  return (
+    <div className="space-y-2 rounded-3xl border border-border bg-card p-4">
+      <p className="text-[13px] font-extrabold text-foreground">{es ? context.titleEs : context.title}</p>
+      <button
+        type="button"
+        onClick={play}
+        disabled={playing || left <= 0}
+        className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl bg-navy px-4 text-[13px] font-extrabold uppercase tracking-[0.12em] text-navy-foreground disabled:opacity-40"
+      >
+        <Headphones className="size-4" aria-hidden="true" />
+        {playing ? (es ? "Reproduciendo…" : "Playing…") : es ? "Reproducir" : "Play"}
+      </button>
+      <p className="text-center text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+        {es
+          ? `${Math.min(plays, context.plays)} de ${context.plays} reproducciones`
+          : `${Math.min(plays, context.plays)} of ${context.plays} plays`}
+      </p>
+    </div>
+  );
 }
 
 function ItemView({
@@ -388,7 +656,66 @@ function ItemView({
     );
   }
 
+  if (item.kind === "speak") {
+    return <SpeakView key={item.id} item={item} locked={Boolean(checked)} onAnswer={onAnswer} es={es} />;
+  }
+
   return <RearrangeView key={item.id} item={item} locked={Boolean(checked)} correct={checked?.correct ?? false} isPilot={isPilot} onAnswer={onAnswer} es={es} />;
+}
+
+/** B2 LAB · Piensa (cuenta regresiva) y luego habla contra el reloj. */
+function SpeakView({
+  item,
+  locked,
+  onAnswer,
+  es,
+}: {
+  item: Extract<GrammarItem, { kind: "speak" }>;
+  locked: boolean;
+  onAnswer: (value: number) => void;
+  es: boolean;
+}) {
+  const [countdown, setCountdown] = useState(item.prepSeconds);
+
+  useEffect(() => {
+    if (countdown <= 0) return;
+    const id = setTimeout(() => setCountdown((c) => c - 1), 1000);
+    return () => clearTimeout(id);
+  }, [countdown]);
+
+  return (
+    <div className="space-y-3 rounded-3xl border border-border bg-card p-4">
+      <p className="text-[15px] font-extrabold leading-snug text-foreground">{item.prompt}</p>
+      {es ? <p className="text-[12px] font-medium text-muted-foreground">{item.promptEs}</p> : null}
+      <ul className="space-y-1 rounded-2xl border border-dashed border-border bg-background p-3">
+        {item.template.map((line) => (
+          <li key={line} className="text-[13px] font-semibold text-muted-foreground">
+            · {line}
+          </li>
+        ))}
+      </ul>
+      {countdown > 0 ? (
+        <div className="rounded-2xl bg-navy p-4 text-center text-navy-foreground">
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">
+            {es ? "Piensa" : "Think"}
+          </p>
+          <p className="mt-1 text-5xl font-extrabold tabular-nums">{countdown}</p>
+        </div>
+      ) : locked ? (
+        <p className="text-center text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+          {es ? "Grabación lista" : "Recording saved"}
+        </p>
+      ) : (
+        <VoiceRecorder
+          label={es ? "GRABAR MI RESPUESTA" : "RECORD MY ANSWER"}
+          stopLabel={es ? "LISTO" : "DONE"}
+          maxSeconds={item.speakSeconds}
+          targetSeconds={[item.minSeconds, item.speakSeconds]}
+          onComplete={(recording) => onAnswer(Math.round(recording.durationSeconds))}
+        />
+      )}
+    </div>
+  );
 }
 
 function RearrangeView({
