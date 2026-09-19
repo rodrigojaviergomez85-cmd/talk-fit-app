@@ -664,9 +664,9 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
                 sourcesRef.current = sourcesRef.current.filter((item) => item !== source);
                  sourceGainsRef.current = sourceGainsRef.current.filter((item) => item !== gain);
                  gain.disconnect();
-                if (sourcesRef.current.length === 0 && !endingRef.current) {
-                  setCoachState("listening");
-                }
+                 if (sourcesRef.current.length === 0 && !endingRef.current) {
+                   setCoachState(talkingRef.current ? "listening" : "idle");
+                 }
               };
             }
 
@@ -716,7 +716,12 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       const processor = micCtx.createScriptProcessor(4096, 1, 1);
       nodeRef.current = processor;
       processor.onaudioprocess = (event) => {
-         if (micPausedRef.current) return;
+        // Push-to-talk: nothing (not even silence) is sent unless the learner
+        // is holding the talk button.
+        if (micPausedRef.current || !talkingRef.current) {
+          setLevel(0);
+          return;
+        }
         const input = event.inputBuffer.getChannelData(0);
         let peak = 0;
         for (let i = 0; i < input.length; i += 64) peak = Math.max(peak, Math.abs(input[i] ?? 0));
