@@ -158,6 +158,9 @@ function ProfilePage() {
 
         </section>
 
+        {userEmail ? <ReminderSettings email={userEmail} /> : null}
+
+
         <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
             {t("place.currentLevel")}
