@@ -64,6 +64,13 @@
       "when": 1789765973925,
       "tag": "0008_anonymize_account_no_ban",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1789834850708,
+      "tag": "0009_admin_retention_cohorts",
+      "breakpoints": true
     }
   ]
 }
