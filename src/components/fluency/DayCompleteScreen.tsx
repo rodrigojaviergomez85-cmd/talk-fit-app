@@ -57,6 +57,7 @@ export function DayCompleteScreen({
   const [state, setState] = useState(() => JourneyService.load());
   const [answer, setAnswer] = useState<SelfAssessment | null>(state.selfAssessment ?? null);
   const [milestones, setMilestones] = useState<HabitMilestoneDef[]>([]);
+  const reminderPrompt = useSchedulePrompt(true);
 
   useEffect(() => setState(JourneyService.load()), []);
 
