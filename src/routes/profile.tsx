@@ -6,6 +6,7 @@ import { clearPendingPlacement } from "@/services/preferences";
 import { AppShell } from "@/components/fluency/AppShell";
 import { ProfileCard } from "@/components/fluency/ProfileCard";
 import { MicTest } from "@/components/fluency/MicTest";
+import { ReminderSettings } from "@/components/fluency/ReminderSettings";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { PracticeSessionService, setSessionScope } from "@/services/practice-session";
@@ -157,6 +158,9 @@ function ProfilePage() {
           </Link>
 
         </section>
+
+        {userEmail ? <ReminderSettings email={userEmail} /> : null}
+
 
         <section className="space-y-3 rounded-3xl bg-card p-5 shadow-[var(--shadow-card)]">
           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">

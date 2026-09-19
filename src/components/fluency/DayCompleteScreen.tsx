@@ -14,6 +14,8 @@ import { HabitMilestone } from "./HabitMilestone";
 import { moduleComparison, weekComparison } from "@/lib/progress-moments";
 import { habitDays, milestonesCrossed, wasOnBreak, type HabitMilestoneDef } from "@/lib/habit";
 import { AchievementsService } from "@/services/achievements-service";
+import { ScheduleReminderCard } from "./ScheduleReminderCard";
+import { useSchedulePrompt } from "@/hooks/use-schedule-prompt";
 
 export type RepSummary = { total: number; attempted: number; skipped: number };
 
@@ -55,6 +57,7 @@ export function DayCompleteScreen({
   const [state, setState] = useState(() => JourneyService.load());
   const [answer, setAnswer] = useState<SelfAssessment | null>(state.selfAssessment ?? null);
   const [milestones, setMilestones] = useState<HabitMilestoneDef[]>([]);
+  const reminderPrompt = useSchedulePrompt(true);
 
   useEffect(() => setState(JourneyService.load()), []);
 
@@ -247,6 +250,15 @@ export function DayCompleteScreen({
               ))}
             </div>
           </div>
+        ) : null}
+
+        {/* Practice reminder: shown above the back button, never covering content. */}
+        {reminderPrompt.decision !== "none" ? (
+          <ScheduleReminderCard
+            variant={reminderPrompt.decision}
+            schedule={reminderPrompt.schedule}
+            onDismiss={reminderPrompt.dismiss}
+          />
         ) : null}
 
         <SaveProgressPrompt moduleId={moduleId} />

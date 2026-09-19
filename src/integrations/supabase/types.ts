@@ -1040,6 +1040,39 @@ export type Database = {
         }
         Relationships: []
       }
+      practice_schedules: {
+        Row: {
+          channel: string
+          created_at: string
+          days: number[]
+          enabled: boolean
+          time_local: string
+          timezone: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          channel?: string
+          created_at?: string
+          days?: number[]
+          enabled?: boolean
+          time_local: string
+          timezone: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          channel?: string
+          created_at?: string
+          days?: number[]
+          enabled?: boolean
+          time_local?: string
+          timezone?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       practice_sessions: {
         Row: {
           attempted: string[]
@@ -1169,6 +1202,42 @@ export type Database = {
         }
         Relationships: []
       }
+      push_subscriptions: {
+        Row: {
+          auth: string
+          created_at: string
+          endpoint: string
+          failed_at: string | null
+          id: string
+          last_seen_at: string
+          p256dh: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          auth: string
+          created_at?: string
+          endpoint: string
+          failed_at?: string | null
+          id?: string
+          last_seen_at?: string
+          p256dh: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          auth?: string
+          created_at?: string
+          endpoint?: string
+          failed_at?: string | null
+          id?: string
+          last_seen_at?: string
+          p256dh?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       recordings: {
         Row: {
           audio_purged_at: string | null
@@ -1216,6 +1285,33 @@ export type Database = {
           storage_path?: string
           take_number?: number
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      reminder_log: {
+        Row: {
+          channel: string
+          id: string
+          kind: string
+          local_date: string
+          sent_at: string
+          user_id: string
+        }
+        Insert: {
+          channel: string
+          id?: string
+          kind: string
+          local_date: string
+          sent_at?: string
+          user_id: string
+        }
+        Update: {
+          channel?: string
+          id?: string
+          kind?: string
+          local_date?: string
+          sent_at?: string
           user_id?: string
         }
         Relationships: []
@@ -1675,6 +1771,7 @@ export type Database = {
           placement_changed_at: string | null
           placement_selected_at: string | null
           placement_source: string | null
+          schedule_prompted_at: string | null
           spanish_support: boolean
           start_week: number
           updated_at: string
@@ -1691,6 +1788,7 @@ export type Database = {
           placement_changed_at?: string | null
           placement_selected_at?: string | null
           placement_source?: string | null
+          schedule_prompted_at?: string | null
           spanish_support?: boolean
           start_week?: number
           updated_at?: string
@@ -1707,6 +1805,7 @@ export type Database = {
           placement_changed_at?: string | null
           placement_selected_at?: string | null
           placement_source?: string | null
+          schedule_prompted_at?: string | null
           spanish_support?: boolean
           start_week?: number
           updated_at?: string
