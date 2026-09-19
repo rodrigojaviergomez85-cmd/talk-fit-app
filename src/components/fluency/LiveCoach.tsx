@@ -400,6 +400,13 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     talkingRef.current = true;
     setTalking(true);
     setCoachState("listening");
+    // Manual turn control: mark the start of the learner's turn so streamed
+    // audio is grouped into one turn.
+    try {
+      sessionRef.current.sendRealtimeInput({ activityStart: {} });
+    } catch {
+      /* socket closing */
+    }
     // Safety cap: a stuck finger never turns into an open-ended bill.
     talkTimeoutRef.current = window.setTimeout(() => stopTalking(), MAX_TALK_SECONDS * 1000);
   }
@@ -414,8 +421,11 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     }
     setTalking(false);
     setLevel(0);
+    // Manual turn control: activityEnd (not audioStreamEnd) is what tells the
+    // model the turn is complete, so it answers right away. audioStreamEnd
+    // alone never triggers a response when automatic activity detection is off.
     try {
-      sessionRef.current?.sendRealtimeInput({ audioStreamEnd: true });
+      sessionRef.current?.sendRealtimeInput({ activityEnd: {} });
     } catch {
       /* socket closing */
     }
