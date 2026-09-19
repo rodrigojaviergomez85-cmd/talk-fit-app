@@ -4,7 +4,7 @@ import { mc, mistake, rearrange, type GrammarQuiz } from "./types";
  * BASIC ZERO · Día 13 — Pets · possessive pronouns (mine, yours, his, hers,
  * ours, theirs) · How old is he/she?
  * (Semana 3, día 3: PETS / POSSESSIVE PRONOUNS / AGE 3RD PERSON)
- * 8 ancla · 6 transferencia · 4 repaso · 2 trampas.
+ * 10 ítems: ancla + transferencia + trampas. Aprueba con 7 de 10.
  */
 const DETECTIVE = "Valeria escribió sobre su mascota. Toca la palabra equivocada.";
 const CHISME = "Valeria dijo la frase en desorden. Ordénala.";
@@ -13,6 +13,7 @@ export const BASIC_ZERO_DAY_13: GrammarQuiz = {
   moduleId: "basic-zero",
   day: 13,
   title: { en: "The Cat Is Mine", es: "El gato es mío" },
+  passScore: 7,
   items: [
     // ── Ancla ──────────────────────────────────────────────────────────────
     mc("bzg13-1", "This is my cat. The cat is ___.", "Este es mi gato. El gato es mío.", ["mine", "my", "me"], 0, {
@@ -27,17 +28,9 @@ export const BASIC_ZERO_DAY_13: GrammarQuiz = {
       en: "Ana → hers.",
       es: "Ana es mujer → hers, al final de la frase.",
     }),
-    mc("bzg13-4", "How old ___ your dog? · He ___ 3 years old.", "¿Cuántos años tiene tu perro? · Tiene 3.", ["is / is", "has / has", "is / has"], 0, {
-      en: "How old is he? He is 3.",
-      es: "La edad con is, también para mascotas: How old is he? He is 3.",
-    }),
     mistake("bzg13-5", "The hamster is my.", "my.", "mine.", {
       en: "mine at the end.",
       es: "The hamster is mine. Al final de la frase va mine, no my.",
-    }, DETECTIVE),
-    mistake("bzg13-6", "My cat have 5 years old.", "have", "is", {
-      en: "My cat is 5.",
-      es: "My cat is 5 years old. La edad con is.",
     }, DETECTIVE),
     rearrange(
       "bzg13-7",
@@ -55,54 +48,15 @@ export const BASIC_ZERO_DAY_13: GrammarQuiz = {
     ),
 
     // ── Transferencia ──────────────────────────────────────────────────────
-    mc("bzg13-9", "The rabbit is Luis's. The rabbit is ___.", "El conejo es de Luis. El conejo es de él.", ["his", "hers", "him"], 0, {
-      en: "Luis → his.",
-      es: "Luis es hombre → his. his sirve con sustantivo (his rabbit) y solo (it is his).",
-    }),
     mc("bzg13-10", "The parrot is Sofia's and mine. The parrot is ___.", "El loro es de Sofía y mío. El loro es nuestro.", ["ours", "our", "us"], 0, {
       en: "Sofia and I = we → ours.",
       es: "Sofia and I = we → ours, al final.",
-    }),
-    mc("bzg13-11", "How old ___ Ana? · ___ is 25.", "¿Cuántos años tiene Ana? · Tiene 25.", ["is / She", "has / She", "is / Her"], 0, {
-      en: "How old is Ana? She is 25.",
-      es: "How old is Ana? She is 25. Antes del verbo va she.",
     }),
     mistake("bzg13-12", "This is my turtle. The turtle is me.", "me.", "mine.", {
       en: "mine.",
       es: "The turtle is mine. me es «a mí», mine es «mío».",
     }, DETECTIVE),
-    rearrange(
-      "bzg13-13",
-      ["hers", "is", "The fish"],
-      ["The fish", "is", "hers"],
-      { en: "The fish + is + hers.", es: "The fish + is + hers." },
-      CHISME,
-    ),
-    rearrange(
-      "bzg13-14",
-      ["is", "6 years old", "My dog"],
-      ["My dog", "is", "6 years old"],
-      { en: "My dog + is + age.", es: "My dog + is + edad." },
-      CHISME,
-    ),
 
-    // ── Repaso ─────────────────────────────────────────────────────────────
-    mc("bzg13-15", "This is my aunt. ___ name is Carmen and ___ is 47.", "Esta es mi tía. Su nombre es Carmen y tiene 47.", ["Her / she", "His / she", "Her / her"], 0, {
-      en: "Her name; she is.",
-      es: "Her name; she is 47.",
-    }),
-    mc("bzg13-16", "___ your dog big? · No, he isn't. He is small.", "¿Tu perro es grande? · No. Es pequeño.", ["Is", "Are", "Does"], 0, {
-      en: "Is your dog big?",
-      es: "dog = he → Is.",
-    }),
-    mistake("bzg13-17", "My pets is a cat and a dog.", "is", "are", {
-      en: "pets (plural): are.",
-      es: "pets es plural → are.",
-    }, DETECTIVE),
-    mistake("bzg13-18", "My cat's eyes is green.", "is", "are", {
-      en: "eyes: are.",
-      es: "eyes es plural → are.",
-    }, DETECTIVE),
 
     // ── Trampas ────────────────────────────────────────────────────────────
     mc("bzg13-19", "Is this your cat? · Yes, it is ___.", "¿Este es tu gato? · Sí, es mío.", ["mine", "my", "mine cat"], 0, {
