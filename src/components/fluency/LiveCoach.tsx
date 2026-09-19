@@ -367,8 +367,10 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
         streamRef.current?.getAudioTracks().forEach((track) => { track.enabled = true; });
         micPausedRef.current = false;
         setMicPaused(false);
-        setCoachState("listening");
+        setCoachState(talkingRef.current ? "listening" : "idle");
       } else {
+        // Pausing mid-turn ends the spoken turn so nothing hangs.
+        if (talkingRef.current) stopTalking();
         micPausedRef.current = true;
         streamRef.current?.getAudioTracks().forEach((track) => { track.enabled = false; });
         setMicPaused(true);
@@ -378,6 +380,46 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     } catch {
       setError(es ? "No se pudo cambiar el micrófono." : "Could not change the microphone.");
     }
+  }
+
+  /** Push-to-talk: start streaming mic audio while the button is held. */
+  function startTalking() {
+    if (phase !== "live" || micPausedRef.current || talkingRef.current || !sessionRef.current) return;
+    // Interrupt whatever the coach is saying so the learner can answer now.
+    sourcesRef.current.forEach((source) => {
+      try {
+        source.stop();
+      } catch {
+        /* already stopped */
+      }
+    });
+    sourcesRef.current = [];
+    sourceGainsRef.current.forEach((gain) => gain.disconnect());
+    sourceGainsRef.current = [];
+    playHeadRef.current = outCtxRef.current?.currentTime ?? 0;
+    talkingRef.current = true;
+    setTalking(true);
+    setCoachState("listening");
+    // Safety cap: a stuck finger never turns into an open-ended bill.
+    talkTimeoutRef.current = window.setTimeout(() => stopTalking(), MAX_TALK_SECONDS * 1000);
+  }
+
+  /** Releasing the button ends the turn so the coach answers right away. */
+  function stopTalking() {
+    if (!talkingRef.current) return;
+    talkingRef.current = false;
+    if (talkTimeoutRef.current !== null) {
+      window.clearTimeout(talkTimeoutRef.current);
+      talkTimeoutRef.current = null;
+    }
+    setTalking(false);
+    setLevel(0);
+    try {
+      sessionRef.current?.sendRealtimeInput({ audioStreamEnd: true });
+    } catch {
+      /* socket closing */
+    }
+    if (!endingRef.current && !collectingSummaryRef.current) setCoachState("thinking");
   }
 
   function requestHelp(kind: HelpKind) {
@@ -542,6 +584,10 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
           systemInstruction: buildSystemInstruction(coachContext),
           inputAudioTranscription: {},
           outputAudioTranscription: {},
+          // Push-to-talk: the app marks turns itself (hold to talk, release to
+          // end), so server-side voice activity detection stays off and no
+          // silence is billed.
+          realtimeInputConfig: { automaticActivityDetection: { disabled: true } },
         },
         callbacks: {
            onmessage: (message: any) => {
