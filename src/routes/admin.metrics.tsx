@@ -78,6 +78,132 @@ function Bar({ label, value, total, right }: { label: string; value: number; tot
   );
 }
 
+/** North star, first 24 hours and weekly cohort retention. Read-only. */
+function RetentionCards({ es, enabled }: { es: boolean; enabled: boolean }) {
+  const load = useServerFn(getRetentionCohorts);
+  const query = useQuery<RetentionData>({
+    queryKey: ["admin-retention-cohorts"],
+    queryFn: () => load({}),
+    staleTime: 60_000,
+    retry: false,
+    enabled,
+  });
+
+  const d = query.data;
+  if (!d) {
+    return enabled ? <div className="h-32 animate-pulse rounded-3xl bg-secondary" aria-busy="true" /> : null;
+  }
+
+  const ns = d.north_star;
+  const nsPct = northStarPct(ns.consistent_users, ns.base_users);
+  const f = d.first_24h;
+
+  return (
+    <>
+      <Card title={es ? "El número" : "The number"}>
+        <p className="text-[44px] font-black leading-none text-foreground">{fmtPct(nsPct)}</p>
+        <p className="mt-1 text-[13px] font-semibold text-muted-foreground">
+          {es
+            ? `${fmtNum(ns.consistent_users)} de ${fmtNum(ns.base_users)} practican 4+ días por semana`
+            : `${fmtNum(ns.consistent_users)} of ${fmtNum(ns.base_users)} practice 4+ days a week`}
+        </p>
+        <div className="mt-4 flex items-end gap-1.5" aria-hidden>
+          {ns.history.map((h) => {
+            const p = northStarPct(h.consistent_users, h.base_users) ?? 0;
+            return (
+              <div key={h.week_start} className="flex flex-1 flex-col items-center gap-1">
+                <div className="flex h-16 w-full items-end rounded-md bg-secondary">
+                  <div className="w-full rounded-md bg-primary" style={{ height: `${Math.max(2, p)}%` }} />
+                </div>
+                <span className="text-[9px] text-muted-foreground">{weekLabel(h.week_start, es ? "es" : "en")}</span>
+              </div>
+            );
+          })}
+        </div>
+      </Card>
+
+      <Card title={es ? "Primeras 24 horas" : "First 24 hours"}>
+        <div className="grid grid-cols-2 gap-2">
+          <Stat label={es ? "Registrados (14 días)" : "Signups (14 days)"} value={fmtNum(f.signups)} />
+          <Stat
+            label={es ? "Grabaron el mismo día" : "Recorded same day"}
+            value={fmtPct(pct(f.activated_same_day, f.signups))}
+            hint={`${f.activated_same_day} / ${f.signups}`}
+          />
+          <Stat
+            label={es ? "Volvieron el día 1" : "Returned on day 1"}
+            value={fmtPct(pct(f.returned_d1, f.signups))}
+            hint={`${f.returned_d1} / ${f.signups}`}
+          />
+          <Stat
+            label={es ? "Día 1 (de los que grabaron)" : "Day 1 (of same-day recorders)"}
+            value={fmtPct(pct(f.same_day_returned_d1, f.activated_same_day))}
+            hint={`${f.same_day_returned_d1} / ${f.activated_same_day}`}
+          />
+        </div>
+        <p className="mt-3 text-[11px] leading-snug text-muted-foreground">
+          {es
+            ? "Si el segundo es bajo, el problema es el onboarding. Si el segundo es alto y el cuarto es bajo, el problema es el regreso."
+            : "If the second is low, onboarding is the problem. If the second is high and the fourth is low, coming back is the problem."}
+        </p>
+      </Card>
+
+      <Card title={es ? "Retención por cohorte semanal (activados)" : "Weekly cohort retention (activated)"}>
+        <div className="-mx-1 overflow-x-auto">
+          <table className="w-full min-w-[520px] border-separate border-spacing-1 text-[11px]">
+            <thead>
+              <tr className="text-[10px] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                <th className="px-1 text-left">{es ? "Semana" : "Week"}</th>
+                <th className="px-1 text-right">{es ? "Registrados" : "Signups"}</th>
+                <th className="px-1 text-right">{es ? "Activados" : "Activated"}</th>
+                {RETENTION_WINDOW_KEYS.map((k) => (
+                  <th key={k} className="px-1 text-center">
+                    {RETENTION_WINDOW_LABELS[k]}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {d.cohorts.map((row) => (
+                <tr key={row.week_start}>
+                  <td className="whitespace-nowrap px-1 font-semibold">{weekLabel(row.week_start, es ? "es" : "en")}</td>
+                  <td className="px-1 text-right tabular-nums">{fmtNum(row.signups)}</td>
+                  <td className="px-1 text-right tabular-nums">{fmtNum(row.activated)}</td>
+                  {RETENTION_WINDOW_KEYS.map((k) => {
+                    const w = row[k];
+                    const p = windowPct(w);
+                    return (
+                      <td
+                        key={k}
+                        className="rounded-md px-1 py-1 text-center"
+                        style={p === null ? undefined : { backgroundColor: `hsl(var(--primary) / ${cellIntensity(p)})` }}
+                      >
+                        <span className="block font-bold tabular-nums">{p === null ? "—" : `${p}%`}</span>
+                        {p === null ? null : (
+                          <span className="block text-[9px] text-muted-foreground">
+                            {w.returned}/{w.eligible}
+                          </span>
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-3 text-[11px] leading-snug text-muted-foreground">
+          {es
+            ? "Las ventanas se calculan sobre los activados de cada cohorte de registro. «—» significa que la ventana todavía no cerró."
+            : "Windows are computed over each signup cohort's activated users. “—” means the window has not closed yet."}
+        </p>
+      </Card>
+    </>
+  );
+}
+
+
+
 function MetricsPage() {
   const { user, loading } = useAuth();
   const { lang } = useAppLang();
