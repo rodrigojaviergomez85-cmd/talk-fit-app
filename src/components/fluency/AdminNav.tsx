@@ -12,7 +12,7 @@ const TABS = [
 ];
 
 export function AdminNav() {
-  const lang = useAppLang();
+  const { lang } = useAppLang();
   const es = lang === "es";
   const { pathname } = useLocation();
   return (
