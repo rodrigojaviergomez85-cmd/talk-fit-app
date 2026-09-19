@@ -56,20 +56,6 @@ export const BASIC_ZERO_DAY_12: GrammarQuiz = {
       en: "Yes, he is.",
       es: "he → is. La respuesta corta repite is.",
     }, DETECTIVE),
-    rearrange(
-      "bzg12-13",
-      ["from Colombia", "My best friend", "is"],
-      ["My best friend", "is", "from Colombia"],
-      { en: "My best friend + is + from.", es: "My best friend + is + from." },
-      CHISME,
-    ),
-    rearrange(
-      "bzg12-14",
-      ["in Medellín", "lives", "He"],
-      ["He", "lives", "in Medellín"],
-      { en: "He + lives + in.", es: "He + lives + in. Con -s." },
-      CHISME,
-    ),
 
     // ── Repaso ─────────────────────────────────────────────────────────────
 

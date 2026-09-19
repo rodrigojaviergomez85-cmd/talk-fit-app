@@ -56,20 +56,6 @@ export const BASIC_ZERO_DAY_11: GrammarQuiz = {
       en: "hands (two): are.",
       es: "hands es plural → are.",
     }, DETECTIVE),
-    rearrange(
-      "bzg11-13",
-      ["her hair?", "What color", "is"],
-      ["What color", "is", "her hair?"],
-      { en: "What color + is + her hair?", es: "What color + is + her hair?" },
-      CHISME,
-    ),
-    rearrange(
-      "bzg11-14",
-      ["is", "my mother", "This"],
-      ["This", "is", "my mother"],
-      { en: "This + is + my mother.", es: "This + is + my mother." },
-      CHISME,
-    ),
 
     // ── Repaso ─────────────────────────────────────────────────────────────
 

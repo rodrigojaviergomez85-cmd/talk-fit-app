@@ -56,20 +56,6 @@ export const BASIC_ZERO_DAY_10: GrammarQuiz = {
       en: "parents = they → their.",
       es: "parents = they → Their names.",
     }, DETECTIVE),
-    rearrange(
-      "bzg10-13",
-      ["are", "Their names", "Luis and Jorge"],
-      ["Their names", "are", "Luis and Jorge"],
-      { en: "Their names + are + names.", es: "Their names + are + nombres. Plural, are." },
-      CHISME,
-    ),
-    rearrange(
-      "bzg10-14",
-      ["your", "Is this", "notebook?"],
-      ["Is this", "your", "notebook?"],
-      { en: "Is this + your + noun?", es: "Is this + your + sustantivo?" },
-      CHISME,
-    ),
 
     // ── Repaso ─────────────────────────────────────────────────────────────
 
