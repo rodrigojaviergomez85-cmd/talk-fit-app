@@ -3,12 +3,17 @@ import { PAST_STORIES_DAY_2 } from "./past-stories-day-2";
 import { PAST_STORIES_DAY_3 } from "./past-stories-day-3";
 import { PAST_STORIES_DAY_4 } from "./past-stories-day-4";
 import { PAST_STORIES_DAY_5 } from "./past-stories-day-5";
+import { PAST_STORIES_DAY_6 } from "./past-stories-day-6";
+import { PAST_STORIES_DAY_7 } from "./past-stories-day-7";
+import { PAST_STORIES_DAY_8 } from "./past-stories-day-8";
+import { PAST_STORIES_DAY_9 } from "./past-stories-day-9";
+import { PAST_STORIES_DAY_10 } from "./past-stories-day-10";
 import type { GrammarQuiz } from "./types";
 
 export * from "./types";
 
 /**
- * Registro del piloto: Basic 3 (past-stories) · Semana 1 · días 1–5.
+ * Registro del piloto: Basic 3 (past-stories) · Semanas 1 y 2 · días 1–10.
  * Agregar más días aquí basta para extender el Paso 3 sin tocar la mecánica.
  */
 export const GRAMMAR_QUIZZES: GrammarQuiz[] = [
@@ -17,6 +22,11 @@ export const GRAMMAR_QUIZZES: GrammarQuiz[] = [
   PAST_STORIES_DAY_3,
   PAST_STORIES_DAY_4,
   PAST_STORIES_DAY_5,
+  PAST_STORIES_DAY_6,
+  PAST_STORIES_DAY_7,
+  PAST_STORIES_DAY_8,
+  PAST_STORIES_DAY_9,
+  PAST_STORIES_DAY_10,
 ];
 
 export function getGrammarQuiz(moduleId: string, day: number): GrammarQuiz | undefined {
