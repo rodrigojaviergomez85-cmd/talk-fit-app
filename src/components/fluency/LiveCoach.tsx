@@ -349,8 +349,8 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       if (!heardVoiceRef.current) {
         setNotice(
           es
-            ? "No te estamos escuchando. Revisa el permiso del micrófono y habla más cerca."
-            : "We are not hearing you. Check microphone permission and speak closer.",
+            ? "No te estamos escuchando. Mantén apretado el botón del micrófono mientras hablas."
+            : "We are not hearing you. Hold the microphone button while you speak.",
         );
       }
     }, 15000);
@@ -801,7 +801,9 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
           ? (es ? "Tu coach está hablando" : "Your coach is talking")
           : coachState === "thinking"
             ? (es ? "Preparando respuesta…" : "Preparing response…")
-            : (es ? "Tu turno. Te escucho." : "Your turn. I'm listening.");
+            : talking
+              ? (es ? "Te escucho… suelta para enviar" : "Listening… release to send")
+              : (es ? "Tu turno. Mantén apretado para hablar." : "Your turn. Hold to talk.");
 
   if (phase === "idle" || phase === "done") {
     return (
