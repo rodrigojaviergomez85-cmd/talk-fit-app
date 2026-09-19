@@ -18,12 +18,32 @@ import { PAST_STORIES_DAY_17 } from "./past-stories-day-17";
 import { PAST_STORIES_DAY_18 } from "./past-stories-day-18";
 import { PAST_STORIES_DAY_19 } from "./past-stories-day-19";
 import { PAST_STORIES_DAY_20 } from "./past-stories-day-20";
+import { MIXED_TENSES_DAY_1 } from "./mixed-tenses-day-1";
+import { MIXED_TENSES_DAY_2 } from "./mixed-tenses-day-2";
+import { MIXED_TENSES_DAY_3 } from "./mixed-tenses-day-3";
+import { MIXED_TENSES_DAY_4 } from "./mixed-tenses-day-4";
+import { MIXED_TENSES_DAY_5 } from "./mixed-tenses-day-5";
+import { MIXED_TENSES_DAY_6 } from "./mixed-tenses-day-6";
+import { MIXED_TENSES_DAY_7 } from "./mixed-tenses-day-7";
+import { MIXED_TENSES_DAY_8 } from "./mixed-tenses-day-8";
+import { MIXED_TENSES_DAY_9 } from "./mixed-tenses-day-9";
+import { MIXED_TENSES_DAY_10 } from "./mixed-tenses-day-10";
+import { MIXED_TENSES_DAY_11 } from "./mixed-tenses-day-11";
+import { MIXED_TENSES_DAY_12 } from "./mixed-tenses-day-12";
+import { MIXED_TENSES_DAY_13 } from "./mixed-tenses-day-13";
+import { MIXED_TENSES_DAY_14 } from "./mixed-tenses-day-14";
+import { MIXED_TENSES_DAY_15 } from "./mixed-tenses-day-15";
+import { MIXED_TENSES_DAY_16 } from "./mixed-tenses-day-16";
+import { MIXED_TENSES_DAY_17 } from "./mixed-tenses-day-17";
+import { MIXED_TENSES_DAY_18 } from "./mixed-tenses-day-18";
+import { MIXED_TENSES_DAY_19 } from "./mixed-tenses-day-19";
+import { MIXED_TENSES_DAY_20 } from "./mixed-tenses-day-20";
 import type { GrammarQuiz } from "./types";
 
 export * from "./types";
 
 /**
- * Registro del piloto: Basic 3 (past-stories) · Semanas 1 a 4 · días 1–20.
+ * Registro: Basic 3 (past-stories) y Basic 4 (mixed-tenses) · días 1–20 de cada uno.
  * Agregar más días aquí basta para extender el Paso 3 sin tocar la mecánica.
  */
 export const GRAMMAR_QUIZZES: GrammarQuiz[] = [
@@ -47,6 +67,26 @@ export const GRAMMAR_QUIZZES: GrammarQuiz[] = [
   PAST_STORIES_DAY_18,
   PAST_STORIES_DAY_19,
   PAST_STORIES_DAY_20,
+  MIXED_TENSES_DAY_1,
+  MIXED_TENSES_DAY_2,
+  MIXED_TENSES_DAY_3,
+  MIXED_TENSES_DAY_4,
+  MIXED_TENSES_DAY_5,
+  MIXED_TENSES_DAY_6,
+  MIXED_TENSES_DAY_7,
+  MIXED_TENSES_DAY_8,
+  MIXED_TENSES_DAY_9,
+  MIXED_TENSES_DAY_10,
+  MIXED_TENSES_DAY_11,
+  MIXED_TENSES_DAY_12,
+  MIXED_TENSES_DAY_13,
+  MIXED_TENSES_DAY_14,
+  MIXED_TENSES_DAY_15,
+  MIXED_TENSES_DAY_16,
+  MIXED_TENSES_DAY_17,
+  MIXED_TENSES_DAY_18,
+  MIXED_TENSES_DAY_19,
+  MIXED_TENSES_DAY_20,
 ];
 
 export function getGrammarQuiz(moduleId: string, day: number): GrammarQuiz | undefined {

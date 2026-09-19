@@ -1,3 +1,4 @@
+import { hasGrammarQuiz } from "@/lib/grammar-quiz-manifest";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Check, RotateCcw, Trophy, X } from "lucide-react";
@@ -52,7 +53,7 @@ export function GrammarQuizScreen({
 
   const item = round[index];
   const isRetry = round.length !== quiz.items.length;
-  const isPilot = moduleId === "past-stories" && day >= 1 && day <= 20;
+  const isPilot = hasGrammarQuiz(moduleId, day);
 
   const send = useCallback(
     async (all: Answers) => {
