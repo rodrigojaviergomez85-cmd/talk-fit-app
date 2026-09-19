@@ -11,6 +11,7 @@ import {
 import { isItemCorrect, submitGrammarQuiz } from "@/lib/grammar-quiz.functions";
 import {
   playGoodFeedbackSound,
+  playVictorySound,
   playWrongFeedbackSound,
   unlockFeedbackAudio,
 } from "@/lib/feedback-sounds";
