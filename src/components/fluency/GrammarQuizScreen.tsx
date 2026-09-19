@@ -360,11 +360,15 @@ function ItemView({
 function RearrangeView({
   item,
   locked,
+  correct,
+  isPilot,
   onAnswer,
   es,
 }: {
   item: Extract<GrammarItem, { kind: "rearrange" }>;
   locked: boolean;
+  correct: boolean;
+  isPilot: boolean;
   onAnswer: (value: string[]) => void;
   es: boolean;
 }) {
@@ -394,7 +398,12 @@ function RearrangeView({
               type="button"
               disabled={locked}
               onClick={() => setPicked(picked.filter((_, j) => j !== i))}
-              className="min-h-[40px] rounded-xl border border-primary bg-primary/10 px-3 text-[14px] font-bold text-foreground"
+              className={cn(
+                "min-h-[40px] rounded-xl border px-3 text-[14px] font-bold",
+                locked && correct && isPilot
+                  ? "border-success bg-success/10 text-success"
+                  : "border-primary bg-primary/10 text-foreground",
+              )}
             >
               {piece}
             </button>
