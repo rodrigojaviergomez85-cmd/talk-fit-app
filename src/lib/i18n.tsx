@@ -730,6 +730,46 @@ const DICT = {
     "Play short sounds when you get it right or need to try again.",
   ],
   "account.viewIntro": ["Ver la introducción otra vez", "See the intro again"],
+
+  // Practice reminders
+  "rem.section": ["Recordatorios", "Reminders"],
+  "rem.toggle": ["Recordatorios de práctica", "Practice reminders"],
+  "rem.time": ["Hora", "Time"],
+  "rem.days": ["Días", "Days"],
+  "rem.onPhone": ["Llegan a este teléfono", "They arrive on this phone"],
+  "rem.byEmail": ["Llegan por correo a", "They arrive by email to"],
+  "rem.activateHere": [
+    "Activar notificaciones en este teléfono",
+    "Turn on notifications on this phone",
+  ],
+  "rem.addCalendar": ["Agregar a mi calendario", "Add to my calendar"],
+  "rem.installCta": [
+    "Agregá la app a tu pantalla de inicio",
+    "Add the app to your home screen",
+  ],
+  "rem.cardTitle": ["¿A qué hora practicás mañana?", "What time will you practice tomorrow?"],
+  "rem.cardTitleSecond": ["¿Te ayudamos a no perder el ritmo?", "Can we help you keep the rhythm?"],
+  "rem.cardSubtitle": [
+    "Te avisamos al teléfono, solo si todavía no practicaste.",
+    "We'll ping your phone, only if you haven't practiced yet.",
+  ],
+  "rem.otherTime": ["Otra hora", "Another time"],
+  "rem.remindMe": ["Recordarme", "Remind me"],
+  "rem.notNow": ["Ahora no", "Not now"],
+  "rem.activate": ["Activar", "Turn on"],
+  "rem.donePush": ["Listo. Te avisamos a las {time}.", "Done. We'll ping you at {time}."],
+  "rem.doneEmail": [
+    "Listo. Te avisamos por correo a las {time}. Podés activar las notificaciones en Perfil → Mi horario.",
+    "Done. We'll email you at {time}. You can turn on notifications in Profile → My schedule.",
+  ],
+  "rem.doneIos": [
+    "Para que te suene el teléfono, agregá la app a tu pantalla de inicio",
+    "To make your phone ring, add the app to your home screen",
+  ],
+  "rem.newDevice": [
+    "Tenés recordatorio a las {time}. Activá las notificaciones en este teléfono.",
+    "You have a reminder at {time}. Turn on notifications on this phone.",
+  ],
   "account.signedIn": ["Sesión iniciada", "Signed in"],
   "account.syncNote": [
     "Tu progreso y tus grabaciones se sincronizan automáticamente.",
