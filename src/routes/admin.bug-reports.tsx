@@ -3,6 +3,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { ShieldCheck } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { AdminNav } from "@/components/fluency/AdminNav";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { useAuth } from "@/lib/auth";
 import { useAppLang } from "@/lib/i18n";
@@ -79,6 +80,7 @@ function BugReportsPage() {
   if (loading || (user && admin === null)) {
     return (
       <AppShell title={title}>
+        <AdminNav />
         <div className="space-y-3" aria-busy="true">
           {[0, 1, 2].map((i) => (
             <div key={i} className="h-24 animate-pulse rounded-3xl bg-secondary" />
@@ -91,6 +93,7 @@ function BugReportsPage() {
   if (!user) {
     return (
       <AppShell title={title}>
+        <AdminNav />
         <AuthGate blocking />
       </AppShell>
     );
@@ -107,6 +110,7 @@ function BugReportsPage() {
 
   return (
     <AppShell title={title}>
+      <AdminNav />
       <div className="space-y-4">
         <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
           <ShieldCheck className="size-3.5" aria-hidden /> {es ? "Solo admin" : "Admin only"}
