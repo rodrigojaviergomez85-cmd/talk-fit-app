@@ -249,6 +249,15 @@ export function DayCompleteScreen({
           </div>
         ) : null}
 
+        {/* Practice reminder: shown above the back button, never covering content. */}
+        {reminderPrompt.decision !== "none" ? (
+          <ScheduleReminderCard
+            variant={reminderPrompt.decision}
+            schedule={reminderPrompt.schedule}
+            onDismiss={reminderPrompt.dismiss}
+          />
+        ) : null}
+
         <SaveProgressPrompt moduleId={moduleId} />
       </div>
 
