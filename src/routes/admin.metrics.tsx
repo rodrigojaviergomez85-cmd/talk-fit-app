@@ -309,6 +309,8 @@ function MetricsPage() {
 
         {error ? <p className="text-[13px] font-semibold text-primary">{error}</p> : null}
 
+        <RetentionCards es={es} enabled={admin === true} />
+
         {!data ? (
           <div className="space-y-3" aria-busy="true">
             {[0, 1, 2, 3].map((k) => (
