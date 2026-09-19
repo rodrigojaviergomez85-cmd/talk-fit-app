@@ -54,6 +54,7 @@ export function GrammarQuizScreen({
   const item = round[index];
   const isRetry = round.length !== quiz.items.length;
   const isPilot = hasGrammarQuiz(moduleId, day);
+  const passScore = quiz.passScore ?? GRAMMAR_PASS_SCORE;
 
   const send = useCallback(
     async (all: Answers) => {
@@ -132,8 +133,8 @@ export function GrammarQuizScreen({
             ) : (
               <p className="text-sm font-bold text-muted-foreground">
                 {es
-                  ? `Necesitas ${GRAMMAR_PASS_SCORE} de ${result.total} para ganar los 150 puntos. Repite los que fallaste.`
-                  : `You need ${GRAMMAR_PASS_SCORE} of ${result.total} to earn the 150 points. Try the ones you missed.`}
+                  ? `Necesitas ${passScore} de ${result.total} para ganar los 150 puntos. Repite los que fallaste.`
+                  : `You need ${passScore} of ${result.total} to earn the 150 points. Try the ones you missed.`}
               </p>
             )}
             {!result.passed && result.canRetry ? (
