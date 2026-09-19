@@ -1,3 +1,43 @@
+import { SIMPLE_FUTURE_DAY_1 } from "./simple-future-day-1";
+import { SIMPLE_FUTURE_DAY_2 } from "./simple-future-day-2";
+import { SIMPLE_FUTURE_DAY_3 } from "./simple-future-day-3";
+import { SIMPLE_FUTURE_DAY_4 } from "./simple-future-day-4";
+import { SIMPLE_FUTURE_DAY_5 } from "./simple-future-day-5";
+import { SIMPLE_FUTURE_DAY_6 } from "./simple-future-day-6";
+import { SIMPLE_FUTURE_DAY_7 } from "./simple-future-day-7";
+import { SIMPLE_FUTURE_DAY_8 } from "./simple-future-day-8";
+import { SIMPLE_FUTURE_DAY_9 } from "./simple-future-day-9";
+import { SIMPLE_FUTURE_DAY_10 } from "./simple-future-day-10";
+import { SIMPLE_FUTURE_DAY_11 } from "./simple-future-day-11";
+import { SIMPLE_FUTURE_DAY_12 } from "./simple-future-day-12";
+import { SIMPLE_FUTURE_DAY_13 } from "./simple-future-day-13";
+import { SIMPLE_FUTURE_DAY_14 } from "./simple-future-day-14";
+import { SIMPLE_FUTURE_DAY_15 } from "./simple-future-day-15";
+import { SIMPLE_FUTURE_DAY_16 } from "./simple-future-day-16";
+import { SIMPLE_FUTURE_DAY_17 } from "./simple-future-day-17";
+import { SIMPLE_FUTURE_DAY_18 } from "./simple-future-day-18";
+import { SIMPLE_FUTURE_DAY_19 } from "./simple-future-day-19";
+import { SIMPLE_FUTURE_DAY_20 } from "./simple-future-day-20";
+import { SIMPLE_PRESENT_DAY_1 } from "./simple-present-day-1";
+import { SIMPLE_PRESENT_DAY_2 } from "./simple-present-day-2";
+import { SIMPLE_PRESENT_DAY_3 } from "./simple-present-day-3";
+import { SIMPLE_PRESENT_DAY_4 } from "./simple-present-day-4";
+import { SIMPLE_PRESENT_DAY_5 } from "./simple-present-day-5";
+import { SIMPLE_PRESENT_DAY_6 } from "./simple-present-day-6";
+import { SIMPLE_PRESENT_DAY_7 } from "./simple-present-day-7";
+import { SIMPLE_PRESENT_DAY_8 } from "./simple-present-day-8";
+import { SIMPLE_PRESENT_DAY_9 } from "./simple-present-day-9";
+import { SIMPLE_PRESENT_DAY_10 } from "./simple-present-day-10";
+import { SIMPLE_PRESENT_DAY_11 } from "./simple-present-day-11";
+import { SIMPLE_PRESENT_DAY_12 } from "./simple-present-day-12";
+import { SIMPLE_PRESENT_DAY_13 } from "./simple-present-day-13";
+import { SIMPLE_PRESENT_DAY_14 } from "./simple-present-day-14";
+import { SIMPLE_PRESENT_DAY_15 } from "./simple-present-day-15";
+import { SIMPLE_PRESENT_DAY_16 } from "./simple-present-day-16";
+import { SIMPLE_PRESENT_DAY_17 } from "./simple-present-day-17";
+import { SIMPLE_PRESENT_DAY_18 } from "./simple-present-day-18";
+import { SIMPLE_PRESENT_DAY_19 } from "./simple-present-day-19";
+import { SIMPLE_PRESENT_DAY_20 } from "./simple-present-day-20";
 import { PAST_STORIES_DAY_1 } from "./past-stories-day-1";
 import { PAST_STORIES_DAY_2 } from "./past-stories-day-2";
 import { PAST_STORIES_DAY_3 } from "./past-stories-day-3";
@@ -58,7 +98,8 @@ import type { GrammarQuiz } from "./types";
 export * from "./types";
 
 /**
- * Registro: Basic Zero (basic-zero, días 6–20), Basic 3 (past-stories) y Basic 4 (mixed-tenses) · días 1–20.
+ * Registro: Basic Zero (basic-zero, días 6–20), Basic 1 (simple-future), Basic 2 (simple-present),
+ * Basic 3 (past-stories) y Basic 4 (mixed-tenses) · días 1–20.
  * Agregar más días aquí basta para extender el Paso 3 sin tocar la mecánica.
  */
 export const GRAMMAR_QUIZZES: GrammarQuiz[] = [
@@ -77,6 +118,46 @@ export const GRAMMAR_QUIZZES: GrammarQuiz[] = [
   BASIC_ZERO_DAY_18,
   BASIC_ZERO_DAY_19,
   BASIC_ZERO_DAY_20,
+  SIMPLE_FUTURE_DAY_1,
+  SIMPLE_FUTURE_DAY_2,
+  SIMPLE_FUTURE_DAY_3,
+  SIMPLE_FUTURE_DAY_4,
+  SIMPLE_FUTURE_DAY_5,
+  SIMPLE_FUTURE_DAY_6,
+  SIMPLE_FUTURE_DAY_7,
+  SIMPLE_FUTURE_DAY_8,
+  SIMPLE_FUTURE_DAY_9,
+  SIMPLE_FUTURE_DAY_10,
+  SIMPLE_FUTURE_DAY_11,
+  SIMPLE_FUTURE_DAY_12,
+  SIMPLE_FUTURE_DAY_13,
+  SIMPLE_FUTURE_DAY_14,
+  SIMPLE_FUTURE_DAY_15,
+  SIMPLE_FUTURE_DAY_16,
+  SIMPLE_FUTURE_DAY_17,
+  SIMPLE_FUTURE_DAY_18,
+  SIMPLE_FUTURE_DAY_19,
+  SIMPLE_FUTURE_DAY_20,
+  SIMPLE_PRESENT_DAY_1,
+  SIMPLE_PRESENT_DAY_2,
+  SIMPLE_PRESENT_DAY_3,
+  SIMPLE_PRESENT_DAY_4,
+  SIMPLE_PRESENT_DAY_5,
+  SIMPLE_PRESENT_DAY_6,
+  SIMPLE_PRESENT_DAY_7,
+  SIMPLE_PRESENT_DAY_8,
+  SIMPLE_PRESENT_DAY_9,
+  SIMPLE_PRESENT_DAY_10,
+  SIMPLE_PRESENT_DAY_11,
+  SIMPLE_PRESENT_DAY_12,
+  SIMPLE_PRESENT_DAY_13,
+  SIMPLE_PRESENT_DAY_14,
+  SIMPLE_PRESENT_DAY_15,
+  SIMPLE_PRESENT_DAY_16,
+  SIMPLE_PRESENT_DAY_17,
+  SIMPLE_PRESENT_DAY_18,
+  SIMPLE_PRESENT_DAY_19,
+  SIMPLE_PRESENT_DAY_20,
   PAST_STORIES_DAY_1,
   PAST_STORIES_DAY_2,
   PAST_STORIES_DAY_3,

@@ -5,9 +5,9 @@ import { grammarDaysInWeek, hasGrammarQuiz } from "@/lib/grammar-quiz-manifest";
 import { attainableWeeklyGoal, dailyGoal } from "@/lib/league";
 
 describe("paso 3 · gramática — banco de ítems", () => {
-  it("cubre Basic 3 y Basic 4 completos (días 1 a 20) y Basic Zero días 6 a 20", () => {
-    expect(GRAMMAR_QUIZZES).toHaveLength(55);
-    for (const moduleId of ["past-stories", "mixed-tenses"]) {
+  it("cubre Basic 1–4 completos (días 1 a 20) y Basic Zero días 6 a 20", () => {
+    expect(GRAMMAR_QUIZZES).toHaveLength(95);
+    for (const moduleId of ["simple-future", "simple-present", "past-stories", "mixed-tenses"]) {
       for (const day of Array.from({ length: 20 }, (_, i) => i + 1)) {
         const quiz = getGrammarQuiz(moduleId, day);
         expect(quiz, `${moduleId} day ${day}`).toBeDefined();
@@ -27,6 +27,8 @@ describe("paso 3 · gramática — banco de ítems", () => {
     expect(getGrammarQuiz("past-stories", 21)).toBeUndefined();
     expect(getGrammarQuiz("mixed-tenses", 21)).toBeUndefined();
     expect(getGrammarQuiz("basic-zero", 21)).toBeUndefined();
+    expect(getGrammarQuiz("simple-future", 21)).toBeUndefined();
+    expect(getGrammarQuiz("simple-present", 21)).toBeUndefined();
   });
 
   it("mezcla los tres formatos en cada día", () => {
@@ -58,7 +60,7 @@ describe("paso 3 · gramática — banco de ítems", () => {
         }
       }
     }
-    expect(ids.size).toBe(950);
+    expect(ids.size).toBe(1750);
   });
 
   it("califica cada formato contra la respuesta fija", () => {
@@ -104,6 +106,12 @@ describe("paso 3 · gramática — liga", () => {
     expect(hasGrammarQuiz("basic-zero", 6)).toBe(true);
     expect(hasGrammarQuiz("basic-zero", 20)).toBe(true);
     expect(hasGrammarQuiz("basic-zero", 21)).toBe(false);
+    expect(hasGrammarQuiz("simple-future", 1)).toBe(true);
+    expect(hasGrammarQuiz("simple-future", 20)).toBe(true);
+    expect(hasGrammarQuiz("simple-future", 21)).toBe(false);
+    expect(hasGrammarQuiz("simple-present", 1)).toBe(true);
+    expect(hasGrammarQuiz("simple-present", 20)).toBe(true);
+    expect(hasGrammarQuiz("simple-present", 21)).toBe(false);
     expect(grammarDaysInWeek("past-stories", 1)).toBe(5);
     expect(grammarDaysInWeek("past-stories", 2)).toBe(5);
     expect(grammarDaysInWeek("past-stories", 3)).toBe(5);
@@ -114,6 +122,10 @@ describe("paso 3 · gramática — liga", () => {
     expect(grammarDaysInWeek("basic-zero", 1)).toBe(0);
     expect(grammarDaysInWeek("basic-zero", 2)).toBe(5);
     expect(grammarDaysInWeek("basic-zero", 4)).toBe(5);
+    expect(grammarDaysInWeek("simple-future", 1)).toBe(5);
+    expect(grammarDaysInWeek("simple-future", 4)).toBe(5);
+    expect(grammarDaysInWeek("simple-present", 1)).toBe(5);
+    expect(grammarDaysInWeek("simple-present", 4)).toBe(5);
   });
 
   it("sube la meta diaria a 450 y la semanal a 2250 solo en esa cohorte", () => {
