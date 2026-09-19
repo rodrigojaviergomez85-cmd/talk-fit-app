@@ -32,6 +32,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SoporteRouteImport } from './routes/soporte'
 import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as TerminosRouteImport } from './routes/terminos'
+import { Route as TmpRemPreviewRouteImport } from './routes/tmp-rem-preview'
 import { Route as VerbBankRouteImport } from './routes/verb-bank'
 import { Route as AuthenticatedEliminarCuentaRouteImport } from './routes/_authenticated.eliminar-cuenta'
 import { Route as AdminAlertasRouteImport } from './routes/admin.alertas'
@@ -191,6 +192,11 @@ const SprintRoute = SprintRouteImport.update({
 const TerminosRoute = TerminosRouteImport.update({
   id: '/terminos',
   path: '/terminos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TmpRemPreviewRoute = TmpRemPreviewRouteImport.update({
+  id: '/tmp-rem-preview',
+  path: '/tmp-rem-preview',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VerbBankRoute = VerbBankRouteImport.update({
@@ -458,6 +464,7 @@ export interface FileRoutesByFullPath {
   '/soporte': typeof SoporteRoute
   '/sprint': typeof SprintRoute
   '/terminos': typeof TerminosRoute
+  '/tmp-rem-preview': typeof TmpRemPreviewRoute
   '/verb-bank': typeof VerbBankRoute
   '/eliminar-cuenta': typeof AuthenticatedEliminarCuentaRoute
   '/admin/alertas': typeof AdminAlertasRoute
@@ -528,6 +535,7 @@ export interface FileRoutesByTo {
   '/soporte': typeof SoporteRoute
   '/sprint': typeof SprintRoute
   '/terminos': typeof TerminosRoute
+  '/tmp-rem-preview': typeof TmpRemPreviewRoute
   '/verb-bank': typeof VerbBankRoute
   '/eliminar-cuenta': typeof AuthenticatedEliminarCuentaRoute
   '/admin/alertas': typeof AdminAlertasRoute
@@ -599,6 +607,7 @@ export interface FileRoutesById {
   '/soporte': typeof SoporteRoute
   '/sprint': typeof SprintRoute
   '/terminos': typeof TerminosRoute
+  '/tmp-rem-preview': typeof TmpRemPreviewRoute
   '/verb-bank': typeof VerbBankRoute
   '/_authenticated/eliminar-cuenta': typeof AuthenticatedEliminarCuentaRoute
   '/admin/alertas': typeof AdminAlertasRoute
@@ -671,6 +680,7 @@ export interface FileRouteTypes {
     | '/soporte'
     | '/sprint'
     | '/terminos'
+    | '/tmp-rem-preview'
     | '/verb-bank'
     | '/eliminar-cuenta'
     | '/admin/alertas'
@@ -741,6 +751,7 @@ export interface FileRouteTypes {
     | '/soporte'
     | '/sprint'
     | '/terminos'
+    | '/tmp-rem-preview'
     | '/verb-bank'
     | '/eliminar-cuenta'
     | '/admin/alertas'
@@ -811,6 +822,7 @@ export interface FileRouteTypes {
     | '/soporte'
     | '/sprint'
     | '/terminos'
+    | '/tmp-rem-preview'
     | '/verb-bank'
     | '/_authenticated/eliminar-cuenta'
     | '/admin/alertas'
@@ -883,6 +895,7 @@ export interface RootRouteChildren {
   SoporteRoute: typeof SoporteRoute
   SprintRoute: typeof SprintRoute
   TerminosRoute: typeof TerminosRoute
+  TmpRemPreviewRoute: typeof TmpRemPreviewRoute
   VerbBankRoute: typeof VerbBankRoute
   AdminAlertasRoute: typeof AdminAlertasRoute
   AdminBugReportsRoute: typeof AdminBugReportsRoute
@@ -1087,6 +1100,13 @@ declare module '@tanstack/react-router' {
       path: '/terminos'
       fullPath: '/terminos'
       preLoaderRoute: typeof TerminosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tmp-rem-preview': {
+      id: '/tmp-rem-preview'
+      path: '/tmp-rem-preview'
+      fullPath: '/tmp-rem-preview'
+      preLoaderRoute: typeof TmpRemPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/verb-bank': {
@@ -1466,6 +1486,7 @@ const rootRouteChildren: RootRouteChildren = {
   SoporteRoute: SoporteRoute,
   SprintRoute: SprintRoute,
   TerminosRoute: TerminosRoute,
+  TmpRemPreviewRoute: TmpRemPreviewRoute,
   VerbBankRoute: VerbBankRoute,
   AdminAlertasRoute: AdminAlertasRoute,
   AdminBugReportsRoute: AdminBugReportsRoute,
