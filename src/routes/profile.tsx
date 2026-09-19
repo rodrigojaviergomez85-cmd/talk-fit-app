@@ -6,6 +6,7 @@ import { clearPendingPlacement } from "@/services/preferences";
 import { AppShell } from "@/components/fluency/AppShell";
 import { ProfileCard } from "@/components/fluency/ProfileCard";
 import { MicTest } from "@/components/fluency/MicTest";
+import { ReminderSettings } from "@/components/fluency/ReminderSettings";
 import { CourseService } from "@/services/course-service";
 import { JourneyService, emptyJourney } from "@/services/journey-service";
 import { PracticeSessionService, setSessionScope } from "@/services/practice-session";
