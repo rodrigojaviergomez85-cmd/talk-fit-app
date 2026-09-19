@@ -5,14 +5,14 @@ import { grammarDaysInWeek, hasGrammarQuiz } from "@/lib/grammar-quiz-manifest";
 import { attainableWeeklyGoal, dailyGoal } from "@/lib/league";
 
 describe("paso 3 · gramática — banco de ítems", () => {
-  it("cubre Basic 3 semanas 1 y 2, días 1 a 10, con 20 ítems cada uno", () => {
-    expect(GRAMMAR_QUIZZES).toHaveLength(10);
-    for (const day of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
+  it("cubre Basic 3 completo, días 1 a 20, con 20 ítems cada uno", () => {
+    expect(GRAMMAR_QUIZZES).toHaveLength(20);
+    for (const day of Array.from({ length: 20 }, (_, i) => i + 1)) {
       const quiz = getGrammarQuiz("past-stories", day);
       expect(quiz, `day ${day}`).toBeDefined();
       expect(quiz!.items).toHaveLength(GRAMMAR_ITEMS_PER_QUIZ);
     }
-    expect(getGrammarQuiz("past-stories", 11)).toBeUndefined();
+    expect(getGrammarQuiz("past-stories", 21)).toBeUndefined();
     expect(getGrammarQuiz("basic-zero", 1)).toBeUndefined();
   });
 
@@ -45,7 +45,7 @@ describe("paso 3 · gramática — banco de ítems", () => {
         }
       }
     }
-    expect(ids.size).toBe(200);
+    expect(ids.size).toBe(400);
   });
 
   it("califica cada formato contra la respuesta fija", () => {
@@ -73,16 +73,18 @@ describe("paso 3 · gramática — banco de ítems", () => {
 });
 
 describe("paso 3 · gramática — liga", () => {
-  it("solo el piloto Basic 3 semanas 1 y 2 tiene tercera actividad", () => {
+  it("solo el piloto Basic 3 tiene tercera actividad", () => {
     expect(hasGrammarQuiz("past-stories", 1)).toBe(true);
     expect(hasGrammarQuiz("past-stories", 5)).toBe(true);
     expect(hasGrammarQuiz("past-stories", 6)).toBe(true);
-    expect(hasGrammarQuiz("past-stories", 10)).toBe(true);
-    expect(hasGrammarQuiz("past-stories", 11)).toBe(false);
+    expect(hasGrammarQuiz("past-stories", 20)).toBe(true);
+    expect(hasGrammarQuiz("past-stories", 21)).toBe(false);
     expect(hasGrammarQuiz("basic-zero", 1)).toBe(false);
     expect(grammarDaysInWeek("past-stories", 1)).toBe(5);
     expect(grammarDaysInWeek("past-stories", 2)).toBe(5);
-    expect(grammarDaysInWeek("past-stories", 3)).toBe(0);
+    expect(grammarDaysInWeek("past-stories", 3)).toBe(5);
+    expect(grammarDaysInWeek("past-stories", 4)).toBe(5);
+    expect(grammarDaysInWeek("past-stories", 5)).toBe(0);
     expect(grammarDaysInWeek("basic-zero", 1)).toBe(0);
   });
 
