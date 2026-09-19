@@ -71,6 +71,13 @@
       "when": 1789834850708,
       "tag": "0009_admin_retention_cohorts",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1789840295875,
+      "tag": "0010_practice_reminders",
+      "breakpoints": true
     }
   ]
 }
