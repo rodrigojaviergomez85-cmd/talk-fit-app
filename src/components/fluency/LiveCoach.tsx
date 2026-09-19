@@ -32,6 +32,7 @@ type HelpKind = "spanish" | "slow" | "idea";
 type StartResponse = {
   token?: string;
   model?: string;
+  unlimited?: boolean;
   usedSeconds?: number;
   dailyLimitSeconds?: number;
   sessionLimitSeconds?: number;
@@ -90,6 +91,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
 
   const [phase, setPhase] = useState<Phase>("idle");
   const [allowed, setAllowed] = useState<boolean | null>(null);
+  const [unlimited, setUnlimited] = useState(false);
   const [usedSeconds, setUsedSeconds] = useState(0);
   const [dailyLimit, setDailyLimit] = useState(15 * 60);
   const [remaining, setRemaining] = useState(0);
@@ -166,10 +168,12 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     const res = await fetch("/api/live-coach", { headers });
     const body = (await res.json().catch(() => null)) as {
       allowed?: boolean;
+      unlimited?: boolean;
       usedSeconds?: number;
       dailyLimitSeconds?: number;
     } | null;
     setAllowed(Boolean(body?.allowed));
+    setUnlimited(Boolean(body?.unlimited));
     setUsedSeconds(body?.usedSeconds ?? 0);
     if (body?.dailyLimitSeconds) setDailyLimit(body.dailyLimitSeconds);
   }, []);
@@ -552,6 +556,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
       });
       const body = (await res.json().catch(() => null)) as StartResponse | null;
       if (cancelled()) return;
+      if (body?.unlimited) setUnlimited(true);
 
       if (res.status === 429 || body?.error === "daily_limit") {
         setUsedSeconds(body?.usedSeconds ?? usedSeconds);
@@ -835,11 +840,15 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
         <div className="mt-5 rounded-[20px] border border-border bg-card p-4 text-left shadow-[var(--shadow-card)]">
           <p className="text-[12px] font-bold text-primary">{es ? `Para tu nivel · ${levelLabel}` : `For your level · ${levelLabel}`}</p>
           <h3 className="mt-1 text-lg font-extrabold text-foreground">{topicLabel}</h3>
-          <p className="mt-1 text-[13px] text-muted-foreground">{es ? `${mmss(leftToday)} disponibles hoy` : `${mmss(leftToday)} available today`}</p>
+          <p className="mt-1 text-[13px] text-muted-foreground">
+            {unlimited
+              ? (es ? "Minutos ilimitados" : "Unlimited minutes")
+              : (es ? `${mmss(leftToday)} disponibles hoy` : `${mmss(leftToday)} available today`)}
+          </p>
         </div>
         {feedback ? <div className="mt-4 rounded-2xl border border-border bg-card p-4 text-left"><p className="text-xs font-bold text-primary">{es ? "Cierre de Vale" : "Vale's closing"}</p><p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-foreground">{feedback}</p></div> : null}
         {error ? <p className="mt-4 text-[13px] font-semibold text-destructive">{error}</p> : null}
-        <Button onClick={() => void start()} disabled={leftToday <= 30} className="mt-5 h-[54px] w-full rounded-2xl bg-primary text-[15px] font-bold text-primary-foreground">
+        <Button onClick={() => void start()} disabled={!unlimited && leftToday <= 30} className="mt-5 h-[54px] w-full rounded-2xl bg-primary text-[15px] font-bold text-primary-foreground">
           {phase === "done" ? <RotateCcw aria-hidden /> : <Mic aria-hidden />}
           {phase === "done" ? (es ? "Volver a hablar" : "Talk again") : (es ? "Empezar a hablar" : "Start talking")}
         </Button>
@@ -943,8 +952,8 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
             }
           }}
           className={cn(
-            "flex size-20 touch-none items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-card)] transition-transform select-none",
-            talking && "scale-110 ring-4 ring-primary/30",
+            "flex size-20 touch-none items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-card)] transition-all duration-200 select-none",
+            talking && "scale-125 ring-8 ring-primary/40 shadow-[0_0_50px] shadow-primary/70 brightness-110",
             (phase !== "live" || micPaused) && "opacity-50",
           )}
           aria-label={es ? "Mantén apretado para hablar" : "Hold to talk"}
