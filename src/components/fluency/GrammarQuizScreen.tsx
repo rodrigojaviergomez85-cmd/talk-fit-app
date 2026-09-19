@@ -1,3 +1,4 @@
+import { hasGrammarQuiz } from "@/lib/grammar-quiz-manifest";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Check, RotateCcw, Trophy, X } from "lucide-react";

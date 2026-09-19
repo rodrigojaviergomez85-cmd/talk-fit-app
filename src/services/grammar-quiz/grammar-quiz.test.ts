@@ -5,14 +5,17 @@ import { grammarDaysInWeek, hasGrammarQuiz } from "@/lib/grammar-quiz-manifest";
 import { attainableWeeklyGoal, dailyGoal } from "@/lib/league";
 
 describe("paso 3 · gramática — banco de ítems", () => {
-  it("cubre Basic 3 completo, días 1 a 20, con 20 ítems cada uno", () => {
-    expect(GRAMMAR_QUIZZES).toHaveLength(20);
-    for (const day of Array.from({ length: 20 }, (_, i) => i + 1)) {
-      const quiz = getGrammarQuiz("past-stories", day);
-      expect(quiz, `day ${day}`).toBeDefined();
-      expect(quiz!.items).toHaveLength(GRAMMAR_ITEMS_PER_QUIZ);
+  it("cubre Basic 3 y Basic 4 completos, días 1 a 20, con 20 ítems cada uno", () => {
+    expect(GRAMMAR_QUIZZES).toHaveLength(40);
+    for (const moduleId of ["past-stories", "mixed-tenses"]) {
+      for (const day of Array.from({ length: 20 }, (_, i) => i + 1)) {
+        const quiz = getGrammarQuiz(moduleId, day);
+        expect(quiz, `${moduleId} day ${day}`).toBeDefined();
+        expect(quiz!.items).toHaveLength(GRAMMAR_ITEMS_PER_QUIZ);
+      }
     }
     expect(getGrammarQuiz("past-stories", 21)).toBeUndefined();
+    expect(getGrammarQuiz("mixed-tenses", 21)).toBeUndefined();
     expect(getGrammarQuiz("basic-zero", 1)).toBeUndefined();
   });
 
