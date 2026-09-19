@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Check, RotateCcw, Trophy, X } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
