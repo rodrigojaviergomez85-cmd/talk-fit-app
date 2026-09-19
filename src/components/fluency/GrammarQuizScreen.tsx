@@ -38,7 +38,7 @@ export function GrammarQuizScreen({
   const [round, setRound] = useState<GrammarItem[]>(quiz.items);
   const [index, setIndex] = useState(0);
   const [checked, setChecked] = useState<null | { correct: boolean; value: number | string[] }>(null);
-  const [result, setResult] = useState<null | { correct: number; total: number; passed: boolean; awarded: boolean; wrong: string[] }>(null);
+  const [result, setResult] = useState<null | { correct: number; total: number; passed: boolean; awarded: boolean; wrong: string[]; canRetry: boolean }>(null);
   const [sending, setSending] = useState(false);
   const [failedToSend, setFailedToSend] = useState(false);
 
@@ -127,7 +127,7 @@ export function GrammarQuizScreen({
                   : `You need ${GRAMMAR_PASS_SCORE} of ${result.total} to earn the 150 points. Try the ones you missed.`}
               </p>
             )}
-            {!result.passed ? (
+            {!result.passed && result.canRetry ? (
               <button
                 type="button"
                 onClick={retryWrong}
@@ -136,6 +136,30 @@ export function GrammarQuizScreen({
                 <RotateCcw className="size-4" aria-hidden="true" />
                 {es ? `Repetir los ${result.wrong.length} fallados` : `Retry the ${result.wrong.length} you missed`}
               </button>
+            ) : null}
+            {!result.passed && !result.canRetry ? (
+              <div className="mt-2 space-y-2 text-left">
+                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                  {es ? "Repasá los que fallaste" : "Review the ones you missed"}
+                </p>
+                {result.wrong.map((id) => {
+                  const missed = quiz.items.find((i) => i.id === id);
+                  if (!missed) return null;
+                  return (
+                    <div key={id} className="rounded-2xl border border-border bg-background p-3">
+                      <p className="text-[13px] font-bold text-foreground">{correctAnswerText(missed)}</p>
+                      <p className="mt-1 text-[12px] font-medium text-muted-foreground">
+                        {es ? missed.explain.es : missed.explain.en}
+                      </p>
+                    </div>
+                  );
+                })}
+                <p className="pt-1 text-center text-[12px] font-bold text-muted-foreground">
+                  {es
+                    ? "Hoy ya usaste tu reintento. Mañana podés intentarlo de nuevo."
+                    : "You already used today's retry. You can try again tomorrow."}
+                </p>
+              </div>
             ) : null}
             <Link
               to="/day/$moduleId/$day"
