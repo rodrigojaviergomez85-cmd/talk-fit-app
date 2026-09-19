@@ -55,39 +55,6 @@ export const BASIC_ZERO_DAY_6: GrammarQuiz = {
       en: "an artist.",
       es: "an artist: vocal.",
     }, DETECTIVE),
-    rearrange(
-      "bzg6-13",
-      ["an", "engineer", "Daniel is"],
-      ["Daniel is", "an", "engineer"],
-      { en: "Daniel is + an + profession.", es: "Daniel is + an + profesión." },
-      CHISME,
-    ),
-    rearrange(
-      "bzg6-14",
-      ["hungry?", "Is", "Sofia"],
-      ["Is", "Sofia", "hungry?"],
-      { en: "Is + name + adjective?", es: "Is + nombre + adjetivo?" },
-      CHISME,
-    ),
-
-    // ── Repaso de la semana 1 ──────────────────────────────────────────────
-    mc("bzg6-15", "I ___ 28 years old and I ___ from Mexico.", "Tengo 28 años y soy de México.", ["am / am", "have / am", "am / is"], 0, {
-      en: "I am, I am.",
-      es: "La edad y el país, los dos con am.",
-    }),
-    mc("bzg6-16", "Sofia ___ in Guadalajara.", "Sofía vive en Guadalajara.", ["lives", "live", "is live"], 0, {
-      en: "She lives.",
-      es: "Sofia = she → lives, con -s.",
-    }),
-    mistake("bzg6-17", "My favorite color are purple.", "are", "is", {
-      en: "It is.",
-      es: "Un color → is.",
-    }, DETECTIVE),
-    mistake("bzg6-18", "Where is you from?", "is", "are", {
-      en: "Where are you from?",
-      es: "you → are.",
-    }, DETECTIVE),
-
     // ── Trampas ────────────────────────────────────────────────────────────
     mc("bzg6-19", "Are you hot? · No, I'm not. I ___ cold.", "¿Tienes calor? · No. Tengo frío.", ["am", "have", "is"], 0, {
       en: "I am cold. Not I have cold.",
