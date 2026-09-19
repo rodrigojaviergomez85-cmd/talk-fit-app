@@ -94,24 +94,29 @@ export const Route = createFileRoute("/api/live-coach")({
         const { data: userData } = await supabaseAdmin.auth.admin.getUserById(userId);
         const email = (userData?.user?.email ?? "").toLowerCase().trim();
         if (!ALLOWED_EMAILS.includes(email)) return json({ error: "not_allowed" }, 403);
+        const { isUnlimitedEmail } = await import("@/lib/unlimited-access");
+        const unlimited = isUnlimitedEmail(email);
+        const sessionCap = unlimited ? UNLIMITED_SESSION_LIMIT_SECONDS : SESSION_LIMIT_SECONDS;
 
         if (body.action === "end") {
           const raw = typeof body.seconds === "number" ? Math.round(body.seconds) : 0;
-          const seconds = Math.max(0, Math.min(SESSION_LIMIT_SECONDS, raw));
+          const seconds = Math.max(0, Math.min(sessionCap, raw));
+          // Usage is always recorded, even for unlimited accounts, so the real
+          // Gemini spend stays measurable.
           if (seconds > 0) {
             await supabaseAdmin
               .from("live_coach_sessions")
               .insert({ user_id: userId, local_day: localDay(), seconds } as never);
           }
           const used = await usedSecondsToday(supabaseAdmin as never, userId);
-          return json({ usedSeconds: used, dailyLimitSeconds: DAILY_LIMIT_SECONDS });
+          return json({ usedSeconds: used, dailyLimitSeconds: DAILY_LIMIT_SECONDS, unlimited });
         }
 
         if (body.action !== "start") return json({ error: "bad_request" }, 400);
 
         const used = await usedSecondsToday(supabaseAdmin as never, userId);
         const remaining = DAILY_LIMIT_SECONDS - used;
-        if (remaining <= 30) {
+        if (!unlimited && remaining <= 30) {
           return json(
             { error: "daily_limit", usedSeconds: used, dailyLimitSeconds: DAILY_LIMIT_SECONDS },
             429,
