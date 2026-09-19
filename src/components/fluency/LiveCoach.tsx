@@ -634,6 +634,9 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
                setCoachState("thinking");
              }
             for (const part of parts) {
+              // While the learner holds the talk button they interrupted the
+              // coach: drop any of its audio still arriving.
+              if (talkingRef.current) continue;
               const data = part?.inlineData?.data;
               if (!data) continue;
               const pcm = fromBase64(data);
