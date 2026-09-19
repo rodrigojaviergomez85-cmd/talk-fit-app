@@ -14,6 +14,8 @@ import { HabitMilestone } from "./HabitMilestone";
 import { moduleComparison, weekComparison } from "@/lib/progress-moments";
 import { habitDays, milestonesCrossed, wasOnBreak, type HabitMilestoneDef } from "@/lib/habit";
 import { AchievementsService } from "@/services/achievements-service";
+import { ScheduleReminderCard } from "./ScheduleReminderCard";
+import { useSchedulePrompt } from "@/hooks/use-schedule-prompt";
 
 export type RepSummary = { total: number; attempted: number; skipped: number };
 
