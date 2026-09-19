@@ -18,11 +18,6 @@ import { PAST_STORIES_DAY_17 } from "./past-stories-day-17";
 import { PAST_STORIES_DAY_18 } from "./past-stories-day-18";
 import { PAST_STORIES_DAY_19 } from "./past-stories-day-19";
 import { PAST_STORIES_DAY_20 } from "./past-stories-day-20";
-import { BASIC_ZERO_DAY_1 } from "./basic-zero-day-1";
-import { BASIC_ZERO_DAY_2 } from "./basic-zero-day-2";
-import { BASIC_ZERO_DAY_3 } from "./basic-zero-day-3";
-import { BASIC_ZERO_DAY_4 } from "./basic-zero-day-4";
-import { BASIC_ZERO_DAY_5 } from "./basic-zero-day-5";
 import { BASIC_ZERO_DAY_6 } from "./basic-zero-day-6";
 import { BASIC_ZERO_DAY_7 } from "./basic-zero-day-7";
 import { BASIC_ZERO_DAY_8 } from "./basic-zero-day-8";
@@ -63,15 +58,10 @@ import type { GrammarQuiz } from "./types";
 export * from "./types";
 
 /**
- * Registro: Basic Zero (basic-zero), Basic 3 (past-stories) y Basic 4 (mixed-tenses) · días 1–20 de cada uno.
+ * Registro: Basic Zero (basic-zero, días 6–20), Basic 3 (past-stories) y Basic 4 (mixed-tenses) · días 1–20.
  * Agregar más días aquí basta para extender el Paso 3 sin tocar la mecánica.
  */
 export const GRAMMAR_QUIZZES: GrammarQuiz[] = [
-  BASIC_ZERO_DAY_1,
-  BASIC_ZERO_DAY_2,
-  BASIC_ZERO_DAY_3,
-  BASIC_ZERO_DAY_4,
-  BASIC_ZERO_DAY_5,
   BASIC_ZERO_DAY_6,
   BASIC_ZERO_DAY_7,
   BASIC_ZERO_DAY_8,
