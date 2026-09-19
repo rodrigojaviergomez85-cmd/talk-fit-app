@@ -147,6 +147,8 @@ function RootComponent() {
 
   useEffect(() => {
     startServerDayWatcher();
+    // Notifications-only service worker. Never asks for permission here.
+    void registerServiceWorker().then(() => syncPushSubscription());
   }, []);
 
   return (
