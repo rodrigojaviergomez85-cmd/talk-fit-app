@@ -1,102 +1,108 @@
 import { mc, mistake, rearrange, type GrammarQuiz } from "./types";
 
-/** BASIC 3 · Día 2 — At Work Yesterday (verbos regulares -ed). */
+/**
+ * BASIC 3 · Día 2 — At Work Yesterday (verbos regulares -ed).
+ * 8 ancla · 8 transferencia · 4 trampas.
+ */
 export const PAST_STORIES_DAY_2: GrammarQuiz = {
   moduleId: "past-stories",
   day: 2,
   title: { en: "At Work Yesterday", es: "En el trabajo ayer" },
   items: [
-    mc("m3g2-1", "I ___ at work around eight.", "Llegué al trabajo como a las ocho.", ["arrive", "arrived", "arriveed", "arriving"], 1, {
-      en: "arrive already ends in -e, so you only add -d.",
-      es: "arrive ya termina en -e: solo se agrega -d → arrived.",
+    // ── Ancla ──────────────────────────────────────────────────────────────
+    mc("m3g2-1", "I ___ at work around eight.", "Llegué al trabajo como a las ocho.", ["arrive", "arrives", "arrived", "arriving"], 2, {
+      en: "Regular verb: arrive + d = arrived.",
+      es: "Verbo regular: arrive + d = arrived.",
     }),
-    mc("m3g2-2", "I ___ to several customers.", "Hablé con varios clientes.", ["talk", "talkd", "talked", "tolk"], 2, {
-      en: "talk is regular: talk + ed.",
-      es: "talk es regular: talk + ed = talked.",
+    mc("m3g2-2", "I ___ to several customers.", "Hablé con varios clientes.", ["talk", "talked", "talks", "talking"], 1, {
+      en: "talk + ed = talked.",
+      es: "talk + ed = talked.",
     }),
-    mc("m3g2-3", "I ___ emails during the morning.", "Respondí correos durante la mañana.", ["answered", "answerd", "answer", "answering"], 0, {
-      en: "answer + ed = answered.",
-      es: "answer + ed = answered.",
+    mc("m3g2-3", "I ___ a customer with a problem.", "Ayudé a un cliente con un problema.", ["helps", "help", "helping", "helped"], 3, {
+      en: "help + ed = helped.",
+      es: "help + ed = helped. Una sola p.",
     }),
-    mc("m3g2-4", "I ___ a customer with a problem.", "Ayudé a un cliente con un problema.", ["help", "helpped", "helped", "holp"], 2, {
-      en: "help → helped, with one p.",
-      es: "help → helped, con una sola p.",
+    mc("m3g2-4", "Overall, it ___ a busy day.", "En general, fue un día ocupado.", ["is", "was", "were", "did"], 1, {
+      en: "it was: the past of is.",
+      es: "it was: el pasado de is. did no va con adjetivos.",
     }),
-    mc("m3g2-5", "I ___ work around five.", "Terminé de trabajar como a las cinco.", ["finish", "finished", "finishd", "finishing"], 1, {
-      en: "finish → finished.",
-      es: "finish → finished.",
+    mistake("m3g2-5", "I answer emails all morning yesterday.", "answer", "answered", {
+      en: "Yesterday needs the past: answered.",
+      es: "Con yesterday el verbo va en pasado: answered. Dejarlo sin -ed es el error más común.",
     }),
-    mc("m3g2-6", "I ___ my day with a meeting.", "Empecé mi día con una reunión.", ["started", "startd", "start", "starting"], 0, {
-      en: "start → started.",
-      es: "start → started.",
-    }),
-    mc("m3g2-7", "I ___ lunch with my coworkers.", "Almorcé con mis compañeros.", ["haved", "have", "had", "has"], 2, {
-      en: "have is irregular even in a day of -ed verbs: have → had.",
-      es: "have es irregular aunque el día sea de verbos -ed: have → had.",
-    }),
-    mc("m3g2-8", "Overall, it ___ a busy day.", "En general, fue un día ocupado.", ["was", "were", "is", "be"], 0, {
-      en: "it → was.",
-      es: "Con it se usa was.",
-    }),
-    mistake("m3g2-9", "I arrive at work around eight yesterday.", "arrive", "arrived", {
-      en: "yesterday needs the past: arrived.",
-      es: "yesterday pide pasado: arrived.",
-    }),
-    mistake("m3g2-10", "I talkd to several customers.", "talkd", "talked", {
-      en: "The regular past ending is -ed: talked.",
-      es: "La terminación regular es -ed: talked.",
-    }),
-    mistake("m3g2-11", "I helpped a customer with a problem.", "helpped", "helped", {
-      en: "help does not double the p: helped.",
-      es: "help no dobla la p: helped.",
-    }),
-    mistake("m3g2-12", "Yesterday I answer emails all morning.", "answer", "answered", {
-      en: "yesterday needs the past: answered.",
-      es: "yesterday pide pasado: answered.",
-    }),
-    mistake("m3g2-13", "I haved lunch with my coworkers.", "haved", "had", {
-      en: "have → had, never haved.",
-      es: "have → had, nunca haved.",
-    }),
-    mistake("m3g2-14", "Yesterday it were a busy day.", "were", "was", {
-      en: "it takes was, not were.",
-      es: "Con it se usa was, no were.",
+    mistake("m3g2-6", "I finish work around five and went home.", "finish", "finished", {
+      en: "Both verbs go in the past: finished ... and went.",
+      es: "Los dos verbos van en pasado: finished ... and went. No se mezcla.",
     }),
     rearrange(
+      "m3g2-7",
+      ["my day", "with a meeting", "started", "I", "Yesterday,"],
+      ["Yesterday,", "I", "started", "my day", "with a meeting"],
+      { en: "Time word, subject, verb, object, detail.", es: "Palabra de tiempo, sujeto, verbo, objeto, detalle." },
+    ),
+    rearrange(
+      "m3g2-8",
+      ["with my coworkers", "had", "lunch", "I"],
+      ["I", "had", "lunch", "with my coworkers"],
+      { en: "Subject + verb + object + who with.", es: "Sujeto + verbo + objeto + con quién." },
+    ),
+
+    // ── Transferencia ──────────────────────────────────────────────────────
+    mc("m3g2-9", "My supervisor ___ the meeting at nine.", "Mi supervisor empezó la reunión a las nueve.", ["starts", "started", "start", "starting"], 1, {
+      en: "Regular past: started. Same form for he, she, I, they.",
+      es: "Pasado regular: started. Es igual para he, she, I, they; no lleva -s.",
+    }),
+    mc("m3g2-10", "The customers ___ for twenty minutes.", "Los clientes esperaron veinte minutos.", ["wait", "waits", "waited", "waiting"], 2, {
+      en: "wait + ed = waited.",
+      es: "wait + ed = waited.",
+    }),
+    mc("m3g2-11", "She ___ the call at five thirty.", "Ella terminó la llamada a las cinco y media.", ["finish", "finished", "finishes", "finishing"], 1, {
+      en: "finish + ed = finished.",
+      es: "finish + ed = finished.",
+    }),
+    mistake("m3g2-12", "My coworker helpped me with the system.", "helpped", "helped", {
+      en: "help + ed = helped, one p.",
+      es: "help + ed = helped, una sola p. Solo se dobla la consonante en verbos como stop → stopped.",
+    }),
+    mistake("m3g2-13", "The team work until nine last night.", "work", "worked", {
+      en: "last night needs the past: worked.",
+      es: "Con last night el verbo va en pasado: worked. The team es singular pero eso no cambia el pasado.",
+    }),
+    rearrange(
+      "m3g2-14",
+      ["the phone", "answered", "Carlos", "on the first ring"],
+      ["Carlos", "answered", "the phone", "on the first ring"],
+      { en: "Subject + verb + object + detail.", es: "Sujeto + verbo + objeto + detalle." },
+    ),
+    rearrange(
       "m3g2-15",
-      ["around eight", "arrived", "I", "at work"],
-      ["I", "arrived", "at work", "around eight"],
-      { en: "Subject + past verb + place + time.", es: "Sujeto + verbo en pasado + lugar + hora." },
+      ["late", "arrived", "The bus", "so", "I", "walked"],
+      ["The bus", "arrived", "late", "so", "I", "walked"],
+      { en: "Two past actions joined by so.", es: "Dos acciones en pasado unidas por so: el bus llegó tarde, así que caminé." },
     ),
     rearrange(
       "m3g2-16",
-      ["to several customers", "talked", "I"],
-      ["I", "talked", "to several customers"],
-      { en: "talk to + person.", es: "talk to + persona." },
+      ["a busy day", "it", "was", "for everyone", "Overall,"],
+      ["Overall,", "it", "was", "a busy day", "for everyone"],
+      { en: "Overall, it was ... for everyone.", es: "Overall, it was ... for everyone. was va después de it." },
     ),
-    rearrange(
-      "m3g2-17",
-      ["emails", "during the morning", "answered", "I"],
-      ["I", "answered", "emails", "during the morning"],
-      { en: "What first, then when.", es: "Primero qué, luego cuándo." },
-    ),
-    rearrange(
-      "m3g2-18",
-      ["a customer", "with a problem", "helped", "I"],
-      ["I", "helped", "a customer", "with a problem"],
-      { en: "Person first, then the detail.", es: "Primero la persona, luego el detalle." },
-    ),
-    rearrange(
-      "m3g2-19",
-      ["with my coworkers", "I", "lunch", "had"],
-      ["I", "had", "lunch", "with my coworkers"],
-      { en: "have lunch with + people.", es: "have lunch with + personas." },
-    ),
-    rearrange(
-      "m3g2-20",
-      ["a busy day", "Overall,", "was", "it"],
-      ["Overall,", "it", "was", "a busy day"],
-      { en: "Overall + it + was.", es: "Overall + it + was." },
-    ),
+
+    // ── Trampas ────────────────────────────────────────────────────────────
+    mc("m3g2-17", "___ you talk to the manager yesterday?", "¿Hablaste con el gerente ayer?", ["Did", "Do", "Were", "Was"], 0, {
+      en: "Past question: Did + you + talk.",
+      es: "Pregunta en pasado: Did + you + talk. Nunca Did you talked.",
+    }),
+    mistake("m3g2-18", "Yesterday I have a meeting with my boss.", "have", "had", {
+      en: "Yesterday needs the past: had.",
+      es: "Con yesterday: had. Dejar have en presente es el error número uno en llamadas.",
+    }),
+    mistake("m3g2-19", "He didn't finished the report.", "finished", "finish", {
+      en: "After didn't, the verb goes to base form: didn't finish.",
+      es: "Después de didn't el verbo va en forma base: didn't finish. El pasado ya está en did.",
+    }),
+    mistake("m3g2-20", "I stayed in home because I was sick.", "in", "at", {
+      en: "stay at home, not in home.",
+      es: "En inglés es stay at home. «In home» es calco de «en casa».",
+    }),
   ],
 };

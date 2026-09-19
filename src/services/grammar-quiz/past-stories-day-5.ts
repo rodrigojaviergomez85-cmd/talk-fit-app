@@ -1,102 +1,108 @@
 import { mc, mistake, rearrange, type GrammarQuiz } from "./types";
 
-/** BASIC 3 · Día 5 — My Yesterday Challenge (todo el día: mezcla de la semana). */
+/**
+ * BASIC 3 · Día 5 — My Yesterday Challenge (toda la semana: regulares, irregulares,
+ * was/were, didn't y preguntas con Did). 8 ancla · 8 transferencia · 4 trampas.
+ */
 export const PAST_STORIES_DAY_5: GrammarQuiz = {
   moduleId: "past-stories",
   day: 5,
   title: { en: "My Yesterday Challenge", es: "Mi reto de ayer" },
   items: [
-    mc("m3g5-1", "Yesterday ___ a normal day for me.", "Ayer fue un día normal para mí.", ["were", "was", "is", "did"], 1, {
-      en: "One day → was.",
-      es: "Un día → was.",
+    // ── Ancla ──────────────────────────────────────────────────────────────
+    mc("m3g5-1", "Yesterday ___ a normal day for me.", "Ayer fue un día normal para mí.", ["is", "was", "were", "did"], 1, {
+      en: "Yesterday (it) was.",
+      es: "Yesterday (it) was: singular y pasado.",
     }),
-    mc("m3g5-2", "I woke up early and ___ a shower.", "Me desperté temprano y me bañé.", ["take", "taked", "took", "taking"], 2, {
-      en: "Both verbs go in the past: woke up and took.",
-      es: "Los dos verbos van en pasado: woke up and took.",
+    mc("m3g5-2", "I woke up early and ___ a shower.", "Me desperté temprano y me bañé.", ["take", "took", "taken", "takes"], 1, {
+      en: "Both verbs in the past: woke up and took.",
+      es: "Los dos verbos en pasado: woke up and took. El segundo verbo también va en pasado.",
     }),
-    mc("m3g5-3", "I ate breakfast and ___ some coffee.", "Desayuné y tomé café.", ["drink", "drank", "drinked", "drunk"], 1, {
-      en: "drink → drank.",
-      es: "drink → drank.",
+    mc("m3g5-3", "Then, I ___ to work and ___ to a lot of people.", "Luego fui al trabajo y hablé con mucha gente.", ["go / talk", "went / talked", "went / talk", "goed / talked"], 1, {
+      en: "went (irregular) and talked (regular). Both past.",
+      es: "went (irregular) y talked (regular). Los dos en pasado; el error típico es dejar el segundo en presente.",
     }),
-    mc("m3g5-4", "Then, I ___ to work.", "Luego fui al trabajo.", ["goed", "go", "went", "gone"], 2, {
-      en: "go → went.",
-      es: "go → went.",
+    mc("m3g5-4", "___ you talk to a lot of people yesterday?", "¿Hablaste con mucha gente ayer?", ["Do", "Did", "Were", "Was"], 1, {
+      en: "Past question with an action verb: Did you talk.",
+      es: "Pregunta en pasado con verbo de acción: Did you talk.",
     }),
-    mc("m3g5-5", "My coworkers ___ very busy.", "Mis compañeros estaban muy ocupados.", ["was", "were", "are", "is"], 1, {
-      en: "Plural → were.",
-      es: "Plural → were.",
+    mistake("m3g5-5", "After work, I came home and make dinner.", "make", "made", {
+      en: "Second verb in the past too: came ... and made.",
+      es: "El segundo verbo también en pasado: came ... and made.",
     }),
-    mc("m3g5-6", "After work, I ___ home and made dinner.", "Después del trabajo, llegué a casa e hice la cena.", ["comed", "come", "came", "coming"], 2, {
-      en: "come → came.",
-      es: "come → came.",
-    }),
-    mc("m3g5-7", "Later, I watched TV and ___ to bed.", "Más tarde vi televisión y me acosté.", ["go", "went", "gone", "goed"], 1, {
-      en: "go to bed → went to bed.",
-      es: "go to bed → went to bed.",
-    }),
-    mc("m3g5-8", "___ you talk to a lot of people yesterday?", "¿Hablaste con mucha gente ayer?", ["Did", "Was", "Were", "Do"], 0, {
-      en: "Past questions with action verbs use Did + base form.",
-      es: "Las preguntas en pasado con verbos de acción usan Did + verbo base.",
-    }),
-    mistake("m3g5-9", "Yesterday were a normal day for me.", "were", "was", {
-      en: "One day → was.",
-      es: "Un día → was.",
-    }),
-    mistake("m3g5-10", "I woke up early and take a shower.", "take", "took", {
-      en: "The second verb also goes in the past: took.",
-      es: "El segundo verbo también va en pasado: took.",
-    }),
-    mistake("m3g5-11", "Then, I goed to work.", "goed", "went", {
-      en: "go → went.",
-      es: "go → went.",
-    }),
-    mistake("m3g5-12", "After work, I comed home and made dinner.", "comed", "came", {
-      en: "come → came.",
-      es: "come → came.",
-    }),
-    mistake("m3g5-13", "Did you talked to a lot of people?", "talked", "talk", {
-      en: "After Did the verb stays in its base form: Did you talk…?",
-      es: "Después de Did el verbo queda en forma base: Did you talk…?",
-    }),
-    mistake("m3g5-14", "My coworkers was very busy yesterday.", "was", "were", {
-      en: "Plural subject → were.",
-      es: "Sujeto plural → were.",
+    mistake("m3g5-6", "My coworkers was very busy yesterday.", "was", "were", {
+      en: "my coworkers = they: were.",
+      es: "my coworkers = they: were.",
     }),
     rearrange(
+      "m3g5-7",
+      ["I", "watched TV", "and", "went to bed", "Later,"],
+      ["Later,", "I", "watched TV", "and", "went to bed"],
+      { en: "Later, + subject + action + and + action.", es: "Later, + sujeto + acción + and + acción." },
+    ),
+    rearrange(
+      "m3g5-8",
+      ["and drank", "ate breakfast", "I", "some coffee"],
+      ["I", "ate breakfast", "and drank", "some coffee"],
+      { en: "Two past actions joined by and.", es: "Dos acciones en pasado unidas por and." },
+    ),
+
+    // ── Transferencia ──────────────────────────────────────────────────────
+    mc("m3g5-9", "Last Saturday, my cousin ___ me a message and we ___ to the beach.", "El sábado pasado mi primo me mandó un mensaje y fuimos a la playa.", ["send / go", "sent / went", "sended / went", "sent / go"], 1, {
+      en: "send → sent, go → went. Both irregular.",
+      es: "send → sent, go → went. Los dos irregulares, los dos en pasado.",
+    }),
+    mc("m3g5-10", "She ___ the bus because she ___ late.", "Ella perdió el bus porque se despertó tarde.", ["missed / woke up", "miss / wakes up", "missed / wakes up", "missing / woke up"], 0, {
+      en: "missed (regular) + woke up (irregular).",
+      es: "missed (regular) + woke up (irregular). Una frase real mezcla los dos tipos.",
+    }),
+    mc("m3g5-11", "___ your team happy with the results?", "¿Tu equipo quedó contento con los resultados?", ["Did", "Was", "Were", "Do"], 1, {
+      en: "your team = it: Was your team ...? No action verb, no Did.",
+      es: "your team = it: Was your team ...? No hay verbo de acción, así que no lleva Did.",
+    }),
+    mistake("m3g5-12", "We didn't went to the party on Friday.", "went", "go", {
+      en: "After didn't, base form: didn't go.",
+      es: "Después de didn't el verbo va en forma base: didn't go.",
+    }),
+    mistake("m3g5-13", "Last week my mom visit my grandmother in Santa Ana.", "visit", "visited", {
+      en: "Last week needs the past: visited.",
+      es: "Con last week el verbo va en pasado: visited.",
+    }),
+    rearrange(
+      "m3g5-14",
+      ["did", "What", "you", "do", "last weekend?"],
+      ["What", "did", "you", "do", "last weekend?"],
+      { en: "Wh-word + did + subject + base verb.", es: "Palabra wh + did + sujeto + verbo base. do vuelve a la forma base porque did ya lleva el pasado." },
+    ),
+    rearrange(
       "m3g5-15",
-      ["a normal day", "Yesterday", "for me", "was"],
-      ["Yesterday", "was", "a normal day", "for me"],
-      { en: "for me closes the sentence.", es: "for me cierra la oración." },
+      ["tired", "but", "happy", "we", "were", "After the game,"],
+      ["After the game,", "we", "were", "tired", "but", "happy"],
+      { en: "Time, subject, were, adjective, but, adjective.", es: "Tiempo, sujeto, were, adjetivo, but, adjetivo." },
     ),
     rearrange(
       "m3g5-16",
-      ["and took a shower", "I", "early", "woke up"],
-      ["I", "woke up", "early", "and took a shower"],
-      { en: "First action, then the second one with and.", es: "Primero una acción, luego la otra con and." },
+      ["didn't", "The customer", "so", "I", "understand", "repeated the question"],
+      ["The customer", "didn't", "understand", "so", "I", "repeated the question"],
+      { en: "Negative past + so + what you did.", es: "Negativo en pasado + so + lo que hiciste. Muy útil en llamadas." },
     ),
-    rearrange(
-      "m3g5-17",
-      ["to work", "Then,", "went", "I"],
-      ["Then,", "I", "went", "to work"],
-      { en: "Then opens the next step.", es: "Then abre el siguiente paso." },
-    ),
-    rearrange(
-      "m3g5-18",
-      ["and made dinner", "I", "After work,", "came home"],
-      ["After work,", "I", "came home", "and made dinner"],
-      { en: "The time phrase opens the sentence.", es: "La frase de tiempo abre la oración." },
-    ),
-    rearrange(
-      "m3g5-19",
-      ["and went to bed", "Later,", "watched TV", "I"],
-      ["Later,", "I", "watched TV", "and went to bed"],
-      { en: "Later + subject + two past actions.", es: "Later + sujeto + dos acciones en pasado." },
-    ),
-    rearrange(
-      "m3g5-20",
-      ["a good day", "was", "Overall,", "it"],
-      ["Overall,", "it", "was", "a good day"],
-      { en: "Overall + it + was.", es: "Overall + it + was." },
-    ),
+
+    // ── Trampas ────────────────────────────────────────────────────────────
+    mc("m3g5-17", "___ you at home last night? I called you.", "¿Estabas en casa anoche? Te llamé.", ["Did", "Do", "Were", "Was"], 2, {
+      en: "at home is a state, not an action: Were you at home?",
+      es: "at home es un estado, no una acción: Were you at home? Did solo va con verbos de acción.",
+    }),
+    mistake("m3g5-18", "Yesterday I go to the gym and then I went home.", "go", "went", {
+      en: "Both actions yesterday: went ... went.",
+      es: "Las dos acciones fueron ayer: went ... went. Cambiar de pasado a presente a mitad de frase es el error más común al contar el día.",
+    }),
+    mistake("m3g5-19", "My supervisor said me that the call was good.", "said", "told", {
+      en: "told me, not said me. say something / tell someone.",
+      es: "told me, no said me. say va con la cosa dicha; tell va con la persona. «Said me» es calco de «me dijo».",
+    }),
+    mistake("m3g5-20", "Did you slept well last night?", "slept", "sleep", {
+      en: "After Did, base form: Did you sleep well?",
+      es: "Después de Did el verbo va en forma base: Did you sleep well? El pasado ya está en Did.",
+    }),
   ],
 };
