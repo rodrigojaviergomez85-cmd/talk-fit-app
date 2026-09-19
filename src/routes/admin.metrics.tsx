@@ -367,7 +367,13 @@ function MetricsPage() {
 
             {/* 3. Retención por calendario */}
             <Card title={es ? "3. Regresan después de registrarse" : "3. Return after signing up"}>
+              <p className="mb-3 text-[11px] leading-snug text-muted-foreground">
+                {es
+                  ? "Usuarios con al menos N días de registrados que practicaron en o después del día N. No es por cohorte."
+                  : "Users signed up for at least N days who practiced on or after day N. Not cohort-based."}
+              </p>
               <div className="space-y-2">
+
                 {data.calendar_retention.map((row) => (
                   <Bar
                     key={row.day}
