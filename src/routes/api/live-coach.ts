@@ -15,6 +15,11 @@ export const LIVE_MODEL = "gemini-3.8-live";
 export const SESSION_LIMIT_SECONDS = 5 * 60;
 /** Minutes one learner may speak per local day. */
 export const DAILY_LIMIT_SECONDS = 15 * 60;
+/**
+ * Internal unlimited accounts (src/lib/unlimited-access.ts) get no daily cap
+ * and a generous per-session ceiling (a forgotten session still ends itself).
+ */
+export const UNLIMITED_SESSION_LIMIT_SECONDS = 60 * 60;
 
 const ALLOWED_EMAILS = ["english4callcenters@gmail.com"];
 
