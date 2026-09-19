@@ -65,13 +65,16 @@ export const Route = createFileRoute("/api/live-coach")({
         const { data: userData } = await supabaseAdmin.auth.admin.getUserById(userId);
         const email = (userData?.user?.email ?? "").toLowerCase().trim();
         const allowed = ALLOWED_EMAILS.includes(email);
+        const { isUnlimitedEmail } = await import("@/lib/unlimited-access");
+        const unlimited = allowed && isUnlimitedEmail(email);
         const used = allowed ? await usedSecondsToday(supabaseAdmin as never, userId) : 0;
 
         return json({
           allowed,
+          unlimited,
           usedSeconds: used,
           dailyLimitSeconds: DAILY_LIMIT_SECONDS,
-          sessionLimitSeconds: SESSION_LIMIT_SECONDS,
+          sessionLimitSeconds: unlimited ? UNLIMITED_SESSION_LIMIT_SECONDS : SESSION_LIMIT_SECONDS,
         });
       },
 
