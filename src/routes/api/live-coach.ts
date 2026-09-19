@@ -151,9 +151,10 @@ export const Route = createFileRoute("/api/live-coach")({
         return json({
           token: minted.name,
           model: LIVE_MODEL,
+          unlimited,
           usedSeconds: used,
           dailyLimitSeconds: DAILY_LIMIT_SECONDS,
-          sessionLimitSeconds: Math.min(SESSION_LIMIT_SECONDS, remaining),
+          sessionLimitSeconds: unlimited ? UNLIMITED_SESSION_LIMIT_SECONDS : Math.min(SESSION_LIMIT_SECONDS, remaining),
         });
       },
     },
