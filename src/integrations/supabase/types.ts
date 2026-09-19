@@ -1886,6 +1886,7 @@ export type Database = {
       }
       admin_engagement_metrics: { Args: never; Returns: Json }
       admin_health_snapshot: { Args: never; Returns: Json }
+      admin_reminder_stats: { Args: never; Returns: Json }
       admin_retention_cohorts: { Args: never; Returns: Json }
       admin_story_metrics: { Args: never; Returns: Json }
       anonymize_account: {
@@ -2138,6 +2139,14 @@ export type Database = {
       release_tts_lock: {
         Args: { _clip_key: string; _owner: string }
         Returns: boolean
+      }
+      reminder_activation_candidates: {
+        Args: { _hours: number; _kind: string }
+        Returns: {
+          local_date: string
+          module_id: string
+          user_id: string
+        }[]
       }
     }
     Enums: {
