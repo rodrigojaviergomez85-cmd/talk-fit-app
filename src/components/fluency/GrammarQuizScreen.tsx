@@ -68,13 +68,23 @@ export function GrammarQuizScreen({
     const keep = roundIds ? new Set(roundIds) : null;
     const byId = new Map(quiz.items.map((i) => [i.id, i] as const));
     const list: Step[] = [];
-    if (quiz.sections?.length) {
-      for (const section of quiz.sections) {
+    const sections = quiz.sections;
+    if (sections?.length) {
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i]!;
         const items = section.itemIds
           .map((id) => byId.get(id))
           .filter((i): i is GrammarItem => Boolean(i) && (!keep || keep.has(i!.id)));
-        if (items.length) for (const item of items) list.push({ section, item });
-        else if (!keep && section.itemIds.length === 0) list.push({ section });
+        const hasPendingLater = keep
+          ? sections.slice(i + 1).some((s) => s.itemIds.some((id) => keep.has(id)))
+          : false;
+        if (items.length) {
+          for (const item of items) list.push({ section, item });
+        } else if (!keep && section.itemIds.length === 0) {
+          list.push({ section });
+        } else if (keep && section.context?.kind === "reading" && hasPendingLater) {
+          list.push({ section });
+        }
       }
       return list;
     }
