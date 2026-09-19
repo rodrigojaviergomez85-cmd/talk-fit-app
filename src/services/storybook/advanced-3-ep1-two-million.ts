@@ -135,13 +135,13 @@ export const ADVANCED3_EP1_TWO_MILLION: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "It was a normal Monday morning, a week ago. At 10:44 an agent ended a call with an abusive customer, after two warnings. What happened was that Ms.",
-          es: "Era un lunes normal por la mañana, hace una semana. A las 10:44 un agente terminó una llamada con un cliente abusivo, después de dos advertencias. Lo que pasó fue que Ms.",
+          text: "It was a normal Monday morning, a week ago. At 10:44 an agent ended a call with an abusive customer, after two warnings.",
+          es: "Era un lunes normal por la mañana, hace una semana. A las 10:44 un agente terminó una llamada con un cliente abusivo, después de dos advertencias.",
         },
         {
           speaker: "dani",
-          text: "Barrett asked me for the incident report in her office, and I gave it: facts in one paragraph, my opinion in another, marked as opinion.",
-          es: "Barrett me pidió el reporte del incidente en su oficina, y lo di: hechos en un párrafo, mi opinión en otro, marcada como opinión.",
+          text: "What happened was that Ms. Barrett asked me for the incident report in her office, and I gave it: facts in one paragraph, my opinion in another, marked as opinion.",
+          es: "Lo que pasó fue que Ms. Barrett me pidió el reporte del incidente en su oficina, y lo di: hechos en un párrafo, mi opinión en otro, marcada como opinión.",
         },
         {
           speaker: "reed",
