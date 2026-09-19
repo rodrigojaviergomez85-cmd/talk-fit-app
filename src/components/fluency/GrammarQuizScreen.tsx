@@ -44,6 +44,7 @@ export function GrammarQuizScreen({
 
   const item = round[index];
   const isRetry = round.length !== quiz.items.length;
+  const isPilot = moduleId === "past-stories" && day >= 1 && day <= 5;
 
   const send = useCallback(
     async (all: Answers) => {
@@ -177,20 +178,24 @@ export function GrammarQuizScreen({
           </div>
         </header>
 
-        <ItemView item={item} checked={checked} onAnswer={answer} es={es} />
+        <ItemView item={item} checked={checked} onAnswer={answer} es={es} isPilot={isPilot} />
 
         {checked ? (
           <div
             role="status"
             className={cn(
               "rounded-2xl border p-3.5",
-              checked.correct ? "border-primary bg-primary/10" : "border-destructive/40 bg-destructive/10",
+              checked.correct
+                ? isPilot
+                  ? "border-success bg-success/10"
+                  : "border-primary bg-primary/10"
+                : "border-destructive/40 bg-destructive/10",
             )}
           >
-            <p className="flex items-center gap-1.5 text-[13px] font-extrabold text-foreground">
+            <p className={cn("flex items-center gap-1.5 text-[13px] font-extrabold", checked.correct && isPilot ? "text-success" : "text-foreground")}>
               {checked.correct ? (
                 <>
-                  <Check className="size-4 text-primary" aria-hidden="true" />
+                  <Check className={cn("size-4", isPilot ? "text-success" : "text-primary")} aria-hidden="true" />
                   {es ? "¡Correcto!" : "Correct!"}
                 </>
               ) : (
@@ -270,11 +275,13 @@ function ItemView({
   checked,
   onAnswer,
   es,
+  isPilot,
 }: {
   item: GrammarItem;
   checked: null | { correct: boolean; value: number | string[] };
   onAnswer: (value: number | string[]) => void;
   es: boolean;
+  isPilot: boolean;
 }) {
   if (item.kind === "mc") {
     return (
@@ -292,12 +299,14 @@ function ItemView({
                 disabled={Boolean(checked)}
                 onClick={() => onAnswer(i)}
                 className={cn(
-                  "flex min-h-[48px] w-full items-center rounded-2xl border px-3.5 text-left text-[14px] font-bold text-foreground transition-colors",
+                  "flex min-h-[48px] w-full items-center rounded-2xl border px-3.5 text-left text-[14px] font-bold transition-colors",
                   checked && isAnswer
-                    ? "border-primary bg-primary/10"
+                    ? isPilot
+                      ? "border-success bg-success/10 text-success"
+                      : "border-primary bg-primary/10 text-foreground"
                     : picked
-                      ? "border-destructive bg-destructive/10"
-                      : "border-border bg-background",
+                      ? "border-destructive bg-destructive/10 text-foreground"
+                      : "border-border bg-background text-foreground",
                 )}
               >
                 {option}
@@ -326,12 +335,14 @@ function ItemView({
                 disabled={Boolean(checked)}
                 onClick={() => onAnswer(i)}
                 className={cn(
-                  "min-h-[44px] rounded-xl border px-3 text-[15px] font-bold text-foreground",
+                  "min-h-[44px] rounded-xl border px-3 text-[15px] font-bold",
                   checked && isAnswer
-                    ? "border-primary bg-primary/10"
+                    ? isPilot
+                      ? "border-success bg-success/10 text-success"
+                      : "border-primary bg-primary/10 text-foreground"
                     : picked
-                      ? "border-destructive bg-destructive/10"
-                      : "border-border bg-background",
+                      ? "border-destructive bg-destructive/10 text-foreground"
+                      : "border-border bg-background text-foreground",
                 )}
               >
                 {word}
@@ -343,17 +354,21 @@ function ItemView({
     );
   }
 
-  return <RearrangeView key={item.id} item={item} locked={Boolean(checked)} onAnswer={onAnswer} es={es} />;
+  return <RearrangeView key={item.id} item={item} locked={Boolean(checked)} correct={checked?.correct ?? false} isPilot={isPilot} onAnswer={onAnswer} es={es} />;
 }
 
 function RearrangeView({
   item,
   locked,
+  correct,
+  isPilot,
   onAnswer,
   es,
 }: {
   item: Extract<GrammarItem, { kind: "rearrange" }>;
   locked: boolean;
+  correct: boolean;
+  isPilot: boolean;
   onAnswer: (value: string[]) => void;
   es: boolean;
 }) {
@@ -383,7 +398,12 @@ function RearrangeView({
               type="button"
               disabled={locked}
               onClick={() => setPicked(picked.filter((_, j) => j !== i))}
-              className="min-h-[40px] rounded-xl border border-primary bg-primary/10 px-3 text-[14px] font-bold text-foreground"
+              className={cn(
+                "min-h-[40px] rounded-xl border px-3 text-[14px] font-bold",
+                locked && correct && isPilot
+                  ? "border-success bg-success/10 text-success"
+                  : "border-primary bg-primary/10 text-foreground",
+              )}
             >
               {piece}
             </button>
