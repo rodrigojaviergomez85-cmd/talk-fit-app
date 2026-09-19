@@ -1,102 +1,111 @@
 import { mc, mistake, rearrange, type GrammarQuiz } from "./types";
 
-/** BASIC 3 · Día 1 — My Morning Yesterday (pasado simple, verbos irregulares). */
+/**
+ * BASIC 3 · Día 1 — My Morning Yesterday (pasado simple, verbos irregulares).
+ *
+ * Mezcla del día: 8 ítems ancla con las frases del curso, 8 de transferencia
+ * (misma gramática, otros verbos y otras personas) y 4 trampas con los errores
+ * reales de hispanohablantes. Los distractores son palabras que existen.
+ */
 export const PAST_STORIES_DAY_1: GrammarQuiz = {
   moduleId: "past-stories",
   day: 1,
   title: { en: "My Morning Yesterday", es: "Mi mañana de ayer" },
   items: [
-    mc("m3g1-1", "Yesterday, I ___ up at six thirty.", "Ayer me desperté a las seis y media.", ["wake", "woke", "waked", "waking"], 1, {
-      en: "wake is irregular: wake → woke.",
-      es: "wake es irregular: wake → woke. No existe «waked».",
+    // ── Ancla: las frases del día ──────────────────────────────────────────
+    mc("m3g1-1", "Yesterday, I ___ up at six thirty.", "Ayer me desperté a las seis y media.", ["wake", "woke", "woken", "wakes"], 1, {
+      en: "wake → woke in the simple past. woken is the participle (have woken).",
+      es: "wake → woke en pasado simple. woken es el participio (have woken).",
     }),
-    mc("m3g1-2", "I ___ a shower before work.", "Me bañé antes del trabajo.", ["take", "taked", "took", "takes"], 2, {
-      en: "take → took (irregular).",
-      es: "take → took. Es irregular, no lleva -ed.",
+    mc("m3g1-2", "I ___ a shower before work.", "Me bañé antes del trabajo.", ["take", "takes", "took", "taken"], 2, {
+      en: "take → took. taken needs have: I have taken.",
+      es: "take → took. taken necesita have: I have taken.",
     }),
-    mc("m3g1-3", "I ___ breakfast at home.", "Desayuné en casa.", ["eat", "eated", "ate", "eaten"], 2, {
-      en: "eat → ate in the simple past.",
-      es: "eat → ate en pasado simple. «eaten» es participio.",
+    mc("m3g1-3", "I ___ breakfast at home.", "Desayuné en casa.", ["eat", "ate", "eaten", "eats"], 1, {
+      en: "eat → ate. eaten is the participle.",
+      es: "eat → ate. eaten es el participio.",
     }),
-    mc("m3g1-4", "I ___ some coffee before work.", "Tomé café antes del trabajo.", ["drinked", "drank", "drink", "drunk"], 1, {
-      en: "drink → drank.",
-      es: "drink → drank en pasado simple.",
-    }),
-    mc("m3g1-5", "I ___ home around seven thirty.", "Salí de casa como a las siete y media.", ["leaved", "leave", "left", "leaves"], 2, {
+    mc("m3g1-4", "I ___ home around seven thirty.", "Salí de casa como a las siete y media.", ["leave", "left", "leaves", "leaving"], 1, {
       en: "leave → left.",
       es: "leave → left. Es irregular.",
     }),
-    mc("m3g1-6", "I ___ dressed for work.", "Me vestí para el trabajo.", ["got", "getted", "get", "gets"], 0, {
-      en: "get → got: I got dressed.",
-      es: "get → got: I got dressed.",
+    mistake("m3g1-5", "Yesterday I drink some coffee before work.", "drink", "drank", {
+      en: "Yesterday needs the past: drink → drank.",
+      es: "Con yesterday el verbo va en pasado: drink → drank. Dejarlo en presente es el error más común.",
     }),
-    mc("m3g1-7", "Overall, I ___ a good morning.", "En general, tuve una buena mañana.", ["have", "haved", "had", "has"], 2, {
-      en: "have → had.",
-      es: "have → had en pasado.",
-    }),
-    mc("m3g1-8", "I ___ a little tired in the morning.", "Estaba un poco cansado en la mañana.", ["was", "were", "am", "is"], 0, {
-      en: "With I the past of be is was.",
-      es: "Con I el pasado de be es was.",
-    }),
-    mistake("m3g1-9", "Yesterday I waked up at six.", "waked", "woke", {
-      en: "wake is irregular: woke, not waked.",
-      es: "wake es irregular: woke, no waked.",
-    }),
-    mistake("m3g1-10", "I eated breakfast at home.", "eated", "ate", {
-      en: "eat → ate.",
-      es: "eat → ate. No se agrega -ed a los irregulares.",
-    }),
-    mistake("m3g1-11", "I taked a shower before work.", "taked", "took", {
-      en: "take → took.",
-      es: "take → took.",
-    }),
-    mistake("m3g1-12", "I leaved home around seven thirty.", "leaved", "left", {
-      en: "leave → left.",
-      es: "leave → left.",
-    }),
-    mistake("m3g1-13", "I drinked some coffee.", "drinked", "drank", {
-      en: "drink → drank.",
-      es: "drink → drank.",
-    }),
-    mistake("m3g1-14", "I was get out of bed at six thirty.", "get", "got", {
-      en: "One past verb is enough: I got out of bed.",
-      es: "Un solo verbo en pasado: I got out of bed.",
+    mistake("m3g1-6", "I got dressed and I am a little tired.", "am", "was", {
+      en: "The whole story is in the past: I was a little tired.",
+      es: "Toda la historia va en pasado: I was a little tired. No se mezcla am con got.",
     }),
     rearrange(
-      "m3g1-15",
-      ["at six thirty", "Yesterday", "woke up", "I"],
-      ["Yesterday", "I", "woke up", "at six thirty"],
-      { en: "Time word + subject + past verb + time.", es: "Palabra de tiempo + sujeto + verbo en pasado + hora." },
+      "m3g1-7",
+      ["at six thirty", "I", "up", "Yesterday,", "woke"],
+      ["Yesterday,", "I", "woke", "up", "at six thirty"],
+      { en: "Time word, subject, verb, particle, time.", es: "Palabra de tiempo, sujeto, verbo, partícula, hora. Woke y up van juntos." },
     ),
     rearrange(
-      "m3g1-16",
-      ["a shower", "I", "took", "before work"],
-      ["I", "took", "a shower", "before work"],
-      { en: "Subject + verb + object + time.", es: "Sujeto + verbo + objeto + tiempo." },
-    ),
-    rearrange(
-      "m3g1-17",
-      ["breakfast", "ate", "at home", "I"],
-      ["I", "ate", "breakfast", "at home"],
-      { en: "Subject + verb + what + where.", es: "Sujeto + verbo + qué + dónde." },
-    ),
-    rearrange(
-      "m3g1-18",
-      ["around seven thirty", "left", "home", "I"],
-      ["I", "left", "home", "around seven thirty"],
-      { en: "The time goes at the end.", es: "La hora va al final." },
-    ),
-    rearrange(
-      "m3g1-19",
-      ["tired", "I", "in the morning", "was"],
-      ["I", "was", "tired", "in the morning"],
-      { en: "was comes right after I.", es: "was va justo después de I." },
-    ),
-    rearrange(
-      "m3g1-20",
-      ["a good morning", "Overall,", "had", "I"],
+      "m3g1-8",
+      ["a good morning", "had", "Overall,", "I"],
       ["Overall,", "I", "had", "a good morning"],
       { en: "Overall opens the sentence.", es: "Overall abre la oración." },
     ),
+
+    // ── Transferencia: misma gramática, otras personas y otros verbos ──────
+    mc("m3g1-9", "My sister ___ up late and missed the bus.", "Mi hermana se despertó tarde y perdió el bus.", ["wakes", "woke", "waked", "woken"], 1, {
+      en: "Same verb, different subject: she woke up.",
+      es: "Mismo verbo, otra persona: she woke up. En pasado no cambia con he/she.",
+    }),
+    mc("m3g1-10", "We ___ pupusas for breakfast on Sunday.", "Comimos pupusas de desayuno el domingo.", ["eat", "eats", "ate", "eaten"], 2, {
+      en: "eat → ate, with we too.",
+      es: "eat → ate, también con we. El pasado es igual para todas las personas.",
+    }),
+    mc("m3g1-11", "The bus ___ at seven and I was still at home.", "El bus salió a las siete y yo todavía estaba en casa.", ["leaves", "leave", "left", "leaving"], 2, {
+      en: "leave → left. The bus left.",
+      es: "leave → left. The bus left. Sin -s en pasado.",
+    }),
+    mistake("m3g1-12", "My mom maked coffee for everyone.", "maked", "made", {
+      en: "make → made.",
+      es: "make → made. Irregular, no lleva -ed.",
+    }),
+    mistake("m3g1-13", "Yesterday my brother get up at five.", "get", "got", {
+      en: "Yesterday needs the past: got up.",
+      es: "Con yesterday el verbo va en pasado: got up.",
+    }),
+    rearrange(
+      "m3g1-14",
+      ["her phone", "in the morning", "checked", "Ana"],
+      ["Ana", "checked", "her phone", "in the morning"],
+      { en: "Subject + verb + object + time.", es: "Sujeto + verbo + objeto + tiempo. El sujeto puede ser un nombre, no solo I." },
+    ),
+    rearrange(
+      "m3g1-15",
+      ["a shower", "took", "before school", "my cousin", "Then,"],
+      ["Then,", "my cousin", "took", "a shower", "before school"],
+      { en: "Then, + subject + verb + object + time.", es: "Then, + sujeto + verbo + objeto + tiempo." },
+    ),
+    rearrange(
+      "m3g1-16",
+      ["late", "were", "for class", "We"],
+      ["We", "were", "late", "for class"],
+      { en: "We were: were goes right after we.", es: "We were: were va justo después de we. Con we no es was." },
+    ),
+
+    // ── Trampas: los errores que sí cometen los hispanohablantes ───────────
+    mc("m3g1-17", "___ you wake up early yesterday?", "¿Te despertaste temprano ayer?", ["Do", "Did", "Was", "Were"], 1, {
+      en: "Questions about the past use Did + base verb.",
+      es: "Las preguntas del pasado usan Did + verbo base: Did you wake up. No se dice Do you wake up yesterday.",
+    }),
+    mistake("m3g1-18", "Did you took a shower this morning?", "took", "take", {
+      en: "After Did, the verb goes back to base form: take.",
+      es: "Después de Did el verbo vuelve a la forma base: take. El pasado ya está en Did.",
+    }),
+    mistake("m3g1-19", "I no eat breakfast today.", "no", "didn't", {
+      en: "Negative past: didn't + base verb. I didn't eat.",
+      es: "Negativo en pasado: didn't + verbo base. I didn't eat. «I no ate» es traducción del español.",
+    }),
+    mistake("m3g1-20", "I arrived to work at eight.", "to", "at", {
+      en: "arrive at a place: I arrived at work.",
+      es: "Se llega «a», pero en inglés es arrive at: I arrived at work. «Arrive to» es calco del español.",
+    }),
   ],
 };

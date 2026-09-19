@@ -20,6 +20,12 @@ export type GrammarSubmitResult = {
   wrong: string[];
   /** true cuando la liga confirmó los 150 puntos en esta llamada. */
   awarded: boolean;
+  /**
+   * true solo después del primer intento fallido del día: un solo reintento
+   * por día. Se calcula con los intentos ya guardados (grammar_quiz_attempts),
+   * el mismo lugar donde queda el resultado del día.
+   */
+  canRetry: boolean;
 };
 
 export function isItemCorrect(item: GrammarItem, value: number | string[] | undefined): boolean {
@@ -44,7 +50,7 @@ export const submitGrammarQuiz = createServerFn({ method: "POST" })
   }))
   .handler(async ({ data, context }): Promise<GrammarSubmitResult> => {
     const quiz = getGrammarQuiz(data.moduleId, data.day);
-    if (!quiz) return { correct: 0, total: 0, passed: false, wrong: [], awarded: false };
+    if (!quiz) return { correct: 0, total: 0, passed: false, wrong: [], awarded: false, canRetry: false };
 
     const byId = new Map(data.answers.map((a) => [a.id, a.value] as const));
     const wrong: string[] = [];
@@ -66,6 +72,20 @@ export const submitGrammarQuiz = createServerFn({ method: "POST" })
       answers: data.answers,
     });
 
+    // Un solo reintento por día: contamos los intentos de hoy (UTC) para este
+    // módulo y día. El insert de arriba ya está incluido en el conteo.
+    const todayStart = new Date();
+    todayStart.setUTCHours(0, 0, 0, 0);
+    const { count } = await context.supabase
+      .from("grammar_quiz_attempts")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", context.userId)
+      .eq("module_id", data.moduleId)
+      .eq("day", data.day)
+      .gte("completed_at", todayStart.toISOString());
+    const attemptsToday = count ?? 1;
+    const canRetry = !passed && attemptsToday < 2;
+
     let awarded = false;
     if (passed) {
       const { data: res } = await context.supabase.rpc("league_award", {
@@ -78,7 +98,7 @@ export const submitGrammarQuiz = createServerFn({ method: "POST" })
       awarded = (res as { status?: string } | null)?.status === "awarded";
     }
 
-    return { correct, total, passed, wrong, awarded };
+    return { correct, total, passed, wrong, awarded, canRetry };
   });
 
 /** ¿Ya aprobó este día? Para pintar la tarjeta como completada. */
