@@ -681,7 +681,8 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
                userTurnRef.current += 1;
                helpKindRef.current = null;
                setHelpLoading(null);
-               if (sourcesRef.current.length === 0 && !micPausedRef.current) setCoachState("listening");
+               if (sourcesRef.current.length === 0 && !micPausedRef.current)
+                 setCoachState(talkingRef.current ? "listening" : "idle");
              }
 
           },
