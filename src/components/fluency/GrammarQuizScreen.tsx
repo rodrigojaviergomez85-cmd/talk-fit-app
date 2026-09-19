@@ -43,6 +43,13 @@ export function GrammarQuizScreen({
   const [sending, setSending] = useState(false);
   const [failedToSend, setFailedToSend] = useState(false);
 
+  useEffect(() => {
+    if (result?.passed) {
+      unlockFeedbackAudio();
+      playVictorySound();
+    }
+  }, [result?.passed]);
+
   const item = round[index];
   const isRetry = round.length !== quiz.items.length;
   const isPilot = moduleId === "past-stories" && day >= 1 && day <= 10;
