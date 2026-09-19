@@ -105,6 +105,17 @@ export function playCorrectFeedbackSound() {
   ]);
 }
 
+/** VICTORY — bright rising fanfare (~1 s) for passing the quiz (16/20+). */
+export function playVictorySound() {
+  playNotes([
+    { at: 0, freq: 523.25, dur: 0.18, peak: 0.14, type: "triangle" }, // C5
+    { at: 0.12, freq: 659.25, dur: 0.18, peak: 0.14, type: "triangle" }, // E5
+    { at: 0.24, freq: 783.99, dur: 0.2, peak: 0.15, type: "triangle" }, // G5
+    { at: 0.38, freq: 1046.5, dur: 0.42, peak: 0.16, type: "triangle" }, // C6
+    { at: 0.38, freq: 2093, dur: 0.3, peak: 0.03, type: "sine" }, // soft sparkle
+  ]);
+}
+
 /** WRONG — short low double note. Never harsh: it marks the miss, it doesn't punish. */
 export function playWrongFeedbackSound() {
   playNotes([
