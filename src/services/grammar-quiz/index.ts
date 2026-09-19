@@ -18,6 +18,26 @@ import { PAST_STORIES_DAY_17 } from "./past-stories-day-17";
 import { PAST_STORIES_DAY_18 } from "./past-stories-day-18";
 import { PAST_STORIES_DAY_19 } from "./past-stories-day-19";
 import { PAST_STORIES_DAY_20 } from "./past-stories-day-20";
+import { BASIC_ZERO_DAY_1 } from "./basic-zero-day-1";
+import { BASIC_ZERO_DAY_2 } from "./basic-zero-day-2";
+import { BASIC_ZERO_DAY_3 } from "./basic-zero-day-3";
+import { BASIC_ZERO_DAY_4 } from "./basic-zero-day-4";
+import { BASIC_ZERO_DAY_5 } from "./basic-zero-day-5";
+import { BASIC_ZERO_DAY_6 } from "./basic-zero-day-6";
+import { BASIC_ZERO_DAY_7 } from "./basic-zero-day-7";
+import { BASIC_ZERO_DAY_8 } from "./basic-zero-day-8";
+import { BASIC_ZERO_DAY_9 } from "./basic-zero-day-9";
+import { BASIC_ZERO_DAY_10 } from "./basic-zero-day-10";
+import { BASIC_ZERO_DAY_11 } from "./basic-zero-day-11";
+import { BASIC_ZERO_DAY_12 } from "./basic-zero-day-12";
+import { BASIC_ZERO_DAY_13 } from "./basic-zero-day-13";
+import { BASIC_ZERO_DAY_14 } from "./basic-zero-day-14";
+import { BASIC_ZERO_DAY_15 } from "./basic-zero-day-15";
+import { BASIC_ZERO_DAY_16 } from "./basic-zero-day-16";
+import { BASIC_ZERO_DAY_17 } from "./basic-zero-day-17";
+import { BASIC_ZERO_DAY_18 } from "./basic-zero-day-18";
+import { BASIC_ZERO_DAY_19 } from "./basic-zero-day-19";
+import { BASIC_ZERO_DAY_20 } from "./basic-zero-day-20";
 import { MIXED_TENSES_DAY_1 } from "./mixed-tenses-day-1";
 import { MIXED_TENSES_DAY_2 } from "./mixed-tenses-day-2";
 import { MIXED_TENSES_DAY_3 } from "./mixed-tenses-day-3";
@@ -43,10 +63,30 @@ import type { GrammarQuiz } from "./types";
 export * from "./types";
 
 /**
- * Registro: Basic 3 (past-stories) y Basic 4 (mixed-tenses) · días 1–20 de cada uno.
+ * Registro: Basic Zero (basic-zero), Basic 3 (past-stories) y Basic 4 (mixed-tenses) · días 1–20 de cada uno.
  * Agregar más días aquí basta para extender el Paso 3 sin tocar la mecánica.
  */
 export const GRAMMAR_QUIZZES: GrammarQuiz[] = [
+  BASIC_ZERO_DAY_1,
+  BASIC_ZERO_DAY_2,
+  BASIC_ZERO_DAY_3,
+  BASIC_ZERO_DAY_4,
+  BASIC_ZERO_DAY_5,
+  BASIC_ZERO_DAY_6,
+  BASIC_ZERO_DAY_7,
+  BASIC_ZERO_DAY_8,
+  BASIC_ZERO_DAY_9,
+  BASIC_ZERO_DAY_10,
+  BASIC_ZERO_DAY_11,
+  BASIC_ZERO_DAY_12,
+  BASIC_ZERO_DAY_13,
+  BASIC_ZERO_DAY_14,
+  BASIC_ZERO_DAY_15,
+  BASIC_ZERO_DAY_16,
+  BASIC_ZERO_DAY_17,
+  BASIC_ZERO_DAY_18,
+  BASIC_ZERO_DAY_19,
+  BASIC_ZERO_DAY_20,
   PAST_STORIES_DAY_1,
   PAST_STORIES_DAY_2,
   PAST_STORIES_DAY_3,
