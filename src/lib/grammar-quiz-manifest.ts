@@ -3,7 +3,7 @@
  * la liga (cliente y servidor) pueda preguntarlo sin cargar el banco de ítems.
  */
 export const GRAMMAR_QUIZ_DAYS: { moduleId: string; days: number[] }[] = [
-  { moduleId: "past-stories", days: [1, 2, 3, 4, 5] },
+  { moduleId: "past-stories", days: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
 ];
 
 export function hasGrammarQuiz(moduleId: string, day: number): boolean {

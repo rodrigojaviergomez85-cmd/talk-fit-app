@@ -44,7 +44,7 @@ export function GrammarQuizScreen({
 
   const item = round[index];
   const isRetry = round.length !== quiz.items.length;
-  const isPilot = moduleId === "past-stories" && day >= 1 && day <= 5;
+  const isPilot = moduleId === "past-stories" && day >= 1 && day <= 10;
 
   const send = useCallback(
     async (all: Answers) => {
