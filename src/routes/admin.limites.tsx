@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { Loader2, ShieldCheck } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { AdminNav } from "@/components/fluency/AdminNav";
 import { AdminAlertsBanner } from "@/components/fluency/AdminAlertsBanner";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -98,6 +99,7 @@ function AdminLimitsPage() {
   if (query.isLoading || !query.data) {
     return (
       <AppShell title="Administración">
+        <AdminNav />
         <div className="flex justify-center py-16">
           <Loader2 className="size-8 animate-spin text-primary" />
         </div>
@@ -109,6 +111,7 @@ function AdminLimitsPage() {
 
   return (
     <AppShell title="Administración">
+      <AdminNav />
       <AdminAlertsBanner />
       <div className="space-y-4">
         <section className="space-y-3 rounded-3xl border border-border bg-card p-4 shadow-[var(--shadow-card)]">

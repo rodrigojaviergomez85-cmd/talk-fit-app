@@ -3,6 +3,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Database, ShieldCheck } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { AdminNav } from "@/components/fluency/AdminNav";
 import { AdminAlertsBanner } from "@/components/fluency/AdminAlertsBanner";
 import { AuthGate } from "@/components/fluency/AuthGate";
 import { useAuth } from "@/lib/auth";
@@ -70,6 +71,7 @@ function StorageReportPage() {
   if (loading || (user && admin === null)) {
     return (
       <AppShell title={title}>
+        <AdminNav />
         <div className="space-y-3" aria-busy="true">
           {[0, 1, 2].map((i) => (
             <div key={i} className="h-24 animate-pulse rounded-3xl bg-secondary" />
@@ -82,6 +84,7 @@ function StorageReportPage() {
   if (!user) {
     return (
       <AppShell title={title}>
+        <AdminNav />
         <AuthGate blocking />
       </AppShell>
     );
@@ -110,6 +113,7 @@ function StorageReportPage() {
 
   return (
     <AppShell title={title}>
+      <AdminNav />
       <AdminAlertsBanner />
       <div className="space-y-5">
         <section className="rounded-3xl bg-navy p-5 text-navy-foreground">

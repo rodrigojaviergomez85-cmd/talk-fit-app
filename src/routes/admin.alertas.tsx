@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { AlertTriangle, CheckCircle2, Loader2, RefreshCw } from "lucide-react";
 import { AppShell } from "@/components/fluency/AppShell";
+import { AdminNav } from "@/components/fluency/AdminNav";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
@@ -144,6 +145,7 @@ function AdminAlertsPage() {
 
   return (
     <AppShell title="Alertas">
+      <AdminNav />
       <div className="space-y-3 pb-6">
         <div className="flex items-center justify-between gap-3">
           <div className={`flex flex-1 items-center gap-2 rounded-2xl border px-4 py-3 ${toneFor[level]}`}>
