@@ -23,6 +23,8 @@ import {
   RETENTION_WINDOW_LABELS,
   type RetentionData,
 } from "@/lib/admin-retention";
+import { getReminderStats } from "@/lib/admin-reminders.functions";
+import { followupRate, type ReminderStats } from "@/lib/admin-reminders";
 import { getStoryMetrics } from "@/lib/story-analytics.functions";
 import type { StoryMetrics } from "@/lib/story-analytics";
 import { getAdminCostCenter } from "@/lib/admin-cost-center.functions";
@@ -212,6 +214,36 @@ function RetentionCards({ es, enabled }: { es: boolean; enabled: boolean }) {
 }
 
 
+/** Reach and follow-through of the practice reminders. Read-only. */
+function ReminderCard({ es, enabled }: { es: boolean; enabled: boolean }) {
+  const load = useServerFn(getReminderStats);
+  const query = useQuery<ReminderStats>({
+    queryKey: ["admin-reminder-stats"],
+    queryFn: () => load({}),
+    staleTime: 60_000,
+    retry: false,
+    enabled,
+  });
+  const d = query.data;
+  if (!d) return null;
+
+  return (
+    <Card title={es ? "Recordatorios" : "Reminders"}>
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <Stat label={es ? "Con horario" : "With a schedule"} value={fmtNum(d.scheduled_users)} />
+        <Stat label={es ? "Con push vivo" : "Live push"} value={fmtNum(d.push_users)} />
+        <Stat label={es ? "Por correo" : "By email"} value={fmtNum(d.email_users)} />
+        <Stat label={es ? "Enviados hoy · 1º" : "Sent today · 1st"} value={fmtNum(d.sent_today_first)} />
+        <Stat label={es ? "Enviados hoy · 2º" : "Sent today · 2nd"} value={fmtNum(d.sent_today_second)} />
+        <Stat
+          label={es ? "Practicó tras el aviso" : "Practiced after reminder"}
+          value={fmtPct(followupRate(d))}
+          hint={es ? `${fmtNum(d.followup.practiced)} de ${fmtNum(d.followup.reminded)} · 7 días` : `${fmtNum(d.followup.practiced)} of ${fmtNum(d.followup.reminded)} · 7 days`}
+        />
+      </div>
+    </Card>
+  );
+}
 
 function MetricsPage() {
   const { user, loading } = useAuth();
@@ -322,6 +354,8 @@ function MetricsPage() {
         {error ? <p className="text-[13px] font-semibold text-primary">{error}</p> : null}
 
         <RetentionCards es={es} enabled={admin === true} />
+
+        <ReminderCard es={es} enabled={admin === true} />
 
         {!data ? (
           <div className="space-y-3" aria-busy="true">
