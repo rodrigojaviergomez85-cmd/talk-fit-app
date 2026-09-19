@@ -168,10 +168,12 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
     const res = await fetch("/api/live-coach", { headers });
     const body = (await res.json().catch(() => null)) as {
       allowed?: boolean;
+      unlimited?: boolean;
       usedSeconds?: number;
       dailyLimitSeconds?: number;
     } | null;
     setAllowed(Boolean(body?.allowed));
+    setUnlimited(Boolean(body?.unlimited));
     setUsedSeconds(body?.usedSeconds ?? 0);
     if (body?.dailyLimitSeconds) setDailyLimit(body.dailyLimitSeconds);
   }, []);
