@@ -179,7 +179,7 @@ function CuentaPage() {
             </div>
             {isAdmin ? (
               <Link
-                to="/admin/limites"
+                to="/admin/metrics"
                 className="inline-flex items-center gap-1 rounded-full bg-secondary px-3 py-1.5 text-[12px] font-bold"
               >
                 <ShieldCheck className="size-3.5" /> Administración
