@@ -1,4 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
+import { useAppLang } from "@/lib/i18n";
 
 const TABS = [
   { to: "/admin/metrics", es: "Métricas", en: "Metrics" },
@@ -10,7 +11,9 @@ const TABS = [
   { to: "/admin/storage-report", es: "Storage", en: "Storage" },
 ];
 
-export function AdminNav({ es }: { es: boolean }) {
+export function AdminNav() {
+  const lang = useAppLang();
+  const es = lang === "es";
   const { pathname } = useLocation();
   return (
     <nav
