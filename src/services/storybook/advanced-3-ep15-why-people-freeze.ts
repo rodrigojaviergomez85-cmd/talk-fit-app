@@ -59,8 +59,13 @@ export const ADVANCED3_EP15_WHY_PEOPLE_FREEZE: StorybookEpisode = {
       lines: [
         {
           speaker: "elena",
-          text: "My nephew passed your audit. Last month at the airport a woman asked him 'window or aisle' and he stood there. He had the words. Nothing came out. Why does that happen? And don't use the word 'confidence', I've heard it.",
-          es: "Mi sobrino pasó tu auditoría. El mes pasado en el aeropuerto una señora le preguntó 'ventana o pasillo' y se quedó parado. Tenía las palabras. No salió nada. ¿Por qué pasa eso? Y no usés la palabra 'confianza', ya la oí.",
+          text: "My nephew passed your audit. Last month at the airport a woman asked him 'window or aisle' and he stood there. He had the words. Nothing came out. Why does that happen?",
+          es: "Mi sobrino pasó tu auditoría. El mes pasado en el aeropuerto una señora le preguntó 'ventana o pasillo' y se quedó parado. Tenía las palabras. No salió nada. ¿Por qué pasa eso?",
+        },
+        {
+          speaker: "elena",
+          text: "And don't use the word 'confidence', I've heard it.",
+          es: "Y no usés la palabra 'confianza', ya la oí.",
         },
         {
           speaker: "dani",
@@ -85,8 +90,13 @@ export const ADVANCED3_EP15_WHY_PEOPLE_FREEZE: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Freezing is a kind of alarm. It's not a language problem; it's the body deciding the room is dangerous and turning off the mouth to keep you safe. Your nephew didn't forget English. His body decided a stranger with a question was a threat, and it shut the door.",
-          es: "Congelarse es un tipo de alarma. No es un problema de idioma; es el cuerpo decidiendo que la sala es peligrosa y apagando la boca para mantenerte a salvo. Tu sobrino no olvidó el inglés. Su cuerpo decidió que una desconocida con una pregunta era una amenaza, y cerró la puerta.",
+          text: "Freezing is a kind of alarm. It's not a language problem; it's the body deciding the room is dangerous and turning off the mouth to keep you safe.",
+          es: "Congelarse es un tipo de alarma. No es un problema de idioma; es el cuerpo decidiendo que la sala es peligrosa y apagando la boca para mantenerte a salvo.",
+        },
+        {
+          speaker: "dani",
+          text: "Your nephew didn't forget English. His body decided a stranger with a question was a threat, and it shut the door.",
+          es: "Tu sobrino no olvidó el inglés. Su cuerpo decidió que una desconocida con una pregunta era una amenaza, y cerró la puerta.",
         },
         {
           speaker: "elena",
@@ -147,13 +157,28 @@ export const ADVANCED3_EP15_WHY_PEOPLE_FREEZE: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "For example: my first day on the floor at Northline, a customer said 'it doesn't work' and I lost him in four minutes. I wasn't missing words. I had all the words. I was missing five seconds. The alarm went off, I translated everything twice, and by the time I answered he was gone.",
-          es: "Por ejemplo: mi primer día en el piso de Northline, un cliente dijo 'no funciona' y lo perdí en cuatro minutos. No me faltaban palabras. Tenía todas las palabras. Me faltaban cinco segundos. La alarma se disparó, traduje todo dos veces, y cuando respondí ya se había ido.",
+          text: "For example: my first day on the floor at Northline, a customer said 'it doesn't work' and I lost him in four minutes.",
+          es: "Por ejemplo: mi primer día en el piso de Northline, un cliente dijo 'no funciona' y lo perdí en cuatro minutos.",
         },
         {
           speaker: "dani",
-          text: "Thursdays, ninety days: your kids practiced hearing the alarm and speaking anyway, badly, in front of someone who wasn't going to fire them. That's what was inside the room. Does that make sense, or should I explain it another way?",
-          es: "Los jueves, noventa días: sus hijos practicaron oír la alarma y hablar de todos modos, mal, frente a alguien que no los iba a despedir. Eso es lo que había adentro del salón. ¿Tiene sentido, o lo explico de otra forma?",
+          text: "I wasn't missing words. I had all the words. I was missing five seconds.",
+          es: "No me faltaban palabras. Tenía todas las palabras. Me faltaban cinco segundos.",
+        },
+        {
+          speaker: "dani",
+          text: "The alarm went off, I translated everything twice, and by the time I answered he was gone.",
+          es: "La alarma se disparó, traduje todo dos veces, y cuando respondí ya se había ido.",
+        },
+        {
+          speaker: "dani",
+          text: "Thursdays, ninety days: your kids practiced hearing the alarm and speaking anyway, badly, in front of someone who wasn't going to fire them. That's what was inside the room.",
+          es: "Los jueves, noventa días: sus hijos practicaron oír la alarma y hablar de todos modos, mal, frente a alguien que no los iba a despedir. Eso es lo que había adentro del salón.",
+        },
+        {
+          speaker: "dani",
+          text: "Does that make sense, or should I explain it another way?",
+          es: "¿Tiene sentido, o lo explico de otra forma?",
         },
       ],
       words: [
@@ -178,8 +203,18 @@ export const ADVANCED3_EP15_WHY_PEOPLE_FREEZE: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "Fair. Another way, then. Imagine that someone asks your name and you know it. And your mouth waits for permission. That's your son in English. The word is on the tip of his tongue and it stays there, because a part of him is asking 'is it safe to say this out loud?'. In Spanish that part never asks.",
-          es: "Justo. De otra forma, entonces. Imagine que alguien le pregunta su nombre y usted lo sabe. Y su boca espera permiso. Ese es su hijo en inglés. La palabra está en la punta de la lengua y se queda ahí, porque una parte de él está preguntando '¿es seguro decir esto en voz alta?'. En español esa parte nunca pregunta.",
+          text: "Fair. Another way, then. Imagine that someone asks your name and you know it. And your mouth waits for permission. That's your son in English.",
+          es: "Justo. De otra forma, entonces. Imagine que alguien le pregunta su nombre y usted lo sabe. Y su boca espera permiso. Ese es su hijo en inglés.",
+        },
+        {
+          speaker: "dani",
+          text: "The word is on the tip of his tongue and it stays there, because a part of him is asking 'is it safe to say this out loud?'.",
+          es: "La palabra está en la punta de la lengua y se queda ahí, porque una parte de él está preguntando '¿es seguro decir esto en voz alta?'.",
+        },
+        {
+          speaker: "dani",
+          text: "In Spanish that part never asks.",
+          es: "En español esa parte nunca pregunta.",
         },
         {
           speaker: "elena",
@@ -209,8 +244,13 @@ export const ADVANCED3_EP15_WHY_PEOPLE_FREEZE: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "One question a night, in English, any question, and you don't correct the answer. You don't need to understand it. You need to be the stranger who asked and didn't leave. Wrong answers count. Silence doesn't.",
-          es: "Una pregunta por noche, en inglés, cualquier pregunta, y no corrigen la respuesta. No necesitan entenderla. Necesitan ser el desconocido que preguntó y no se fue. Las respuestas equivocadas cuentan. El silencio no.",
+          text: "One question a night, in English, any question, and you don't correct the answer. You don't need to understand it. You need to be the stranger who asked and didn't leave.",
+          es: "Una pregunta por noche, en inglés, cualquier pregunta, y no corrigen la respuesta. No necesitan entenderla. Necesitan ser el desconocido que preguntó y no se fue.",
+        },
+        {
+          speaker: "dani",
+          text: "Wrong answers count. Silence doesn't.",
+          es: "Las respuestas equivocadas cuentan. El silencio no.",
         },
         {
           speaker: "elena",
@@ -302,8 +342,13 @@ export const ADVANCED3_EP15_WHY_PEOPLE_FREEZE: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "You had the words and Lidia was watching, and your alarm read her before it read the customer. Monday, seven a.m., the small room at the academy. There's a chair in the middle of the floor. It's yours.",
-          es: "Tenías las palabras y Lidia estaba mirando, y tu alarma la leyó a ella antes de leer al cliente. El lunes, siete a.m., el salón pequeño de la academia. Hay una silla en medio del piso. Es tuya.",
+          text: "You had the words and Lidia was watching, and your alarm read her before it read the customer. Monday, seven a.m., the small room at the academy.",
+          es: "Tenías las palabras y Lidia estaba mirando, y tu alarma la leyó a ella antes de leer al cliente. El lunes, siete a.m., el salón pequeño de la academia.",
+        },
+        {
+          speaker: "dani",
+          text: "There's a chair in the middle of the floor. It's yours.",
+          es: "Hay una silla en medio del piso. Es tuya.",
         },
         {
           speaker: "oscar",

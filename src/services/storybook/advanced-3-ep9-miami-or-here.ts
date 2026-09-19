@@ -90,13 +90,23 @@ export const ADVANCED3_EP9_MIAMI_OR_HERE: StorybookEpisode = {
       lines: [
         {
           speaker: "julieta",
-          text: "In week one you taught Mía to write what the customer said and, under it, what they need. You just did the opposite with yourself. Money is what the offer says. Row one is what you need. Start again.",
-          es: "En la semana uno le enseñaste a Mía a escribir lo que el cliente dijo y, debajo, lo que necesita. Acabas de hacer lo contrario contigo mismo. El dinero es lo que dice la oferta. La fila uno es lo que necesitas. Empieza otra vez.",
+          text: "In week one you taught Mía to write what the customer said and, under it, what they need. You just did the opposite with yourself. Money is what the offer says.",
+          es: "En la semana uno le enseñaste a Mía a escribir lo que el cliente dijo y, debajo, lo que necesita. Acabas de hacer lo contrario contigo mismo. El dinero es lo que dice la oferta.",
+        },
+        {
+          speaker: "julieta",
+          text: "Row one is what you need. Start again.",
+          es: "La fila uno es lo que necesitas. Empieza otra vez.",
         },
         {
           speaker: "dani",
-          text: "...That was wrong. Once. The advantage of Miami is reach: three floors, three countries, twenty Mías in six months instead of one. The advantage of here is contact: one floor, Thursdays at ten, the club, the bus, and somebody who says jefe when I'm wrong.",
-          es: "...Eso estuvo mal. Una vez. La ventaja de Miami es el alcance: tres pisos, tres países, veinte Mías en seis meses en vez de una. La ventaja de aquí es el contacto: un piso, los jueves a las diez, el club, el bus, y alguien que dice jefe cuando me equivoco.",
+          text: "...That was wrong. Once. The advantage of Miami is reach: three floors, three countries, twenty Mías in six months instead of one.",
+          es: "...Eso estuvo mal. Una vez. La ventaja de Miami es el alcance: tres pisos, tres países, veinte Mías en seis meses en vez de una.",
+        },
+        {
+          speaker: "dani",
+          text: "The advantage of here is contact: one floor, Thursdays at ten, the club, the bus, and somebody who says jefe when I'm wrong.",
+          es: "La ventaja de aquí es el contacto: un piso, los jueves a las diez, el club, el bus, y alguien que dice jefe cuando me equivoco.",
         },
       ],
       words: [
@@ -116,8 +126,13 @@ export const ADVANCED3_EP9_MIAMI_OR_HERE: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "The downside of Miami is that it costs the calls. Six months of hotels, no headset, no Thursday. I'd be teaching people to do a thing I stopped doing. The downside of here is that it stays one floor. Barrett's offer expires tomorrow, and there won't be a second one.",
-          es: "La desventaja de Miami es que cuesta las llamadas. Seis meses de hoteles, sin diadema, sin jueves. Estaría enseñando a la gente a hacer algo que dejé de hacer. La desventaja de aquí es que se queda en un piso. La oferta de Barrett vence mañana, y no va a haber una segunda.",
+          text: "The downside of Miami is that it costs the calls. Six months of hotels, no headset, no Thursday. I'd be teaching people to do a thing I stopped doing.",
+          es: "La desventaja de Miami es que cuesta las llamadas. Seis meses de hoteles, sin diadema, sin jueves. Estaría enseñando a la gente a hacer algo que dejé de hacer.",
+        },
+        {
+          speaker: "dani",
+          text: "The downside of here is that it stays one floor. Barrett's offer expires tomorrow, and there won't be a second one.",
+          es: "La desventaja de aquí es que se queda en un piso. La oferta de Barrett vence mañana, y no va a haber una segunda.",
         },
         {
           speaker: "julieta",
@@ -209,8 +224,13 @@ export const ADVANCED3_EP9_MIAMI_OR_HERE: StorybookEpisode = {
       lines: [
         {
           speaker: "camila",
-          text: "Miami: approved, if the board says yes tomorrow. Monterrey from here, six weeks, the app half and the room half: also approved, and it doesn't need you on a plane. I'm not going to tell you which one. I approve coffees.",
-          es: "Miami: aprobado, si la junta dice que sí mañana. Monterrey desde aquí, seis semanas, la mitad app y la mitad salón: también aprobado, y no te necesita en un avión. No te voy a decir cuál. Yo apruebo cafés.",
+          text: "Miami: approved, if the board says yes tomorrow. Monterrey from here, six weeks, the app half and the room half: also approved, and it doesn't need you on a plane.",
+          es: "Miami: aprobado, si la junta dice que sí mañana. Monterrey desde aquí, seis semanas, la mitad app y la mitad salón: también aprobado, y no te necesita en un avión.",
+        },
+        {
+          speaker: "camila",
+          text: "I'm not going to tell you which one. I approve coffees.",
+          es: "No te voy a decir cuál. Yo apruebo cafés.",
         },
         {
           speaker: "dani",
@@ -307,8 +327,13 @@ export const ADVANCED3_EP9_MIAMI_OR_HERE: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Row four. Which one lets me keep taking calls. It's harder, but you don't have to choose only one. That's what I told Nico. That's what I told Mía about the degree. I've never once said it to myself.",
-          es: "Fila cuatro. Cuál me deja seguir tomando llamadas. Es más difícil, pero no tienes que elegir solo una. Eso le dije a Nico. Eso le dije a Mía sobre el título. Nunca me lo he dicho a mí mismo.",
+          text: "Row four. Which one lets me keep taking calls. It's harder, but you don't have to choose only one. That's what I told Nico. That's what I told Mía about the degree.",
+          es: "Fila cuatro. Cuál me deja seguir tomando llamadas. Es más difícil, pero no tienes que elegir solo una. Eso le dije a Nico. Eso le dije a Mía sobre el título.",
+        },
+        {
+          speaker: "dani",
+          text: "I've never once said it to myself.",
+          es: "Nunca me lo he dicho a mí mismo.",
         },
       ],
       words: [

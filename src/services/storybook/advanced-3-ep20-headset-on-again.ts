@@ -131,8 +131,13 @@ export const ADVANCED3_EP20_HEADSET_ON_AGAIN: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "With two conditions. You said maybe two. The first: the floor training in all three countries is led by Mía. The Thursday block, the trainers in Bogotá and Monterrey, the stool. Not reporting to me in Miami. Leading it here.",
-          es: "Con dos condiciones. Usted dijo quizá dos. La primera: el entrenamiento del piso en los tres países lo dirige Mía. El bloque del jueves, los entrenadores de Bogotá y Monterrey, el banco. No reportándome a mí en Miami. Dirigiéndolo desde aquí.",
+          text: "With two conditions. You said maybe two. The first: the floor training in all three countries is led by Mía. The Thursday block, the trainers in Bogotá and Monterrey, the stool.",
+          es: "Con dos condiciones. Usted dijo quizá dos. La primera: el entrenamiento del piso en los tres países lo dirige Mía. El bloque del jueves, los entrenadores de Bogotá y Monterrey, el banco.",
+        },
+        {
+          speaker: "dani",
+          text: "Not reporting to me in Miami. Leading it here.",
+          es: "No reportándome a mí en Miami. Dirigiéndolo desde aquí.",
         },
         {
           speaker: "mia",
@@ -167,8 +172,13 @@ export const ADVANCED3_EP20_HEADSET_ON_AGAIN: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "The second: one shift a month I take calls. On this floor, at the desk in the middle, on the phones, with a headset. In the contract, not as a favor. A director who hasn't sat on the floor in a year can't fix it. I learned that from Ms. Barrett on day one.",
-          es: "La segunda: un turno al mes tomo llamadas. En este piso, en el escritorio del medio, en los teléfonos, con diadema. En el contrato, no como favor. Un director que no se ha sentado en el piso en un año no puede arreglarlo. Eso lo aprendí de Ms. Barrett el día uno.",
+          text: "The second: one shift a month I take calls. On this floor, at the desk in the middle, on the phones, with a headset. In the contract, not as a favor.",
+          es: "La segunda: un turno al mes tomo llamadas. En este piso, en el escritorio del medio, en los teléfonos, con diadema. En el contrato, no como favor.",
+        },
+        {
+          speaker: "dani",
+          text: "A director who hasn't sat on the floor in a year can't fix it. I learned that from Ms. Barrett on day one.",
+          es: "Un director que no se ha sentado en el piso en un año no puede arreglarlo. Eso lo aprendí de Ms. Barrett el día uno.",
         },
         {
           speaker: "reed",
@@ -310,8 +320,13 @@ export const ADVANCED3_EP20_HEADSET_ON_AGAIN: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Abril. You've been here five days and you've said yes, four seconds, and which chair. That's three sentences with one word each. Today you say a whole one. I'm the woman at the airport. Window or aisle?",
-          es: "Abril. Llevás cinco días aquí y has dicho sí, cuatro segundos, y cuál silla. Son tres frases de una palabra. Hoy decís una completa. Yo soy la señora del aeropuerto. ¿Ventana o pasillo?",
+          text: "Abril. You've been here five days and you've said yes, four seconds, and which chair. That's three sentences with one word each. Today you say a whole one.",
+          es: "Abril. Llevás cinco días aquí y has dicho sí, cuatro segundos, y cuál silla. Son tres frases de una palabra. Hoy decís una completa.",
+        },
+        {
+          speaker: "dani",
+          text: "I'm the woman at the airport. Window or aisle?",
+          es: "Yo soy la señora del aeropuerto. ¿Ventana o pasillo?",
         },
         {
           speaker: "oscar",

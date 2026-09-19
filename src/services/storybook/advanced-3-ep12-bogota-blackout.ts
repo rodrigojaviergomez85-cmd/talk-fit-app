@@ -94,8 +94,13 @@ export const ADVANCED3_EP12_BOGOTA_BLACKOUT: StorybookEpisode = {
         },
         {
           speaker: "julieta",
-          text: "Phone. The whole block is out, not just the building. The screen is dead, the router is dead, and I have forty people in a room with no windows. The generator is for the servers, not for us.",
-          es: "Teléfono. Toda la cuadra está sin luz, no solo el edificio. La pantalla está muerta, el router está muerto, y tengo cuarenta personas en una sala sin ventanas. El generador es para los servidores, no para nosotros.",
+          text: "Phone. The whole block is out, not just the building. The screen is dead, the router is dead, and I have forty people in a room with no windows.",
+          es: "Teléfono. Toda la cuadra está sin luz, no solo el edificio. La pantalla está muerta, el router está muerto, y tengo cuarenta personas en una sala sin ventanas.",
+        },
+        {
+          speaker: "julieta",
+          text: "The generator is for the servers, not for us.",
+          es: "El generador es para los servidores, no para nosotros.",
         },
         {
           speaker: "dani",
@@ -124,8 +129,13 @@ export const ADVANCED3_EP12_BOGOTA_BLACKOUT: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Don't hold them. Use them. So instead of the slides, put me on speaker and put the phone in the middle of the room. Everybody has a phone light. That's forty lights. Pairs, one case, the customer won't say what the problem is. No slides. Nobody needs to read anything.",
-          es: "No los retengas. Usalos. Así que en vez de las diapositivas, ponme en altavoz y pon el teléfono en medio de la sala. Todos tienen luz en el celular. Son cuarenta luces. Parejas, un caso, el cliente no dice cuál es el problema. Sin diapositivas. Nadie necesita leer nada.",
+          text: "Don't hold them. Use them. So instead of the slides, put me on speaker and put the phone in the middle of the room. Everybody has a phone light. That's forty lights.",
+          es: "No los retengas. Usalos. Así que en vez de las diapositivas, ponme en altavoz y pon el teléfono en medio de la sala. Todos tienen luz en el celular. Son cuarenta luces.",
+        },
+        {
+          speaker: "dani",
+          text: "Pairs, one case, the customer won't say what the problem is. No slides. Nobody needs to read anything.",
+          es: "Parejas, un caso, el cliente no dice cuál es el problema. Sin diapositivas. Nadie necesita leer nada.",
         },
         {
           speaker: "julieta",
@@ -159,8 +169,13 @@ export const ADVANCED3_EP12_BOGOTA_BLACKOUT: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Bogotá. You can't see me, so listen. The customer says 'it doesn't work'. That's all you get. Person on the left, you're the customer. Person on the right, find the problem in three questions. Go. I'll count.",
-          es: "Bogotá. No pueden verme, así que escuchen. El cliente dice 'no funciona'. Es todo lo que tienen. La persona de la izquierda es el cliente. La de la derecha, encuentre el problema en tres preguntas. Vayan. Yo cuento.",
+          text: "Bogotá. You can't see me, so listen. The customer says 'it doesn't work'. That's all you get. Person on the left, you're the customer.",
+          es: "Bogotá. No pueden verme, así que escuchen. El cliente dice 'no funciona'. Es todo lo que tienen. La persona de la izquierda es el cliente.",
+        },
+        {
+          speaker: "dani",
+          text: "Person on the right, find the problem in three questions. Go. I'll count.",
+          es: "La de la derecha, encuentre el problema en tres preguntas. Vayan. Yo cuento.",
         },
         {
           speaker: "julieta",
@@ -257,8 +272,13 @@ export const ADVANCED3_EP12_BOGOTA_BLACKOUT: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "I was about to run fourteen approved slides when the power went out. So instead of waiting, we ran the case on a phone speaker with forty phone lights. In the end, twenty cases, nobody left, and the room learned it doesn't need the screen. What I learned is that the plan was the slides and the program was the pairs.",
-          es: "Estaba por correr catorce diapositivas aprobadas cuando se fue la luz. Así que en vez de esperar, corrimos el caso en un altavoz de teléfono con cuarenta luces de celular. Al final, veinte casos, nadie se fue, y la sala aprendió que no necesita la pantalla. Lo que aprendí es que el plan eran las diapositivas y el programa eran las parejas.",
+          text: "I was about to run fourteen approved slides when the power went out. So instead of waiting, we ran the case on a phone speaker with forty phone lights.",
+          es: "Estaba por correr catorce diapositivas aprobadas cuando se fue la luz. Así que en vez de esperar, corrimos el caso en un altavoz de teléfono con cuarenta luces de celular.",
+        },
+        {
+          speaker: "dani",
+          text: "In the end, twenty cases, nobody left, and the room learned it doesn't need the screen. What I learned is that the plan was the slides and the program was the pairs.",
+          es: "Al final, veinte casos, nadie se fue, y la sala aprendió que no necesita la pantalla. Lo que aprendí es que el plan eran las diapositivas y el programa eran las parejas.",
         },
         {
           speaker: "barrett",
@@ -283,8 +303,13 @@ export const ADVANCED3_EP12_BOGOTA_BLACKOUT: StorybookEpisode = {
       lines: [
         {
           speaker: "barrett",
-          text: "From legal, six twelve p.m., all three countries. 'Effective tomorrow at eight a.m., the training pilot is suspended in San Salvador, Bogotá and Monterrey pending resolution of the public statement matter.' I'm required to read it to you. I'm not required to agree.",
-          es: "De legal, seis y doce p.m., los tres países. 'A partir de mañana a las ocho a.m., el piloto de entrenamiento queda suspendido en San Salvador, Bogotá y Monterrey hasta que se resuelva el asunto de la declaración pública'. Estoy obligada a leérselo. No estoy obligada a estar de acuerdo.",
+          text: "From legal, six twelve p.m., all three countries. 'Effective tomorrow at eight a.m., the training pilot is suspended in San Salvador, Bogotá and Monterrey pending resolution of the public statement matter.'",
+          es: "De legal, seis y doce p.m., los tres países. 'A partir de mañana a las ocho a.m., el piloto de entrenamiento queda suspendido en San Salvador, Bogotá y Monterrey hasta que se resuelva el asunto de la declaración pública'.",
+        },
+        {
+          speaker: "barrett",
+          text: "I'm required to read it to you. I'm not required to agree.",
+          es: "Estoy obligada a leérselo. No estoy obligada a estar de acuerdo.",
         },
         {
           speaker: "dani",

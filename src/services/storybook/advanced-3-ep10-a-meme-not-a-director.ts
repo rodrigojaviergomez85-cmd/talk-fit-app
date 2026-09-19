@@ -59,8 +59,13 @@ export const ADVANCED3_EP10_A_MEME_NOT_A_DIRECTOR: StorybookEpisode = {
       lines: [
         {
           speaker: "reed",
-          text: "Mr. Dani. Two million views, a podcast, a livestream, and a board that has to decide whether to give you three countries. I'll say what I think so you can push back on it. You're a meme, not a director. A video doesn't make a training program.",
-          es: "Señor Dani. Dos millones de vistas, un podcast, un en vivo, y una junta que tiene que decidir si le da tres países. Voy a decir lo que pienso para que pueda rebatirlo. Es un meme, no un director. Un video no hace un programa de entrenamiento.",
+          text: "Mr. Dani. Two million views, a podcast, a livestream, and a board that has to decide whether to give you three countries.",
+          es: "Señor Dani. Dos millones de vistas, un podcast, un en vivo, y una junta que tiene que decidir si le da tres países.",
+        },
+        {
+          speaker: "reed",
+          text: "I'll say what I think so you can push back on it. You're a meme, not a director. A video doesn't make a training program.",
+          es: "Voy a decir lo que pienso para que pueda rebatirlo. Es un meme, no un director. Un video no hace un programa de entrenamiento.",
         },
         {
           speaker: "dani",
@@ -85,8 +90,18 @@ export const ADVANCED3_EP10_A_MEME_NOT_A_DIRECTOR: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "I'd say the floor made the program, and the video only showed forty seconds of it. My main reason is the number: seventeen of twenty agents passed an audit run by Crown, not by us, on real calls, on day ninety. That number existed before the video and it doesn't care about the video.",
-          es: "Diría que el piso hizo el programa, y el video solo mostró cuarenta segundos de él. Mi razón principal es el número: diecisiete de veinte agentes pasaron una auditoría hecha por Crown, no por nosotros, en llamadas reales, el día noventa. Ese número existía antes del video y al video no le importa.",
+          text: "I'd say the floor made the program, and the video only showed forty seconds of it.",
+          es: "Diría que el piso hizo el programa, y el video solo mostró cuarenta segundos de él.",
+        },
+        {
+          speaker: "dani",
+          text: "My main reason is the number: seventeen of twenty agents passed an audit run by Crown, not by us, on real calls, on day ninety.",
+          es: "Mi razón principal es el número: diecisiete de veinte agentes pasaron una auditoría hecha por Crown, no por nosotros, en llamadas reales, el día noventa.",
+        },
+        {
+          speaker: "dani",
+          text: "That number existed before the video and it doesn't care about the video.",
+          es: "Ese número existía antes del video y al video no le importa.",
         },
         {
           speaker: "reed",
@@ -142,13 +157,28 @@ export const ADVANCED3_EP10_A_MEME_NOT_A_DIRECTOR: StorybookEpisode = {
       lines: [
         {
           speaker: "reed",
-          text: "A director doesn't get corrected by his finance person in front of a board. A director doesn't tell legal 'it's how I work'. A director doesn't put a lawyer's statement face down on the floor in front of four hundred people.",
-          es: "Un director no es corregido por su persona de finanzas frente a una junta. Un director no le dice a legal 'así trabajo yo'. Un director no pone la declaración de un abogado boca abajo en el piso frente a cuatrocientas personas.",
+          text: "A director doesn't get corrected by his finance person in front of a board. A director doesn't tell legal 'it's how I work'.",
+          es: "Un director no es corregido por su persona de finanzas frente a una junta. Un director no le dice a legal 'así trabajo yo'.",
+        },
+        {
+          speaker: "reed",
+          text: "A director doesn't put a lawyer's statement face down on the floor in front of four hundred people.",
+          es: "Un director no pone la declaración de un abogado boca abajo en el piso frente a cuatrocientas personas.",
         },
         {
           speaker: "dani",
-          text: "That's a fair point about the statement, and I'm not saying I'd do it differently. But I still think the question isn't whether I'm a director. It's whether the floor works without me. Seventeen of twenty says it does. Bogotá says it does. What I mean is: if the program only worked with me in the room, it wouldn't be a program.",
-          es: "Es un punto justo sobre la declaración, y no digo que lo haría distinto. Pero sigo pensando que la pregunta no es si soy un director. Es si el piso funciona sin mí. Diecisiete de veinte dice que sí. Bogotá dice que sí. Lo que quiero decir es: si el programa solo funcionara conmigo en la sala, no sería un programa.",
+          text: "That's a fair point about the statement, and I'm not saying I'd do it differently. But I still think the question isn't whether I'm a director.",
+          es: "Es un punto justo sobre la declaración, y no digo que lo haría distinto. Pero sigo pensando que la pregunta no es si soy un director.",
+        },
+        {
+          speaker: "dani",
+          text: "It's whether the floor works without me. Seventeen of twenty says it does. Bogotá says it does.",
+          es: "Es si el piso funciona sin mí. Diecisiete de veinte dice que sí. Bogotá dice que sí.",
+        },
+        {
+          speaker: "dani",
+          text: "What I mean is: if the program only worked with me in the room, it wouldn't be a program.",
+          es: "Lo que quiero decir es: si el programa solo funcionara conmigo en la sala, no sería un programa.",
         },
       ],
       words: [
@@ -209,8 +239,13 @@ export const ADVANCED3_EP10_A_MEME_NOT_A_DIRECTOR: StorybookEpisode = {
         },
         {
           speaker: "barrett",
-          text: "You corrected yourself in front of six people who were looking for a reason to say no. Three of them wrote that down instead of the twenty. The letter on my desk is on hold too. Nobody has to answer anything by five.",
-          es: "Se corrigió frente a seis personas que buscaban una razón para decir que no. Tres de ellas anotaron eso en vez del veinte. La carta en mi escritorio también queda en espera. Nadie tiene que contestar nada a las cinco.",
+          text: "You corrected yourself in front of six people who were looking for a reason to say no. Three of them wrote that down instead of the twenty.",
+          es: "Se corrigió frente a seis personas que buscaban una razón para decir que no. Tres de ellas anotaron eso en vez del veinte.",
+        },
+        {
+          speaker: "barrett",
+          text: "The letter on my desk is on hold too. Nobody has to answer anything by five.",
+          es: "La carta en mi escritorio también queda en espera. Nadie tiene que contestar nada a las cinco.",
         },
       ],
       words: [
@@ -250,8 +285,13 @@ export const ADVANCED3_EP10_A_MEME_NOT_A_DIRECTOR: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "I got a number wrong and Camila fixed it. I said 'that's a fair point' to a man who called me a meme. And I still have Thursdays. So: yes, I lost, and I'm still here.",
-          es: "Me equivoqué en un número y Camila lo corrigió. Le dije 'es un punto justo' a un hombre que me llamó meme. Y todavía tengo los jueves. Así que: sí, perdí, y sigo aquí.",
+          text: "I got a number wrong and Camila fixed it. I said 'that's a fair point' to a man who called me a meme. And I still have Thursdays.",
+          es: "Me equivoqué en un número y Camila lo corrigió. Le dije 'es un punto justo' a un hombre que me llamó meme. Y todavía tengo los jueves.",
+        },
+        {
+          speaker: "dani",
+          text: "So: yes, I lost, and I'm still here.",
+          es: "Así que: sí, perdí, y sigo aquí.",
         },
       ],
       words: [
@@ -281,8 +321,13 @@ export const ADVANCED3_EP10_A_MEME_NOT_A_DIRECTOR: StorybookEpisode = {
         },
         {
           speaker: "vale",
-          text: "I had nine years to add. I didn't, because the point of nine years is that you don't need me in the room anymore. Monday, the small room. I'm going to tell you how it was before you. You've never heard it.",
-          es: "Tenía nueve años que agregar. No lo hice, porque el punto de nueve años es que ya no me necesitas en la sala. El lunes, el salón pequeño. Te voy a contar cómo era antes de ti. Nunca lo has oído.",
+          text: "I had nine years to add. I didn't, because the point of nine years is that you don't need me in the room anymore. Monday, the small room.",
+          es: "Tenía nueve años que agregar. No lo hice, porque el punto de nueve años es que ya no me necesitas en la sala. El lunes, el salón pequeño.",
+        },
+        {
+          speaker: "vale",
+          text: "I'm going to tell you how it was before you. You've never heard it.",
+          es: "Te voy a contar cómo era antes de ti. Nunca lo has oído.",
         },
       ],
       words: [

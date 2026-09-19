@@ -152,8 +152,13 @@ export const ADVANCED3_EP19_WHAT_I_DIDNT_SAY: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Three years ago, in the last room, you said you'd signed with Crown. I said 'you could have said that at seven thirty'. That was my decision: a joke about the time. The consequence was that you left, I got the room, and I never told you I wanted you in it.",
-          es: "Hace tres años, en la última sala, dijiste que habías firmado con Crown. Yo dije 'pudiste haberlo dicho a las siete y media'. Esa fue mi decisión: un chiste sobre la hora. La consecuencia fue que te fuiste, yo me quedé con el salón, y nunca te dije que te quería en él.",
+          text: "Three years ago, in the last room, you said you'd signed with Crown. I said 'you could have said that at seven thirty'. That was my decision: a joke about the time.",
+          es: "Hace tres años, en la última sala, dijiste que habías firmado con Crown. Yo dije 'pudiste haberlo dicho a las siete y media'. Esa fue mi decisión: un chiste sobre la hora.",
+        },
+        {
+          speaker: "dani",
+          text: "The consequence was that you left, I got the room, and I never told you I wanted you in it.",
+          es: "La consecuencia fue que te fuiste, yo me quedé con el salón, y nunca te dije que te quería en él.",
         },
         {
           speaker: "lidia",
@@ -183,8 +188,18 @@ export const ADVANCED3_EP19_WHAT_I_DIDNT_SAY: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Looking back, I should have asked you to stay. In the room, before the name. I could have said 'the pilot needs two teachers and one of them sounds like her students'. I shouldn't have made the joke; it was my five seconds and I spent them on it. It was Vale who gave up the room that day. It should have been me who asked you to share it.",
-          es: "Mirando atrás, debí pedirte que te quedaras. En la sala, antes del nombre. Pude haber dicho 'el piloto necesita dos maestros y una de ellas suena como sus estudiantes'. No debí hacer el chiste; eran mis cinco segundos y me los gasté en eso. Fue Vale quien entregó el salón ese día. Debí ser yo quien te pidiera compartirlo.",
+          text: "Looking back, I should have asked you to stay. In the room, before the name. I could have said 'the pilot needs two teachers and one of them sounds like her students'.",
+          es: "Mirando atrás, debí pedirte que te quedaras. En la sala, antes del nombre. Pude haber dicho 'el piloto necesita dos maestros y una de ellas suena como sus estudiantes'.",
+        },
+        {
+          speaker: "dani",
+          text: "I shouldn't have made the joke; it was my five seconds and I spent them on it. It was Vale who gave up the room that day.",
+          es: "No debí hacer el chiste; eran mis cinco segundos y me los gasté en eso. Fue Vale quien entregó el salón ese día.",
+        },
+        {
+          speaker: "dani",
+          text: "It should have been me who asked you to share it.",
+          es: "Debí ser yo quien te pidiera compartirlo.",
         },
         {
           speaker: "lidia",
@@ -214,8 +229,13 @@ export const ADVANCED3_EP19_WHAT_I_DIDNT_SAY: StorybookEpisode = {
       lines: [
         {
           speaker: "lidia",
-          text: "Then mine. I should have played you your worst call before I left, here, as a teacher. Instead I did it a year later as Crown's auditor. What I regret is not the audit. It's that the first time I gave you something honest, I was being paid by the other side to do it.",
-          es: "Entonces el mío. Debí ponerte tu peor llamada antes de irme, aquí, como maestra. En vez de eso lo hice un año después como auditora de Crown. Lo que lamento no es la auditoría. Es que la primera vez que te di algo honesto, me estaba pagando el otro lado para hacerlo.",
+          text: "Then mine. I should have played you your worst call before I left, here, as a teacher. Instead I did it a year later as Crown's auditor.",
+          es: "Entonces el mío. Debí ponerte tu peor llamada antes de irme, aquí, como maestra. En vez de eso lo hice un año después como auditora de Crown.",
+        },
+        {
+          speaker: "lidia",
+          text: "What I regret is not the audit. It's that the first time I gave you something honest, I was being paid by the other side to do it.",
+          es: "Lo que lamento no es la auditoría. Es que la primera vez que te di algo honesto, me estaba pagando el otro lado para hacerlo.",
         },
         {
           speaker: "dani",
@@ -245,8 +265,13 @@ export const ADVANCED3_EP19_WHAT_I_DIDNT_SAY: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "What I learned was that the thing I don't say doesn't disappear. It waits. Now, when I want someone to stay, I say it before they sign anything. I said it to a girl in this chair on Monday. Tomorrow at nine, I say it to a room.",
-          es: "Lo que aprendí fue que lo que no digo no desaparece. Espera. Ahora, cuando quiero que alguien se quede, lo digo antes de que firme nada. Se lo dije a una muchacha en esta silla el lunes. Mañana a las nueve, se lo digo a una sala.",
+          text: "What I learned was that the thing I don't say doesn't disappear. It waits. Now, when I want someone to stay, I say it before they sign anything.",
+          es: "Lo que aprendí fue que lo que no digo no desaparece. Espera. Ahora, cuando quiero que alguien se quede, lo digo antes de que firme nada.",
+        },
+        {
+          speaker: "dani",
+          text: "I said it to a girl in this chair on Monday. Tomorrow at nine, I say it to a room.",
+          es: "Se lo dije a una muchacha en esta silla el lunes. Mañana a las nueve, se lo digo a una sala.",
         },
         {
           speaker: "lidia",
@@ -276,8 +301,13 @@ export const ADVANCED3_EP19_WHAT_I_DIDNT_SAY: StorybookEpisode = {
       lines: [
         {
           speaker: "lidia",
-          text: "I'm not coming back, Dani. Not to the academy, not to the pilot. I'm good where I am, and where I am has a girl who sounds like me and nobody who tells her that's fine. So that's my job now. We're fine.",
-          es: "No voy a volver, Dani. Ni a la academia, ni al piloto. Estoy bien donde estoy, y donde estoy hay una muchacha que suena como yo y nadie que le diga que eso está bien. Así que ese es mi trabajo ahora. Estamos bien.",
+          text: "I'm not coming back, Dani. Not to the academy, not to the pilot.",
+          es: "No voy a volver, Dani. Ni a la academia, ni al piloto.",
+        },
+        {
+          speaker: "lidia",
+          text: "I'm good where I am, and where I am has a girl who sounds like me and nobody who tells her that's fine. So that's my job now. We're fine.",
+          es: "Estoy bien donde estoy, y donde estoy hay una muchacha que suena como yo y nadie que le diga que eso está bien. Así que ese es mi trabajo ahora. Estamos bien.",
         },
         {
           speaker: "dani",
@@ -322,8 +352,13 @@ export const ADVANCED3_EP19_WHAT_I_DIDNT_SAY: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "I said a sentence three years late. Late counts. We're fine. Tomorrow at nine I say a yes with two conditions to a room with a lawyer in it, and Julieta lands at six and I'm supposed to not tell Barrett and tell Barrett.",
-          es: "Dije una frase tres años tarde. Tarde cuenta. Estamos bien. Mañana a las nueve digo un sí con dos condiciones en una sala con un abogado adentro, y Julieta aterriza a las seis y se supone que no le diga a Barrett y le diga a Barrett.",
+          text: "I said a sentence three years late. Late counts. We're fine.",
+          es: "Dije una frase tres años tarde. Tarde cuenta. Estamos bien.",
+        },
+        {
+          speaker: "dani",
+          text: "Tomorrow at nine I say a yes with two conditions to a room with a lawyer in it, and Julieta lands at six and I'm supposed to not tell Barrett and tell Barrett.",
+          es: "Mañana a las nueve digo un sí con dos condiciones en una sala con un abogado adentro, y Julieta aterriza a las seis y se supone que no le diga a Barrett y le diga a Barrett.",
         },
         {
           speaker: "nico",

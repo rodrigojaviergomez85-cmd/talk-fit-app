@@ -59,8 +59,18 @@ export const ADVANCED3_EP18_MONTERREY: StorybookEpisode = {
       lines: [
         {
           speaker: "reed",
-          text: "The file says the method works. It also says an agent in Monterrey named Tomás failed his audit on a Friday, after his Thursday session was moved by a schedule signed in San Salvador. Legal lifts the suspension if someone takes responsibility for that in writing. Ms. Barrett has offered. Before I accept, I'd like you to define the word. Not the dictionary. You.",
-          es: "El expediente dice que el método funciona. También dice que un agente en Monterrey llamado Tomás reprobó su auditoría un viernes, después de que su sesión del jueves fue movida por un horario firmado en San Salvador. Legal levanta la suspensión si alguien asume la responsabilidad por escrito. Ms. Barrett se ofreció. Antes de aceptar, quiero que defina la palabra. No el diccionario. Usted.",
+          text: "The file says the method works.",
+          es: "El expediente dice que el método funciona.",
+        },
+        {
+          speaker: "reed",
+          text: "It also says an agent in Monterrey named Tomás failed his audit on a Friday, after his Thursday session was moved by a schedule signed in San Salvador.",
+          es: "También dice que un agente en Monterrey llamado Tomás reprobó su auditoría un viernes, después de que su sesión del jueves fue movida por un horario firmado en San Salvador.",
+        },
+        {
+          speaker: "reed",
+          text: "Legal lifts the suspension if someone takes responsibility for that in writing. Ms. Barrett has offered. Before I accept, I'd like you to define the word. Not the dictionary. You.",
+          es: "Legal levanta la suspensión si alguien asume la responsabilidad por escrito. Ms. Barrett se ofreció. Antes de aceptar, quiero que defina la palabra. No el diccionario. Usted.",
         },
         {
           speaker: "barrett",
@@ -85,8 +95,18 @@ export const ADVANCED3_EP18_MONTERREY: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "To me, it means the thing with my name at the bottom is mine, whatever was above it. Barrett gave me a number, Camila a budget, and I gave Monterrey a Friday without calling Monterrey. In practice, it starts with owning up out loud before someone finds the page. The signature is mine.",
-          es: "Para mí, significa que lo que tiene mi nombre al pie es mío, sin importar lo que hubiera arriba. Barrett me dio un número, Camila un presupuesto, y yo le di a Monterrey un viernes sin llamar a Monterrey. En la práctica, empieza por asumirlo en voz alta antes de que alguien encuentre la página. La firma es mía.",
+          text: "To me, it means the thing with my name at the bottom is mine, whatever was above it.",
+          es: "Para mí, significa que lo que tiene mi nombre al pie es mío, sin importar lo que hubiera arriba.",
+        },
+        {
+          speaker: "dani",
+          text: "Barrett gave me a number, Camila a budget, and I gave Monterrey a Friday without calling Monterrey. In practice, it starts with owning up out loud before someone finds the page.",
+          es: "Barrett me dio un número, Camila un presupuesto, y yo le di a Monterrey un viernes sin llamar a Monterrey. En la práctica, empieza por asumirlo en voz alta antes de que alguien encuentre la página.",
+        },
+        {
+          speaker: "dani",
+          text: "The signature is mine.",
+          es: "La firma es mía.",
         },
         {
           speaker: "reed",
@@ -116,8 +136,13 @@ export const ADVANCED3_EP18_MONTERREY: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "A clear example is this page. Nobody in Monterrey was watching when I signed it; that's exactly why it matters. Tomás doesn't have a clip. He has a Friday. The impact is that a man who could have passed on a Thursday failed, and his name is in a legal file because of a line I moved to save four hundred dollars.",
-          es: "Un ejemplo claro es esta página. Nadie en Monterrey estaba mirando cuando la firmé; exactamente por eso importa. Tomás no tiene un clip. Tiene un viernes. El impacto es que un hombre que pudo haber pasado un jueves reprobó, y su nombre está en un expediente legal por una línea que moví para ahorrar cuatrocientos dólares.",
+          text: "A clear example is this page. Nobody in Monterrey was watching when I signed it; that's exactly why it matters. Tomás doesn't have a clip. He has a Friday.",
+          es: "Un ejemplo claro es esta página. Nadie en Monterrey estaba mirando cuando la firmé; exactamente por eso importa. Tomás no tiene un clip. Tiene un viernes.",
+        },
+        {
+          speaker: "dani",
+          text: "The impact is that a man who could have passed on a Thursday failed, and his name is in a legal file because of a line I moved to save four hundred dollars.",
+          es: "El impacto es que un hombre que pudo haber pasado un jueves reprobó, y su nombre está en un expediente legal por una línea que moví para ahorrar cuatrocientos dólares.",
         },
         {
           speaker: "camila",
@@ -183,8 +208,18 @@ export const ADVANCED3_EP18_MONTERREY: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Tomás, this is Dani, from San Salvador. Six weeks ago I moved your Thursday to a Friday without asking you. You failed on that Friday. That's mine, not yours. Your schedule is yours again from today. You retake it in two weeks, on a Thursday, and I'll be on the line the whole time, listening. That's not a favor. It's what I owe you.",
-          es: "Tomás, soy Dani, de San Salvador. Hace seis semanas moví tu jueves a un viernes sin preguntarte. Reprobaste ese viernes. Eso es mío, no tuyo. Tu horario es tuyo otra vez desde hoy. Lo volvés a tomar en dos semanas, un jueves, y voy a estar en la línea todo el tiempo, escuchando. No es un favor. Es lo que te debo.",
+          text: "Tomás, this is Dani, from San Salvador. Six weeks ago I moved your Thursday to a Friday without asking you. You failed on that Friday. That's mine, not yours.",
+          es: "Tomás, soy Dani, de San Salvador. Hace seis semanas moví tu jueves a un viernes sin preguntarte. Reprobaste ese viernes. Eso es mío, no tuyo.",
+        },
+        {
+          speaker: "dani",
+          text: "Your schedule is yours again from today. You retake it in two weeks, on a Thursday, and I'll be on the line the whole time, listening. That's not a favor.",
+          es: "Tu horario es tuyo otra vez desde hoy. Lo volvés a tomar en dos semanas, un jueves, y voy a estar en la línea todo el tiempo, escuchando. No es un favor.",
+        },
+        {
+          speaker: "dani",
+          text: "It's what I owe you.",
+          es: "Es lo que te debo.",
         },
         {
           speaker: "mia",

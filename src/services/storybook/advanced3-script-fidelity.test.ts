@@ -8,20 +8,20 @@ const APPROVED_LINES: Record<string, string[]> = {
     "That's the first honest sentence anyone said to you today. Looking back, nobody asked you that on day one either. Take the week.",
   ],
   "advanced3-ep2-the-comments": [
-    "The one looking at his phone. That's Nico. The one who never smiles and never loses a customer. It looks like he's between calls; he might be reading the comments about himself, because he's not moving.",
+    "The one looking at his phone. That's Nico. The one who never smiles and never loses a customer.",
     "I want you to describe me right. You did, the second time. I'm fine.",
   ],
   "advanced3-ep3-miami-six-months": [
-    "That's not a reason. That's a schedule with a hole in it. The difficult part won't be Bogotá or Monterrey; it'll be month four, when you're tired and nobody's watching. A plan without a why doesn't survive month four.",
+    "A plan without a why doesn't survive month four.",
     "I'm not telling you no. I'm telling you to know why before the plane knows.",
   ],
   "advanced3-ep4-mias-night": [
-    "It was your choice. That's the only kind that counts on a Thursday. You gave a reason, an example, the other side and a close. I gave Barrett a plan with your name in it and no reason. Guess which one she wrote down.",
+    "I gave Barrett a plan with your name in it and no reason. Guess which one she wrote down.",
     "Then it's the wrong question mark. The plan isn't who runs the floor. It's who does the Thursdays.",
   ],
   "advanced3-ep5-the-livestream": [
     "...That's not me. That's a page. Let me put this down.",
-    "The way I see it, an app is for the repetitions and a room is for the fear. You can practice a phrase two hundred times alone. You can't practice being afraid alone. I'll say more about that next week, when someone asks me on purpose.",
+    "You can't practice being afraid alone. I'll say more about that next week, when someone asks me on purpose.",
   ],
   "advanced3-ep6-the-accent-question": [
     "Personally, I think an accent is proof that you learned.",

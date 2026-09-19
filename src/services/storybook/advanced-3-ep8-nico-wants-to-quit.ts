@@ -59,8 +59,13 @@ export const ADVANCED3_EP8_NICO_WANTS_TO_QUIT: StorybookEpisode = {
       lines: [
         {
           speaker: "nico",
-          text: "I want to leave Northline. Stream games full time. Forty thousand people since the clip, and last night two hundred of them paid to watch me lose. I make more in a good night than in a week here.",
-          es: "Quiero dejar Northline. Transmitir videojuegos a tiempo completo. Cuarenta mil personas desde el clip, y anoche doscientas pagaron por verme perder. Gano más en una buena noche que en una semana aquí.",
+          text: "I want to leave Northline. Stream games full time. Forty thousand people since the clip, and last night two hundred of them paid to watch me lose.",
+          es: "Quiero dejar Northline. Transmitir videojuegos a tiempo completo. Cuarenta mil personas desde el clip, y anoche doscientas pagaron por verme perder.",
+        },
+        {
+          speaker: "nico",
+          text: "I make more in a good night than in a week here.",
+          es: "Gano más en una buena noche que en una semana aquí.",
         },
         {
           speaker: "dani",
@@ -121,8 +126,18 @@ export const ADVANCED3_EP8_NICO_WANTS_TO_QUIT: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "First of all, what I understand is this: you have forty thousand people who showed up because of forty seconds, you stream from ten to two after a full shift, and the money was real one night. And the thing you actually like isn't the money; it's that nobody there calls you the kid.",
-          es: "Antes que nada, lo que entiendo es esto: tienes cuarenta mil personas que llegaron por cuarenta segundos, transmites de diez a dos después de un turno completo, y el dinero fue real una noche. Y lo que realmente te gusta no es el dinero; es que ahí nadie te dice el muchacho.",
+          text: "First of all, what I understand is this.",
+          es: "Antes que nada, lo que entiendo es esto.",
+        },
+        {
+          speaker: "dani",
+          text: "You have forty thousand people who showed up because of forty seconds, you stream from ten to two after a full shift, and the money was real one night.",
+          es: "Tienes cuarenta mil personas que llegaron por cuarenta segundos, transmites de diez a dos después de un turno completo, y el dinero fue real una noche.",
+        },
+        {
+          speaker: "dani",
+          text: "And the thing you actually like isn't the money; it's that nobody there calls you the kid.",
+          es: "Y lo que realmente te gusta no es el dinero; es que ahí nadie te dice el muchacho.",
         },
         {
           speaker: "nico",
@@ -157,8 +172,18 @@ export const ADVANCED3_EP8_NICO_WANTS_TO_QUIT: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "I'd say you should try it for six months with a plan, not quit tomorrow without one. You could try streaming three nights a week instead of five, and keeping the two-to-ten shift. The reason is simple: the first months of anything pay nothing, and forty thousand people who came for a clip leave for the next clip.",
-          es: "Diría que deberías intentarlo seis meses con un plan, no renunciar mañana sin uno. Podrías probar transmitir tres noches por semana en vez de cinco, y mantener el turno de dos a diez. La razón es simple: los primeros meses de cualquier cosa no pagan nada, y cuarenta mil personas que vinieron por un clip se van por el siguiente clip.",
+          text: "I'd say you should try it for six months with a plan, not quit tomorrow without one.",
+          es: "Diría que deberías intentarlo seis meses con un plan, no renunciar mañana sin uno.",
+        },
+        {
+          speaker: "dani",
+          text: "You could try streaming three nights a week instead of five, and keeping the two-to-ten shift.",
+          es: "Podrías probar transmitir tres noches por semana en vez de cinco, y mantener el turno de dos a diez.",
+        },
+        {
+          speaker: "dani",
+          text: "The reason is simple: the first months of anything pay nothing, and forty thousand people who came for a clip leave for the next clip.",
+          es: "La razón es simple: los primeros meses de cualquier cosa no pagan nada, y cuarenta mil personas que vinieron por un clip se van por el siguiente clip.",
         },
         {
           speaker: "nico",
@@ -306,8 +331,13 @@ export const ADVANCED3_EP8_NICO_WANTS_TO_QUIT: StorybookEpisode = {
       lines: [
         {
           speaker: "julieta",
-          text: "The board is Friday, the offer expires the same day, and you still haven't compared them out loud. Tomorrow at seven, me and you, two columns. Miami and here. I'll do the rows. You do the honesty.",
-          es: "La junta es el viernes, la oferta vence el mismo día, y todavía no las has comparado en voz alta. Mañana a las siete, tú y yo, dos columnas. Miami y aquí. Yo hago las filas. Tú pones la honestidad.",
+          text: "The board is Friday, the offer expires the same day, and you still haven't compared them out loud. Tomorrow at seven, me and you, two columns. Miami and here.",
+          es: "La junta es el viernes, la oferta vence el mismo día, y todavía no las has comparado en voz alta. Mañana a las siete, tú y yo, dos columnas. Miami y aquí.",
+        },
+        {
+          speaker: "julieta",
+          text: "I'll do the rows. You do the honesty.",
+          es: "Yo hago las filas. Tú pones la honestidad.",
         },
         {
           speaker: "dani",
@@ -411,8 +441,8 @@ export const ADVANCED3_EP8_NICO_WANTS_TO_QUIT: StorybookEpisode = {
       variants: ["showed up", "shows up", "showing up"],
       es: "aparecer, presentarse",
       kind: "phrasal",
-      example: "First of all, what I understand is this: you have forty thousand people who showed up because of forty seconds, you stream from ten to two after a full shift, and the money was real one night.",
-      exampleEs: "Antes que nada, lo que entiendo es esto: tienes cuarenta mil personas que llegaron por cuarenta segundos, transmites de diez a dos después de un turno completo, y el dinero fue real una noche.",
+      example: "You have forty thousand people who showed up because of forty seconds, you stream from ten to two after a full shift, and the money was real one night.",
+      exampleEs: "Tienes cuarenta mil personas que llegaron por cuarenta segundos, transmites de diez a dos después de un turno completo, y el dinero fue real una noche.",
     },
     {
       phrase: "make something out of",

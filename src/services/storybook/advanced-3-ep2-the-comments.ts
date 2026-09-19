@@ -90,8 +90,13 @@ export const ADVANCED3_EP2_THE_COMMENTS: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "In the front, a wall screen says today's account: billing. It's red, which means the queue is long. Two people are taking notes on paper, which we tell them not to do and they do anyway. One person is looking at his phone.",
-          es: "Al frente, una pantalla en la pared dice la cuenta de hoy: facturación. Está en rojo, lo que significa que la cola es larga. Dos personas toman notas en papel, cosa que les decimos que no hagan y hacen igual. Una persona está mirando su celular.",
+          text: "In the front, a wall screen says today's account: billing. It's red, which means the queue is long.",
+          es: "Al frente, una pantalla en la pared dice la cuenta de hoy: facturación. Está en rojo, lo que significa que la cola es larga.",
+        },
+        {
+          speaker: "dani",
+          text: "Two people are taking notes on paper, which we tell them not to do and they do anyway. One person is looking at his phone.",
+          es: "Dos personas toman notas en papel, cosa que les decimos que no hagan y hacen igual. Una persona está mirando su celular.",
         },
         {
           speaker: "renata",
@@ -100,8 +105,13 @@ export const ADVANCED3_EP2_THE_COMMENTS: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "The one looking at his phone. That's Nico. The one who never smiles and never loses a customer. It looks like he's between calls; he might be reading the comments about himself, because he's not moving.",
-          es: "El que mira su celular. Ese es Nico. El que nunca sonríe y nunca pierde un cliente. Parece que está entre llamadas; puede que esté leyendo los comentarios sobre sí mismo, porque no se mueve.",
+          text: "The one looking at his phone. That's Nico. The one who never smiles and never loses a customer.",
+          es: "El que mira su celular. Ese es Nico. El que nunca sonríe y nunca pierde un cliente.",
+        },
+        {
+          speaker: "dani",
+          text: "It looks like he's between calls; he might be reading the comments about himself, because he's not moving.",
+          es: "Parece que está entre llamadas; puede que esté leyendo los comentarios sobre sí mismo, porque no se mueve.",
         },
       ],
       words: [

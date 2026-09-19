@@ -90,8 +90,13 @@ export const ADVANCED3_EP4_MIAS_NIGHT: StorybookEpisode = {
       lines: [
         {
           speaker: "mia",
-          text: "For me, the better option is staying an agent. One reason is that the supervisor shift ends at eleven and my classes end at nine. I'd miss the last two hours of every class, every night, and the university doesn't have a two-to-ten option.",
-          es: "Para mí, la mejor opción es seguir siendo agente. Una razón es que el turno de supervisora termina a las once y mis clases terminan a las nueve. Me perdería las últimas dos horas de cada clase, todas las noches, y la universidad no tiene opción de dos a diez.",
+          text: "For me, the better option is staying an agent. One reason is that the supervisor shift ends at eleven and my classes end at nine.",
+          es: "Para mí, la mejor opción es seguir siendo agente. Una razón es que el turno de supervisora termina a las once y mis clases terminan a las nueve.",
+        },
+        {
+          speaker: "mia",
+          text: "I'd miss the last two hours of every class, every night, and the university doesn't have a two-to-ten option.",
+          es: "Me perdería las últimas dos horas de cada clase, todas las noches, y la universidad no tiene opción de dos a diez.",
         },
         {
           speaker: "barrett",
@@ -100,8 +105,13 @@ export const ADVANCED3_EP4_MIAS_NIGHT: StorybookEpisode = {
         },
         {
           speaker: "mia",
-          text: "For example, last week I taught fifteen people in Bogotá a process, and I got step three wrong and fixed it myself. I want to do that with a degree behind me, not instead of one.",
-          es: "Por ejemplo, la semana pasada le enseñé un proceso a quince personas en Bogotá, y me equivoqué en el paso tres y lo arreglé sola. Quiero hacer eso con un título detrás, no en vez de uno.",
+          text: "For example, last week I taught fifteen people in Bogotá a process, and I got step three wrong and fixed it myself.",
+          es: "Por ejemplo, la semana pasada le enseñé un proceso a quince personas en Bogotá, y me equivoqué en el paso tres y lo arreglé sola.",
+        },
+        {
+          speaker: "mia",
+          text: "I want to do that with a degree behind me, not instead of one.",
+          es: "Quiero hacer eso con un título detrás, no en vez de uno.",
         },
       ],
       words: [
@@ -121,8 +131,13 @@ export const ADVANCED3_EP4_MIAS_NIGHT: StorybookEpisode = {
       lines: [
         {
           speaker: "mia",
-          text: "On the other hand, I understand thirty percent is a lot for my family, and I understand the plan needs someone on this floor. So my choice isn't absolute: I'll take the supervisor job in two years, when I finish. Overall, I choose the degree first and the title second.",
-          es: "Por otro lado, entiendo que treinta por ciento es mucho para mi familia, y entiendo que el plan necesita a alguien en este piso. Así que mi elección no es absoluta: acepto el puesto de supervisora en dos años, cuando termine. En general, elijo el título primero y el cargo segundo.",
+          text: "On the other hand, I understand thirty percent is a lot for my family, and I understand the plan needs someone on this floor.",
+          es: "Por otro lado, entiendo que treinta por ciento es mucho para mi familia, y entiendo que el plan necesita a alguien en este piso.",
+        },
+        {
+          speaker: "mia",
+          text: "So my choice isn't absolute: I'll take the supervisor job in two years, when I finish. Overall, I choose the degree first and the title second.",
+          es: "Así que mi elección no es absoluta: acepto el puesto de supervisora en dos años, cuando termine. En general, elijo el título primero y el cargo segundo.",
         },
         {
           speaker: "dani",
@@ -260,13 +275,23 @@ export const ADVANCED3_EP4_MIAS_NIGHT: StorybookEpisode = {
       lines: [
         {
           speaker: "mia",
-          text: "Business administration. Nights. Four years. The first class is Monday at six. I've been an agent for four months and I said no to a title in front of Barrett. Was that the wrong choice, jefe?",
-          es: "Administración de empresas. De noche. Cuatro años. La primera clase es el lunes a las seis. Llevo cuatro meses de agente y le dije que no a un cargo frente a Barrett. ¿Fue la elección equivocada, jefe?",
+          text: "Business administration. Nights. Four years. The first class is Monday at six. I've been an agent for four months and I said no to a title in front of Barrett.",
+          es: "Administración de empresas. De noche. Cuatro años. La primera clase es el lunes a las seis. Llevo cuatro meses de agente y le dije que no a un cargo frente a Barrett.",
+        },
+        {
+          speaker: "mia",
+          text: "Was that the wrong choice, jefe?",
+          es: "¿Fue la elección equivocada, jefe?",
         },
         {
           speaker: "dani",
-          text: "It was your choice. That's the only kind that counts on a Thursday. You gave a reason, an example, the other side and a close. I gave Barrett a plan with your name in it and no reason. Guess which one she wrote down.",
-          es: "Fue tu elección. Es la única clase que cuenta un jueves. Diste una razón, un ejemplo, el otro lado y un cierre. Yo le di a Barrett un plan con tu nombre adentro y ninguna razón. Adivina cuál anotó.",
+          text: "It was your choice. That's the only kind that counts on a Thursday. You gave a reason, an example, the other side and a close.",
+          es: "Fue tu elección. Es la única clase que cuenta un jueves. Diste una razón, un ejemplo, el otro lado y un cierre.",
+        },
+        {
+          speaker: "dani",
+          text: "I gave Barrett a plan with your name in it and no reason. Guess which one she wrote down.",
+          es: "Yo le di a Barrett un plan con tu nombre adentro y ninguna razón. Adivina cuál anotó.",
         },
         {
           speaker: "nico",

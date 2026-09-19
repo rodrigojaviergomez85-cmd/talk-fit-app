@@ -59,8 +59,13 @@ export const ADVANCED3_EP6_THE_ACCENT_QUESTION: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Personally, I think a company that removes a teacher for her accent is asking for a teacher who never learned anything. I don't know if Northline did it. I'll find out, and I'll say it here, on Monday, with a name if the name is mine to say.",
-          es: "Personalmente, pienso que una empresa que quita a una maestra por su acento está pidiendo una maestra que nunca aprendió nada. No sé si Northline lo hizo. Lo voy a averiguar, y lo voy a decir aquí, el lunes, con nombre si el nombre me toca decirlo a mí.",
+          text: "Personally, I think a company that removes a teacher for her accent is asking for a teacher who never learned anything. I don't know if Northline did it.",
+          es: "Personalmente, pienso que una empresa que quita a una maestra por su acento está pidiendo una maestra que nunca aprendió nada. No sé si Northline lo hizo.",
+        },
+        {
+          speaker: "dani",
+          text: "I'll find out, and I'll say it here, on Monday, with a name if the name is mine to say.",
+          es: "Lo voy a averiguar, y lo voy a decir aquí, el lunes, con nombre si el nombre me toca decirlo a mí.",
         },
         {
           speaker: "mia",
@@ -126,8 +131,13 @@ export const ADVANCED3_EP6_THE_ACCENT_QUESTION: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "Personally, I think an accent is proof that you learned. The main reason is that nobody is born with two languages; the second one always carries the first, and the people who hire us know it.",
-          es: "Personalmente, pienso que un acento es prueba de que aprendiste. La razón principal es que nadie nace con dos idiomas; el segundo siempre carga al primero, y la gente que nos contrata lo sabe.",
+          text: "Personally, I think an accent is proof that you learned.",
+          es: "Personalmente, pienso que un acento es prueba de que aprendiste.",
+        },
+        {
+          speaker: "dani",
+          text: "The main reason is that nobody is born with two languages; the second one always carries the first, and the people who hire us know it.",
+          es: "La razón principal es que nadie nace con dos idiomas; el segundo siempre carga al primero, y la gente que nos contrata lo sabe.",
         },
       ],
       words: [
@@ -147,8 +157,18 @@ export const ADVANCED3_EP6_THE_ACCENT_QUESTION: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "For example, five years ago a client asked Northline to remove a trainer for her accent. Northline said no, and the person who signed the no was the woman who taught me English on bus 42 with her own accent. She audits my floor now. Nobody ever asked to remove her.",
-          es: "Por ejemplo, hace cinco años un cliente le pidió a Northline quitar a una entrenadora por su acento. Northline dijo que no, y la persona que firmó el no fue la mujer que me enseñó inglés en el bus 42 con su propio acento. Ahora audita mi piso. Nadie pidió nunca que la quitaran.",
+          text: "For example, five years ago a client asked Northline to remove a trainer for her accent.",
+          es: "Por ejemplo, hace cinco años un cliente le pidió a Northline quitar a una entrenadora por su acento.",
+        },
+        {
+          speaker: "dani",
+          text: "Northline said no, and the person who signed the no was the woman who taught me English on bus 42 with her own accent. She audits my floor now.",
+          es: "Northline dijo que no, y la persona que firmó el no fue la mujer que me enseñó inglés en el bus 42 con su propio acento. Ahora audita mi piso.",
+        },
+        {
+          speaker: "dani",
+          text: "Nobody ever asked to remove her.",
+          es: "Nadie pidió nunca que la quitaran.",
         },
         {
           speaker: "dani",
@@ -403,8 +423,8 @@ export const ADVANCED3_EP6_THE_ACCENT_QUESTION: StorybookEpisode = {
       variants: ["found out", "finds out", "finding out"],
       es: "averiguar, enterarse",
       kind: "phrasal",
-      example: "I don't know if Northline did it. I'll find out, and I'll say it here, on Monday, with a name if the name is mine to say.",
-      exampleEs: "No sé si Northline lo hizo. Lo voy a averiguar, y lo voy a decir aquí, el lunes, con nombre si el nombre me toca decirlo a mí.",
+      example: "I'll find out, and I'll say it here, on Monday, with a name if the name is mine to say.",
+      exampleEs: "Lo voy a averiguar, y lo voy a decir aquí, el lunes, con nombre si el nombre me toca decirlo a mí.",
     },
     {
       phrase: "the customer is always right",

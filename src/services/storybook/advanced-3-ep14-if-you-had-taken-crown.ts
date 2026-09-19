@@ -129,13 +129,23 @@ export const ADVANCED3_EP14_IF_YOU_HAD_TAKEN_CROWN: StorybookEpisode = {
       lines: [
         {
           speaker: "lidia",
-          text: "Two weeks ago you told four hundred people that somebody deserved the first version of an answer. Keller tells everyone she offered you the training job before me. It's her favorite story. So: what if you had taken Crown's offer?",
-          es: "Hace dos semanas le dijiste a cuatrocientas personas que alguien merecía la primera versión de una respuesta. Keller le cuenta a todos que te ofreció el puesto de entrenamiento antes que a mí. Es su historia favorita. Así que: ¿y si hubieras aceptado la oferta de Crown?",
+          text: "Two weeks ago you told four hundred people that somebody deserved the first version of an answer. Keller tells everyone she offered you the training job before me. It's her favorite story.",
+          es: "Hace dos semanas le dijiste a cuatrocientas personas que alguien merecía la primera versión de una respuesta. Keller le cuenta a todos que te ofreció el puesto de entrenamiento antes que a mí. Es su historia favorita.",
+        },
+        {
+          speaker: "lidia",
+          text: "So: what if you had taken Crown's offer?",
+          es: "Así que: ¿y si hubieras aceptado la oferta de Crown?",
         },
         {
           speaker: "dani",
-          text: "In that situation, I would have a title in Bogotá, a script approved by someone else, and no Thursdays. If that had happened, the clip wouldn't exist, because nobody at Crown films the floor. And nothing would be suspended today, because there'd be nothing to suspend.",
-          es: "En esa situación, tendría un título en Bogotá, un guion aprobado por alguien más, y ningún jueves. Si eso hubiera pasado, el clip no existiría, porque nadie en Crown filma el piso. Y hoy no habría nada suspendido, porque no habría nada que suspender.",
+          text: "In that situation, I would have a title in Bogotá, a script approved by someone else, and no Thursdays.",
+          es: "En esa situación, tendría un título en Bogotá, un guion aprobado por alguien más, y ningún jueves.",
+        },
+        {
+          speaker: "dani",
+          text: "If that had happened, the clip wouldn't exist, because nobody at Crown films the floor. And nothing would be suspended today, because there'd be nothing to suspend.",
+          es: "Si eso hubiera pasado, el clip no existiría, porque nadie en Crown filma el piso. Y hoy no habría nada suspendido, porque no habría nada que suspender.",
         },
       ],
       words: [
@@ -159,8 +169,18 @@ export const ADVANCED3_EP14_IF_YOU_HAD_TAKEN_CROWN: StorybookEpisode = {
         },
         {
           speaker: "dani",
-          text: "I'd be safe, and Mía would be on Crown's night team with no university, and seventeen people would still be where I was on day one. The reason I said no in the parking lot is that the offer had a room with no chairs in it. The risk of saying no was exactly this week. I knew. I'd say it again.",
-          es: "Estaría a salvo, y Mía estaría en el equipo nocturno de Crown sin universidad, y diecisiete personas seguirían donde yo estaba el día uno. La razón por la que dije que no en el estacionamiento es que la oferta tenía una sala sin sillas adentro. El riesgo de decir que no era exactamente esta semana. Lo sabía. Lo diría otra vez.",
+          text: "I'd be safe, and Mía would be on Crown's night team with no university, and seventeen people would still be where I was on day one.",
+          es: "Estaría a salvo, y Mía estaría en el equipo nocturno de Crown sin universidad, y diecisiete personas seguirían donde yo estaba el día uno.",
+        },
+        {
+          speaker: "dani",
+          text: "The reason I said no in the parking lot is that the offer had a room with no chairs in it. The risk of saying no was exactly this week. I knew.",
+          es: "La razón por la que dije que no en el estacionamiento es que la oferta tenía una sala sin sillas adentro. El riesgo de decir que no era exactamente esta semana. Lo sabía.",
+        },
+        {
+          speaker: "dani",
+          text: "I'd say it again.",
+          es: "Lo diría otra vez.",
         },
         {
           speaker: "lidia",
@@ -184,8 +204,13 @@ export const ADVANCED3_EP14_IF_YOU_HAD_TAKEN_CROWN: StorybookEpisode = {
       lines: [
         {
           speaker: "lidia",
-          text: "Crown read the suspension at seven. By nine, Keller had a proposal: Crown licenses the program, you run it from Bogotá, your seventeen stay here, first cohort in March. Keller calls you Monday. I'm calling today so you have the weekend.",
-          es: "Crown leyó la suspensión a las siete. A las nueve, Keller tenía una propuesta: Crown licencia el programa, vos lo dirigís desde Bogotá, tus diecisiete se quedan aquí, primera cohorte en marzo. Keller te llama el lunes. Yo llamo hoy para que tengás el fin de semana.",
+          text: "Crown read the suspension at seven. By nine, Keller had a proposal: Crown licenses the program, you run it from Bogotá, your seventeen stay here, first cohort in March.",
+          es: "Crown leyó la suspensión a las siete. A las nueve, Keller tenía una propuesta: Crown licencia el programa, vos lo dirigís desde Bogotá, tus diecisiete se quedan aquí, primera cohorte en marzo.",
+        },
+        {
+          speaker: "lidia",
+          text: "Keller calls you Monday. I'm calling today so you have the weekend.",
+          es: "Keller te llama el lunes. Yo llamo hoy para que tengás el fin de semana.",
         },
         {
           speaker: "dani",
@@ -251,8 +276,13 @@ export const ADVANCED3_EP14_IF_YOU_HAD_TAKEN_CROWN: StorybookEpisode = {
         },
         {
           speaker: "elena",
-          text: "My nephew passed your audit and still can't order a coffee at the airport. If that room is closed, I want to know what was inside it. And I brought bread, because nobody explains anything well hungry.",
-          es: "Mi sobrino pasó tu auditoría y todavía no puede pedir un café en el aeropuerto. Si ese salón está cerrado, quiero saber qué había adentro. Y traje pan, porque nadie explica nada bien con hambre.",
+          text: "My nephew passed your audit and still can't order a coffee at the airport. If that room is closed, I want to know what was inside it.",
+          es: "Mi sobrino pasó tu auditoría y todavía no puede pedir un café en el aeropuerto. Si ese salón está cerrado, quiero saber qué había adentro.",
+        },
+        {
+          speaker: "elena",
+          text: "And I brought bread, because nobody explains anything well hungry.",
+          es: "Y traje pan, porque nadie explica nada bien con hambre.",
         },
         {
           speaker: "dani",
@@ -313,8 +343,13 @@ export const ADVANCED3_EP14_IF_YOU_HAD_TAKEN_CROWN: StorybookEpisode = {
       lines: [
         {
           speaker: "dani",
-          text: "Ms. Keller. In that situation, I would ask one question before the salary, before Bogotá, before March. Where are the chairs? If the answer is a screen, the answer is no. If the answer is a room, I'd need to know whose.",
-          es: "Ms. Keller. En esa situación, haría una pregunta antes del salario, antes de Bogotá, antes de marzo. ¿Dónde están las sillas? Si la respuesta es una pantalla, la respuesta es no. Si la respuesta es un salón, necesitaría saber de quién.",
+          text: "Ms. Keller. In that situation, I would ask one question before the salary, before Bogotá, before March. Where are the chairs? If the answer is a screen, the answer is no.",
+          es: "Ms. Keller. En esa situación, haría una pregunta antes del salario, antes de Bogotá, antes de marzo. ¿Dónde están las sillas? Si la respuesta es una pantalla, la respuesta es no.",
+        },
+        {
+          speaker: "dani",
+          text: "If the answer is a room, I'd need to know whose.",
+          es: "Si la respuesta es un salón, necesitaría saber de quién.",
         },
       ],
       words: [
