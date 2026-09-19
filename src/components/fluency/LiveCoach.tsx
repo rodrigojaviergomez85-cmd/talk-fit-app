@@ -32,6 +32,7 @@ type HelpKind = "spanish" | "slow" | "idea";
 type StartResponse = {
   token?: string;
   model?: string;
+  unlimited?: boolean;
   usedSeconds?: number;
   dailyLimitSeconds?: number;
   sessionLimitSeconds?: number;
@@ -90,6 +91,7 @@ export function LiveCoach({ onActiveChange }: { onActiveChange?: (active: boolea
 
   const [phase, setPhase] = useState<Phase>("idle");
   const [allowed, setAllowed] = useState<boolean | null>(null);
+  const [unlimited, setUnlimited] = useState(false);
   const [usedSeconds, setUsedSeconds] = useState(0);
   const [dailyLimit, setDailyLimit] = useState(15 * 60);
   const [remaining, setRemaining] = useState(0);
